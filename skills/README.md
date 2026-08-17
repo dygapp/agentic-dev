@@ -2,7 +2,7 @@
 
 当前处于 **Skill Engineering** 阶段。
 
-第一批 8 个核心 Skill 已完成 Contract Review，并开始按照已复核契约逐个实现。当前不以“目录是否存在”作为完成标准，每个 Skill 都必须先对齐 Contract，再完成验证。
+第一批 8 个核心 Skill 已完成 Contract Review，并已按照已复核契约逐个实现并完成首轮契约验证。当前不以“目录是否存在”作为完成标准，每个 Skill 都必须持续与 Contract 对齐，并由当前证据支持完成状态。
 
 ## 第一批 8 个核心 Skill
 
@@ -15,7 +15,7 @@
 | `readiness-check` | 已实现，完成首轮契约验证 |
 | `execute-unit` | 已实现，完成首轮契约验证 |
 | `systematic-debug` | 已实现，完成首轮契约验证 |
-| `converge` | 待实现 |
+| `converge` | 已实现，完成首轮契约验证 |
 
 权威设计参考：
 
