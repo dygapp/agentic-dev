@@ -12,7 +12,7 @@
 | `specify` | 待实现 |
 | `technical-plan` | 待实现 |
 | `slice-work` | 待实现 |
-| `readiness-check` | 首个实现，验证中 |
+| `readiness-check` | 已实现，完成首轮契约验证 |
 | `execute-unit` | 待实现 |
 | `systematic-debug` | 待实现 |
 | `converge` | 待实现 |
