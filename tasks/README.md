@@ -6,17 +6,18 @@ Tasks 只承担工作协调职责，不构成方法权威。
 
 下一里程碑：
 
-> **Skill Contract Finalization**
+> **First Skill Implementation**
+
+第一批 8 个核心 Skill Contract 已完成复核，并形成 `docs/architecture/first-batch-skill-design.md` 设计基线。
 
 推荐顺序：
 
-1. 复核 8 个核心候选 Skill。
-2. 检查职责重叠和能力断层。
-3. 解决 `docs/architecture/skill-contracts.md` 中的开放问题。
-4. 确定第一批 Skill Implementation Wave。
-5. 一次只实现一个 Skill。
-6. 每个 Skill 都先根据 Method Contract 验证，再继续下一个。
+1. 实现并验证 `readiness-check`。
+2. 实现并验证 `slice-work`。
+3. 按第一批 Skill 设计基线逐个推进其余 Skill。
+4. 每次只实现一个 Skill。
+5. 每个 Skill 都先根据 Method / Architecture / Contract 验证，再继续下一个。
 
 方法结论不能只存在于 Task 中。
 
-如果 Task 产生新的 Method Decision，应先更新对应权威文档。
+如果 Task 产生新的 Method Decision，应先更新对应权威文档；如果实现暴露 Skill Contract 问题，应先修改并提交 Contract，再继续实现。
