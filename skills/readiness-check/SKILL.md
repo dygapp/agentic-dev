@@ -139,9 +139,9 @@ PASS
 
 如存在 Non-blocking Findings，可以在 `PASS` 后列出；它们不得改变 Gate Verdict。
 
-如果存在 Blocking Finding，不输出 `PASS`。按优先级列出 Blocking Findings，并可附 Non-blocking Findings。
+如果存在 Blocking Finding，不输出 `PASS`。按优先级列出 Blocking Findings，并可附 Non-blocking Findings；当前 Workflow 应返回 Finding 指定的职责层。
 
-`readiness-check` 到此退出，不自动调用 `execute-unit`，也不自行修复 Finding。
+`readiness-check` 不自动调用 `execute-unit`，也不自行修复 Finding。
 
 ## Outputs
 
@@ -172,12 +172,9 @@ Non-blocking Findings:  # optional
 
 ## Exit Conditions
 
-本次 Readiness Check 完成时必须满足以下之一：
+不存在 Blocking Finding，并且 `PASS` 有当前权威输入支持。
 
-1. 不存在 Blocking Finding，并以当前权威输入支持 `PASS`；或
-2. 已识别一个或多个 Blocking Findings，并明确每个阻塞项应返回的职责层与必要的升级路径。
-
-只有第一种情况允许当前工作进入 Execute。
+如果存在 Blocking Finding，本 Skill 应输出 Findings 并停止继续进入 Execute；这表示 Readiness Gate **未满足 Exit Condition**，当前 Workflow 应返回相应职责层处理。
 
 ## Escalation Conditions
 
