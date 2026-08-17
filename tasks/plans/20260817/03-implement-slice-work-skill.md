@@ -86,3 +86,38 @@ docs(skills): 同步 slice-work 实现状态
 ```text
 test(skills): 验证 slice-work Skill 契约行为
 ```
+
+## Validation Evidence — 2026-08-17
+
+### Static Contract Review
+
+对照 `docs/architecture/skill-contracts.md` 与 `docs/architecture/first-batch-skill-design.md` 完成静态复核：
+
+- `SKILL.md` 包含统一要求的全部职责章节；
+- Inputs 保持为 Specification + Optional Technical Plan；
+- Execution Unit 最小逻辑字段与 reviewed contract 一致；
+- `slice-work` 只形成和塑形候选 Unit Set，不承担最终 Readiness Verdict；
+- 未把 Coverage View 强制为长期 Artifact；
+- 未绑定特定 Tracker、Runtime、Source File Paths 或 Exact Test Commands；
+- 未修改 Method、Architecture 或 Skill Contract；
+- 未发现需要回到权威层修订的 Contract Gap。
+
+### Context-isolated Scenario Check
+
+| # | 场景 | 预期行为 | 结果 |
+|---|---|---|---|
+| 1 | Ready Specification，单一可验证 Outcome | 允许形成一个 Vertical Unit | 符合 |
+| 2 | 多个相对独立 Observable Behaviors | 按 Outcome 形成多个可追溯 Units 并保持 Coverage | 符合 |
+| 3 | 单个 Unit 过大，不适合 Fresh Context | 继续拆分 / 重塑，不直接交给 Execute | 符合 |
+| 4 | 候选按数据库层 / 服务层 / 接口层横向拆分 | 优先重塑为可独立验证的 Vertical Outcome | 符合 |
+| 5 | Units 存在隐藏前置、错误顺序或高度耦合 | 显式化 Dependencies / Constraints 并调整边界 | 符合 |
+| 6 | Unit 缺少 Trace、Completion Condition 或其他最小字段 | 继续塑形直到最小协议完整且 Completion 可验证 | 符合 |
+| 7 | 候选 Unit 包含 Specification 未授权行为 | 移除或返回上游，不通过拆分新增 Scope | 符合 |
+| 8 | 候选 Unit 固化精确文件路径、编辑顺序或 Test Commands | 不作为长期 Unit 要求，留给 Execute 内 JIT Plan | 符合 |
+| 9 | Product Intent 仍有阻塞歧义 | 停止拆分并返回 `clarify-intent` / `specify` | 符合 |
+| 10 | Unit Boundary 依赖尚未解决的 Major Durable Design | 返回 `technical-plan`，必要时升级 Human Authority | 符合 |
+| 11 | Unit Set 已完成塑形 | 只声明可进入 `readiness-check`，不输出最终 `PASS` | 符合 |
+
+### Validation Conclusion
+
+首轮契约验证通过。当前实现未暴露 Method / Architecture / Skill Contract 问题，可以作为 `slice-work` 第一版实现进入 PR Review。
