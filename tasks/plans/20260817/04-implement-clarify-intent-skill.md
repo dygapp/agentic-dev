@@ -59,6 +59,34 @@
 
 验证应基于 Skill 文本契约进行 context-isolated 行为检查；如仓库已有适用验证机制，应优先复用现有机制。
 
+## Validation Result
+
+**结果：通过。**
+
+已完成静态 Contract 对照与 12 个 context-isolated 场景检查：
+
+1. 明确 Intent：快速形成 Clarified Intent，不追加无关问题；
+2. 用户可见行为存在高影响分歧：形成 Blocking Question；
+3. Scope 边界改变验收范围：形成 Blocking Question；
+4. 普通低影响可逆实现细节：过滤，不升级 Human；
+5. 纯技术设计选择：留给 `technical-plan` / Execute，不作为 Intent 阻塞；
+6. 已确认 Product Decision 与未决问题：保持分离；
+7. Authoritative Sources Conflict：停止并升级，不猜测；
+8. Existing Intent 重新确认：只加载并收敛受影响部分；
+9. Execute / Debug / Converge 阶段回退：只重新澄清暴露出的 Product Intent 问题；
+10. 输出边界：形成 `specify` 输入，但不替代正式 Specification；
+11. Conversation History：不作为权威事实来源；
+12. Exit Condition：仅在不存在 materially changing Intent / Acceptance 的关键未决问题时满足。
+
+静态复核同时确认：
+
+- 未引入技术方案模板、Code Inspection 流程或永久 Clarification Artifact 要求；
+- 未把实现不确定性扩大为 Product Intent 问题；
+- 未自动调用 `specify` 或接管后续生命周期；
+- 未发现需要修改 Method、Skill Architecture 或 Skill Contract 的问题。
+
+当前证据支持 `clarify-intent` 首版实现与 Reviewed Contract 一致。
+
 ## Acceptance Criteria
 
 - `skills/clarify-intent/SKILL.md` 存在且职责单一；
