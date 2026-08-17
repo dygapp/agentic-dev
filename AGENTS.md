@@ -24,6 +24,18 @@ Skill 只能实现方法，不允许通过修改 `SKILL.md` 暗中改变方法�
 
 如果某个 Skill 的设计要求改变方法本身，必须先显式修改方法文档，再修改 Skill。
 
+## Repository Source of Truth
+
+GitHub repository 是本仓库的唯一长期基线来源。
+
+规则：
+
+- Git commit 记录项目演进历史；
+- Branch 用于隔离实验、设计和实现过程；
+- ZIP 快照只用于初始化、离线交换或临时备份，不作为持续开发上下文来源。
+
+所有后续 Method、Contract 和 Skill Implementation 变更，应基于 Git repository 状态进行。
+
 ## 当前阶段
 
 当前处于：
