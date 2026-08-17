@@ -72,6 +72,40 @@
 - 至少完成一轮 current evidence 支持的契约验证；
 - 实现变更与任何必要的 Contract Change 保持独立提交。
 
+## Validation Evidence
+
+**状态：** PASS  
+**验证对象：** `skills/specify/SKILL.md` 当前分支版本  
+**验证性质：** 静态 Contract 对照 + context-isolated 文本行为检查；当前仓库尚无独立 Skill Runtime / 自动化 harness，因此不将本轮结果表述为 Runtime 执行测试。
+
+### Static Contract Review
+
+- 统一 11 个 `SKILL.md` 契约章节均已实现；
+- Purpose 与 reviewed contract 一致，限定为创建或更新 WHAT / WHY Authority；
+- Inputs、Authority Sources、Exit Conditions、Escalation Conditions 与 Context Rules 均有显式定义；
+- 未引入固定文件名、目录、Markdown / YAML 模板、Front Matter 或 Runtime-specific 协议；
+- 未修改 Method、Skill Architecture 或 reviewed Skill Contract；
+- 未把 `technical-plan`、`slice-work`、Execute / JIT Planning 的职责并入本 Skill。
+
+### Context-isolated Scenario Checks
+
+1. **Clarified Intent → Specification：PASS** — Procedure 3–8 可以形成 Goal、Scope、Behaviors、Rules、Boundary、Acceptance 与相关 NFR，Procedure 11 检查 Fresh-Agent 可理解性。
+2. **Existing Specification 增量更新：PASS** — Procedure 2 明确只修改受影响 WHAT / WHY，并保留未受影响 Existing Authority，同时要求最终自洽。
+3. **Product Decision 未解决：PASS** — Procedure 1 / 10 / 11 均要求返回 `clarify-intent`，不猜测补齐 Requirement。
+4. **Requirement / Authority Conflict：PASS** — Authority Sources 与 Escalation Conditions 要求停止并升级，不选择方便实现的解释。
+5. **HOW 泄漏：PASS** — Procedure 9 显式过滤 Source Paths、Classes、Framework、Persistence、Exact Commands 与 JIT Plan。
+6. **Observable Behaviors / Business Rules：PASS** — Procedure 4 / 5 分别定义可观察 Product Outcome 与有权威依据的业务规则。
+7. **Boundary / Failure Behavior：PASS** — Procedure 6 只纳入会改变 Product Semantics / Acceptance 的关键边界与失败行为。
+8. **Observable Acceptance：PASS** — Procedure 7 要求可观察、可区分完成状态，并禁止用内部实现方式定义 Product Acceptance。
+9. **Relevant NFR：PASS** — Procedure 8 只记录已有权威要求的 NFR，不因模板完整性发明约束。
+10. **Fresh-Agent Spec Ready：PASS** — Procedure 11 明确检查 What / Not What / Completion / Ambiguity 四项。
+11. **Current System 不反向覆盖 Product Authority：PASS** — Authority Sources 明确 Current Code / Tests / Database 只能反映 Current System State，不能单独成为新 Product Requirement。
+12. **职责终点：PASS** — Procedure 12 与 Context Rules 明确输出 Specification 后退出，不自动 Technical Planning、Slice、Readiness 或 Execute。
+
+### Review Conclusion
+
+本轮未发现实现层偏差，也未发现必须修改 Method / Architecture / Skill Contract 才能解决的问题。当前 `specify` 实现满足 task 05 的 Acceptance Criteria，可以进入 PR Review。
+
 ## Commit Guidance
 
 如果权威 Contract 无需修改，本任务的 Skill Implementation 提交使用仓库既有 Commit 规范：
