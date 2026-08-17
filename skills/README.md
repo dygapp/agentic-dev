@@ -1,28 +1,27 @@
 # Skills
 
-Baseline v0.1 暂不包含正式生产级 Skills。
+当前处于 **Skill Engineering** 阶段。
 
-这是刻意设计的阶段边界。
+第一批 8 个核心 Skill 已完成 Contract Review，并开始按照已复核契约逐个实现。当前不以“目录是否存在”作为完成标准，每个 Skill 都必须先对齐 Contract，再完成验证。
 
-当前先完成 Skill Contract Design，再进入实现。
+## 第一批 8 个核心 Skill
 
-## 当前 8 个核心候选 Skill
-
-```text
-clarify-intent
-specify
-technical-plan
-slice-work
-readiness-check
-execute-unit
-systematic-debug
-converge
-```
+| Skill | 状态 |
+|---|---|
+| `clarify-intent` | 待实现 |
+| `specify` | 待实现 |
+| `technical-plan` | 待实现 |
+| `slice-work` | 待实现 |
+| `readiness-check` | 已实现，完成首轮契约验证 |
+| `execute-unit` | 待实现 |
+| `systematic-debug` | 待实现 |
+| `converge` | 待实现 |
 
 权威设计参考：
 
 - `../docs/architecture/skill-architecture.md`
 - `../docs/architecture/skill-contracts.md`
+- `../docs/architecture/first-batch-skill-design.md`
 
 ## Skill 实现原则
 
@@ -45,3 +44,5 @@ Escalation Conditions
 Context Rules
 Allowed Sub-skills / Disciplines
 ```
+
+实现不得通过 `SKILL.md` 暗中修改 Method、Architecture 或 reviewed Contract。若实现暴露权威层问题，应先回到对应权威文档处理，再继续 Skill Implementation。
