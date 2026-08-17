@@ -68,6 +68,29 @@
 
 本轮验证属于基于 `SKILL.md` 文本的 context-isolated 行为检查，不表述为 Runtime / 自动化 harness 测试。
 
+## Validation Result
+
+首轮文本契约行为验证完成，14 个场景全部通过。
+
+验证确认：
+
+- `execute-unit` 严格一次只处理一个 Unit，不自动遍历 Queue；
+- Fresh Execution Context 与 Progressive Disclosure 边界明确；
+- 实施前必须 Inspect Actual Repository State；
+- Verification Commands 必须从 Repository Rules / Actual Repository State 发现，不硬编码或猜测；
+- JIT Execution Plan 只服务当前 Unit，默认不持久化；
+- TDD / Expected Failing Evidence 仅在存在稳定 Behavior Seam 时按需使用；
+- Unexpected Failure 明确进入 `systematic-debug`；
+- Review 逻辑区分 Specification Compliance 与 Engineering Quality，但不强制独立 Reviewer Agent；
+- Completion Claim 必须由当前 Verification Evidence 支持；
+- Product Intent / Major Design / Authority / Destructive / Security / Privacy / External Side Effect 问题会返回上游或升级；
+- Current Code / Tests 只表示 Current System State，不能反向覆盖 Product Authority；
+- Skill 不自动进入 `converge`，也不承担 Integration。
+
+静态 Contract 对照过程中曾发现首版 Context Rules 对 Integration 存在一个过宽例外措辞，已在实现层修正为“本 Skill 不承担 Merge / Push / Release / Deploy；Integration 在方法终点之外由 Repository Policy / Human Authority 处理”。该问题未要求修改 Method、Architecture 或 Skill Contract。
+
+当前未发现需要回到 Method / Architecture / Contract 层处理的问题。
+
 ## Acceptance Criteria
 
 - `skills/execute-unit/SKILL.md` 存在且职责单一；
