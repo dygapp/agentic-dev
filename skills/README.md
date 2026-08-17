@@ -10,7 +10,7 @@
 |---|---|
 | `clarify-intent` | 已实现，完成首轮契约验证 |
 | `specify` | 已实现，完成首轮契约验证 |
-| `technical-plan` | 待实现 |
+| `technical-plan` | 已实现，完成首轮契约验证 |
 | `slice-work` | 已实现，完成首轮契约验证 |
 | `readiness-check` | 已实现，完成首轮契约验证 |
 | `execute-unit` | 待实现 |
