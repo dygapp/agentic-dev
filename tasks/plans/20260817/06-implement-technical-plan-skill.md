@@ -60,6 +60,27 @@
 
 本轮验证属于基于 `SKILL.md` 文本的 context-isolated 行为检查，不表述为 Runtime / 自动化 harness 测试。
 
+## Validation Evidence
+
+验证时间：2026-08-17。
+
+验证方式：将 `skills/technical-plan/SKILL.md` 与 reviewed Contract 静态对照，并对以下 12 个 context-isolated 文本场景逐项检查预期行为。此处记录的是当前文本契约证据，不代表已经建立独立 Runtime / 自动化测试框架。
+
+1. **Direct mapping** — PASS。Procedure 先判断是否需要 Technical Planning；不存在跨 Unit Durable Uncertainty 时明确输出“不需要 Technical Planning”，且禁止创建空 Plan。
+2. **Cross-module coordination** — PASS。Use When 与 Durable Question 判断均覆盖跨模块、跨 Unit 一致性问题。
+3. **New data / persistence model** — PASS。作为典型触发项，并要求在具有跨 Unit 持续价值时记录 Data / Contract Design。
+4. **Integration / migration / shared contract / deployment triggers** — PASS。Use When 明确包含这些触发场景。
+5. **Local reversible choice** — PASS。普通、低影响、可逆局部实现选择明确留给 Execute，不要求长期冻结。
+6. **JIT detail separation** — PASS。精确文件路径、逐文件顺序、Exact Test Commands 与 Local Implementation Details 明确留给 Execute 内 JIT Execution Plan。
+7. **No silent product redefinition** — PASS。每个技术决定都必须检查是否改变 Specification WHAT / WHY；如改变则返回 `specify` / `clarify-intent`。
+8. **High-impact escalation** — PASS。Major Architecture、不可逆数据操作、安全 / 隐私、未授权外部副作用和高影响 Trade-off 均要求停止并升级。
+9. **Durable output discipline** — PASS。Technical Approach、Boundaries、Data / Contracts、Seams、Migration、Testing、Risks 仅按需记录，不要求填满分类。
+10. **Current system authority boundary** — PASS。Current Architecture / ADR / Codebase State 可以约束 HOW，但不能反向覆盖 Product Authority。
+11. **Exit condition** — PASS。只有实施前必须解决的跨 Unit 技术不确定性已解决或确认不存在，并且没有 Silent Redefinition 时才完成。
+12. **Lifecycle boundary** — PASS。输出完成后不自动创建 Execution Units，也不自动进入 `slice-work`、`readiness-check` 或 Execute。
+
+静态 Contract 对照结论：**PASS**。未发现需要修改 `AGENTS.md`、Method、Skill Architecture 或 reviewed Skill Contract 的问题。
+
 ## Acceptance Criteria
 
 - `skills/technical-plan/SKILL.md` 存在且职责单一；
