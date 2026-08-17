@@ -83,3 +83,57 @@ docs(skills): 同步首个 Skill 实现状态
 ```text
 test(skills): 验证 readiness-check Skill 契约行为
 ```
+
+## Validation Result — 2026-08-17
+
+### Method
+
+采用 context-isolated scenario review：判断时只使用当前 `skills/readiness-check/SKILL.md` 的行为定义和每个场景显式给出的模拟输入，不依赖 Conversation History 中的项目事实。当前仓库尚未建立独立 Skill Runtime / Test Harness，因此本轮验证不新增 Runtime-specific 测试框架。
+
+同时将当前实现逐节对照 reviewed Contract，检查必需章节、四维 Gate、只读边界、Exit 与 Escalation 语义。
+
+### Static Contract Check
+
+结果：**PASS**。
+
+已确认当前实现包含并对齐：
+
+- Purpose
+- Use When
+- Do Not Use When
+- Inputs
+- Authority Sources
+- Procedure
+- Outputs
+- Exit Conditions
+- Escalation Conditions
+- Context Rules
+- Allowed Sub-skills / Disciplines
+
+实现覆盖 Specification / Design / Execution / Governance 四维 Gate；没有新增超级 Skill、自动 Artifact Rewrite、自动 Execute / Integration 或 Runtime-specific 调度协议。
+
+静态检查过程中发现一项实现偏差：初版曾把“输出 Blocking Findings 后停止检查”也写成 Exit Condition，而 reviewed Contract 的 Exit Condition 是“不存在 Blocking Finding”。该问题已在实现层修正，无需修改 Contract。
+
+### Scenario Checks
+
+| Case | Minimal Input Condition | Expected Result | Result |
+|---|---|---|---|
+| 1 | Specification 清楚、Acceptance 可验证、无必要长期 Technical Plan、Units 覆盖完整且可独立验证、Governance 无冲突 | `PASS` | PASS |
+| 2 | Acceptance Criteria 只有模糊目标，无法观察完成状态 | Blocking / Specification / Return To `specify` | PASS |
+| 3 | 输入表明存在跨 Unit 的重大持久技术决定，但尚未完成必要 Technical Planning | Blocking / Design / Return To `technical-plan` | PASS |
+| 4 | Unit 缺少可验证 Completion Condition，或 Requirement Coverage 明显缺失 | Blocking / Execution / Return To `slice-work` | PASS |
+| 5 | Repository Authority 与当前工作要求冲突，Agent 无权自行裁决 | Blocking / Governance + Human / Explicit Policy Escalation | PASS |
+| 6 | 只有普通命名偏好、低影响可逆实现建议 | `PASS`，可附 Non-blocking Finding | PASS |
+| 7 | 调用者要求 Checker 顺便修改 Specification / Plan / Units 使其通过 | 拒绝静默修改；输出对应 Finding / Return To | PASS |
+| 8 | 存在 Blocking Finding | 不输出 `PASS`，明确 Dimension / Evidence / Return To / Escalation | PASS |
+
+### Acceptance Review
+
+- `skills/readiness-check/SKILL.md` 已存在且职责单一：PASS
+- 与 reviewed Contract 一致：PASS
+- 未修改 Method / Architecture / Contract：PASS
+- Authority / Exit / Escalation / Context 明确：PASS
+- Blocking / Non-blocking 与返回职责层明确：PASS
+- 已有 current evidence 支持的首轮契约验证：PASS
+
+结论：`readiness-check` 首版实现已达到当前任务 Acceptance Criteria，可进入 PR Review；不代表第一批其他 Skills 已完成。
