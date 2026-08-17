@@ -74,7 +74,7 @@
 - Current Implemented System；
 - Current Verification Evidence。
 
-如果仍存在明显未执行的必要 Unit，且不存在合理理由进行阶段性 Feature-wide 收敛检查，则返回执行路径，不通过本 Skill制造一个形式化 `GAPS` 报告代替尚未完成的正常执行。
+如果仍存在明显未执行的必要 Unit，则返回执行路径并停止本 Skill；不通过形式化 `GAPS` 报告代替尚未完成的正常执行。
 
 ### 2. Build a Specification-to-System Coverage View
 
