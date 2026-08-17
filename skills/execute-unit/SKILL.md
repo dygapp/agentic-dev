@@ -4,7 +4,7 @@
 
 使用最小 Fresh Execution Context，实现并证明一个 Execution Unit。
 
-本 Skill 一次只负责一个 Current Execution Unit。它不自动遍历 Feature / Queue，不自动进入 `converge`，也不执行 Merge / Push / Release / Deploy。
+本 Skill 一次只负责一个 Current Execution Unit。它不自动遍历 Feature / Queue，不自动进入 `converge`，也不承担 Merge / Push / Release / Deploy 等 Integration 行为。
 
 完成状态必须由当前 Verification Evidence 支持，而不是由“代码已经修改”“测试看起来应该通过”或 Conversation History 中的旧结论支持。
 
@@ -357,7 +357,7 @@ Review 逻辑上至少区分两个维度：
 - 一次只执行一个 Unit；
 - 不自动遍历 Queue；
 - 不自动调用 `converge`；
-- 不执行 Merge / Push / Release / Deploy，除非另有 Repository Policy 和明确授权且该动作本身属于当前请求；
+- 本 Skill 不承担 Merge / Push / Release / Deploy；Integration 由仓库 Policy / Human Authority 在本方法终点之外处理；
 - Completion Claim 必须符合 Verification-before-claim。
 
 ## Allowed Sub-skills / Disciplines
