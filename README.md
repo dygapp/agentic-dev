@@ -25,8 +25,9 @@
 4. `docs/architecture/skill-architecture.md`
 5. `docs/architecture/skill-contracts.md`
 6. `docs/decisions/method-decisions.md`
-7. `docs/research/*`
-8. Tasks 与临时工作记录
+7. `docs/guides/git-commit-guidelines.md`
+8. `docs/research/*`
+9. Tasks 与临时工作记录
 
 `docs/research/` 只负责说明“为什么形成当前方法”，不能覆盖已经固化的方法结论。
 
@@ -103,6 +104,8 @@ Regression Verification
 │   │   └── skill-contracts.md
 │   ├── decisions/
 │   │   └── method-decisions.md
+│   ├── guides/
+│   │   └── git-commit-guidelines.md
 │   └── research/
 │       ├── README.md
 │       ├── mattpocock-skills-analysis.md
@@ -113,6 +116,21 @@ Regression Verification
 └── tasks/
     └── README.md
 ```
+
+
+## Git Commit 规范
+
+仓库统一采用：
+
+```text
+<type>(<scope>): <中文摘要>
+```
+
+完整规则见：
+
+`docs/guides/git-commit-guidelines.md`
+
+特别要求 Method / Contract 变更与 Skill Implementation 变更保持清晰分层，避免通过实现提交暗中改写方法权威。
 
 ## 下一阶段
 

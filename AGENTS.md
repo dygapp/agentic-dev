@@ -18,8 +18,9 @@ Skill 只能实现方法，不允许通过修改 `SKILL.md` 暗中改变方法�
 4. `docs/architecture/skill-architecture.md`
 5. `docs/architecture/skill-contracts.md`
 6. `docs/decisions/method-decisions.md`
-7. `docs/research/*`
-8. Tasks 与临时工作记录
+7. `docs/guides/git-commit-guidelines.md`
+8. `docs/research/*`
+9. Tasks 与临时工作记录
 
 如果某个 Skill 的设计要求改变方法本身，必须先显式修改方法文档，再修改 Skill。
 
@@ -60,3 +61,22 @@ Skill 只能实现方法，不允许通过修改 `SKILL.md` 暗中改变方法�
 不能因为上游项目使用了某个命令、模板或产物，就直接照搬到本仓库。
 
 必须先抽象其底层工程原则，再判断是否应该进入本方法。
+
+## Git Commit
+
+所有提交必须遵循：
+
+`docs/guides/git-commit-guidelines.md`
+
+最小格式：
+
+```text
+<type>(<scope>): <中文摘要>
+```
+
+重点要求：
+
+- 一次 Commit 只表达一个主要目的；
+- Method / Contract Change 与 Skill Implementation Change 原则上分开提交；
+- `type`、`scope` 使用小写英文，摘要使用中文；
+- 不使用“更新文件”“修改内容”等无法独立表达目的的摘要。
