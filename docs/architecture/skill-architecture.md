@@ -84,7 +84,7 @@ Handoff 只转移 Working State，不复制 Project Knowledge。
 
 Project Bootstrap 不属于正常 Feature Workflow。
 
-## 3. 当前 8 个核心候选 Skill
+## 3. 第一批 8 个核心 Skill
 
 | Skill | 类型 | 核心职责 |
 |---|---|---|
@@ -97,9 +97,22 @@ Project Bootstrap 不属于正常 Feature Workflow。
 | `systematic-debug` | Investigation | Reproduce、Diagnose、Fix、Regression |
 | `converge` | Workflow | Feature-wide Completion Check |
 
-这是 Skill Contract Design 基线，还不是最终实现承诺。
+这 8 个 Skill 已完成 Contract Review，作为第一批核心 Skill 的设计与后续实现范围。
 
-正式写 `SKILL.md` 前必须先复核职责重叠和能力断层。
+正式实现 `SKILL.md` 时必须遵循 `skill-contracts.md` 的已复核契约，不得通过实现扩大职责边界。
+
+### 3.1 第一批暂不独立 Skill 化的能力
+
+以下能力第一批不独立实现：
+
+- `verify-evidence`；
+- `code-review`；
+- 独立 `tdd`；
+- 独立 `context-discipline`；
+- 独立 `human-escalation`；
+- `handoff`。
+
+其中前五项继续作为 Embedded Discipline；`handoff` 继续保留为 Transition Skill 候选，待核心 Feature / Defect 路径稳定后再评估。
 
 ## 4. 暂不独立 Skill 化的横切规则
 
