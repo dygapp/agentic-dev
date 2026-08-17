@@ -28,9 +28,9 @@ Skill 只能实现方法，不允许通过修改 `SKILL.md` 暗中改变方法�
 
 当前处于：
 
-> **Skill Contract Design**
+> **Skill Engineering**
 
-暂不批量实现 Skills。
+当前先完成 Skill Contract 冻结与第一批核心 Skill 设计，再按已复核契约逐个实现。不得批量实现尚未完成 Contract Review 的 Skills。
 
 在创建或重大修改一个 Skill 前，必须先确认：
 
