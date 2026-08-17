@@ -14,7 +14,7 @@
 | `slice-work` | 已实现，完成首轮契约验证 |
 | `readiness-check` | 已实现，完成首轮契约验证 |
 | `execute-unit` | 待实现 |
-| `systematic-debug` | 待实现 |
+| `systematic-debug` | 已实现，完成首轮契约验证 |
 | `converge` | 待实现 |
 
 权威设计参考：
