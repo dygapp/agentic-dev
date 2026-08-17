@@ -8,7 +8,7 @@
 
 | Skill | 状态 |
 |---|---|
-| `clarify-intent` | 待实现 |
+| `clarify-intent` | 已实现，完成首轮契约验证 |
 | `specify` | 待实现 |
 | `technical-plan` | 待实现 |
 | `slice-work` | 已实现，完成首轮契约验证 |
