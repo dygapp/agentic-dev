@@ -62,6 +62,25 @@
 
 本轮验证属于基于 `SKILL.md` 文本的 context-isolated 行为检查，不表述为 Runtime / 自动化 harness 测试。
 
+## Validation Result
+
+首轮文本契约行为验证完成，12 个场景均通过：
+
+1. Observed Unexpected Failure 会进入 Reproduce-first 调查路径；
+2. TDD 预期初始失败被明确排除；
+3. 在修复前要求建立可重复或足够稳定的 Failure Evidence；
+4. Expected Behavior 只能来自 Applicable Authority；
+5. Expected Behavior 未定义或冲突时返回 `clarify-intent` / `specify`；
+6. Expected 与 Actual 在调查中独立表达；
+7. Hypothesis 必须说明可支持证据和可否定条件，并通过针对性证据验证；
+8. 连续猜 Patch 被明确禁止，修复目标是已验证 Root Cause；
+9. Minimal Fix 被限制为恢复既有 Expected Behavior，不扩张 Product Scope；
+10. Regression Evidence 必须来自修复后的当前状态；
+11. Major Architecture、Product Intent Change、不可逆 Data Action、安全 / 隐私或未授权 External Effect 会回上游或升级；
+12. 输出结构覆盖 Root-cause Statement、Minimal Fix、Regression Evidence 与必要 Stage Return / Escalation。
+
+静态 Contract 对照与场景检查均未发现需要修改 Method、Skill Architecture 或 Skill Contract 的问题。
+
 ## Acceptance Criteria
 
 - `skills/systematic-debug/SKILL.md` 存在且职责单一；
