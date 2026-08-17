@@ -5,7 +5,7 @@
 ## 当前状态
 
 **基线版本：** v0.1  
-**当前阶段：** 方法基线已固化，进入 Skill 契约设计阶段，尚未开始正式实现 Skills。
+**当前阶段：** Skill Engineering。第一批 8 个核心 Skill Contract 已完成复核并形成 Design Baseline，下一步按已复核契约逐个实现和验证 Skill。
 
 本仓库基于以下三个项目的对照研究与方法收敛形成：
 
@@ -14,6 +14,14 @@
 - `obra/superpowers`
 
 这些项目是研究输入，不是本仓库的运行时依赖，也不直接构成本仓库的方法权威。
+
+## Repository Source of Truth
+
+GitHub repository 是本项目长期演进的唯一基线来源。Git commit 记录项目演进，Branch 隔离设计与实现工作；ZIP 只用于初始化、离线交换或临时备份。
+
+详细规则见：
+
+`docs/project/repository-baseline.md`
 
 ## 权威顺序
 
@@ -101,11 +109,14 @@ Regression Verification
 │   │   └── principles.md
 │   ├── architecture/
 │   │   ├── skill-architecture.md
-│   │   └── skill-contracts.md
+│   │   ├── skill-contracts.md
+│   │   └── first-batch-skill-design.md
 │   ├── decisions/
 │   │   └── method-decisions.md
 │   ├── guides/
 │   │   └── git-commit-guidelines.md
+│   ├── project/
+│   │   └── repository-baseline.md
 │   └── research/
 │       ├── README.md
 │       ├── mattpocock-skills-analysis.md
@@ -116,7 +127,6 @@ Regression Verification
 └── tasks/
     └── README.md
 ```
-
 
 ## Git Commit 规范
 
@@ -134,10 +144,12 @@ Regression Verification
 
 ## 下一阶段
 
-正式编写 `SKILL.md` 前，优先完成：
+第一批 Skill 已完成 Contract Review 与实现设计基线。后续按照 `docs/architecture/first-batch-skill-design.md` 逐个实现和验证，不批量生成全部 `SKILL.md`。
 
-1. 复核 8 个核心 Skill 候选的职责边界。
-2. 检查 Skill Contract 是否存在职责重叠或能力断层。
-3. 决定哪些横切能力继续作为内嵌 discipline，哪些值得升级为独立 Skill。
-4. 冻结第一版 Skill Contract。
-5. 按单个 Skill 逐步实现和验证。
+当前优先实现：
+
+1. `readiness-check`
+2. `slice-work`
+3. 其余 Skill 按设计基线顺序推进
+
+每个 Skill 实现必须继续遵守 `docs/architecture/skill-contracts.md`，发现 Contract 问题时先修改并提交权威 Contract，再调整实现。
