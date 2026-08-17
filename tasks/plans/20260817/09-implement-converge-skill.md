@@ -76,6 +76,33 @@
 - 至少完成一轮 current evidence 支持的文本契约行为验证；
 - 实现变更与任何必要 Contract Change 保持独立提交。
 
+## Validation Result
+
+本轮已完成静态 Contract 对照与 16 个 context-isolated 文本行为场景检查。
+
+结果：
+
+1. PASS — Feature-wide 职责与单 Unit `execute-unit` 边界明确；
+2. PASS — Specification 保持 Feature Intent 主要权威，Technical Plan 不覆盖 Product Intent；
+3. PASS — Missing Behavior 形成 Gap；
+4. PASS — Partial Implementation 形成 Gap；
+5. PASS — Contradiction with Specification 形成 Gap，且不静默改写 Specification；
+6. PASS — 具有收敛意义的 Unrequested Behavior 形成 Gap；
+7. PASS — Obsolete Technical Plan 被识别并路由，不要求实现机械服从过时 Plan；
+8. PASS — Unverified Critical Behavior 阻止 `READY`；
+9. PASS — Cross-unit Integration Gap 形成 Gap；
+10. PASS — Unit / Ticket 全部 Done 但 Current System / Evidence 不收敛时仍不得 `READY`；
+11. PASS — Existing Intent / Design 下的 Execution Gap 返回 `slice-work` 塑形；
+12. PASS — Product Intent / Major Design Gap 返回相应上游职责或 Human Authority；
+13. PASS — `GAPS` 包含 Gap Description、Authority / Evidence Reference、Required Stage Return / Execution-work Direction；
+14. PASS — 只有 Current System + Current Evidence 与 Specification 收敛时输出 `READY`；
+15. PASS — `READY` 只表示 `Ready to Integrate`，不执行 Integration；
+16. PASS — Authority Conflict 或未授权 Shared / Production / External Side Effect 会停止并升级。
+
+静态 Review 中发现并修正一处实现偏差：首版曾允许在“明显存在必要 Unit 未执行”时以阶段性理由继续 `converge`；冻结 Contract 的 `Do Not Use When` 不允许该例外，已修正为直接返回执行路径并停止本 Skill。
+
+未发现需要修改 `AGENTS.md`、Method、Skill Architecture 或 Skill Contract 的问题。
+
 ## Commit Guidance
 
 如果权威 Contract 无需修改：
