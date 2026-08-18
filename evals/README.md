@@ -11,15 +11,26 @@ Runtime Eval 只回答两个不同问题：
 
 这两类问题必须分开记录。Skill 没有激活与 Skill 激活后执行错误，不得合并成同一类失败。
 
-## Fresh Context 规则
+## Fresh Context 与隔离规则
 
 每次 Eval Run 必须从干净 Context 开始：
 
 - 不继承上一次 Eval 的 Conversation History；
 - 不把本仓库 Skill Engineering 讨论历史注入 Run；
-- Activation Eval 只能依赖 Runtime 自动发现的 Skill metadata，不应预先把目标 `SKILL.md` 正文塞入 Prompt；
-- Behavior Eval 应让 Runtime 使用目标 Skill，并加载该 Skill 正文，但不加载无关 Skill 正文；
+- Activation Eval 只能依赖 Runtime 自动发现的 Skill metadata，不预先把目标 `SKILL.md` 正文塞入 Prompt；
+- Behavior Eval 使用显式 `$skill-name`，验证 Skill 被选中后的行为契约；
+- Activation 和 Behavior 都必须在仓库外隔离 workspace 中运行；
+- Runtime 只可见当前 8 个 Skills，以及场景明确需要的 fixture；
+- Runtime 不得读取 `evals/activation/*`、`evals/behavior/*`、历史 `evals/results/*` 或 grading assertions；
 - Current Repository / Fixture Context 只按场景最小提供。
+
+如果 Runtime 能读取 expected target、expected behavior、assertions 或历史回答，则该 Run 记为：
+
+```text
+INFRASTRUCTURE_INVALID / CONTAMINATED
+```
+
+它不是 PASS，也不是 Skill FAIL；必须先修 Eval 隔离，再使用新的 Fresh Run 重测。
 
 没有 Fresh Context 的文本推演不计入 B3 Runtime Evidence。
 
@@ -41,13 +52,17 @@ Runtime Eval 只回答两个不同问题：
 ```text
 evals/
 ├── README.md
+├── CODEX.md
+├── run_codex_evals.py
 ├── activation/
 │   └── core-first-pass.json
-└── behavior/
-    ├── clarify-intent.json
-    ├── readiness-check.json
-    ├── execute-unit.json
-    └── converge.json
+├── behavior/
+│   ├── clarify-intent.json
+│   ├── readiness-check.json
+│   ├── execute-unit.json
+│   └── converge.json
+└── fixtures/
+    └── execute-unit-basic/
 ```
 
 ## Activation Eval
@@ -61,13 +76,30 @@ Runtime 必须能够观察 Skill 是否实际加载。仅根据最终回答“�
 单次判定：
 
 - `should_trigger=true`：目标 Skill 实际加载 → PASS；
-- `should_trigger=false`：near-miss Skill 未加载 → PASS。
+- `should_trigger=false`：near-miss Skill 未加载，且正确相邻职责被选择 → PASS。
 
 如果 Runtime 同时加载多个 Skill，应记录完整 activation set，并检查是否存在明显越界激活。
 
+### 当前 Activation 结果
+
+隔离后的第一轮 Activation corpus：
+
+```text
+16 / 16 PASS
+```
+
+4 个 near-miss 均正确路由：
+
+- `clarify-intent` → `specify`
+- `readiness-check` → `slice-work`
+- `execute-unit` → `converge`
+- `converge` → `systematic-debug`
+
+未发现 Activation metadata Blocking Finding。
+
 ## Behavior Eval
 
-每个 Behavior 文件只包含少量 Fresh-context 场景，每项包含：
+每个 Behavior 文件包含少量 Fresh-context 场景，每项包含：
 
 - `prompt`
 - `expected_behavior`
@@ -79,13 +111,26 @@ Behavior Eval 不要求固定自然语言输出。Assertions 检查语义行为�
 
 - `PASS` — 存在明确证据支持；
 - `FAIL` — 输出与 Contract 相反、缺少必要行为，或在无证据情况下声明完成；
-- `NOT_OBSERVABLE` — Runtime 无法提供判断所需信息。
+- `NOT_OBSERVABLE` — Runtime 无法提供判断所需信息；
+- `INFRASTRUCTURE_INVALID` — Run 被 expected answer / assertions / 历史结果污染，无法作为独立行为证据。
 
-`NOT_OBSERVABLE` 不能被当作 PASS；如果它阻碍关键 Contract 验证，应记录为 Eval Infrastructure Gap。
+`NOT_OBSERVABLE` 或 `INFRASTRUCTURE_INVALID` 不能被当作 PASS。
+
+### 首次全量 Behavior 结果
+
+14 个 Behavior Codex 进程全部正常退出，最终输出表面上均符合场景 assertions；严格污染检查得到：
+
+- `B-CI-03`：clean PASS
+- `B-EU-01`：clean PASS
+- 其余 12 个：`INFRASTRUCTURE_INVALID / CONTAMINATED`
+
+污染来源是 Runtime 从仓库根目录运行时读取了 `evals/behavior/*` 或历史 `evals/results/*`。这属于 Eval Infrastructure Failure，不是 Skill Failure。
+
+当前 Runner 已改为仓库外隔离 Behavior workspace。下一步只需重新运行完整 Behavior corpus 并重新 grading；Activation 无需重跑。
 
 ## Result 记录
 
-第一轮不建设复杂 benchmark harness。每次 Run 至少记录：
+每次 Run 至少记录：
 
 ```text
 runtime:
@@ -101,12 +146,14 @@ notes:
 
 如 Runtime 能提供 token / duration，可附带记录，但它们不是本轮 B3 的关闭条件。
 
+进程退出 `0` 只表示 Runtime 正常结束，不等于 Eval PASS。
+
 ## B3 关闭条件
 
 B3 只有在以下条件同时满足时才可标记完成：
 
-1. 4 个关键 Skill 都有至少一个实际 Fresh Runtime Run；
-2. Activation 和 Behavior 分别有可观察结果；
+1. 4 个关键 Skill 都有实际 Fresh Runtime Run；
+2. Activation 和 Behavior 分别有可观察、未污染结果；
 3. 没有未解决的 Blocking Contract / Method Gap；
 4. 失败已分类为 Metadata / Skill Implementation / Contract / Method / Runtime Infrastructure；
 5. 对 Critical Evidence、Stage Return、Escalation 或职责边界的失败不能通过“模型大概理解了”豁免；
