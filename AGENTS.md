@@ -40,17 +40,19 @@ GitHub repository 是本仓库的唯一长期基线来源。
 
 当前处于：
 
-> **Skill Engineering**
+> **Skill Operationalization & Method Validation**
 
-当前先完成 Skill Contract 冻结与第一批核心 Skill 设计，再按已复核契约逐个实现。不得批量实现尚未完成 Contract Review 的 Skills。
+第一批 8 个核心 Skill 的 **Skill Engineering 已关闭**。关闭基线包括：
 
-在创建或重大修改一个 Skill 前，必须先确认：
+- Method / Architecture / Contract 已收敛；
+- 8 个核心 Skill 已实现并完成 Contract Review；
+- Skill Packaging / Activation Metadata 已标准化；
+- Fresh Runtime Eval 已完成，代表性核心场景没有未解决的 Blocking Metadata / Skill Implementation / Contract / Method Gap；
+- `Ready to Integrate`、Current Evidence、Fresh Context、Stage Return 与 Human-controlled Integration 的边界已形成一致语义。
 
-1. 它对应哪个方法阶段或横切职责；
-2. 输入、输出、退出条件、上下文规则和人工升级条件是否明确；
-3. 是否与其他 Skill 存在职责重叠；
-4. Workflow Skill 与 Discipline Rule 是否被错误混合；
-5. 是否可以进一步缩小职责边界。
+当前阶段重点不是继续扩充核心 Skill 数量，而是验证其在真实 Agent / Repository 工作流中的可发现性、激活可靠性、组合调用、运行时编排和方法有效性。
+
+只有真实使用证据暴露新的职责缺口时，才重新进入 Skill Engineering。不得为了形式完整性新增第九个核心 Skill、Super-skill 或不必要的流程层级。
 
 ## 核心规则
 
@@ -70,9 +72,15 @@ GitHub repository 是本仓库的唯一长期基线来源。
 
 `docs/research/` 只保存研究依据和横向比较。
 
-不能因为上游项目使用了某个命令、模板或产物，就直接照搬到本仓库。
+不能因为上游项目或外部规范使用了某个命令、模板、字段或产物，就直接照搬到本仓库。
 
-必须先抽象其底层工程原则，再判断是否应该进入本方法。
+必须先区分：
+
+- Method / Contract 语义；
+- Skill Packaging / Interoperability 约束；
+- Runtime / Tool-specific 实现细节。
+
+任何外部来源都不能自动覆盖本仓库的 Method Authority；需要改变方法时必须通过显式 Method Decision。
 
 ## Git Commit
 
