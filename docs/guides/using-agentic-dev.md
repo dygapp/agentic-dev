@@ -260,14 +260,14 @@ Fresh Context 是逻辑隔离，不要求某一种特定 Runtime 形式。可以
 
 ### 8.1 实验隔离
 
-实验应尽量使用独立 Fresh Context，并只提供：
+实验应尽量使用独立 Fresh Context，并只把以下内容作为 Consumer Authority / Execution Input：
 
 - 指定的 `agentic-dev` Repository baseline；
 - 明确的 Consumer 需求来源；
 - Consumer Repository；
-- 当前 Runtime 能力。
+- 当前 Runtime 可直接观察到的能力和状态。
 
-不得把实验设计者的历史 Conversation、其他项目隐含知识或未固化记忆作为 Consumer Authority。
+即使 Runtime 可能暴露其他会话、个人记忆或历史上下文，也不得把这些内容作为 Consumer 项目事实、规则或需求依据。需要使用的事实必须能回溯到当前 Consumer Authority。
 
 ### 8.2 GitHub Issue 作为首选反馈通道
 
@@ -293,7 +293,13 @@ Issue **不是**：
 
 默认一个 Consumer Experiment 对应一个 Tracking Issue，不为每个小问题创建独立 Issue。
 
-建议初始信息：
+为了在不依赖 GitHub Issue Template 的情况下保持首轮反馈可检索、可比较，Tracking Issue 使用以下标题约定：
+
+```text
+[experiment] <consumer> - <experiment goal>
+```
+
+Issue Body 至少包含：
 
 ```text
 Experiment:
@@ -304,6 +310,8 @@ Runtime / Model:
 Goal:
 Scope:
 ```
+
+其中无法获得的字段应明确写 `Unknown / Not available`，不要静默省略。
 
 开发过程中只在出现有意义的新证据时追加 Comment：
 
@@ -321,6 +329,8 @@ Classification Candidate:
 - Runtime
 - Unknown
 ```
+
+如果某条 Finding 没有可引用的代码、Commit、PR、命令结果或其他 Current Evidence，应明确说明证据限制，不把推测写成已确认缺口。
 
 不要提交：
 
