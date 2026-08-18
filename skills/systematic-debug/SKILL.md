@@ -1,3 +1,8 @@
+---
+name: systematic-debug
+description: Investigates an observed defect or unexpected failure through reproduction, authority-backed expected-versus-actual analysis, falsifiable root-cause hypotheses, minimal fix, and regression evidence. Use for unexpected failures or standalone defect work; not for expected initial TDD failures or undefined product behavior.
+---
+
 # systematic-debug
 
 ## Purpose
