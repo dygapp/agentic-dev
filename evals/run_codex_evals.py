@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Run the first-pass agentic-dev Skill eval corpus with fresh Codex CLI sessions.
+"""Run first-pass agentic-dev Skill evals with fresh Codex CLI sessions.
 
 This runner deliberately stays thin:
 - one `codex exec --ephemeral --json` process per scenario;
-- saves raw JSONL/stdout and stderr;
+- activation runs in an external temporary workspace that contains only Skill copies;
+- behavior runs use explicit Skill invocation;
 - rebuilds the writable execute-unit fixture before B-EU-01;
+- saves raw JSONL/stdout and stderr;
 - does NOT grade semantic assertions automatically.
 
 No third-party Python packages are required.
@@ -18,6 +20,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Iterable
 
@@ -41,13 +44,18 @@ def load_json(path: Path):
         return json.load(handle)
 
 
-def ensure_skill_links() -> None:
+def iter_skill_dirs() -> Iterable[Path]:
+    for skill_dir in sorted((ROOT / "skills").iterdir()):
+        if skill_dir.is_dir() and (skill_dir / "SKILL.md").is_file():
+            yield skill_dir
+
+
+def ensure_repo_skill_links() -> None:
+    """Expose source Skills to Codex for behavior evals inside this repository."""
     skill_root = ROOT / ".agents" / "skills"
     skill_root.mkdir(parents=True, exist_ok=True)
 
-    for skill_dir in sorted((ROOT / "skills").iterdir()):
-        if not skill_dir.is_dir() or not (skill_dir / "SKILL.md").is_file():
-            continue
+    for skill_dir in iter_skill_dirs():
         link = skill_root / skill_dir.name
         target = Path("..") / ".." / "skills" / skill_dir.name
 
@@ -56,11 +64,23 @@ def ensure_skill_links() -> None:
                 continue
             link.unlink()
         elif link.exists():
-            raise RuntimeError(
-                f"Refusing to replace non-symlink runtime path: {link}"
-            )
+            raise RuntimeError(f"Refusing to replace non-symlink runtime path: {link}")
 
         link.symlink_to(target, target_is_directory=True)
+
+
+def populate_isolated_skill_copies(workspace: Path) -> None:
+    """Copy only Skills into an external workspace for activation evals.
+
+    Keeping activation outside the repository prevents Codex from discovering the
+    eval corpus itself (which contains target_skill / expected answers) while it
+    searches for authority or context.
+    """
+    skill_root = workspace / ".agents" / "skills"
+    skill_root.mkdir(parents=True, exist_ok=True)
+
+    for skill_dir in iter_skill_dirs():
+        shutil.copytree(skill_dir, skill_root / skill_dir.name)
 
 
 def check_codex(codex_bin: str) -> None:
@@ -112,7 +132,7 @@ def run_codex(
     scenario_id: str,
     prompt: str,
     result_group: str,
-    cwd: Path = ROOT,
+    cwd: Path,
     workspace_write: bool = False,
 ) -> int:
     result_dir = RESULTS / result_group
@@ -141,16 +161,14 @@ def run_codex(
         completed.stderr,
         encoding="utf-8",
     )
-    write_run_metadata(
-        result_dir, scenario_id, command, cwd, completed.returncode
-    )
+    write_run_metadata(result_dir, scenario_id, command, cwd, completed.returncode)
 
     status = "OK" if completed.returncode == 0 else f"EXIT {completed.returncode}"
     print(f"[{scenario_id}] {status}")
     return completed.returncode
 
 
-def activation_cases() -> Iterable[dict]:
+def activation_cases() -> list[dict]:
     return load_json(ACTIVATION_FILE)
 
 
@@ -173,21 +191,36 @@ def prepare_execute_fixture() -> Path:
 
 def run_activation(codex_bin: str, selected: set[str] | None) -> int:
     failures = 0
-    for case in activation_cases():
+    cases = activation_cases()
+
+    for case in cases:
         scenario_id = case["id"]
         if selected and scenario_id not in selected:
             continue
-        failures += run_codex(
-            codex_bin=codex_bin,
-            scenario_id=scenario_id,
-            prompt=case["query"],
-            result_group="activation",
-        ) != 0
+
+        # Each activation scenario gets a fresh workspace outside ROOT. Only the
+        # current Skill packages are copied in, so the model cannot inspect the
+        # eval corpus and learn target_skill / expected answers.
+        with tempfile.TemporaryDirectory(
+            prefix=f"agentic-dev-activation-{scenario_id}-"
+        ) as temp_dir:
+            cwd = Path(temp_dir)
+            populate_isolated_skill_copies(cwd)
+            failures += run_codex(
+                codex_bin=codex_bin,
+                scenario_id=scenario_id,
+                prompt=case["query"],
+                result_group="activation",
+                cwd=cwd,
+            ) != 0
+
     return failures
 
 
 def run_behavior(codex_bin: str, selected: set[str] | None) -> int:
     failures = 0
+    ensure_repo_skill_links()
+
     for skill_name, case in behavior_cases():
         scenario_id = case["id"]
         if selected and scenario_id not in selected:
@@ -213,6 +246,7 @@ def run_behavior(codex_bin: str, selected: set[str] | None) -> int:
             cwd=cwd,
             workspace_write=workspace_write,
         ) != 0
+
     return failures
 
 
@@ -242,8 +276,15 @@ def main() -> int:
     args = parse_args()
     selected = set(args.scenario) or None
 
+    known = {case["id"] for case in activation_cases()}
+    known.update(case["id"] for _, case in behavior_cases())
+    if selected:
+        unknown = selected - known
+        if unknown:
+            print(f"Unknown scenario id(s): {', '.join(sorted(unknown))}", file=sys.stderr)
+            return 2
+
     check_codex(args.codex_bin)
-    ensure_skill_links()
     RESULTS.mkdir(parents=True, exist_ok=True)
 
     if args.activation:
@@ -251,18 +292,10 @@ def main() -> int:
     elif args.behavior:
         failures = run_behavior(args.codex_bin, selected)
     else:
-        # No mode or --all: run both. This keeps the default useful but explicit modes
-        # remain available for the recommended activation-first workflow.
+        # No mode or --all: run both. Explicit modes remain available for the
+        # recommended activation-first workflow.
         failures = run_activation(args.codex_bin, selected)
         failures += run_behavior(args.codex_bin, selected)
-
-    if selected:
-        known = {case["id"] for case in activation_cases()}
-        known.update(case["id"] for _, case in behavior_cases())
-        unknown = selected - known
-        if unknown:
-            print(f"Unknown scenario id(s): {', '.join(sorted(unknown))}", file=sys.stderr)
-            return 2
 
     if failures:
         print(f"Codex process failures: {failures}", file=sys.stderr)
