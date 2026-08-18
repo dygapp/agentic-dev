@@ -5,15 +5,29 @@
 ## 当前状态
 
 **基线版本：** v0.1  
-**当前阶段：** Skill Engineering。第一批 8 个核心 Skill Contract 已完成复核并形成 Design Baseline，下一步按已复核契约逐个实现和验证 Skill。
+**当前阶段：** **Skill Operationalization & Method Validation**
 
-本仓库基于以下三个项目的对照研究与方法收敛形成：
+第一批 8 个核心 Skill 的 **Skill Engineering Baseline 已关闭**：
+
+- Method / Architecture / Contract 已收敛；
+- 8 个核心 Skill 已实现并完成 Contract Review；
+- Skill Packaging / Activation Metadata 已标准化；
+- 第一轮 Fresh Runtime Eval：Activation `16 / 16 PASS`，Behavior `14 / 14 PASS`；
+- 当前没有未解决的 Blocking Metadata / Skill Implementation / Contract / Method Gap。
+
+下一阶段重点是验证这些 Skills 在真实 Agent / Repository 工作流中的发现、激活、组合、编排和方法有效性，而不是继续机械增加核心 Skill 数量。
+
+## 研究来源
+
+本仓库的方法基线主要由以下三个项目的对照研究收敛形成：
 
 - `mattpocock/skills`
 - `github/spec-kit`
 - `obra/superpowers`
 
-这些项目是研究输入，不是本仓库的运行时依赖，也不直接构成本仓库的方法权威。
+此外，`Agent Skills Specification` 作为 Skill Packaging / Interoperability 的外部规范参考。
+
+这些来源都是研究输入，不是本仓库的运行时依赖，也不直接构成本仓库的方法权威。
 
 ## Repository Source of Truth
 
@@ -37,7 +51,7 @@ GitHub repository 是本项目长期演进的唯一基线来源。Git commit 记
 8. `docs/research/*`
 9. Tasks 与临时工作记录
 
-`docs/research/` 只负责说明“为什么形成当前方法”，不能覆盖已经固化的方法结论。
+`docs/research/` 只说明研究依据、横向比较和外部规范参考，不能覆盖已经固化的方法结论。
 
 ## 核心开发流程
 
@@ -54,48 +68,86 @@ Technical Planning?（按需）
         ↓
 Slice & Ready
         ↓
+Readiness Gate
+        ↓
 Fresh-context Execute
         ↓
 Converge
         ↓
-Full Verification
-        ↓
 Ready to Integrate
         ↓
-Human / Project Policy
+Human / Repository Policy
 ```
 
-缺陷处理采用独立的轻量流程：
+Standalone Defect 使用轻量独立路径：
 
 ```text
 Observed Symptom
     ↓
 Reproduce
     ↓
-Root Cause Investigation
+Expected Behavior
     ↓
-Hypothesis
+Root Cause Investigation
     ↓
 Failing / Reproduction Evidence
     ↓
 Minimal Fix
     ↓
 Regression Verification
+    ↓
+Defect Closure Check
+    ↓
+Ready to Integrate
 ```
 
 ## 核心设计原则
 
 - 阶段是工作状态，不等于必须创建文档。
 - Specification 负责 **WHAT / WHY**。
-- Technical Plan 负责 **HOW**，且只在必要时产生。
-- 实施工作拆分为纵向、可验证、适合 fresh context 的 Execution Unit。
+- Technical Plan 负责长期 **HOW**，且只在必要时产生。
+- 实施工作拆分为纵向、可验证、适合 Fresh Context 的 Execution Unit。
 - 具体文件路径、测试命令和施工步骤优先在执行时通过 JIT Plan 临时生成。
 - 所有“完成、通过、修复成功”等状态声明必须有当前证据。
 - Conversation History 不是权威知识库。
 - Human Escalation 依据 Authority、Impact、Reversibility 判断。
-- Human 负责不可逆意图，AI 负责可逆执行。
+- 普通、低影响、可逆的局部实现选择由 Agent 自主处理。
 - 通用开发方法只推进到 Ready to Integrate。
-- Skills 应保持小型、可组合，不允许一个 Skill 接管完整生命周期。
+- Merge / Push / Release / Deploy 由 Human Authority 或 Repository Policy 控制。
+- Skills 保持小型、可组合，不允许一个 Super-skill 接管完整生命周期。
+
+## 第一批核心 Skills
+
+```text
+clarify-intent
+      ↓
+specify
+      ↓
+technical-plan?   (conditional)
+      ↓
+slice-work
+      ↓
+readiness-check
+      ↓
+execute-unit
+      │
+      └─ systematic-debug on unexpected failure
+      ↓
+converge
+```
+
+第一批固定为：
+
+- `clarify-intent`
+- `specify`
+- `technical-plan`
+- `slice-work`
+- `readiness-check`
+- `execute-unit`
+- `systematic-debug`
+- `converge`
+
+详见 `skills/README.md`。
 
 ## 仓库结构
 
@@ -121,9 +173,23 @@ Regression Verification
 │       ├── README.md
 │       ├── mattpocock-skills-analysis.md
 │       ├── spec-kit-analysis.md
-│       └── superpowers-analysis.md
+│       ├── superpowers-analysis.md
+│       └── agent-skills-specification-analysis.md
 ├── skills/
-│   └── README.md
+│   ├── README.md
+│   ├── clarify-intent/
+│   ├── specify/
+│   ├── technical-plan/
+│   ├── slice-work/
+│   ├── readiness-check/
+│   ├── execute-unit/
+│   ├── systematic-debug/
+│   └── converge/
+├── evals/
+│   ├── README.md
+│   ├── activation/
+│   ├── behavior/
+│   └── fixtures/
 └── tasks/
     └── README.md
 ```
@@ -140,16 +206,17 @@ Regression Verification
 
 `docs/guides/git-commit-guidelines.md`
 
-特别要求 Method / Contract 变更与 Skill Implementation 变更保持清晰分层，避免通过实现提交暗中改写方法权威。
+Method / Contract 变更与 Skill Implementation 变更必须保持清晰分层，避免通过实现提交暗中改写方法权威。
 
 ## 下一阶段
 
-第一批 Skill 已完成 Contract Review 与实现设计基线。后续按照 `docs/architecture/first-batch-skill-design.md` 逐个实现和验证，不批量生成全部 `SKILL.md`。
+当前进入 **Skill Operationalization & Method Validation**，优先研究和验证：
 
-当前优先实现：
+1. Skill Discovery / Installation / Distribution；
+2. Activation Reliability；
+3. Skill Composition / Call-chain Orchestration；
+4. Controller / Runtime Orchestration；
+5. 在真实 Repository 中验证完整方法；
+6. 依据真实使用证据决定是否需要重新进入 Skill Engineering。
 
-1. `readiness-check`
-2. `slice-work`
-3. 其余 Skill 按设计基线顺序推进
-
-每个 Skill 实现必须继续遵守 `docs/architecture/skill-contracts.md`，发现 Contract 问题时先修改并提交权威 Contract，再调整实现。
+下一阶段默认不新增第九个核心 Skill，也不继续扩大方法论研究样本。
