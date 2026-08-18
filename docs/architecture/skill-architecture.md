@@ -71,9 +71,9 @@ Skills 用于实现已经确定的开发方法，而不是另外定义一套生�
 
 Handoff 只转移 Working State，不复制 Project Knowledge。
 
-### 2.5 Project Initialization Skills
+### 2.5 Project Initialization / Bootstrap Capabilities
 
-可以按需提供项目初始化 Skill，用于建立：
+项目初始化可能需要建立或确认：
 
 - Repository Instructions
 - Authority Hierarchy
@@ -82,7 +82,50 @@ Handoff 只转移 Working State，不复制 Project Knowledge。
 - Verification Commands
 - Integration Policy
 
+这类能力统称为 Project Initialization / Bootstrap Capability。它可以由 Skill、Template、Script、Setup Workflow 或人工引导实现，不预设必须 Skill 化。
+
 Project Bootstrap 不属于正常 Feature Workflow。
+
+仅当真实使用证明某个 Bootstrap Capability：
+
+- 能跨多个项目重复使用；
+- 具有独立、稳定的 Procedure；
+- 输入、输出与 Exit Condition 可以明确；
+- 主要承载可复用能力，而不是某个项目自己的事实与决策；
+
+时，才考虑将其升级为正式 Skill。
+
+**“可复用”本身不足以成为新增 Skill 的理由。**
+
+### 2.6 Reusable Capability 与 Project Rule 边界
+
+本架构区分三类内容。
+
+#### Reusable Skill
+
+Skill 表达可跨项目复用的执行能力。它应具有清晰职责、稳定 Procedure、明确输入输出和 Exit Condition，并能独立组合使用。
+
+Skill 不保存某个具体项目的长期事实，也不拥有覆盖项目权威的权限。
+
+#### Project Rule
+
+Project Rule 表达当前 Repository 的具体 Authority、Policy、Context 与约束，例如：
+
+- 权威来源和优先级；
+- 当前阶段；
+- 文档与任务位置；
+- Verification / Integration Policy；
+- 当前项目允许或要求使用哪些 Skills。
+
+Project Rule 应固化在当前项目的 `AGENTS.md`、规范文档、配置或其他合适的 Repository Artifact 中。
+
+Project Rule 可以选择、要求或限制 Reusable Skills，但 Skill 不得反向覆盖 Project Authority。
+
+#### Bootstrap / Setup Capability
+
+Bootstrap / Setup Capability 使用可复用流程帮助项目建立或更新 Project Rules。其产物通常是项目实例自己的 `AGENTS.md`、配置、目录约定或其他 Repository Artifact。
+
+它可能最终实现为 Skill，但只有跨项目真实使用证据证明其具有稳定独立职责时才这样做；不得因为某条规则“可能在别的项目也有用”就提前创建 Skill。
 
 ## 3. 第一批 8 个核心 Skill
 
@@ -282,5 +325,7 @@ Allowed Sub-skills / Disciplines
 - Mandatory Technical Plan
 - Multiple Reviewer Agents
 - Automatic Integration
+- Project Bootstrap 必须实现为 Skill
+- Project Rule 必须采用一种固定文件布局
 
 标准化的是语义职责，而不是具体工具 Harness。

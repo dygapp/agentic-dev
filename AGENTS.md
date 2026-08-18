@@ -36,6 +36,18 @@ GitHub repository 是本仓库的唯一长期基线来源。
 
 所有后续 Method、Contract 和 Skill Implementation 变更，应基于 Git repository 状态进行。
 
+## 知识边界与项目自治
+
+当前 Repository Authority 决定本项目的事实、规则与约束。
+
+- Conversation History 不构成项目权威；
+- 其他会话、其他项目或个人记忆中的规则，不得直接作为本项目事实继续执行；
+- 外部项目经验可以作为 Research 输入，但只有在当前仓库中按权威层级显式固化后，才能改变本项目的长期规则；
+- Project Rule 可以选择、要求或限制某些 Skills 的使用方式；Skill Implementation 不得覆盖当前 Repository Authority；
+- 新的长期结论应进入合适的 Method、Architecture、Contract、Decision、Guide 或其他项目级权威 Artifact，不能只停留在聊天或临时 Plan 中。
+
+复杂、多阶段或跨 Fresh Context 的工作协调遵循 `tasks/README.md`。简单工作不得为了形式完整性创建 Plan。
+
 ## 当前阶段
 
 当前处于：
@@ -50,7 +62,7 @@ GitHub repository 是本仓库的唯一长期基线来源。
 - Fresh Runtime Eval 已完成，代表性核心场景没有未解决的 Blocking Metadata / Skill Implementation / Contract / Method Gap；
 - `Ready to Integrate`、Current Evidence、Fresh Context、Stage Return 与 Human-controlled Integration 的边界已形成一致语义。
 
-当前阶段重点不是继续扩充核心 Skill 数量，而是验证其在真实 Agent / Repository 工作流中的可发现性、激活可靠性、组合调用、运行时编排和方法有效性。
+当前阶段重点不是继续扩充核心 Skill 数量，也不是预先建设完整 Runtime / Distribution / Controller 体系，而是先保证仓库自身具备继续工作的必要权威与项目级规则，再通过真实 Agent / Repository 工作流验证 Skills 的发现、组合、运行和方法有效性。
 
 只有真实使用证据暴露新的职责缺口时，才重新进入 Skill Engineering。不得为了形式完整性新增第九个核心 Skill、Super-skill 或不必要的流程层级。
 
