@@ -134,6 +134,7 @@ def run_codex(
     result_group: str,
     cwd: Path,
     workspace_write: bool = False,
+    skip_git_repo_check: bool = False,
 ) -> int:
     result_dir = RESULTS / result_group
     result_dir.mkdir(parents=True, exist_ok=True)
@@ -141,6 +142,8 @@ def run_codex(
     command = [codex_bin, "exec", "--ephemeral", "--json"]
     if workspace_write:
         command.extend(["--sandbox", "workspace-write"])
+    if skip_git_repo_check:
+        command.append("--skip-git-repo-check")
     command.extend(["-C", str(cwd), prompt])
 
     print(f"[{scenario_id}] fresh codex exec")
@@ -212,6 +215,7 @@ def run_activation(codex_bin: str, selected: set[str] | None) -> int:
                 prompt=case["query"],
                 result_group="activation",
                 cwd=cwd,
+                skip_git_repo_check=True,
             ) != 0
 
     return failures
