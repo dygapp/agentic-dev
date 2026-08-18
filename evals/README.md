@@ -22,6 +22,7 @@ Runtime Eval 只回答两个不同问题：
 - Activation 和 Behavior 都必须在仓库外隔离 workspace 中运行；
 - Runtime 只可见当前 8 个 Skills，以及场景明确需要的 fixture；
 - Runtime 不得读取 `evals/activation/*`、`evals/behavior/*`、历史 `evals/results/*` 或 grading assertions；
+- Codex 子进程的实际 `cwd` / `PWD` 也必须指向隔离 workspace，不能只依赖 `-C`；
 - Current Repository / Fixture Context 只按场景最小提供。
 
 如果 Runtime 能读取 expected target、expected behavior、assertions 或历史回答，则该 Run 记为：
@@ -126,7 +127,29 @@ Behavior Eval 不要求固定自然语言输出。Assertions 检查语义行为�
 
 污染来源是 Runtime 从仓库根目录运行时读取了 `evals/behavior/*` 或历史 `evals/results/*`。这属于 Eval Infrastructure Failure，不是 Skill Failure。
 
-当前 Runner 已改为仓库外隔离 Behavior workspace。下一步只需重新运行完整 Behavior corpus 并重新 grading；Activation 无需重跑。
+### 隔离 Behavior 重跑结果
+
+第二次完整 Behavior rerun：
+
+- 14 / 14 Codex 进程正常退出；
+- 11 个场景没有访问本地仓库或 eval corpus；
+- 其中 10 个 clean PASS；
+- `B-EU-02` 为真实 Skill Behavior FAIL：面对两个独立 Ready Units，Runtime 计划在同一次 `execute-unit` invocation 中顺序执行 U-10、U-11，违反 one-unit / no queue traversal 边界；
+- `B-CG-02`、`B-EU-03`、`B-RC-01` 仍通过 launcher 的进程环境线索回读本地仓库，因此继续判为 `INFRASTRUCTURE_INVALID / CONTAMINATED`。
+
+已采取针对性修正：
+
+- `execute-unit` 明确多 Unit 请求没有唯一 Current Unit 时必须停止并返回协调层；后续 Unit 必须由新的 invocation / Fresh Execution Context 执行；
+- Runner 将 Codex 子进程自身 `cwd` 与 `PWD` 切到仓库外临时 workspace，并移除 `OLDPWD` 与常见 `GIT_*` 环境线索。
+
+下一步只需重跑：
+
+- `B-EU-02`
+- `B-CG-02`
+- `B-EU-03`
+- `B-RC-01`
+
+其他 Activation 与 clean Behavior evidence 不需要重复运行。
 
 ## Result 记录
 
@@ -157,6 +180,7 @@ B3 只有在以下条件同时满足时才可标记完成：
 3. 没有未解决的 Blocking Contract / Method Gap；
 4. 失败已分类为 Metadata / Skill Implementation / Contract / Method / Runtime Infrastructure；
 5. 对 Critical Evidence、Stage Return、Escalation 或职责边界的失败不能通过“模型大概理解了”豁免；
-6. Eval 结果来自当前 Skill 版本，不使用 B2 之前的历史输出。
+6. Eval 结果来自当前 Skill 版本，不使用 B2 之前的历史输出；
+7. 用于 PASS 的 Runtime evidence 不包含 expected answer / assertions / 历史结果污染。
 
 完成 B3 后再进行 Skill Engineering Closure Review。
