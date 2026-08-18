@@ -87,6 +87,9 @@ Current Unit 应至少能提供：
 如果当前请求实际包含多个 Units：
 
 - 只执行被明确选定的 Current Unit；
+- 如果没有唯一 Current Unit 被明确选定，停止并返回协调层或要求先选定一个 Unit，不由 `execute-unit` 自行挑选；
+- 即使多个 Units 都 Ready，且用户要求“一次全做完”，也不得在同一次 Skill invocation / Fresh Execution Context 中顺序执行多个 Units；
+- 一个 Unit 完成后立即停止；后续 Unit 必须由协调层重新选定，并在新的 `execute-unit` invocation / Fresh Execution Context 中执行；
 - 不自动继续下一个 Unit；
 - 不把 Queue Management 混入本 Skill。
 

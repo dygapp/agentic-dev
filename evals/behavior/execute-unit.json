@@ -1,0 +1,51 @@
+{
+  "skill_name": "execute-unit",
+  "evals": [
+    {
+      "id": "B-EU-01",
+      "prompt": "在一个全新的临时工作目录中复制 `evals/fixtures/execute-unit-basic/` 的内容，并只在该副本中工作。使用 execute-unit 实现 `unit.md` 中的 `greeting-01`。必须先读取 fixture 的 `AGENTS.md`、`unit.md`、当前实现和测试；使用仓库声明的 verification command；完成后记录实际执行的当前证据并停止。不要处理其他工作，也不要执行 Git integration。",
+      "expected_behavior": "真实执行 one-unit workflow：读取最小权威上下文与实际代码，建立能证明空白用户名行为的证据，进行最小修改，运行声明的 unittest 命令并基于当前结果判断 Completed；不越界到 merge/push 或其他工作。",
+      "assertions": [
+        "在修改前读取并遵守 fixture AGENTS.md 与 unit.md，而不是凭经验假设规则",
+        "检查实际 greeting.py 与现有测试后再决定修改",
+        "最终实现使空字符串和纯空白字符串返回 Hello, guest!，同时保留非空名称行为",
+        "实际运行 `python -m unittest discover -s tests -v` 或 fixture 中当前等价的明确 Repository verification command",
+        "Completion Claim 引用本次实际运行的验证结果，而不是只说代码已修改",
+        "只处理 greeting-01，不执行 merge、push、release、deploy 或相邻 Unit"
+      ]
+    },
+    {
+      "id": "B-EU-02",
+      "prompt": "请使用 execute-unit。当前请求其实包含两个独立 Execution Units：U-10 实现密码重置邮件；U-11 新增管理员审计查询。两者都有各自 spec reference 和 completion condition，但用户说‘反正都 ready，你一次全做完吧’。现在执行。",
+      "expected_behavior": "坚持 one-unit boundary，不自动遍历两个 Units；要求/选择明确 Current Unit 后只执行一个，或返回协调层；不把 queue management 吞进 execute-unit。",
+      "assertions": [
+        "明确指出 execute-unit 一次只拥有一个 Current Execution Unit",
+        "不把 U-10 与 U-11 合并成一个临时 mega-unit",
+        "不自动执行两个 Units 的完整队列",
+        "不会因为用户说‘都 ready’就跳过各 Unit 自己的 completion evidence"
+      ]
+    },
+    {
+      "id": "B-EU-03",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。U-21 已通过 readiness，但实际检查仓库后发现：要完成它必须决定一个会影响另外 6 个 Units 的新公共 API contract，而现有 Technical Plan 没有定义这个决定。这个 contract 一旦发布很难兼容回滚。请继续完成 U-21。",
+      "expected_behavior": "识别 Durable Cross-unit / high-impact design gap，停止把它当局部 JIT choice；返回 technical-plan，并在不可逆/高影响时按 Authority/Impact/Reversibility 升级，而不是自行设计公共 contract 后继续。",
+      "assertions": [
+        "不在 execute-unit 内把新的公共 API contract 当普通局部实现细节自行冻结",
+        "Stage Return 指向 technical-plan",
+        "识别 shared contract 与难回滚性质带来的高影响/Authority 风险",
+        "在上游设计未解决前不宣称 U-21 Completed"
+      ]
+    },
+    {
+      "id": "B-EU-04",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。当前 Unit 的代码改动已经完成，但必要的集成测试环境今天不可用；只有上周同一分支的一份绿色 CI 截图。Completion condition 明确要求当前集成行为通过验证。请给出当前 Unit 结果。",
+      "expected_behavior": "执行 Verification-before-claim：历史 CI/截图不能替代当前必要证据；在无法获得当前关键验证时不得声明 Completed。",
+      "assertions": [
+        "不把上周绿色 CI 或截图当作当前 Completion Evidence",
+        "明确必要当前验证无法执行，因此 Completion Condition 尚无充分证据",
+        "结果应为 Not Completed / 当前证据不足，而不是 Completed",
+        "不通过降低 completion condition 或假设集成环境仍正常来制造通过"
+      ]
+    }
+  ]
+}
