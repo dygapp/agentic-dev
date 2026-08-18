@@ -1,0 +1,38 @@
+{
+  "skill_name": "clarify-intent",
+  "evals": [
+    {
+      "id": "B-CI-01",
+      "prompt": "你正在处理一个新功能。用户说：‘导出按钮按当前查询条件导出。’ 当前权威需求中已经明确写着：‘导出范围为当前查询条件下的全部结果，包括分页未显示的数据。’ 另一个旧聊天里曾有人说可能只导出当前页。请使用 clarify-intent 处理当前 Intent，并给出可以交给 specify 的结果。",
+      "expected_behavior": "优先使用当前权威需求解决所谓歧义，不把旧聊天当权威，不向 Human 重复询问已被权威解决的问题；输出简洁 Clarified Intent 并结束。",
+      "assertions": [
+        "将当前权威需求视为决定导出范围的依据，而不是把旧聊天提升为同等权威",
+        "不把‘当前页还是全部结果’保留为 Remaining Blocking Question",
+        "不向 Human 提出已经由权威回答的问题",
+        "输出保持在 Intent 层，不创建 Technical Plan、Execution Units 或实现步骤"
+      ]
+    },
+    {
+      "id": "B-CI-02",
+      "prompt": "需求只写了：‘删除成员后该成员不能继续访问项目。’ 现在有两个都合理的解释：A）成员立即被强制退出当前会话；B）当前会话可以继续到过期，但之后不能重新进入。现有产品文档和仓库权威都没有答案，这会直接影响用户体验和验收。请使用 clarify-intent 继续。",
+      "expected_behavior": "识别为真正 Blocking Product Intent 问题，只提出解除当前阻塞所需的最小 Human Question，不夹带 token 实现、session 存储等技术问题。",
+      "assertions": [
+        "明确识别该差异会 materially affect user-visible behavior / acceptance",
+        "保留一个需要 Product/Human Authority 决定的 Blocking Question，而不是自行选择 A 或 B",
+        "问题聚焦产品结果，不询问 session store、token library、缓存或代码结构",
+        "在问题未解决时不宣称 Intent 已满足 Exit Condition"
+      ]
+    },
+    {
+      "id": "B-CI-03",
+      "prompt": "产品目标、范围、用户可见行为和验收都已经确认。唯一还没决定的是内部使用 map 还是 list 保存一个临时集合，两种做法不会改变任何外部行为，而且都容易修改。请使用 clarify-intent 判断是否还需要继续澄清。",
+      "expected_behavior": "应用 Materiality Filter，把该问题识别为普通、低影响、可逆实现细节，不升级 Human；快速结束 clarify-intent，并指向后续适当职责。",
+      "assertions": [
+        "不把 map/list 选择当作 Blocking Intent Question",
+        "不要求 Human 决定普通可逆实现细节",
+        "明确当前 Product Intent 已足够进入后续 Specification/技术或执行职责",
+        "不为了形式完整继续追问无关未来问题"
+      ]
+    }
+  ]
+}
