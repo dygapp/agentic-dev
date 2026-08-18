@@ -52,19 +52,19 @@ printf '\n.agents/\nevals/workspace/\nevals/results/\n' >> .git/info/exclude
 先运行单个 Activation 场景验证环境：
 
 ```bash
-python evals/run_codex_evals.py --activation --scenario A-CI-01
+python3 evals/run_codex_evals.py --activation --scenario A-CI-01
 ```
 
 再运行单个可写 Behavior 场景：
 
 ```bash
-python evals/run_codex_evals.py --behavior --scenario B-EU-01
+python3 evals/run_codex_evals.py --behavior --scenario B-EU-01
 ```
 
 环境确认后运行第一轮完整 corpus：
 
 ```bash
-python evals/run_codex_evals.py --all
+python3 evals/run_codex_evals.py --all
 ```
 
 结果写入 `evals/results/`。每个 scenario 都由独立的 `codex exec --ephemeral --json` 执行，不使用 `resume`。
