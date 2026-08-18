@@ -160,7 +160,18 @@ python3 -m unittest discover -s tests -v
 
 下一次 Run 必须重新复制干净 fixture，不能沿用已经修好的工作目录。
 
-## 7. 结果判定
+## 7. Pilot 判定与污染检查
+
+第一次 Pilot 运行证明：
+
+- Codex JSONL 可以直接观察 implicit Skill activation；
+- `execute-unit` 可以在 Fresh Runtime 中真实修改 fixture、执行当前验证并基于证据停止。
+
+同时也暴露了一个 Eval Infrastructure 问题：如果 Activation 从仓库根目录执行，Agent 搜索上下文时可能读到 `evals/activation/core-first-pass.json`，从而看到 `target_skill` / expected reason。即使某次 Run 在读取答案文件之前已经正确选择 Skill，也不能把这种环境用于全量 Activation Eval。
+
+因此当前 Runner 强制使用仓库外临时 Activation workspace。修改 Runner 后，应重新运行至少一个 Activation smoke test，确认隔离环境中 Skill 仍然可以被发现并触发，再执行 `--all`。
+
+## 8. 结果判定
 
 按 `evals/README.md` 的 PASS / FAIL / NOT_OBSERVABLE 规则逐项检查 assertions。
 
@@ -185,7 +196,7 @@ notes:
 
 发现失败后不要在同一个 Context 中修改 Skill 并继续测试。先分类失败，修正后使用新的 Fresh Run 重新验证。
 
-## 8. B3 不接受的替代证据
+## 9. B3 不接受的替代证据
 
 以下内容不能替代 Runtime Eval PASS：
 
