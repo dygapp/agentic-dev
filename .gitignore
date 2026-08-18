@@ -1,0 +1,19 @@
+# Skill Runtime Eval generated artifacts
+/evals/results/
+/evals/workspace/
+
+# Python generated files
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local Python environments
+.venv/
+venv/
+
+# OS generated files
+.DS_Store
+Thumbs.db
