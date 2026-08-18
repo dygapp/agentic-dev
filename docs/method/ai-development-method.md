@@ -74,6 +74,12 @@ Governance / Domain Context
 
 Integration 不属于通用开发生命周期，因为它依赖具体仓库和运行环境的授权策略。
 
+进入 **Ready to Integrate** 前，工作必须满足与自身规模相称的收敛语义：当前权威 Intent、当前实现状态与当前 Verification Evidence 必须彼此一致，并且不存在已知的 Blocking Gap。
+
+普通与复杂 Feature 通过 Stage 6 `Converge` 显式完成这一判断。小型安全修改可以轻量执行相同收敛语义，不要求为了流程完整性制造重型 Feature-wide 报告或独立持久 Artifact，但 **Execution Unit Completion 本身不能直接等同于 Ready to Integrate**。
+
+Standalone Defect 不要求机械进入完整 Feature Workflow；它在满足既有 Expected Behavior、完成 Root-cause Fix 与 Regression Verification 后，还必须完成与缺陷范围相称的最终 Closure Check，确认当前证据充分、没有已知阻塞回归或未经授权行为，才能进入 Ready to Integrate。
+
 ## 3. Stage 1 — Clarify Intent
 
 ### 核心问题
@@ -326,6 +332,8 @@ Record Verified Result
 
 当前 Execution Unit 的 Completion Condition 已经有**当前证据**支持。
 
+Unit 成功退出 Execute 只证明当前 Unit 已完成，不自动证明整个 Feature / Change 已满足进入 Ready to Integrate 所需的最终收敛语义。
+
 ## 8. Stage 6 — Converge
 
 ### 核心问题
@@ -365,6 +373,14 @@ GAPS
 → New / Corrected Execution Units
 ```
 
+### 比例化执行
+
+Converge 的语义要求不因工作规模较小而消失，但执行强度应与工作复杂度成比例。
+
+对于只有一个 Execution Unit 的小型安全修改，可以轻量执行同一收敛检查：确认该 Change 的权威 Scope 已完整实现、当前证据支持 Completion、没有已知 Blocking Gap，也没有未经授权的 Product / External Behavior。此时不要求重型报告、独立长期 Artifact 或人为制造额外流程层级。
+
+轻量 Convergence 仍然是与 Unit Verification 逻辑上不同的最终完成判断；不得因为 Unit 已 Completed 就自动推出 `READY`。
+
 ### Exit Condition
 
 Feature Behavior、Implementation State 和 Verification Evidence 已与 Specification 收敛一致。
@@ -395,11 +411,30 @@ Minimal Fix
 Regression Verification
       ↓
 Review if warranted
+      ↓
+Defect Closure Check
+      ↓
+Ready to Integrate
 ```
 
 如果 Debug 过程中发现 Expected Behavior 本身未定义或错误，则回退到 Clarify Intent / Specification。
 
 如果 Fix 涉及重大架构变化，则按需进入 Technical Planning。
+
+### Standalone Defect Closure
+
+Standalone Defect 在进入 Ready to Integrate 前，应至少确认：
+
+- Expected Behavior 仍有当前权威支持；
+- Root Cause 已处理，而不是只让症状暂时消失；
+- Regression Evidence 来自修复后的当前状态；
+- Repository Rules 要求的相关验证已经完成；
+- 没有已知会阻塞该缺陷修复交付的回归、未经授权 Product Behavior 或 External Side Effect；
+- 调查过程没有暴露尚未处理的 Requirement / Major Design / Authority Gap。
+
+该 Closure Check 是与缺陷规模相称的最终收敛检查，不要求为了形式完整性创建 Feature Specification、Execution Unit Set 或调用完整 Feature `converge` 流程。
+
+`systematic-debug` 负责证明 Root Cause Fix 与 Regression Evidence；它本身不自动执行 Integration，也不因为 Regression Test 通过就拥有 Merge / Push / Release / Deploy 权限。
 
 ## 10. 阶段回退
 
@@ -531,10 +566,14 @@ Lightweight Specification / Execution Unit
  ↓
 Execute
  ↓
-Verify
+Targeted Verification
+ ↓
+Lightweight Convergence
  ↓
 Ready to Integrate
 ```
+
+`Lightweight Convergence` 只表示以与工作规模相称的方式应用 Stage 6 完成语义；它不要求重型报告，也不能由 Unit Completed 状态自动替代。
 
 ### 普通 Feature
 
@@ -548,6 +587,8 @@ Slice & Ready
 Execute
  ↓
 Converge
+ ↓
+Ready to Integrate
 ```
 
 ### 复杂 Feature
@@ -563,9 +604,23 @@ Slice & Ready
  ↓
 Execute
  ↓
-Converge
+Converge / Full Verification
  ↓
-Full Verification
+Ready to Integrate
 ```
 
-方法必须与工作复杂度成比例，避免流程主义。
+### Standalone Defect
+
+```text
+Observed Defect
+ ↓
+Systematic Debugging
+ ↓
+Regression Verification
+ ↓
+Defect Closure Check
+ ↓
+Ready to Integrate
+```
+
+方法必须与工作复杂度成比例，避免流程主义；比例化不能被解释为跳过最终的权威、实现与当前证据一致性判断。
