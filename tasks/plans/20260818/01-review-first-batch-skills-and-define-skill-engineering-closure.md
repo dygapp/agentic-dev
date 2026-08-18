@@ -111,6 +111,24 @@ HARDENING REQUIRED
 
 该项属于 Debug 行为 hardening，不改变 Root-cause-first 主流程。
 
+## B1 Resolution Result
+
+B1 已在 Method 层完成修正：
+
+- 明确任何工作进入 `Ready to Integrate` 前，都必须满足与自身规模相称的收敛语义；
+- 明确 Small Safe Change 使用 `Lightweight Convergence`，但 Unit Completion 不能直接等同于 Ready to Integrate；
+- 明确 Standalone Defect 使用 `Defect Closure Check`，在 Root-cause Fix 与 Regression Evidence 之外继续检查权威、当前证据、已知回归、未经授权行为与 Authority Gap；
+- 明确普通与复杂 Feature 继续由 Stage 6 `Converge` 形成 Feature-wide `READY` / `GAPS`；
+- 未扩大 `execute-unit`、`systematic-debug` 或 Integration 权限。
+
+重新对照 `skill-architecture.md` 与 `skill-contracts.md` 后，现有 Contract 已与该 Method 修订兼容：
+
+- `execute-unit` 本来只证明一个 Unit，不拥有 Feature Ready；
+- `converge` 本来负责整个 Feature 的最终收敛，单 Unit Feature 仍可在 Unit 完成后以轻量方式执行同一 Contract；
+- `systematic-debug` 本来只负责 Root Cause、Minimal Fix 与 Regression Evidence，不声明 Ready to Integrate。
+
+因此 B1 **不需要修改 Skill Contract 或 Skill Implementation**。后续 B2 / B3 不得重新扩大这些职责。
+
 ## Closure Criteria
 
 只有同时满足以下条件，才能正式关闭 Skill Engineering：
