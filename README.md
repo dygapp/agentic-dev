@@ -2,6 +2,46 @@
 
 面向 AI Agent 驱动软件开发的方法体系与可组合 Skills 实现仓库。
 
+## Quick Start
+
+如果你希望使用 `agentic-dev` 启动一个新的软件项目，先阅读：
+
+`docs/guides/using-agentic-dev.md`
+
+推荐在一个新的 Chat / Codex Context 中开始，并把 `agentic-dev` Repository 作为方法与 Skills 知识源提供给 Agent。不要提前复制一套大而全的项目模板；让 Agent 根据项目目标、当前权威需求和 Operating Guide 建立足以启动工作的最小 Repository Authority，并随着真实工作逐步丰富项目结构。
+
+可以使用下面的提示词作为新项目会话起点：
+
+```text
+我要创建并持续开发一个新的软件项目。
+
+项目目标：
+<用几句话描述真实项目或当前建设目标>
+
+开发方法与可用 Skills：
+<agentic-dev repository path or URL>
+
+权威需求 / 初始业务输入：
+<requirement files, repository paths, URLs, or concise authoritative input>
+
+目标项目目录 / Repository：
+<consumer repository path or target location>
+
+请先读取 agentic-dev 的 Operating Guide，并按其中的知识边界、项目渐进演进、Skill 使用和 Fresh Context 规则开展工作。
+
+先根据当前项目实际情况建立启动项目所需的最小骨架和 Repository Authority，不要预先创建没有真实需要的大而全文档或目录体系。随后从当前 Intent / Requirements 开始，逐步推进 Specification、必要的 Technical Planning、Work Slicing、Execution 和 Convergence。
+
+除非我明确提供，否则不要使用其他会话、其他项目或个人记忆中的隐含知识作为本项目事实。
+```
+
+如果当前工作被明确作为 `agentic-dev` Experiment / Validation，还应在提示词末尾补充：
+
+```text
+本项目属于 agentic-dev Experiment。请按照 Operating Guide 的 Experimental Use 规则保持上下文隔离，并通过 agentic-dev Repository 的 GitHub Issue 回传有意义的实践证据。
+```
+
+该模板只是启动入口，不是固定执行脚本。后续项目结构、Artifact 和 Skill 应根据真实需求逐步形成。
+
 ## 当前状态
 
 **基线版本：** v0.1  
@@ -166,7 +206,8 @@ converge
 │   ├── decisions/
 │   │   └── method-decisions.md
 │   ├── guides/
-│   │   └── git-commit-guidelines.md
+│   │   ├── git-commit-guidelines.md
+│   │   └── using-agentic-dev.md
 │   ├── project/
 │   │   └── repository-baseline.md
 │   └── research/
@@ -210,13 +251,11 @@ Method / Contract 变更与 Skill Implementation 变更必须保持清晰分层�
 
 ## 下一阶段
 
-当前进入 **Skill Operationalization & Method Validation**，优先研究和验证：
+当前进入 **Skill Operationalization & Method Validation**。优先目标是：
 
-1. Skill Discovery / Installation / Distribution；
-2. Activation Reliability；
-3. Skill Composition / Call-chain Orchestration；
-4. Controller / Runtime Orchestration；
-5. 在真实 Repository 中验证完整方法；
-6. 依据真实使用证据决定是否需要重新进入 Skill Engineering。
+1. 通过 Operating Guide 让 Fresh Agent 能够从真实需求启动并持续推进 Consumer Repository；
+2. 在独立真实 Repository 中验证完整方法、Skills 组合、Fresh Context 与项目渐进演进；
+3. 通过真实 Experiment Evidence 识别 Usage / Skill / Contract / Method / Project Rule Gap；
+4. 仅在真实使用证明必要时，再处理 Distribution、Bootstrap 自动化、Controller / Runtime Orchestration 或重新进入 Skill Engineering。
 
 下一阶段默认不新增第九个核心 Skill，也不继续扩大方法论研究样本。
