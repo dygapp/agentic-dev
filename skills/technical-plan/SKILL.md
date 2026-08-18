@@ -1,3 +1,8 @@
+---
+name: technical-plan
+description: Resolves durable cross-unit HOW decisions needed to map a ready specification safely onto the current technical system. Use for cross-module, data or persistence, external integration, migration, shared contract, deployment topology, or significant architecture decisions; skip when only local reversible implementation details remain.
+---
+
 # technical-plan
 
 ## Purpose
