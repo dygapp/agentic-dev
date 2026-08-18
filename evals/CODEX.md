@@ -110,7 +110,8 @@ codex exec --ephemeral --json \
 `B-EU-01` 会真实修改文件，因此为每次 Run 创建全新的 fixture 副本：
 
 ```bash
-rm -rf evals/workspace/B-EU-01\mkdir -p evals/workspace
+rm -rf evals/workspace/B-EU-01
+mkdir -p evals/workspace
 cp -R evals/fixtures/execute-unit-basic evals/workspace/B-EU-01
 ```
 
