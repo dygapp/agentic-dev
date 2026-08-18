@@ -4,6 +4,7 @@
 This runner deliberately stays thin:
 - one `codex exec --ephemeral --json` process per scenario;
 - activation and behavior runs use external temporary workspaces containing only Skill copies;
+- the Codex process cwd/PWD matches the isolated workspace so repository paths do not leak through the launcher;
 - behavior runs use explicit Skill invocation;
 - B-EU-01 additionally receives a fresh writable fixture and its final snapshot is preserved;
 - saves raw JSONL/stdout and stderr;
@@ -150,10 +151,17 @@ def run_codex(
         command.append("--skip-git-repo-check")
     command.extend(["-C", str(cwd), prompt])
 
+    runtime_env = os.environ.copy()
+    runtime_env["PWD"] = str(cwd)
+    runtime_env.pop("OLDPWD", None)
+    for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE"):
+        runtime_env.pop(key, None)
+
     print(f"[{scenario_id}] fresh codex exec")
     completed = subprocess.run(
         command,
-        cwd=ROOT,
+        cwd=cwd,
+        env=runtime_env,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
