@@ -4,161 +4,196 @@
 
 Ready for Execution。
 
-当前不绑定具体 Consumer Repository 或虚构需求。执行开始条件是出现一个真实 Feature / Defect Work Item。
-
 ## Goal
 
-在独立 Consumer Repository 中，使用 `agentic-dev` 当前 `master` 的 Method、Project Rules 与第一批 8 个核心 Skills 完成一次真实软件工作，验证该体系是否能够在不依赖历史 Conversation 的情况下自然推进到 `Ready to Integrate`，并用真实证据识别是否存在 Runtime、Skill、Contract、Method 或 Project Rule Gap。
+验证 `agentic-dev` 作为一个可被独立消费的方法与 Skills Repository，是否能够在完全独立的 Fresh Context 中支撑一个真实 Greenfield Consumer Project 从初始化到 `Ready to Integrate` 的完整开发闭环。
 
-本轮目标是验证真实使用效果，不是继续扩展 Eval Framework。
+本轮重点验证：
 
-## Authority / Inputs
+- Operating Guide 是否足以指导新的 Agent 开始工作；
+- Project Authority 与 Consumer Repository 自治边界是否清晰；
+- Skills 是否能够被正确发现、选择和组合；
+- Method 是否能够降低上下文负担并支持持续演进。
 
-执行时只使用以下输入：
+本轮不是在 `agentic-dev` 当前会话中开发 Consumer，也不是继续扩展 Eval Framework。
 
-1. `agentic-dev` 当时的 `master` commit，并记录 commit SHA；
-2. Consumer Repository 自己的 Repository Authority，例如 `AGENTS.md`、项目文档、源码、测试与配置；
-3. 一个真实存在的 Feature / Defect Work Item；
-4. 当前 Runtime 可以直接观察到的能力与行为。
+## Experiment Isolation
 
-不得把历史聊天、其他项目经验或未固化个人记忆当作 Consumer Repository 的事实。
+实验必须在独立 Consumer Context 中进行。
 
-## Pilot Work Item 选择
+实验 Context 不得继承：
 
-优先选择满足以下条件的真实工作：
+- 当前 `agentic-dev` 开发会话；
+- 其他项目聊天历史；
+- 未固化的个人记忆；
+- 实验设计者口头补充的隐含流程。
 
-- 来自 Consumer Repository 的真实待办，而不是为了验证临时创造的需求；
-- 范围中等、可回滚、风险可控；
-- 有明确可执行的 Verification；
-- 最好能够自然形成 2–3 个 Execution Units，以观察 Fresh Context 与组合调用；
-- 不要求必须使用全部 8 个 Skills；
-- 不为了满足验证形式人为拆分本来只需要一个 Unit 的简单工作。
+Consumer Context 只获得：
 
-如果当前没有这样的真实 Work Item，本 Plan 保持 Ready，不以模拟任务代替。
+1. 指定版本的 `agentic-dev` Repository；
+2. Consumer 项目的真实需求来源；
+3. Consumer Repository；
+4. 当前 Runtime 可观察能力。
 
-## Runtime Preparation
+如果使用 ChatGPT Project，应优先使用独立 Project 边界；如果使用 Codex，则应使用新的 Session / Context。
 
-在 Consumer Repository 的干净 branch / worktree / workspace 中执行。
+## Consumer Project Selection
 
-- 不复用历史 Eval 留下的 `.agents/`、workspace 或 results；
-- 从已记录 SHA 的 `agentic-dev` Skills 源重新安装或加载 Skills；
-- 使用当前 Runtime 实际支持的安装 / discovery 方式，不在本 Plan 中预设工具路径；
-- 记录实际安装方式以及 8 个 Skills 是否可发现；
-- 不复制 `agentic-dev/evals` corpus、expected answers 或历史运行结果到 Consumer Repository。
+首个 Consumer 应满足：
 
-安装 / discovery 如果失败，直接记录 Runtime / Distribution Evidence，不先建设通用 Installer Framework。
+- 真实业务目标，而非为验证临时创造；
+- 规模可控；
+- 可以从最小项目骨架开始逐步演进；
+- 不依赖先对大型 Legacy Repository 完成完整 Spec Reconstruction。
 
-## Execution
+当前候选 Consumer：
 
-### 1. 从 Consumer Repository Authority 开始
+**jilinjobs 信息发布网站核心重构验证。**
 
-Fresh Coordination Context 只读取完成当前工作所需的 Repository Authority 与真实 Work Item。
+首轮范围：
 
-先确认 Intent 和已有权威是否足够；不得通过回忆其他会话补全缺失事实。
+包含：
 
-### 2. 自然使用 Workflow Skills
+- 栏目管理；
+- 菜单 / 导航组织；
+- 信息发布核心能力；
+- 首页；
+- 二级页面；
+- 内容详情页面。
 
-按真实需要使用：
+不包含：
+
+- 外部内容嵌入；
+- 用户与权限管理；
+- 中心党建二级网站；
+- 评论；
+- 复杂统计；
+- 多站点扩展。
+
+## Operating Guide Validation
+
+Consumer 启动时不提供固定项目模板。
+
+Agent 应首先读取：
 
 ```text
-clarify-intent?
-→ specify
-→ technical-plan?  (conditional)
-→ slice-work
-→ readiness-check
-→ execute-unit
-→ converge
+agentic-dev/docs/guides/using-agentic-dev.md
 ```
 
-规则：
+然后根据真实项目需要建立最小启动骨架。
 
-- 不要求每个 Skill 都必须触发；
-- `technical-plan` 只有存在需要长期固化的 HOW 决策时才使用；
-- Defect 如果需要诊断，可自然进入 `systematic-debug`；
-- 不为了验证覆盖率制造不必要 Artifact 或流程阶段。
+验证重点：
 
-### 3. Fresh Execution Context
+- 是否可以从最小 Repository Authority 开始；
+- 是否会过度创建目录和 Artifact；
+- 是否能随着需求逐步形成 Project Rules；
+- 是否能自然选择所需 Skills。
 
-每次 `execute-unit` 只执行唯一 Current Unit。
+项目初始化不预设需要 Bootstrap Skill。
 
-当 Work Item 自然形成多个 Units 时：
+如果实践中反复出现稳定、跨项目的初始化 Procedure，再作为候选能力分析。
 
-- Coordination Context 只保留队列、当前状态、必要 Artifact Reference 与 Blocker；
-- 每个 Unit 使用新的 Fresh Execution Context；
-- Worker 只加载当前 Unit 和必要 Repository Authority；
-- 不把前一个 Worker 的完整 Conversation History 传给下一个 Worker。
+## Development Flow
 
-本轮允许人工充当 Controller。没有真实证据前不实现 Controller Framework。
+Consumer Agent 根据 Operating Guide 自主推进：
 
-### 4. Converge
+```text
+Project Initialization
+        ↓
+clarify-intent?
+        ↓
+specify
+        ↓
+technical-plan? (conditional)
+        ↓
+slice-work
+        ↓
+readiness-check
+        ↓
+execute-unit
+        ↓
+converge
+        ↓
+Ready to Integrate
+```
 
-所有计划 Units 完成后执行 Feature-wide / Defect-wide convergence。
+不要求所有 Skill 都出现。
 
-只有当前实现、Intent、Specification（如存在）与 Verification Evidence 已收敛，且没有 Blocking Gap，才达到 `Ready to Integrate`。
+不要求所有阶段都产生文件。
 
-Merge / Push / Release / Deploy 继续由 Consumer Repository 的 Human Authority / Repository Policy 决定。
+不为了验证覆盖率创建无价值 Artifact。
 
-## Minimum Evidence
+## Experiment Feedback Channel
 
-本 Plan 内只保留最小验证记录，不新增独立 Validation Report 目录。
+实验反馈优先通过 `agentic-dev` GitHub Issue 回流。
 
-执行完成后补充：
+Issue 作为：
 
-- Consumer Repository 与 baseline / branch；
-- `agentic-dev` commit SHA；
-- Runtime / model；
-- 实际 Skill 安装 / discovery 方式；
-- 实际使用或观察到的 Skills；
-- Execution Units 与各自 Evidence Reference；
-- Verification Commands / Results；
-- 发生过的 Human Intervention，以及是否属于 Authority / Impact / Reversibility 边界；
-- 最终状态：`Ready to Integrate` / Blocked；
-- 发现的 Gap Classification。
+- Evidence Channel；
+- 跨 Repository / Context 的跟踪入口；
+- 后续分析输入。
 
-不保存完整 prompt、完整 reasoning 或重复 Repository Knowledge。
+Issue 不作为：
 
-## Gap Classification
+- Consumer 项目知识库；
+- Method Authority；
+- Contract Authority。
 
-发现问题后先分类，再决定是否修改 `agentic-dev`：
+建议一个 Consumer Experiment 对应一个 Tracking Issue。
 
-- **Runtime / Distribution Gap**：安装、发现、调用、Fresh Context 启动等 Runtime 问题；
-- **Skill Implementation Gap**：现有 Contract 正确，但 `SKILL.md` 行为不符合；
-- **Contract Gap**：职责、输入输出或 Stage Return 本身定义不足；
-- **Method Gap**：生命周期、Authority、Execution / Convergence 语义存在缺口；
-- **Project Rule Gap**：Consumer Repository 缺少自身必要的项目级权威或约束。
+反馈内容只记录：
 
-只有真实证据支持时才修改对应层。不得因为一次不便就新增 Skill 或 Runtime Layer。
+- 实际观察到的问题；
+- Evidence Reference；
+- 使用阶段 / Skill；
+- Human Intervention；
+- Candidate Classification。
+
+不提交：
+
+- 完整 Conversation；
+- 完整 Reasoning；
+- Consumer Repository 已存在的大量文档副本。
+
+## Evidence Classification
+
+实验结束后，Evidence 回到新的 `agentic-dev` Context 分析。
+
+分类：
+
+- Runtime / Distribution Gap；
+- Skill Implementation Gap；
+- Contract Gap；
+- Method Gap；
+- Operating Guide Gap；
+- Project-specific Issue。
+
+只有真实证据支持时，才修改对应 Artifact。
 
 ## Success Criteria
 
-首轮验证成功不要求证明整个方法“最终正确”，只要求获得足够真实证据继续收敛：
+首轮成功标准：
 
-- Skills 能从记录的 `agentic-dev` baseline 在干净 Consumer Repository 中重新安装 / 加载并被 Runtime 发现；
-- Workflow 可以从真实 Intent 推进，而不依赖历史 Conversation；
-- 至少一个真实 Execution Unit 被实际实现并使用 Current Evidence 验证；
-- 如果存在多个 Units，它们由独立 Fresh Execution Context 执行；
-- `converge` 基于整体当前状态判断，而不是重复 Unit Completion Claim；
-- Human Intervention 主要发生在真实授权边界，而不是日常低风险实现细节；
-- 没有为了形式完整性制造明显无价值 Artifact；
-- 最终达到 `Ready to Integrate`，或形成一个有证据、可分类的真实 Blocker。
+- 一个新的 Agent 可以仅依靠 `agentic-dev` Repository 和 Consumer 输入开始工作；
+- Operating Guide 足以指导项目启动；
+- Consumer 可以建立最小必要 Project Authority；
+- 至少一个真实 Execution Unit 完成并验证；
+- 多 Unit 工作可以使用 Fresh Execution Context 推进；
+- Converge 可以基于整体 Evidence 判断 Ready to Integrate；
+- 实验产生的发现可以通过 Issue 回流并分类。
 
 ## Non-goals
 
 本轮不做：
 
-- 新建第九个核心 Skill；
-- 预先建设 Installer / Registry / Marketplace；
-- 预先建设 Controller / Worker Framework；
-- 扩展 Activation / Behavior Eval corpus；
-- 强制全部 8 个 Skills 出场；
-- 强制 Technical Plan；
-- 使用 `agentic-dev` Eval Runner 自身作为首个 Consumer Feature；
-- 为验证需要凭空创造产品需求。
+- 新增第九个核心 Skill；
+- 创建固定项目模板体系；
+- 创建 Bootstrap Framework；
+- 创建 Installer / Registry / Marketplace；
+- 创建 Controller / Worker Framework；
+- 扩展 Eval Corpus；
+- 在当前 `agentic-dev` Repository 内模拟 Consumer 开发。
 
 ## Validation Record
 
-执行真实 Work Item 后在本节追加最小证据摘要。
-
-当前状态：**尚未选择真实 Consumer Work Item。**
-
-这不是 Method Blocker；在真实待办出现前保持 Ready，不以模拟验证替代。
+执行真实 Consumer Experiment 后追加最小证据摘要。
