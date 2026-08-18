@@ -1,3 +1,8 @@
+---
+name: clarify-intent
+description: Clarifies only product-intent ambiguities that materially affect goal, scope, user-visible behavior, business boundaries, acceptance, or significant non-functional obligations. Use before specification when authoritative context cannot resolve a high-impact product decision; do not use for ordinary reversible implementation choices.
+---
+
 # clarify-intent
 
 ## Purpose

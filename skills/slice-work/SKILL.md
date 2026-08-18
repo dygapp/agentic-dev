@@ -1,3 +1,8 @@
+---
+name: slice-work
+description: Turns a ready specification and optional technical plan into bounded, traceable, context-fit execution units with observable completion conditions and explicit dependencies. Use before readiness checking or when convergence exposes implementation gaps that need new or corrected execution work.
+---
+
 # slice-work
 
 ## Purpose

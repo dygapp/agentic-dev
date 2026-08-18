@@ -1,3 +1,8 @@
+---
+name: execute-unit
+description: Implements and verifies exactly one ready execution unit in minimal fresh context using current repository evidence. Use when a single unit is ready to execute; discover repository-specific verification, route unexpected failures through systematic-debug, and stop after evidence supports or fails the unit completion condition.
+---
+
 # execute-unit
 
 ## Purpose
