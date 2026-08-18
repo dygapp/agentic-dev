@@ -1,0 +1,130 @@
+[
+  {
+    "id": "A-CI-01",
+    "target_skill": "clarify-intent",
+    "query": "客户说新增批量导出，但没有确认是导出当前筛选结果还是所有可访问数据。这两个行为都会影响验收，而且现有需求里找不到答案。先把这个问题处理清楚再写需求。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "clarify-intent",
+    "reason": "存在无法由现有权威解决、会 materially change user-visible behavior 与 acceptance 的 Product Intent 歧义。"
+  },
+  {
+    "id": "A-CI-02",
+    "target_skill": "clarify-intent",
+    "query": "登录失效后有两个都说得通的方案：直接回登录页，或者保留当前页面并弹出重新认证窗口。产品文档没写，先决定我们到底要哪种用户体验。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "clarify-intent",
+    "reason": "多个合理解释会产生实质不同的用户可见行为。"
+  },
+  {
+    "id": "A-CI-03",
+    "target_skill": "clarify-intent",
+    "query": "实现过程中发现原需求只写了“删除后不可见”，但没有说管理员是否还能从审计入口查看已删除记录。这个差异会改变产品边界，代码里也无法判断。现在应该怎么继续？",
+    "should_trigger_target": true,
+    "expected_primary_skill": "clarify-intent",
+    "reason": "Execute 暴露上游 Product Boundary 缺口，应阶段回退到 Intent。"
+  },
+  {
+    "id": "A-CI-04",
+    "target_skill": "clarify-intent",
+    "query": "所有产品决定已经确认：未授权请求返回 401，过期会话返回 401，范围也已经确定。请把这些确认结果整理成一份 Fresh Agent 能直接理解的 WHAT/WHY specification。",
+    "should_trigger_target": false,
+    "expected_primary_skill": "specify",
+    "reason": "Intent 已明确，只需要形成 Specification；这是 clarify-intent 的近似负例。"
+  },
+  {
+    "id": "A-RC-01",
+    "target_skill": "readiness-check",
+    "query": "Specification、Technical Plan 和 4 个 Execution Units 都已经准备好了。在开始改代码之前，请统一检查需求、设计、单元依赖和仓库治理是否还有 blocking finding。不要修改这些文档。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "readiness-check",
+    "reason": "明确要求 Execute 前只读四维 Gate。"
+  },
+  {
+    "id": "A-RC-02",
+    "target_skill": "readiness-check",
+    "query": "准备进入实现了。帮我确认每个 unit 都能追溯到 spec、completion condition 可验证、依赖没有漏，并检查 plan 有没有偷偷改需求。只给 PASS 或 findings。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "readiness-check",
+    "reason": "典型 Readiness Gate，且要求只给 verdict/findings。"
+  },
+  {
+    "id": "A-RC-03",
+    "target_skill": "readiness-check",
+    "query": "这个小改动已经有轻量 spec 和一个 execution unit。编码前自动做一次最小 readiness gate；如果没阻塞就告诉我可以进入 Execute。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "readiness-check",
+    "reason": "Small Safe Change 仍需比例化 Readiness 语义。"
+  },
+  {
+    "id": "A-RC-04",
+    "target_skill": "readiness-check",
+    "query": "Specification 已经 ready，不需要 technical plan。请把它拆成适合 Fresh Agent 独立实现的纵向 execution units，并写清 spec trace、completion condition 和 dependencies。",
+    "should_trigger_target": false,
+    "expected_primary_skill": "slice-work",
+    "reason": "目标是形成 Units，而不是检查既有 Unit Set；这是 readiness-check 的近似负例。"
+  },
+  {
+    "id": "A-EU-01",
+    "target_skill": "execute-unit",
+    "query": "U-03 已通过 readiness。只实现这个 unit：补上订单取消后的库存回补行为，按仓库现有测试方式验证 completion condition。不要继续做 U-04，也不要 merge。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "execute-unit",
+    "reason": "明确是一个 Ready Unit 的实施与当前证据验证。"
+  },
+  {
+    "id": "A-EU-02",
+    "target_skill": "execute-unit",
+    "query": "当前只处理 execution unit auth-02。Spec 和 durable plan 都已确定，请先看实际仓库状态，再做必要的最小修改并运行与这个 unit 直接相关的验证；完成后停止。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "execute-unit",
+    "reason": "符合 one-unit + fresh context + targeted verification 边界。"
+  },
+  {
+    "id": "A-EU-03",
+    "target_skill": "execute-unit",
+    "query": "这个 unit 已 ready：把 API 返回的 deprecated 字段从新响应中移除，同时保持兼容性要求里明确保留的旧 endpoint。只做这个 unit，并用当前仓库机制证明它完成。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "execute-unit",
+    "reason": "单一可验证 Unit，要求实现并证明完成。"
+  },
+  {
+    "id": "A-EU-04",
+    "target_skill": "execute-unit",
+    "query": "所有 execution units 都已经完成。现在不要再改任何单个 unit，请从整个 feature 角度核对 specification、当前实现和验证证据，判断能不能进入 Ready to Integrate。",
+    "should_trigger_target": false,
+    "expected_primary_skill": "converge",
+    "reason": "目标是 Feature-wide closure，而不是单 Unit Execute；这是 execute-unit 的近似负例。"
+  },
+  {
+    "id": "A-CG-01",
+    "target_skill": "converge",
+    "query": "这个 feature 的 required units 都做完了。请在合并前做最终整体收敛检查：按 specification 找 missing、partial、contradiction、unrequested behavior、unverified critical behavior 和 cross-unit integration gap，然后给 READY 或 GAPS。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "converge",
+    "reason": "完整 Feature-wide convergence 请求。"
+  },
+  {
+    "id": "A-CG-02",
+    "target_skill": "converge",
+    "query": "Tickets 全部是 done，但我不想靠 ticket 状态判断完成。请只根据 authoritative spec、current system 和 current evidence 确认这个功能是否真的可以 Ready to Integrate。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "converge",
+    "reason": "强调 Ticket Done 不等于 Feature Ready，符合 converge 核心职责。"
+  },
+  {
+    "id": "A-CG-03",
+    "target_skill": "converge",
+    "query": "这是一个只有一个 execution unit 的小型安全修改，unit 已经有当前测试证据支持。现在按比例化方式做最后的 lightweight convergence，确认 scope 已完整满足且没有 blocking gap；不要制造重型报告。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "converge",
+    "reason": "B1 明确单 Unit Small Safe Change 可轻量执行同一 Convergence 语义。"
+  },
+  {
+    "id": "A-CG-04",
+    "target_skill": "converge",
+    "query": "U-05 的目标测试出现了一个之前没有的空指针异常，现在还不知道根因。先把这个 unexpected failure 复现并定位修掉，再谈 feature 是否 ready。",
+    "should_trigger_target": false,
+    "expected_primary_skill": "systematic-debug",
+    "reason": "当前首先需要 Unexpected Failure root-cause investigation；这是 converge 的近似负例。"
+  }
+]
