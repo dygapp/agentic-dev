@@ -1,3 +1,8 @@
+---
+name: readiness-check
+description: Performs a read-only pre-execution gate across specification, optional technical plan, execution units, and governance. Use immediately before execution to return PASS or evidence-backed blocking and non-blocking findings; never repair authoritative artifacts inside the check.
+---
+
 # readiness-check
 
 ## Purpose
