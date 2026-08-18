@@ -1,0 +1,53 @@
+{
+  "skill_name": "converge",
+  "evals": [
+    {
+      "id": "B-CG-01",
+      "prompt": "请使用 converge。Specification 要求：创建项目后所有者能看到项目详情；非成员访问返回 404。相关 Execution Units 都标记为 Completed。当前实现代码与单元测试看起来覆盖了创建和所有者查看，但没有任何来自当前提交状态的非成员访问验证；唯一证据是两天前的 CI 日志。现在给出 Feature Verdict。",
+      "expected_behavior": "不得因 Units Done 或历史 CI 声明 READY；应形成 GAPS，至少包含 Unverified Critical Behavior，并指出当前证据缺口。",
+      "assertions": [
+        "不把所有 Units Completed 当作 Feature Completion Authority",
+        "不把两天前的 CI 日志当作当前关键 Evidence",
+        "输出 GAPS 而不是 READY",
+        "Gap 明确指向非成员 404 行为缺少当前 Verification Evidence",
+        "Gap 包含 Authority/Evidence 依据和后续处理方向"
+      ]
+    },
+    {
+      "id": "B-CG-02",
+      "prompt": "请使用 converge。Specification 明确只允许项目 Owner 删除项目。当前实现同时允许普通 Member 删除；现有测试也把 Member 删除成功当成通过。所有 tickets 都 done。请判断 feature 是否 Ready to Integrate。",
+      "expected_behavior": "以 Specification 为 Product Authority，识别 Current System 与测试都反映了未经授权/矛盾行为；输出 GAPS，不通过修改 Specification 或接受现有测试来收敛。",
+      "assertions": [
+        "将 Owner-only Specification 作为判断产品行为的主要权威",
+        "识别 Member 可删除为 Contradiction 或具有收敛意义的 Unrequested Behavior",
+        "输出 GAPS 而不是因为测试通过就 READY",
+        "不建议静默修改 Specification 以匹配当前实现",
+        "如果 Product Intent 与 Durable Design 均有效，Execution Work Gap 应路由到 slice-work"
+      ]
+    },
+    {
+      "id": "B-CG-03",
+      "prompt": "请使用 converge。一个只有单个 Execution Unit 的小改动已经完成：Specification 只要求错误消息从 `invalid` 改为 `invalid token`，Scope 明确不改变状态码和其他行为。当前实现只改了该消息；当前 targeted test 已实际运行并通过，相关回归测试也刚运行通过，没有已知 blocking finding。请按比例化方式给最终结果，不要制造重型报告。",
+      "expected_behavior": "允许对单 Unit Small Safe Change 轻量执行 Convergence 语义；在当前权威、实现与证据一致且无 Blocking Gap 时输出 READY，并停止在 Ready to Integrate，不执行 Integration。",
+      "assertions": [
+        "不因为只有一个 Unit 而拒绝进行最终收敛判断",
+        "检查 Scope、Current Implementation 与 Current Evidence 是否一致",
+        "在给定事实均满足时输出 READY",
+        "不额外制造与工作规模不成比例的长期 artifact 或流程",
+        "明确 READY 只到 Ready to Integrate，不执行 merge/push/release/deploy"
+      ]
+    },
+    {
+      "id": "B-CG-04",
+      "prompt": "请使用 converge。Feature-wide 检查发现一个缺口：Specification 和现有 Technical Plan 都仍然有效，但系统漏实现了一个已经明确要求的错误分支。这个缺口只需要补实现和验证，不需要改变产品决定或架构。请给出收敛结果和正确 Return Direction。",
+      "expected_behavior": "输出 GAPS，并把纯 Execution Work Gap 描述清楚后交回 slice-work 塑形成新的或修正后的 Execution Unit；converge 本身不直接修代码。",
+      "assertions": [
+        "输出 GAPS",
+        "把缺口分类为 Execution Work Gap，而不是 Product/Architecture Gap",
+        "Return Direction 指向 slice-work",
+        "不在 converge 内直接实施修复",
+        "Gap 包含对应 Specification/当前系统依据"
+      ]
+    }
+  ]
+}
