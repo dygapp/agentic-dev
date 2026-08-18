@@ -1,3 +1,8 @@
+---
+name: specify
+description: Creates or incrementally updates an authoritative WHAT/WHY specification from clarified product intent, domain facts, and governance. Use when intent is ready but required behavior, scope, boundaries, acceptance criteria, or relevant non-functional constraints need to be explicit for a fresh agent.
+---
+
 # specify
 
 ## Purpose
