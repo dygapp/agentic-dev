@@ -45,7 +45,33 @@ printf '\n.agents/\nevals/workspace/\nevals/results/\n' >> .git/info/exclude
 
 只有 8 个 Skill 都被 Runtime 发现，Activation Eval 才可开始。
 
-## 4. Activation Eval
+## 4. 推荐：使用薄 Runner
+
+仓库提供 `evals/run_codex_evals.py`，只负责启动独立 Fresh Codex 进程、保存 JSONL / stderr，并为 `B-EU-01` 重建干净 fixture；它**不会自动把进程退出码当成语义 PASS**。
+
+先运行单个 Activation 场景验证环境：
+
+```bash
+python evals/run_codex_evals.py --activation --scenario A-CI-01
+```
+
+再运行单个可写 Behavior 场景：
+
+```bash
+python evals/run_codex_evals.py --behavior --scenario B-EU-01
+```
+
+环境确认后运行第一轮完整 corpus：
+
+```bash
+python evals/run_codex_evals.py --all
+```
+
+结果写入 `evals/results/`。每个 scenario 都由独立的 `codex exec --ephemeral --json` 执行，不使用 `resume`。
+
+Runner 会自动创建 `.agents/skills` symlink；这些 Runtime 临时目录和结果不应提交到本轮源码 PR。
+
+## 5. Activation Eval
 
 输入：`evals/activation/core-first-pass.json`。
 
@@ -58,7 +84,7 @@ printf '\n.agents/\nevals/workspace/\nevals/results/\n' >> .git/info/exclude
 - 使用 `--ephemeral` 避免把 Eval session rollout 持久化为后续上下文；
 - 使用 `--json` 保存 JSONL Trace。
 
-单条示例：
+不用 Runner 时的单条示例：
 
 ```bash
 mkdir -p evals/results/activation
@@ -84,7 +110,7 @@ NOT_OBSERVABLE: activation trace unavailable
 
 第一轮每个 query 先运行 1 次。只有结果不稳定、临界或失败时，才对该 query 重复 3 次并记录 trigger rate；本轮不默认制造 48 次以上重复调用。
 
-## 5. Behavior Eval
+## 6. Behavior Eval
 
 输入：
 
@@ -95,7 +121,7 @@ NOT_OBSERVABLE: activation trace unavailable
 
 Behavior Eval 的目的不是再次测试 activation，因此使用显式 Skill invocation，隔离“选错 Skill”和“Skill 执行错误”。
 
-例如：
+不用 Runner 时，例如：
 
 ```bash
 codex exec --ephemeral --json \
@@ -118,11 +144,15 @@ cp -R evals/fixtures/execute-unit-basic evals/workspace/B-EU-01
 然后从该目录运行允许 workspace 写入的 Fresh Run：
 
 ```bash
+mkdir -p evals/results/behavior
+
 codex exec --ephemeral --json --sandbox workspace-write \
   -C evals/workspace/B-EU-01 \
   '$execute-unit 读取当前目录的 AGENTS.md 和 unit.md，只实现 greeting-01，并按仓库规则验证；完成后停止。' \
-  > ../../results/behavior/B-EU-01.jsonl
+  > evals/results/behavior/B-EU-01.jsonl
 ```
+
+注意：`-C` 改变的是 Codex 的工作目录，不改变启动 Codex 的 shell 对 `>` 重定向路径的解析，因此输出路径仍应从当前 shell 工作目录计算。
 
 运行后保留：
 
@@ -133,7 +163,7 @@ codex exec --ephemeral --json --sandbox workspace-write \
 
 下一次重复 Run 前删除并重新复制 fixture，不能沿用已经修好的工作目录。
 
-## 6. 结果判定
+## 7. 结果判定
 
 按 `evals/README.md` 的 PASS / FAIL / NOT_OBSERVABLE 规则逐项检查 assertion。
 
@@ -157,7 +187,7 @@ notes:
 
 不要在发现失败后直接修改 Skill 并继续使用同一个 Context。失败先分类，再回到新的实现分支修正；修正后必须使用新的 Fresh Run 重新验证。
 
-## 7. B3 不接受的替代证据
+## 8. B3 不接受的替代证据
 
 以下内容不计为 Runtime Eval PASS：
 
