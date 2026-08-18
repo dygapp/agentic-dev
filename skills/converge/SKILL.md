@@ -1,3 +1,8 @@
+---
+name: converge
+description: Performs feature-wide convergence against the authoritative specification using current implementation and verification evidence, producing READY or GAPS. Use after required execution work is complete enough for final feature review; route execution, product, design, or authority gaps back to the correct responsibility layer and stop at Ready to Integrate.
+---
+
 # converge
 
 ## Purpose
