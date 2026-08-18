@@ -54,59 +54,84 @@ HARDENING REQUIRED
 
 第一批 8 个 Skill 的主体语义架构已经收敛：主调用链闭合，职责边界清楚，没有发现需要重新设计第一批 Skill 列表或新增 Super-skill 的结构性问题。
 
-本轮复核识别了 3 个关闭前 Blocking Work Item，以及 2 个 Non-blocking Hardening Item。
-
-### Closure Progress
-
-```text
-B1 — RESOLVED
-B2 — RESOLVED
-B3 — READY FOR RUNTIME EXECUTION
-Skill Engineering — NOT CLOSED
-```
-
-B1 与 B2 已进入 `master`。B3 的 Eval 协议、场景、可运行 fixture 与 Codex 执行方式已经准备完成，但在真实 Fresh Runtime 结果产生并复核前，B3 不得标记完成，也不得关闭 Skill Engineering。
+当前关闭前 Blocking Work Item 为 B1 / B2 / B3，其中 B1、B2 已解决，B3 正在 Runtime Eval。
 
 ## Blocking Work Items
 
 ### B1 — 统一 Ready-to-Integrate 终点语义
 
-当前 Method 的普通 Feature 路径由 `converge` 进入 `Ready to Integrate`，但比例化流程中仍存在终点所有权不够明确的问题：
+状态：**RESOLVED**。
 
-- Small Safe Change 当前表达为 `Execute → Verify → Ready to Integrate`；
-- `execute-unit` 同时明确 Unit Completion 不等于 Feature Converged，也不等于 Ready to Integrate；
-- Standalone Defect Workflow 以 Regression Verification / Review 结束，但没有显式定义何时进入 Ready to Integrate。
+Method 已明确：
 
-需要先在 Method 层明确：
+- 普通与复杂 Feature 通过 `converge` 进入 Ready to Integrate；
+- Small Safe Change 使用比例化 Lightweight Convergence；
+- Standalone Defect 使用 Defect Closure Check；
+- Unit Completion 本身不等于 Ready to Integrate；
+- 不扩大 `execute-unit`、`systematic-debug` 或 Integration 权限。
 
-- Convergence 是完成语义要求，但执行强度应与工作规模成比例；
-- Small Safe Change 如何满足轻量 Convergence；
-- Standalone Defect 在不进入完整 Feature Workflow 时，何种最终证据足以进入 Ready to Integrate；
-- 不通过扩大 `execute-unit` 或 `systematic-debug` 职责来解决该问题。
-
-如 Method 修改影响 Skill Contract，应单独同步 Contract；实现层修改不得先于权威语义修正。
+重新对照 Architecture / Contract 后，不需要同步修改 Skill Contract 或 Skill Implementation。
 
 ### B2 — 标准化 Skill Packaging / Activation Metadata
 
-第一批 8 个 `SKILL.md` 当前缺少通用 Skill discoverability 所需的最小 metadata。
+状态：**RESOLVED**。
 
-目标：
+第一批 8 个 `SKILL.md` 已增加最小通用 metadata：
 
-- 为每个 Skill 增加最小 `name` + `description` metadata；
-- `description` 同时表达核心职责与触发边界，支持可靠 activation；
-- 不引入 vendor-specific tool permissions、slash commands 或 Runtime 私有协议；
-- 不通过 metadata 改变既有 Contract 语义。
+- `name`
+- `description`
+
+并满足：
+
+- `name` 与目录名一致；
+- `description` 同时表达核心职责与触发边界；
+- 未引入 vendor-specific tool permissions、slash commands 或 Runtime 私有协议；
+- 未通过 metadata 改变既有 Contract 语义。
 
 ### B3 — 建立最小 Fresh-context Runtime Eval
 
-当前首轮验证属于 Contract-level / context-isolated 文本行为检查，尚不能等同于真实 Runtime 行为验证。
+状态：**IN PROGRESS — ACTIVATION PASSED / BEHAVIOR ISOLATION RERUN REQUIRED**。
 
-目标：
+第一轮 Runtime Eval 已建立：
 
-- 先覆盖 `clarify-intent`、`readiness-check`、`execute-unit`、`converge` 四个关键 Skill；
-- 每个 Skill 使用少量 Fresh-context 场景检查触发、拒绝触发、职责边界、Stage Return、Escalation 与 Evidence；
-- 如果暴露共性问题，再扩展到其余 4 个 Skill；
-- 不把本轮 Runtime Eval 扩张为大型测试平台建设。
+- 16 个 Activation 场景；
+- 14 个 Behavior 场景；
+- 覆盖 `clarify-intent`、`readiness-check`、`execute-unit`、`converge`；
+- `B-EU-01` 使用真实可修改 Python fixture 与当前 unittest evidence；
+- 每个 scenario 使用独立 `codex exec --ephemeral --json`。
+
+#### Activation Result
+
+隔离后的 Activation corpus 结果：**16 / 16 PASS**。
+
+每个场景都只加载预期 primary Skill；4 个 near-miss 也全部正确路由：
+
+- `clarify-intent` near-miss → `specify`
+- `readiness-check` near-miss → `slice-work`
+- `execute-unit` near-miss → `converge`
+- `converge` near-miss → `systematic-debug`
+
+未发现 Activation metadata Blocking Finding。
+
+#### Behavior First Full-run Finding
+
+14 个 Behavior 场景全部进程正常退出，输出语义表面上均与 assertions 一致；其中：
+
+- `B-CI-03`：干净有效 PASS；
+- `B-EU-01`：干净有效 PASS，实际完成 inspect → failing/current evidence → minimal fix → `python3 -m unittest discover -s tests -v` → 3 tests PASS → evidence-backed Completed → stop；
+- 其余 12 个场景在运行中读取了 `evals/behavior/*` 或既有 `evals/results/*`，能够接触 expected behavior、assertions 或历史回答，因此属于 **INFRASTRUCTURE_INVALID / CONTAMINATED**，不能作为 Runtime PASS，也不算 Skill FAIL。
+
+由此暴露的是 Behavior Eval 隔离问题，而不是 Method / Contract / Skill 语义缺陷。
+
+Runner 已修正：
+
+- Activation 和 Behavior 均在仓库外临时 workspace 中执行；
+- Runtime 只可见当前 8 个 Skills；
+- Behavior 仍使用显式 `$skill-name`；
+- `B-EU-01` 额外复制源 fixture，运行后只保存最终 fixture 快照；
+- Runtime 不再可读取 `evals/activation/*`、`evals/behavior/*`、历史 `evals/results/*` 或 grading assertions。
+
+B3 下一 Gate：重新运行完整 `--behavior` corpus，并对 14 个隔离 Behavior 结果重新 grading。Activation 不需要重跑。
 
 ## Non-blocking Hardening
 
@@ -122,75 +147,12 @@ B1 与 B2 已进入 `master`。B3 的 Eval 协议、场景、可运行 fixture �
 
 该项属于 Debug 行为 hardening，不改变 Root-cause-first 主流程。
 
-## B1 Resolution Result
-
-B1 已在 Method 层完成修正：
-
-- 明确任何工作进入 `Ready to Integrate` 前，都必须满足与自身规模相称的收敛语义；
-- 明确 Small Safe Change 使用 `Lightweight Convergence`，但 Unit Completion 不能直接等同于 Ready to Integrate；
-- 明确 Standalone Defect 使用 `Defect Closure Check`，在 Root-cause Fix 与 Regression Evidence 之外继续检查权威、当前证据、已知回归、未经授权行为与 Authority Gap；
-- 明确普通与复杂 Feature 继续由 Stage 6 `Converge` 形成 Feature-wide `READY` / `GAPS`；
-- 未扩大 `execute-unit`、`systematic-debug` 或 Integration 权限。
-
-重新对照 `skill-architecture.md` 与 `skill-contracts.md` 后，现有 Contract 已与该 Method 修订兼容：
-
-- `execute-unit` 本来只证明一个 Unit，不拥有 Feature Ready；
-- `converge` 本来负责整个 Feature 的最终收敛，单 Unit Feature 仍可在 Unit 完成后以轻量方式执行同一 Contract；
-- `systematic-debug` 本来只负责 Root Cause、Minimal Fix 与 Regression Evidence，不声明 Ready to Integrate。
-
-因此 B1 **不需要修改 Skill Contract 或 Skill Implementation**。后续 B2 / B3 不得重新扩大这些职责。
-
-B1 已通过 PR #10 squash merge 进入 `master`。
-
-## B2 Resolution Result
-
-B2 已完成并通过 PR #11 squash merge 进入 `master`（`69bd68375821f7c24f6933ab66ac616ec663605f`）。
-
-结果：
-
-- 8 个 `SKILL.md` 均增加标准 YAML frontmatter；
-- 只使用 `name` 与 `description` 两个最小字段；
-- `name` 与 Skill 目录名一致；
-- `description` 同时表达职责与主要触发边界；
-- 最终 diff 仅为 8 个文件各新增 5 行 metadata，共 `+40 / -0`；
-- Skill 正文、Method、Architecture 与 Contract 均未改变；
-- 未引入 vendor-specific tools、slash commands 或 Runtime 私有协议。
-
-B2 只建立可发现/可激活的标准包装，不以静态 metadata 检查替代 B3 的真实 Runtime Activation Evidence。
-
-## B3 Preparation Result
-
-B3 当前状态：
-
-```text
-READY FOR RUNTIME EXECUTION
-```
-
-已在 `test/first-batch-skill-runtime-evals` 分支准备最小 Runtime Eval 资产：
-
-- `evals/README.md`：定义 Activation / Behavior 两层 Eval、Fresh Context、Evidence 与 PASS / FAIL / NOT_OBSERVABLE 规则；
-- `evals/activation/core-first-pass.json`：16 个 realistic activation 场景，覆盖 4 个关键 Skill 的正例与相邻职责 near-miss；
-- `evals/behavior/*.json`：14 个 Behavior 场景，覆盖职责边界、Stage Return、Escalation、Authority 与 Current Evidence；
-- `evals/fixtures/execute-unit-basic/`：一个可真实修改并运行 `unittest` 的最小 `execute-unit` fixture；
-- `evals/CODEX.md`：Codex CLI Fresh Runtime 执行指南；
-- `evals/run_codex_evals.py`：零第三方依赖的薄 Runner，每个场景启动独立 `codex exec --ephemeral --json`，保存 raw trace；不自动把进程退出码等同于语义 PASS。
-
-B3 的关键边界：
-
-1. 当前长聊天中的文本推演不算 Runtime Evidence；
-2. 每个场景必须使用独立 Fresh Runtime，不使用 `resume`；
-3. Activation 必须尽可能观察 Runtime 是否实际加载目标 Skill，不能只从最终回答文风推断；
-4. Behavior 使用显式 Skill invocation，以隔离 Activation Failure 与 Skill Behavior Failure；
-5. `execute-unit` 的可运行场景必须真实修改 fixture 并运行当前 verification command；
-6. 任何 FAIL 先分类为 Metadata / Skill Implementation / Contract / Method / Runtime Infrastructure，再决定返回层级；
-7. 在真实 Run 结果完成复核前，B3 仍为未完成状态。
-
 ## Closure Criteria
 
 只有同时满足以下条件，才能正式关闭 Skill Engineering：
 
-1. B1 已解决，Small Safe Change、普通 Feature 与 Standalone Defect 的 Ready-to-Integrate 终点语义一致；
-2. B2 已完成，8 个 Skill 具备最小标准 Packaging / Activation Metadata；
+1. B1 已解决；
+2. B2 已完成；
 3. B3 已完成，最小 Fresh-context Runtime Eval 未暴露未解决的 Blocking Contract 问题；
 4. 没有新的 Method / Architecture / Contract Blocking Gap；
 5. 第一批 8 个 Skill 仍保持小型、可组合，不形成 Super-skill；
@@ -200,40 +162,18 @@ B3 的关键边界：
 
 ## Work Order
 
-按权威层级执行：
-
-1. B1 — Method / 必要 Contract；
-2. B2 — Skill Packaging / Implementation；
-3. B3 — Runtime Eval；
+1. B1 — Method / 必要 Contract；**DONE**
+2. B2 — Skill Packaging / Implementation；**DONE**
+3. B3 — Runtime Eval；**IN PROGRESS**
 4. Closure Review；
 5. 只有 Closure Review 无 Blocking Finding 后才关闭 Skill Engineering。
 
-不要在 B1 未稳定前通过 Skill Implementation 绕过语义问题。
-
 ## Commit Guidance
 
-本任务记录：
-
-```text
-docs(tasks): 记录第一批 Skill 收口复核结论
-```
-
-B1 Method：
-
-```text
-docs(method): 统一 Ready to Integrate 收敛语义
-```
-
-B2 Skill Packaging：
-
-```text
-feat(skills): 标准化第一批 Skill 激活元数据
-```
-
-B3 Eval Assets：
+B3 Eval 基础设施与结果：
 
 ```text
 test(skills): 建立第一批 Skill Fresh Runtime Eval
 ```
 
-如果 B3 暴露 Contract / Method Gap，必须按权威层级单独修正，不把更高层语义修改混入 Eval 结果提交。
+如 Runtime Eval 暴露 Skill Implementation 问题，应单独修订对应 Skill，不在 Eval 结果中静默修改 Method / Contract。
