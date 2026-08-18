@@ -18,19 +18,18 @@ git checkout test/first-batch-skill-runtime-evals
 printf '\n.agents/\nevals/workspace/\nevals/results/\n' >> .git/info/exclude
 ```
 
-## 2. Skill Discovery 与 Eval 隔离
+## 2. Skill Discovery
 
 本仓库的 Skill 源文件保存在 `skills/`，这只是项目源码组织，不等同于 Runtime 安装目录。
 
-Runner 对 Activation 和 Behavior 都使用**仓库外临时 workspace**：
+Runner 对两类 Eval 都使用仓库外临时 workspace：
 
-- 只复制当前 8 个 Skill 到临时目录的 `.agents/skills/`；
-- Runtime 看不到 `evals/activation/*`、`evals/behavior/*`、历史 `evals/results/*` 或 grading assertions；
-- Activation 不显式指定 Skill；
-- Behavior 使用显式 `$skill-name`，因此只验证 Skill 被选中后的行为契约；
-- `B-EU-01` 额外把可执行 fixture 复制到同一个临时 workspace，运行结束后再把最终 fixture 快照保存回 `evals/workspace/B-EU-01/`。
+- **Activation Eval**：只复制当前 8 个 Skill 到临时 `.agents/skills/`，Runtime 看不到 `evals/activation/core-first-pass.json`、Behavior assertions 或其他答案文件；
+- **Behavior Eval**：同样只复制当前 8 个 Skill，并使用显式 `$skill-name`。`B-EU-01` 额外复制真实 fixture，运行结束后再保存最终 fixture 快照。
 
-仓库外临时目录不是 Git repository，因此 Runner 对这些 Run 使用 Codex 的 `--skip-git-repo-check`。这只解决 Runtime 启动约束，不改变 Skill 行为或授权边界。
+此外，Runner 启动 Codex 子进程时，会把进程级 `cwd` 与 `PWD` 一并切到临时 workspace，并移除 `OLDPWD` 与常见 `GIT_*` 环境线索。只使用 `-C` 而让 launcher 自身仍停留在仓库根目录，会留下反向定位本地仓库的环境线索，不满足本轮严格隔离要求。
+
+这些 Runtime 临时内容不提交到源码 PR。
 
 如果希望人工确认 Skill Discovery，可以启动一个新的 Codex CLI 会话，使用 `/skills` 或 `$` 检查 8 个 Skill 是否可见。
 
@@ -47,24 +46,24 @@ Runner 只负责：
 - 每个 scenario 启动独立 `codex exec --ephemeral --json`；
 - Activation / Behavior 使用仓库外隔离 workspace；
 - Behavior 使用显式 Skill invocation；
-- 为 `B-EU-01` 重建干净 fixture 并保存最终快照；
+- 为 `B-EU-01` 重建干净 fixture；
 - 保存 raw JSONL / stderr / run metadata。
 
 Runner **不会**把进程退出码自动当成语义 PASS。
 
-单独运行 Activation：
+先运行隔离 Activation smoke test：
 
 ```bash
-python3 evals/run_codex_evals.py --activation
+python3 evals/run_codex_evals.py --activation --scenario A-CI-01
 ```
 
-单独运行 Behavior：
+再运行单个可写 Behavior pilot：
 
 ```bash
-python3 evals/run_codex_evals.py --behavior
+python3 evals/run_codex_evals.py --behavior --scenario B-EU-01
 ```
 
-运行全部 corpus：
+Pilot 与环境确认后运行第一轮完整 corpus：
 
 ```bash
 python3 evals/run_codex_evals.py --all
@@ -130,25 +129,23 @@ Behavior Eval 使用显式 `$skill-name`，目的是隔离验证：
 
 > Skill 已经被选中后，是否真正遵守职责边界、Stage Return、Escalation 与 Evidence Contract。
 
-每个 Behavior scenario 也必须在只包含当前 Skills（以及场景明确需要的 fixture）的隔离 workspace 中运行。**如果 Runtime 能读取 `evals/behavior/*.json`、历史结果或 assertions，则该 Run 视为 Contaminated / Infrastructure Invalid，不能判定 PASS。**
-
 每个 scenario 必须使用新的 `codex exec`，不能 `resume`。
+
+Behavior trace 如果读取了仓库中的 `evals/behavior/*`、`evals/results/*`、expected behavior 或 assertions，应判为 **INFRASTRUCTURE_INVALID / CONTAMINATED**，不能因为最终回答正确就算 PASS。
 
 ## 6. execute-unit 可运行 Fixture
 
-`B-EU-01` 的源 fixture 位于：
+`B-EU-01` 会真实修改：
 
 ```text
 evals/fixtures/execute-unit-basic/
 ```
 
-Runner 每次把它复制到仓库外临时 workspace 后执行；运行结束后把最终业务 fixture 快照保存到：
+Runner 每次都从源 fixture 复制到独立临时 workspace，运行后把最终快照保存到：
 
 ```text
 evals/workspace/B-EU-01/
 ```
-
-Runtime-only `.agents/`、`.codex/`、`.git/` 不会复制回结果快照。
 
 fixture 的 Repository verification command 为：
 
@@ -165,18 +162,26 @@ python3 -m unittest discover -s tests -v
 - 是否只处理 `greeting-01`；
 - 是否停止在 Unit Completion，没有 Merge / Push / Release / Deploy。
 
-下一次 Run 必须从源 fixture 重新复制，不能沿用已经修好的工作目录。
+下一次 Run 必须重新复制干净 fixture，不能沿用已经修好的工作目录。
 
-## 7. 第一轮基础设施发现
+## 7. Pilot 与隔离发现
 
-Pilot 与首次全量运行先后暴露了两个 Eval Infrastructure 问题：
+第一轮 Pilot 证明：
 
-1. Activation 如果从仓库根目录执行，Agent 搜索上下文时可能读到 `evals/activation/core-first-pass.json`，看到 `target_skill` / expected reason；
-2. Behavior 如果从仓库根目录执行，Agent 可能读到 `evals/behavior/*.json` 或历史 `evals/results/*`，看到 expected behavior / assertions / 既有回答。
+- Codex JSONL 可以直接观察 implicit Skill activation；
+- `execute-unit` 可以在 Fresh Runtime 中真实修改 fixture、执行当前验证并基于证据停止。
 
-这两类情况都属于**答案污染**，不是 Skill Failure。即使最终答案正确，也不能把该 Run 当作有效 Runtime PASS。
+后续全量运行又暴露两个 Eval Infrastructure 风险：
 
-因此当前 Runner 对 Activation 和 Behavior 都强制使用仓库外临时 workspace，只暴露本轮所需 Skills 与 fixture。
+1. 从仓库根目录运行 Activation 时，Agent 可能读到 `target_skill` / expected reason；
+2. 即使 `-C` 指向仓库外临时目录，如果启动 Codex 的父进程仍以仓库根目录作为 `cwd/PWD`，少数 Run 仍可能沿环境线索反向搜索本地仓库。
+
+因此当前 Runner 同时隔离：
+
+- Runtime workspace 内容；
+- Codex 子进程实际 `cwd`；
+- `PWD` / `OLDPWD`；
+- 常见 `GIT_*` 环境线索。
 
 ## 8. 结果判定
 
@@ -190,7 +195,7 @@ model: <actual model>
 skill_version: <commit SHA>
 scenario_id: <id>
 activated_skills: <observed set or NOT_OBSERVABLE>
-verdict: PASS | FAIL | NOT_OBSERVABLE | INFRASTRUCTURE_INVALID
+verdict: PASS | FAIL | NOT_OBSERVABLE
 assertion_results:
   - <assertion>: PASS | FAIL | NOT_OBSERVABLE
 evidence:
@@ -210,8 +215,8 @@ notes:
 - 当前长聊天中的文本推演；
 - Skill 开发阶段的历史 context-isolated review；
 - 没有 Runtime Trace 的“看起来触发了”；
-- Runtime 可以读取包含 `target_skill` / expected answer / assertions 的 eval corpus；
-- Runtime 读取历史 `evals/results/*` 并据此形成当前答案；
+- Runtime 可以读取包含 `target_skill` / expected answer 的 eval corpus；
+- Runtime 通过 launcher 的 `cwd/PWD` 等环境线索回读到本地仓库中的 eval corpus；
 - 同一 session 连续跑多个 scenario；
 - Skill 修改后继续沿用旧 session；
 - `execute-unit` 只描述应运行测试，但没有实际运行 Current Verification。
