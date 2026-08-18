@@ -54,7 +54,7 @@ HARDENING REQUIRED
 
 第一批 8 个 Skill 的主体语义架构已经收敛：主调用链闭合，职责边界清楚，没有发现需要重新设计第一批 Skill 列表或新增 Super-skill 的结构性问题。
 
-当前关闭前 Blocking Work Item 为 B1 / B2 / B3，其中 B1、B2 已解决，B3 正在 Runtime Eval。
+当前关闭前 Blocking Work Item 为 B1 / B2 / B3，其中 B1、B2 已解决，B3 正在 Runtime Eval 与针对性 hardening。
 
 ## Blocking Work Items
 
@@ -90,7 +90,7 @@ Method 已明确：
 
 ### B3 — 建立最小 Fresh-context Runtime Eval
 
-状态：**IN PROGRESS — ACTIVATION PASSED / BEHAVIOR ISOLATION RERUN REQUIRED**。
+状态：**IN PROGRESS — ACTIVATION PASSED / TARGETED BEHAVIOR RERUN REQUIRED**。
 
 第一轮 Runtime Eval 已建立：
 
@@ -115,23 +115,33 @@ Method 已明确：
 
 #### Behavior First Full-run Finding
 
-14 个 Behavior 场景全部进程正常退出，输出语义表面上均与 assertions 一致；其中：
+首次 14 个 Behavior 场景全部进程正常退出，但大部分场景可以读取仓库内 eval corpus，因此只能保留两个 clean PASS：
 
-- `B-CI-03`：干净有效 PASS；
-- `B-EU-01`：干净有效 PASS，实际完成 inspect → failing/current evidence → minimal fix → `python3 -m unittest discover -s tests -v` → 3 tests PASS → evidence-backed Completed → stop；
-- 其余 12 个场景在运行中读取了 `evals/behavior/*` 或既有 `evals/results/*`，能够接触 expected behavior、assertions 或历史回答，因此属于 **INFRASTRUCTURE_INVALID / CONTAMINATED**，不能作为 Runtime PASS，也不算 Skill FAIL。
+- `B-CI-03`；
+- `B-EU-01`，实际完成 inspect → failing/current evidence → minimal fix → `python3 -m unittest discover -s tests -v` → 3 tests PASS → evidence-backed Completed → stop。
 
-由此暴露的是 Behavior Eval 隔离问题，而不是 Method / Contract / Skill 语义缺陷。
+其余 12 个场景判定为 **INFRASTRUCTURE_INVALID / CONTAMINATED**，不算 Skill FAIL。
 
-Runner 已修正：
+Runner 随后改为仓库外临时 Behavior workspace。
 
-- Activation 和 Behavior 均在仓库外临时 workspace 中执行；
-- Runtime 只可见当前 8 个 Skills；
-- Behavior 仍使用显式 `$skill-name`；
-- `B-EU-01` 额外复制源 fixture，运行后只保存最终 fixture 快照；
-- Runtime 不再可读取 `evals/activation/*`、`evals/behavior/*`、历史 `evals/results/*` 或 grading assertions。
+#### Behavior Isolated Rerun Finding
 
-B3 下一 Gate：重新运行完整 `--behavior` corpus，并对 14 个隔离 Behavior 结果重新 grading。Activation 不需要重跑。
+第二次完整 Behavior rerun 中：
+
+- 14 / 14 Codex 进程正常退出；
+- 11 个场景没有访问仓库或 eval corpus；
+- 其中 10 个为 clean PASS；
+- `B-EU-02` 为 **真实 Skill Behavior FAIL**：面对 U-10 / U-11 两个独立 Units，Runtime 一开始计划“顺序完成 U-10 再完成 U-11”，违反 `execute-unit` 一次只拥有一个 Current Unit、不得自动遍历 Queue 的既有 Contract；
+- `B-CG-02`、`B-EU-03`、`B-RC-01` 仍通过启动进程环境线索回读到本地 `agentic-dev` 仓库，判定为 **INFRASTRUCTURE_INVALID / CONTAMINATED**。
+
+该轮没有发现 Method / Architecture / Contract 需要改变；发现的是一个 Skill Implementation hardening 与一个 Runner isolation gap。
+
+已修正：
+
+1. `execute-unit` 强化 one-unit boundary：若请求包含多个 Units 且没有唯一 Current Unit，不自行选择或顺序执行；即使多个 Units 都 Ready 且用户要求“一次全做完”，也必须由协调层逐个选定，并为后续 Unit 启动新的 `execute-unit` invocation / Fresh Execution Context。
+2. Runner 启动 Codex 子进程时，进程 `cwd` 与 `PWD` 都切到仓库外临时 workspace，并移除 `OLDPWD` / `GIT_*` 环境线索，避免通过 launcher 反向定位仓库。
+
+B3 下一 Gate：只重跑 `B-EU-02`、`B-CG-02`、`B-EU-03`、`B-RC-01` 四个场景。其余 Activation 与 clean Behavior evidence 不需要重复运行。
 
 ## Non-blocking Hardening
 
@@ -176,4 +186,4 @@ B3 Eval 基础设施与结果：
 test(skills): 建立第一批 Skill Fresh Runtime Eval
 ```
 
-如 Runtime Eval 暴露 Skill Implementation 问题，应单独修订对应 Skill，不在 Eval 结果中静默修改 Method / Contract。
+Runtime Eval 暴露的 Skill Implementation hardening 使用独立提交，不在 Eval 结果中静默修改 Method / Contract。
