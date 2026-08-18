@@ -3,9 +3,9 @@
 
 This runner deliberately stays thin:
 - one `codex exec --ephemeral --json` process per scenario;
-- activation runs in an external temporary workspace that contains only Skill copies;
+- activation and behavior runs use external temporary workspaces containing only Skill copies;
 - behavior runs use explicit Skill invocation;
-- rebuilds the writable execute-unit fixture before B-EU-01;
+- B-EU-01 additionally receives a fresh writable fixture and its final snapshot is preserved;
 - saves raw JSONL/stdout and stderr;
 - does NOT grade semantic assertions automatically.
 
@@ -50,37 +50,41 @@ def iter_skill_dirs() -> Iterable[Path]:
             yield skill_dir
 
 
-def ensure_repo_skill_links() -> None:
-    """Expose source Skills to Codex for behavior evals inside this repository."""
-    skill_root = ROOT / ".agents" / "skills"
-    skill_root.mkdir(parents=True, exist_ok=True)
-
-    for skill_dir in iter_skill_dirs():
-        link = skill_root / skill_dir.name
-        target = Path("..") / ".." / "skills" / skill_dir.name
-
-        if link.is_symlink():
-            if os.readlink(link) == str(target):
-                continue
-            link.unlink()
-        elif link.exists():
-            raise RuntimeError(f"Refusing to replace non-symlink runtime path: {link}")
-
-        link.symlink_to(target, target_is_directory=True)
-
-
 def populate_isolated_skill_copies(workspace: Path) -> None:
-    """Copy only Skills into an external workspace for activation evals.
-
-    Keeping activation outside the repository prevents Codex from discovering the
-    eval corpus itself (which contains target_skill / expected answers) while it
-    searches for authority or context.
-    """
+    """Copy only current Skill packages into an external eval workspace."""
     skill_root = workspace / ".agents" / "skills"
     skill_root.mkdir(parents=True, exist_ok=True)
 
     for skill_dir in iter_skill_dirs():
         shutil.copytree(skill_dir, skill_root / skill_dir.name)
+
+
+def copy_fixture_into(workspace: Path) -> None:
+    """Copy the executable B-EU-01 fixture into an isolated workspace root."""
+    for source in FIXTURE.iterdir():
+        target = workspace / source.name
+        if source.is_dir():
+            shutil.copytree(source, target)
+        else:
+            shutil.copy2(source, target)
+
+
+def preserve_execute_fixture_snapshot(workspace: Path) -> None:
+    """Persist only fixture files after B-EU-01; exclude runtime-only directories."""
+    target = WORKSPACE / "B-EU-01"
+    if target.exists():
+        shutil.rmtree(target)
+    target.mkdir(parents=True, exist_ok=True)
+
+    excluded = {".agents", ".codex", ".git"}
+    for source in workspace.iterdir():
+        if source.name in excluded:
+            continue
+        destination = target / source.name
+        if source.is_dir():
+            shutil.copytree(source, destination)
+        else:
+            shutil.copy2(source, destination)
 
 
 def check_codex(codex_bin: str) -> None:
@@ -183,27 +187,14 @@ def behavior_cases() -> Iterable[tuple[str, dict]]:
             yield skill_name, case
 
 
-def prepare_execute_fixture() -> Path:
-    target = WORKSPACE / "B-EU-01"
-    if target.exists():
-        shutil.rmtree(target)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(FIXTURE, target)
-    return target
-
-
 def run_activation(codex_bin: str, selected: set[str] | None) -> int:
     failures = 0
-    cases = activation_cases()
 
-    for case in cases:
+    for case in activation_cases():
         scenario_id = case["id"]
         if selected and scenario_id not in selected:
             continue
 
-        # Each activation scenario gets a fresh workspace outside ROOT. Only the
-        # current Skill packages are copied in, so the model cannot inspect the
-        # eval corpus and learn target_skill / expected answers.
         with tempfile.TemporaryDirectory(
             prefix=f"agentic-dev-activation-{scenario_id}-"
         ) as temp_dir:
@@ -223,33 +214,42 @@ def run_activation(codex_bin: str, selected: set[str] | None) -> int:
 
 def run_behavior(codex_bin: str, selected: set[str] | None) -> int:
     failures = 0
-    ensure_repo_skill_links()
 
     for skill_name, case in behavior_cases():
         scenario_id = case["id"]
         if selected and scenario_id not in selected:
             continue
 
-        cwd = ROOT
-        workspace_write = False
-        prompt = f"${skill_name} {case['prompt']}"
+        with tempfile.TemporaryDirectory(
+            prefix=f"agentic-dev-behavior-{scenario_id}-"
+        ) as temp_dir:
+            cwd = Path(temp_dir)
+            populate_isolated_skill_copies(cwd)
 
-        if scenario_id == "B-EU-01":
-            cwd = prepare_execute_fixture()
-            workspace_write = True
-            prompt = (
-                "$execute-unit 读取当前目录的 AGENTS.md 和 unit.md，只实现 "
-                "greeting-01，并按仓库规则验证；完成后记录当前证据并停止。"
-            )
+            workspace_write = False
+            prompt = f"${skill_name} {case['prompt']}"
 
-        failures += run_codex(
-            codex_bin=codex_bin,
-            scenario_id=scenario_id,
-            prompt=prompt,
-            result_group="behavior",
-            cwd=cwd,
-            workspace_write=workspace_write,
-        ) != 0
+            if scenario_id == "B-EU-01":
+                copy_fixture_into(cwd)
+                workspace_write = True
+                prompt = (
+                    "$execute-unit 读取当前目录的 AGENTS.md 和 unit.md，只实现 "
+                    "greeting-01，并按仓库规则验证；完成后记录当前证据并停止。"
+                )
+
+            failed = run_codex(
+                codex_bin=codex_bin,
+                scenario_id=scenario_id,
+                prompt=prompt,
+                result_group="behavior",
+                cwd=cwd,
+                workspace_write=workspace_write,
+                skip_git_repo_check=True,
+            ) != 0
+            failures += failed
+
+            if scenario_id == "B-EU-01":
+                preserve_execute_fixture_snapshot(cwd)
 
     return failures
 
@@ -296,8 +296,6 @@ def main() -> int:
     elif args.behavior:
         failures = run_behavior(args.codex_bin, selected)
     else:
-        # No mode or --all: run both. Explicit modes remain available for the
-        # recommended activation-first workflow.
         failures = run_activation(args.codex_bin, selected)
         failures += run_behavior(args.codex_bin, selected)
 
