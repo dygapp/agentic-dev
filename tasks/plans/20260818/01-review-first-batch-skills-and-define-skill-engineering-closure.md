@@ -4,7 +4,7 @@
 
 对第一批 8 个核心 Skill 进行整体收口复核，确认调用链、职责边界、Stage Return、Context、Escalation 与 Evidence 是否形成一致且可执行的体系，并定义关闭 Skill Engineering 前必须完成的最小 Hardening 工作。
 
-本任务不预设 Skill Engineering 可以立即关闭。复核结论必须由当前 Method、Architecture、Contract 与已实现 Skill 状态支持。
+本任务不预设 Skill Engineering 可以立即关闭。复核结论必须由当前 Method、Architecture、Contract、Skill Implementation 与 Runtime Evidence 支持。
 
 ## Authority Inputs
 
@@ -17,7 +17,7 @@
 
 `docs/architecture/first-batch-skill-design.md` 只作为已冻结契约的实现设计参考，不增加或覆盖前四项语义。
 
-外部项目仅可作为实现成熟度与工程工艺参照，不作为本仓库 Method / Contract Authority。
+外部项目与外部 Skill Specification 只能作为实现成熟度、Packaging 与工程工艺参照，不作为本仓库 Method / Contract Authority。
 
 ## Review Scope
 
@@ -36,7 +36,7 @@
 
 - Feature 主调用链是否闭合；
 - Workflow / Investigation 职责是否重叠或存在断层；
-- Stage Return 是否能把 Requirement、Design、Execution、Defect 与 Convergence Gap 路由到正确职责层；
+- Stage Return 是否把 Requirement、Design、Execution、Defect 与 Convergence Gap 路由到正确职责层；
 - Authority First、Progressive Disclosure、Fresh Context 与 Conversation History 非权威规则是否一致；
 - Human Escalation 是否统一遵循 Authority / Impact / Reversibility；
 - Verification-before-claim 与 Current Evidence 语义是否一致；
@@ -45,16 +45,18 @@
 
 ## Review Result
 
-### Overall Verdict
+### Current Verdict
 
 ```text
 Skill Engineering Closure Verdict:
-HARDENING REQUIRED
+READY FOR FINAL CLOSURE REVIEW
 ```
 
-第一批 8 个 Skill 的主体语义架构已经收敛：主调用链闭合，职责边界清楚，没有发现需要重新设计第一批 Skill 列表或新增 Super-skill 的结构性问题。
+第一批 8 个 Skill 的主体语义架构已经收敛：主调用链闭合、职责边界清楚，没有发现需要重新设计第一批 Skill 列表或新增 Super-skill 的结构性问题。
 
-当前关闭前 Blocking Work Item 为 B1 / B2 / B3，其中 B1、B2 已解决，B3 正在 Runtime Eval 与针对性 hardening。
+关闭前 Blocking Work Item B1 / B2 / B3 已全部解决。当前不再存在已知 Blocking Metadata / Skill Implementation / Contract / Method Gap。
+
+正式关闭 Skill Engineering 前，只剩最后一步：将本 PR 的 B3 evidence 与 hardening 集成到 `master` 后，基于最终权威状态执行一次 Closure Review。
 
 ## Blocking Work Items
 
@@ -70,7 +72,7 @@ Method 已明确：
 - Unit Completion 本身不等于 Ready to Integrate；
 - 不扩大 `execute-unit`、`systematic-debug` 或 Integration 权限。
 
-重新对照 Architecture / Contract 后，不需要同步修改 Skill Contract 或 Skill Implementation。
+重新对照 Architecture / Contract 后，不需要同步修改 Skill Contract。
 
 ### B2 — 标准化 Skill Packaging / Activation Metadata
 
@@ -90,9 +92,9 @@ Method 已明确：
 
 ### B3 — 建立最小 Fresh-context Runtime Eval
 
-状态：**IN PROGRESS — ACTIVATION PASSED / TARGETED BEHAVIOR RERUN REQUIRED**。
+状态：**RESOLVED / COMPLETE**。
 
-第一轮 Runtime Eval 已建立：
+第一轮 Runtime Eval 建立并实际执行：
 
 - 16 个 Activation 场景；
 - 14 个 Behavior 场景；
@@ -102,9 +104,9 @@ Method 已明确：
 
 #### Activation Result
 
-隔离后的 Activation corpus 结果：**16 / 16 PASS**。
+最终结果：**16 / 16 PASS**。
 
-每个场景都只加载预期 primary Skill；4 个 near-miss 也全部正确路由：
+4 个 near-miss 正确路由：
 
 - `clarify-intent` near-miss → `specify`
 - `readiness-check` near-miss → `slice-work`
@@ -113,35 +115,38 @@ Method 已明确：
 
 未发现 Activation metadata Blocking Finding。
 
-#### Behavior First Full-run Finding
+#### Behavior Result
 
-首次 14 个 Behavior 场景全部进程正常退出，但大部分场景可以读取仓库内 eval corpus，因此只能保留两个 clean PASS：
+最终有效 Fresh Runtime evidence：**14 / 14 PASS**。
 
-- `B-CI-03`；
-- `B-EU-01`，实际完成 inspect → failing/current evidence → minimal fix → `python3 -m unittest discover -s tests -v` → 3 tests PASS → evidence-backed Completed → stop。
+Runtime hardening 过程中曾发现两类问题：
 
-其余 12 个场景判定为 **INFRASTRUCTURE_INVALID / CONTAMINATED**，不算 Skill FAIL。
+1. **Eval Infrastructure contamination** — 初始 Behavior Run 可以读取仓库内 eval corpus；后续还发现 launcher `cwd/PWD` 与文件系统搜索可能泄漏仓库或其他项目上下文。Runner 已逐步改为仓库外隔离 workspace、真实子进程 `cwd/PWD` 隔离、移除 launcher 环境路径线索，并对最终必要场景显式限制只使用当前工作目录与 prompt。
+2. **真实 Skill Implementation Finding** — `B-EU-02` 暴露 `execute-unit` 面对两个独立 Ready Units 时可能计划在同一次 invocation 中顺序执行。Skill 已强化既有 one-unit Contract：没有唯一 Current Unit 时停止并返回协调层；后续 Unit 必须使用新的 invocation / Fresh Execution Context。
 
-Runner 随后改为仓库外临时 Behavior workspace。
+受影响场景均使用修改后的当前 Skill / Runner 重新执行并通过。
 
-#### Behavior Isolated Rerun Finding
+最终关键证据包括：
 
-第二次完整 Behavior rerun 中：
+- `B-EU-01`：真实 inspect → minimal fix → 当前 unittest verification → 3 tests PASS → evidence-backed Completed → stop；
+- `B-EU-02`：拒绝在同一次 invocation 中顺序执行两个 Units；
+- `B-EU-03`：跨 6 Units、难回滚的公共 API contract 正确返回 `technical-plan`；
+- `B-EU-04`：历史绿色 CI 截图不能替代当前 Completion Evidence，返回 Not Completed；
+- `B-RC-01`：Specification / Design / Execution / Governance 均满足时只读 PASS；
+- `B-CG-02`：Specification 继续作为 Product Authority，矛盾实现与测试不能反向修改 Requirement。
 
-- 14 / 14 Codex 进程正常退出；
-- 11 个场景没有访问仓库或 eval corpus；
-- 其中 10 个为 clean PASS；
-- `B-EU-02` 为 **真实 Skill Behavior FAIL**：面对 U-10 / U-11 两个独立 Units，Runtime 一开始计划“顺序完成 U-10 再完成 U-11”，违反 `execute-unit` 一次只拥有一个 Current Unit、不得自动遍历 Queue 的既有 Contract；
-- `B-CG-02`、`B-EU-03`、`B-RC-01` 仍通过启动进程环境线索回读到本地 `agentic-dev` 仓库，判定为 **INFRASTRUCTURE_INVALID / CONTAMINATED**。
+最终 PASS evidence 没有读取 expected behavior / assertions / 历史 eval 结果、其他项目内容或额外 `find-skills` Skill。
 
-该轮没有发现 Method / Architecture / Contract 需要改变；发现的是一个 Skill Implementation hardening 与一个 Runner isolation gap。
+B3 最终矩阵：
 
-已修正：
-
-1. `execute-unit` 强化 one-unit boundary：若请求包含多个 Units 且没有唯一 Current Unit，不自行选择或顺序执行；即使多个 Units 都 Ready 且用户要求“一次全做完”，也必须由协调层逐个选定，并为后续 Unit 启动新的 `execute-unit` invocation / Fresh Execution Context。
-2. Runner 启动 Codex 子进程时，进程 `cwd` 与 `PWD` 都切到仓库外临时 workspace，并移除 `OLDPWD` / `GIT_*` 环境线索，避免通过 launcher 反向定位仓库。
-
-B3 下一 Gate：只重跑 `B-EU-02`、`B-CG-02`、`B-EU-03`、`B-RC-01` 四个场景。其余 Activation 与 clean Behavior evidence 不需要重复运行。
+```text
+Activation: 16 / 16 PASS
+Behavior:   14 / 14 PASS
+Blocking Metadata Gap: 0
+Blocking Skill Implementation Gap: 0
+Blocking Contract Gap: 0
+Blocking Method Gap: 0
+```
 
 ## Non-blocking Hardening
 
@@ -157,33 +162,36 @@ B3 下一 Gate：只重跑 `B-EU-02`、`B-CG-02`、`B-EU-03`、`B-RC-01` 四个�
 
 该项属于 Debug 行为 hardening，不改变 Root-cause-first 主流程。
 
+N1 / N2 当前均为 Non-blocking，不阻止 Skill Engineering Closure；只有后续真实使用证据表明需要时再进入独立变更。
+
 ## Closure Criteria
 
-只有同时满足以下条件，才能正式关闭 Skill Engineering：
+关闭 Skill Engineering 需要同时满足：
 
-1. B1 已解决；
-2. B2 已完成；
-3. B3 已完成，最小 Fresh-context Runtime Eval 未暴露未解决的 Blocking Contract 问题；
-4. 没有新的 Method / Architecture / Contract Blocking Gap；
-5. 第一批 8 个 Skill 仍保持小型、可组合，不形成 Super-skill；
-6. Integration 继续由 Human Authority / Repository Policy 控制。
+1. B1 已解决；**SATISFIED**
+2. B2 已完成；**SATISFIED**
+3. B3 已完成，Fresh-context Runtime Eval 无未解决 Blocking Contract 问题；**SATISFIED**
+4. 没有新的 Method / Architecture / Contract Blocking Gap；**SATISFIED**
+5. 第一批 8 个 Skill 保持小型、可组合，不形成 Super-skill；**SATISFIED**
+6. Integration 继续由 Human Authority / Repository Policy 控制；**SATISFIED**
 
-满足后再更新阶段状态为 Skill Engineering Closed，并进入后续 Operationalization / Method Validation 工作。
+当前所有实质 Closure Criteria 已满足。为保证最终判定基于 `master` 权威状态，正式 `Skill Engineering = CLOSED` 在 PR #12 集成后执行一次 Final Closure Review 再落地。
 
 ## Work Order
 
 1. B1 — Method / 必要 Contract；**DONE**
 2. B2 — Skill Packaging / Implementation；**DONE**
-3. B3 — Runtime Eval；**IN PROGRESS**
-4. Closure Review；
-5. 只有 Closure Review 无 Blocking Finding 后才关闭 Skill Engineering。
+3. B3 — Runtime Eval；**DONE**
+4. PR #12 Review / Integration；**READY**
+5. Final Skill Engineering Closure Review；**PENDING AFTER INTEGRATION**
+6. 无 Blocking Finding 后进入 `Skill Operationalization & Method Validation`。
 
 ## Commit Guidance
 
-B3 Eval 基础设施与结果：
+PR #12 建议最终 squash commit：
 
 ```text
 test(skills): 建立第一批 Skill Fresh Runtime Eval
 ```
 
-Runtime Eval 暴露的 Skill Implementation hardening 使用独立提交，不在 Eval 结果中静默修改 Method / Contract。
+Runtime Eval 暴露的 Skill Implementation hardening 已在本 PR 内显式记录，没有静默修改 Method / Contract。
