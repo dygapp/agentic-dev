@@ -54,7 +54,18 @@ HARDENING REQUIRED
 
 第一批 8 个 Skill 的主体语义架构已经收敛：主调用链闭合，职责边界清楚，没有发现需要重新设计第一批 Skill 列表或新增 Super-skill 的结构性问题。
 
-当前仍存在 3 个关闭前 Blocking Work Item，以及 2 个 Non-blocking Hardening Item。
+本轮复核识别了 3 个关闭前 Blocking Work Item，以及 2 个 Non-blocking Hardening Item。
+
+### Closure Progress
+
+```text
+B1 — RESOLVED
+B2 — RESOLVED
+B3 — READY FOR RUNTIME EXECUTION
+Skill Engineering — NOT CLOSED
+```
+
+B1 与 B2 已进入 `master`。B3 的 Eval 协议、场景、可运行 fixture 与 Codex 执行方式已经准备完成，但在真实 Fresh Runtime 结果产生并复核前，B3 不得标记完成，也不得关闭 Skill Engineering。
 
 ## Blocking Work Items
 
@@ -129,6 +140,51 @@ B1 已在 Method 层完成修正：
 
 因此 B1 **不需要修改 Skill Contract 或 Skill Implementation**。后续 B2 / B3 不得重新扩大这些职责。
 
+B1 已通过 PR #10 squash merge 进入 `master`。
+
+## B2 Resolution Result
+
+B2 已完成并通过 PR #11 squash merge 进入 `master`（`69bd68375821f7c24f6933ab66ac616ec663605f`）。
+
+结果：
+
+- 8 个 `SKILL.md` 均增加标准 YAML frontmatter；
+- 只使用 `name` 与 `description` 两个最小字段；
+- `name` 与 Skill 目录名一致；
+- `description` 同时表达职责与主要触发边界；
+- 最终 diff 仅为 8 个文件各新增 5 行 metadata，共 `+40 / -0`；
+- Skill 正文、Method、Architecture 与 Contract 均未改变；
+- 未引入 vendor-specific tools、slash commands 或 Runtime 私有协议。
+
+B2 只建立可发现/可激活的标准包装，不以静态 metadata 检查替代 B3 的真实 Runtime Activation Evidence。
+
+## B3 Preparation Result
+
+B3 当前状态：
+
+```text
+READY FOR RUNTIME EXECUTION
+```
+
+已在 `test/first-batch-skill-runtime-evals` 分支准备最小 Runtime Eval 资产：
+
+- `evals/README.md`：定义 Activation / Behavior 两层 Eval、Fresh Context、Evidence 与 PASS / FAIL / NOT_OBSERVABLE 规则；
+- `evals/activation/core-first-pass.json`：16 个 realistic activation 场景，覆盖 4 个关键 Skill 的正例与相邻职责 near-miss；
+- `evals/behavior/*.json`：14 个 Behavior 场景，覆盖职责边界、Stage Return、Escalation、Authority 与 Current Evidence；
+- `evals/fixtures/execute-unit-basic/`：一个可真实修改并运行 `unittest` 的最小 `execute-unit` fixture；
+- `evals/CODEX.md`：Codex CLI Fresh Runtime 执行指南；
+- `evals/run_codex_evals.py`：零第三方依赖的薄 Runner，每个场景启动独立 `codex exec --ephemeral --json`，保存 raw trace；不自动把进程退出码等同于语义 PASS。
+
+B3 的关键边界：
+
+1. 当前长聊天中的文本推演不算 Runtime Evidence；
+2. 每个场景必须使用独立 Fresh Runtime，不使用 `resume`；
+3. Activation 必须尽可能观察 Runtime 是否实际加载目标 Skill，不能只从最终回答文风推断；
+4. Behavior 使用显式 Skill invocation，以隔离 Activation Failure 与 Skill Behavior Failure；
+5. `execute-unit` 的可运行场景必须真实修改 fixture 并运行当前 verification command；
+6. 任何 FAIL 先分类为 Metadata / Skill Implementation / Contract / Method / Runtime Infrastructure，再决定返回层级；
+7. 在真实 Run 结果完成复核前，B3 仍为未完成状态。
+
 ## Closure Criteria
 
 只有同时满足以下条件，才能正式关闭 Skill Engineering：
@@ -162,14 +218,22 @@ B1 已在 Method 层完成修正：
 docs(tasks): 记录第一批 Skill 收口复核结论
 ```
 
-B1 如修改 Method：
+B1 Method：
 
 ```text
 docs(method): 统一 Ready to Integrate 收敛语义
 ```
 
-若随后必须同步 Contract，保持独立提交：
+B2 Skill Packaging：
 
 ```text
-docs(contracts): 同步比例化收敛契约
+feat(skills): 标准化第一批 Skill 激活元数据
 ```
+
+B3 Eval Assets：
+
+```text
+test(skills): 建立第一批 Skill Fresh Runtime Eval
+```
+
+如果 B3 暴露 Contract / Method Gap，必须按权威层级单独修正，不把更高层语义修改混入 Eval 结果提交。
