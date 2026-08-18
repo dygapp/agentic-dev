@@ -21,11 +21,11 @@ Ready for Execution。
 
 实验必须在独立 Consumer Context 中进行。
 
-实验 Context 不得继承：
+实验 Context 不得依赖：
 
 - 当前 `agentic-dev` 开发会话；
 - 其他项目聊天历史；
-- 未固化的个人记忆；
+- 未固化为当前 Consumer Authority 的信息；
 - 实验设计者口头补充的隐含流程。
 
 Consumer Context 只获得：
@@ -33,7 +33,7 @@ Consumer Context 只获得：
 1. 指定版本的 `agentic-dev` Repository；
 2. Consumer 项目的真实需求来源；
 3. Consumer Repository；
-4. 当前 Runtime 可观察能力。
+4. 当前 Runtime 可直接观察能力。
 
 如果使用 ChatGPT Project，应优先使用独立 Project 边界；如果使用 Codex，则应使用新的 Session / Context。
 
@@ -46,29 +46,11 @@ Consumer Context 只获得：
 - 可以从最小项目骨架开始逐步演进；
 - 不依赖先对大型 Legacy Repository 完成完整 Spec Reconstruction。
 
-当前候选 Consumer：
+当前首个 Consumer：
 
 **jilinjobs 信息发布网站核心重构验证。**
 
-首轮范围：
-
-包含：
-
-- 栏目管理；
-- 菜单 / 导航组织；
-- 信息发布核心能力；
-- 首页；
-- 二级页面；
-- 内容详情页面。
-
-不包含：
-
-- 外部内容嵌入；
-- 用户与权限管理；
-- 中心党建二级网站；
-- 评论；
-- 复杂统计；
-- 多站点扩展。
+Consumer 的具体需求范围由 Consumer Repository 中的权威需求输入决定，不在本实验计划中复制维护。
 
 ## Operating Guide Validation
 
@@ -140,6 +122,12 @@ Issue 不作为：
 - Contract Authority。
 
 建议一个 Consumer Experiment 对应一个 Tracking Issue。
+
+Issue 标题约定：
+
+```text
+[experiment] <consumer> - <experiment goal>
+```
 
 反馈内容只记录：
 
