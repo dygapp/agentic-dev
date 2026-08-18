@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": "B-RC-01",
-      "prompt": "请使用 readiness-check 做 Execute 前 Gate。Specification 已明确 Goal、Scope、Boundary、Acceptance；确认不需要 Technical Plan。现有两个 Execution Units 都有 spec_reference、可观察 completion_condition、显式 dependencies，且没有新增 scope；Repository Governance 也没有额外阻塞要求。不要修改任何 artifact。",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 readiness-check 做 Execute 前 Gate。Specification 已明确 Goal、Scope、Boundary、Acceptance；确认不需要 Technical Plan。现有两个 Execution Units 都有 spec_reference、可观察 completion_condition、显式 dependencies，且没有新增 scope；Repository Governance 也没有额外阻塞要求。不要修改任何 artifact。",
       "expected_behavior": "完成只读四维检查，在没有 Blocking Finding 时输出 PASS；可以有非阻塞说明，但不得为了显得严格而制造阻塞项。",
       "assertions": [
         "检查 Specification / Design / Execution / Governance 四个维度",
