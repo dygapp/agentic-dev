@@ -8,7 +8,7 @@
 
 `docs/guides/using-agentic-dev.md`
 
-推荐在一个新的 Chat / Codex Context 中开始，并把 `agentic-dev` Repository 作为方法与 Skills 知识源提供给 Agent。不要提前复制一套大而全的项目模板；让 Agent 根据项目目标、当前权威需求和 Operating Guide 建立足以启动工作的最小 Repository Authority，并随着真实工作逐步丰富项目结构。
+推荐在一个新的 Chat / Codex Context 中开始，并把 `agentic-dev` Repository 作为方法与 Skills 知识源提供给 Agent。不要提前复制一套大而全的项目模板；让 Agent 根据项目目标、已建立的 Consumer Authority、明确提供的 Requirement Source 和 Operating Guide 建立足以启动工作的最小 Repository Authority，并随着真实工作逐步丰富项目结构。
 
 可以使用下面的提示词作为新项目会话起点：
 
@@ -21,13 +21,18 @@
 开发方法与可用 Skills：
 <agentic-dev repository path or URL>
 
-权威需求 / 初始业务输入：
-<requirement files, repository paths, URLs, or concise authoritative input>
+已建立的 Consumer Authority（如有）：
+<current project rules, authoritative requirements, repository paths, or none>
+
+Requirement Source / 初始业务输入（如有）：
+<external requirement files, repository paths, URLs, or concise input>
 
 目标项目目录 / Repository：
 <consumer repository path or target location>
 
-请先读取 agentic-dev 的 Operating Guide，并按其中的知识边界、项目渐进演进、Skill 使用和 Fresh Context 规则开展工作。
+请先读取 agentic-dev 的 Operating Guide，并按其中的知识边界、Requirement Source 采纳、项目渐进演进、Skill 使用和 Fresh Context 规则开展工作。
+
+不要仅因为某份 Requirement Source 被提供、复制到 Consumer Repository，或自身标记为 confirmed / approved，就自动把它视为当前 Consumer Authority；应先根据 Operating Guide 判断其 provenance、当前有效 Scope、Authority precedence 和 upstream references。
 
 先根据当前项目实际情况建立启动项目所需的最小骨架和 Repository Authority，不要预先创建没有真实需要的大而全文档或目录体系。随后从当前 Intent / Requirements 开始，逐步推进 Specification、必要的 Technical Planning、Work Slicing、Execution 和 Convergence。
 

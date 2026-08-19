@@ -46,6 +46,46 @@ Project Rules + Project Knowledge + Code
 
 `agentic-dev` 可以指导“如何工作”，但不能替 Consumer Repository 决定“这个项目的事实是什么”。
 
+### 2.1 Requirement Source 与 Consumer Authority
+
+外部提供的 Requirement Source / Input Material 不会因为被读取、复制到仓库，或自身标记为 `confirmed`、`approved` 等状态，就自动成为 Consumer Repository 的项目权威。
+
+启动或接收需求资料时，Agent 应区分：
+
+```text
+Requirement Source / Input Material
+        │
+        │ explicit adoption into Consumer Authority
+        ▼
+Consumer Authoritative Requirement
+        │
+        │ clarified intent + authority
+        ▼
+Specification
+```
+
+其中：
+
+- **Requirement Source / Input Material** 是当前允许用于理解项目的来源资料，可以来自外部文件、其他 Repository、URL、已有系统说明或 Human 提供的输入；
+- **Consumer Authoritative Requirement** 是已经被当前 Consumer Repository 明确采纳、并在当前 Scope 内作为项目事实和后续验收依据使用的需求；
+- **Specification** 继续由已澄清 Intent 与当前 Consumer Authority 收敛形成 WHAT / WHY 权威，不等同于原始来源资料的简单复制。
+
+Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或额外文档，但在把来源资料纳入 Consumer Authority 前，应至少判断：
+
+- **Provenance**：来源是什么，是否需要保留来源关系；
+- **Active Scope**：来源整体范围与当前 Consumer iteration 的有效范围是否一致；
+- **Authority Precedence**：采纳后它在当前 Repository Authority 中处于什么位置；
+- **Upstream References**：来源文件引用的上游规则、需求、架构或项目文档在 Consumer Repository 中是否真实可用。
+
+如果来源文件包含 Consumer Repository 中不存在或未被采纳的 upstream references：
+
+- 不得把这些引用自动视为当前 Consumer Authority；
+- 可以保留其 provenance，但应在当前 Repository Authority 中明确其有效边界；
+- 只有当前项目确实需要相应长期事实时，才建立或采纳 Consumer-local Authority；
+- 不为了让引用“看起来完整”而机械复制整个上游项目的文档体系。
+
+如果某份来源资料已经被 Human 明确指定为当前 Consumer 的权威需求，可以直接采纳，不要求重复进行形式化审批；但仍应处理当前 Scope、Authority precedence 与不可解析 upstream references，避免 Fresh Agent 混淆“来源整体语义”和“当前 Consumer 中实际有效的权威”。
+
 ## 3. Greenfield Project：建立最小启动骨架
 
 新项目不应从大而全的模板开始。
@@ -371,11 +411,12 @@ Consumer Agent 可以提出 Classification Candidate，但不能自行把实验�
 
 - 要创建什么真实项目；
 - `agentic-dev` Repository 在哪里；
-- 权威需求在哪里；
+- 已建立的 Consumer Authority（如有）；
+- Requirement Source / 初始业务输入在哪里（如有）；
 - Consumer Repository 在哪里；
 - 当前工作是否属于 Experiment。
 
-然后让 Agent 自行读取本文和相关 Skills 开始工作。
+然后让 Agent 自行读取本文和相关 Skills 开始工作，并按第 2 节判断 Requirement Source 是否、以及如何被采纳为 Consumer Authority。
 
 如果仍必须依赖大量未写入 `agentic-dev` 的口头步骤才能启动项目，应把这种情况记录为 Operating Guide / Method 使用证据，而不是用额外聊天指令悄悄补齐。
 
