@@ -80,6 +80,32 @@ GitHub repository 是本仓库的唯一长期基线来源。
 - 不创建接管完整生命周期的超级 Skill。
 - 通用方法的终点是 Ready to Integrate；merge、push、release、deploy 和破坏性 cleanup 由 Human Authority 或 Repository Policy 控制。
 
+## 外部操作治理
+
+当 Agent 具备 GitHub、Repository、Issue、Pull Request、外部 API 或其他会产生外部状态变化的操作能力时，必须遵循：
+
+```text
+Analyze
+  ↓
+Act
+  ↓
+Verify
+  ↓
+Report
+```
+
+基本要求：
+
+- 外部状态修改前先读取当前状态与权威来源；
+- 明确目标、权限和最小必要操作后再执行写操作；
+- 写操作完成后重新读取 Source of Truth 验证目标状态；
+- 工具调用成功不等同于目标状态完成；
+- 只能汇报已经由当前证据确认的状态。
+
+完整说明见：
+
+`docs/guides/external-operation-guidelines.md`
+
 ## Research 使用规则
 
 `docs/research/` 只保存研究依据和横向比较。
