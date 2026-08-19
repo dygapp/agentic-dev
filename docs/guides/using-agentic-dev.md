@@ -99,6 +99,7 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 - 当前允许 Agent 自主处理与必须升级给 Human 的边界；
 - 基本 Verification 与 Integration Policy；
 - 当前 Requirement / Specification 应保存在哪里；
+- 当前项目文档需要遵循的主导语言规则（如已有）；
 - 当前实际需要使用的 Skills。
 
 一个小型 Greenfield 项目的初始骨架可以很轻，例如：
@@ -111,6 +112,14 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 ```
 
 这只是最小示例，不是固定模板。
+
+如果 Consumer Repository 尚未明确自然语言规则，人类可读的项目文档默认应沿用当前权威需求与主要项目协作输入的主导语言，避免把 `agentic-dev` 自身或某个 Runtime 的语言习惯无意复制到目标项目。
+
+语言选择是 Consumer Project Rule，而不是 `agentic-dev` Method 约束：
+
+- 不强制翻译 Method 专有术语、代码标识、文件路径、命令、协议名和专有名词；
+- 如果语言选择对后续 Fresh Agent、Human Review 或长期协作具有持续价值，应在最小 Repository Authority（例如 `AGENTS.md`）中显式固化；
+- 如果 Consumer 已经存在明确语言规则，始终以 Consumer Authority 为准。
 
 不要为了“看起来完整”预先创建空的：
 
