@@ -126,15 +126,4 @@ Report
 
 `docs/guides/git-commit-guidelines.md`
 
-最小格式：
-
-```text
-<type>(<scope>): <中文摘要>
-```
-
-重点要求：
-
-- 一次 Commit 只表达一个主要目的；
-- Method / Contract Change 与 Skill Implementation Change 原则上分开提交；
-- `type`、`scope` 使用小写英文，摘要使用中文；
-- 不使用“更新文件”“修改内容”等无法独立表达目的的摘要。
+具体格式、Scope、摘要和分层提交规则只在该规范中维护，提交前应按该规范完成必要检查。
