@@ -59,7 +59,9 @@ chore(repo): 调整仓库基础配置
 
 ## 4. Scope
 
-Scope 表示稳定的责任域，不表示具体文件名。
+Scope 表示稳定的责任域，不表示具体文件名、文件路径、目录名称或单个 Artifact 类型。
+
+同一次逻辑变更即使同时修改 README、Guide 或其他不同位置的文件，也应根据**变更目的所属的稳定责任域**选择 Scope，而不是跟随被修改文件的位置命名 Scope。
 
 当前推荐：
 
@@ -68,6 +70,7 @@ Scope 表示稳定的责任域，不表示具体文件名。
 | `method` | AI 开发方法、顶层原则、阶段定义 |
 | `contracts` | Skill Contract 与职责边界 |
 | `skills` | Skill 实现及其直接相关内容 |
+| `usage` | `agentic-dev` 使用方式、Operating Guide、Consumer 启动与协作指导 |
 | `research` | 外部项目研究、对照分析 |
 | `governance` | Repository Rules、Authority、治理规则 |
 | `tasks` | Task 管理与工作协调规则 |
@@ -78,13 +81,14 @@ Scope 表示稳定的责任域，不表示具体文件名。
 ```text
 docs(method): 明确 Technical Planning 按需触发规则
 docs(contracts): 完善 readiness-check 输入输出契约
+docs(usage): 明确 Consumer 需求权威采纳边界
 docs(research): 补充 Superpowers 执行模型分析
 docs(governance): 增加 Git Commit 提交规范
 feat(skills): 实现 specify Skill
 chore(repo): 调整目录结构
 ```
 
-如果现有 Scope 已能准确表达责任域，不要为单个文件或一次性概念新增 Scope。
+如果现有 Scope 已能准确表达责任域，不要为单个文件、目录或一次性概念新增 Scope。
 
 ## 5. 摘要规则
 
