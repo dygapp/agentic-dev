@@ -39,7 +39,7 @@ Requirement Source / 初始业务输入（如有）：
 除非我明确提供，否则不要使用其他会话、其他项目或个人记忆中的隐含知识作为本项目事实。
 ```
 
-如果当前工作被明确作为 `agentic-dev` 实验（Experiment / Validation），还应在提示词末尾补充：
+如果当前工作被明确作为 `agentic-dev` 实验 / 验证（Experiment / Validation），还应在提示词末尾补充：
 
 ```text
 本项目属于 agentic-dev Experiment。请按照 Operating Guide 的 Experimental Use 规则保持上下文隔离，并通过 agentic-dev Repository 的 GitHub Issue 回传有意义的实践证据。
@@ -242,7 +242,7 @@ converge
 
 1. 通过使用指南（Operating Guide）让 Fresh Agent 能够从真实需求启动并持续推进 Consumer Repository；
 2. 在独立真实 Repository 中验证完整方法、Skills 组合、Fresh Context 与项目渐进演进；
-3. 通过真实实验（Experiment Evidence）识别 Usage / Skill / Contract / Method / Project Rule Gap；
+3. 通过真实实验产生的证据（Experiment Evidence）识别 Usage / Skill / Contract / Method / Project Rule Gap；
 4. 仅在真实使用证明必要时，再处理 Distribution、Bootstrap 自动化、Controller / Runtime Orchestration 或重新进入 Skill Engineering。
 
 下一阶段默认不新增第九个核心 Skill，也不继续扩大方法论研究样本。
