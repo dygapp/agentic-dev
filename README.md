@@ -145,7 +145,7 @@ Ready to Integrate
 - Conversation History 不是权威知识库。
 - Human Escalation 依据 Authority、Impact、Reversibility 判断。
 - 普通、低影响、可逆的局部实现选择由 Agent 自主处理。
-- 通用方法只推进到 Ready to Integrate。
+- 通用开发方法只推进到 Ready to Integrate。
 - Merge / Push / Release / Deploy 由 Human Authority 或 Repository Policy 控制。
 - Skills 保持小型、可组合，不允许一个 Super-skill 接管完整生命周期。
 
