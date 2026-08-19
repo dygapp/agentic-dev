@@ -1,16 +1,16 @@
 # 术语表达规范
 
-本文规定 `agentic-dev` 中文主导文档中英文术语的呈现方式，目标是在保留方法与技术术语精确性的同时，降低 Human Review 的阅读负担。
+本文规定 `agentic-dev` 中文主导文档中英文术语的呈现方式，目标是在保留方法与技术术语精确性的同时，降低人工复核（Human Review）的阅读负担。
 
-本文属于项目级文档治理，不重新定义 Method、Architecture、Contract 或 Skill 的语义。术语含义发生冲突时，仍以对应 Repository Authority 为准。
+本文属于项目级文档治理，不重新定义方法（Method）、架构（Architecture）、契约（Contract）或 Skill 的语义。术语含义发生冲突时，仍以对应仓库权威（Repository Authority）为准。
 
 ## 1. 适用范围
 
-本规范适用于 `agentic-dev` 中面向 Human 阅读的：
+本规范适用于 `agentic-dev` 中面向人阅读的：
 
 - `AGENTS.md`、`README.md`；
 - Method / Architecture / Contract / Decision 文档；
-- Operating Guide 与其他 Guide；
+- 使用指南（Operating Guide）与其他 Guide；
 - Research、Plan 及其他说明性 Markdown；
 - PR、Issue 等需要长期阅读的项目说明。
 
@@ -46,7 +46,7 @@ Consumer 项目使用什么主导自然语言，由 `docs/guides/using-agentic-d
 ```text
 执行单元（Execution Unit）应能够独立验证。
 当前证据（Current Evidence）必须支持完成声明。
-权威事实来源（Source of Truth）应在修改后重新读取。
+事实来源（Source of Truth）应在修改后重新读取。
 ```
 
 后续出现默认使用更自然的中文或已明确的英文简称，不要求每次重复中英对照。
@@ -95,7 +95,7 @@ Skill Contract（Skill 的职责与输入输出契约）
 
 选择标准依次是：
 
-1. 是否容易被 Human 正确理解；
+1. 是否容易被人正确理解；
 2. 是否保持与 Repository Authority 的精确对应；
 3. 是否避免重复和视觉噪声；
 4. 是否有利于 Fresh Agent 在跨文档工作时识别同一概念。
@@ -174,17 +174,25 @@ Agent 在 Fresh Context 中执行一个执行单元（Execution Unit），形成
 
 ## 7. 既有文档的收敛方式
 
-本规范生效后：
+本规范首次引入时，对高频入口和直接治理文档做一次首轮统一收敛：
+
+- `AGENTS.md`；
+- `README.md`；
+- `docs/guides/` 下全部文档。
+
+首轮收敛只调整术语呈现、标题和说明性措辞，不借机改变 Method、Contract、Skill 或其他既有治理语义。
+
+完成首轮收敛后：
 
 - 新增文档应直接遵守本规范；
-- 修改既有文档时，在当前修改范围内顺带收敛明显的中英文混用；
-- 不要求为了术语形式统一立即重写整个仓库；
+- 其他既有文档在实际修改时，在当前修改范围内顺带收敛明显的中英文混用；
+- 不要求为了术语形式统一立即重写 Method、Architecture、Contract、Research、Skills 等全部旧内容；
 - 不创建只有语言替换、没有实际阅读价值的大规模 diff；
 - 如果发现术语背后存在真实语义不一致，应单独按对应 Method / Contract / Governance 流程处理，而不是用翻译调整掩盖。
 
 原则：
 
-> 新内容立即一致，旧内容按触达逐步收敛。
+> 高频入口先统一，其他旧内容按触达逐步收敛。
 
 ## 8. 与其他规则的关系
 

@@ -2,7 +2,7 @@
 
 ## 仓库目标
 
-本仓库用于定义一套通用的 AI Agent 驱动软件开发方法，并实现一组小型、可组合的 Skills。
+本仓库用于定义一套通用的 AI Agent（以下简称 Agent）驱动软件开发方法，并实现一组小型、可组合的 Skill。
 
 **方法定义高于 Skill 实现。**
 
@@ -24,9 +24,9 @@ Skill 只能实现方法，不允许通过修改 `SKILL.md` 暗中改变方法�
 
 如果某个 Skill 的设计要求改变方法本身，必须先显式修改方法文档，再修改 Skill。
 
-## Repository Source of Truth
+## 仓库事实来源（Repository Source of Truth）
 
-GitHub repository 是本仓库的唯一长期基线来源。
+GitHub 仓库是本仓库唯一的长期基线来源。
 
 规则：
 
@@ -34,17 +34,17 @@ GitHub repository 是本仓库的唯一长期基线来源。
 - Branch 用于隔离实验、设计和实现过程；
 - ZIP 快照只用于初始化、离线交换或临时备份，不作为持续开发上下文来源。
 
-所有后续 Method、Contract 和 Skill Implementation 变更，应基于 Git repository 状态进行。
+所有后续方法（Method）、契约（Contract）和 Skill 实现变更，都应基于 Git 仓库当前状态进行。
 
 ## 知识边界与项目自治
 
-当前 Repository Authority 决定本项目的事实、规则与约束。
+当前仓库权威（Repository Authority）决定本项目的事实、规则与约束。
 
-- Conversation History 不构成项目权威；
+- 会话历史（Conversation History）不构成项目权威；
 - 其他会话、其他项目或个人记忆中的规则，不得直接作为本项目事实继续执行；
-- 外部项目经验可以作为 Research 输入，但只有在当前仓库中按权威层级显式固化后，才能改变本项目的长期规则；
-- Project Rule 可以选择、要求或限制某些 Skills 的使用方式；Skill Implementation 不得覆盖当前 Repository Authority；
-- 新的长期结论应进入合适的 Method、Architecture、Contract、Decision、Guide 或其他项目级权威 Artifact，不能只停留在聊天或临时 Plan 中。
+- 外部项目经验可以作为研究（Research）输入，但只有在当前仓库中按权威层级显式固化后，才能改变本项目的长期规则；
+- 项目规则（Project Rule）可以选择、要求或限制某些 Skills 的使用方式；Skill 实现不得覆盖当前仓库权威；
+- 新的长期结论应进入合适的 Method、Architecture、Contract、Decision、Guide 或其他项目级权威产物（Artifact），不能只停留在聊天或临时 Plan 中。
 
 复杂、多阶段或跨 Fresh Context 的工作协调遵循 `tasks/README.md`。简单工作不得为了形式完整性创建 Plan。
 
@@ -54,13 +54,13 @@ GitHub repository 是本仓库的唯一长期基线来源。
 
 > **Skill Operationalization & Method Validation**
 
-第一批 8 个核心 Skill 的 **Skill Engineering 已关闭**。关闭基线包括：
+第一批 8 个核心 Skill 的 **Skill 工程（Skill Engineering）已关闭**。关闭基线包括：
 
 - Method / Architecture / Contract 已收敛；
-- 8 个核心 Skill 已实现并完成 Contract Review；
-- Skill Packaging / Activation Metadata 已标准化；
+- 8 个核心 Skill 已实现并完成契约复核（Contract Review）；
+- Skill 打包与激活元数据（Packaging / Activation Metadata）已标准化；
 - Fresh Runtime Eval 已完成，代表性核心场景没有未解决的 Blocking Metadata / Skill Implementation / Contract / Method Gap；
-- `Ready to Integrate`、Current Evidence、Fresh Context、Stage Return 与 Human-controlled Integration 的边界已形成一致语义。
+- `Ready to Integrate`、当前证据（Current Evidence）、Fresh Context、阶段返回（Stage Return）与人工控制集成（Human-controlled Integration）的边界已形成一致语义。
 
 当前阶段重点不是继续扩充核心 Skill 数量，也不是预先建设完整 Runtime / Distribution / Controller 体系，而是先保证仓库自身具备继续工作的必要权威与项目级规则，再通过真实 Agent / Repository 工作流验证 Skills 的发现、组合、运行和方法有效性。
 
@@ -69,16 +69,16 @@ GitHub repository 是本仓库的唯一长期基线来源。
 ## 核心规则
 
 - 阶段是状态，不是文件。
-- Specification 描述 WHAT / WHY，不默认包含 HOW。
-- Technical Planning 是条件阶段。
-- Execution Unit 应纵向、可独立验证、范围明确、可追溯并适合 fresh context。
+- 规格说明（Specification）描述 WHAT / WHY，不默认包含 HOW。
+- 技术规划（Technical Planning）是条件阶段。
+- 执行单元（Execution Unit）应纵向、可独立验证、范围明确、可追溯并适合 Fresh Context。
 - Conversation History 不作为项目权威知识。
-- 使用 Progressive Disclosure，只加载当前工作真正需要的上下文。
+- 使用渐进式披露（Progressive Disclosure），只加载当前工作真正需要的上下文。
 - 没有当前证据，不得声明完成。
 - 普通、低影响、可逆的实现歧义由 Agent 自主裁决并继续。
 - 会改变产品意图、具有破坏性或不可逆性、安全/隐私敏感、改变重大架构方向，或超出 Agent 授权的事项必须升级。
 - 不创建接管完整生命周期的超级 Skill。
-- 通用方法的终点是 Ready to Integrate；merge、push、release、deploy 和破坏性 cleanup 由 Human Authority 或 Repository Policy 控制。
+- 通用方法的终点是 `Ready to Integrate`（可进入集成）；merge、push、release、deploy 和破坏性 cleanup 由人工权威（Human Authority）或仓库策略（Repository Policy）控制。
 
 ## 外部操作治理
 
@@ -98,7 +98,7 @@ Report
 
 - 外部状态修改前先读取当前状态与权威来源；
 - 明确目标、权限和最小必要操作后再执行写操作；
-- 写操作完成后重新读取 Source of Truth 验证目标状态；
+- 写操作完成后重新读取事实来源（Source of Truth）验证目标状态；
 - 工具调用成功不等同于目标状态完成；
 - 只能汇报已经由当前证据确认的状态。
 
@@ -108,7 +108,7 @@ Report
 
 ## 文档语言与术语表达
 
-当前仓库面向 Human 的说明性文档以中文作为主要叙述语言，同时保留对方法、技术和固定标识有必要的英文术语。
+当前仓库面向人的说明性文档以中文作为主要叙述语言，同时保留对方法、技术和固定标识有必要的英文术语。
 
 基本要求：
 
@@ -116,7 +116,7 @@ Report
 - 英文本身是固定名称、状态或精确锚点时，可使用“English Term（中文解释）”；
 - Skill 名称、代码标识符、文件路径、命令、API 参数等保持原生形式；
 - 不要求每次重复中英对照，避免双语注释本身成为阅读噪声；
-- 新内容直接遵守规范，既有文档在实际修改时逐步收敛，不为了形式统一制造大规模语言替换。
+- 规范首次引入时对 `AGENTS.md`、`README.md` 和 `docs/guides/` 做一轮统一收敛；其他既有文档在实际修改时按触达逐步收敛。
 
 完整说明见：
 
@@ -134,7 +134,7 @@ Report
 - Skill Packaging / Interoperability 约束；
 - Runtime / Tool-specific 实现细节。
 
-任何外部来源都不能自动覆盖本仓库的 Method Authority；需要改变方法时必须通过显式 Method Decision。
+任何外部来源都不能自动覆盖本仓库的方法权威（Method Authority）；需要改变方法时必须通过显式方法决策（Method Decision）。
 
 ## Git Commit
 

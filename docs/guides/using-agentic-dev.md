@@ -1,18 +1,18 @@
 # 使用 agentic-dev
 
-本文说明一个 AI Agent 或开发者如何把 `agentic-dev` 作为方法与 Skills 知识源，用于启动并持续推进一个真实软件项目。
+本文说明 AI Agent 或开发者如何把 `agentic-dev` 作为方法与 Skills 知识源，用于启动并持续推进真实软件项目。
 
-本文是 Operating Guide，不重新定义 Method、Architecture 或 Skill Contract。发生冲突时，以目标项目自己的 Repository Authority 与 `agentic-dev` 的权威层级为准。
+本文是使用指南（Operating Guide），不重新定义方法（Method）、架构（Architecture）或 Skill 契约（Skill Contract）。发生冲突时，以目标项目自己的仓库权威（Repository Authority）与 `agentic-dev` 的权威层级为准。
 
 ## 1. 使用模型
 
 `agentic-dev` 提供三类可复用资产：
 
-- **Method**：软件开发过程中的阶段、边界、证据和上下文原则；
+- **方法（Method）**：软件开发过程中的阶段、边界、证据和上下文原则；
 - **Skills**：执行特定职责的可组合能力；
-- **Operating Guide**：说明如何在真实项目中使用 Method 与 Skills。
+- **使用指南（Operating Guide）**：说明如何在真实项目中使用 Method 与 Skills。
 
-目标项目仍然拥有自己的 Project Rules、Requirements、Architecture、Code、Tests 与 Integration Policy。
+目标项目仍然拥有自己的项目规则（Project Rules）、需求（Requirements）、架构（Architecture）、代码（Code）、测试（Tests）与集成策略（Integration Policy）。
 
 ```text
 agentic-dev
@@ -32,10 +32,10 @@ Project Rules + Project Knowledge + Code
 
 至少区分：
 
-1. `agentic-dev` Repository：提供可复用 Method、Skills 与 Operating Guide；
+1. `agentic-dev` 仓库：提供可复用 Method、Skills 与 Operating Guide；
 2. Consumer Repository：提供并逐步形成当前项目自己的 Authority；
 3. 当前明确提供的业务 / 产品需求来源；
-4. 当前 Runtime 可直接观察到的能力和状态。
+4. 当前运行环境（Runtime）可直接观察到的能力和状态。
 
 不得把以下内容直接当作目标项目事实：
 
@@ -46,9 +46,9 @@ Project Rules + Project Knowledge + Code
 
 `agentic-dev` 可以指导“如何工作”，但不能替 Consumer Repository 决定“这个项目的事实是什么”。
 
-### 2.1 Requirement Source 与 Consumer Authority
+### 2.1 需求来源与 Consumer 权威
 
-外部提供的 Requirement Source / Input Material 不会因为被读取、复制到仓库，或自身标记为 `confirmed`、`approved` 等状态，就自动成为 Consumer Repository 的项目权威。
+外部提供的需求来源（Requirement Source / Input Material）不会因为被读取、复制到仓库，或自身标记为 `confirmed`、`approved` 等状态，就自动成为 Consumer Repository 的项目权威。
 
 启动或接收需求资料时，Agent 应区分：
 
@@ -66,16 +66,16 @@ Specification
 
 其中：
 
-- **Requirement Source / Input Material** 是当前允许用于理解项目的来源资料，可以来自外部文件、其他 Repository、URL、已有系统说明或 Human 提供的输入；
-- **Consumer Authoritative Requirement** 是已经被当前 Consumer Repository 明确采纳、并在当前 Scope 内作为项目事实和后续验收依据使用的需求；
-- **Specification** 继续由已澄清 Intent 与当前 Consumer Authority 收敛形成 WHAT / WHY 权威，不等同于原始来源资料的简单复制。
+- **需求来源（Requirement Source / Input Material）** 是当前允许用于理解项目的来源资料，可以来自外部文件、其他 Repository、URL、已有系统说明或人工提供的输入；
+- **Consumer 权威需求（Consumer Authoritative Requirement）** 是已经被当前 Consumer Repository 明确采纳，并在当前范围内作为项目事实和后续验收依据使用的需求；
+- **规格说明（Specification）** 继续由已澄清意图（Intent）与当前 Consumer Authority 收敛形成 WHAT / WHY 权威，不等同于原始来源资料的简单复制。
 
 Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或额外文档，但在把来源资料纳入 Consumer Authority 前，应至少判断：
 
-- **Provenance**：来源是什么，是否需要保留来源关系；
-- **Active Scope**：来源整体范围与当前 Consumer iteration 的有效范围是否一致；
-- **Authority Precedence**：采纳后它在当前 Repository Authority 中处于什么位置；
-- **Upstream References**：来源文件引用的上游规则、需求、架构或项目文档在 Consumer Repository 中是否真实可用。
+- **来源关系（Provenance）**：来源是什么，是否需要保留来源关系；
+- **当前有效范围（Active Scope）**：来源整体范围与当前 Consumer iteration 的有效范围是否一致；
+- **权威优先级（Authority Precedence）**：采纳后它在当前 Repository Authority 中处于什么位置；
+- **上游引用（Upstream References）**：来源文件引用的上游规则、需求、架构或项目文档在 Consumer Repository 中是否真实可用。
 
 如果来源文件包含 Consumer Repository 中不存在或未被采纳的 upstream references：
 
@@ -84,20 +84,20 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 - 只有当前项目确实需要相应长期事实时，才建立或采纳 Consumer-local Authority；
 - 不为了让引用“看起来完整”而机械复制整个上游项目的文档体系。
 
-如果某份来源资料已经被 Human 明确指定为当前 Consumer 的权威需求，可以直接采纳，不要求重复进行形式化审批；但仍应处理当前 Scope、Authority precedence 与不可解析 upstream references，避免 Fresh Agent 混淆“来源整体语义”和“当前 Consumer 中实际有效的权威”。
+如果某份来源资料已经被人工明确指定为当前 Consumer 的权威需求，可以直接采纳，不要求重复进行形式化审批；但仍应处理当前 Scope、Authority Precedence 与不可解析 upstream references，避免 Fresh Agent 混淆“来源整体语义”和“当前 Consumer 中实际有效的权威”。
 
 ## 3. Greenfield Project：建立最小启动骨架
 
 新项目不应从大而全的模板开始。
 
-目标是先建立**足以让 Fresh Agent 正确继续工作的最小 Repository Authority**，然后随真实需求逐步演进。
+目标是先建立**足以让 Fresh Agent 正确继续工作的最小仓库权威（Repository Authority）**，然后随真实需求逐步演进。
 
 通常需要先明确：
 
 - 项目目标与当前范围；
 - Repository Authority / Knowledge Boundary；
-- 当前允许 Agent 自主处理与必须升级给 Human 的边界；
-- 基本 Verification 与 Integration Policy；
+- 当前允许 Agent 自主处理与必须升级给人工的边界；
+- 基本验证与集成策略（Verification / Integration Policy）；
 - 当前 Requirement / Specification 应保存在哪里；
 - 当前项目文档需要遵循的主导语言规则（如已有）；
 - 当前实际需要使用的 Skills。
@@ -118,7 +118,7 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 语言选择是 Consumer Project Rule，而不是 `agentic-dev` Method 约束：
 
 - 不强制翻译 Method 专有术语、代码标识、文件路径、命令、协议名和专有名词；
-- 如果语言选择对后续 Fresh Agent、Human Review 或长期协作具有持续价值，应在最小 Repository Authority（例如 `AGENTS.md`）中显式固化；
+- 如果语言选择对后续 Fresh Agent、人工复核（Human Review）或长期协作具有持续价值，应在最小 Repository Authority（例如 `AGENTS.md`）中显式固化；
 - 如果 Consumer 已经存在明确语言规则，始终以 Consumer Authority 为准。
 
 不要为了“看起来完整”预先创建空的：
@@ -129,11 +129,11 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 - 大量阶段目录；
 - 未被当前工作需要的配置或 Skills。
 
-当真实工作产生长期价值时再新增相应 Artifact。
+当真实工作产生长期价值时再新增相应产物（Artifact）。
 
 例如：
 
-- 出现需要跨 Execution Units 长期协调的 HOW，再持久化 Technical Plan；
+- 出现需要跨执行单元（Execution Units）长期协调的 HOW，再持久化技术计划（Technical Plan）；
 - 出现值得长期解释的架构决定，再建立适当的 Decision / Architecture Artifact；
 - 工作复杂到需要跨 Fresh Context 协调时，再建立临时 Plan / Coordination Artifact；
 - 进入实现阶段后，再按实际技术栈创建源码、测试与构建结构。
@@ -158,7 +158,7 @@ skills/
 
 Agent 应根据当前 Runtime 支持的方式读取、安装或暴露所需 Skills。
 
-本文不规定固定的 Distribution / Installation 机制。只要求：
+本文不规定固定的分发 / 安装机制（Distribution / Installation）。只要求：
 
 - 使用来自已确认 `agentic-dev` baseline 的 Skill；
 - 不依赖历史测试残留或陈旧复制；
@@ -169,7 +169,7 @@ Agent 应根据当前 Runtime 支持的方式读取、安装或暴露所需 Skil
 
 ## 5. 常规 Feature 工作流
 
-### 5.1 先判断 Intent 是否需要澄清
+### 5.1 先判断意图（Intent）是否需要澄清
 
 如果 Goal、Scope、User-visible Behavior、Business Boundary 或 Acceptance 存在会实质改变产品结果的歧义，使用：
 
@@ -179,7 +179,7 @@ clarify-intent
 
 如果现有权威已经足够明确，不为了流程完整性制造额外澄清。
 
-### 5.2 形成最小充分 Specification
+### 5.2 形成最小充分规格说明（Specification）
 
 使用：
 
@@ -192,11 +192,11 @@ Specification 负责 WHAT / WHY，应让 Fresh Agent 能判断：
 - 要做什么；
 - 不做什么；
 - 什么结果表示完成；
-- 是否仍存在关键 Product Ambiguity。
+- 是否仍存在关键产品歧义（Product Ambiguity）。
 
 Specification 不要求固定文件名、目录、Markdown 模板或 YAML Front Matter。
 
-### 5.3 只在需要时创建 Technical Plan
+### 5.3 只在需要时创建技术计划（Technical Plan）
 
 如果存在需要跨 Execution Units 长期协调的 HOW 决策，使用：
 
@@ -204,9 +204,9 @@ Specification 不要求固定文件名、目录、Markdown 模板或 YAML Front 
 technical-plan
 ```
 
-如果 HOW 可以安全地在单个 Execution Unit 中通过 JIT Plan 解决，则不要为了阶段完整性创建永久 Technical Plan。
+如果 HOW 可以安全地在单个 Execution Unit 中通过即时计划（JIT Plan）解决，则不要为了阶段完整性创建永久 Technical Plan。
 
-### 5.4 切分并检查 Execution Units
+### 5.4 切分并检查执行单元（Execution Units）
 
 使用：
 
@@ -221,7 +221,7 @@ Execution Unit 应：
 - 可独立验证；
 - 尽量纵向完成一个有意义的行为结果；
 - 适合在 Fresh Execution Context 中执行；
-- 不依赖前一个 Worker 未持久化的 Conversation Reasoning。
+- 不依赖前一个 Worker 未持久化的会话推理（Conversation Reasoning）。
 
 ### 5.5 每个 Unit 使用 Fresh Execution Context
 
@@ -238,7 +238,7 @@ Worker 只加载：
 - 当前 Unit；
 - 必要的 Consumer Repository Authority；
 - 必要的 Specification / Technical Plan；
-- 当前 Verification 所需上下文。
+- 当前验证（Verification）所需上下文。
 
 不要把前一个 Worker 的完整聊天历史当作下一个 Worker 的依赖。
 
@@ -256,13 +256,13 @@ systematic-debug
 converge
 ```
 
-只有当前 Intent、Specification、Implementation 与 Verification Evidence 一致，且不存在 Blocking Gap，才能达到：
+只有当前 Intent、Specification、Implementation 与验证证据（Verification Evidence）一致，且不存在阻塞缺口（Blocking Gap），才能达到：
 
 ```text
 Ready to Integrate
 ```
 
-Merge / Push / Release / Deploy 仍由 Consumer Repository 的 Human Authority 或 Repository Policy 决定。
+Merge / Push / Release / Deploy 仍由 Consumer Repository 的人工权威（Human Authority）或仓库策略（Repository Policy）决定。
 
 ## 6. 项目如何持续演进
 
@@ -270,7 +270,7 @@ Consumer Repository 应随着真实工作逐步丰富，而不是在初始化时
 
 可以新增：
 
-- 新的 Project Rules；
+- 新的项目规则（Project Rules）；
 - Domain / Requirement Artifacts；
 - Architecture / Decision Artifacts；
 - Coordination Artifacts；
@@ -287,7 +287,7 @@ Project Rule 可以选择、要求或限制 Skills，但 Skill 不得覆盖 Proj
 
 ## 7. 中断、恢复与 Fresh Context
 
-Conversation History 不是长期项目状态。
+会话历史（Conversation History）不是长期项目状态。
 
 工作中断或切换 Context 时，应依赖 Consumer Repository 中已经持久化的：
 
@@ -301,7 +301,7 @@ Conversation History 不是长期项目状态。
 
 Fresh Context 是逻辑隔离，不要求某一种特定 Runtime 形式。可以是新 Chat、新 Codex session、isolated worker 或其他能够避免依赖未持久化历史 reasoning 的执行环境。
 
-## 8. Experimental Use：向 agentic-dev 回传实践证据
+## 8. 实验使用（Experimental Use）：向 agentic-dev 回传实践证据
 
 普通 Consumer Project **不要求**向 `agentic-dev` 提交反馈。
 
@@ -320,7 +320,7 @@ Fresh Context 是逻辑隔离，不要求某一种特定 Runtime 形式。可以
 
 ### 8.2 GitHub Issue 作为首选反馈通道
 
-实验期间，使用 `agentic-dev` Repository 的 GitHub Issue 作为首选 Experiment Feedback Channel。
+实验期间，使用 `agentic-dev` Repository 的 GitHub Issue 作为首选实验反馈通道（Experiment Feedback Channel）。
 
 Issue 是：
 
@@ -338,7 +338,7 @@ Issue **不是**：
 
 如果没有写权限，不得阻塞 Consumer 开发；生成符合以下格式的 Issue Body / Comment，待具备权限后提交即可。
 
-### 8.3 一个实验使用一个 Tracking Issue
+### 8.3 一个实验使用一个跟踪 Issue（Tracking Issue）
 
 默认一个 Consumer Experiment 对应一个 Tracking Issue，不为每个小问题创建独立 Issue。
 
@@ -379,7 +379,7 @@ Classification Candidate:
 - Unknown
 ```
 
-如果某条 Finding 没有可引用的代码、Commit、PR、命令结果或其他 Current Evidence，应明确说明证据限制，不把推测写成已确认缺口。
+如果某条 Finding 没有可引用的代码、Commit、PR、命令结果或其他当前证据（Current Evidence），应明确说明证据限制，不把推测写成已确认缺口。
 
 不要提交：
 
@@ -438,4 +438,4 @@ Consumer Agent 可以提出 Classification Candidate，但不能自行把实验�
 3. 在需要时选择合适的 Skills；
 4. 用 Fresh Context 和 Current Evidence 推进实现；
 5. 在项目演进过程中只持久化真正有长期价值的知识；
-6. 最终基于整体证据达到 Ready to Integrate。
+6. 最终基于整体证据达到 `Ready to Integrate`。
