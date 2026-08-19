@@ -1,4 +1,4 @@
-# Git Commit 提交规范
+# Git Commit 规范
 
 **状态：** Baseline v0.1  
 **性质：** 规范性文档
@@ -8,8 +8,8 @@
 本规范用于统一 `agentic-dev` 仓库的 Git Commit Message，确保提交历史能够：
 
 - 清晰表达每次变更的主要目的；
-- 支持 Human 与 Agent 在 Fresh Context 中快速理解仓库演进；
-- 区分 Method、Skill Contract 与 Skill Implementation 的变化；
+- 支持人工（Human）与 Agent 在 Fresh Context 中快速理解仓库演进；
+- 区分方法（Method）、Skill 契约（Skill Contract）与 Skill 实现（Skill Implementation）的变化；
 - 避免一个提交混合多个不同层级的目的；
 - 为后续 Release、Review 和问题追溯提供稳定语义。
 
@@ -59,7 +59,7 @@ chore(repo): 调整仓库基础配置
 
 ## 4. Scope
 
-Scope 表示稳定的责任域，不表示具体文件名、文件路径、目录名称或单个 Artifact 类型。
+Scope 表示稳定的责任域，不表示具体文件名、文件路径、目录名称或单个产物（Artifact）类型。
 
 同一次逻辑变更即使同时修改 README、Guide 或其他不同位置的文件，也应根据**变更目的所属的稳定责任域**选择 Scope，而不是跟随被修改文件的位置命名 Scope。
 
@@ -214,9 +214,9 @@ refactor(skills): 对齐 execute-unit 新验证契约
 
 如果仓库存在对应 Build / Test / Validation Command，应在提交前按当前变更风险执行必要验证。
 
-“准备提交”本身不构成完成证据；验证仍应遵守仓库的 Evidence Before Claims 原则。
+“准备提交”本身不构成完成证据；验证仍应遵守仓库的“证据先于结论（Evidence Before Claims）”原则。
 
-## 9. Commit Body
+## 9. Commit Body（提交正文）
 
 普通提交默认不要求 Body。
 
@@ -238,7 +238,7 @@ docs(contracts): 调整 readiness-check 的职责边界
 实际修正由对应 Workflow Skill 或 Human 决定，避免 Checker 静默改写权威产物。
 ```
 
-## 10. Breaking Change
+## 10. 不兼容变更（Breaking Change）
 
 当前仓库主要处于方法与 Skill 建设阶段。
 
