@@ -238,7 +238,7 @@ docs(contracts): 调整 readiness-check 的职责边界
 实际修正由对应 Workflow Skill 或 Human 决定，避免 Checker 静默改写权威产物。
 ```
 
-## 10. Breaking Change（破坏性变更）
+## 10. 不兼容变更（Breaking Change）
 
 当前仓库主要处于方法与 Skill 建设阶段。
 
