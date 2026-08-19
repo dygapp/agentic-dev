@@ -78,7 +78,7 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 - 普通、低影响、可逆的实现歧义由 Agent 自主裁决并继续。
 - 会改变产品意图、具有破坏性或不可逆性、安全/隐私敏感、改变重大架构方向，或超出 Agent 授权的事项必须升级。
 - 不创建接管完整生命周期的超级 Skill。
-- 通用方法的终点是 `Ready to Integrate`（可进入集成）；merge、push、release、deploy 和破坏性 cleanup 由人工权威（Human Authority）或仓库策略（Repository Policy）控制。
+- 通用方法的终点是 `Ready to Integrate`（已具备进入集成决策的条件）；merge、push、release、deploy 和破坏性 cleanup 由人工权威（Human Authority）或仓库策略（Repository Policy）控制。
 
 ## 外部操作治理
 
@@ -116,7 +116,7 @@ Report
 - 英文本身是固定名称、状态或精确锚点时，可使用“English Term（中文解释）”；
 - Skill 名称、代码标识符、文件路径、命令、API 参数等保持原生形式；
 - 不要求每次重复中英对照，避免双语注释本身成为阅读噪声；
-- 规范首次引入时对 `AGENTS.md`、`README.md` 和 `docs/guides/` 做一轮统一收敛；其他既有文档在实际修改时按触达逐步收敛。
+- 新增内容直接遵守本规范；其他既有文档在实际修改时按触达逐步收敛。
 
 完整说明见：
 
