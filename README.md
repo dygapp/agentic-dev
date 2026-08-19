@@ -77,21 +77,9 @@ GitHub repository 是本项目长期演进的唯一基线来源。Git commit 记
 
 `docs/project/repository-baseline.md`
 
-## 权威顺序
+## Repository Authority
 
-当文档内容发生冲突时，按以下顺序判断：
-
-1. `AGENTS.md`
-2. `docs/method/ai-development-method.md`
-3. `docs/method/principles.md`
-4. `docs/architecture/skill-architecture.md`
-5. `docs/architecture/skill-contracts.md`
-6. `docs/decisions/method-decisions.md`
-7. `docs/guides/git-commit-guidelines.md`
-8. `docs/research/*`
-9. Tasks 与临时工作记录
-
-`docs/research/` 只说明研究依据、横向比较和外部规范参考，不能覆盖已经固化的方法结论。
+仓库权威顺序、知识边界和 Agent 工作规则以 `AGENTS.md` 为统一入口；README 不重复维护规范性清单。
 
 ## 核心开发流程
 
@@ -152,7 +140,7 @@ Ready to Integrate
 - Conversation History 不是权威知识库。
 - Human Escalation 依据 Authority、Impact、Reversibility 判断。
 - 普通、低影响、可逆的局部实现选择由 Agent 自主处理。
-- 通用开发方法只推进到 Ready to Integrate。
+- 通用方法只推进到 Ready to Integrate。
 - Merge / Push / Release / Deploy 由 Human Authority 或 Repository Policy 控制。
 - Skills 保持小型、可组合，不允许一个 Super-skill 接管完整生命周期。
 
@@ -237,17 +225,9 @@ converge
 
 ## Git Commit 规范
 
-仓库统一采用：
-
-```text
-<type>(<scope>): <中文摘要>
-```
-
 完整规则见：
 
 `docs/guides/git-commit-guidelines.md`
-
-Method / Contract 变更与 Skill Implementation 变更必须保持清晰分层，避免通过实现提交暗中改写方法权威。
 
 ## 下一阶段
 
