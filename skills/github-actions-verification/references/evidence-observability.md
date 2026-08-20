@@ -55,6 +55,28 @@ Required Artifacts / Logs
 
 如果 Evidence 与当前目标提交不匹配，不用于当前 Completion Claim。
 
+## Artifact 实体验证
+
+当 Artifact 本身被用于证明完成、失败、诊断或其他当前状态时，必须区分：
+
+```text
+Artifact upload step success
+≠
+Artifact entity exists
+```
+
+上传步骤的 `success` 只说明该 Step 按当前配置正常结束；在允许缺少文件的配置下，它可能没有实际创建 Artifact。
+
+因此，当 Artifact 本身属于必要 Evidence 时：
+
+1. 重新读取当前 Run 的 Artifact 集合，而不是只读取 upload step conclusion；
+2. 核对预期 Artifact 的名称、Run ID 与 Head SHA；
+3. 必要时结合 upload step log，确认实际输入路径是否产生文件并被上传；
+4. 如果缺少预期 Artifact 本身应使验证失败，则 Workflow 应采用缺失即失败（fail-on-missing）的行为，例如 GitHub Actions `upload-artifact` 的 `if-no-files-found: error`；
+5. 如果 Artifact 只是可选诊断产物，则可以允许其缺失，但不得把 upload step 的 `success` 汇报成“Artifact 已存在”。
+
+本规则不要求所有 Completion Verification 都生成 Artifact。只有当 Repository Policy、Verification Strategy、Completion Condition 或当前验证设计明确让 Artifact 承担证据职责时，才要求验证 Artifact 实体及其关联关系。
+
 ## Connector 可观察性不足时
 
 如果 Agent 知道某个 CI Run 存在，但当前 Connector 无法自动枚举：
