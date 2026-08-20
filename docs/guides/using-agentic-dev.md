@@ -156,6 +156,12 @@ skills/
 └── converge/
 ```
 
+除第一批核心 Skills 外，仓库还可以基于真实 Consumer Evidence 提供**平台专项非核心 Skill**。这类 Skill 只在当前 Repository / Runtime 实际满足触发条件时加载，不成为所有项目的默认依赖，也不得覆盖 Consumer Repository Authority。
+
+当前已经形成的代表性能力：
+
+- `github-actions-verification`：当 Consumer 使用 GitHub Actions 取得验证证据，且 Branch / PR trigger、CI 可观察性、验证分层、容器化 Runtime、Artifact 复用、timeout / cancellation 或 diagnostics 会实质影响验证可靠性时按需使用。
+
 Agent 应根据当前 Runtime 支持的方式读取、安装或暴露所需 Skills。
 
 本文不规定固定的分发 / 安装机制（Distribution / Installation）。只要求：
