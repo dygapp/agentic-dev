@@ -18,9 +18,12 @@ Skill 只能实现方法，不允许通过修改 `SKILL.md` 暗中改变方法�
 4. `docs/architecture/skill-architecture.md`
 5. `docs/architecture/skill-contracts.md`
 6. `docs/decisions/method-decisions.md`
-7. `docs/guides/git-commit-guidelines.md`
-8. `docs/research/*`
-9. Tasks 与临时工作记录
+7. `docs/project/*`
+8. `docs/guides/git-commit-guidelines.md`
+9. `docs/research/*`
+10. Tasks 与临时工作记录
+
+`docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行规则，不得覆盖更高优先级 Method、Architecture 或 Contract Authority，也不得被 Consumer Repository 自动继承。
 
 如果某个 Skill 的设计要求改变方法本身，必须先显式修改方法文档，再修改 Skill。
 
@@ -105,6 +108,24 @@ Report
 完整说明见：
 
 `docs/guides/external-operation-guidelines.md`
+
+## AI 复核（AI Review）
+
+本节只约束 `agentic-dev` 仓库自身，不属于通用 Method、Skill Contract 或 Consumer Operating Guide，Consumer Repository 不得自动继承。
+
+对会改变 Method、Principles、Architecture、Contract、核心 Skill Implementation、Repository Authority、`docs/project/*`，或其他会实质改变后续 Agent 行为的治理规则的 PR，在进入 Human Review / Merge 前必须完成与风险相称的 AI Review。
+
+基本要求：
+
+- 基于当前目标分支 Authority、PR metadata、changed files 与最终 diff / patch 重新建立判断；
+- 根据变更性质检查 Authority Alignment、Semantic Regression、Cross-layer Consistency、Scope Control、Terminology、Human / Integration Boundary 与 Evidence Alignment 等必要维度；
+- Review 后如果发生会影响结论的实质修改，必须重新读取最终 PR 状态，并对受影响维度执行针对性重新复核；
+- 只有不存在未解决的 Blocking 或 Medium Finding 时，才可以报告 `AI Review: PASS`；
+- `AI Review: PASS` 不等于 Human Approval，也不授予 Merge 权限。
+
+完整说明见：
+
+`docs/project/ai-review-guidelines.md`
 
 ## 文档语言与术语表达
 
