@@ -1,5 +1,11 @@
 # Artifact 生命周期闭环修订计划
 
+**状态：** CLOSED（原范围已由 PR #28 合并）
+
+**集成基线：** `master@8882c98`
+
+**后继计划：** `tasks/plans/20260820/02-artifact-lifecycle-operationalization-recovery.md`
+
 ## 1. 目标
 
 修复 agentic-dev 中长期产物（Artifact）仅被引用但缺少完整生命周期定义的问题，并同步收敛 Skill 清单、项目治理规则和相关派生文档的一致性。
@@ -145,3 +151,11 @@ Domain Context（领域上下文）被多个阶段消费，但当前未明确：
 - 执行 AI Review；
 - 创建 PR；
 - 等待 Human Review / Merge。
+
+## 7. Closure / Successor Record
+
+本计划定义的 Method、Skill Architecture、Skill Inventory 与 AI Review Governance 修订已经通过 PR #28 合并到 `master@8882c98`；PR 讨论中已记录当轮 `AI Review: PASS`。该范围已经关闭，不应在 Fresh Context 中被误判为尚待重新执行。
+
+PR #28 合并后确认仍需把既有 Method 语义映射到 Skill Contract、核心 Skill 实现、Consumer Operating Guide 与针对性 Eval。该后续工作不改变本计划的已完成结论，统一由后继恢复计划管理：
+
+`tasks/plans/20260820/02-artifact-lifecycle-operationalization-recovery.md`

@@ -56,6 +56,7 @@ Allowed Sub-skills / Disciplines
 - 只识别会 materially affect Product Intent / Acceptance 的问题；
 - 自动忽略普通、低影响、可逆实现细节；
 - 输出必须可以直接喂给 `specify`；
+- 把可能跨多个功能持续有效的长期领域事实标记为候选并交给 `specify`，不在 Clarification 中直接提升权威；
 - 如果没有阻塞问题，应快速退出，不制造讨论流程。
 
 首版不需要：
@@ -70,6 +71,7 @@ Allowed Sub-skills / Disciplines
 
 - 强制 WHAT / WHY 边界；
 - 对 Existing Specification 支持增量更新；
+- 验证长期领域事实候选，并按 Consumer Repository Authority 处理确认、持久化、更新、取代或 Required Authority Action；
 - 必须包含 Fresh-Agent Spec Ready 自检；
 - 能明确发现 Requirement Conflict / Product Decision 缺失并停止。
 
@@ -86,6 +88,7 @@ Allowed Sub-skills / Disciplines
 - 先判断是否真的需要 Technical Planning；
 - 只保留跨 Unit 有持续协调价值的决定；
 - 明确区分 Durable Technical Plan 与 JIT Execution Plan；
+- 明确区分 Architecture Context 更新与 ADR 条件产生；跨功能持续有效的架构状态进入 Architecture Authority，只有需要保留背景、权衡或替代关系的重要决定形成 ADR；
 - 检查是否 Silent Redefinition of Intent。
 
 首版不需要：
@@ -117,6 +120,7 @@ Allowed Sub-skills / Disciplines
 - 四维 Gate：Specification / Design / Execution / Governance；
 - Finding 必须分 Blocking / Non-blocking；
 - Blocking Finding 要指出返回哪个职责层，而不是自己修文档；
+- 未处理的 Domain / Architecture Authority 或 Artifact Lifecycle Gap 必须阻止进入 Execute；
 - 允许 Controller / Runtime 自动调用。
 
 首版不需要：
@@ -135,6 +139,7 @@ Allowed Sub-skills / Disciplines
 - Repository-specific Verification Commands 运行时发现，不硬编码；
 - JIT Plan 临时化；
 - Unexpected Failure 转 `systematic-debug`；
+- 发现长期领域事实或架构状态缺口时返回拥有相应权威的上游职责，不在代码 / 测试中静默提升长期权威；
 - Completion 必须由 Current Evidence 支持。
 
 首版不需要：
@@ -154,6 +159,7 @@ Allowed Sub-skills / Disciplines
 - Minimal Root-cause Fix；
 - Regression Evidence；
 - Expected Behavior 不明确时必须回上游，而不是猜需求。
+- Root Cause 暴露长期 Domain / Architecture Authority 缺口时必须返回相应上游职责。
 
 首版不需要：
 
@@ -168,6 +174,7 @@ Allowed Sub-skills / Disciplines
 - Feature-wide，而不是 Unit-wide；
 - READY / GAPS 二元主结果；
 - 检查 Missing / Partial / Contradicting / Unrequested / Obsolete Plan / Missing Verification / Integration Gap；
+- 检查 Domain / Architecture Authority 与 Artifact Lifecycle Gap；
 - Gap 需要执行工作时交给 `slice-work` 塑形；
 - READY 必须基于 Current System + Current Evidence。
 

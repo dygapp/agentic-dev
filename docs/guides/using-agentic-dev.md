@@ -133,8 +133,10 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 
 例如：
 
+- Specification 确认的业务术语、不变量或跨功能规则需要被后续多个工作持续消费时，再按 Consumer Repository Authority 形成或更新 Domain / Requirement Authority；
 - 出现需要跨执行单元（Execution Units）长期协调的 HOW，再持久化技术计划（Technical Plan）；
-- Technical Planning 形成跨功能长期约束后续工作的架构决策，且保留选择理由、主要权衡或替代关系具有持续价值时，再形成或更新 ADR / Architecture Decision Artifact；
+- Technical Planning 改变跨功能持续有效的系统结构、组件 / 数据 / 契约边界或集成 / 部署约束时，更新适当的 Architecture Authority；
+- Architecture Context 中的重要决定只有在保留选择理由、主要权衡或替代关系具有持续价值时，才形成或更新 ADR / Architecture Decision Artifact；
 - 不为了“项目应该有 ADR”预建固定 `adr/` 目录、空 ADR 或统一模板；
 - 工作复杂到需要跨 Fresh Context 协调时，再建立临时 Plan / Coordination Artifact；
 - 进入实现阶段后，再按实际技术栈创建源码、测试与构建结构。
@@ -186,6 +188,8 @@ clarify-intent
 
 如果现有权威已经足够明确，不为了流程完整性制造额外澄清。
 
+如果澄清过程中识别出可能跨多个功能持续有效的业务术语、不变量或规则，将其作为 Domain Authority Candidate 交给 `specify` 验证；不要因为它已经在聊天或 Clarification 中确认，就直接把它提升为长期领域权威。
+
 ### 5.2 形成最小充分规格说明（Specification）
 
 使用：
@@ -203,6 +207,13 @@ Specification 负责 WHAT / WHY，应让 Fresh Agent 能判断：
 
 Specification 不要求固定文件名、目录、Markdown 模板或 YAML Front Matter。
 
+`specify` 还应判断已确认的领域事实是否需要独立于当前 Feature 长期维护：
+
+- 只服务当前 Feature 的行为继续留在 Specification；
+- 会被多个功能、缺陷处理或独立工作流持续消费的事实，按 Consumer Repository Authority 形成或更新 Domain Authority；
+- Agent 已获授权时可以执行相应更新；无权确认时输出 Required Domain Authority Action；
+- 旧事实失效时显式更新、取代或同步修正引用，避免新旧事实同时被视为有效。
+
 ### 5.3 只在需要时创建技术计划（Technical Plan）并评估 ADR
 
 如果存在需要跨 Execution Units 长期协调的 HOW 决策，使用：
@@ -211,13 +222,20 @@ Specification 不要求固定文件名、目录、Markdown 模板或 YAML Front 
 technical-plan
 ```
 
-如果 HOW 可以安全地在单个 Execution Unit 中通过即时计划（JIT Plan）解决，则不要为了阶段完整性创建永久 Technical Plan。
+如果 HOW 可以安全地在单个 Execution Unit 中通过即时计划（JIT Plan）解决，且不存在需要维护的 Architecture Context 或需要评估的 ADR，则不要为了阶段完整性创建永久 Technical Plan。无需单独持久化 Technical Plan Artifact，不会豁免已经触发的 Architecture Authority 更新。
 
-`technical-plan` 形成长期技术决策后，还应判断哪些决定需要成为跨功能的长期架构权威：
+`technical-plan` 形成长期技术决策后，应依次判断 Architecture Context 更新与 ADR 条件产生：
 
 - 只服务当前功能及其执行单元协调的决定，继续留在 Technical Plan；
-- 会长期约束未来多个功能 / 模块、改变系统级组件 / 数据 / 集成 / 部署 / 共享契约边界、替换成本高，或需要保留重要选择理由与权衡的决定，应显式评估形成或更新 ADR；
+- 改变未来多个功能持续依赖的系统结构、组件 / 数据 / 集成 / 部署 / 共享契约边界时，形成或更新适当的 Architecture Authority；
+- Architecture Context 中需要长期保留背景、重要选择理由、权衡或替代关系的决定，再显式评估形成或更新 ADR；
 - 普通局部、低影响、可逆实现选择、即时文件 / 命令 / 编辑细节以及尚未收敛的探索过程，不形成 ADR。
+
+需要更新 Architecture Context 时：
+
+- 使用 Consumer Repository 已有的架构说明、契约、模型、代码或其他可发现载体；
+- 同步维护当前有效状态、引用与取代关系；
+- 不满足 ADR 条件不代表架构状态可以只留在 Technical Plan。
 
 需要 ADR 时：
 
@@ -226,7 +244,7 @@ technical-plan
 - 使用 Consumer Repository 已有的 Architecture / Decision 载体；如果此前没有相应目录，只在真实 ADR 首次产生时再建立，不要求固定目录名或模板；
 - 是否需要人工介入仍依据权限（Authority）、影响（Impact）、可逆性（Reversibility）；重大架构方向（Major Architecture Direction）或高影响难逆决定不得由 Agent 静默确认为长期权威。
 
-如果 Execute、`systematic-debug` 或 `converge` 才发现新的长期架构决定，应回到 `technical-plan` 完成 ADR 评估，而不是把决定只留在代码、当前聊天或局部 JIT Plan 中。
+如果 Execute、`systematic-debug` 或 `converge` 才发现长期领域事实缺失、冲突或失效，应回到 `clarify-intent` / `specify`；发现新的长期架构状态、决定或现有 Architecture Context 失效时，应回到 `technical-plan` 完成 Architecture Authority 更新与必要 ADR 评估。不要把长期权威只留在代码、测试、当前聊天或局部 JIT Plan 中。
 
 ### 5.4 切分并检查执行单元（Execution Units）
 
@@ -245,7 +263,7 @@ Execution Unit 应：
 - 适合在 Fresh Execution Context 中执行；
 - 不依赖前一个 Worker 未持久化的会话推理（Conversation Reasoning）。
 
-存在 ADR / Architecture Decision 时，Readiness 还应确认相关执行单元遵守当前有效的长期架构约束；如果存在应形成 / 更新 ADR 但尚未进入 Consumer Repository Authority 的架构权威缺口，不应进入 Execute。
+Readiness 还应确认相关执行单元遵守当前有效的 Domain / Architecture / ADR Authority。如果已经暴露 Domain / Architecture Authority Gap，或当前工作要求创建 / 重大更新长期权威产物却无法确定其生命周期责任，不应进入 Execute；Checker 只返回拥有相应事实或决定的职责层，不自行修复权威。
 
 ### 5.5 每个 Unit 使用 Fresh Execution Context
 
@@ -262,7 +280,7 @@ Worker 只加载：
 - 当前 Unit；
 - 必要的 Consumer Repository Authority；
 - 必要的 Specification / Technical Plan；
-- 相关 ADR / Architecture Context（如存在）；
+- 相关 Domain / Architecture / ADR Context（如存在）；
 - 当前验证（Verification）所需上下文。
 
 不要把前一个 Worker 的完整聊天历史当作下一个 Worker 的依赖。
@@ -296,13 +314,13 @@ systematic-debug
 converge
 ```
 
-只有当前 Intent、Specification、Implementation 与验证证据（Verification Evidence）一致，不违反当前有效的 Architecture / ADR Authority，且不存在阻塞缺口（Blocking Gap），才能达到：
+只有当前 Intent、Specification、Implementation 与验证证据（Verification Evidence）一致，不违反当前有效的 Domain / Architecture / ADR Authority，本次工作产生或改变的长期权威事实已完成适当生命周期闭环，且不存在阻塞缺口（Blocking Gap），才能达到：
 
 ```text
 Ready to Integrate
 ```
 
-如果收敛阶段发现尚未处理的长期架构决定或 ADR / Architecture Authority Gap，应返回 `technical-plan`，不能用 `READY` 绕过。
+如果收敛阶段发现 Domain Authority Gap，应返回 `clarify-intent` / `specify`；发现 Architecture Authority / ADR Gap，应返回 `technical-plan`；发现 Artifact Lifecycle Gap，应返回拥有相应事实或决定的职责层。不能用 `READY` 绕过。
 
 Merge / Push / Release / Deploy 仍由 Consumer Repository 的人工权威（Human Authority）或仓库策略（Repository Policy）决定。
 
@@ -325,6 +343,8 @@ Consumer Repository 应随着真实工作逐步丰富，而不是在初始化时
 
 如果没有，就不要仅为了形式完整性持久化。
 
+新增或重大修改长期权威产物时，还应能从当前 Method 与 Consumer Repository Authority 中确定：谁负责确认和形成、什么变化触发、谁会消费、保存在哪里、何时更新、如何取代旧内容，以及哪些情况必须升级。具体载体和写入权限由 Consumer 决定，不要求为此创建统一目录、模板或 Artifact Management Skill。
+
 对 ADR 还应额外确认：它记录的是跨功能长期架构约束，而不是当前 Feature 的普通 Technical Plan Decision。已有 ADR 被新决定替代时，应显式维护其状态或替代关系，避免后续 Fresh Agent 同时把新旧决定都当作有效权威。
 
 Project Rule 可以选择、要求或限制 Skills，但 Skill 不得覆盖 Project Authority。
@@ -337,7 +357,7 @@ Project Rule 可以选择、要求或限制 Skills，但 Skill 不得覆盖 Proj
 
 - Project Rules；
 - 当前 Specification / Technical Plan（如存在）；
-- 相关 Architecture / ADR Authority（如存在）；
+- 相关 Domain / Architecture / ADR Authority（如存在）；
 - Current Unit / Coordination State；
 - Verification Evidence；
 - 必要的代码与配置。

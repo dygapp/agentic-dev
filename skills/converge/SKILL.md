@@ -1,13 +1,13 @@
 ---
 name: converge
-description: Performs feature-wide convergence against the authoritative specification using current implementation and verification evidence, producing READY or GAPS. Use after required execution work is complete enough for final feature review; route execution, product, design, or authority gaps back to the correct responsibility layer and stop at Ready to Integrate.
+description: Performs feature-wide convergence against specification, domain and architecture authority, artifact lifecycle responsibilities, current implementation, and verification evidence. Use after required execution work is complete enough for final review; return READY or route evidence-backed gaps to the responsible layer, then stop at Ready to Integrate.
 ---
 
 # converge
 
 ## Purpose
 
-从 Feature-wide 视角判断 Current Implemented System 与 Current Verification Evidence 是否真正符合权威 Specification 以及当前有效 Architecture / ADR Authority，并形成 `READY` 或 `GAPS`。
+从 Feature-wide 视角判断 Current Implemented System 与 Current Verification Evidence 是否真正符合权威 Specification、Domain Context 以及当前有效 Architecture / ADR Authority，确认本次工作产生或改变的长期权威事实已经完成生命周期闭环，并形成 `READY` 或 `GAPS`。
 
 本 Skill 负责 Feature 收敛，不负责单个 Execution Unit 的实施，也不把 Unit / Ticket 状态汇总当作完成结论。
 
@@ -18,7 +18,7 @@ description: Performs feature-wide convergence against the authoritative specifi
 - 相关 Execution Units 已完成或已经达到可进行 Feature-wide 收敛检查的状态；
 - 需要判断整个 Feature，而不是单个 Unit；
 - 需要在 Ready to Integrate 前进行 Feature-wide Review / Full Verification；
-- 需要确认 Specification、Optional Technical Plan、Current System、Current Evidence 与相关 Architecture / ADR Authority 是否彼此收敛。
+- 需要确认 Specification、Optional Technical Plan、Current System、Current Evidence、相关 Domain / Architecture / ADR Authority 与 Artifact Lifecycle 是否彼此收敛。
 
 ## Do Not Use When
 
@@ -27,7 +27,7 @@ description: Performs feature-wide convergence against the authoritative specifi
 - 期望用“所有 Unit / Ticket Done”直接替代 Feature Evidence；
 - 当前主要问题是 Product Intent 未定义，应返回 `clarify-intent` / `specify`；
 - 当前主要问题是跨 Unit Durable Technical Design 未解决，应返回 `technical-plan`；
-- 当前已经明确存在新的跨功能长期架构决策或 ADR Authority Gap，应返回 `technical-plan` 完成 ADR 评估；
+- 当前已经明确存在 Domain Authority Gap，应返回 `clarify-intent` / `specify`；存在 Architecture Context 更新或 ADR Authority Gap，应返回 `technical-plan`；
 - 当前只是需要把已确认的执行缺口塑形成 Units，应使用 `slice-work`。
 
 不要为了“走完流程”而在 Feature 明显未达到可收敛状态时机械运行本 Skill。
@@ -36,6 +36,8 @@ description: Performs feature-wide convergence against the authoritative specifi
 
 - Specification
 - Technical Plan（如存在）
+- Relevant Domain Authority（如存在）
+- Relevant Architecture / ADR Authority（如存在）
 - Execution Units / Status
 - Current Implemented System
 - Current Verification Evidence
@@ -43,7 +45,6 @@ description: Performs feature-wide convergence against the authoritative specifi
 按需还可读取：
 
 - Repository Rules
-- Relevant Architecture / ADR / Domain Context
 - Repository-specific Verification Configuration
 - 与 Feature 直接相关的 Current Code / Tests / Runtime Evidence
 
@@ -56,11 +57,11 @@ description: Performs feature-wide convergence against the authoritative specifi
 收敛判断遵守以下规则：
 
 1. Specification 是 Feature Intent 的主要权威，定义必须实现的 Product Behavior、Scope、Boundary 与 Acceptance。
-2. Technical Plan（如存在）只约束跨 Unit Durable HOW，不能覆盖或重定义 Product Intent，也不得静默覆盖当前有效 ADR。
+2. Technical Plan（如存在）只约束跨 Unit Durable HOW，不能覆盖或重定义 Product Intent，也不得静默覆盖当前有效 Architecture Context / ADR。
 3. Execution Units / Status 用于理解执行覆盖和已完成工作，但不是 Feature Completion Authority。
-4. Current Implemented System 用于判断实际系统状态，不能反向覆盖更高层 Product Authority 或长期 Architecture / ADR Authority。
+4. Current Implemented System 用于判断实际系统状态，不能反向覆盖更高层 Product / Domain / Architecture / ADR Authority。
 5. Current Verification Evidence 用于证明当前系统行为是否满足 Specification；历史证据、旧日志或未执行的验证不能替代当前证据。
-6. ADR / Domain Context 提供相关长期约束和事实；当前实现必须符合仍然有效的 ADR。
+6. Domain Context 提供长期业务事实，Architecture Context 提供当前有效架构状态，ADR 提供满足条件的重要架构决定及其理由；当前实现必须符合仍然有效的长期权威。
 7. Conversation History 不构成权威事实或完成证据。
 
 如果权威来源冲突，停止相关 `READY` 判断并按 Escalation Conditions 处理；不得为了收敛而选择一个方便的解释。
@@ -76,6 +77,7 @@ description: Performs feature-wide convergence against the authoritative specifi
 - Feature Goal 与 Scope；
 - Specification 中的 Observable Behaviors、Business Rules、Boundary / Failure Behavior、Acceptance Criteria 与 Relevant NFR；
 - Optional Technical Plan 中仍然有效的 Durable Decisions；
+- Relevant Domain Authority；
 - Relevant Architecture / ADR Authority；
 - Execution Unit Set 及其当前状态；
 - Current Implemented System；
@@ -156,7 +158,7 @@ Partial Implementation 仍然是 Gap。
 - 判断是否需要返回 `technical-plan` 更新 Durable Design；
 - 如果 Obsolete Plan 只是不再需要、且 Current System 已由更高或更新权威充分支持，应记录相应权威状态，而不是制造虚假实现 Gap。
 
-`converge` 不静默重写 Technical Plan 或 ADR。
+`converge` 不静默重写 Technical Plan、Domain / Architecture Authority 或 ADR。
 
 ### 8. Check Current Verification Evidence
 
@@ -188,18 +190,44 @@ Critical Behavior 缺少当前证据时形成 `Unverified Critical Behavior` Gap
 
 单 Unit 都 Completed 不代表不存在 Cross-unit Integration Gap。
 
-### 10. Check Architecture / ADR Gaps
+### 10. Check Domain Authority Gaps
+
+检查当前 Feature 是否存在领域权威缺口（Domain Authority Gap）：
+
+- 本次工作确认了会跨多个功能持续消费的业务术语、不变量或规则，但仍只存在于 Feature Specification、代码、测试、聊天或局部计划中；
+- 当前实现或 Specification 与有效 Domain Authority 冲突；
+- 已有长期领域事实已经失效，但尚未更新、取代或同步修正引用；
+- Domain Authority Candidate 尚未完成 `specify` 验证和 Consumer Repository Authority 路由。
+
+发现这类 Gap 时阻止 `READY`，返回 `clarify-intent` / `specify`；如果确认、更新或取代长期领域事实超出 Agent 权限，再升级相应 Human / Repository Authority。
+
+### 11. Check Architecture / ADR Gaps
 
 检查当前 Feature 是否存在架构 / ADR 缺口（Architecture / ADR Gap）：
 
 - Current Implementation 是否违反当前有效 ADR 或其他长期 Architecture Authority；
 - Technical Plan 或 Execution Units 是否静默覆盖已确认 ADR；
-- 实施 / Debug / 收敛过程中是否已经形成新的跨功能长期架构决策，但尚未经过 `technical-plan` 的 ADR 评估；
+- 实施 / Debug / 收敛过程中是否已经改变 Architecture Context，但尚未进入适当 Repository Authority；
+- 是否已经形成满足 ADR 条件的重要架构决定，但尚未经过 `technical-plan` 的 ADR 评估；
 - 新决定已经取代旧 ADR 时，是否缺少明确的 Superseded / Replaced 关系，导致新旧权威同时被视为有效。
 
-发现这类 Gap 时阻止 `READY`。需要新的长期架构决定或 ADR 更新时，返回 `technical-plan`；如果还涉及 Major Architecture Direction 或其他 Human Escalation 条件，再按授权规则升级。
+发现这类 Gap 时阻止 `READY`。需要更新 Architecture Context 或形成 / 更新 ADR 时，返回 `technical-plan`；如果还涉及 Major Architecture Direction 或其他 Human Escalation 条件，再按授权规则升级。
 
-### 11. Classify Each Gap by Required Return Direction
+### 12. Check Artifact Lifecycle Closure
+
+如果本次工作新增或重大修改长期权威产物，检查是否能从 Method、Consumer Repository Authority 与最终状态中明确回答：
+
+- Producer；
+- Trigger；
+- Consumer；
+- Persistence；
+- Update；
+- Supersede；
+- Escalation。
+
+只有当前工作实际产生或改变长期权威时才执行该检查；不要求每个阶段机械创建 Artifact。任何会使后续 Agent 无法可靠产生、维护或识别当前有效事实的责任缺口都形成 Artifact Lifecycle Gap，并返回拥有相应事实或决定的职责层。
+
+### 13. Classify Each Gap by Required Return Direction
 
 对每个 Gap 判断应该回到哪个职责层。
 
@@ -218,12 +246,20 @@ Critical Behavior 缺少当前证据时形成 `Unverified Critical Behavior` Gap
 - 返回 `clarify-intent` / `specify`；
 - 必要时升级 Human Authority。
 
+**Domain Authority Gap**
+
+如果长期领域事实缺失、冲突、失效或尚未完成候选验证 / 授权路由：
+
+- 返回 `clarify-intent` / `specify`；
+- 不在 `converge` 中根据代码或测试提升业务权威；
+- 需要 Product / Domain Authority 时升级。
+
 **Major / Durable Technical Design or ADR Gap**
 
-如果需要新增或改变跨 Unit Durable Technical Decision，或形成 / 更新跨功能长期架构决策：
+如果需要新增或改变跨 Unit Durable Technical Decision，更新跨功能持续有效的 Architecture Context，或形成 / 更新满足条件的 ADR：
 
 - 返回 `technical-plan`；
-- 由 `technical-plan` 完成必要 ADR 评估；
+- 由 `technical-plan` 完成 Architecture Authority 更新与必要 ADR 评估；
 - Major Architecture Direction 需要 Human Authority 时升级。
 
 **Authority / External Action Gap**
@@ -233,7 +269,7 @@ Critical Behavior 缺少当前证据时形成 `Unverified Critical Behavior` Gap
 - 停止相关动作；
 - 按 Escalation Conditions 处理。
 
-### 12. Form the Main Verdict
+### 14. Form the Main Verdict
 
 主结果只能是：
 
@@ -255,8 +291,9 @@ GAPS
 - Current Implemented System 与 Specification 不冲突；
 - 不存在具有收敛意义的 Unrequested Behavior；
 - Optional Technical Plan 没有阻塞性的 Obsolete / Invalid Durable Decision；
-- Current Implementation 未违反当前有效 Architecture / ADR Authority；
-- 不存在尚未处理的 ADR / Architecture Authority Gap；
+- Current Implementation 未违反当前有效 Domain / Architecture / ADR Authority；
+- 不存在尚未处理的 Domain / Architecture Authority / ADR Gap；
+- 本次工作产生或改变的长期权威事实不存在 Artifact Lifecycle Gap；
 - Critical Behavior 有 Current Verification Evidence；
 - 不存在 Cross-unit Integration Gap；
 - 当前 Feature 不存在需要阶段回退的 Blocking Gap；
@@ -264,7 +301,7 @@ GAPS
 
 #### GAPS
 
-只要存在阻止 Feature 与 Specification / Architecture Authority 收敛的 Gap，就输出 `GAPS`。
+只要存在阻止 Feature 与 Specification、Domain / Architecture Authority 或 Artifact Lifecycle 收敛的 Gap，就输出 `GAPS`。
 
 每个 Gap 至少包含：
 
@@ -274,7 +311,7 @@ GAPS
 
 按需还可包含 Gap Type、Impact、相关 Units 等辅助信息，但不要求固定机器协议。
 
-### 13. Apply Verification-before-claim
+### 15. Apply Verification-before-claim
 
 在输出 `READY` 前再次检查：
 
@@ -283,18 +320,18 @@ GAPS
 - 是否遗漏关键 Boundary / Failure / Integration Behavior；
 - 是否存在未经验证但被假设成立的 Critical Behavior；
 - 是否把 Historical Evidence 当作 Current Evidence；
-- 是否存在未处理的 Architecture / ADR Gap；
+- 是否存在未处理的 Domain / Architecture / ADR 或 Artifact Lifecycle Gap；
 - 是否通过忽略 Gap 或静默改写权威获得“收敛”。
 
-没有当前证据，或存在未处理的 ADR / Architecture Authority Gap，不得声明 `READY`。
+没有当前证据，或存在未处理的 Domain / Architecture / ADR Authority 或 Artifact Lifecycle Gap，不得声明 `READY`。
 
-### 14. Stop at Ready to Integrate
+### 16. Stop at Ready to Integrate
 
 输出 `READY` 后，本 Skill 到此结束。
 
 `READY` 的含义是：
 
-> Feature Behavior、Implementation State 和 Current Verification Evidence 已与 Specification 收敛，且实现未违反当前有效 Architecture / ADR Authority，可以进入 **Ready to Integrate**。
+> Feature Behavior、Implementation State 和 Current Verification Evidence 已与 Specification 收敛，实现未违反当前有效 Domain / Architecture / ADR Authority，且本次工作产生或改变的长期权威事实已完成适当生命周期闭环，可以进入 **Ready to Integrate**。
 
 它不意味着：
 
@@ -330,7 +367,7 @@ GAPS
 
 存在多个 Gap 时，逐项组织；可以按阻塞程度或影响排序。
 
-`converge` 不在输出 Gaps 的同时静默修改 Specification、Technical Plan、ADR 或执行实现工作。
+`converge` 不在输出 Gaps 的同时静默修改 Specification、Technical Plan、Domain / Architecture / ADR Authority 或执行实现工作。
 
 ## Exit Conditions
 
@@ -338,9 +375,9 @@ GAPS
 
 - Feature Behavior 与 Specification 收敛一致；
 - Current Implementation State 与权威 Intent 一致；
-- Current Implementation 未违反当前有效 Architecture / ADR Authority；
+- Current Implementation 未违反当前有效 Domain / Architecture / ADR Authority；
 - Critical Behavior 有 Current Verification Evidence；
-- 不存在阻塞性的 Missing / Partial / Contradicting / Unrequested / Obsolete-plan / Unverified / Cross-unit Integration / Architecture / ADR Gap；
+- 不存在阻塞性的 Missing / Partial / Contradicting / Unrequested / Obsolete-plan / Unverified / Cross-unit Integration / Domain / Architecture / ADR / Artifact Lifecycle Gap；
 - `READY` 由当前证据支持。
 
 满足后进入：
@@ -353,7 +390,7 @@ GAPS
 
 出现以下情况时必须停止相关自主处理并升级或返回上游：
 
-- Gap 需要 Product Authority 才能决定；
+- Gap 需要 Product / Domain Authority 才能决定；
 - Gap 需要 Major Architecture Authority；
 - Authoritative Sources Conflict；
 - 证明收敛需要未授权 Shared / Production / External Side Effect；
@@ -361,15 +398,15 @@ GAPS
 - Security / Privacy Sensitive Decision；
 - Agent 无权自主决定的高影响或不可逆事项。
 
-普通、低影响、可逆且不改变 Product Intent / Major Design 的 Execution Gap 不直接升级给 Human，应交回正常执行路径。需要新的长期架构决定但未触发 Human Escalation 时，返回 `technical-plan` 完成 ADR 评估。
+普通、低影响、可逆且不改变 Product Intent / Major Design 的 Execution Gap 不直接升级给 Human，应交回正常执行路径。需要确认长期领域事实时返回 `clarify-intent` / `specify`；需要更新 Architecture Context 或形成新的长期架构决定但未触发 Human Escalation 时，返回 `technical-plan` 完成 Architecture Authority 更新与必要 ADR 评估。
 
 ## Context Rules
 
 - Authority First；
 - Feature-wide，但仍遵循 Progressive Disclosure；
 - Specification 是 Feature Intent 的主要权威；
-- Technical Plan 不能覆盖 Product Intent 或当前有效 ADR；
-- Current System / Evidence 用于判断收敛，不反向定义 Requirement 或长期 Architecture Authority；
+- Technical Plan 不能覆盖 Product Intent 或当前有效 Architecture Context / ADR；
+- Current System / Evidence 用于判断收敛，不反向定义 Requirement 或长期 Domain / Architecture Authority；
 - Conversation History 不作为权威知识或完成证据；
 - 不因 Unit / Ticket 状态为 Done 就声明 `READY`；
 - `READY` 必须由 Current System + Current Evidence 支持；

@@ -1,0 +1,18 @@
+{
+  "skill_name": "specify",
+  "evals": [
+    {
+      "id": "B-SP-01",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 specify。Clarified Intent 已确认：所有退款金额都按银行家舍入保留两位小数；该规则将被退款、对账和报表等多个独立功能持续消费。当前 Consumer Repository Policy 规定只有 Product Owner 可以更新领域规则，Agent 没有该写入授权。请形成 Specification 结果并处理这个长期领域事实候选。",
+      "expected_behavior": "形成当前功能的 WHAT/WHY Specification，判断舍入规则需要进入 Domain Authority；因没有授权，输出 Required Domain Authority Action，而不是静默写入、把代码当权威或假装候选已闭环。",
+      "assertions": [
+        "把退款舍入规则作为当前 Specification 的权威业务规则表达",
+        "识别该规则具有跨功能长期消费价值，需要进入或更新 Domain Authority",
+        "遵守只有 Product Owner 可更新领域规则的 Consumer Repository Policy",
+        "输出 Required Domain Authority Action，而不是声称 Agent 已完成长期权威写入",
+        "不规定固定领域文档目录、文件名或模板",
+        "不进入 Technical Plan、实现或 Integration"
+      ]
+    }
+  ]
+}

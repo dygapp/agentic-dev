@@ -1,6 +1,6 @@
 ---
 name: specify
-description: Creates or incrementally updates an authoritative WHAT/WHY specification from clarified product intent, domain facts, and governance. Use when intent is ready but required behavior, scope, boundaries, acceptance criteria, or relevant non-functional constraints need to be explicit for a fresh agent.
+description: Creates or incrementally updates an authoritative WHAT/WHY specification and evaluates durable domain-fact candidates under repository authority. Use when intent is ready, required behavior needs to be explicit for a fresh agent, or a domain-authority candidate or conflict must be validated and routed.
 ---
 
 # specify
@@ -11,11 +11,14 @@ description: Creates or incrementally updates an authoritative WHAT/WHY specific
 
 本 Skill 只固化已经确认的 Product / Domain / Governance 事实，不通过实现细节、当前代码便利性或常见工程实践反向发明需求。
 
+当已确认信息可能跨多个功能持续有效时，本 Skill 还负责验证 Domain Authority Candidate，并按 Consumer Repository Authority 处理其确认、持久化、更新、取代或 Required Authority Action。进入 Specification 阶段本身不授予长期领域权威写入权限。
+
 ## Use When
 
 - `clarify-intent` 已经收敛关键 Product Intent，需要形成正式 Feature Specification；
 - Existing Specification 需要根据已经确认的 Product Decision 增量更新；
 - Execute / Debug / Converge 等阶段回退，已确认需要修正 WHAT / WHY 权威；
+- Clarify / Execute / Debug / Converge 已识别长期领域事实候选、缺失、冲突或失效；
 - 已存在明确 Requirement，但当前表达不足以让 Fresh Agent 独立判断 Required Behavior 与 Completion。
 
 如果 Intent 已经明确但 Specification 很小，可以使用轻量表达；不为了形式完整而制造与工作复杂度不成比例的文档。
@@ -33,6 +36,7 @@ description: Creates or incrementally updates an authoritative WHAT/WHY specific
 ## Inputs
 
 - Clarified Intent
+- Domain Authority Candidates（如存在）
 - Repository Governance
 - Relevant Domain Authority
 - Existing Authoritative Behavior
@@ -52,6 +56,7 @@ description: Creates or incrementally updates an authoritative WHAT/WHY specific
 4. Existing Specification 在增量修改时作为当前 Feature Authority 输入，但不能覆盖更高优先级的已确认 Product / Domain / Governance 事实。
 5. Current Code、测试、数据库结构或实现习惯可以反映 Current System State，但不能单独成为新 Product Requirement 的权威来源。
 6. Conversation History 不构成权威事实来源。
+7. Domain Authority 的确认、更新与取代由 Consumer Repository Authority 指定的产品 / 领域责任方或被明确授权的 Agent 执行；`specify` 的阶段职责不能替代写入授权。
 
 如果 Requirement / Authority Sources 发生冲突，停止相关 Specification 更新并升级；不得自行选择一个更容易实现的解释。
 
@@ -179,7 +184,28 @@ Acceptance Criteria 应让 Fresh Agent 能基于系统行为和证据判断 Requ
 
 如果某个技术约束确实是外部强制 Requirement，应描述其 Requirement 意义和约束，而不是扩展成施工计划。
 
-### 10. Check Internal Consistency
+### 10. Evaluate Domain Authority Candidates
+
+检查当前 Specification 中已确认的业务术语、业务不变量、跨功能规则或其他领域事实是否需要独立于当前 Feature 长期维护。
+
+满足以下一项或多项时，应显式评估创建或更新 Domain Authority：
+
+- 预计会被多个功能、缺陷处理或独立工作流持续消费；
+- 后续 Agent 只读取单个 Feature Specification 时容易遗漏或产生冲突解释；
+- 需要独立于当前 Feature 生命周期持续维护；
+- 当前工作修正了已有长期领域事实，旧事实继续生效会误导后续工作。
+
+对每个候选明确：
+
+1. 留在 Feature Specification，还是进入 / 更新长期 Domain Context；
+2. 哪个授权角色负责确认并形成该权威；
+3. Consumer Repository 选择的可发现持久化载体；
+4. 何时更新、旧事实如何取代或同步修正引用；
+5. 哪些权威冲突、产品意图变化或未授权决定必须升级。
+
+如果 Agent 已获授权且当前任务包含相应更新，可以形成或更新 Domain Authority；否则输出 Required Domain Authority Action 并停止把该候选视为已闭环。不得用代码、测试、聊天或局部计划代替缺失的业务权威确认。
+
+### 11. Check Internal Consistency
 
 检查：
 
@@ -193,7 +219,7 @@ Acceptance Criteria 应让 Fresh Agent 能基于系统行为和证据判断 Requ
 
 发现 Product Decision 缺失时返回 `clarify-intent`；发现 Authority Conflict 时升级，不在 Specification 中静默“修平”。
 
-### 11. Run Fresh-Agent Spec Ready Check
+### 12. Run Fresh-Agent Spec Ready Check
 
 假设一个没有当前 Conversation History 的 Fresh Agent，只读取最终 Specification 与最小必要 Repository Context。
 
@@ -210,7 +236,7 @@ Acceptance Criteria 应让 Fresh Agent 能基于系统行为和证据判断 Requ
 - 如果只是尚未决定 HOW，但 WHAT / WHY 已明确，不阻塞 Specification Ready；
 - 如果来源冲突，按 Escalation Conditions 处理。
 
-### 12. Produce or Update the Specification
+### 13. Produce or Update the Specification
 
 输出最终 WHAT / WHY Specification，并保持其与当前 Authority 一致。
 
@@ -227,6 +253,8 @@ Acceptance Criteria 应让 Fresh Agent 能基于系统行为和证据判断 Requ
 - Boundary / Failure Behavior
 - Acceptance Criteria
 - Relevant Non-functional Constraints
+- Domain Authority Update / Supersede（已授权且需要时）
+- Required Domain Authority Action（需要但当前无权更新时）
 
 这些是语义要求，不是固定文件模板：
 
@@ -246,7 +274,7 @@ Fresh Agent 只读取最终 Specification 与最小必要 Repository Context，�
 3. 什么情况下算完成；
 4. 是否仍存在关键歧义。
 
-并且不存在尚未解决的 Requirement / Authority Conflict 或 Product Decision 缺口阻止上述判断。
+并且不存在尚未解决的 Requirement / Authority Conflict 或 Product Decision 缺口阻止上述判断；已识别的 Domain Authority Candidate 已明确判定为留在 Specification、进入 / 更新 Domain Authority，或返回相应 Authority，不只留在会话中。
 
 ## Escalation Conditions
 
@@ -256,6 +284,7 @@ Fresh Agent 只读取最终 Specification 与最小必要 Repository Context，�
 - Product Decision 尚未解决，无法在现有权威下确定 Required Behavior；
 - Specification 必须 materially change 已确认 Scope / Intent 才能继续；
 - Agent 无权自主决定的高影响 Product Choice；
+- Agent 无权确认、更新或取代会改变产品意图 / 业务边界的长期领域事实；
 - 与 Product Requirement 直接相关的安全、隐私、不可逆或其他 Explicit Policy Decision 尚未确认。
 
 纯技术实现选择、普通低影响可逆 HOW 不升级给 Human；它们留给 `technical-plan` 或 Execute 的适当职责。
@@ -267,6 +296,7 @@ Fresh Agent 只读取最终 Specification 与最小必要 Repository Context，�
 - Conversation History 不作为权威知识；
 - 不默认加载完整 Codebase；Current Code 不能反向覆盖 Product Authority；
 - Existing Specification 更新时优先增量加载受影响部分，同时检查最终文档的一致性；
+- Domain Authority 使用 Consumer Repository 选择的载体和授权流程，不强制固定目录、文件名或模板；
 - 不强制固定 Specification 文件、目录、Markdown 模板或 YAML Front Matter；
 - 不把 Source Paths、Framework、Persistence、Exact Commands 或 JIT Plan 提前固化到 Specification；
 - 不自动调用 `technical-plan`、`slice-work`、`readiness-check`、`execute-unit` 或接管后续生命周期。

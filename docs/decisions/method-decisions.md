@@ -171,3 +171,22 @@ ADR 不是新的方法阶段（Method Stage），也不是每次 Technical Plann
 **原因：**
 
 Technical Plan 主要服务当前功能与执行单元的 HOW 协调，而 ADR 服务跨功能的长期架构权威（Architecture Authority）。两者生命周期和权威用途不同；显式区分可以避免既把所有技术选择过度文档化，也避免重要架构决定只埋在阶段性计划或代码中。
+
+## D-019 — 长期权威产物必须具备生命周期闭环
+
+**决定：**
+
+新增或重大修改长期权威产物时，必须能够从当前方法职责与仓库权威中确定其产生、触发、消费、持久化、更新、取代和升级责任。阶段可以识别或验证长期事实候选，但阶段转换本身不授予权威写入权限；下游执行职责发现长期事实缺失、冲突或失效时，应返回拥有该事实或决定的上游职责处理。
+
+Domain Context 保存跨功能持续有效的业务语言与领域事实，由 Clarify Intent 识别候选、Specification 验证候选，并由 Consumer Repository Authority 指定的领域责任方确认和维护。Architecture Context 保存跨功能持续有效的架构状态，由 Technical Planning 维护；ADR 只记录其中需要长期保留背景、权衡或替代关系的重要架构决定，不等同于全部 Architecture Context。
+
+**不采用：**
+
+- 为每类长期权威产物新增独立方法阶段；
+- 创建接管所有产物产生、更新与取代的 Artifact Management Super-skill；
+- 强制 Consumer 使用固定目录、模板、文件名或审批流程；
+- 让代码、测试、临时 Plan 或 Conversation History 自动把候选事实提升为长期权威。
+
+**原因：**
+
+只有消费者而没有 Producer、Trigger、Update 与 Supersede 等责任，会使 Fresh Agent 无法可靠判断长期事实如何产生以及哪个版本当前有效。将职责分配给拥有相应事实或决定的方法层，同时把具体载体和写入权限留给 Consumer Repository Authority，可以闭合生命周期而不引入新的流程层级或集中式超级能力。

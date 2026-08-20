@@ -33,6 +33,18 @@
         "明确当前 Product Intent 已足够进入后续 Specification/技术或执行职责",
         "不为了形式完整继续追问无关未来问题"
       ]
+    },
+    {
+      "id": "B-CI-04",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 clarify-intent。当前产品权威已经确认：所有面向客户显示的时间都使用客户账户时区，而不是浏览器本地时区。这个规则预计会约束后续多个页面和独立功能，但当前只出现在本次功能输入中。请给出可交给 specify 的结果。",
+      "expected_behavior": "Product Intent 已明确，不重复提问；把跨功能时区规则标记为 Domain Authority Candidate 并交给 specify 验证，但不在 clarify-intent 中自行持久化或宣布它已经成为长期权威。",
+      "assertions": [
+        "不把已经由当前产品权威确认的时区规则保留为 Blocking Question",
+        "识别该规则可能被多个后续功能持续消费，标记为 Domain Authority Candidate",
+        "Return Direction 指向 specify 完成候选验证和授权路由",
+        "不因为规则已确认就声称 clarify-intent 有权将其写入长期 Domain Authority",
+        "不创建技术计划、ADR 或实现步骤"
+      ]
     }
   ]
 }
