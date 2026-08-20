@@ -55,6 +55,8 @@ Conversation、scratch reasoning、探索过程和临时 implementation plan 都
 - 必要的 Technical Plan；
 - Code / Tests。
 
+其中，ADR 只用于保留需要跨 Feature 长期约束后续工作的架构决定及其关键理由，不用于记录普通局部实现选择或尚未收敛的探索过程。
+
 没有长期价值的信息可以随 context 一起结束。
 
 ## P4. Context Capacity 是执行约束
@@ -177,9 +179,11 @@ Agent 应自主作出合理裁决。
 
 小型、常规、已有稳定实现模式的修改可以直接进入 Slice。
 
+Technical Planning 需要同时判断其中形成的 Durable Technical Decision 是否已经超出当前 Feature 的协调范围并形成长期 Architecture Authority；只有满足 ADR 条件的决定才单独持久化为 ADR。
+
 ## P12. Durable Technical Design 与 JIT Execution Planning 分离
 
-Technical Plan 是按需持久化的设计协调产物。
+Technical Plan 是按需持久化的设计协调产物，主要服务当前 Feature 或一组 Execution Units 的长期 HOW 协调。
 
 JIT Execution Plan 是 Agent 在查看当前代码状态后生成的临时施工计划，可以包含：
 
@@ -188,6 +192,8 @@ JIT Execution Plan 是 Agent 在查看当前代码状态后生成的临时施工
 - Concrete Edit Sequence。
 
 默认不作为长期项目知识保存。
+
+跨 Feature、需要长期约束后续工作的重大架构决定不应只埋在 Technical Plan 或 JIT Plan 中；应按 P15 评估并进入适当的 Architecture / ADR Authority。
 
 ## P13. Skills 必须小型、可组合
 
@@ -213,3 +219,26 @@ Workflow Transition 必须保持可观察、可控制。
 > **Ready to Integrate**
 
 Commit Policy、Merge、Push、PR、Release、Deploy 和 Destructive Cleanup 由 Repository Policy 或 Human Authority 决定。
+
+## P15. ADR 是条件性长期架构权威
+
+架构决策记录（Architecture Decision Record，ADR）不是方法阶段，也不是 Technical Plan 的同义词。
+
+一个技术决定只有在需要跨越当前 Feature 持续约束后续工作，并且保留其选择理由、主要 Trade-off 或替代关系具有长期价值时，才应形成或更新 ADR。
+
+典型信号包括：
+
+- 约束多个未来 Feature、模块或独立工作流；
+- 改变系统级组件、数据、集成、部署或共享 Contract Boundary；
+- 替换成本高、难以安全回滚，或形成长期兼容 / 迁移义务；
+- 多个合理方案具有实质不同的长期后果；
+- 缺少该决定会导致后续 Agent 反复重新决策或产生冲突实现。
+
+以下内容不应为了形式完整性创建 ADR：
+
+- 只服务当前 Feature 的普通 Technical Plan Decision；
+- 单 Unit 内低影响、可逆的 Local Implementation Choice；
+- JIT File / Command / Edit Detail；
+- 尚未收敛的探索与推理过程。
+
+ADR 的创建、更新与取代仍受 Repository Authority 和 Human Escalation 规则约束。Major Architecture Direction 或高影响、难逆的 Trade-off 必须按 Authority、Impact、Reversibility 升级；新 ADR 取代旧 ADR 时，应显式保留 Superseded / Replaced 关系。
