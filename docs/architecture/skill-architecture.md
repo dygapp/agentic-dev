@@ -127,6 +127,27 @@ Bootstrap / Setup Capability 使用可复用流程帮助项目建立或更新 Pr
 
 它可能最终实现为 Skill，但只有跨项目真实使用证据证明其具有稳定独立职责时才这样做；不得因为某条规则“可能在别的项目也有用”就提前创建 Skill。
 
+### 2.7 平台专项 Reusable Skills
+
+当真实 Consumer Evidence 证明某个平台或工具生态存在稳定、可复用且足够复杂的操作能力时，可以建立**平台专项非核心 Skill**。
+
+这类 Skill：
+
+- 实现既有 Method / Contract / Governance 语义，不新增 Method 阶段；
+- 可以包含平台专有对象、API、CI/CD 机制和运行模式；
+- 只有在 Consumer 实际满足触发条件时才加载，不成为所有项目的默认依赖；
+- 必须服从 Consumer Repository Authority、Repository Policy 与 Runtime 实际能力；
+- 不得把平台实现细节反向升级为通用 Method 强制规则；
+- 不得接管完整 Feature 生命周期、Integration、Release 或 Deploy。
+
+平台专项 Skill 与第一批核心 Skill 是组合关系，而不是替代关系。核心 Workflow Skill 可以在当前工作确实需要时调用平台专项 Skill，以取得更可靠的实现或验证能力。
+
+真实 Consumer Experiment 已证明 GitHub Actions 验证存在独立可复用的路径选择、证据可观察性、Runtime 成本控制和诊断流程，因此允许新增：
+
+- `github-actions-verification`：面向使用 GitHub Actions 的 Consumer，建立或优化可观察、可追踪、成本可控的 CI 验证路径。
+
+该 Skill 属于平台专项非核心 Discipline Skill，不计入第一批 8 个核心 Skill，也不意味着重新打开核心 Skill Engineering。
+
 ## 3. 第一批 8 个核心 Skill
 
 | Skill | 类型 | 核心职责 |
@@ -218,6 +239,7 @@ execute-unit
       ├─ embedded verification
       ├─ embedded / optional TDD
       ├─ systematic-debug on failure
+      ├─ platform-specific verification skill when applicable
       └─ review when risk warrants
       ↓
 converge
@@ -327,5 +349,6 @@ Allowed Sub-skills / Disciplines
 - Automatic Integration
 - Project Bootstrap 必须实现为 Skill
 - Project Rule 必须采用一种固定文件布局
+- 所有 Consumer 使用同一个平台专项 Skill
 
 标准化的是语义职责，而不是具体工具 Harness。

@@ -156,6 +156,12 @@ skills/
 └── converge/
 ```
 
+除第一批核心 Skills 外，仓库还可以基于真实 Consumer Evidence 提供**平台专项非核心 Skill**。这类 Skill 只在当前 Repository / Runtime 实际满足触发条件时加载，不成为所有项目的默认依赖，也不得覆盖 Consumer Repository Authority。
+
+当前已经形成的代表性能力：
+
+- `github-actions-verification`：当 Consumer 使用 GitHub Actions 取得验证证据，且 Branch / PR trigger、CI 可观察性、验证分层、容器化 Runtime、Artifact 复用、timeout / cancellation 或 diagnostics 会实质影响验证可靠性时按需使用。
+
 Agent 应根据当前 Runtime 支持的方式读取、安装或暴露所需 Skills。
 
 本文不规定固定的分发 / 安装机制（Distribution / Installation）。只要求：
@@ -248,7 +254,22 @@ Worker 只加载：
 systematic-debug
 ```
 
-### 5.6 整体收敛
+### 5.6 验证 Runtime 与当前证据
+
+选择验证路径时，不仅要确认验证机制存在，还应确认当前运行环境（Runtime）能够重新取得与目标状态对应的当前证据（Current Evidence）。
+
+遵循以下原则：
+
+- 验证路径应具有足够的证据可观察性（Evidence Observability）；Agent 不应选择自己无法重新取得必要完成证据（Completion Evidence）的执行路径；
+- 如果当前 Runtime 对某类 CI trigger 或验证结果不可观察，应在仓库策略（Repository Policy）允许范围内切换到可观察路径，而不是把未知状态当作通过；
+- 快速反馈（Fast Feedback）与完成验证（Completion Verification）可以分层；中间修复优先取得低成本、针对性的反馈，最终完成声明仍必须满足必要的完整验证；
+- 中间修复迭代不要求每次重复支付最高成本的环境准备，但不能因此降低最终 Completion Evidence 的覆盖；
+- 高成本且稳定的环境依赖可以通过预构建 Runtime、Artifact 复用、缓存或其他当前平台支持的方式降低重复准备成本；
+- 长运行环境准备和验证应具有与正常基线相称的 timeout / cancellation 策略，避免把异常等待当作正常执行；
+- Diagnostic / Runtime Observation 可以支持 diagnose、abort、reroute 或调整验证路径，但不能因为同样属于 Current Evidence 就自动替代 Completion Evidence；
+- 平台专项实现细节按需下沉到相应 Skill；例如 GitHub Actions 场景可使用 `github-actions-verification`，而不是把 PR、容器或特定 registry 提升为所有 Consumer 的通用规则。
+
+### 5.7 整体收敛
 
 所有当前范围内的 Units 完成后使用：
 
