@@ -6,21 +6,21 @@
 
 ## 1. 目标
 
-AI Review 用于在高影响变更进入人工复核（Human Review）或集成决策前，基于当前仓库权威和最终变更状态发现：
+AI Review 用于在高影响变更进入最终人工复核（Human Review）或合并决策前，基于当前仓库权威和最终变更状态发现：
 
 - 权威层级不一致；
 - 方法语义回归；
-- Contract 与 Skill Implementation 断层；
+- 契约（Contract）与 Skill 实现（Skill Implementation）断层；
 - 未授权的范围扩大；
 - 术语表达偏差；
-- Human / Integration Boundary 被弱化；
+- 人工 / 集成边界（Human / Integration Boundary）被弱化；
 - 证据不足却被提升为长期结论。
 
-AI Review 不替代 Verification，也不构成 Human Approval 或 Merge Authorization。
+AI Review 不替代验证（Verification），也不构成人工批准（Human Approval）或合并授权（Merge Authorization）。
 
 ## 2. 必须执行 AI Review 的变更
 
-以下 PR 在进入 Human Review / Merge 前必须完成与风险相称的 AI Review：
+以下 PR 在进入最终 Human Review / Merge 决策前必须完成与风险相称的 AI Review：
 
 - 修改 Method 或 Principles；
 - 修改 Architecture 或 Skill Contract；
@@ -36,14 +36,14 @@ AI Review 不替代 Verification，也不构成 Human Approval 或 Merge Authori
 Review 不得只依赖作者的说明或此前聊天结论。至少重新读取：
 
 1. 当前目标分支 / `master` 的仓库权威（Repository Authority）；
-2. PR metadata；
-3. changed files；
+2. PR 元数据（metadata）；
+3. 变更文件（changed files）；
 4. 最终 PR diff / patch；
 5. 当前变更层适用的更高优先级 Authority；
 6. 面向人的文档发生变化时，适用的术语表达规范；
 7. 如果变更声称由 Consumer Experiment / Evidence 驱动，相应 Issue 与可验证 Evidence Reference。
 
-Review 依据必须来自当前可验证状态，不以 Conversation History 代替仓库事实。
+Review 依据必须来自当前可验证状态，不以会话历史（Conversation History）代替仓库事实。
 
 ## 4. Review 维度
 
@@ -81,7 +81,7 @@ Review 依据必须来自当前可验证状态，不以 Conversation History 代
 
 Review Finding 使用以下严重程度：
 
-- **Blocking**：会导致 Authority 冲突、错误方法语义、错误授权边界、明显 Contract / Skill 断层，或使 PR 不应按当前状态进入 Human Review / Merge；
+- **Blocking**：会导致 Authority 冲突、错误方法语义、错误授权边界、明显 Contract / Skill 断层，或使 PR 不应按当前状态进入最终 Human Review / Merge 决策；
 - **Medium**：不会立即破坏核心语义，但会造成持续歧义、治理不一致、术语误导或明显维护风险，应在当前 PR 收敛；
 - **Low / Non-blocking**：可改进但不影响当前 PR 的安全接受。
 
