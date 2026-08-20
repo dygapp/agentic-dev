@@ -152,3 +152,22 @@ Merge、Push、Release、Deploy 和 Destructive Cleanup 由 Project Policy 或 H
 **决定：**
 
 Artifact 是否持久化取决于知识价值，而不是 Stage 是否存在。
+
+## D-018 — ADR 由长期架构决策按条件产生
+
+**决定：**
+
+Technical Planning 既消费已有 ADR，也负责判断新形成的长期技术决策（Durable Technical Decision）是否需要持久化为架构决策记录（Architecture Decision Record，ADR）。
+
+ADR 不是新的方法阶段（Method Stage），也不是每次 Technical Planning 的固定输出。只有当技术决定需要跨越当前功能（Feature）长期约束后续工作，并且保留其选择理由、主要权衡（Trade-off）或替代关系具有持续价值时，才形成或更新 ADR。
+
+**不采用：**
+
+- 为每个 Technical Plan 固定生成 ADR；
+- 把单个执行单元的局部实现选择记录为 ADR；
+- 规定所有 Consumer 必须预建固定 `adr/` 目录或统一模板；
+- 在 Execute / Debug / Converge 中静默建立长期架构约束而不回退 Technical Planning。
+
+**原因：**
+
+Technical Plan 主要服务当前功能与执行单元的 HOW 协调，而 ADR 服务跨功能的长期架构权威（Architecture Authority）。两者生命周期和权威用途不同；显式区分可以避免既把所有技术选择过度文档化，也避免重要架构决定只埋在阶段性计划或代码中。

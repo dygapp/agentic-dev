@@ -206,9 +206,41 @@ Fresh Agent 只读取 Specification 和最小必要 Repository Context，应能�
 - Testing Strategy
 - Risks / Constraints
 
+### ADR 产生规则
+
+技术规划不仅消费已有 ADR，也必须判断新形成的长期技术决策（Durable Technical Decision）是否需要提升为架构决策记录（Architecture Decision Record，ADR）。
+
+Technical Plan 与 ADR 的职责不同：
+
+- **Technical Plan** 记录当前功能（Feature）或一组执行单元（Execution Units）为安全实施而需要持续协调的 HOW；
+- **ADR** 记录会跨越当前功能、对后续工作形成长期架构约束，且需要保留决策背景、权衡（Trade-off）或替代关系的重要架构决定。
+
+当技术决定具有以下一项或多项特征时，应显式评估是否形成或更新 ADR：
+
+- 预计约束未来多个功能、模块或独立工作流；
+- 改变系统级组件、数据、集成、部署或共享 / 公共契约边界（Shared / Public Contract Boundary）；
+- 替换成本较高、难以安全回滚，或会形成长期兼容 / 迁移义务；
+- 存在多个具有实质不同长期后果的合理方案，需要保留选择理由与主要权衡；
+- 后续 Agent 若不知道该决定及其理由，容易重新打开已关闭的架构选择或产生相互冲突的实现。
+
+以下情况通常不形成 ADR：
+
+- 只服务当前功能的技术协调决定；
+- 单个执行单元内的局部、低影响、可逆实现选择；
+- 精确文件、命令、编辑顺序等即时执行细节（JIT Execution Detail）；
+- 尚未形成稳定决定的探索记录。
+
+ADR 是**条件性长期权威产物**，不是新的方法阶段，也不要求每次 Technical Planning 都创建。方法不规定固定 `adr/` 目录、文件名或模板；Consumer Repository 应根据自身仓库权威（Repository Authority）选择合适载体。
+
+形成 ADR 不自动意味着必须由人工批准。是否升级仍按权限（Authority）、影响（Impact）、可逆性（Reversibility）判断；重大架构方向（Major Architecture Direction）、难以逆转的高影响权衡或超出 Agent 授权边界的决定必须升级。
+
+如果 Execute、Systematic Debugging 或 Converge 才暴露新的长期架构决定，不应在代码或局部计划中静默固化；应回退到 Technical Planning，完成相应架构决策判断后再继续实施。
+
+已有 ADR 被新决定取代时，应保留可追溯的被取代 / 替换（Superseded / Replaced）关系，而不是静默覆盖历史决策背景。
+
 ### Exit Condition
 
-实施前必须解决的技术不确定性已经解决。
+实施前必须解决的技术不确定性已经解决；需要形成或更新的长期架构决定已经进入适当的仓库权威，且不存在尚未处理的 ADR / 架构权威缺口（Architecture Authority Gap）。
 
 ## 6. Stage 4 — Slice & Ready
 
@@ -257,6 +289,12 @@ Execution Unit 是本方法的逻辑工作单位，与 Jira、GitHub Issue、Mar
 - 覆盖相关 Specification；
 - 没有擅自改变需求；
 - 必要技术决定已确认。
+
+如果当前 Technical Planning 产生或更新了 ADR / 架构决策（Architecture Decision）：
+
+- 相关执行单元必须引用并遵守当前有效的架构约束；
+- 不得让 Technical Plan 或执行单元静默覆盖已确认 ADR；
+- 若存在未解决的 ADR / 架构权威缺口，不得进入 Execute。
 
 #### Execution Readiness
 
@@ -357,6 +395,7 @@ Unit 成功退出 Execute 只证明当前 Unit 已完成，不自动证明整个
 - Obsolete Technical Plan
 - Unverified Critical Behavior
 - Cross-unit Integration Gap
+- 架构 / ADR 缺口（Architecture / ADR Gap）
 
 ### 输出
 
@@ -383,7 +422,7 @@ Converge 的语义要求不因工作规模较小而消失，但执行强度应�
 
 ### Exit Condition
 
-Feature Behavior、Implementation State 和 Verification Evidence 已与 Specification 收敛一致。
+Feature Behavior、Implementation State 和 Verification Evidence 已与 Specification 收敛一致，且实现未违反当前有效的长期架构 / ADR 权威。
 
 随后工作进入：
 
@@ -444,10 +483,13 @@ Standalone Defect 在进入 Ready to Integrate 前，应至少确认：
 Execute
   ├─发现 Requirement Ambiguity → Specification / Clarify
   ├─发现 Technical Design Invalid → Technical Planning
+  ├─发现新的长期架构决策 → Technical Planning / ADR 评估
   ├─发现 Unit Too Large → Slice Again
   ├─出现 Unexpected Failure → Systematic Debugging
   └─发现 Feature Gap → Converge → New Execution Units
 ```
+
+Systematic Debugging 或 Converge 发现新的长期架构决策时，也应按同样原则回退到 Technical Planning，而不是在当前阶段静默建立长期架构约束。
 
 一旦回退改变了项目事实，必须更新对应权威 Artifact，不能只在当前聊天中临时修补。
 
@@ -467,7 +509,7 @@ Execute
 
 - Glossary
 - Durable Domain Facts
-- ADRs
+- ADRs（由真实长期架构决策按需产生）
 
 ### 11.3 Feature Context
 
@@ -544,16 +586,16 @@ Worker 每次只获得一个 Execution Unit 所需的 Fresh Execution Context。
 | Repository Rules | 长期 |
 | Governance / Engineering Principles | 长期 |
 | Domain Context | 按需长期 |
-| ADR | 条件长期 |
+| ADR | 条件长期；只在需要跨功能保留架构约束与决策理由时产生 |
 | Specification | Feature 权威产物 |
-| Technical Plan | 条件长期 |
+| Technical Plan | 条件长期；服务当前功能与执行单元的 HOW 协调 |
 | Execution Unit | 工作生命周期 |
 | JIT Execution Plan | 临时 |
 | Code / Tests | 长期系统事实 |
 | Verification Evidence | 当前状态证据 |
 | Handoff | 临时 Transition State |
 
-不存在“一个阶段必须对应一个文件”的要求。
+不存在“一个阶段必须对应一个文件”的要求，也不存在“进入 Technical Planning 就必须创建 ADR”的要求。
 
 ## 15. 按复杂度选择流程
 
@@ -608,6 +650,8 @@ Converge / Full Verification
  ↓
 Ready to Integrate
 ```
+
+Technical Planning 中如果形成跨功能的长期架构决定，应在进入 Slice & Ready 前完成相应 ADR / 架构权威（Architecture Authority）的持久化；如果没有这类决定，则不创建 ADR。
 
 ### Standalone Defect
 
