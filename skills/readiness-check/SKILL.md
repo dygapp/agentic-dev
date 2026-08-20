@@ -7,9 +7,9 @@ description: Performs a read-only pre-execution gate across specification, optio
 
 ## Purpose
 
-在进入 Execute 前执行统一、只读的 Readiness Gate，判断当前 Specification、可选 Technical Plan、Execution Units 与 Governance Context 是否已经足以安全进入实施。
+在进入 Execute 前执行统一、只读的 Readiness Gate，判断当前 Specification、可选 Technical Plan、Execution Units、当前有效 Architecture / ADR Authority 与 Governance Context 是否已经足以安全进入实施。
 
-本 Skill 只负责发现和分类 Readiness Findings，不修改 Specification、Technical Plan、Execution Units 或其他权威 Artifact。
+本 Skill 只负责发现和分类 Readiness Findings，不修改 Specification、Technical Plan、Execution Units、ADR 或其他权威 Artifact。
 
 ## Use When
 
@@ -26,7 +26,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 - 当前仍处于 Intent Clarification；
 - 尚没有可检查的 Specification；
 - 尚没有可检查的 Execution Unit；
-- 目标是让 Checker 自动补写或改写 Specification、Technical Plan 或 Execution Units；
+- 目标是让 Checker 自动补写或改写 Specification、Technical Plan、ADR 或 Execution Units；
 - 当前工作实际上是在实施某个 Unit，而不是判断其是否 Ready。
 
 如果在缺少必要输入的情况下被调用，应停止 Gate，并指出应返回的职责层；不得通过猜测或补写输入来制造 `PASS`。
@@ -37,6 +37,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 - Optional Technical Plan
 - Execution Units
 - Governance / Context Authority
+- Relevant Architecture / ADR Authority（如存在）
 
 只要求当前 Gate 所需的最小权威上下文，不要求加载完整 Conversation History 或完整仓库内容。
 
@@ -49,9 +50,10 @@ description: Performs a read-only pre-execution gate across specification, optio
 1. Repository Instructions、Method、Architecture 与其他更高优先级 Authority 约束低优先级 Artifact。
 2. Specification 定义 Product / Feature 的 WHAT / WHY；Technical Plan 与 Execution Units 不得反向改变已确认 Intent。
 3. Technical Plan 只在存在时作为 Design Readiness 输入；其内容不得通过 Silent Redefinition 改写 Specification。
-4. Execution Units 必须可追溯到 Specification，并遵守已确认的 Durable Technical Decisions 与 Governance Rules。
-5. Conversation History 不构成权威来源。
-6. `readiness-check` 没有修改更高层 Authority 以消除 Finding 的权限。
+4. Execution Units 必须可追溯到 Specification，并遵守已确认的 Durable Technical Decisions、当前有效 ADR 与 Governance Rules。
+5. ADR / Architecture Authority 提供跨功能的长期架构约束；低层 Artifact 不得静默覆盖。
+6. Conversation History 不构成权威来源。
+7. `readiness-check` 没有修改更高层 Authority 以消除 Finding 的权限。
 
 如果 Authoritative Sources 发生冲突，形成 Blocking Finding 并升级，而不是自行选择一个解释继续。
 
@@ -88,9 +90,12 @@ description: Performs a read-only pre-execution gate across specification, optio
 - 是否覆盖相关 Specification；
 - 是否存在 Silent Redefinition of Intent；
 - 实施前必须解决的 Durable Technical Decisions 是否已经解决；
+- 是否与当前有效 Architecture / ADR Authority 一致；
 - 是否仍存在会跨 Unit 影响实现的重大技术不确定性。
 
-如果没有 Technical Plan，不因“没有文档”本身判定失败。只有当输入表明实施前仍存在必须持久协调的技术决定时，才形成 Blocking Finding 并返回 `technical-plan`。
+同时检查当前规划过程中是否存在已经形成、应进入长期架构权威但尚未形成或更新 ADR 的架构权威缺口（Architecture Authority Gap）。如果存在，形成 Blocking Finding 并返回 `technical-plan` 完成 ADR 评估。
+
+如果没有 Technical Plan，不因“没有文档”本身判定失败。只有当输入表明实施前仍存在必须持久协调的技术决定，或存在未处理的长期架构决策时，才形成 Blocking Finding 并返回 `technical-plan`。
 
 ### 4. Check Execution Readiness
 
@@ -102,7 +107,8 @@ description: Performs a read-only pre-execution gate across specification, optio
 - Completion Condition 是否可观察、可验证；
 - Dependencies 是否真实、顺序合理且没有隐藏前置条件；
 - Unit 是否 Bounded、Context-fit，并适合 Fresh Agent 独立执行；
-- Unit 是否包含超出 Specification Scope 的未授权工作。
+- Unit 是否包含超出 Specification Scope 的未授权工作；
+- Unit 是否遵守当前有效 Architecture / ADR Constraints。
 
 需要重新塑形、补充或拆分 Unit 时，Blocking Finding 返回 `slice-work`。
 
@@ -112,10 +118,12 @@ description: Performs a read-only pre-execution gate across specification, optio
 
 - Repository Instructions；
 - Engineering / Governance Rules；
-- 已确认 Architecture Decisions；
+- 已确认 Architecture Decisions / ADR；
 - Authority、Impact、Reversibility 相关的 Human Escalation Boundary。
 
 如果继续执行需要未授权的高影响、不可逆、安全 / 隐私敏感或重大架构决策，形成 Blocking Finding 并升级到相应 Human / Repository Authority。
+
+如果问题不是授权冲突，而是需要形成新的长期架构决定，则返回 `technical-plan` 处理 ADR 评估，不由本 Skill 决定或持久化。
 
 ### 6. Classify Findings
 
@@ -192,7 +200,7 @@ Non-blocking Findings:  # optional
 - 继续执行需要未授权的 Shared / Production / External Side Effect；
 - 涉及 Destructive / Hard-to-reverse、Security 或 Privacy Sensitive Decision。
 
-普通、低影响、可逆且可由现有权威或证据判断的问题，不升级给 Human。
+普通、低影响、可逆且可由现有权威或证据判断的问题，不升级给 Human。需要新的长期架构决定但尚未触发 Human Escalation 时，返回 `technical-plan`，而不是把“需要 ADR”本身等同于必须人工批准。
 
 ## Context Rules
 
