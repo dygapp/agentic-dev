@@ -187,6 +187,10 @@ Completion E2E when required
 - 必要 Logs / Artifacts；
 - PR / Branch 与当前提交的对应关系。
 
+当某个 Artifact 本身构成必要验证证据（Verification Evidence）时，Artifact 上传步骤（upload step）的 `success` 不能单独证明 Artifact 实体已经存在。应重新读取当前 Run 的 Artifact 集合，并核对 Artifact 名称、Run 与 Head SHA 的对应关系；如果“缺少该 Artifact”本身应使验证失败，则 Workflow 应采用缺失即失败（fail-on-missing）的配置，例如 GitHub Actions `upload-artifact` 的 `if-no-files-found: error`。
+
+该规则只在 Artifact 本身承担必要证据职责时适用，不要求所有 Completion Verification 都生成 Artifact。
+
 只使用与当前目标提交真实关联的 Evidence。
 
 ### 10. Return Verification Result to the Caller
