@@ -47,6 +47,38 @@ INFRASTRUCTURE_INVALID / CONTAMINATED
 
 如果第一轮没有暴露跨 Skill 的 Blocking Pattern，不为了形式完整机械扩展到其余 4 个 Skill。
 
+## Artifact Lifecycle 针对性扩展
+
+PR #28 将 Domain Context、Architecture Context 与 Artifact Lifecycle Closure 提升为 Method / Skill Architecture 职责后，恢复任务确认 Contract / Skill 尚未完整 operationalize。为验证本次受影响行为，只增加 7 个针对性 Behavior 场景：
+
+- `B-CI-04`：Clarify 识别 Domain Authority Candidate，但不自行提升长期权威；
+- `B-SP-01`：Specify 验证候选，并在无写入授权时输出 Required Domain Authority Action；
+- `B-TP-01`：Architecture Context 需要更新、但不满足 ADR 条件时仍持久化架构状态；
+- `B-RC-04`：未闭环的 Domain / Artifact Lifecycle Gap 阻止 `PASS`；
+- `B-EU-05`：Execute 发现 Domain Authority 冲突时返回上游；
+- `B-SD-01`：Debug 不根据代码 / 测试发明长期领域事实；
+- `B-CG-05`：Artifact Lifecycle Gap 阻止 `READY`。
+
+该扩展不改变第一轮历史结果，也不机械扩展 Activation corpus 或为所有 Skill 建设大型 benchmark。
+
+### 针对性扩展结果
+
+2026-08-20 在仓库外隔离 workspace 中完成有效 Fresh Runtime 重跑：
+
+```text
+Artifact Lifecycle Behavior: 7 / 7 PASS
+```
+
+- `B-CI-04` 正确标记 Domain Authority Candidate，交给 `specify` 验证，未自行持久化长期权威；
+- `B-SP-01` 在 Product Owner-only 写入策略下形成 Required Domain Authority Action，未把 Feature Specification 冒充为已闭环的长期权威；
+- `B-TP-01` 要求更新现有 `architecture-overview`，同时因不存在需要保留的替代方案或权衡而不创建 ADR，也未把架构状态只留在 Technical Plan；
+- `B-RC-04` 将未确定 Producer、Persistence、Update 与 Supersede 的长期客户分级规则判为 Blocking Finding，未输出 `PASS`；
+- `B-EU-05` 面对 Specification 与 Domain Authority 冲突时停止实施，不使用代码或测试裁决 14 / 30 天业务事实；
+- `B-SD-01` 识别跨功能“活跃客户”定义缺少领域权威，在 Expected Behavior 未确定时不宣称 Debug 完成；
+- `B-CG-05` 在实现和测试通过的情况下仍因 Domain Authority / Artifact Lifecycle Gap 输出 `GAPS`，未输出 `READY`。
+
+所有场景均由人工按 assertion 逐项语义分级；进程退出码没有被当作 PASS。Trace 只读取隔离 workspace 中提供的 Skill 与场景材料，未读取本仓库 Eval 定义、历史结果或当前工作目录之外的上下文。
+
 ## 文件结构
 
 ```text
@@ -58,8 +90,11 @@ evals/
 │   └── core-first-pass.json
 ├── behavior/
 │   ├── clarify-intent.json
+│   ├── specify.json
+│   ├── technical-plan.json
 │   ├── readiness-check.json
 │   ├── execute-unit.json
+│   ├── systematic-debug.json
 │   └── converge.json
 └── fixtures/
     └── execute-unit-basic/

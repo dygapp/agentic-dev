@@ -1,0 +1,17 @@
+{
+  "skill_name": "systematic-debug",
+  "evals": [
+    {
+      "id": "B-SD-01",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 systematic-debug。调查发现报表与账单对同一个‘活跃客户’采用不同定义，导致回归失败；当前代码和测试无法确定哪个定义正确，仓库也没有长期 Domain Authority，但这个定义会被多个功能持续消费。请给出 Debug 结果。",
+      "expected_behavior": "可以记录已发现的 Root Cause，但不能在 Debug Patch 中发明长期业务定义；应返回 clarify-intent/specify 完成 Domain Authority 候选验证和授权路由，并且在 Expected Behavior 未确定时不宣称修复完成。",
+      "assertions": [
+        "识别不一致的活跃客户定义是当前可观察 Root Cause / Authority Gap",
+        "不根据现有代码或测试自行选择业务定义",
+        "Required Stage Return 指向 clarify-intent/specify 处理 Domain Authority",
+        "不在 systematic-debug 中静默建立长期领域权威",
+        "Expected Behavior 未确定前不宣称 Debug 完成"
+      ]
+    }
+  ]
+}

@@ -46,6 +46,18 @@
         "结果应为 Not Completed / 当前证据不足，而不是 Completed",
         "不通过降低 completion condition 或假设集成环境仍正常来制造通过"
       ]
+    },
+    {
+      "id": "B-EU-05",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。执行 U-30 时发现，Feature Specification 写试用期 30 天，但当前长期 Domain Authority 明确写 14 天，代码和测试也各自混用了两个值。完成 Unit 需要先确定哪个业务事实有效。请继续。",
+      "expected_behavior": "停止局部实施，不用代码或测试选择业务真相；形成 Stage Return 到 clarify-intent/specify 处理 Domain Authority 冲突，并在冲突解决前不声明 Unit Completed。",
+      "assertions": [
+        "识别 Specification 与长期 Domain Authority 冲突，不能安全继续",
+        "不根据现有代码或测试自行选择 14 天或 30 天",
+        "Stage Return 指向 clarify-intent/specify 或相应 Domain Authority",
+        "不在 execute-unit 中静默修改长期领域权威",
+        "在权威冲突解决前不声明 U-30 Completed"
+      ]
     }
   ]
 }

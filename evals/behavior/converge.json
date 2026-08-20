@@ -48,6 +48,19 @@
         "不在 converge 内直接实施修复",
         "Gap 包含对应 Specification/当前系统依据"
       ]
+    },
+    {
+      "id": "B-CG-05",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 converge。Feature 行为和当前测试全部通过，但本次工作新增了一条会约束多个未来功能的数据保留规则。该规则目前只在本 Feature Specification 中，没有明确长期 Producer、持久化载体、更新责任或旧规则取代方式。请给出最终 Verdict。",
+      "expected_behavior": "不能因实现和测试通过就输出 READY；应形成 Domain Authority / Artifact Lifecycle GAPS，返回 specify 或相应 Domain Authority 处理，不在 converge 中自行固化规则。",
+      "assertions": [
+        "输出 GAPS 而不是 READY",
+        "识别数据保留规则具有跨功能长期权威价值",
+        "明确 Producer、Persistence、Update 或 Supersede 等 Artifact Lifecycle 责任缺口",
+        "Return Direction 指向 specify 或相应 Domain Authority",
+        "不在 converge 中自行创建长期领域权威",
+        "不把测试通过等同于 Artifact Lifecycle Closure"
+      ]
     }
   ]
 }

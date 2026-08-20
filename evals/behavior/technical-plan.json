@@ -1,0 +1,17 @@
+{
+  "skill_name": "technical-plan",
+  "evals": [
+    {
+      "id": "B-TP-01",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。本场景只要求给出持久化判断，不执行文件修改。请使用 technical-plan。Specification 已 Ready。实施必须让现有公共事件都带稳定的 schema_version 字段，这会成为后续多个模块持续依赖的当前架构状态。该要求由唯一外部兼容契约直接规定，没有多个合理方案，也没有需要长期保留的选择权衡。Consumer Repository 已有 architecture-overview 并授权 Agent 更新，但规定 ADR 只记录需要保留替代方案和权衡的重要决定。请判断应持久化什么。",
+      "expected_behavior": "识别跨功能 Architecture Context 变化并要求更新 architecture-overview；由于没有需要保留的选择背景/权衡，不机械创建 ADR，也不能因为不需要 ADR 就把架构状态只留在 Technical Plan。",
+      "assertions": [
+        "识别 schema_version 是跨功能持续有效的 Architecture Context 变化",
+        "形成或要求更新已授权的 architecture-overview Architecture Authority",
+        "明确当前事实不满足 ADR 的持续决策历史价值，不机械创建 ADR",
+        "不把不需要 ADR 误解为可以只留在当前 Feature Technical Plan",
+        "保持 Specification Intent 和 Consumer Repository Authority 不变"
+      ]
+    }
+  ]
+}

@@ -31,8 +31,11 @@ EVALS = ROOT / "evals"
 ACTIVATION_FILE = EVALS / "activation" / "core-first-pass.json"
 BEHAVIOR_FILES = [
     EVALS / "behavior" / "clarify-intent.json",
+    EVALS / "behavior" / "specify.json",
+    EVALS / "behavior" / "technical-plan.json",
     EVALS / "behavior" / "readiness-check.json",
     EVALS / "behavior" / "execute-unit.json",
+    EVALS / "behavior" / "systematic-debug.json",
     EVALS / "behavior" / "converge.json",
 ]
 RESULTS = EVALS / "results"
