@@ -1,6 +1,6 @@
 # Artifact 生命周期跨层对齐恢复计划
 
-**状态：** ACTIVE
+**状态：** COMPLETE（Draft PR #29，等待 Human Review）
 
 **当前分支：** `codex/artifact-lifecycle-operationalization`
 
@@ -113,8 +113,8 @@ Method 已要求 `READY` 前同时满足领域、架构 / ADR 权威与 Artifact
 | W5 | 对齐 Consumer Operating Guide | COMPLETE | 已补充 Domain Authority、Architecture Context / ADR 分离与收敛路由 |
 | W6 | 增加并运行针对性 Eval / Skill Validation | COMPLETE | 7 个 Skill validation PASS；Artifact Lifecycle Fresh Runtime Behavior 7 / 7 PASS |
 | W7 | 重新读取最终状态并执行 AI Review | COMPLETE | 修复 1 个 Medium Finding 后 targeted re-review PASS；无未解决 Blocking / Medium Finding |
-| W8 | Commit / Push / PR / Verify | PENDING | 本地状态已验证，当前等待显式 Stage 授权；Commit、Push、PR 仍需分别授权与写后验证 |
-| W9 | 回写前序计划 Closure 与本计划最终结果 | IN PROGRESS | 前序计划 Closure / Successor 指针已完成；本计划最终发布结果等待 W8 |
+| W8 | Commit / Push / PR / Verify | COMPLETE | 6 个分层提交已推送；Draft PR #29 已创建并完成元数据、评论、文件与 compare 写后验证 |
+| W9 | 回写前序计划 Closure 与本计划最终结果 | COMPLETE | 前序计划 Closure / Successor 与本计划最终发布结果均已固化 |
 
 ## 7. Required Semantic Mapping
 
@@ -198,8 +198,17 @@ Fresh Context 恢复时只需：
 - Targeted re-review 未发现未解决的 Blocking / Medium Finding；本地结论为 `AI Review: PASS`。该结论不等于 Human Approval 或 Merge Authorization；采用 PR 后仍必须把摘要记录到 PR 讨论或正式 Review。
 - 前序计划已追加 PR #28 Closure / Successor 指针；W7 完成，W9 已完成前序指针部分。
 
+### 2026-08-20 — Publish / Closure
+
+- 按 Authority 层级形成 6 个分层提交：Method Decision、Contract / Architecture、Skill Implementation、Consumer Guide、Eval、Task Recovery Record；
+- 分支 `codex/artifact-lifecycle-operationalization` 已推送到 `origin`；
+- 创建 Draft PR #29：`https://github.com/dygapp/agentic-dev/pull/29`，目标为 `master@8882c98`；
+- 写后重新读取确认：PR 为 `open`、`draft`、`mergeable`，head 正确；22 个预期文件完整，分支相对 `master` 为 ahead 6 / behind 0；
+- 最终 AI Review 摘要已记录到 PR 讨论：`https://github.com/dygapp/agentic-dev/pull/29#issuecomment-5354842030`；
+- W8、W9 完成；本计划关闭于 Draft PR / Human Review 边界，不授予 Merge 权限。
+
 ## 11. Blockers
 
-当前无 Blocking External Dependency。
+当前无 Blocking External Dependency。后续 Human Review / Merge 不属于本计划授权范围。
 
 如果后续 GitHub 写操作因权限、网络或授权失败，应保留本地已验证状态和精确失败证据，不把工具调用失败误报为已发布。
