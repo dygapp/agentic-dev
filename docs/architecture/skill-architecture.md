@@ -148,6 +148,29 @@ Bootstrap / Setup Capability 使用可复用流程帮助项目建立或更新 Pr
 
 该 Skill 属于平台专项非核心 Discipline Skill，不计入第一批 8 个核心 Skill，也不意味着重新打开核心 Skill Engineering。
 
+### 2.8 当前 Skill 清单（Skill Inventory）
+
+当前仓库实际实现并维护 9 个 Skill：
+
+| 分类 | 数量 | 当前成员 | 状态语义 |
+|---|---:|---|---|
+| Core Skills | 8 | `clarify-intent`、`specify`、`technical-plan`、`slice-work`、`readiness-check`、`execute-unit`、`systematic-debug`、`converge` | 第一批核心 Skill Engineering 已关闭 |
+| Platform-specific Skills | 1 | `github-actions-verification` | 由真实 Consumer Evidence 支持的非核心 Skill |
+| Future Experimental Skills | 0 | 无 | 只在新的真实证据暴露稳定职责缺口时评估 |
+
+因此，“第一批 8 个核心 Skill”描述的是核心基线，不是仓库全部 Skill 数量。`github-actions-verification` 是当前第 9 个已实现 Skill，但不是“第 9 个核心 Skill”，其存在不重新打开 Core Skill Engineering。
+
+### 2.9 产物生命周期与 Skill 边界
+
+长期权威产物的生命周期由 Method 职责和 Consumer Repository Authority 共同决定，不由新增的 Artifact Management Super-skill 接管：
+
+- `clarify-intent` 可以识别长期领域事实候选，`specify` 负责在权威输入支持下验证相关 WHAT / WHY；需要独立长期维护的候选由 Consumer Repository Authority 指定的领域责任方确认并持久化，阶段转换本身不授予写入权限；
+- `technical-plan` 负责判断并维护跨功能持续有效的 Architecture Context 变化，其中满足条件的重要架构决定按需形成或更新 ADR；
+- `execute-unit`、`systematic-debug` 与 `converge` 可以发现权威产物缺口，但必须返回拥有该事实或决定的上游职责层，不得在下游静默提升长期权威；
+- Project Rule、Repository Policy 或人工权威决定具体载体、写入权限与集成方式，Skill 不强制固定目录、模板或审批流程。
+
+这类职责分配落实产物生命周期闭环（Artifact Lifecycle Closure），但不新增方法阶段、Domain Context Skill、Architecture Management Skill 或完整生命周期 Super-skill。
+
 ## 3. 第一批 8 个核心 Skill
 
 | Skill | 类型 | 核心职责 |

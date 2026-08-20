@@ -8,6 +8,16 @@
 
 关闭 Skill Engineering 的依据不是“目录已经存在”，而是第一批核心 Skill 已完成 Method / Architecture / Contract 对齐、实现、Packaging Hardening、Fresh Runtime Eval 与最终 Closure Review。
 
+## 当前 Skill 清单（Skill Inventory）
+
+当前仓库共实现 9 个 Skill：
+
+- 8 个 Core Skills（核心 Skill），构成已经关闭工程工作的第一批核心基线；
+- 1 个 Platform-specific Skill（平台专项 Skill），即 `github-actions-verification`；
+- 当前没有 Future Experimental Skill（未来实验性 Skill）。
+
+平台专项 Skill 不计入第一批核心 Skill，也不意味着重新打开 Core Skill Engineering。未来只有真实使用证据暴露新的稳定职责缺口时，才评估其他实验性 Skill。
+
 ## 第一批 8 个核心 Skill
 
 | Skill | 状态 |
@@ -28,7 +38,15 @@
 - 覆盖 `clarify-intent`、`readiness-check`、`execute-unit`、`converge` 四个关键调用链节点；
 - 当前没有未解决的 Blocking Metadata / Skill Implementation / Contract / Method Gap。
 
-其他 Skill 的后续 Runtime Coverage 应由真实 Operationalization / Method Validation 证据驱动，不为了形式完整性机械扩张。
+核心 Skill 的后续 Runtime Coverage 应由真实 Operationalization / Method Validation 证据驱动，不为了形式完整性机械扩张。
+
+## 平台专项 Skill
+
+| Skill | 状态 |
+|---|---|
+| `github-actions-verification` | 已实现；基于真实 Consumer Evidence 的平台专项非核心 Discipline Skill |
+
+该 Skill 只在 Consumer 使用 GitHub Actions，且 CI 验证路径、证据可观察性、运行成本或诊断问题会实质影响验证可靠性时按需使用。它实现既有 Method / Governance 语义，不新增方法阶段，也不接管 Integration、Release 或 Deploy。
 
 权威设计参考：
 

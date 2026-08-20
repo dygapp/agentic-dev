@@ -50,6 +50,7 @@ Conversation、scratch reasoning、探索过程和临时 implementation plan 都
 
 - Repository Instructions；
 - Domain Context / Glossary；
+- Architecture Context；
 - ADR；
 - Specification；
 - 必要的 Technical Plan；
@@ -111,7 +112,7 @@ Fresh Context 不绑定某一种产品功能。
 - Current Execution Unit；
 - Relevant Specification Sections；
 - Relevant Technical Plan Decisions；
-- Relevant ADR / Domain Context；
+- Relevant Architecture / ADR / Domain Context；
 - Relevant Code / Tests。
 
 ## P8. Evidence Before Claims

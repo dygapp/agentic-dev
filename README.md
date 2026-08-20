@@ -60,6 +60,8 @@ Requirement Source / 初始业务输入（如有）：
 - 第一轮 Fresh Runtime Eval：Activation `16 / 16 PASS`，Behavior `14 / 14 PASS`；
 - 当前没有未解决的 Blocking Metadata / Skill Implementation / Contract / Method Gap。
 
+除第一批核心基线外，仓库当前还实现 1 个由真实 Consumer Evidence 支持的平台专项非核心 Skill：`github-actions-verification`。因此仓库当前共有 9 个 Skill，其中 8 个 Core Skills、1 个 Platform-specific Skill；这不代表新增了第 9 个核心 Skill，也不重新打开 Core Skill Engineering。
+
 下一阶段重点是验证这些 Skills 在真实 Agent / Repository 工作流中的发现、激活、组合、编排和方法有效性，而不是继续机械增加核心 Skill 数量。
 
 ## 研究来源
@@ -149,7 +151,11 @@ Ready to Integrate
 - Merge / Push / Release / Deploy 由人工权威（Human Authority）或仓库策略（Repository Policy）控制。
 - Skills 保持小型、可组合，不允许一个 Super-skill 接管完整生命周期。
 
-## 第一批核心 Skills
+## Skill 清单（Skill Inventory）
+
+当前仓库共实现 9 个 Skill：第一批 8 个核心 Skill，以及 1 个平台专项非核心 Skill。Future Experimental Skills 当前为 0，只有真实使用证据暴露新的稳定职责缺口时才评估。
+
+### 第一批核心 Skills
 
 ```text
 clarify-intent
@@ -180,6 +186,10 @@ converge
 - `systematic-debug`
 - `converge`
 
+### 平台专项 Skill
+
+- `github-actions-verification`：面向使用 GitHub Actions 的 Consumer，按需建立或优化可观察、可追踪且成本可控的 CI 验证路径。
+
 详见 `skills/README.md`。
 
 ## 仓库结构
@@ -204,6 +214,7 @@ converge
 │   │   ├── terminology-guidelines.md
 │   │   └── using-agentic-dev.md
 │   ├── project/
+│   │   ├── ai-review-guidelines.md
 │   │   └── repository-baseline.md
 │   └── research/
 │       ├── README.md
@@ -220,7 +231,8 @@ converge
 │   ├── readiness-check/
 │   ├── execute-unit/
 │   ├── systematic-debug/
-│   └── converge/
+│   ├── converge/
+│   └── github-actions-verification/
 ├── evals/
 │   ├── README.md
 │   ├── activation/
