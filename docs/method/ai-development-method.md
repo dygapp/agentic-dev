@@ -120,6 +120,8 @@ Standalone Defect 不要求机械进入完整 Feature Workflow；它在满足既
 
 不存在会显著改变 Goal、Scope、Product Behavior 或 Acceptance Result 的关键未决问题。
 
+如果澄清过程识别了会约束后续多个功能的长期领域事实（Durable Domain Fact），应把它作为领域权威（Domain Authority）候选交给 Specification 阶段验证，并按 Consumer Repository Authority 交给有权维护领域事实的职责确认和持久化；不得因为事实首先出现在会话、Feature 输入或临时 Plan 中，就自动把它提升为长期权威。
+
 ## 4. Stage 2 — Specification
 
 ### 核心问题
@@ -165,6 +167,19 @@ Fresh Agent 只读取 Specification 和最小必要 Repository Context，应能�
 4. 是否还存在关键歧义。
 
 高影响歧义必须在实施前解决。
+
+### 领域权威候选与更新
+
+Specification 主要形成当前功能的 WHAT / WHY 权威，同时必须判断其中确认的业务术语、业务不变量、跨功能规则或其他领域事实是否需要进入长期领域上下文（Domain Context）。
+
+满足以下条件时，应显式评估创建或更新领域权威产物（Domain Authority Artifact）：
+
+- 该事实预计会被多个功能、缺陷处理或独立工作流持续消费；
+- 后续 Agent 若只读取单个 Feature Specification，容易遗漏该事实或产生冲突解释；
+- 该事实需要独立于当前功能生命周期持续维护；
+- 当前工作修正了已有长期领域事实，且旧事实继续作为有效权威会误导后续工作。
+
+Feature Specification 可以引用长期领域权威，但不得静默覆盖它。是否接受候选并更新 Domain Context，由 Consumer Repository Authority 指定的产品 / 领域责任方决定；Agent 只有在获得相应授权时才能执行该更新。Execute、Systematic Debugging 或 Converge 如果发现长期领域事实缺失、冲突或已失效，应返回 Clarify Intent / Specification 完成候选验证，再交由上述责任方确认；不得只在代码、测试、聊天或局部计划中完成事实提升。
 
 ## 5. Stage 3 — Technical Planning（Optional）
 
@@ -214,6 +229,10 @@ Technical Plan 与 ADR 的职责不同：
 
 - **Technical Plan** 记录当前功能（Feature）或一组执行单元（Execution Units）为安全实施而需要持续协调的 HOW；
 - **ADR** 记录会跨越当前功能、对后续工作形成长期架构约束，且需要保留决策背景、权衡（Trade-off）或替代关系的重要架构决定。
+
+架构上下文（Architecture Context）描述当前有效的系统结构、组件与契约边界、技术约束以及实现必须遵守的架构状态。它可以由当前代码、架构说明、公共契约和有效 ADR 共同构成。ADR 只记录满足条件的重要架构决定及其理由，不等同于全部 Architecture Context，也不应被用来复制所有当前架构状态。
+
+Technical Planning 如果改变了需要跨当前功能持续消费的架构状态，应更新适当的架构权威产物（Architecture Authority Artifact）；其中只有需要长期保留决定背景、主要权衡或替代关系的决定才形成或更新 ADR。局部、可逆且只服务当前功能的技术协调仍留在 Technical Plan 中。
 
 当技术决定具有以下一项或多项特征时，应显式评估是否形成或更新 ADR：
 
@@ -328,7 +347,7 @@ Readiness Check 尽量由 AI 自动完成。
 - Current Execution Unit
 - Relevant Specification Sections
 - Relevant Technical Plan Decisions
-- Relevant ADR / Domain Context
+- Relevant Architecture / ADR / Domain Context
 - Relevant Current Code / Tests
 
 不依赖完整 Conversation History。
@@ -396,6 +415,7 @@ Unit 成功退出 Execute 只证明当前 Unit 已完成，不自动证明整个
 - Unverified Critical Behavior
 - Cross-unit Integration Gap
 - 架构 / ADR 缺口（Architecture / ADR Gap）
+- 长期权威产物的生命周期缺口（Artifact Lifecycle Gap）
 
 ### 输出
 
@@ -422,7 +442,7 @@ Converge 的语义要求不因工作规模较小而消失，但执行强度应�
 
 ### Exit Condition
 
-Feature Behavior、Implementation State 和 Verification Evidence 已与 Specification 收敛一致，且实现未违反当前有效的长期架构 / ADR 权威。
+Feature Behavior、Implementation State 和 Verification Evidence 已与 Specification 收敛一致，实现未违反当前有效的领域、架构 / ADR 权威，且本次工作产生或改变的长期权威事实已经完成适当的生命周期闭环。
 
 随后工作进入：
 
@@ -482,20 +502,39 @@ Standalone Defect 在进入 Ready to Integrate 前，应至少确认：
 ```text
 Execute
   ├─发现 Requirement Ambiguity → Specification / Clarify
+  ├─发现长期领域事实缺失或冲突 → Specification / Domain Authority Update
   ├─发现 Technical Design Invalid → Technical Planning
-  ├─发现新的长期架构决策 → Technical Planning / ADR 评估
+  ├─发现新的长期架构状态或决策 → Technical Planning / Architecture Authority / ADR 评估
   ├─发现 Unit Too Large → Slice Again
   ├─出现 Unexpected Failure → Systematic Debugging
   └─发现 Feature Gap → Converge → New Execution Units
 ```
 
-Systematic Debugging 或 Converge 发现新的长期架构决策时，也应按同样原则回退到 Technical Planning，而不是在当前阶段静默建立长期架构约束。
+Systematic Debugging 或 Converge 发现长期领域事实缺口时，应回退到 Clarify Intent / Specification；发现新的长期架构状态或决策时，应回退到 Technical Planning，而不是在当前阶段静默建立长期权威。
 
 一旦回退改变了项目事实，必须更新对应权威 Artifact，不能只在当前聊天中临时修补。
 
 ## 11. Context Model
 
-### 11.1 Governance Context
+### 11.1 长期权威产物的生命周期闭环
+
+长期权威产物（Durable Authoritative Artifact）只有在以下生命周期责任明确时，才形成闭环：
+
+| 责任 | 必须回答的问题 |
+|---|---|
+| Producer | 哪个方法职责或已授权角色负责确认并形成该产物？ |
+| Trigger | 什么事实或变化使创建、提升或重大更新成为必要？ |
+| Consumer | 哪些后续阶段、Skill、人员或系统依赖它？ |
+| Persistence | 它以什么受仓库权威管理的载体长期保存和被发现？ |
+| Update | 新证据、需求变化或系统变化出现时，谁在什么条件下维护它？ |
+| Supersede | 旧内容失效时，如何标明取代、保留必要历史并避免新旧同时生效？ |
+| Escalation | 哪些权限冲突、高影响变化或难逆决定必须交给人工或更高权威？ |
+
+Producer 是逻辑责任，不要求对应独立 Skill、固定人员或固定文件。Trigger 也不意味着每次进入某个阶段都必须创建产物；只有信息具备跨当前工作持续存在的权威、协调或追溯价值时才持久化。
+
+如果当前工作新增或重大修改长期权威产物，却无法回答上述责任，应视为产物生命周期缺口（Artifact Lifecycle Gap），返回拥有相应事实或决策的职责层处理。不得用临时 Plan、会话历史、代码注释或下游 Skill 的推测代替缺失的生命周期责任。
+
+### 11.2 Governance Context
 
 长期存在：
 
@@ -503,22 +542,46 @@ Systematic Debugging 或 Converge 发现新的长期架构决策时，也应按�
 - Engineering Principles
 - Authority Rules
 
-### 11.2 Domain Context
+### 11.3 Domain Context
 
-按项目需要长期存在：
+领域上下文保存跨功能持续有效的业务语言与领域事实，例如：
 
 - Glossary
 - Durable Domain Facts
-- ADRs（由真实长期架构决策按需产生）
 
-### 11.3 Feature Context
+其生命周期规则是：
+
+- **Producer：** Consumer Repository Authority 指定的产品 / 领域责任方，或被明确授权承担该职责的 Agent；Clarify Intent 与 Specification 负责识别和验证候选，但阶段转换本身不授予长期领域权威写入权限；
+- **Trigger：** 当候选事实会被多个后续工作消费，或现有领域权威已不再准确时，评估创建或更新；
+- **Consumer：** Specification、Technical Planning、Slice & Ready、Execute、Systematic Debugging 与 Converge 按当前工作需要消费相关部分；
+- **Persistence：** 使用 Consumer Repository 选择的领域文档、术语表、规则集或其他可发现的权威载体，不规定固定目录或模板；
+- **Update / Supersede：** 由拥有相应产品或领域权限的职责更新；旧事实失效时应显式标明取代关系或同步修正引用，避免冲突事实同时被视为有效；
+- **Escalation：** 当权威来源冲突、改变产品意图或业务边界、存在多种 materially different 的解释，或 Agent 无权确认领域事实时，升级给相应 Human / Repository Authority。
+
+Feature Context 中出现的业务信息不会仅因被实现或验证就自动成为 Domain Context。代码和测试可以提供当前系统行为证据，但不能单独授予业务事实长期权威。
+
+### 11.4 Architecture Context
+
+架构上下文保存跨功能持续有效的系统结构、组件与数据边界、共享 / 公共契约、集成与部署约束以及其他当前架构状态。它与 Domain Context 的边界是：Domain Context 说明业务世界中必须成立的事实，Architecture Context 说明技术系统为满足权威意图而采用并持续受约束的结构与状态。
+
+其生命周期规则是：
+
+- **Producer / Trigger：** Technical Planning 在当前系统证据与有效架构权威基础上确认；当技术工作改变了需要跨当前功能持续消费的架构状态，或现有架构说明已与有效系统状态不一致时，创建或更新；
+- **Consumer：** Technical Planning、Slice & Ready、Readiness、Execute、Systematic Debugging 与 Converge 按需消费；
+- **Persistence：** 使用 Consumer Repository 选择的架构说明、契约、模型、代码或其他可发现的权威载体；不同载体的权威关系由该仓库定义；
+- **Update / Supersede：** 架构变化被确认并实施时同步维护；旧约束失效时显式更新状态、引用或取代关系，不能让过期说明继续与当前有效架构并列；
+- **Escalation：** 重大架构方向、高影响或难逆权衡、权威冲突以及超出 Agent 授权的共享 / 外部影响，按 Authority、Impact、Reversibility 升级。
+
+ADR 是 Architecture Context 中按条件产生的决策记录：它解释重要架构决定的背景、选择、权衡、后果与替代关系，但不是全部当前架构状态。架构事实变化不必机械创建 ADR；只有满足第 5 节条件的长期决定才创建或更新 ADR。
+
+### 11.5 Feature Context
 
 Feature 生命周期：
 
 - Specification
 - Optional Technical Plan
 
-### 11.4 Execution Context
+### 11.6 Execution Context
 
 单 Execution Unit 生命周期：
 
@@ -527,7 +590,7 @@ Feature 生命周期：
 - JIT Execution Plan
 - Targeted Evidence
 
-### 11.5 Coordination Context
+### 11.7 Coordination Context
 
 当前 Workflow / Session 生命周期：
 
@@ -585,8 +648,9 @@ Worker 每次只获得一个 Execution Unit 所需的 Fresh Execution Context。
 |---|---|
 | Repository Rules | 长期 |
 | Governance / Engineering Principles | 长期 |
-| Domain Context | 按需长期 |
-| ADR | 条件长期；只在需要跨功能保留架构约束与决策理由时产生 |
+| Domain Context | 按需长期；Clarify / Specification 识别和验证候选，由 Repository Authority 授权的领域责任方确认并维护更新与取代关系 |
+| Architecture Context | 按需长期；由 Technical Planning 维护跨功能持续有效的架构状态 |
+| ADR | 条件长期；属于 Architecture Context 中的决策记录，只在需要跨功能保留架构约束与决策理由时产生 |
 | Specification | Feature 权威产物 |
 | Technical Plan | 条件长期；服务当前功能与执行单元的 HOW 协调 |
 | Execution Unit | 工作生命周期 |

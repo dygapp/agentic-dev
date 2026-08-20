@@ -15,6 +15,7 @@ AI Review 用于在高影响变更进入最终人工复核（Human Review）或�
 - 术语表达偏差；
 - 人工 / 集成边界（Human / Integration Boundary）被弱化；
 - 证据不足却被提升为长期结论。
+- 新增或重大修改的长期权威产物缺少可执行的生命周期责任。
 
 AI Review 不替代验证（Verification），也不构成人工批准（Human Approval）或合并授权（Merge Authorization）。
 
@@ -47,6 +48,7 @@ Review 不得只依赖作者的说明或此前聊天结论。至少重新读取�
 4. 当前变更层适用的更高优先级 Authority；
 5. 面向人的文档发生变化时，适用的术语表达规范；
 6. 如果变更声称由 Consumer Experiment / Evidence 驱动，相应 Issue 与可验证 Evidence Reference。
+7. 如果变更新增、提升或重大修改长期权威产物，该产物的上游事实来源、当前消费者和现有替代 / 失效关系。
 
 Review 依据必须来自当前可验证状态，不以会话历史（Conversation History）代替仓库事实。
 
@@ -81,6 +83,20 @@ Review 依据必须来自当前可验证状态，不以会话历史（Conversati
 ### 4.7 证据一致性（Evidence Alignment）
 
 当变更基于实验、Consumer 或 Runtime Finding 时，检查结论是否超出了现有 Evidence 能支持的范围，并确认分类层级正确。
+
+### 4.8 产物生命周期闭环（Artifact Lifecycle Closure）
+
+当变更新增、提升或重大修改长期权威产物时，检查是否能从 Method、Repository Authority 与最终变更中明确回答：
+
+- **Producer：** 哪个方法职责或已授权角色负责确认并形成该产物；
+- **Trigger：** 什么事实或变化触发创建、权威提升或重大更新；
+- **Consumer：** 哪些后续阶段、Skill、人员或系统依赖它；
+- **Persistence：** 它如何在仓库权威中长期保存、被发现并参与优先级判断；
+- **Update：** 新证据、需求变化或系统变化出现时，谁负责在什么条件下维护；
+- **Supersede：** 旧内容失效时，如何标明取代关系、保留必要历史并避免冲突版本同时生效；
+- **Escalation：** 哪些权限冲突、高影响变化、难逆决定或外部影响必须升级。
+
+该检查不要求每个阶段创建文件，也不要求固定目录、模板或独立 Artifact Management Skill。对临时产物只检查其退出或丢弃边界；对长期权威产物，如果上述责任存在会导致后续 Agent 无法可靠产生、更新或识别当前有效事实的缺口，应记录为 Blocking 或 Medium Finding。
 
 ## 5. Finding 与结论
 
