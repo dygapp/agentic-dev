@@ -185,14 +185,14 @@ Analyze Again
 
 ### 8.1 Git / GitHub 执行路径选择
 
-Git Branch 是 Git 的隔离机制；Pull Request（PR）是 GitHub 提供的协作与集成对象，不属于 Git Method 的通用强制概念。
+Git 分支（Branch）是 Git 的隔离机制；Pull Request（PR）是 GitHub 提供的协作与集成对象。二者都属于具体 Repository / 平台能力，不是通用 Method 的强制对象。
 
 在 GitHub Consumer 中选择执行路径时，不应只判断“是否能够直接写默认分支”，还应同时检查：
 
 - **隔离性（Isolation）**：未完成工作是否会污染共享权威基线；
 - **可逆性（Reversibility）**：失败或方向调整时能否低成本恢复；
 - **证据可观察性（Evidence Observability）**：当前 Runtime 能否重新取得验证和 CI 结果；
-- **仓库策略（Repository Policy）**：是否要求 Branch、PR、Review 或特定 CI trigger；
+- **仓库策略（Repository Policy）**：是否要求分支、PR、复核（Review）或特定 CI 触发方式；
 - **工作风险与持续时间**：是否需要多轮实现、验证、调试或人工复核。
 
 对于需要多轮修改、CI、调试或 Review 的工作，如果直接修改共享默认分支会降低隔离性、可逆性或证据可观察性，应优先采用当前 Repository / Runtime 支持的隔离路径。
@@ -208,11 +208,11 @@ Task / Feature Branch
 → Human / Repository Policy
 ```
 
-PR 可以同时提供 change review、CI trigger、evidence association 和 integration boundary，因此当当前 GitHub Runtime 对 PR-triggered Actions 的可观察性明显优于 push-triggered Actions 时，Agent 可以优先选择该路径。
+PR 可以同时提供变更复核、CI 触发、证据关联和集成边界。因此，当当前 GitHub Runtime 对 PR-triggered Actions 的可观察性明显优于 push-triggered Actions 时，Agent 可以优先选择该路径。
 
-这不是“所有 GitHub 项目必须使用 PR”的通用规则。如果 Repository Policy 允许 direct push，且当前 Runtime 能完整取得当前验证证据，低风险工作仍可以采用更轻量路径。
+这不是“所有 GitHub 项目必须使用 PR”的通用规则。如果 Repository Policy 允许直接推送（direct push），且当前 Runtime 能完整取得当前验证证据，低风险工作仍可以采用更轻量路径。
 
-当 GitHub Actions 验证本身需要进一步设计、诊断或优化时，可按条件使用 `github-actions-verification` Skill；External Operation Guide 只定义协作与授权边界，不承载具体 Workflow、容器或镜像实现方案。
+当 GitHub Actions 验证本身需要进一步设计、诊断或优化时，可按条件使用 `github-actions-verification` Skill；本指南只定义协作与授权边界，不承载具体 Workflow、容器或镜像实现方案。
 
 ### 8.2 PR 复核
 
