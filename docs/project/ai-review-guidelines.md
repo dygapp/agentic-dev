@@ -6,7 +6,7 @@
 
 ## 1. 目标
 
-AI Review 用于在高影响变更进入最终人工复核（Human Review）或合并决策前，基于当前仓库权威和最终变更状态发现：
+AI Review 用于在高影响变更进入最终人工复核（Human Review）或集成决策前，基于当前仓库权威和最终变更状态发现：
 
 - 权威层级不一致；
 - 方法语义回归；
@@ -18,9 +18,9 @@ AI Review 用于在高影响变更进入最终人工复核（Human Review）或�
 
 AI Review 不替代验证（Verification），也不构成人工批准（Human Approval）或合并授权（Merge Authorization）。
 
-## 2. 必须执行 AI Review 的变更
+## 2. 必须执行 AI Review 的高影响变更
 
-以下 PR 在进入最终 Human Review / Merge 决策前必须完成与风险相称的 AI Review：
+以下变更在进入最终 Human Review 或集成决策前必须完成与风险相称的 AI Review：
 
 - 修改 Method 或 Principles；
 - 修改 Architecture 或 Skill Contract；
@@ -29,25 +29,30 @@ AI Review 不替代验证（Verification），也不构成人工批准（Human A
 - 修改会实质改变 Agent 行为的 Operating / Governance Guide；
 - 同时跨越 Method、Contract、Skill、Governance 等多个权威层的同步变更。
 
-普通低风险文字修正、链接修正、无语义影响的排版调整，不要求为了形式完整性执行重型 Review；如果它们属于上述高影响 PR 的一部分，则随该 PR 一并检查。
+普通低风险文字修正、链接修正、无语义影响的排版调整，不要求为了形式完整性执行重型 Review；如果它们属于上述高影响变更的一部分，则随该变更一并检查。
+
+PR 不是触发 AI Review 的必要条件：
+
+- 采用 PR 时，以最终 PR 状态和最终 diff / patch 作为主要变更证据；
+- 未采用 PR 时，以拟集成 ref 与目标基线之间的当前 compare / diff 或等价可验证变更集作为主要证据；
+- 不得通过选择非 PR 路径绕过本规则要求的 AI Review。
 
 ## 3. Review 输入
 
 Review 不得只依赖作者的说明或此前聊天结论。至少重新读取：
 
-1. 当前目标分支 / `master` 的仓库权威（Repository Authority）；
-2. PR 元数据（metadata）；
-3. 变更文件（changed files）；
-4. 最终 PR diff / patch；
-5. 当前变更层适用的更高优先级 Authority；
-6. 面向人的文档发生变化时，适用的术语表达规范；
-7. 如果变更声称由 Consumer Experiment / Evidence 驱动，相应 Issue 与可验证 Evidence Reference。
+1. 当前集成目标基线的仓库权威（Repository Authority）；
+2. 采用 PR 时的 PR 元数据（metadata）与变更文件（changed files），或非 PR 路径下对应的 source / target ref；
+3. 最终 diff / patch 或等价可验证变更集；
+4. 当前变更层适用的更高优先级 Authority；
+5. 面向人的文档发生变化时，适用的术语表达规范；
+6. 如果变更声称由 Consumer Experiment / Evidence 驱动，相应 Issue 与可验证 Evidence Reference。
 
 Review 依据必须来自当前可验证状态，不以会话历史（Conversation History）代替仓库事实。
 
 ## 4. Review 维度
 
-根据变更性质选择必要维度，不要求每个 PR 机械检查全部项目。
+根据变更性质选择必要维度，不要求每个变更机械检查全部项目。
 
 ### 4.1 权威一致性（Authority Alignment）
 
@@ -63,7 +68,7 @@ Review 依据必须来自当前可验证状态，不以会话历史（Conversati
 
 ### 4.4 范围控制（Scope Control）
 
-检查 PR 是否出现与目标无关的顺带修改、额外框架、额外 Skill、固定模板或其他缺乏证据的范围扩张。
+检查变更是否出现与目标无关的顺带修改、额外框架、额外 Skill、固定模板或其他缺乏证据的范围扩张。
 
 ### 4.5 术语规范（Terminology）
 
@@ -81,9 +86,9 @@ Review 依据必须来自当前可验证状态，不以会话历史（Conversati
 
 Review Finding 使用以下严重程度：
 
-- **Blocking**：会导致 Authority 冲突、错误方法语义、错误授权边界、明显 Contract / Skill 断层，或使 PR 不应按当前状态进入最终 Human Review / Merge 决策；
-- **Medium**：不会立即破坏核心语义，但会造成持续歧义、治理不一致、术语误导或明显维护风险，应在当前 PR 收敛；
-- **Low / Non-blocking**：可改进但不影响当前 PR 的安全接受。
+- **Blocking**：会导致 Authority 冲突、错误方法语义、错误授权边界、明显 Contract / Skill 断层，或使变更不应按当前状态进入最终 Human Review / 集成决策；
+- **Medium**：不会立即破坏核心语义，但会造成持续歧义、治理不一致、术语误导或明显维护风险，应在当前变更中收敛；
+- **Low / Non-blocking**：可改进但不影响当前变更的安全接受。
 
 只有在已检查维度中不存在未解决的 Blocking 或 Medium Finding 时，才能报告：
 
@@ -91,7 +96,7 @@ Review Finding 使用以下严重程度：
 AI Review: PASS
 ```
 
-`PASS` 只表示当前 AI Review 未发现阻塞当前 PR 的问题，不代表 Human 已批准，也不授予 Merge 权限。
+`PASS` 只表示当前 AI Review 未发现阻塞当前变更的问题，不代表 Human 已批准，也不授予 Merge 或其他集成权限。
 
 ## 6. 修复后的重新复核
 
@@ -104,14 +109,14 @@ Finding
   ↓
 Fix
   ↓
-Re-read Final PR State
+Re-read Final Change State
   ↓
 Targeted Re-review
   ↓
 PASS / Remaining Findings
 ```
 
-如果 Review 后发生可能影响已检查结论的实质修改，旧 Review 不能自动覆盖新状态。必须重新读取最终 PR patch，并至少对受影响维度重新 Review。
+如果 Review 后发生可能影响已检查结论的实质修改，旧 Review 不能自动覆盖新状态。必须重新读取最终变更状态，并至少对受影响维度重新 Review。
 
 纯粹不影响语义的 metadata 或格式变化可以采用轻量复核，不为了形式完整性重复全部检查。
 
@@ -127,14 +132,18 @@ AI Review 不要求固定 Reviewer Agent，也不要求每次创建新会话，�
 
 ## 8. Review 结果的记录
 
-不要求为每次 AI Review 创建独立长期文档。
+不要求为每次 AI Review 创建独立长期文档，但本规则要求执行的 Review 必须留下最小可追溯摘要。
 
-至少应在当前工作上下文、PR 讨论或交付汇报中明确说明：
+采用 PR 时，在进入最终合并决策前，应在 PR 讨论或正式 Review 中记录：
 
 - Review 范围 / 维度；
 - Blocking / Medium Finding 数量及必要的证据引用；
 - 是否经过修复后的重新复核；
 - 最终结论。
+
+不需要把完整推理过程、聊天记录或大篇幅 Review 报告写入 PR。
+
+未采用 PR 时，应在当前集成决策可见的外部协作记录中保留等价摘要，不要求为了记录 Review 再创建新的长期文档体系。
 
 如果 Review 本身产生外部写操作，继续遵循 `docs/guides/external-operation-guidelines.md` 的 Analyze → Act → Verify → Report 闭环。
 
