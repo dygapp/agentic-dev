@@ -23,6 +23,7 @@ description: Investigates an observed defect or unexpected failure through repro
 - 当前只是 TDD 中为了驱动实现而预期出现的初始 Failing Evidence；
 - Expected Behavior 尚未定义或存在 Product / Requirement 冲突；此时应先返回 `clarify-intent` / `specify`；
 - 已知修复必须重新决定 Major Architecture Direction；此时应进入 `technical-plan` / Human Authority；
+- 已知修复需要形成新的跨功能长期架构决策；此时应进入 `technical-plan` 完成 ADR 评估；
 - 当前目标只是实现正常 Execution Unit，而没有 Unexpected Failure；
 - 目标是通过尝试多个 Patch 找到“哪个看起来能过”，而不调查 Root Cause。
 
@@ -44,7 +45,7 @@ Debug 时遵守以下规则：
 1. Expected Behavior 必须来自 Applicable Product / Domain / Governance / Specification Authority。
 2. Current Code、Tests、Runtime State 和日志用于解释 Actual Behavior，不得自行定义 Expected Behavior。
 3. Existing Test 只有在其行为与更高权威一致时才能作为 Expected Behavior 的证据。
-4. Technical Plan / ADR 可以约束修复方式，但不得覆盖 Product Intent。
+4. Technical Plan / ADR 可以约束修复方式，但不得覆盖 Product Intent；当前 Debug Fix 不得静默覆盖当前有效 ADR。
 5. Conversation History 不构成权威事实来源。
 6. 如果 Expected Behavior 与权威来源冲突或本身未定义，停止 Debug Fix，返回上游处理。
 
@@ -161,11 +162,13 @@ Actual:
 - 不新增未授权 Product Scope；
 - 不通过特殊分支掩盖更深层 Cause；
 - 避免无关重构扩大验证面；
-- 遵守 Existing Architecture / Durable Technical Decisions。
+- 遵守 Existing Architecture / Durable Technical Decisions / 当前有效 ADR。
 
 如果真正修复要求 materially change Product Intent / Scope，停止并返回上游。
 
 如果真正修复要求 Major Architecture Direction，停止并进入 `technical-plan` / Human Authority，而不是在 Debug Patch 中静默完成重大设计变更。
+
+如果调查发现修复需要形成新的跨功能长期架构决策，即使该决定本身尚未达到 Human Escalation 条件，也应停止在 Debug 中继续固化，返回 `technical-plan` 完成 ADR 评估。
 
 ### 9. Run Regression Verification
 
@@ -219,7 +222,7 @@ Review 不替代 Regression Verification，也不要求固定 Reviewer Agent。
 如果调查发现问题并非局部 Defect，明确返回：
 
 - `clarify-intent` / `specify`：Expected Behavior 未定义、冲突或 Product Intent 需要改变；
-- `technical-plan`：修复需要 Major / Durable Technical Redesign；
+- `technical-plan`：修复需要 Major / Durable Technical Redesign，或出现新的跨功能长期架构决策 / ADR Authority Gap；
 - Human / Explicit Policy：动作超出 Authority，或涉及高影响、不可逆、安全 / 隐私、未授权 External / Data Effect。
 
 ## Exit Conditions
@@ -229,7 +232,8 @@ Review 不替代 Regression Verification，也不要求固定 Reviewer Agent。
 - Root Cause 已被当前证据支持并得到处理；
 - 修复符合 Applicable Expected Behavior Authority；
 - 当前 Regression Evidence 已通过；
-- 不存在尚未处理的同一 Root Cause 阻塞项。
+- 不存在尚未处理的同一 Root Cause 阻塞项；
+- 不存在因本次调查暴露、但尚未返回 `technical-plan` 处理的长期 Architecture / ADR Authority Gap。
 
 仅仅“症状暂时消失”或“某次命令通过”不足以证明 Root Cause 已处理。
 
@@ -246,7 +250,7 @@ Review 不替代 Regression Verification，也不要求固定 Reviewer Agent。
 - 未授权 Shared / Production / External Side Effect；
 - Agent 无权执行的其他高影响或不可逆动作。
 
-普通、低影响、可逆且可由当前代码 / 证据判断的局部 Debug 决策由 Agent 自主处理。
+普通、低影响、可逆且可由当前代码 / 证据判断的局部 Debug 决策由 Agent 自主处理。需要新的长期架构决定但未触发 Human Escalation 时，返回 `technical-plan`，不在 Debug 中直接确立 ADR。
 
 ## Context Rules
 
@@ -254,6 +258,7 @@ Review 不替代 Regression Verification，也不要求固定 Reviewer Agent。
 - Progressive Disclosure，优先使用最小 Reproduction Context；
 - Conversation History 不作为权威知识；
 - Current Code / Runtime Evidence 解释 Actual Behavior，不定义 Expected Behavior；
+- Technical Plan / ADR 约束修复路径，不能被局部 Debug Patch 静默覆盖；
 - 不通过连续猜 Patch 替代 Root-cause Investigation；
 - Hypothesis 必须能够被证据支持或否定；
 - Regression Evidence 必须来自修复后的当前状态；
