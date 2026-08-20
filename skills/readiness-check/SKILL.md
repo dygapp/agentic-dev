@@ -1,13 +1,13 @@
 ---
 name: readiness-check
-description: Performs a read-only pre-execution gate across specification, optional technical plan, execution units, and governance. Use immediately before execution to return PASS or evidence-backed blocking and non-blocking findings; never repair authoritative artifacts inside the check.
+description: Performs a read-only pre-execution gate across specification, optional technical plan, execution units, domain and architecture authority, artifact lifecycle responsibilities, and governance. Use immediately before execution to return PASS or evidence-backed findings; never repair authoritative artifacts inside the check.
 ---
 
 # readiness-check
 
 ## Purpose
 
-在进入 Execute 前执行统一、只读的 Readiness Gate，判断当前 Specification、可选 Technical Plan、Execution Units、当前有效 Architecture / ADR Authority 与 Governance Context 是否已经足以安全进入实施。
+在进入 Execute 前执行统一、只读的 Readiness Gate，判断当前 Specification、可选 Technical Plan、Execution Units、相关 Domain / Architecture / ADR Authority、长期权威产物生命周期责任与 Governance Context 是否已经足以安全进入实施。
 
 本 Skill 只负责发现和分类 Readiness Findings，不修改 Specification、Technical Plan、Execution Units、ADR 或其他权威 Artifact。
 
@@ -37,6 +37,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 - Optional Technical Plan
 - Execution Units
 - Governance / Context Authority
+- Relevant Domain Authority（如存在）
 - Relevant Architecture / ADR Authority（如存在）
 
 只要求当前 Gate 所需的最小权威上下文，不要求加载完整 Conversation History 或完整仓库内容。
@@ -50,8 +51,8 @@ description: Performs a read-only pre-execution gate across specification, optio
 1. Repository Instructions、Method、Architecture 与其他更高优先级 Authority 约束低优先级 Artifact。
 2. Specification 定义 Product / Feature 的 WHAT / WHY；Technical Plan 与 Execution Units 不得反向改变已确认 Intent。
 3. Technical Plan 只在存在时作为 Design Readiness 输入；其内容不得通过 Silent Redefinition 改写 Specification。
-4. Execution Units 必须可追溯到 Specification，并遵守已确认的 Durable Technical Decisions、当前有效 ADR 与 Governance Rules。
-5. ADR / Architecture Authority 提供跨功能的长期架构约束；低层 Artifact 不得静默覆盖。
+4. Execution Units 必须可追溯到 Specification，并遵守已确认的 Durable Technical Decisions、当前有效 Domain / Architecture / ADR Authority 与 Governance Rules。
+5. Domain Authority 提供跨功能持续有效的业务事实；Architecture Context 提供当前有效架构状态；ADR 提供满足条件的重要架构决定及其理由。低层 Artifact 不得静默覆盖。
 6. Conversation History 不构成权威来源。
 7. `readiness-check` 没有修改更高层 Authority 以消除 Finding 的权限。
 
@@ -61,7 +62,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 
 ### 1. Confirm Checkable Inputs
 
-确认存在可检查的 Specification 和至少一个 Execution Unit，并识别当前适用的 Governance / Context Authority。
+确认存在可检查的 Specification 和至少一个 Execution Unit，并识别当前适用的 Domain / Architecture / Governance Authority。
 
 如果缺失：
 
@@ -80,6 +81,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 - Boundary / Failure Behavior 是否足以支持执行判断；
 - Acceptance Criteria 是否可观察、可验证；
 - Unit 所依赖的 Required Behavior 是否存在权威定义。
+- 已识别的 Domain Authority Candidate 是否已完成 `specify` 验证和授权路由。
 
 如果问题需要改变或补充 Product Intent，Blocking Finding 应返回 `clarify-intent` / `specify`，而不是由 Checker 决定需求。
 
@@ -93,9 +95,14 @@ description: Performs a read-only pre-execution gate across specification, optio
 - 是否与当前有效 Architecture / ADR Authority 一致；
 - 是否仍存在会跨 Unit 影响实现的重大技术不确定性。
 
-同时检查当前规划过程中是否存在已经形成、应进入长期架构权威但尚未形成或更新 ADR 的架构权威缺口（Architecture Authority Gap）。如果存在，形成 Blocking Finding 并返回 `technical-plan` 完成 ADR 评估。
+同时分别检查：
 
-如果没有 Technical Plan，不因“没有文档”本身判定失败。只有当输入表明实施前仍存在必须持久协调的技术决定，或存在未处理的长期架构决策时，才形成 Blocking Finding 并返回 `technical-plan`。
+- 是否存在应更新 Architecture Context、但尚未进入适当 Repository Authority 的架构权威缺口；
+- 是否存在满足 ADR 条件、但尚未创建、更新或取代 ADR 的决策记录缺口。
+
+任一缺口存在时形成 Blocking Finding，并返回 `technical-plan` 完成 Architecture Authority 更新与必要 ADR 评估。
+
+如果没有 Technical Plan，不因“没有文档”本身判定失败。只有当输入表明实施前仍存在必须持久协调的技术决定、未处理的 Architecture Context 变化或满足条件的 ADR 时，才形成 Blocking Finding 并返回 `technical-plan`。
 
 ### 4. Check Execution Readiness
 
@@ -117,13 +124,16 @@ description: Performs a read-only pre-execution gate across specification, optio
 检查当前工作是否违反：
 
 - Repository Instructions；
+- 当前有效 Domain Authority；
 - Engineering / Governance Rules；
-- 已确认 Architecture Decisions / ADR；
+- 当前有效 Architecture Context / ADR；
 - Authority、Impact、Reversibility 相关的 Human Escalation Boundary。
 
 如果继续执行需要未授权的高影响、不可逆、安全 / 隐私敏感或重大架构决策，形成 Blocking Finding 并升级到相应 Human / Repository Authority。
 
-如果问题不是授权冲突，而是需要形成新的长期架构决定，则返回 `technical-plan` 处理 ADR 评估，不由本 Skill 决定或持久化。
+如果当前工作已经要求创建或重大更新长期权威产物，但无法确定 Producer、Trigger、Consumer、Persistence、Update、Supersede 或 Escalation 责任，形成 Artifact Lifecycle Gap，阻止 `PASS` 并返回拥有相应事实或决定的职责层。
+
+如果问题不是授权冲突，而是需要形成新的长期领域事实，返回 `clarify-intent` / `specify`；需要更新 Architecture Context 或形成新的长期架构决定时，返回 `technical-plan`。本 Skill 不决定或持久化这些权威。
 
 ### 6. Classify Findings
 
@@ -185,7 +195,7 @@ Non-blocking Findings:  # optional
 
 ## Exit Conditions
 
-不存在 Blocking Finding，并且 `PASS` 有当前权威输入支持。
+不存在 Blocking Finding，包括未处理的 Domain / Architecture Authority 或 Artifact Lifecycle Gap，并且 `PASS` 有当前权威输入支持。
 
 如果存在 Blocking Finding，本 Skill 应输出 Findings 并停止继续进入 Execute；这表示 Readiness Gate **未满足 Exit Condition**，当前 Workflow 应返回相应职责层处理。
 
@@ -209,6 +219,7 @@ Non-blocking Findings:  # optional
 - Conversation History 不作为权威知识；
 - 不默认加载完整 Codebase；只有当前 Authority / Design 判断确实需要时才读取相关上下文；
 - Findings 必须基于当前输入和当前权威证据，不能依据未经验证的假设；
+- 只检查当前工作已经暴露的生命周期责任，不为了形式完整性要求每个阶段创建 Artifact；
 - User 不必显式调用，Controller / Workflow Runtime 可以自动发起；
 - 保持独立 Skill Contract，不与 `slice-work` 或 `execute-unit` 合并；
 - Gate 结束后不自动推进完整生命周期。

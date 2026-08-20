@@ -15,7 +15,7 @@ description: Clarifies only product-intent ambiguities that materially affect go
 
 - 新 Feature / Change 仍存在可能显著改变 Goal、Scope、User-visible Behavior、Business Boundary、Acceptance Result 或 Significant Non-functional Obligation 的问题；
 - Existing Intent 因新信息、冲突或范围变化需要重新确认；
-- Execute / Debug / Converge 发现上游 Product Intent 不明确并发生阶段回退；
+- Execute / Debug / Converge 发现上游 Product Intent 不明确，或长期领域事实缺失、冲突、失效并发生阶段回退；
 - 用户提出的目标可以理解，但存在少量高影响解释分支，需要先收敛再进入 Specification。
 
 ## Do Not Use When
@@ -160,7 +160,20 @@ Existing Intent、Existing Specification 或阶段回退信息可以作为相关
 
 本步骤不创建完整 Acceptance Criteria、Business Rule 结构或技术方案；这些属于后续职责。
 
-### 8. Evaluate Exit Condition
+### 8. Identify Durable Domain Fact Candidates
+
+检查已确认的 Product / Domain 信息中，是否存在预计会被多个功能、缺陷处理或独立工作流持续消费，并需要独立于当前 Feature 生命周期维护的业务术语、不变量或跨功能规则。
+
+如果存在：
+
+- 将其标记为 Domain Authority Candidate；
+- 记录最小 Authority Trace 和为什么可能具有跨功能长期价值；
+- 交给 `specify` 验证是否应创建、更新或取代 Domain Authority；
+- 不因为信息已在 Clarification 中确认，就直接把它提升为长期领域权威。
+
+代码、测试、当前系统行为或 Conversation History 可以提示候选，但不能单独授予长期业务权威。
+
+### 9. Evaluate Exit Condition
 
 检查是否仍存在会显著改变以下内容的关键未决问题：
 
@@ -193,6 +206,9 @@ Key Observable Behaviors:
 Confirmed Product Decisions:
 - <confirmed decision and concise authority basis when useful>
 
+Domain Authority Candidates:
+- <candidate, authority trace, and durable-value reason>  # only if any
+
 Remaining Blocking Questions:
 - <question, affected product dimension, and why it blocks>  # only if any
 ```
@@ -210,6 +226,7 @@ Remaining Blocking Questions:
 - Goal 与 Scope 足以进入 Specification；
 - 关键 Observable Behaviors 已可识别；
 - 已确认 Product Decisions 与未决问题没有混淆；
+- 已识别的长期领域事实候选已经交给 `specify`，没有只留在当前会话或临时 Clarification 中；
 - 不需要 Human 再回答任何会 materially change Product Intent / Acceptance 的问题。
 
 如果仍有 Remaining Blocking Questions，则本 Skill 尚未满足 Exit Condition。
@@ -236,7 +253,8 @@ Remaining Blocking Questions:
 - 不生成大篇幅永久讨论记录；
 - 不要求为 Clarification 单独创建永久 Artifact；
 - Existing Intent 重新确认时优先增量加载受影响部分，不重建无关上下文；
-- 阶段回退时只重新澄清暴露出的 Product Intent 问题，不重新开启已经稳定的无关决策；
+- 阶段回退时只重新澄清暴露出的 Product Intent / Domain Authority Candidate，不重新开启已经稳定的无关决策；
+- Clarification 只识别 Domain Authority Candidate，不拥有未授权的长期领域权威持久化权限；
 - 不自动调用 `specify` 或接管后续生命周期。
 
 ## Allowed Sub-skills / Disciplines

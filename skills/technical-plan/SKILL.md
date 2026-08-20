@@ -1,6 +1,6 @@
 ---
 name: technical-plan
-description: Resolves durable cross-unit HOW decisions needed to map a ready specification safely onto the current technical system, and evaluates whether resulting long-lived cross-feature architecture decisions require ADR persistence. Use for cross-module, data or persistence, external integration, migration, shared contract, deployment topology, or significant architecture decisions; skip when only local reversible implementation details remain.
+description: Resolves durable cross-unit HOW decisions, maintains cross-feature architecture context changes, and conditionally persists ADRs for decisions whose background or trade-offs need durable history. Use for cross-module, data, integration, migration, shared contract, deployment topology, or significant architecture work; skip when only local reversible implementation details remain.
 ---
 
 # technical-plan
@@ -11,7 +11,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 本 Skill 不是默认阶段产物生成器。若不存在必须跨 Unit 持久协调的技术不确定性，应明确返回“不需要 Technical Planning”，不制造长期 Technical Plan。
 
-当技术规划形成长期技术决策（Durable Technical Decision）时，本 Skill 还负责判断该决定是否已经超出当前功能（Feature）的协调范围，需要形成或更新架构决策记录（Architecture Decision Record，ADR）。ADR 是条件性长期架构权威，不是 Technical Plan 的固定组成部分。
+当技术规划改变需要跨当前功能持续消费的架构状态时，本 Skill 负责形成或更新适当的 Architecture Authority Artifact；其中只有需要长期保留决定背景、主要权衡或替代关系的重要架构决定才形成或更新架构决策记录（Architecture Decision Record，ADR）。ADR 是 Architecture Context 中的条件性决策记录，不等同于全部架构状态，也不是 Technical Plan 的固定组成部分。
 
 ## Use When
 
@@ -29,11 +29,13 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 如果多个 Execution Units 必须共享同一个长期技术决定才能安全实现或保持一致，也属于适用场景。
 
-如果 Execute、Systematic Debugging 或 Converge 暴露了新的长期架构决策，也应回到本 Skill 完成相应技术规划与 ADR 评估，而不是在代码、局部计划或下游 Artifact 中静默固化。
+如果 Execute、Systematic Debugging 或 Converge 暴露了新的长期架构状态、长期架构决策或现有 Architecture Context 失效，也应回到本 Skill 完成 Architecture Authority 更新与必要 ADR 评估，而不是在代码、局部计划或下游 Artifact 中静默固化。
+
+已经确认的技术要求会改变跨功能持续有效的 Architecture Context、需要维护 Architecture Authority 时，即使不需要单独持久化 Technical Plan，也属于本 Skill。
 
 ## Do Not Use When
 
-- Specification 可以直接、安全映射到实现；
+- Specification 可以直接、安全映射到实现，且不存在需要维护的 Architecture Context 或需要评估的 ADR；
 - 只需要当前 Execution Unit 的文件级操作顺序、Exact Test Commands 或 Local Implementation Details；
 - 技术选择属于普通、低影响、可逆的局部实现细节；
 - Product Intent / Specification 本身仍有阻塞问题；
@@ -60,12 +62,12 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 技术规划时遵守以下规则：
 
 1. Specification 定义 WHAT / WHY，Technical Plan 不得重新定义 Product Intent。
-2. Architecture / ADR 提供已确认的长期技术约束和决策。
+2. Architecture Context 提供当前有效的长期技术状态；ADR 提供满足条件的重要架构决定及其理由。两者都不能被 Technical Plan 静默覆盖。
 3. Current Codebase State 用于判断当前系统真实结构、能力和技术限制，但不能反向覆盖更高层 Product Authority。
 4. Technical Constraints 只有在具有当前权威依据时才能成为长期设计约束。
 5. Conversation History 不构成权威事实来源。
 6. 当前 Unit 的临时施工信息不是 Durable Technical Authority。
-7. 已确认 ADR 不得被 Technical Plan 静默覆盖；需要改变长期架构权威时，必须显式形成新的架构决策并处理既有 ADR 的更新或取代关系。
+7. 需要改变长期 Architecture Context 时，必须更新适当的架构权威；满足 ADR 条件时再处理 ADR 的创建、更新或取代关系。
 
 如果权威来源之间发生冲突，停止相关规划并升级；不得自行选择一个方便实现的解释继续。
 
@@ -89,13 +91,15 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 - 如果留到各 Unit 独立决定，是否会造成返工、冲突、不可安全拆分或不可安全实施；
 - 是否属于需要长期保存的 Durable Decision，而不是单 Unit JIT Detail。
 
-如果这些条件都不成立，并且 Specification 可以直接、安全映射到实现，输出：
+如果这些条件都不成立、Specification 可以直接安全映射到实现，并且不存在需要维护的 Architecture Context 或需要评估的 ADR，输出：
 
 ```text
 不需要 Technical Planning
 ```
 
 然后退出，不创建长期 Artifact。
+
+如果不需要单独持久化 Technical Plan，但已经确认 Architecture Context 必须更新，继续执行第 8 步；“无需 Technical Plan Artifact”不等于“无需维护 Architecture Authority”。
 
 ### 3. Frame the Durable Technical Questions
 
@@ -170,9 +174,20 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 升级时只提出解除当前阻塞所需的技术决策，不扩大为无关架构讨论。
 
-### 8. Evaluate ADR Persistence
+### 8. Maintain Architecture Context and Evaluate ADR Persistence
 
-在长期技术决策已经形成后，逐项判断是否需要进入 ADR / Architecture Authority。
+在长期技术决策已经形成后，先判断它是否改变需要跨当前功能持续消费的系统结构、组件与数据边界、共享 / 公共契约、集成 / 部署约束或其他 Architecture Context。
+
+如果不改变跨功能持续有效的架构状态，决定可以继续留在当前 Feature 的 Technical Plan。
+
+如果改变 Architecture Context：
+
+1. 按当前 Repository Authority 选择适当的架构说明、契约、模型、代码或其他可发现载体；
+2. 创建或更新相应 Architecture Authority Artifact；
+3. 旧架构状态失效时，显式更新状态、引用或取代关系，避免新旧约束同时被视为有效；
+4. 对重大架构方向、高影响难逆权衡或超出 Agent Authority 的决定，在接受或持久化为当前权威前升级。
+
+完成 Architecture Context 判断后，再评估其中的重要决定是否需要 ADR。ADR 用于保留决定背景、主要权衡、后果或替代关系，不用于复制全部当前架构状态。
 
 当决定具有以下一项或多项特征时，应显式评估形成或更新 ADR：
 
@@ -197,7 +212,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 4. 按当前 Repository Authority 选择适当载体，不强制固定 `adr/` 目录、文件名或模板；
 5. 对重大架构方向、高影响难逆权衡或超出 Agent Authority 的决定，在接受或持久化为当前权威前升级。
 
-如果不满足 ADR 条件，则决定继续留在 Technical Plan，不为了形式完整性制造 ADR。
+如果不满足 ADR 条件，不为了形式完整性制造 ADR；但只要决定已经改变 Architecture Context，仍必须完成前述 Architecture Authority 更新，不能只留在 Technical Plan。
 
 ### 9. Record Durable Technical Decisions
 
@@ -223,24 +238,26 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 这些内容属于 Execute 内的 JIT Execution Plan。
 
-需要跨功能长期约束后续工作的架构决定，不应只埋在 Technical Plan 中；它们应按第 8 步进入相应 ADR / Architecture Authority。
+需要跨功能持续有效的架构状态不应只埋在 Technical Plan 中；它们应按第 8 步进入相应 Architecture Authority，其中满足条件的重要决定再形成或更新 ADR。
 
 ### 10. Check Cross-unit and Architecture Coherence
 
-检查最终 Technical Plan 与相关 ADR：
+检查最终 Technical Plan、Architecture Authority 与相关 ADR：
 
 - 是否覆盖所有必须在实施前解决的 Durable Technical Questions；
 - 不同技术决定之间是否互相一致；
-- 是否与 Specification、Architecture、当前有效 ADR 冲突；
+- 是否与 Specification、当前 Architecture Context、有效 ADR 冲突；
 - 是否仍存在会阻止安全切分或实施的跨 Unit 技术不确定性；
-- 是否存在应形成 / 更新 ADR 但尚未进入适当 Repository Authority 的架构权威缺口；
+- 是否存在应更新 Architecture Context 但尚未进入适当 Repository Authority 的架构权威缺口；
+- 是否存在满足 ADR 条件但尚未创建、更新或取代 ADR 的决策记录缺口；
+- 本次新增或重大修改的长期架构权威是否具有明确的生命周期责任；
 - 是否错误持久化了只属于单 Unit 的施工细节。
 
-如果仍存在 Blocking Technical Uncertainty 或 ADR / Architecture Authority Gap，则继续在当前职责内解决或按 Escalation Conditions 升级。
+如果仍存在 Blocking Technical Uncertainty、Architecture Authority / ADR Gap 或 Artifact Lifecycle Gap，则继续在当前职责内解决或按 Escalation Conditions 升级。
 
 ### 11. Produce the Result
 
-如果无需长期 Technical Planning：
+如果无需长期 Technical Plan Artifact，且没有 Architecture Authority 更新：
 
 ```text
 不需要 Technical Planning
@@ -248,7 +265,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 不创建长期 Plan Artifact。
 
-如果需要，则输出只包含 Durable Technical Decisions 的 Technical Plan，并按第 8 步形成必要的 ADR / Architecture Authority 更新。
+如果需要，则输出只包含 Durable Technical Decisions 的 Technical Plan，并按第 8 步形成必要的 Architecture Authority 更新与条件性 ADR。如果不需要 Technical Plan Artifact、但需要 Architecture Authority 更新，则明确前者不需要并完成后者。
 
 `technical-plan` 到此退出，不自动创建 Execution Units，也不自动进入 Execute。
 
@@ -260,7 +277,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 不需要 Technical Planning
 ```
 
-这表示 Specification 可以直接、安全进入 Slice & Ready；不要求为了流程完整性创建空 Plan 或 ADR。
+这表示不要求为了流程完整性创建空 Plan 或 ADR。只有不存在待完成的 Architecture Authority 更新时，Specification 才可以直接、安全进入 Slice & Ready。
 
 ### Durable Technical Planning Needed
 
@@ -276,9 +293,18 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 这些是语义类别，不是固定模板。只记录对当前功能跨 Unit 协调有持续价值的内容。
 
-### Conditional ADR / Architecture Authority Update
+### Architecture Authority Update
 
-只有满足 ADR 条件时，附加形成或更新相应长期架构权威。内容应足以记录：
+当决定改变跨功能持续有效的 Architecture Context 时，形成或更新 Consumer Repository 选择的架构权威载体，并按需说明：
+
+- 当前有效的架构状态；
+- 适用范围与消费者；
+- 更新与取代关系；
+- 必要的 Authority / Escalation 状态。
+
+### Conditional ADR
+
+只有满足 ADR 条件时，附加形成或更新决策记录。内容应足以记录：
 
 - Context / Decision；
 - 主要 Alternatives / Trade-offs；
@@ -301,8 +327,9 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 - 实施前必须解决的跨 Unit 技术不确定性已经解决，或已经确认不存在这类不确定性；
 - 最终决定与 Specification Intent 一致，没有 Silent Redefinition；
 - 对当前功能需要长期协调的技术边界已经形成足够清晰的 Durable Decisions；
-- 需要形成或更新的长期架构决定已经进入适当 Repository Authority；
-- 不再存在会阻止安全进入 Slice & Ready 的 Blocking Technical Uncertainty 或 ADR / Architecture Authority Gap。
+- 需要形成或更新的 Architecture Context 已经进入适当 Repository Authority；
+- 满足 ADR 条件的重要决定已经形成、更新或取代相应 ADR；
+- 不再存在会阻止安全进入 Slice & Ready 的 Blocking Technical Uncertainty、Architecture Authority / ADR Gap 或 Artifact Lifecycle Gap。
 
 “无需 Technical Planning”本身也是合法完成结果。
 
@@ -327,7 +354,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 - Conversation History 不作为权威知识；
 - 允许读取 Relevant Architecture / ADR / Current Codebase State，但 Current Code 不能反向覆盖 Product Authority；
 - Technical Plan 只持久化当前功能跨 Unit 有持续协调价值的 Durable Decisions；
-- 跨功能、需要长期约束后续工作的架构决定按条件进入 ADR / Architecture Authority；
+- 跨功能持续有效的架构状态进入 Architecture Authority；其中需要保留背景、权衡或替代关系的重要决定按条件进入 ADR；
 - 文件级施工步骤、Exact Test Commands 与 Local Implementation Details 留给 Execute 内 JIT Execution Plan；
 - 不强制固定 Technical Plan 文件、ADR 目录、Diagram、Markdown / YAML 模板；
 - 不自动调用 `slice-work`、`readiness-check`、`execute-unit` 或接管后续生命周期。
