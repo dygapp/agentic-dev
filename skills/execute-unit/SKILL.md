@@ -146,6 +146,15 @@ Fresh Execution Context 是逻辑上下文边界，不要求绑定某个特定 A
 
 只有在仓库中实际发现、验证或由 Repository Rules 明确规定的命令，才可以作为当前 Verification Mechanism 使用。
 
+选择验证机制时还应确认：
+
+- 当前 Runtime 能否重新取得与目标提交对应的验证证据；
+- trigger / Branch / PR 路径是否满足当前 Repository Policy；
+- 验证反馈成本是否与当前修复阶段和风险相称；
+- 高成本 Completion Verification 是否可以与低成本 Fast Feedback 分层，而不削弱最终 Completion Evidence。
+
+当 Consumer 使用 GitHub Actions，且 CI trigger、Branch / PR 路径、证据可观察性、环境准备成本或 Runtime diagnostics 会实质影响验证可靠性时，可按需调用 `github-actions-verification`。该平台专项 Skill 只优化验证路径，不改变 Current Unit 的 Completion Condition，也不自动执行 Integration。
+
 如果无法确定必要验证方式：
 
 - 继续检查最小相关仓库上下文；
@@ -223,6 +232,8 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 - lint / static analysis；
 - integration checks；
 - 其他必要验证。
+
+如果 GitHub Actions 是当前 Completion Evidence 的主要来源，可使用 `github-actions-verification` 将 Fast Feedback 与 Completion Verification 分层，并优化预构建 Runtime、Artifact 复用、timeout、过期 Run 取消和 diagnostics；这些优化不能降低 Current Unit 最终必须满足的验证覆盖。
 
 不得把历史通过结果、未执行命令、旧日志或推测结果当作 Current Evidence。
 
@@ -360,6 +371,7 @@ Review 逻辑上至少区分两个维度：
 - 不依赖完整 Conversation History；
 - Current Code / Tests 表示 Current System State，但不能反向覆盖 Product Authority；
 - Repository-specific Verification Commands 必须运行时从 Repository Rules / Actual State 发现，不硬编码；
+- 平台专项验证能力只在当前 Repository / Runtime 真实满足触发条件时加载，不成为所有 Unit 的默认上下文；
 - JIT Execution Plan 默认临时存在，随 Current Unit Execution Context 结束；
 - 不把单 Unit Local Details 提前升级为 Durable Technical Plan；
 - 一次只执行一个 Unit；
@@ -371,6 +383,7 @@ Review 逻辑上至少区分两个维度：
 ## Allowed Sub-skills / Disciplines
 
 - `systematic-debug`
+- `github-actions-verification`（when applicable）
 - Verification-before-claim
 - TDD（when useful）
 - Code Review（risk-based discipline）
