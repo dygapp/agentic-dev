@@ -12,11 +12,11 @@
 复核后确认以下边界：
 
 1. `clarify-intent` 与 `specify` 保持独立 Skill。前者解决 Product Intent 层关键歧义，后者负责形成或更新 WHAT / WHY 权威。小型安全修改可以采用轻量路径，但不合并两者的语义职责。
-2. `technical-plan` 只处理跨 Execution Unit 有持续协调价值的长期技术决定；Execute 内的 JIT Execution Plan 只服务当前 Unit，默认不持久化。
+2. `technical-plan` 处理跨 Execution Unit 有持续协调价值的长期技术决定，并对其中形成的长期技术决策执行 ADR 评估；只有跨功能形成长期架构权威的决定才按条件形成或更新 ADR。Execute 内的 JIT Execution Plan 只服务当前 Unit，默认不持久化。
 3. `slice-work` 负责生成和塑形 Execution Units；`readiness-check` 是独立 Gate，只检查跨 Artifact 一致性与阻塞项，不静默修改权威 Artifact。
 4. `execute-unit` 只执行并证明一个 Execution Unit，不自动执行整个 Feature，也不自动进入 `converge` 或 Integration。
 5. `systematic-debug` 是 Defect / Unexpected Failure 的调查路径，可以由 `execute-unit` 调用，也可以独立用于缺陷工作；它不替代普通 TDD 的预期失败步骤。
-6. `converge` 负责 Feature-wide 收敛检查。发现 Gap 时描述缺口并触发必要的重新切分或阶段回退，不通过静默修改 Specification / Technical Plan 来“修平”差异。
+6. `converge` 负责 Feature-wide 收敛检查。发现 Gap 时描述缺口并触发必要的重新切分或阶段回退，不通过静默修改 Specification / Technical Plan / ADR 来“修平”差异。
 7. Verification-before-claim、Code Review、TDD、Context Discipline 和 Human Escalation 暂继续作为内嵌纪律，不进入第一批独立 Skill。
 8. `handoff` 暂不进入第一批核心 Skill。它属于 Transition Skill，后续在核心 Feature / Defect 路径稳定后再评估。
 
@@ -26,12 +26,12 @@
 |---|---|---|---|---|
 | `clarify-intent` | User Intent + Authority Context | Clarified Goal / Scope / Product Decisions | 不再存在阻塞 Intent 的关键歧义 | 多种解释会导致 materially different User-visible Behavior，或 Scope / Intent 需要改变 |
 | `specify` | Clarified Intent + Governance / Domain Context + Existing Specification（如有） | WHAT / WHY Specification | Fresh Agent 能判断 Required Behavior、Boundary 与 Completion | Requirement / Authority Conflict 或 Product Decision 未解决 |
-| `technical-plan` | Specification + Architecture / Code Constraints | Durable Technical Decisions，或确认无需长期 Technical Plan | 实施前必须解决的技术不确定性已解决 | Major Architecture、Destructive / Irreversible Trade-off 或未授权 External Effect |
+| `technical-plan` | Specification + Architecture / ADR / Code Constraints | Durable Technical Decisions + 条件性 ADR / Architecture Authority Update，或确认无需长期 Technical Plan | 技术不确定性已解决，且需要形成或更新的长期架构决定已进入适当 Repository Authority | Major Architecture、Destructive / Irreversible Trade-off 或未授权 External Effect |
 | `slice-work` | Specification + Optional Technical Plan | Vertical Context-fit Execution Units | Requirements 获得合理 Execution Coverage，Units 可进入 Readiness Gate | 无法在不改变 Scope / Intent / Required Design 的情况下安全拆分 |
 | `readiness-check` | Spec + Optional Plan + Units + Governance | `PASS` 或 Blocking / Non-blocking Findings | 无 Blocking Finding | Authoritative Sources Conflict 或高影响 Choice 无权自主裁决 |
 | `execute-unit` | One Unit + Minimum Authority Context + Current Code / Tests | Implementation + Current Evidence + Result State | Completion Condition 有当前证据支持 | 必须改变 Product Intent / Major Design，或动作超出授权 / 不可逆 / 安全隐私敏感 |
 | `systematic-debug` | Observed Problem + Expected Behavior + Runnable Context | Root Cause + Minimal Fix + Regression Evidence | Root Cause 已处理且 Regression Evidence 通过 | Expected Behavior 未定义/冲突，或修复要求重大设计变更 |
-| `converge` | Specification + Optional Plan + Units + System State + Evidence | `READY` 或 `GAPS` | Feature 与权威 Intent 和 Current Evidence 收敛 | Gap 需要 Product / Architecture Authority，或权威来源冲突 |
+| `converge` | Specification + Optional Plan + Units + System State + Evidence | `READY` 或 `GAPS` | Feature 与权威 Intent、Architecture / ADR Authority 和 Current Evidence 收敛 | Gap 需要 Product / Architecture Authority，或权威来源冲突 |
 
 ## 3. `clarify-intent`
 
@@ -183,7 +183,7 @@ Fresh Agent 只读取 Specification 与最小必要 Repository Context，就能�
 
 ### Purpose
 
-在 Specification 无法直接、安全映射到当前技术系统时，解决跨 Execution Unit 有持续协调价值的长期 HOW 决策。
+在 Specification 无法直接、安全映射到当前技术系统时，解决跨 Execution Unit 有持续协调价值的长期 HOW 决策，并判断其中形成的长期技术决策（Durable Technical Decision）是否需要进入 ADR / Architecture Authority。
 
 ### Use When
 
@@ -196,6 +196,8 @@ Fresh Agent 只读取 Specification 与最小必要 Repository Context，就能�
 - Shared / Public Contract Change
 - Deployment Topology Change
 - Significant Architecture Trade-off
+
+如果 Execute、Systematic Debugging 或 Converge 暴露新的长期架构决策，也应返回 `technical-plan` 完成相应 ADR 评估。
 
 ### Do Not Use When
 
@@ -213,7 +215,7 @@ Fresh Agent 只读取 Specification 与最小必要 Repository Context，就能�
 
 ### Authority Sources
 
-Specification 定义 WHAT / WHY，Architecture / ADR / Current Codebase 提供技术约束。Technical Plan 不得静默重定义 Product Intent。
+Specification 定义 WHAT / WHY，Architecture / ADR / Current Codebase 提供技术约束。Technical Plan 不得静默重定义 Product Intent，也不得静默覆盖当前有效 ADR。
 
 ### Procedure
 
@@ -221,12 +223,15 @@ Specification 定义 WHAT / WHY，Architecture / ADR / Current Codebase 提供�
 2. 若不存在，不创建为创建而创建的长期 Plan，并返回 Slice & Ready。
 3. 若存在，识别 Technical Approach、Boundaries、Data / Contracts、Important Seams 等必要决定。
 4. 评估 Migration、Testing Strategy、Risks / Constraints。
-5. 检查是否擅自改变 Specification。
-6. 对超出授权的 Major Architecture / Irreversible Trade-off 升级。
+5. 检查是否擅自改变 Specification 或违反当前有效 Architecture / ADR Authority。
+6. 对已经形成的长期技术决策执行 ADR 评估：判断其是否需要跨功能长期约束后续工作，以及保留选择理由、主要权衡或替代关系是否具有持续价值。
+7. 需要 ADR 时，判断创建、更新或取代关系，并保留必要的 Context、Decision、Alternatives / Trade-offs、Consequences 与 Superseded / Replaced 关系；不强制固定 `adr/` 目录、文件名或模板。
+8. 对超出授权的重大架构方向（Major Architecture Direction）、高影响难逆权衡或其他未授权 External Effect 升级。
+9. 检查最终 Technical Plan 与 ADR / Architecture Authority 是否一致，并确认不存在未处理的架构权威缺口。
 
 ### Outputs
 
-只记录跨 Unit 有持续价值的技术决策：
+只记录当前功能跨 Unit 有持续价值的技术决策：
 
 - Technical Approach
 - Component Boundaries
@@ -236,25 +241,30 @@ Specification 定义 WHAT / WHY，Architecture / ADR / Current Codebase 提供�
 - Testing Strategy
 - Risks / Constraints
 
-若无需长期 Technical Plan，则明确返回“不需要 Technical Planning”，不制造持久 Artifact。
+若某项决定满足 ADR 条件，附加形成或更新相应 ADR / Architecture Authority；若不满足，则继续留在 Technical Plan，不为了形式完整性制造 ADR。
+
+若无需长期 Technical Plan，则明确返回“不需要 Technical Planning”，不制造持久 Artifact 或 ADR。
 
 ### Exit Conditions
 
-实施前必须解决的技术不确定性已经解决，且未改变 Specification Intent。
+实施前必须解决的技术不确定性已经解决，且未改变 Specification Intent；需要形成或更新的长期架构决定已经进入适当 Repository Authority，不存在未处理的 ADR / Architecture Authority Gap。
 
 ### Escalation Conditions
 
-- Major Architecture Direction；
+- 重大架构方向（Major Architecture Direction）；
 - Destructive / Hard-to-reverse Data Operation；
 - Security / Privacy Sensitive Decision；
 - 未授权 Shared / Production / External Side Effect；
+- Agent 无权自主决定的高影响或不可逆权衡；
 - 必须改变 Product Intent 才能继续。
 
 ### Context Rules
 
 - 允许读取 Relevant Architecture / ADR / Current Code；
-- 只持久化跨 Unit 的 Durable Decisions；
-- 文件级施工步骤、Exact Test Commands 和 Local Implementation Details 留给 JIT Execution Plan。
+- Technical Plan 只持久化当前功能跨 Unit 的 Durable Decisions；
+- 跨功能、需要长期约束后续工作的架构决定按条件进入 ADR / Architecture Authority；
+- 文件级施工步骤、Exact Test Commands 和 Local Implementation Details 留给 JIT Execution Plan；
+- 不强制固定 Technical Plan 文件、ADR 目录或统一模板。
 
 ### Allowed Sub-skills / Disciplines
 
@@ -369,9 +379,9 @@ constraints
 ### Procedure
 
 1. 检查 Specification Readiness：Clarity、Boundary、Acceptance Observability。
-2. 检查 Design Readiness：覆盖 Specification，且无 Silent Redefinition。
+2. 检查 Design Readiness：覆盖 Specification，无 Silent Redefinition；Technical Planning 产生或更新 ADR 时，相关 Units 必须遵守当前有效的架构约束。
 3. 检查 Execution Readiness：Coverage、Orphan Work、Dependencies、Context-fit、Completion Conditions。
-4. 检查 Governance Readiness：不违反 Repository Instructions、Engineering Rules、Architecture Decisions。
+4. 检查 Governance Readiness：不违反 Repository Instructions、Engineering Rules、Architecture Decisions / ADR；存在未解决的 ADR / Architecture Authority Gap 时判为 Blocking。
 5. 将 Findings 区分为 Blocking / Non-blocking。
 6. 若无 Blocking Finding，输出 `PASS`。
 
@@ -444,17 +454,18 @@ constraints
 6. Implement 当前 Unit 所需最小变更。
 7. Run Targeted Verification。
 8. 对 Unexpected Failure 调用 `systematic-debug`。
-9. Review when risk warrants，并逻辑区分 Specification Compliance 与 Engineering Quality。
-10. Record Current Evidence。
+9. 如果实施暴露新的跨功能长期架构决策，不在代码或局部 JIT Plan 中静默固化；返回 `technical-plan` 完成 ADR 评估。
+10. Review when risk warrants，并逻辑区分 Specification Compliance 与 Engineering Quality。
+11. Record Current Evidence。
 
 ### Outputs
 
 - Implementation
 - Tests / Verification Evidence
 - Result State
-- Stage Return / Authoritative Update Required（如执行发现上游事实必须改变）
+- Stage Return / Authoritative Update Required（如执行发现上游事实或长期 Architecture / ADR Authority 必须改变）
 
-`execute-unit` 不通过静默修改 Product Intent 或 Major Technical Design 来让当前实现“通过”。
+`execute-unit` 不通过静默修改 Product Intent、Major Technical Design 或 ADR 来让当前实现“通过”。
 
 ### Exit Conditions
 
@@ -531,14 +542,15 @@ Expected Behavior 必须来自 Applicable Authority；Current Code / Runtime Evi
 5. Establish Failing / Reproduction Evidence。
 6. Apply Minimal Root-cause Fix。
 7. Run Regression Verification。
-8. Review if warranted。
+8. 如果 Root Cause 暴露新的跨功能长期架构决策，返回 `technical-plan` 完成 ADR 评估，不在 Debug 中静默建立长期 Architecture Authority。
+9. Review if warranted。
 
 ### Outputs
 
 - Root-cause Statement
 - Minimal Fix
 - Regression Evidence
-- Required Stage Return / Escalation（如 Expected Behavior 或 Design 不再有效）
+- Required Stage Return / Escalation（如 Expected Behavior、Design 或长期 Architecture / ADR Authority 不再有效）
 
 ### Exit Conditions
 
@@ -568,7 +580,7 @@ Root Cause 已处理，且当前 Regression Evidence 通过。
 
 ### Purpose
 
-从 Feature-wide 视角判断 Current System 是否真正符合权威 Specification，并形成 `READY` 或 `GAPS`。
+从 Feature-wide 视角判断 Current System 是否真正符合权威 Specification 与当前有效 Architecture / ADR Authority，并形成 `READY` 或 `GAPS`。
 
 ### Use When
 
@@ -586,13 +598,14 @@ Root Cause 已处理，且当前 Regression Evidence 通过。
 
 - Specification
 - Technical Plan（如存在）
+- Relevant Architecture / ADR Authority
 - Execution Units / Status
 - Current Implemented System
 - Current Verification Evidence
 
 ### Authority Sources
 
-Specification 是 Feature Intent 的主要权威；Technical Plan 不能覆盖 Product Intent。Current System / Evidence 只用于判断是否收敛。
+Specification 是 Feature Intent 的主要权威；Technical Plan 不能覆盖 Product Intent，且实现不得违反当前有效 Architecture / ADR Authority。Current System / Evidence 只用于判断是否收敛。
 
 ### Procedure
 
@@ -603,9 +616,10 @@ Specification 是 Feature Intent 的主要权威；Technical Plan 不能覆盖 P
 5. 检查 Obsolete Technical Plan。
 6. 检查 Unverified Critical Behavior。
 7. 检查 Cross-unit Integration Gap。
-8. 形成 `READY` 或 `GAPS`。
-9. 对可在现有 Intent / Design 下修正的 Gap，描述补充/修正 Execution Work，并交回 `slice-work` 塑形为 Units。
-10. 对需要改变 Product Intent / Major Design 的 Gap，回到相应上游阶段或升级 Human Authority。
+8. 检查 Architecture / ADR Gap，包括实现违反当前有效 ADR，或存在应形成 / 更新但尚未进入 Repository Authority 的长期架构决定。
+9. 形成 `READY` 或 `GAPS`。
+10. 对可在现有 Intent / Design 下修正的 Gap，描述补充/修正 Execution Work，并交回 `slice-work` 塑形为 Units。
+11. 对需要改变 Product Intent 的 Gap，回到相应上游阶段或升级 Human Authority；对需要新的长期架构决定的 Gap，返回 `technical-plan` 完成 ADR 评估。
 
 ### Outputs
 
@@ -624,7 +638,7 @@ GAPS
 
 ### Exit Conditions
 
-Feature Behavior、Implementation State 和 Current Verification Evidence 已与 Specification 收敛一致，可以进入 **Ready to Integrate**。
+Feature Behavior、Implementation State 和 Current Verification Evidence 已与 Specification 收敛一致，且实现未违反当前有效 Architecture / ADR Authority，可以进入 **Ready to Integrate**。
 
 ### Escalation Conditions
 

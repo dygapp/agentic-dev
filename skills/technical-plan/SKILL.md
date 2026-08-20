@@ -1,6 +1,6 @@
 ---
 name: technical-plan
-description: Resolves durable cross-unit HOW decisions needed to map a ready specification safely onto the current technical system. Use for cross-module, data or persistence, external integration, migration, shared contract, deployment topology, or significant architecture decisions; skip when only local reversible implementation details remain.
+description: Resolves durable cross-unit HOW decisions needed to map a ready specification safely onto the current technical system, and evaluates whether resulting long-lived cross-feature architecture decisions require ADR persistence. Use for cross-module, data or persistence, external integration, migration, shared contract, deployment topology, or significant architecture decisions; skip when only local reversible implementation details remain.
 ---
 
 # technical-plan
@@ -10,6 +10,8 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 在 Specification 无法直接、安全映射到当前技术系统时，解决跨 Execution Unit 有持续协调价值的长期 HOW 决策。
 
 本 Skill 不是默认阶段产物生成器。若不存在必须跨 Unit 持久协调的技术不确定性，应明确返回“不需要 Technical Planning”，不制造长期 Technical Plan。
+
+当技术规划形成长期技术决策（Durable Technical Decision）时，本 Skill 还负责判断该决定是否已经超出当前功能（Feature）的协调范围，需要形成或更新架构决策记录（Architecture Decision Record，ADR）。ADR 是条件性长期架构权威，不是 Technical Plan 的固定组成部分。
 
 ## Use When
 
@@ -27,6 +29,8 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 如果多个 Execution Units 必须共享同一个长期技术决定才能安全实现或保持一致，也属于适用场景。
 
+如果 Execute、Systematic Debugging 或 Converge 暴露了新的长期架构决策，也应回到本 Skill 完成相应技术规划与 ADR 评估，而不是在代码、局部计划或下游 Artifact 中静默固化。
+
 ## Do Not Use When
 
 - Specification 可以直接、安全映射到实现；
@@ -36,6 +40,8 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 - 当前目标是拆分 Execution Units、执行代码或验证实现。
 
 不要因为“技术上还有很多细节没决定”就自动创建长期 Plan。只有对跨 Unit 安全实施和持续协调有价值的决定才属于本 Skill。
+
+同样，不要因为进入 Technical Planning 就自动创建 ADR。只有满足长期架构权威条件的决定才进入 ADR。
 
 ## Inputs
 
@@ -59,6 +65,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 4. Technical Constraints 只有在具有当前权威依据时才能成为长期设计约束。
 5. Conversation History 不构成权威事实来源。
 6. 当前 Unit 的临时施工信息不是 Durable Technical Authority。
+7. 已确认 ADR 不得被 Technical Plan 静默覆盖；需要改变长期架构权威时，必须显式形成新的架构决策并处理既有 ADR 的更新或取代关系。
 
 如果权威来源之间发生冲突，停止相关规划并升级；不得自行选择一个方便实现的解释继续。
 
@@ -128,7 +135,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 - 是否减少跨 Unit 隐藏耦合；
 - 是否支持可验证的实施边界；
 - 是否引入 Migration / Compatibility / Operational Risk；
-- 是否存在高影响、不可逆或超出 Agent Authority 的 Trade-off。
+- 是否存在高影响、不可逆或超出 Agent Authority 的权衡（Trade-off）。
 
 普通、低影响、可逆的局部实现选择不需要在长期 Technical Plan 中冻结，可以留给 Execute。
 
@@ -154,7 +161,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 出现以下情况时停止并升级：
 
-- Major Architecture Direction；
+- 重大架构方向（Major Architecture Direction）；
 - Destructive / Hard-to-reverse Data Operation；
 - Security / Privacy Sensitive Decision；
 - 未授权 Shared / Production / External Side Effect；
@@ -163,9 +170,38 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 升级时只提出解除当前阻塞所需的技术决策，不扩大为无关架构讨论。
 
-### 8. Record Durable Technical Decisions
+### 8. Evaluate ADR Persistence
 
-只记录对跨 Unit 实施有持续协调价值的最终技术决定。
+在长期技术决策已经形成后，逐项判断是否需要进入 ADR / Architecture Authority。
+
+当决定具有以下一项或多项特征时，应显式评估形成或更新 ADR：
+
+- 预计约束未来多个功能、模块或独立工作流；
+- 改变系统级组件、数据、集成、部署或共享 / 公共契约边界（Shared / Public Contract Boundary）；
+- 替换成本较高、难以安全回滚，或形成长期兼容 / 迁移义务；
+- 多个合理方案具有实质不同的长期后果，需要保留选择理由与主要权衡；
+- 后续 Agent 若不知道该决定及其理由，容易重新打开已关闭的架构选择或产生冲突实现。
+
+以下内容通常不形成 ADR：
+
+- 只服务当前功能的普通 Technical Plan Decision；
+- 单 Unit 内局部、低影响、可逆的实现选择；
+- 文件、命令、编辑顺序等 JIT Detail；
+- 尚未形成稳定决定的探索记录。
+
+如果需要 ADR：
+
+1. 判断应创建新的 ADR、更新现有 ADR，还是以新决定取代旧 ADR；
+2. 保留足以解释决定的 Context、Decision、主要 Alternatives / Trade-offs 与 Consequences；
+3. 新决定取代旧 ADR 时显式保留被取代 / 替换（Superseded / Replaced）关系；
+4. 按当前 Repository Authority 选择适当载体，不强制固定 `adr/` 目录、文件名或模板；
+5. 对重大架构方向、高影响难逆权衡或超出 Agent Authority 的决定，在接受或持久化为当前权威前升级。
+
+如果不满足 ADR 条件，则决定继续留在 Technical Plan，不为了形式完整性制造 ADR。
+
+### 9. Record Durable Technical Decisions
+
+只记录对当前功能及其跨 Unit 实施有持续协调价值的最终技术决定。
 
 按需包含：
 
@@ -187,19 +223,22 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 这些内容属于 Execute 内的 JIT Execution Plan。
 
-### 9. Check Cross-unit Coherence
+需要跨功能长期约束后续工作的架构决定，不应只埋在 Technical Plan 中；它们应按第 8 步进入相应 ADR / Architecture Authority。
 
-检查最终 Technical Plan：
+### 10. Check Cross-unit and Architecture Coherence
+
+检查最终 Technical Plan 与相关 ADR：
 
 - 是否覆盖所有必须在实施前解决的 Durable Technical Questions；
 - 不同技术决定之间是否互相一致；
-- 是否与 Specification、Architecture、ADR 冲突；
+- 是否与 Specification、Architecture、当前有效 ADR 冲突；
 - 是否仍存在会阻止安全切分或实施的跨 Unit 技术不确定性；
+- 是否存在应形成 / 更新 ADR 但尚未进入适当 Repository Authority 的架构权威缺口；
 - 是否错误持久化了只属于单 Unit 的施工细节。
 
-如果仍存在 Blocking Technical Uncertainty，则继续在当前职责内解决或按 Escalation Conditions 升级。
+如果仍存在 Blocking Technical Uncertainty 或 ADR / Architecture Authority Gap，则继续在当前职责内解决或按 Escalation Conditions 升级。
 
-### 10. Produce the Result
+### 11. Produce the Result
 
 如果无需长期 Technical Planning：
 
@@ -209,7 +248,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 不创建长期 Plan Artifact。
 
-如果需要，则输出只包含 Durable Technical Decisions 的 Technical Plan。
+如果需要，则输出只包含 Durable Technical Decisions 的 Technical Plan，并按第 8 步形成必要的 ADR / Architecture Authority 更新。
 
 `technical-plan` 到此退出，不自动创建 Execution Units，也不自动进入 Execute。
 
@@ -221,7 +260,7 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 不需要 Technical Planning
 ```
 
-这表示 Specification 可以直接、安全进入 Slice & Ready；不要求为了流程完整性创建空 Plan。
+这表示 Specification 可以直接、安全进入 Slice & Ready；不要求为了流程完整性创建空 Plan 或 ADR。
 
 ### Durable Technical Planning Needed
 
@@ -235,12 +274,22 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 - Testing Strategy
 - Risks / Constraints
 
-这些是语义类别，不是固定模板。只记录对跨 Unit 有持续价值的内容。
+这些是语义类别，不是固定模板。只记录对当前功能跨 Unit 协调有持续价值的内容。
+
+### Conditional ADR / Architecture Authority Update
+
+只有满足 ADR 条件时，附加形成或更新相应长期架构权威。内容应足以记录：
+
+- Context / Decision；
+- 主要 Alternatives / Trade-offs；
+- Consequences；
+- 适用范围；
+- 必要的 Superseded / Replaced 关系。
 
 不要求：
 
 - 固定文件名或目录；
-- 固定 ADR；
+- 每个 Technical Plan 都有 ADR；
 - 特定 Architecture Diagram；
 - YAML Front Matter；
 - 一个阶段必须对应一个独立文件。
@@ -251,8 +300,9 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 - 实施前必须解决的跨 Unit 技术不确定性已经解决，或已经确认不存在这类不确定性；
 - 最终决定与 Specification Intent 一致，没有 Silent Redefinition；
-- 对需要长期协调的技术边界已经形成足够清晰的 Durable Decisions；
-- 不再存在会阻止安全进入 Slice & Ready 的 Blocking Technical Uncertainty。
+- 对当前功能需要长期协调的技术边界已经形成足够清晰的 Durable Decisions；
+- 需要形成或更新的长期架构决定已经进入适当 Repository Authority；
+- 不再存在会阻止安全进入 Slice & Ready 的 Blocking Technical Uncertainty 或 ADR / Architecture Authority Gap。
 
 “无需 Technical Planning”本身也是合法完成结果。
 
@@ -260,15 +310,15 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 
 出现以下情况时必须停止并升级或返回上游：
 
-- Major Architecture Direction；
+- 重大架构方向（Major Architecture Direction）；
 - Destructive / Hard-to-reverse Data Operation；
 - Security / Privacy Sensitive Decision；
 - 未授权 Shared / Production / External Side Effect；
-- Agent 无权自主决定的高影响或不可逆 Trade-off；
+- Agent 无权自主决定的高影响或不可逆权衡；
 - 必须改变 Product Intent / Specification 才能继续；
 - Authoritative Sources Conflict。
 
-普通、低影响、可逆且可由现有技术证据判断的局部实现选择不升级给 Human，也不要求进入长期 Technical Plan。
+普通、低影响、可逆且可由现有技术证据判断的局部实现选择不升级给 Human，也不要求进入长期 Technical Plan 或 ADR。
 
 ## Context Rules
 
@@ -276,9 +326,10 @@ description: Resolves durable cross-unit HOW decisions needed to map a ready spe
 - Progressive Disclosure，只加载解决 Durable Technical Uncertainty 所需的上下文；
 - Conversation History 不作为权威知识；
 - 允许读取 Relevant Architecture / ADR / Current Codebase State，但 Current Code 不能反向覆盖 Product Authority；
-- 只持久化跨 Unit 有持续协调价值的 Durable Decisions；
+- Technical Plan 只持久化当前功能跨 Unit 有持续协调价值的 Durable Decisions；
+- 跨功能、需要长期约束后续工作的架构决定按条件进入 ADR / Architecture Authority；
 - 文件级施工步骤、Exact Test Commands 与 Local Implementation Details 留给 Execute 内 JIT Execution Plan；
-- 不强制固定 Technical Plan 文件、ADR、Diagram、Markdown / YAML 模板；
+- 不强制固定 Technical Plan 文件、ADR 目录、Diagram、Markdown / YAML 模板；
 - 不自动调用 `slice-work`、`readiness-check`、`execute-unit` 或接管后续生命周期。
 
 ## Allowed Sub-skills / Disciplines

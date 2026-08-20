@@ -62,7 +62,7 @@ Current Unit 应至少能提供：
 2. Current Execution Unit 定义本次执行工作边界，但不能覆盖更高层 Specification / Technical Plan / Governance Authority。
 3. Relevant Specification 定义当前 Unit 必须满足的 WHAT / WHY。
 4. Relevant Technical Plan（如存在）提供跨 Unit Durable Technical Constraints，不应被当前局部实现静默改写。
-5. ADR / Domain Context 提供相关长期约束和事实。
+5. ADR / Domain Context 提供相关长期约束和事实；当前 Unit 不得静默覆盖当前有效 ADR。
 6. Current Code / Tests 用于确定 Actual Current System State，但不能反向定义或覆盖 Product Requirement。
 7. Conversation History 不构成权威事实来源。
 8. 未经当前仓库证据确认的 Build / Test / Lint / Verification 命令不能被当作仓库事实。
@@ -181,7 +181,7 @@ JIT Plan：
 - 默认随当前 Execution Context 结束；
 - 不要求持久化为长期 Artifact。
 
-如果执行中发现某个决定实际需要跨多个 Units 长期协调，则停止把它当成 JIT Detail，返回 `technical-plan`。
+如果执行中发现某个决定实际需要跨多个 Units 持续协调，或需要跨当前功能长期约束后续工作，则停止把它当成 JIT Detail，返回 `technical-plan`；由 `technical-plan` 判断是否只进入 Technical Plan，还是需要进一步形成或更新 ADR。
 
 ### 6. Establish Expected / Failing Evidence When Useful
 
@@ -211,6 +211,7 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 - 普通、低影响、可逆的 Local Implementation Choice 由 Agent 自主处理；
 - 不为了局部实现便利静默改变 Specification；
 - 不为了绕过实现困难静默改变 Major Technical Design；
+- 不静默覆盖当前有效 ADR，也不在代码中直接确立新的跨功能长期架构权威；
 - 不把当前 Unit 变成整个 Feature 的重构机会。
 
 发现超出 Unit 边界但会阻塞完成的问题时，记录并返回相应职责层，而不是顺手接管。
@@ -250,6 +251,7 @@ Debug 结果可能：
 - 在当前 Unit 内形成 Minimal Root-cause Fix 后返回验证；
 - 暴露 Expected Behavior 缺失并返回 `clarify-intent` / `specify`；
 - 暴露 Major Design 问题并返回 `technical-plan`；
+- 暴露新的跨功能长期架构决策并返回 `technical-plan` 完成 ADR 评估；
 - 暴露授权 / 高影响问题并升级 Human Authority。
 
 ### 10. Review When Risk Warrants
@@ -280,6 +282,7 @@ Review 逻辑上至少区分两个维度：
 
 - Requirement / Expected Behavior 不明确 → `clarify-intent` / `specify`；
 - Durable Cross-unit Technical Decision 缺失或失效 → `technical-plan`；
+- 新的跨功能长期架构决策或 ADR / Architecture Authority Gap → `technical-plan` 完成 ADR 评估；
 - Unit Boundary / Dependencies 失效 → `slice-work`；
 - Unexpected Failure → `systematic-debug`。
 
@@ -345,7 +348,7 @@ Review 逻辑上至少区分两个维度：
 - 必要 Targeted Verification 已实际运行；
 - 当前 Verification Evidence 与 Completion Condition 一致；
 - 没有尚未解决的 Blocking Requirement / Design / Governance 问题；
-- 没有通过静默改变 Product Intent / Major Design 来获得“通过”。
+- 没有通过静默改变 Product Intent / Major Design 或 Architecture / ADR Authority 来获得“通过”。
 
 完成一个 Unit 不等于 Feature 已 Converged，也不等于 Ready to Integrate。
 
@@ -361,7 +364,7 @@ Review 逻辑上至少区分两个维度：
 - Authoritative Sources Conflict；
 - Agent 无权自主决定的高影响或不可逆事项。
 
-普通、低影响、可逆的 Local Implementation Choice 由 Agent 自主处理，不升级给 Human。
+普通、低影响、可逆的 Local Implementation Choice 由 Agent 自主处理，不升级给 Human。需要形成新的长期架构决定但尚未触发 Human Escalation 时，返回 `technical-plan`，而不是在本 Skill 中直接确立 ADR。
 
 ## Context Rules
 
@@ -373,7 +376,7 @@ Review 逻辑上至少区分两个维度：
 - Repository-specific Verification Commands 必须运行时从 Repository Rules / Actual State 发现，不硬编码；
 - 平台专项验证能力只在当前 Repository / Runtime 真实满足触发条件时加载，不成为所有 Unit 的默认上下文；
 - JIT Execution Plan 默认临时存在，随 Current Unit Execution Context 结束；
-- 不把单 Unit Local Details 提前升级为 Durable Technical Plan；
+- 不把单 Unit Local Details 提前升级为 Durable Technical Plan 或 ADR；
 - 一次只执行一个 Unit；
 - 不自动遍历 Queue；
 - 不自动调用 `converge`；
