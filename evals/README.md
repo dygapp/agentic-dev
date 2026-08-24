@@ -110,7 +110,7 @@ Issue #18 的 Consumer 实验在 `agentic-dev@3e0b99d85d968f138e6eae9bc51ea1b7a7
 
 `stderr` 中存在 Codex 模型列表刷新超时，但四个进程均以状态码 `0` 完成、JSONL 均包含 `turn.completed` 和完整最终输出，因此该诊断噪声没有影响本轮语义观察。精确模型名没有由当前 JSONL / 运行元数据 暴露，记录为非阻塞运行时观察；本轮行为结论不依赖进程退出码。
 
-## Project Roadmap 针对性扩展
+## 项目路线图（Project Roadmap）针对性扩展
 
 持续演进复核证明：现有 Artifact Lifecycle 检查只覆盖本次新增或重大修改的长期权威产物，无法发现一个未被修改、却已因项目级里程碑完成而陈旧的既有 Project Roadmap。
 
