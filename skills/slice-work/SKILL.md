@@ -9,7 +9,7 @@ description: Turns a ready specification and optional technical plan into bounde
 
 将已经 Ready 的 Specification 与可选 Technical Plan 转换为适合 Fresh Agent 独立执行和验证的纵向 Execution Units。
 
-本 Skill 负责形成和塑形 Execution Unit Set，不负责最终 Readiness Verdict，不执行 Unit，也不通过拆分过程新增 Product Scope。
+本 Skill 负责形成和塑形执行单元集合，并建立规格验收义务到实现责任 / 验证责任与计划验证证据的闭环。它不负责最终就绪结论，不负责执行具体执行单元，也不通过拆分过程新增产品范围。
 
 ## Use When
 
@@ -67,7 +67,7 @@ description: Turns a ready specification and optional technical plan into bounde
 
 ### 2. Build a Specification Coverage View
 
-从 Specification 中识别需要获得 Execution Coverage 的内容，例如：
+从规格说明中识别需要获得实现覆盖与验证覆盖的内容，例如：
 
 - Observable Behaviors；
 - Acceptance Criteria；
@@ -75,7 +75,16 @@ description: Turns a ready specification and optional technical plan into bounde
 - Boundary / Failure Behavior；
 - Relevant Non-functional Constraints。
 
-Coverage View 用于防止遗漏、重复或无来源工作。它可以只是当前拆分过程中的工作视图，不要求创建新的长期 Artifact。
+覆盖视图用于防止遗漏、重复、无来源工作或只有实现范围而没有验证责任的义务。它可以只是当前拆分过程中的工作视图，不要求创建新的长期产物。
+
+对每项必需行为 / 验收义务分别判断：
+
+- 哪个执行单元承担实现责任；
+- 哪个执行单元承担验证责任；
+- 如果只有跨执行单元组合后才能有效证明，是否具有明确的功能整体验证责任；
+- 计划使用什么当前证据区分该义务是否真实满足。
+
+实现责任与验证责任可以相同，也可以基于真实跨执行单元原因分开，但不能让验证责任未归属。功能整体验证责任不能作为推迟普通执行单元级验证的兜底标签。
 
 ### 3. Identify Vertical Execution Seams
 
@@ -114,6 +123,16 @@ constraints
 
 不要把精确 Source File Paths、逐文件 Edit Sequence、Exact Test Commands 或其他 JIT Execution Plan 内容作为通用长期字段要求。
 
+除上述最小字段外，执行单元集合必须通过执行单元字段、覆盖视图或等价载体表达：
+
+```text
+规格验收义务
+→ 实现责任 / 验证责任
+→ 计划验证证据
+```
+
+不要求固定字段名，也不要求一条验收义务对应一个测试。计划验证证据可以是与行为和风险相称的自动化测试、集成 / 运行时观察、人工可重复检查或仓库规则允许的其他证据；但不能只写“代码完成”“测试通过”或其他无法证明具体义务的宽泛条件。
+
 ### 5. Expose Dependencies and Hidden Coupling
 
 检查候选 Units 之间是否存在：
@@ -134,6 +153,8 @@ constraints
 
 - **Vertical**：围绕 Outcome，而非纯技术层；
 - **Independently Verifiable**：Completion Condition 能单独获得证据；
+- **验收责任明确**：承接的必需行为 / 验收义务及其验证责任可识别；
+- **证据充分**：计划验证证据足以区分所承接义务是否满足；
 - **Bounded**：Goal 与 Scope 不无限扩张；
 - **Traceable**：能回到 Specification；
 - **Context-fit**：适合一个 Fresh Agent 在合理最小上下文中执行；
@@ -147,6 +168,8 @@ constraints
 - **Horizontal-only**：只有技术层产物，没有可独立验证 Outcome；
 - **Highly Coupled**：必须频繁跨多个 Unit 才能形成证据；
 - **Ambiguous Completion**：无法明确判断何时完成；
+- **无责任归属的验证**：验收义务没有执行单元级或合法且显式的功能整体验证责任；
+- **计划证据薄弱**：只验证主路径，无法证明分页、排序、边界 / 失败、多状态、跨入口等规格说明要求的关键差异；
 - **Untraceable**：找不到合法 Specification 来源；
 - **Scope-expanding**：包含 Specification 未授权行为。
 
@@ -158,7 +181,9 @@ constraints
 
 回到 Specification Coverage View，确认：
 
-- Required Behaviors 获得合理 Execution Coverage；
+- 必需行为同时获得合理实现覆盖与验证覆盖；
+- 每项验收义务都有明确责任，或有真实跨执行单元原因支持的功能整体验证责任；
+- 计划验证证据足以证明关键差异，而不只覆盖主路径；
 - 没有重要遗漏；
 - 没有明显 Orphan Work；
 - 没有由 Units 新增未授权 Product Scope；
@@ -187,7 +212,15 @@ constraints:
   - <durable relevant constraint, if any>
 ```
 
-必要时可以附简短 Coverage Notes，帮助解释 Unit Set 如何覆盖 Specification；Coverage Notes 不是新的强制长期 Artifact，也不能替代 `spec_reference`。
+必要时可以附简短覆盖说明，帮助解释执行单元集合如何覆盖规格说明，以及各项验收责任 / 验证责任与计划证据如何分配；覆盖说明不是新的强制长期产物，也不能替代 `spec_reference`。
+
+无论采用何种载体，输出都必须能恢复：
+
+```text
+规格验收义务
+→ 实现责任 / 验证责任
+→ 计划验证证据
+```
 
 输出不包含最终 Readiness Verdict、代码实现或 JIT 文件级施工计划。
 
@@ -195,7 +228,9 @@ constraints:
 
 只有同时满足以下条件，`slice-work` 才完成：
 
-- Requirements 已获得合理 Execution Coverage；
+- 需求已获得合理实现覆盖与验证覆盖；
+- 每项必需行为 / 验收义务都有明确责任，或有合法且显式的功能整体验证责任；
+- 计划验证证据足以证明所承接义务；
 - Unit 边界足够明确；
 - Dependencies 与 Relevant Constraints 已显式表达到足以继续检查；
 - 每个 Unit 都有可观察、可验证的 Completion Condition；

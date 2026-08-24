@@ -8,7 +8,7 @@ Tasks 只承担工作协调职责，不构成 Method、Architecture 或 Skill Co
 
 > **Skill Operationalization & Method Validation**
 
-第一批 8 个核心 Skill 的 Skill Engineering 已关闭。当前优先目标是让仓库自身具备继续工作的完整知识边界，并尽快进入真实 Repository 工作流验证，而不是继续为形式完整性扩展 Skill、Runtime 层级或 Eval。
+第一批 8 个核心 Skill 的历史 Skill 工程基线已关闭。Issue #18 的真实 Consumer 项目证据触发了验收到验证的闭环定向强化，仅涉及已有方法 / 契约与 `slice-work`、`readiness-check`、`execute-unit`；针对性全新运行时评估已经 `4 / 4 PASS`，最终 AI 复核已通过，本次定向强化达到 `Ready to Integrate`。当前不扩展 Skill 清单、运行时层级或与证据无关的评估。
 
 ## Plan 使用规则
 

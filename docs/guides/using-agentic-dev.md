@@ -263,6 +263,24 @@ Execution Unit 应：
 - 适合在 Fresh Execution Context 中执行；
 - 不依赖前一个 Worker 未持久化的会话推理（Conversation Reasoning）。
 
+切分结果还应显式建立：
+
+```text
+规格验收义务
+→ 实现责任 / 验证责任
+→ 计划验证证据
+```
+
+具体要求：
+
+- 每项必需行为 / 验收义务都由某个执行单元承担实现与验证责任；
+- 只有确实必须在多个执行单元组合后才能证明的行为，才显式归属功能整体验证责任；
+- 计划验证证据应能证明具体行为及其关键差异，不能只写“代码完成”“测试通过”或主路径；
+- 分页、排序、边界 / 失败、多状态、跨入口等行为应按实际规格说明与风险设计足够的验证场景；
+- 不要求一条验收义务对应一个测试，也不限定自动化、E2E、CI 或其他固定证据格式。
+
+就绪检查不只检查执行单元能否实施，还应检查验收责任归属和计划验证覆盖是否足以进入执行。需要补充责任或验证覆盖时返回 `slice-work`，检查者不自行改写执行单元。
+
 Readiness 还应确认相关执行单元遵守当前有效的 Domain / Architecture / ADR Authority。如果已经暴露 Domain / Architecture Authority Gap，或当前工作要求创建 / 重大更新长期权威产物却无法确定其生命周期责任，不应进入 Execute；Checker 只返回拥有相应事实或决定的职责层，不自行修复权威。
 
 ### 5.5 每个 Unit 使用 Fresh Execution Context
@@ -280,6 +298,7 @@ Worker 只加载：
 - 当前 Unit；
 - 必要的 Consumer Repository Authority；
 - 必要的 Specification / Technical Plan；
+- 当前执行单元承担验证责任的验收义务与计划验证证据；
 - 相关 Domain / Architecture / ADR Context（如存在）；
 - 当前验证（Verification）所需上下文。
 
@@ -297,6 +316,9 @@ systematic-debug
 
 遵循以下原则：
 
+- 执行单元完成前回到规格追踪，确认当前证据逐项支持当前执行单元承担验证责任的验收义务；
+- 实现存在、代码检查、历史证据或未覆盖关键差异的主路径证据不能代替必要的完成证据；
+- 显式归属功能整体验证责任的义务保持 `Pending`，必须由后续 `converge` 独立重新检查；
 - 验证路径应具有足够的证据可观察性（Evidence Observability）；Agent 不应选择自己无法重新取得必要完成证据（Completion Evidence）的执行路径；
 - 如果当前 Runtime 对某类 CI trigger 或验证结果不可观察，应在仓库策略（Repository Policy）允许范围内切换到可观察路径，而不是把未知状态当作通过；
 - 快速反馈（Fast Feedback）与完成验证（Completion Verification）可以分层；中间修复优先取得低成本、针对性的反馈，最终完成声明仍必须满足必要的完整验证；
@@ -309,6 +331,8 @@ systematic-debug
 ### 5.7 整体收敛
 
 所有当前范围内的 Units 完成后使用：
+
+即使前置的切分、就绪检查与执行已建立义务闭环，`converge` 仍必须独立从规格说明重建功能整体覆盖，不把执行单元状态、计划验证或实现存在当作功能完成证据。
 
 ```text
 converge

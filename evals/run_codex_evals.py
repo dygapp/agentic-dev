@@ -33,6 +33,7 @@ BEHAVIOR_FILES = [
     EVALS / "behavior" / "clarify-intent.json",
     EVALS / "behavior" / "specify.json",
     EVALS / "behavior" / "technical-plan.json",
+    EVALS / "behavior" / "slice-work.json",
     EVALS / "behavior" / "readiness-check.json",
     EVALS / "behavior" / "execute-unit.json",
     EVALS / "behavior" / "systematic-debug.json",
