@@ -9,6 +9,7 @@ Tasks 只承担工作协调职责，不构成 Method、Architecture 或 Skill Co
 `docs/project/project-roadmap.md`
 
 Tasks 不重复维护这些易变化的项目状态；这里只定义工作协调规则。
+
 ## Plan 使用规则
 
 复杂、多步骤、跨 Fresh Context、需要恢复现场或需要显式阶段协调的工作，可以创建临时 Plan：
