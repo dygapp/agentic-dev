@@ -97,7 +97,7 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 - 项目目标与当前范围；
 - Repository Authority / Knowledge Boundary；
 - 当前允许 Agent 自主处理与必须升级给人工的边界；
-- 项目是否需要可跨里程碑、阶段或 Fresh Context 恢复的 Project Roadmap；
+- 项目是否需要可跨里程碑、阶段或 Fresh Context 恢复的项目路线图（Project Roadmap）；
 - 基本验证与集成策略（Verification / Integration Policy）；
 - 当前 Requirement / Specification 应保存在哪里；
 - 当前项目文档需要遵循的主导语言规则（如已有）；
@@ -114,7 +114,7 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 
 这只是最小示例，不是固定模板。
 
-如果项目预计会跨越多个里程碑、方法阶段或 Fresh Context，且仅凭当前 Feature / Task Artifact 无法可靠恢复整体路线，应在初始化时建立一个薄的 Project Roadmap。初始内容只需明确：
+如果项目预计会跨越多个里程碑、方法阶段或 Fresh Context，且仅凭当前 Feature / Task Artifact 无法可靠恢复整体路线，应在初始化时建立一个薄的项目路线图。初始内容只需明确：
 
 - 已知项目目标与初步路线；
 - 已完成、当前、下一步、条件性和未知部分；
@@ -122,7 +122,7 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 - 触发路线更新的项目级变化；
 - Fresh Agent 应继续读取的权威入口。
 
-可以使用 `docs/project/project-roadmap.md` 等一眼可识别的名称，但 Consumer Repository 可以选择其他可发现载体。README 只链接到当前路线，不并行复制易变化的详细状态。对于小型、一次性或仅含单一局部工作的项目，不要为了套用模板创建 Project Roadmap。
+可以使用 `docs/project/project-roadmap.md` 等一眼可识别的名称，但 Consumer Repository 可以选择其他可发现载体。README 只链接到当前路线，不并行复制易变化的详细状态。对于小型、一次性或仅含单一局部工作的项目，不要为了套用模板创建项目路线图。
 
 如果 Consumer Repository 尚未明确自然语言规则，人类可读的项目文档默认应沿用当前权威需求与主要项目协作输入的主导语言，避免把 `agentic-dev` 自身或某个 Runtime 的语言习惯无意复制到目标项目。
 
