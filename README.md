@@ -52,18 +52,13 @@ Requirement Source / 初始业务输入（如有）：
 **基线版本：** v0.1  
 **当前阶段：** **Skill Operationalization & Method Validation**
 
-第一批 8 个核心 Skill 的 **Skill Engineering Baseline 已关闭**：
+第一批 8 个核心 Skill 的 Skill Engineering Baseline、首轮真实 Consumer Experiment 以及 Issue #18 触发的验收到验证闭环定向强化均已完成。仓库当前共有 9 个 Skill，其中包括 8 个 Core Skills 和 1 个由真实 Consumer Evidence 支持的 Platform-specific Skill：`github-actions-verification`。
 
-- 方法（Method）/ 架构（Architecture）/ 契约（Contract）已收敛；
-- 8 个核心 Skill 已实现并完成契约复核（Contract Review）；
-- Skill 打包与激活元数据（Packaging / Activation Metadata）已标准化；
-- 第一轮 Fresh Runtime Eval：Activation `16 / 16 PASS`，Behavior `14 / 14 PASS`；
-- 上述 B3 结论属于 `3e0b99d85d968f138e6eae9bc51ea1b7a710748e` 之前完成的历史基线；Issue #18 随后的真实 Consumer 项目证据已暴露验收到验证的闭环缺口。
-- `slice-work`、`readiness-check`、`execute-unit` 的针对性方法 / 契约 / Skill 定向强化已经完成；新增行为评估为 `4 / 4 PASS`，最终 AI 复核没有未解决的阻塞性或中等级别发现；PR #30 已合并到 `master`，Issue #18 已按 `completed` 关闭。
+项目演进路线、完整里程碑、当前证据基线与下一步工作统一维护在：
 
-除第一批核心基线外，仓库当前还实现 1 个由真实 Consumer Evidence 支持的平台专项非核心 Skill：`github-actions-verification`。因此仓库当前共有 9 个 Skill，其中 8 个 Core Skills、1 个 Platform-specific Skill；这不代表新增了第 9 个核心 Skill，也不重新打开 Core Skill Engineering。
+`docs/project/project-roadmap.md`
 
-下一阶段重点是验证这些 Skills 在真实 Agent / Repository 工作流中的发现、激活、组合、编排和方法有效性，而不是继续机械增加核心 Skill 数量。
+后续变化继续由真实 Consumer Evidence 驱动，不以机械增加核心 Skill 数量为目标。
 
 ## 研究来源
 
@@ -217,7 +212,7 @@ converge
 │   │   └── using-agentic-dev.md
 │   ├── project/
 │   │   ├── ai-review-guidelines.md
-│   │   ├── current-status.md
+│   │   ├── project-roadmap.md
 │   │   └── repository-baseline.md
 │   └── research/
 │       ├── README.md
@@ -251,19 +246,10 @@ converge
 
 `docs/guides/git-commit-guidelines.md`
 
-## 下一阶段
+## 项目演进路线
 
-当前继续处于 **Skill Operationalization & Method Validation**。首轮 Greenfield Consumer Experiment 已完成，下一步工作的核心目标转为：基于已有真实 Consumer Repository 开展继续演进验证，而不是重复 Bootstrap 或继续扩展方法与 Skill 清单。
+当前核心目标是基于已有真实 Consumer Repository 开展继续演进验证。具体路线、当前进度、下一步工作、条件性后续方向和新上下文恢复入口见：
 
-优先验证：
+`docs/project/project-roadmap.md`
 
-1. Fresh Agent 能否仅依靠已持久化的 Consumer Authority 和当前 `agentic-dev` 基线恢复工作；
-2. 新的真实纵向切片能否按需完成 Specification、Technical Planning、Work Slicing、Execution 与 Convergence；
-3. 项目权威、长期产物和验收验证责任能否在持续开发中正确增量演进；
-4. 只有真实实验产生的新证据暴露稳定缺口时，才判断是否需要 Usage Guide、Skill Implementation、Contract 或 Method 修改。
-
-当前状态、范围边界与新上下文恢复入口见：
-
-`docs/project/current-status.md`
-
-下一阶段默认不新增第九个核心 Skill，不重新打开 Issue #18，也不继续扩大方法论研究样本。Distribution、Bootstrap 自动化、Controller / Runtime Orchestration 仍只在真实使用证明必要时评估。
+README 只提供稳定入口，不重复维护易变化的详细项目状态。
