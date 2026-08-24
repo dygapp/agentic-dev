@@ -78,11 +78,14 @@ Handoff 只转移 Working State，不复制 Project Knowledge。
 - Repository Instructions
 - Authority Hierarchy
 - Governance
+- Project Roadmap（满足项目级长期协调与 Fresh Context 恢复条件时）
 - Context / Document Locations
 - Verification Commands
 - Integration Policy
 
 这类能力统称为 Project Initialization / Bootstrap Capability。它可以由 Skill、Template、Script、Setup Workflow 或人工引导实现，不预设必须 Skill 化。
+
+Bootstrap 只有在项目预计跨越多个里程碑、方法阶段或 Fresh Context，且整体路线无法从其他产物可靠恢复时，才建立薄的 Project Roadmap。初始路线可以不完整，但必须区分已完成、当前、下一步、条件性与未知内容；载体由 Consumer Repository 选择，不强制固定路径或模板。
 
 Project Bootstrap 不属于正常 Feature Workflow。
 
@@ -166,7 +169,9 @@ Bootstrap / Setup Capability 使用可复用流程帮助项目建立或更新 Pr
 
 - `clarify-intent` 可以识别长期领域事实候选，`specify` 负责在权威输入支持下验证相关 WHAT / WHY；需要独立长期维护的候选由 Consumer Repository Authority 指定的领域责任方确认并持久化，阶段转换本身不授予写入权限；
 - `technical-plan` 负责判断并维护跨功能持续有效的 Architecture Context 变化，其中满足条件的重要架构决定按需形成或更新 ADR；
+- Project Initialization / Bootstrap Capability 或 Consumer Repository 授权的项目治理职责按条件建立和维护 Project Roadmap；
 - `execute-unit`、`systematic-debug` 与 `converge` 可以发现权威产物缺口，但必须返回拥有该事实或决定的上游职责层，不得在下游静默提升长期权威；
+- `converge` 可以在本次工作明确触发已有 Project Roadmap 更新时识别其陈旧状态，但不得自行规划路线、创建 Roadmap 或发明下一步工作；
 - Project Rule、Repository Policy 或人工权威决定具体载体、写入权限与集成方式，Skill 不强制固定目录、模板或审批流程。
 
 这类职责分配落实产物生命周期闭环（Artifact Lifecycle Closure），但不新增方法阶段、Domain Context Skill、Architecture Management Skill 或完整生命周期 Super-skill。
