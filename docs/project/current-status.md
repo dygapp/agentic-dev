@@ -21,6 +21,8 @@
 
 下一步工作的核心目标是：**基于已经完成 Greenfield Bootstrap 和首个真实纵向切片的 Consumer Repository，验证项目在后续真实开发中的继续演进能力。**
 
+当前优先验证载体是 `dygapp/jilinjobs-cms`。该仓库已经完成首轮 Greenfield Bootstrap 与信息发布纵向切片，可以用于验证已有 Consumer 的持续开发；它只提供 Consumer Evidence，其项目事实仍由自身 Repository Authority 决定。当前尚未启动新的继续演进实验，也尚未创建新的 Tracking Issue。
+
 优先使用已有真实 Consumer Repository 开展新的真实纵向工作，不为了重复证明启动能力而重新执行同类 Bootstrap。验证重点包括：
 
 1. Fresh Agent 能否只依靠已持久化的 Consumer Authority、当前代码与验证证据恢复工作；
@@ -50,9 +52,10 @@
 1. 读取根目录 `AGENTS.md`；
 2. 读取本文，确认当前阶段、已完成基线与下一步核心目标；
 3. 读取当前 GitHub `master`，确认是否存在晚于本文的新集成状态；
-4. 判断当前工作是普通 Consumer 开发，还是明确的 `agentic-dev` Experiment / Validation；
-5. 只加载当前工作真正需要的 Method、Operating Guide、Skills、Consumer Authority 与当前证据；
-6. 不依赖 Issue #18、历史聊天或个人记忆补充未固化的项目事实。
+4. 如果继续使用 `dygapp/jilinjobs-cms`，读取其当前默认分支与 Repository Authority，不把 Issue #18 或本仓库文档当作 Consumer 项目事实；
+5. 判断当前工作是普通 Consumer 开发，还是明确的 `agentic-dev` Experiment / Validation；
+6. 只加载当前工作真正需要的 Method、Operating Guide、Skills、Consumer Authority 与当前证据；
+7. 不依赖 Issue #18、历史聊天或个人记忆补充未固化的项目事实。
 
 ## 本轮继续演进工作的收敛条件
 
