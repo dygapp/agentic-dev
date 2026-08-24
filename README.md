@@ -52,7 +52,7 @@ Requirement Source / 初始业务输入（如有）：
 **基线版本：** v0.1  
 **当前阶段：** **Skill Operationalization & Method Validation**
 
-第一批 8 个核心 Skill 的 Skill Engineering Baseline、首轮真实 Consumer Experiment 以及 Issue #18 触发的验收到验证闭环定向强化均已完成。仓库当前共有 9 个 Skill，其中包括 8 个 Core Skills 和 1 个由真实 Consumer Evidence 支持的 Platform-specific Skill：`github-actions-verification`。
+第一批 8 个核心 Skill 的 Skill 工程（Skill Engineering）基线、首轮真实 Consumer Experiment 以及 Issue #18 触发的验收到验证闭环定向强化均已完成。仓库当前共有 9 个 Skill，其中包括 8 个 Core Skills 和 1 个由真实 Consumer Evidence 支持的 Platform-specific Skill：`github-actions-verification`。
 
 项目演进路线、完整里程碑、当前证据基线与下一步工作统一维护在：
 
