@@ -24,7 +24,7 @@
 | 开展 Skill Operationalization & Method Validation | 当前 | 使用真实 Consumer Evidence 验证方法、Skills 组合与项目渐进演进 |
 | 完成首轮真实 Consumer Experiment | 已完成 | `dygapp/jilinjobs-cms` 完成 Greenfield Bootstrap、信息发布纵向切片与功能整体收敛 |
 | 补齐验收到验证的闭环 | 已完成 | PR #30 已合并，Issue #18 已按 `completed` 关闭 |
-| 建立通用 Project Roadmap 规则 | 下一步 | 在独立修订中定义条件性长期产物、Bootstrap 与 Fresh Context 恢复规则 |
+| 建立通用 Project Roadmap 规则 | 当前 | 独立修订已进入 Method、Bootstrap、Fresh Context 与 `converge` 定向评估阶段；`B-CG-07` 仍待 Fresh Runtime 语义评分 |
 | 验证已有 Consumer 的继续演进 | 下一步 | 在 `dygapp/jilinjobs-cms` 中验证项目状态恢复、权威增量演进和新的真实纵向工作 |
 | Distribution、Bootstrap 自动化或 Controller / Runtime Orchestration | 条件性后续 | 只有真实使用证明存在稳定、独立且可复用的职责缺口时才评估 |
 | 重新进入 Skill Engineering | 条件性后续 | 只有新的真实证据暴露稳定 Skill Implementation / Contract / Method Gap 时才定向重开 |
@@ -45,6 +45,8 @@
 
 - 当前阶段：**Skill Operationalization & Method Validation**；
 - PR #30 能力集成提交：`a6ea8ccfb23cb0837d4721192470e3bd11597059`；
+- PR #31 路线图基线集成提交：`f15d3b42fd56498ffa08633c66b338e28e046542`；
+- 当前 Method 修订分支：`codex/project-roadmap-method`，`B-CG-07` 语义评估仍为 `PENDING`；
 - Skill 清单（Skill Inventory）：8 个 Core Skills、1 个 Platform-specific Skill；
 - 首轮 Consumer Experiment：已完成；
 - Issue #18：已关闭；
@@ -55,7 +57,7 @@
 
 ## 当前核心目标
 
-当前核心目标是：**基于已有真实 Consumer Repository 开展继续演进验证，而不是重复 Greenfield Bootstrap 或机械扩展方法与 Skill 清单。**
+当前核心目标是：**先完成通用 Project Roadmap Method 修订及其 Fresh Runtime 语义验证，再基于已有真实 Consumer Repository 开展继续演进验证；不重复 Greenfield Bootstrap，也不机械扩展方法与 Skill 清单。**
 
 当前优先验证载体是 `dygapp/jilinjobs-cms`。它只提供 Consumer Evidence，其项目事实仍由自身 Repository Authority 决定。
 
@@ -69,18 +71,16 @@
 
 ## 下一步工作
 
-1. 本项目路线图基线合并后，在独立分支和 PR 中修订 Method、Artifact Strategy、Operating Guide 与 Bootstrap Capability，正式定义条件性 Project Roadmap 规则；
-2. 完成相应契约影响分析；只有确有必要时才修改 `converge` Contract / Skill 并增加针对性行为评估；
-3. 使用新的精确 `agentic-dev` baseline，在 `dygapp/jilinjobs-cms` 中建立 Consumer 自己的 Project Roadmap；
+1. 完成 `B-CG-07` 的 Fresh Runtime 执行与逐项语义评分，并完成当前修订的中文规范、跨层一致性和 AI Review；
+2. 当前修订达到 `Ready to Integrate` 后，由人工权威决定是否合并；
+3. 使用合并后的精确 `agentic-dev` baseline，在 `dygapp/jilinjobs-cms` 中按条件建立 Consumer 自己的 Project Roadmap；
 4. 通过新的 Tracking Issue 开展已有 Consumer 继续演进验证；
 5. 让 Fresh Agent 仅依靠 Consumer Repository Authority 恢复项目整体状态，再进入新的真实纵向工作。
-
-通用 Project Roadmap Method 修订必须在本项目路线图基线合并后开始，不与本次项目状态收敛工作混入同一 PR。
 
 ## 尚未确定与条件性后续
 
 - `dygapp/jilinjobs-cms` 的下一个真实纵向切片尚未选择，应由其当前 Repository Authority 和真实项目需要决定；
-- Project Roadmap 是否最终需要独立 Bootstrap Skill 尚未确定；当前只规划 Method、Operating Guide 与 Bootstrap Capability 修订；
+- 当前证据不支持新增独立 Project Roadmap / Bootstrap Skill；只有后续跨项目真实使用证明存在稳定、独立且可复用的操作职责缺口时才重新评估；
 - 不继续扩大方法论研究样本；
 - Distribution、Bootstrap 自动化、Controller / Runtime Orchestration 和新的 Skill 只在真实证据满足触发条件时评估。
 
