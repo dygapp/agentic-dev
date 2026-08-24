@@ -217,6 +217,7 @@ converge
 │   │   └── using-agentic-dev.md
 │   ├── project/
 │   │   ├── ai-review-guidelines.md
+│   │   ├── current-status.md
 │   │   └── repository-baseline.md
 │   └── research/
 │       ├── README.md
@@ -261,7 +262,7 @@ converge
 3. 项目权威、长期产物和验收验证责任能否在持续开发中正确增量演进；
 4. 只有真实实验产生的新证据暴露稳定缺口时，才判断是否需要 Usage Guide、Skill Implementation、Contract 或 Method 修改。
 
-当前状态、范围边界与新 Context 恢复入口见：
+当前状态、范围边界与新上下文恢复入口见：
 
 `docs/project/current-status.md`
 
