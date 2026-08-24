@@ -31,7 +31,7 @@
 | `readiness-check` | 规格说明 + 可选计划 + 执行单元 + 相关领域 / 架构 / 治理权威 | `PASS` 或阻塞性 / 非阻塞性发现 | 无阻塞性发现，包括验收责任归属 / 计划验证覆盖、领域 / 架构权威或产物生命周期缺口 | 权威来源冲突或高影响决策无权自主裁决 |
 | `execute-unit` | 单个执行单元 + 负责的验收义务 + 计划验证 + 最小权威上下文 + 当前代码 / 测试 | 实现 + 已执行的当前证据 + 结果状态 / 必需阶段返回 | 完成条件与执行单元负责的验证义务有当前证据支持，且发现的长期权威缺口已返回相应职责 | 必须改变产品意图 / 重大设计，或动作超出授权 / 不可逆 / 安全隐私敏感 |
 | `systematic-debug` | Observed Problem + Expected Behavior + Runnable Context | Root Cause + Minimal Fix + Regression Evidence / Required Stage Return | Root Cause 已处理且 Regression Evidence 通过，发现的长期权威缺口已返回相应职责 | Expected Behavior 未定义/冲突，或修复要求重大设计变更 |
-| `converge` | Specification + Optional Plan + Units + Relevant Domain / Architecture Authority + System State + Evidence | `READY` 或 `GAPS` | Feature 与权威 Intent、Domain / Architecture Authority、Artifact Lifecycle 和 Current Evidence 收敛 | Gap 需要 Product / Domain / Architecture Authority，或权威来源冲突 |
+| `converge` | Specification + Optional Plan + Units + Relevant Domain / Architecture Authority + applicable Project Roadmap + System State + Evidence | `READY` 或 `GAPS` | Feature 与权威 Intent、Domain / Architecture Authority、Artifact Lifecycle 和 Current Evidence 收敛 | Gap 需要 Product / Domain / Architecture Authority，或权威来源冲突 |
 
 ## 3. `clarify-intent`
 
@@ -635,13 +635,14 @@ Root Cause 已处理，当前 Regression Evidence 通过，且调查暴露的长
 - Technical Plan（如存在）
 - Relevant Domain Authority
 - Relevant Architecture / ADR Authority
+- Relevant Project Roadmap（如存在，且本次工作触发其更新）
 - Execution Units / Status
 - Current Implemented System
 - Current Verification Evidence
 
 ### Authority Sources
 
-Specification 是 Feature Intent 的主要权威；Technical Plan 不能覆盖 Product Intent，且实现不得违反当前有效 Domain / Architecture / ADR Authority。Current System / Evidence 只用于判断是否收敛，不能自行提升长期领域或架构权威。
+Specification 是 Feature Intent 的主要权威；Technical Plan 不能覆盖 Product Intent，且实现不得违反当前有效 Domain / Architecture / ADR Authority。Project Roadmap（如适用）只提供项目级当前路线与协调状态，不能覆盖 Specification、Domain / Architecture Authority 或 ADR。Current System / Evidence 只用于判断是否收敛，不能自行提升长期领域、架构或项目路线权威。
 
 ### Procedure
 
@@ -656,9 +657,10 @@ Specification 是 Feature Intent 的主要权威；Technical Plan 不能覆盖 P
 9. 检查领域权威缺口，包括长期领域事实缺失、冲突、失效，或候选事实尚未完成规格说明验证和授权路由。
 10. 检查架构 / ADR 缺口，包括实现违反当前有效架构权威，架构上下文尚未更新，或满足 ADR 条件的决定尚未形成 / 更新 / 取代 ADR。
 11. 检查产物生命周期缺口：本次新增或重大修改的长期权威产物是否缺少生产者、触发条件、使用方、持久化、更新、取代或升级责任。
-12. 形成 `READY` 或 `GAPS`。
-13. 对可在现有意图 / 设计下修正的缺口，描述补充/修正执行工作，并交回 `slice-work` 塑形为执行单元。
-14. 对领域权威缺口返回 `clarify-intent` / `specify`；对架构权威 / ADR 缺口返回 `technical-plan`；涉及产品意图、重大架构方向或授权冲突时升级人工权威。
+12. 如果已有且适用的 Project Roadmap，并且本次工作完成、取消或取代项目级里程碑，改变当前阶段 / 核心目标，使已决定的下一步顺序失效，或使条件性方向进入当前路线，检查 Roadmap 是否已由当前证据同步更新。陈旧或缺失的必要更新形成 Project Roadmap / Artifact Lifecycle Gap；返回 Consumer Repository 授权的项目治理 / Bootstrap 维护职责，不在 `converge` 中自行修改路线或发明下一步。与项目路线无关的普通局部工作不触发该检查，也不要求每个项目创建 Roadmap。
+13. 形成 `READY` 或 `GAPS`。
+14. 对可在现有意图 / 设计下修正的缺口，描述补充/修正执行工作，并交回 `slice-work` 塑形为执行单元。
+15. 对领域权威缺口返回 `clarify-intent` / `specify`；对架构权威 / ADR 缺口返回 `technical-plan`；对 Project Roadmap Gap 返回 Consumer Repository 授权的项目治理 / Bootstrap 维护职责；涉及产品意图、重大架构方向或授权冲突时升级人工权威。
 
 ### Outputs
 
@@ -677,7 +679,7 @@ GAPS
 
 ### Exit Conditions
 
-Feature Behavior、Implementation State 和 Current Verification Evidence 已与 Specification 收敛一致，实现未违反当前有效 Domain / Architecture / ADR Authority，且本次工作产生或改变的长期权威事实已完成适当生命周期闭环，可以进入 **Ready to Integrate**。
+Feature Behavior、Implementation State 和 Current Verification Evidence 已与 Specification 收敛一致，实现未违反当前有效 Domain / Architecture / ADR Authority，本次工作产生或改变的长期权威事实已完成适当生命周期闭环，且不存在因本次工作触发而仍然陈旧的适用 Project Roadmap，可以进入 **Ready to Integrate**。
 
 ### Escalation Conditions
 
@@ -691,7 +693,7 @@ Feature Behavior、Implementation State 和 Current Verification Evidence 已与
 - Feature-wide，但仍遵循 Progressive Disclosure；
 - 不把 Conversation History 当作完成证据；
 - 不因 Ticket / Unit 状态为 Done 就声明 READY；
-- 不在存在未处理的 Domain / Architecture Authority 或 Artifact Lifecycle Gap 时声明 READY；
+- 不在存在未处理的 Domain / Architecture Authority、适用的 Project Roadmap 或其他 Artifact Lifecycle Gap 时声明 READY；
 - READY 必须由当前证据支持。
 
 ### Allowed Sub-skills / Disciplines
