@@ -34,7 +34,7 @@ Requirement Source / 初始业务输入（如有）：
 
 不要仅因为某份 Requirement Source 被提供、复制到 Consumer Repository，或自身标记为 confirmed / approved，就自动把它视为当前 Consumer Authority；应先根据 Operating Guide 判断其 provenance、当前有效 Scope、Authority precedence 和 upstream references。
 
-先根据当前项目实际情况建立启动项目所需的最小骨架和 Repository Authority，不要预先创建没有真实需要的大而全文档或目录体系。随后从当前 Intent / Requirements 开始，逐步推进 Specification、必要的 Technical Planning、Work Slicing、Execution 和 Convergence。
+先根据当前项目实际情况建立启动项目所需的最小骨架和 Repository Authority，不要预先创建没有真实需要的大而全文档或目录体系。如果项目预计跨越多个里程碑、阶段或 Fresh Context，且需要可恢复的整体路线，请按 Operating Guide 建立或更新可发现的 Project Roadmap；不要强制固定模板，也不要把完整规则复制进启动提示。随后从当前 Intent / Requirements 开始，逐步推进 Specification、必要的 Technical Planning、Work Slicing、Execution 和 Convergence。
 
 除非我明确提供，否则不要使用其他会话、其他项目或个人记忆中的隐含知识作为本项目事实。
 ```
