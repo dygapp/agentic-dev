@@ -41,3 +41,35 @@
 - `converge` 继续独立重新检查 Feature-wide Specification-to-Evidence coverage。
 - 针对性 Eval 定义通过结构验证，并完成与风险相称的 Fresh Runtime 验证或明确记录不可执行原因。
 - 最终 AI Review 不存在未解决 Blocking / Medium Finding。
+
+
+## Current State
+
+- Draft PR：`dygapp/agentic-dev#30`
+- Semantic Head：`dc8e9f451155018a581c7c1a2739075e10650f74`
+- Method / Principles / Architecture / Contract / Skills / Operating Guide：已对齐
+- Eval JSON structure / Runner Python syntax / Scenario registration：PASS
+- Final AI Review：Blocking 0 / Medium 0 / PASS
+- Fresh Runtime Behavior Evidence：PENDING
+- Blocker：当前执行 Runtime 没有 `codex` 可执行文件
+- Integration：未执行；PR 保持 Draft
+
+## Resume Steps
+
+在具备 Codex CLI、并符合 `evals/README.md` 隔离规则的环境中运行：
+
+```bash
+python3 evals/run_codex_evals.py --behavior \
+  --scenario B-SW-01 \
+  --scenario B-RC-05 \
+  --scenario B-EU-06 \
+  --scenario B-CG-06
+```
+
+然后：
+
+1. 对四个场景逐项执行人工语义分级，不能把进程退出码当作 PASS；
+2. 如果出现 Skill / Contract / Method Finding，按权威层级修正并针对性重跑；
+3. 全部 PASS 后更新 `evals/README.md`、Repository / Skill 状态与 PR Evidence；
+4. 重新读取最终 PR 状态并执行受影响维度 AI Review；
+5. 只有验证与 Review 均闭环后，才将 PR 从 Draft 转为 Ready for Human Review；Merge 仍由 Human 决定。
