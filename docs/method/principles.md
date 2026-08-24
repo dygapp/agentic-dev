@@ -125,6 +125,16 @@ Fresh Context 不绑定某一种产品功能。
 - “tests pass”必须有当前 test 结果；
 - “API works”必须有当前行为验证结果。
 
+当前证据必须能追溯到所声明完成的 Required Behavior / Acceptance Obligation，并足以区分该义务是否真实满足。
+
+以下关系不能自动成立：
+
+```text
+Implementation Exists ≠ Verification Coverage
+Planned Evidence ≠ Executed Current Evidence
+Happy-path Pass ≠ All Owned Acceptance Obligations Closed
+```
+
 历史测试、代码阅读或其他 Agent 的无证据声明不能证明当前状态。
 
 ## P9. Human Escalation 依据 Authority、Impact、Reversibility
