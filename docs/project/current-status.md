@@ -1,6 +1,6 @@
 # agentic-dev 当前状态与下一步核心目标
 
-本文记录 `agentic-dev` 仓库自身的当前项目状态、近期工作边界与新 Context 恢复入口。本文属于 `docs/project/*` 项目级权威，不修改也不覆盖更高优先级的 Method、Architecture 或 Contract Authority。
+本文记录 `agentic-dev` 仓库自身的当前项目状态、近期工作边界与新上下文恢复入口。本文属于 `docs/project/*` 项目级权威，不修改也不覆盖更高优先级的 Method、Architecture 或 Contract Authority。
 
 ## 当前基线
 
@@ -12,7 +12,7 @@
 - 验收到验证的闭环定向强化已通过 PR #30 合并到 `master`；
 - PR #30 的 Merge commit 为 `a6ea8ccfb23cb0837d4721192470e3bd11597059`；
 - 针对性全新运行时评估为 `4 / 4 PASS`，合计 `21 / 21` 条断言通过；
-- 最终 AI 复核没有未解决的 Blocking 或 Medium Finding；
+- 最终 AI 复核没有未解决的阻塞性或中等级别发现；
 - Issue #18 已按 `completed` 关闭，相关临时分支已经删除。
 
 `a6ea8ccfb23cb0837d4721192470e3bd11597059` 是 PR #30 的能力集成提交，不是要求后续实验永久固定使用的静态版本。每个新的 Consumer Experiment 开始时，仍应读取并记录当时实际使用的精确 `agentic-dev` baseline。
@@ -43,9 +43,9 @@
 - 当前不继续扩大方法论研究样本；
 - Distribution、Bootstrap 自动化、Controller / Runtime Orchestration 仅在真实使用证明必要时评估。
 
-## 新 Context 恢复顺序
+## 新上下文恢复顺序
 
-新的 `agentic-dev` 工作 Context 应：
+新的 `agentic-dev` 工作上下文应：
 
 1. 读取根目录 `AGENTS.md`；
 2. 读取本文，确认当前阶段、已完成基线与下一步核心目标；
