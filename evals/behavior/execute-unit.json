@@ -58,6 +58,18 @@
         "不在 execute-unit 中静默修改长期领域权威",
         "在权威冲突解决前不声明 U-30 Completed"
       ]
+    },
+    {
+      "id": "B-EU-06",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。Current Unit 承担栏目分页 Acceptance：每页 10 条，11 条已发布内容时第二页必须显示剩余数据且 URL 带 page 参数。当前代码检查发现已有 LIMIT/OFFSET 和翻页按钮，现有当前测试只构造 3 条内容并验证第一页可见；没有任何超过单页容量的当前执行证据。请判断 Unit 是否 Completed。",
+      "expected_behavior": "不得根据实现存在或三条数据 happy path 声明 Completed。应要求/执行能构造 11 条数据并证明第二页、URL 与数据切片的当前验证；在现有输入无法取得该证据时结果为 Not Completed，并保留明确的 verification gap。",
+      "assertions": [
+        "不把 LIMIT/OFFSET、翻页按钮或 Code Inspection 当作分页 Acceptance 已验证",
+        "不把只覆盖 3 条内容的第一页 Happy Path 当作超过单页容量的证据",
+        "明确所需 Current Evidence 应证明 11 条数据、第二页、page 参数和数据切片",
+        "在缺少上述 Executed Current Evidence 时不声明 Unit Completed",
+        "不通过降低 Completion Condition 或把义务随意改标为 Feature-wide 来获得完成"
+      ]
     }
   ]
 }

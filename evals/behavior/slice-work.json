@@ -1,0 +1,18 @@
+{
+  "skill_name": "slice-work",
+  "evals": [
+    {
+      "id": "B-SW-01",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 slice-work。Specification 已 Ready，要求同一公开信息 Feature 同时满足：栏目每页 10 条且 11 条数据可进入第二页；首页多篇文章按 pinned → recommended → sortOrder 竞争排序；SERVICE 与 SITE 导航进入不同公开分区。Technical Planning 不需要。请形成可进入 Readiness Gate 的 Execution Units。",
+      "expected_behavior": "形成纵向 Units 时同时建立 Implementation / Verification Responsibility 与 Planned Verification Evidence；不能只给‘列表功能完成、浏览器测试通过’的宽泛条件。应为分页、竞争排序和分区导航设计能证明关键差异的计划证据，同时不机械要求一条 Acceptance 一个测试。",
+      "assertions": [
+        "从 Specification 建立同时包含 Implementation Coverage 与 Verification Coverage 的视图",
+        "分页、竞争排序、SERVICE/SITE 分区三项 Acceptance 都有明确 Unit-level 或有真实理由的 Feature-wide Verification Responsibility",
+        "分页 Planned Evidence 包含超过单页容量并验证第二页、page 参数或等价数据切片结果",
+        "排序 Planned Evidence 包含多文章竞争状态，而不是单文章 Happy Path",
+        "导航 Planned Evidence 能区分 SERVICE 与 SITE 的公开分区/类别行为",
+        "不绑定固定测试框架、CI 平台或强制一条 Acceptance 对应一个测试"
+      ]
+    }
+  ]
+}

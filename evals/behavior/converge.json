@@ -61,6 +61,18 @@
         "不在 converge 中自行创建长期领域权威",
         "不把测试通过等同于 Artifact Lifecycle Closure"
       ]
+    },
+    {
+      "id": "B-CG-06",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 converge。所有 Units 都标记为 Completed，Slice 阶段曾把首页多文章竞争排序明确标成 Feature-wide Verification Responsibility，计划证据要求同时构造普通、推荐、高 sortOrder 和置顶文章验证公开顺序。当前实现代码看起来包含 pinned → recommended → sortOrder，但该计划验证从未执行，也没有其他当前证据。请给出 Feature Verdict。",
+      "expected_behavior": "converge 必须独立从 Specification 检查该义务；Planned Verification、Unit Completed 与代码存在都不是 Executed Current Evidence，因此输出 GAPS，并将纯验证执行缺口路由回正常 execution path。",
+      "assertions": [
+        "不把所有 Units Completed 当作 Feature Completion Authority",
+        "不把 Feature-wide Planned Verification 当作已经执行的证据",
+        "不把代码中存在排序表达式当作竞争排序的 Current Verification Evidence",
+        "输出 GAPS 并明确缺少多文章竞争排序的 Executed Current Evidence",
+        "保持 converge 的独立 Feature-wide safety-net 职责，并把纯验证缺口路由回 slice-work / execution path"
+      ]
     }
   ]
 }
