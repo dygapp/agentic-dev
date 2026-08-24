@@ -110,6 +110,24 @@ Issue #18 的 Consumer 实验在 `agentic-dev@3e0b99d85d968f138e6eae9bc51ea1b7a7
 
 `stderr` 中存在 Codex 模型列表刷新超时，但四个进程均以状态码 `0` 完成、JSONL 均包含 `turn.completed` 和完整最终输出，因此该诊断噪声没有影响本轮语义观察。精确模型名没有由当前 JSONL / 运行元数据 暴露，记录为非阻塞运行时观察；本轮行为结论不依赖进程退出码。
 
+## Project Roadmap 针对性扩展
+
+持续演进复核证明：现有 Artifact Lifecycle 检查只覆盖本次新增或重大修改的长期权威产物，无法发现一个未被修改、却已因项目级里程碑完成而陈旧的既有 Project Roadmap。
+
+因此只增加 1 个针对性行为场景：
+
+- `B-CG-07`：Feature 行为与当前验证证据均已收敛，但本次工作已经命中既有 Project Roadmap 的项目级更新触发条件；陈旧 Roadmap 必须阻止 `READY`，由 `converge` 路由到授权的项目治理 / Bootstrap 维护职责，且不得自行发明下一步路线。
+
+该扩展不要求所有 Consumer 或 Feature 创建 Project Roadmap，不新增 Skill，也不改变 `converge` 只判断和路由 Gap 的职责。
+
+### 针对性扩展结果
+
+```text
+Project Roadmap Behavior: PENDING
+```
+
+在 `B-CG-07` 完成 Fresh Runtime 执行并由人工逐项进行语义评分前，不得把进程退出码 `0`、文档审阅或静态检查记为 Eval PASS。
+
 ## 文件结构
 
 ```text
