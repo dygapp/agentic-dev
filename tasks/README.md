@@ -10,7 +10,7 @@ Tasks 只承担工作协调职责，不构成 Method、Architecture 或 Skill Co
 
 第一批 8 个核心 Skill 的历史 Skill 工程基线已关闭。Issue #18 的真实 Consumer 项目证据触发了验收到验证的闭环定向强化，仅涉及已有方法 / 契约与 `slice-work`、`readiness-check`、`execute-unit`；针对性全新运行时评估已经 `4 / 4 PASS`，最终 AI 复核已通过，PR #30 已合并到 `master`，Issue #18 已按 `completed` 关闭。
 
-下一步工作的核心目标是基于已有真实 Consumer Repository 开展继续演进验证。当前不扩展 Skill 清单、运行时层级或与证据无关的评估；详细状态、范围边界与新 Context 恢复入口见 `docs/project/current-status.md`。
+下一步工作的核心目标是基于已有真实 Consumer Repository 开展继续演进验证。当前不扩展 Skill 清单、运行时层级或与证据无关的评估；详细状态、范围边界与新上下文恢复入口见 `docs/project/current-status.md`。
 
 ## Plan 使用规则
 
