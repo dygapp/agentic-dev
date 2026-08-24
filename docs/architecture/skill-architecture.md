@@ -78,7 +78,7 @@ Handoff 只转移 Working State，不复制 Project Knowledge。
 - Repository Instructions
 - Authority Hierarchy
 - Governance
-- Project Roadmap（满足项目级长期协调与 Fresh Context 恢复条件时）
+- 项目路线图（Project Roadmap，满足项目级长期协调与 Fresh Context 恢复条件时）
 - Context / Document Locations
 - Verification Commands
 - Integration Policy
