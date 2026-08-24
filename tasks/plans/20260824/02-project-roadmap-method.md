@@ -1,4 +1,4 @@
-# Project Roadmap 方法修订计划
+# 项目路线图（Project Roadmap）方法修订计划
 
 **状态：** In Progress  
 **日期：** 2026-08-24  
@@ -6,7 +6,7 @@
 
 ## 目标
 
-把 Project Roadmap 定义为一种**条件性长期项目级产物**：当项目跨越多个里程碑、阶段或 Fresh Context，且仅凭功能级与任务级产物无法可靠恢复整体路线和当前状态时，用它承载可发现的项目演进路线、当前核心目标和下一步工作。
+把项目路线图定义为一种**条件性长期项目级产物**：当项目跨越多个里程碑、阶段或 Fresh Context，且仅凭功能级与任务级产物无法可靠恢复整体路线和当前状态时，用它承载可发现的项目演进路线、当前核心目标和下一步工作。
 
 同时补齐启动、恢复、更新和收敛检查规则，使后续 Agent 不依赖聊天记忆，也不必重新分析整个仓库才能恢复真实项目状态。
 
@@ -23,16 +23,16 @@
 
 ## 范围
 
-1. 在 Method 与 Principles 中定义 Project Roadmap 的适用条件、边界和完整生命周期。
-2. 在 Skill Architecture 中把条件性 Project Roadmap 纳入 Project Initialization / Bootstrap Capability，但不新增 Skill。
-3. 在 `converge` Contract 与 Skill 中增加窄范围检查：已有且适用的 Project Roadmap 因本次工作跨越更新触发条件而失效时，阻止 `READY` 并路由到有权维护项目路线的职责层。
+1. 在 Method 与 Principles 中定义项目路线图的适用条件、边界和完整生命周期。
+2. 在 Skill Architecture 中把条件性项目路线图纳入 Project Initialization / Bootstrap Capability，但不新增 Skill。
+3. 在 `converge` Contract 与 Skill 中增加窄范围检查：已有且适用的项目路线图因本次工作跨越更新触发条件而失效时，阻止 `READY` 并路由到有权维护项目路线的职责层。
 4. 在 Operating Guide 与 README 启动提示中增加薄入口，避免复制 Method 或强制固定模板。
-5. 新增一个隔离 Runtime Behavior Eval，验证陈旧但适用的 Project Roadmap 能被识别为 Artifact Lifecycle Gap。
+5. 新增一个隔离 Runtime Behavior Eval，验证陈旧但适用的项目路线图能被识别为 Artifact Lifecycle Gap。
 6. 记录方法决策，并在证据完成后更新本项目 Project Roadmap。
 
 ## 非目标
 
-- 不把 Project Roadmap 设为所有 Consumer 的必需文件。
+- 不把项目路线图设为所有 Consumer 的必需文件。
 - 不强制所有仓库使用固定路径或固定模板。
 - 不新增方法阶段、核心 Skill、非核心 Skill 或 Super-skill。
 - 不扩展研究样本。
