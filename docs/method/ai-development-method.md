@@ -574,9 +574,9 @@ Producer 是逻辑责任，不要求对应独立 Skill、固定人员或固定�
 - Engineering Principles
 - Authority Rules
 
-### 11.3 Project Roadmap Context
+### 11.3 项目路线图（Project Roadmap）上下文
 
-Project Roadmap 是一种**条件性长期项目级产物**。当项目预计或已经跨越多个里程碑、方法阶段或 Fresh Context，且仅凭 Feature / Execution / Coordination 产物无法可靠恢复整体演进路线、当前阶段和下一步工作时，才建立或继续维护 Project Roadmap。
+项目路线图（Project Roadmap）是一种**条件性长期项目级产物**。当项目预计或已经跨越多个里程碑、方法阶段或 Fresh Context，且仅凭 Feature / Execution / Coordination 产物无法可靠恢复整体演进路线、当前阶段和下一步工作时，才建立或继续维护 Project Roadmap。
 
 它至少应让 Fresh Agent 区分：
 
