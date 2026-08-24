@@ -31,7 +31,7 @@
 | `readiness-check` | 规格说明 + 可选计划 + 执行单元 + 相关领域 / 架构 / 治理权威 | `PASS` 或阻塞性 / 非阻塞性发现 | 无阻塞性发现，包括验收责任归属 / 计划验证覆盖、领域 / 架构权威或产物生命周期缺口 | 权威来源冲突或高影响决策无权自主裁决 |
 | `execute-unit` | 单个执行单元 + 负责的验收义务 + 计划验证 + 最小权威上下文 + 当前代码 / 测试 | 实现 + 已执行的当前证据 + 结果状态 / 必需阶段返回 | 完成条件与执行单元负责的验证义务有当前证据支持，且发现的长期权威缺口已返回相应职责 | 必须改变产品意图 / 重大设计，或动作超出授权 / 不可逆 / 安全隐私敏感 |
 | `systematic-debug` | Observed Problem + Expected Behavior + Runnable Context | Root Cause + Minimal Fix + Regression Evidence / Required Stage Return | Root Cause 已处理且 Regression Evidence 通过，发现的长期权威缺口已返回相应职责 | Expected Behavior 未定义/冲突，或修复要求重大设计变更 |
-| `converge` | Specification + Optional Plan + Units + Relevant Domain / Architecture Authority + applicable Project Roadmap + System State + Evidence | `READY` 或 `GAPS` | Feature 与权威 Intent、Domain / Architecture Authority、Artifact Lifecycle 和 Current Evidence 收敛 | Gap 需要 Product / Domain / Architecture Authority，或权威来源冲突 |
+| `converge` | Specification + Optional Plan + Units + Relevant Domain / Architecture Authority + 适用的 Project Roadmap + System State + Evidence | `READY` 或 `GAPS` | Feature 与权威 Intent、Domain / Architecture Authority、适用的 Project Roadmap、Artifact Lifecycle 和 Current Evidence 收敛 | Gap 需要 Product / Domain / Architecture Authority，或权威来源冲突 |
 
 ## 3. `clarify-intent`
 
