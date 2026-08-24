@@ -212,12 +212,11 @@ Domain Context 保存跨功能持续有效的业务语言与领域事实，由 C
 
 真实 Consumer 实验证明，执行单元可以在主要纵向路径通过后进入 `Completed` / `Integrated`，但仍有分页、竞争排序和多类导航等已实现验收义务缺少已执行的当前证据。后续只补验证、不修改产品实现即可使功能整体 `converge` 从 `GAPS` 转为 `READY`，说明缺口位于验收责任归属、验证规划与闭环机制，而不是 Consumer 项目实现或 `converge` 职责。
 
-
-## D-021 — Project Roadmap 是条件性长期项目级产物
+## D-021 — 项目路线图（Project Roadmap）是条件性长期项目级产物
 
 **决定：**
 
-当项目跨越多个里程碑、方法阶段或 Fresh Context，且仅凭功能级与任务级产物无法可靠恢复整体路线、当前阶段和下一步工作时，建立并持续维护 Project Roadmap。初始路线可以不完整，但必须区分已完成、当前、下一步、条件性与未知内容，并把具体载体交给 Consumer Repository Authority 决定。
+当项目跨越多个里程碑、方法阶段或 Fresh Context，且仅凭功能级与任务级产物无法可靠恢复整体路线、当前阶段和下一步工作时，建立并持续维护项目路线图。初始路线可以不完整，但必须区分已完成、当前、下一步、条件性与未知内容，并把具体载体交给 Consumer Repository Authority 决定。
 
 Project Roadmap 不替代 Specification、Technical Plan、Execution Unit、临时 Coordination Plan 或项目管理排期。普通小型、一次性或单一局部工作不要求创建它。
 
