@@ -11,7 +11,7 @@ description: Implements and verifies exactly one ready execution unit in minimal
 
 本 Skill 一次只负责一个 Current Execution Unit。它不自动遍历 Feature / Queue，不自动进入 `converge`，也不承担 Merge / Push / Release / Deploy 等 Integration 行为。
 
-完成状态必须由当前 Verification Evidence 支持，而不是由“代码已经修改”“测试看起来应该通过”或 Conversation History 中的旧结论支持。
+完成状态必须由当前 Verification Evidence 支持，并逐项关闭 Current Unit 承担验证责任的 Required Behaviors / Acceptance Obligations，而不是由“代码已经修改”“测试看起来应该通过”、Code Inspection 或 Conversation History 中的旧结论支持。
 
 ## Use When
 
@@ -46,6 +46,8 @@ Current Unit 应至少能提供：
 - Identifier
 - Goal
 - Specification Trace / Reference
+- Current Unit 承担验证责任的 Acceptance Obligations
+- Planned Verification Evidence
 - Observable Completion Condition
 - Dependencies
 - Relevant Constraints
@@ -79,6 +81,8 @@ Current Unit 应至少能提供：
 
 - Current Unit 的 Goal；
 - Spec Reference；
+- Current Unit 承担验证责任的 Required Behaviors / Acceptance Obligations；
+- Planned Verification Evidence；
 - Observable Completion Condition；
 - Dependencies；
 - Relevant Constraints；
@@ -102,6 +106,7 @@ Current Unit 应至少能提供：
 - Repository Rules；
 - Current Execution Unit；
 - Relevant Specification Sections；
+- Current Unit 承担验证责任的 Acceptance Obligations 与 Planned Verification Evidence；
 - Relevant Technical Plan Decisions；
 - Relevant Architecture / ADR / Domain Context；
 - Relevant Current Code / Tests。
@@ -218,12 +223,13 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 
 ### 8. Run Targeted Verification
 
-实施后运行与 Current Unit Completion Condition 直接相关的当前验证。
+实施后回到 Specification Trace 与 Acceptance Ownership，逐项运行足以证明 Current Unit 所承担义务的当前验证。
 
 优先：
 
 - 最小、针对性的验证；
-- 能直接覆盖当前 Required Behavior 的证据；
+- 能直接覆盖当前 Required Behavior / Acceptance Obligation 的证据；
+- 能证明分页、排序、Boundary / Failure、多状态、跨入口等关键差异的场景（如适用）；
 - 仓库规则要求的必要检查。
 
 根据变更风险和仓库约束，再按需扩大到：
@@ -236,7 +242,9 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 
 如果 GitHub Actions 是当前 Completion Evidence 的主要来源，可使用 `github-actions-verification` 将 Fast Feedback 与 Completion Verification 分层，并优化预构建 Runtime、Artifact 复用、timeout、过期 Run 取消和 diagnostics；这些优化不能降低 Current Unit 最终必须满足的验证覆盖。
 
-不得把历史通过结果、未执行命令、旧日志或推测结果当作 Current Evidence。
+不得把历史通过结果、未执行命令、旧日志、推测结果、Implementation Existence、Code Inspection 或未覆盖关键差异的 Happy-path Evidence 当作 Current Evidence / obligation closure。
+
+如果 Planned Verification 在实际仓库状态下无法证明所承接义务，且必须重新分配责任或改变 Unit Completion Condition，返回 `slice-work`；不要在执行阶段静默降低证据覆盖。
 
 ### 9. Handle Unexpected Failure Systematically
 
@@ -264,6 +272,7 @@ Review 逻辑上至少区分两个维度：
 **Specification Compliance**
 
 - 当前实现是否满足 Current Unit 对应的 Required Behavior；
+- Current Evidence 是否逐项支持 Current Unit 承担验证责任的 Acceptance Obligations；
 - 是否遗漏 Boundary / Acceptance；
 - 是否增加未经请求的 Product Behavior。
 
@@ -299,15 +308,16 @@ Review 逻辑上至少区分两个维度：
 - 实施了什么与 Current Unit 直接相关的变更；
 - 实际运行了哪些验证；
 - 验证结果是什么；
+- 每项 Executed Current Evidence 支持哪些 Unit-owned Required Behaviors / Acceptance Obligations；
 - 当前证据是否支持 Observable Completion Condition；
 - 是否存在 Stage Return / Authoritative Update Required；
 - 是否存在仍未解决但不影响当前 Completion 的 Non-blocking Observation（如有）。
 
-不要将“Implementation exists”与“Unit completed”混为一谈。
+不要将“Implementation exists”与“Unit completed”混为一谈。显式归属 Feature-wide Verification Responsibility 的义务应保持 Pending，并交给后续 Feature-wide `converge` 独立重新检查；Unit Result 不得声称这些义务已经验证。
 
 ### 13. Evaluate Exit Condition
 
-只有在当前证据支持 Current Unit 的 Observable Completion Condition 时，`execute-unit` 才完成。
+只有在当前证据支持 Current Unit 的 Observable Completion Condition，并逐项支持 Current Unit 承担验证责任的 Required Behaviors / Acceptance Obligations 时，`execute-unit` 才完成。
 
 如果：
 
@@ -348,6 +358,7 @@ Review 逻辑上至少区分两个维度：
 
 - Current Unit 所需实现已存在于当前系统状态；
 - 必要 Targeted Verification 已实际运行；
+- Current Unit 承担验证责任的 Required Behaviors / Acceptance Obligations 已逐项获得 Executed Current Evidence；
 - 当前 Verification Evidence 与 Completion Condition 一致；
 - 没有尚未解决的 Blocking Requirement / Design / Governance 问题；
 - 没有通过静默改变 Product Intent / Major Design 或 Domain / Architecture / ADR Authority 来获得“通过”。
