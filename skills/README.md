@@ -36,7 +36,8 @@
 - Activation：16 / 16 PASS；
 - Behavior：14 / 14 PASS；
 - 覆盖 `clarify-intent`、`readiness-check`、`execute-unit`、`converge` 四个关键调用链节点；
-- 当前没有未解决的 Blocking Metadata / Skill Implementation / Contract / Method Gap。
+- 上述结论属于首轮 B3 历史基线；Issue #18 随后的真实 Consumer Evidence 已暴露 Acceptance-to-Verification closure Gap。
+- 当前已对 `slice-work`、`readiness-check`、`execute-unit` 建立针对性修订与 Behavior Eval 场景；在 Fresh Runtime 重新验证完成前，不把本次 Hardening 声明为已关闭。
 
 核心 Skill 的后续 Runtime Coverage 应由真实 Operationalization / Method Validation 证据驱动，不为了形式完整性机械扩张。
 
