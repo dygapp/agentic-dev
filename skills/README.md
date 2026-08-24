@@ -1,6 +1,8 @@
 # Skills
 
-第一批核心 Skill 的 **Skill Engineering Baseline 已关闭**。
+第一批核心 Skill 的 **Skill Engineering Historical Baseline 已关闭**。
+
+Issue #18 随后的真实 Consumer Evidence 已触发 `slice-work`、`readiness-check`、`execute-unit` 的定向 Hardening；在针对性 Fresh Runtime Eval 与最终 AI Review 完成前，当前状态不是“本次 Hardening 已关闭”。
 
 当前仓库已进入：
 

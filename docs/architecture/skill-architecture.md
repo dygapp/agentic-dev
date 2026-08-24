@@ -154,11 +154,11 @@ Bootstrap / Setup Capability 使用可复用流程帮助项目建立或更新 Pr
 
 | 分类 | 数量 | 当前成员 | 状态语义 |
 |---|---:|---|---|
-| Core Skills | 8 | `clarify-intent`、`specify`、`technical-plan`、`slice-work`、`readiness-check`、`execute-unit`、`systematic-debug`、`converge` | 第一批核心 Skill Engineering 已关闭 |
+| Core Skills | 8 | `clarify-intent`、`specify`、`technical-plan`、`slice-work`、`readiness-check`、`execute-unit`、`systematic-debug`、`converge` | 历史基线已关闭；Issue #18 触发 `slice-work` / `readiness-check` / `execute-unit` 定向 Hardening，待针对性验证重关 |
 | Platform-specific Skills | 1 | `github-actions-verification` | 由真实 Consumer Evidence 支持的非核心 Skill |
 | Future Experimental Skills | 0 | 无 | 只在新的真实证据暴露稳定职责缺口时评估 |
 
-因此，“第一批 8 个核心 Skill”描述的是核心基线，不是仓库全部 Skill 数量。`github-actions-verification` 是当前第 9 个已实现 Skill，但不是“第 9 个核心 Skill”，其存在不重新打开 Core Skill Engineering。
+因此，“第一批 8 个核心 Skill”描述的是核心基线，不是仓库全部 Skill 数量。`github-actions-verification` 是当前第 9 个已实现 Skill，但不是“第 9 个核心 Skill”，其存在不重新打开 Core Skill Engineering。当前定向重开来自 Issue #18 的通用方法证据，与平台专项 Skill 数量无关，也不改变 Skill Inventory。
 
 ### 2.9 产物生命周期与 Skill 边界
 
