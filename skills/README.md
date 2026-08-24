@@ -2,7 +2,7 @@
 
 第一批核心 Skill 的 **Skill 工程历史基线已关闭**。
 
-Issue #18 随后的真实 Consumer 项目证据已触发 `slice-work`、`readiness-check`、`execute-unit` 的定向强化；在针对性全新运行时评估与最终 AI 复核完成前，当前状态不是“本次定向强化已关闭”。
+Issue #18 随后的真实 Consumer 项目证据触发了 `slice-work`、`readiness-check`、`execute-unit` 的定向强化；相关修订已经通过针对性全新运行时评估（`4 / 4 PASS`）和最终 AI 复核，当前达到 `Ready to Integrate`。
 
 当前仓库已进入：
 
@@ -39,7 +39,7 @@ Issue #18 随后的真实 Consumer 项目证据已触发 `slice-work`、`readine
 - Behavior：14 / 14 PASS；
 - 覆盖 `clarify-intent`、`readiness-check`、`execute-unit`、`converge` 四个关键调用链节点；
 - 上述结论属于首轮 B3 历史基线；Issue #18 随后的真实 Consumer 项目证据已暴露验收到验证的闭环缺口。
-- 当前已对 `slice-work`、`readiness-check`、`execute-unit` 建立针对性修订与行为评估场景；在全新运行时重新验证完成前，不把本次定向强化声明为已关闭。
+- `slice-work`、`readiness-check`、`execute-unit` 的针对性修订已经完成；新增行为评估为 `4 / 4 PASS`，本次定向强化已完成工程闭环。
 
 核心 Skill 的后续 Runtime Coverage 应由真实 Operationalization / Method Validation 证据驱动，不为了形式完整性机械扩张。
 

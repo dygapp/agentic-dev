@@ -45,31 +45,20 @@
 
 ## 当前状态
 
-- PR 草稿：`dygapp/agentic-dev#30`
-- 语义基线：`dc8e9f451155018a581c7c1a2739075e10650f74`
+- PR：`dygapp/agentic-dev#30`
+- 语义与评估基线：`5a894d28bddc4b427af0d3822ae3e2541e730512`
 - 方法 / 原则 / 架构 / 契约 / Skills / 使用指南：已对齐
 - Eval JSON 结构 / Runner 脚本的 Python 语法 / 场景注册：PASS
+- 全新运行时行为评估：`4 / 4 PASS`
+- 断言：`21 / 21 PASS`
 - 最终 AI 复核：阻塞性发现 0 / 中等级别发现 0 / `PASS`
-- 全新运行时行为证据：PENDING
-- 阻塞项：当前运行环境没有 `codex` 可执行文件
-- 集成：未执行；PR 保持草稿状态
+- 阻塞项：无
+- 集成：未执行；PR 达到 `Ready to Integrate`，合并仍由人工决定
 
-## 恢复步骤
+## 完成结果
 
-在具备 Codex CLI、并符合 `evals/README.md` 隔离规则的环境中运行：
-
-```bash
-python3 evals/run_codex_evals.py --behavior \
-  --scenario B-SW-01 \
-  --scenario B-RC-05 \
-  --scenario B-EU-06 \
-  --scenario B-CG-06
-```
-
-然后：
-
-1. 对四个场景逐项执行人工语义分级，不能把进程退出码当作 PASS；
-2. 如果出现 Skill / 契约 / 方法发现，按权威层级修正并针对性重跑；
-3. 全部 PASS 后更新 `evals/README.md`、仓库 / Skill 状态与 PR 证据；
-4. 重新读取最终 PR 状态并执行受影响维度 AI 复核；
-5. 只有验证与复核均闭环后，才将 PR 从草稿转为可供人工复核；合并仍由人工决定。
+1. `slice-work` 为规格验收义务建立实现责任、验证责任和计划验证证据；
+2. `readiness-check` 在验收责任未归属或计划验证覆盖不足时阻止 `PASS`；
+3. `execute-unit` 在缺少已执行的当前证据时不声明执行单元 `Completed`；
+4. `converge` 继续独立检查功能整体覆盖，并将未执行的验证判为 `GAPS`；
+5. 本次定向强化没有新增核心 Skill，没有绑定固定测试框架，也没有弱化人工集成边界。

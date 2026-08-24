@@ -59,7 +59,7 @@ Requirement Source / 初始业务输入（如有）：
 - Skill 打包与激活元数据（Packaging / Activation Metadata）已标准化；
 - 第一轮 Fresh Runtime Eval：Activation `16 / 16 PASS`，Behavior `14 / 14 PASS`；
 - 上述 B3 结论属于 `3e0b99d85d968f138e6eae9bc51ea1b7a710748e` 之前完成的历史基线；Issue #18 随后的真实 Consumer 项目证据已暴露验收到验证的闭环缺口。
-- 当前正在对 `slice-work`、`readiness-check`、`execute-unit` 进行针对性方法 / 契约 / Skill 定向强化；新的行为评估场景已经建立，但在全新运行时重新验证完成前，不重新声明“当前没有未解决的阻塞性 Skill / 契约 / 方法缺口”。
+- `slice-work`、`readiness-check`、`execute-unit` 的针对性方法 / 契约 / Skill 定向强化已经完成；新增行为评估为 `4 / 4 PASS`，最终 AI 复核没有未解决的阻塞性或中等级别发现，当前达到 `Ready to Integrate`。
 
 除第一批核心基线外，仓库当前还实现 1 个由真实 Consumer Evidence 支持的平台专项非核心 Skill：`github-actions-verification`。因此仓库当前共有 9 个 Skill，其中 8 个 Core Skills、1 个 Platform-specific Skill；这不代表新增了第 9 个核心 Skill，也不重新打开 Core Skill Engineering。
 

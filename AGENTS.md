@@ -65,9 +65,9 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 - Fresh Runtime Eval 已完成，代表性核心场景没有未解决的 Blocking Metadata / Skill Implementation / Contract / Method Gap；
 - `Ready to Integrate`、当前证据（Current Evidence）、Fresh Context、阶段返回（Stage Return）与人工控制集成（Human-controlled Integration）的边界已形成一致语义。
 
-Issue #18 随后的真实 Consumer 项目证据已证明验收义务到验证责任 / 当前证据的闭环在更早的执行单元生命周期中不足，因此当前仅对 `slice-work`、`readiness-check`、`execute-unit` 及其方法 / 契约映射进行**定向 Skill 工程重开**。在针对性全新运行时评估与最终 AI 复核完成前，不得把本次定向强化声明为已关闭。
+Issue #18 随后的真实 Consumer 项目证据证明，验收义务到验证责任 / 当前证据的闭环在更早的执行单元生命周期中不足，因此曾对 `slice-work`、`readiness-check`、`execute-unit` 及其方法 / 契约映射进行**定向 Skill 工程重开**。本次定向强化已经完成针对性全新运行时评估（`4 / 4 PASS`）与最终 AI 复核，当前达到 `Ready to Integrate`；合并仍由人工权威或仓库策略决定。
 
-当前定向重开不改变 8 个核心 Skill 的清单，不新增独立 `verify-evidence` 或第九个核心 Skill，也不弱化 `converge`。除当前已有真实证据支持的范围外，后续仍只有新的真实使用证据暴露稳定职责缺口时，才重新进入相应 Skill 工程；不得为了形式完整性新增 Skill、Super-skill 或不必要的流程层级。
+本次定向强化没有改变 8 个核心 Skill 的清单，没有新增独立 `verify-evidence` 或第九个核心 Skill，也没有弱化 `converge`。后续仍只有新的真实使用证据暴露稳定职责缺口时，才重新进入相应 Skill 工程；不得为了形式完整性新增 Skill、Super-skill 或不必要的流程层级。
 
 ## 核心规则
 

@@ -19,9 +19,9 @@ Skill 没有激活与 Skill 激活后执行错误必须分别分类。
 - 不注入本仓库 Skill Engineering 讨论历史；
 - Activation 只能依赖 Runtime 自动发现的 Skill metadata，不预加载目标 `SKILL.md` 正文；
 - Behavior 使用显式 `$skill-name`，验证 Skill 被选中后的行为契约；
-- Activation 和 Behavior 都在仓库外隔离 workspace 中运行；
+- Activation 和 Behavior 都在仓库外隔离工作目录中运行；
 - Runtime 只可见当前 8 个 Skills，以及场景明确需要的 fixture；
-- Runtime 不得读取 `evals/activation/*`、`evals/behavior/*`、历史 `evals/results/*` 或 grading assertions；
+- Runtime 不得读取 `evals/activation/*`、`evals/behavior/*`、历史 `evals/results/*` 或 分级断言；
 - Codex 子进程实际 `cwd` / `PWD` 指向隔离 workspace；
 - Behavior 场景在需要时显式声明当前工作目录与 prompt 构成本场景全部可用上下文，不允许搜索目录外路径；
 - Current Repository / Fixture Context 只按场景最小提供。
@@ -92,17 +92,23 @@ Issue #18 的 Consumer 实验在 `agentic-dev@3e0b99d85d968f138e6eae9bc51ea1b7a7
 
 该扩展不新增独立 `verify-evidence` Skill，不要求一条验收义务对应一个测试，也不把 E2E、CI 或特定平台提升为通用方法要求。
 
-### 当前验证状态
+### 针对性扩展结果
 
-已完成：
+2026-08-24，使用 `codex-cli 0.148.0` 在仓库外隔离 workspace 中完成有效全新运行时重跑。Skill 内容与 PR #30 的语义基线 `5a894d28bddc4b427af0d3822ae3e2541e730512` 一致。
 
 ```text
-Eval JSON 结构：PASS
-Runner 脚本的 Python 语法：PASS
-场景注册：PASS
+验收到验证的闭环行为评估：4 / 4 PASS
+断言：                          21 / 21 PASS
 ```
 
-当前执行环境没有 `codex` 可执行文件，因此尚未形成这 4 个场景的有效全新运行时证据。它们不能计入既有 `14 / 14 PASS`，也不能仅根据评估定义或进程结构验证宣称本次 Skill 定向强化已完成。后续必须在符合本文件隔离规则的 Codex 运行时中运行并进行人工语义分级。
+- `B-SW-01`（`6 / 6`）建立同时包含实现覆盖与验证覆盖的规格覆盖视图，为分页、竞争排序和分区导航分别分配执行单元级验证责任，并给出能够证明关键差异的计划验证证据；
+- `B-RC-05`（`5 / 5`）拒绝进入执行，明确把验收责任未归属和计划验证覆盖不足列为阻塞性发现，并返回 `slice-work`；
+- `B-EU-06`（`5 / 5`）没有把 `LIMIT/OFFSET`、翻页按钮或三条数据的主路径视为分页已验证，在缺少 11 条数据、第二页、`page` 参数和数据切片证据时输出 `Not Completed`；
+- `B-CG-06`（`5 / 5`）没有把所有执行单元均已完成、计划验证或排序代码视为当前证据，输出 `GAPS` 并把纯验证缺口返回正常执行路径。
+
+所有断言均由人工读取最终输出与命令轨迹后逐项语义分级。四次运行都从独立临时 workspace 启动，只读取当前场景提供的 Skill 与目录内容，没有读取 Eval 定义、grading assertions、历史结果或仓库外上下文。
+
+`stderr` 中存在 Codex 模型列表刷新超时，但四个进程均以状态码 `0` 完成、JSONL 均包含 `turn.completed` 和完整最终输出，因此该诊断噪声没有影响本轮语义观察。精确模型名没有由当前 JSONL / 运行元数据 暴露，记录为非阻塞运行时观察；本轮行为结论不依赖进程退出码。
 
 ## 文件结构
 
