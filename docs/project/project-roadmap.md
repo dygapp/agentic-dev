@@ -35,7 +35,7 @@
 |---|---|---|
 | 2026-08-17 | 建立 Method 基线并冻结第一批核心 Skill 设计与契约 | `8fccf7232c21`、`b5480db06940`、`992f13a2ed49` |
 | 2026-08-17 | 完成 8 个 Core Skills 的首轮实现 | `f6a6d5843a4c` 至 `c96cc7e2ac30` 的 Skill 实现提交 |
-| 2026-08-18 | 完成首轮 Fresh Runtime Eval 并关闭历史 Skill Engineering Baseline | `498bdfc543bf`、`bf4f4b5e7ba6` |
+| 2026-08-18 | 完成首轮 Fresh Runtime Eval 并关闭历史 Skill 工程（Skill Engineering）基线 | `498bdfc543bf`、`bf4f4b5e7ba6` |
 | 2026-08-18 | 启动首个真实 Consumer Repository 验证 | `d8b90b1880a1`、Issue #18 |
 | 2026-08-19 至 2026-08-20 | 根据真实使用补齐外部操作、平台验证、ADR 与长期权威产物生命周期边界 | `080cbe660db3` 至 `3e0b99d85d96` 的相关提交 |
 | 2026-08-24 | 完成验收到验证闭环定向强化及运行时评估 | PR #30、`a6ea8ccfb23c`，行为评估 `4 / 4 PASS`、断言 `21 / 21 PASS` |
@@ -45,11 +45,11 @@
 
 - 当前阶段：**Skill Operationalization & Method Validation**；
 - PR #30 能力集成提交：`a6ea8ccfb23cb0837d4721192470e3bd11597059`；
-- Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；
+- Skill 清单（Skill Inventory）：8 个 Core Skills、1 个 Platform-specific Skill；
 - 首轮 Consumer Experiment：已完成；
 - Issue #18：已关闭；
 - 新的继续演进实验：尚未启动；
-- 新的 Tracking Issue：尚未创建。
+- 新的实验跟踪 Issue（Tracking Issue）：尚未创建。
 
 上述提交是已完成里程碑的证据锚点，不是要求后续工作永久固定使用的静态版本。新的实验或修订开始时，必须读取并记录当时实际使用的精确 `agentic-dev` baseline。
 
@@ -69,13 +69,13 @@
 
 ## 下一步工作
 
-1. 本 Roadmap 基线合并后，在独立分支和 PR 中修订 Method、Artifact Strategy、Operating Guide 与 Bootstrap Capability，正式定义条件性 Project Roadmap 规则；
+1. 本项目路线图基线合并后，在独立分支和 PR 中修订 Method、Artifact Strategy、Operating Guide 与 Bootstrap Capability，正式定义条件性 Project Roadmap 规则；
 2. 完成相应契约影响分析；只有确有必要时才修改 `converge` Contract / Skill 并增加针对性行为评估；
 3. 使用新的精确 `agentic-dev` baseline，在 `dygapp/jilinjobs-cms` 中建立 Consumer 自己的 Project Roadmap；
 4. 通过新的 Tracking Issue 开展已有 Consumer 继续演进验证；
 5. 让 Fresh Agent 仅依靠 Consumer Repository Authority 恢复项目整体状态，再进入新的真实纵向工作。
 
-第二步 Method 修订必须在本 Roadmap 基线合并后开始，不与本次项目状态收敛混入同一 PR。
+第二步 Method 修订必须在本 Roadmap 基线合并后开始，不与本次项目状态收敛工作混入同一 PR。
 
 ## 尚未确定与条件性后续
 
