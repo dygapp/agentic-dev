@@ -34,7 +34,7 @@
 | 日期 | 里程碑 | 证据 |
 |---|---|---|
 | 2026-08-17 | 建立 Method 基线并冻结第一批核心 Skill 设计与契约 | `8fccf7232c21`、`b5480db06940`、`992f13a2ed49` |
-| 2026-08-17 | 完成 8 个 Core Skills 的首轮实现 | `f6a6d5843a4c` 至 `c96cc7e2ac30` 的 Skill 实现提交 |
+| 2026-08-17 | 完成 8 个 Core Skills 的首轮实现 | `99314b70c05c` 至 `c96cc7e2ac30` 的 Skill 实现提交 |
 | 2026-08-18 | 完成首轮 Fresh Runtime Eval 并关闭历史 Skill 工程（Skill Engineering）基线 | `498bdfc543bf`、`bf4f4b5e7ba6` |
 | 2026-08-18 | 启动首个真实 Consumer Repository 验证 | `d8b90b1880a1`、Issue #18 |
 | 2026-08-19 至 2026-08-20 | 根据真实使用补齐外部操作、平台验证、ADR 与长期权威产物生命周期边界 | `080cbe660db3` 至 `3e0b99d85d96` 的相关提交 |
@@ -75,7 +75,7 @@
 4. 通过新的 Tracking Issue 开展已有 Consumer 继续演进验证；
 5. 让 Fresh Agent 仅依靠 Consumer Repository Authority 恢复项目整体状态，再进入新的真实纵向工作。
 
-第二步 Method 修订必须在本 Roadmap 基线合并后开始，不与本次项目状态收敛工作混入同一 PR。
+通用 Project Roadmap Method 修订必须在本项目路线图基线合并后开始，不与本次项目状态收敛工作混入同一 PR。
 
 ## 尚未确定与条件性后续
 
