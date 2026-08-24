@@ -179,13 +179,16 @@ Allowed Sub-skills / Disciplines
 - READY / GAPS 二元主结果；
 - 检查 Missing / Partial / Contradicting / Unrequested / Obsolete Plan / Missing Verification / Integration Gap；
 - 检查 Domain / Architecture Authority 与 Artifact Lifecycle Gap；
+- 本次工作命中项目级更新触发条件时，检查已有且适用的 Project Roadmap 是否陈旧，并只把 Gap 路由到授权的项目治理 / Bootstrap 维护职责；
 - Gap 需要执行工作时交给 `slice-work` 塑形；
 - READY 必须基于 Current System + Current Evidence。
 
 首版不需要：
 
 - 把 Unit Status 聚合为完成结论；
-- 自动修改 Specification / Technical Plan；
+- 自动修改 Specification / Technical Plan / Project Roadmap；
+- 发明下一阶段、项目核心目标或下一步路线；
+- 要求每个项目或每个 Feature 创建 / 更新 Project Roadmap；
 - 自动 Integration。
 
 ## 4. 建议实现顺序
