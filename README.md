@@ -59,7 +59,7 @@ Requirement Source / 初始业务输入（如有）：
 - Skill 打包与激活元数据（Packaging / Activation Metadata）已标准化；
 - 第一轮 Fresh Runtime Eval：Activation `16 / 16 PASS`，Behavior `14 / 14 PASS`；
 - 上述 B3 结论属于 `3e0b99d85d968f138e6eae9bc51ea1b7a710748e` 之前完成的历史基线；Issue #18 随后的真实 Consumer 项目证据已暴露验收到验证的闭环缺口。
-- `slice-work`、`readiness-check`、`execute-unit` 的针对性方法 / 契约 / Skill 定向强化已经完成；新增行为评估为 `4 / 4 PASS`，最终 AI 复核没有未解决的阻塞性或中等级别发现，当前达到 `Ready to Integrate`。
+- `slice-work`、`readiness-check`、`execute-unit` 的针对性方法 / 契约 / Skill 定向强化已经完成；新增行为评估为 `4 / 4 PASS`，最终 AI 复核没有未解决的阻塞性或中等级别发现；PR #30 已合并到 `master`，Issue #18 已按 `completed` 关闭。
 
 除第一批核心基线外，仓库当前还实现 1 个由真实 Consumer Evidence 支持的平台专项非核心 Skill：`github-actions-verification`。因此仓库当前共有 9 个 Skill，其中 8 个 Core Skills、1 个 Platform-specific Skill；这不代表新增了第 9 个核心 Skill，也不重新打开 Core Skill Engineering。
 
@@ -252,11 +252,17 @@ converge
 
 ## 下一阶段
 
-当前进入 **Skill Operationalization & Method Validation**。优先目标是：
+当前继续处于 **Skill Operationalization & Method Validation**。首轮 Greenfield Consumer Experiment 已完成，下一步工作的核心目标转为：基于已有真实 Consumer Repository 开展继续演进验证，而不是重复 Bootstrap 或继续扩展方法与 Skill 清单。
 
-1. 通过使用指南（Operating Guide）让 Fresh Agent 能够从真实需求启动并持续推进 Consumer Repository；
-2. 在独立真实 Repository 中验证完整方法、Skills 组合、Fresh Context 与项目渐进演进；
-3. 通过真实实验产生的证据（Experiment Evidence）识别 Usage / Skill / Contract / Method / Project Rule Gap；
-4. 仅在真实使用证明必要时，再处理 Distribution、Bootstrap 自动化、Controller / Runtime Orchestration 或重新进入 Skill Engineering。
+优先验证：
 
-下一阶段默认不新增第九个核心 Skill，也不继续扩大方法论研究样本。
+1. Fresh Agent 能否仅依靠已持久化的 Consumer Authority 和当前 `agentic-dev` 基线恢复工作；
+2. 新的真实纵向切片能否按需完成 Specification、Technical Planning、Work Slicing、Execution 与 Convergence；
+3. 项目权威、长期产物和验收验证责任能否在持续开发中正确增量演进；
+4. 只有真实实验产生的新证据暴露稳定缺口时，才判断是否需要 Usage Guide、Skill Implementation、Contract 或 Method 修改。
+
+当前状态、范围边界与新 Context 恢复入口见：
+
+`docs/project/current-status.md`
+
+下一阶段默认不新增第九个核心 Skill，不重新打开 Issue #18，也不继续扩大方法论研究样本。Distribution、Bootstrap 自动化、Controller / Runtime Orchestration 仍只在真实使用证明必要时评估。
