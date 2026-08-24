@@ -103,6 +103,8 @@ Allowed Sub-skills / Disciplines
 
 - 以 Vertical / Independently Verifiable 为首要拆分方向；
 - 为每个 Unit 强制最小逻辑字段；
+- 为 Required Behaviors / Acceptance Obligations 建立 Unit-level 或显式 Feature-wide Verification Responsibility；
+- 让 Planned Verification Evidence 足以证明所承接义务，而不只描述实现范围；
 - 检查 Context-fit 与 Hidden Dependency；
 - 产生的是候选执行结构，不承担最终 Readiness Verdict。
 
@@ -118,6 +120,7 @@ Allowed Sub-skills / Disciplines
 
 - 只读 Checker；
 - 四维 Gate：Specification / Design / Execution / Governance；
+- Execution Readiness 同时检查 Acceptance Ownership 与 Planned Verification Coverage；
 - Finding 必须分 Blocking / Non-blocking；
 - Blocking Finding 要指出返回哪个职责层，而不是自己修文档；
 - 未处理的 Domain / Architecture Authority 或 Artifact Lifecycle Gap 必须阻止进入 Execute；
@@ -140,7 +143,8 @@ Allowed Sub-skills / Disciplines
 - JIT Plan 临时化；
 - Unexpected Failure 转 `systematic-debug`；
 - 发现长期领域事实或架构状态缺口时返回拥有相应权威的上游职责，不在代码 / 测试中静默提升长期权威；
-- Completion 必须由 Current Evidence 支持。
+- Completion 必须由 Current Evidence 支持，并逐项关闭 Current Unit 承担验证责任的 Acceptance Obligations；
+- Implementation Existence 或未覆盖关键差异的 Happy-path Evidence 不能代替 obligation closure。
 
 首版不需要：
 

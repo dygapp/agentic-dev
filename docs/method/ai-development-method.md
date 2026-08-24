@@ -280,6 +280,8 @@ Execution Unit 是本方法的逻辑工作单位，与 Jira、GitHub Issue、Mar
 - Dependencies
 - Relevant Constraints
 
+上述内容不要求采用固定字段名或固定模板，但整个 Unit Set 必须能够显式回答：每项 Required Behavior / Acceptance Obligation 由哪个 Unit 承担实现与验证责任，或者为什么必须由 Feature-wide Verification 承担。
+
 ### 质量属性
 
 每个 Execution Unit 应尽量满足：
@@ -290,6 +292,29 @@ Execution Unit 是本方法的逻辑工作单位，与 Jira、GitHub Issue、Mar
 - Traceable
 - Context-fit
 - Low Hidden Dependency
+
+### 验收义务与验证责任闭环
+
+Slice & Ready 不只检查实现范围是否被 Units 覆盖，还必须建立验收义务到验证证据的可执行闭环：
+
+```text
+Specification Obligation
+→ Implementation / Verification Responsibility
+→ Planned Verification Evidence
+→ Executed Current Evidence
+```
+
+规则：
+
+- 每项 Required Behavior / Acceptance Obligation 必须明确归属某个 Execution Unit，或在行为只有跨 Unit 组合后才能被有效证明时，明确归属 Feature-wide Verification Responsibility；
+- Implementation Responsibility 与 Verification Responsibility 可以由同一 Unit 承担，也可以在有真实跨 Unit 原因时分开，但不能让验证责任处于未归属状态；
+- Planned Verification Evidence 必须足以区分义务是否真实满足，不能只写“代码完成”“测试通过”或其他无法对应具体行为的宽泛条件；
+- 分页、排序、Boundary / Failure、多状态、跨入口等容易被 Happy Path 遗漏的行为，应按 Specification 风险设计足以证明其关键差异的验证场景；
+- 不要求一条 Acceptance 对应一个测试，也不规定必须使用自动化测试、E2E、CI 或特定证据格式；证据类型与强度应和行为、风险及 Repository Rules 相称；
+- Feature-wide Responsibility 只用于确实需要组合状态才能证明的行为，不能作为推迟普通 Unit-level Verification 的兜底标签；
+- 实现存在、代码检查通过或某条邻近路径已经验证，不自动等同于该 Acceptance Obligation 已获得 Verification Coverage。
+
+该闭环可以通过 Execution Unit 字段、Coverage View 或 Consumer Repository 选择的等价载体表达，不要求新增固定长期 Artifact。
 
 ### Readiness Gate
 
@@ -317,8 +342,10 @@ Execution Unit 是本方法的逻辑工作单位，与 Jira、GitHub Issue、Mar
 
 #### Execution Readiness
 
-- Requirements 有 Execution Coverage；
-- 不存在重要 Orphan Work；
+- Requirements 同时具有 Implementation Coverage 与 Verification Coverage；
+- 每项 Required Behavior / Acceptance Obligation 都有明确的实现与验证责任，或有合法且显式的 Feature-wide Verification Responsibility；
+- Planned Verification Evidence 足以证明所承接的义务，而不是只覆盖主要 Happy Path；
+- 不存在重要 Orphan Work 或未归属的 Verification Obligation；
 - Dependencies 真实且顺序合理；
 - Unit 满足 Context-fit；
 - Unit 有明确 Completion Condition。
@@ -346,6 +373,7 @@ Readiness Check 尽量由 AI 自动完成。
 - Repository Rules
 - Current Execution Unit
 - Relevant Specification Sections
+- Current Unit 承接的 Acceptance Obligations 与 Planned Verification Evidence
 - Relevant Technical Plan Decisions
 - Relevant Architecture / ADR / Domain Context
 - Relevant Current Code / Tests
@@ -387,9 +415,11 @@ Record Verified Result
 
 ### Exit Condition
 
-当前 Execution Unit 的 Completion Condition 已经有**当前证据**支持。
+当前 Execution Unit 的 Completion Condition，以及由当前 Unit 承担验证责任的 Required Behaviors / Acceptance Obligations，已经有**当前证据**支持。
 
-Unit 成功退出 Execute 只证明当前 Unit 已完成，不自动证明整个 Feature / Change 已满足进入 Ready to Integrate 所需的最终收敛语义。
+声明 Unit Completed 前必须回到其 Specification Trace 检查 obligation closure；Implementation Existence、Code Inspection 或未覆盖关键差异的 Happy-path Evidence 不能替代必要的 Executed Current Evidence。
+
+如果某项义务已基于真实跨 Unit 原因显式归属 Feature-wide Verification Responsibility，Unit Result 必须保留该 Pending Responsibility，不能把 Unit Completion 陈述为该义务已经获得证据。Unit 成功退出 Execute 只证明当前 Unit 自身的实现与验证责任已完成，不自动证明整个 Feature / Change 已满足进入 Ready to Integrate 所需的最终收敛语义。
 
 ## 8. Stage 6 — Converge
 
@@ -406,6 +436,8 @@ Unit 成功退出 Execute 只证明当前 Unit 已完成，不自动证明整个
 - Current Verification Evidence。
 
 ### 检查内容
+
+Converge 必须重新从 Specification 建立 Feature-wide Coverage，不把 Slice / Readiness 阶段形成的 ownership 或 planned evidence 视为完成证据。此前显式归属 Feature-wide Verification Responsibility 的义务在本阶段到期，仍缺少 Executed Current Evidence 时必须阻止 `READY`。
 
 - Missing Behavior
 - Partial Implementation
@@ -586,9 +618,11 @@ Feature 生命周期：
 单 Execution Unit 生命周期：
 
 - Current Unit
+- Owned Acceptance Obligations
+- Planned Verification Evidence
 - Relevant Code / Tests
 - JIT Execution Plan
-- Targeted Evidence
+- Executed Current Evidence
 
 ### 11.7 Coordination Context
 

@@ -301,12 +301,30 @@ dependencies
 constraints
 ```
 
+除上述最小字段外，整个 Unit Set 还必须表达以下逻辑关系，但不要求采用固定字段名或固定模板：
+
+```text
+Specification Obligation
+→ Implementation / Verification Responsibility
+→ Planned Verification Evidence
+```
+
+其中：
+
+- `spec_reference` 或等价 Coverage View 必须能识别 Unit 承接的 Required Behaviors / Acceptance Obligations；
+- `completion_condition` 与 Planned Verification Evidence 必须足以证明这些义务，而不只是证明实现存在或主要 Happy Path 可用；
+- 只有确实需要跨 Unit 组合状态才能证明的义务，才可以显式归属 Feature-wide Verification Responsibility；
+- `execute-unit` 形成 Executed Current Evidence，`converge` 仍独立从 Specification 重新检查 Feature-wide Coverage；
+- 不要求一条 Acceptance 对应一个测试，也不规定测试层级、CI 平台或证据载体。
+
 可选 Metadata：
 
 - priority
 - status
 - risk
 - owner / worker
+- acceptance ownership
+- planned verification
 - evidence references
 
 长期 Execution Unit 不要求精确 File Paths。
