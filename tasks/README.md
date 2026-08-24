@@ -8,7 +8,7 @@ Tasks 只承担工作协调职责，不构成 Method、Architecture 或 Skill Co
 
 > **Skill Operationalization & Method Validation**
 
-第一批 8 个核心 Skill 的历史 Skill Engineering Baseline 已关闭。Issue #18 的真实 Consumer Evidence 当前触发 Acceptance-to-Verification closure 定向 Hardening，仅涉及已有 Method / Contract 与 `slice-work`、`readiness-check`、`execute-unit`；在针对性 Fresh Runtime Eval 与最终 AI Review 完成前，本次 Hardening 保持未关闭。当前不扩展 Skill Inventory、Runtime 层级或与证据无关的 Eval。
+第一批 8 个核心 Skill 的历史 Skill 工程基线已关闭。Issue #18 的真实 Consumer 项目证据当前触发验收到验证的闭环定向强化，仅涉及已有方法 / 契约与 `slice-work`、`readiness-check`、`execute-unit`；在针对性全新运行时评估与最终 AI 复核完成前，本次定向强化保持未关闭。当前不扩展 Skill 清单、运行时层级或与证据无关的评估。
 
 ## Plan 使用规则
 

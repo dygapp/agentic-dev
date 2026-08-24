@@ -79,30 +79,30 @@ Artifact Lifecycle Behavior: 7 / 7 PASS
 
 所有场景均由人工按 assertion 逐项语义分级；进程退出码没有被当作 PASS。Trace 只读取隔离 workspace 中提供的 Skill 与场景材料，未读取本仓库 Eval 定义、历史结果或当前工作目录之外的上下文。
 
-## Acceptance-to-Verification Closure 针对性扩展
+## 验收到验证的闭环针对性扩展
 
-Issue #18 的 Consumer Experiment 在 `agentic-dev@3e0b99d85d968f138e6eae9bc51ea1b7a710748e` 上证明：Execution Units 可以具有 Implementation Coverage 并完成主要 Happy Path，但部分 Acceptance Obligations 仍缺少 Planned / Executed Verification Evidence；Feature-wide `converge` 能正确阻止 `READY`，但发现时机偏晚。
+Issue #18 的 Consumer 项目实验在 `agentic-dev@3e0b99d85d968f138e6eae9bc51ea1b7a710748e` 上证明：执行单元可以具有实现覆盖并完成主路径，但部分验收义务仍缺少计划验证证据和已执行的当前证据；功能整体 `converge` 能正确阻止 `READY`，但发现时机偏晚。
 
-为验证本次受影响行为，只增加 4 个针对性 Behavior 场景：
+为验证本次受影响行为，只增加 4 个针对性行为场景：
 
-- `B-SW-01`：`slice-work` 为分页、竞争排序和分区导航建立 Acceptance Ownership 与 Planned Verification Evidence；
-- `B-RC-05`：宽泛 Completion Condition 与 Happy-path Plan 不足以通过 Verification Coverage Readiness；
-- `B-EU-06`：Implementation Existence 与单页 Happy Path 不能代替分页义务的 Executed Current Evidence；
-- `B-CG-06`：即使 Units Completed 且存在 Feature-wide Planned Verification，未执行的证据仍由 `converge` 判为 `GAPS`。
+- `B-SW-01`：`slice-work` 为分页、竞争排序和分区导航建立验收责任归属与计划验证证据；
+- `B-RC-05`：宽泛完成条件与主路径验证计划不足以通过验证覆盖就绪检查；
+- `B-EU-06`：实现存在与单页主路径不能代替分页义务的已执行的当前证据；
+- `B-CG-06`：即使执行单元均已完成且存在功能整体计划验证，未执行的证据仍由 `converge` 判为 `GAPS`。
 
-该扩展不新增独立 `verify-evidence` Skill，不要求一条 Acceptance 对应一个测试，也不把 E2E、CI 或特定平台提升为通用方法要求。
+该扩展不新增独立 `verify-evidence` Skill，不要求一条验收义务对应一个测试，也不把 E2E、CI 或特定平台提升为通用方法要求。
 
 ### 当前验证状态
 
 已完成：
 
 ```text
-Eval JSON structure: PASS
-Runner Python syntax: PASS
-Scenario registration: PASS
+Eval JSON 结构：PASS
+Runner 脚本的 Python 语法：PASS
+场景注册：PASS
 ```
 
-当前执行环境没有 `codex` 可执行文件，因此尚未形成这 4 个场景的有效 Fresh Runtime Evidence。它们不能计入既有 `14 / 14 PASS`，也不能仅根据 Eval 定义或进程结构验证宣称本次 Skill Hardening 已完成。后续必须在符合本文件隔离规则的 Codex Runtime 中运行并进行人工语义分级。
+当前执行环境没有 `codex` 可执行文件，因此尚未形成这 4 个场景的有效全新运行时证据。它们不能计入既有 `14 / 14 PASS`，也不能仅根据评估定义或进程结构验证宣称本次 Skill 定向强化已完成。后续必须在符合本文件隔离规则的 Codex 运行时中运行并进行人工语义分级。
 
 ## 文件结构
 

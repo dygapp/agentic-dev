@@ -125,14 +125,14 @@ Fresh Context 不绑定某一种产品功能。
 - “tests pass”必须有当前 test 结果；
 - “API works”必须有当前行为验证结果。
 
-当前证据必须能追溯到所声明完成的 Required Behavior / Acceptance Obligation，并足以区分该义务是否真实满足。
+当前证据必须能追溯到所声明完成的必需行为 / 验收义务，并足以区分该义务是否真实满足。
 
 以下关系不能自动成立：
 
 ```text
-Implementation Exists ≠ Verification Coverage
-Planned Evidence ≠ Executed Current Evidence
-Happy-path Pass ≠ All Owned Acceptance Obligations Closed
+实现存在 ≠ 验证覆盖
+计划证据 ≠ 已执行的当前证据
+主路径通过 ≠ 执行单元负责的全部验收义务已闭环
 ```
 
 历史测试、代码阅读或其他 Agent 的无证据声明不能证明当前状态。

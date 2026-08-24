@@ -7,7 +7,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 
 ## Purpose
 
-在进入 Execute 前执行统一、只读的 Readiness Gate，判断当前 Specification、可选 Technical Plan、Execution Units、Acceptance Ownership / Planned Verification Coverage、相关 Domain / Architecture / ADR Authority、长期权威产物生命周期责任与 Governance Context 是否已经足以安全进入实施。
+在进入执行前执行统一、只读的就绪门禁，判断当前规格说明、可选技术计划、执行单元、验收责任归属 / 计划验证覆盖、相关领域 / 架构 / ADR 权威、长期权威产物生命周期责任与治理上下文是否已经足以安全进入实施。
 
 本 Skill 只负责发现和分类 Readiness Findings，不修改 Specification、Technical Plan、Execution Units、ADR 或其他权威 Artifact。
 
@@ -108,11 +108,11 @@ description: Performs a read-only pre-execution gate across specification, optio
 
 检查 Execution Unit Set：
 
-- Requirements 是否同时获得合理 Implementation Coverage 与 Verification Coverage；
-- 每项 Required Behavior / Acceptance Obligation 是否有明确的 Implementation / Verification Responsibility，或有真实跨 Unit 原因支持的显式 Feature-wide Verification Responsibility；
-- Planned Verification Evidence 是否足以区分所承接义务是否满足，而不是只写“代码完成”“测试通过”或覆盖主要 Happy Path；
-- 分页、排序、Boundary / Failure、多状态、跨入口等关键差异是否具有与 Specification 风险相称的验证场景；
-- 是否存在重要 Orphan Work 或未归属的 Verification Obligation；
+- 需求是否同时获得合理实现覆盖与验证覆盖；
+- 每项必需行为 / 验收义务是否有明确的实现责任 / 验证责任，或有真实跨执行单元原因支持的显式功能整体验证责任；
+- 计划验证证据是否足以区分所承接义务是否满足，而不是只写“代码完成”“测试通过”或覆盖主路径；
+- 分页、排序、边界 / 失败、多状态、跨入口等关键差异是否具有与规格说明风险相称的验证场景；
+- 是否存在重要孤立工作项或未归属的验证义务；
 - 每个 Unit 是否具有明确 Goal 与 Specification Trace / Reference；
 - Completion Condition 是否可观察、可验证；
 - Dependencies 是否真实、顺序合理且没有隐藏前置条件；
@@ -120,7 +120,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 - Unit 是否包含超出 Specification Scope 的未授权工作；
 - Unit 是否遵守当前有效 Architecture / ADR Constraints。
 
-需要重新塑形、补充或拆分 Unit，补齐 Acceptance Ownership，或增强 Planned Verification Coverage 时，Blocking Finding 返回 `slice-work`。Checker 不替 Unit 选择测试框架、固定证据格式，也不自行补写 ownership mapping。
+需要重新塑形、补充或拆分执行单元，补齐验收责任归属，或增强计划验证覆盖时，阻塞性发现返回 `slice-work`。检查者不替执行单元选择测试框架、固定证据格式，也不自行补写责任归属映射。
 
 ### 5. Check Governance Readiness
 
@@ -198,7 +198,7 @@ Non-blocking Findings:  # optional
 
 ## Exit Conditions
 
-不存在 Blocking Finding，包括未归属的 Acceptance / Verification Responsibility、无法证明所承接义务的 Planned Verification Coverage、未处理的 Domain / Architecture Authority 或 Artifact Lifecycle Gap，并且 `PASS` 有当前权威输入支持。
+不存在阻塞性发现，包括未归属的验收责任 / 验证责任、无法证明所承接义务的计划验证覆盖、未处理的领域 / 架构权威或产物生命周期缺口，并且 `PASS` 有当前权威输入支持。
 
 如果存在 Blocking Finding，本 Skill 应输出 Findings 并停止继续进入 Execute；这表示 Readiness Gate **未满足 Exit Condition**，当前 Workflow 应返回相应职责层处理。
 

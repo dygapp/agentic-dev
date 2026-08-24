@@ -58,8 +58,8 @@ Requirement Source / 初始业务输入（如有）：
 - 8 个核心 Skill 已实现并完成契约复核（Contract Review）；
 - Skill 打包与激活元数据（Packaging / Activation Metadata）已标准化；
 - 第一轮 Fresh Runtime Eval：Activation `16 / 16 PASS`，Behavior `14 / 14 PASS`；
-- 上述 B3 结论属于 `3e0b99d85d968f138e6eae9bc51ea1b7a710748e` 之前完成的历史基线；Issue #18 随后的真实 Consumer Evidence 已暴露 Acceptance-to-Verification closure Gap。
-- 当前正在对 `slice-work`、`readiness-check`、`execute-unit` 进行针对性 Method / Contract / Skill Hardening；新的 Behavior Eval 场景已经建立，但在 Fresh Runtime 重新验证完成前，不重新声明“当前没有未解决的 Blocking Skill / Contract / Method Gap”。
+- 上述 B3 结论属于 `3e0b99d85d968f138e6eae9bc51ea1b7a710748e` 之前完成的历史基线；Issue #18 随后的真实 Consumer 项目证据已暴露验收到验证的闭环缺口。
+- 当前正在对 `slice-work`、`readiness-check`、`execute-unit` 进行针对性方法 / 契约 / Skill 定向强化；新的行为评估场景已经建立，但在全新运行时重新验证完成前，不重新声明“当前没有未解决的阻塞性 Skill / 契约 / 方法缺口”。
 
 除第一批核心基线外，仓库当前还实现 1 个由真实 Consumer Evidence 支持的平台专项非核心 Skill：`github-actions-verification`。因此仓库当前共有 9 个 Skill，其中 8 个 Core Skills、1 个 Platform-specific Skill；这不代表新增了第 9 个核心 Skill，也不重新打开 Core Skill Engineering。
 
@@ -145,7 +145,7 @@ Ready to Integrate
 - 实施工作拆分为纵向、可验证、适合 Fresh Context 的执行单元（Execution Unit）。
 - 具体文件路径、测试命令和施工步骤优先在执行时通过即时计划（JIT Plan）临时生成。
 - 所有“完成、通过、修复成功”等状态声明必须有当前证据（Current Evidence）。
-- 每项 Specification Acceptance Obligation 必须闭环到明确的实现 / 验证责任、计划证据与已执行当前证据；Implementation Coverage 不自动等同于 Verification Coverage。
+- 每项规格验收义务必须闭环到明确的实现 / 验证责任、计划证据与已执行当前证据；实现覆盖不自动等同于验证覆盖。
 - 会话历史（Conversation History）不是权威知识库。
 - 人工升级（Human Escalation）依据 Authority、Impact、Reversibility 判断。
 - 普通、低影响、可逆的局部实现选择由 Agent 自主处理。

@@ -154,11 +154,11 @@ Bootstrap / Setup Capability 使用可复用流程帮助项目建立或更新 Pr
 
 | 分类 | 数量 | 当前成员 | 状态语义 |
 |---|---:|---|---|
-| Core Skills | 8 | `clarify-intent`、`specify`、`technical-plan`、`slice-work`、`readiness-check`、`execute-unit`、`systematic-debug`、`converge` | 历史基线已关闭；Issue #18 触发 `slice-work` / `readiness-check` / `execute-unit` 定向 Hardening，待针对性验证重关 |
+| 核心 Skills | 8 | `clarify-intent`、`specify`、`technical-plan`、`slice-work`、`readiness-check`、`execute-unit`、`systematic-debug`、`converge` | 历史基线已关闭；Issue #18 触发 `slice-work` / `readiness-check` / `execute-unit` 定向强化，待针对性验证重关 |
 | Platform-specific Skills | 1 | `github-actions-verification` | 由真实 Consumer Evidence 支持的非核心 Skill |
 | Future Experimental Skills | 0 | 无 | 只在新的真实证据暴露稳定职责缺口时评估 |
 
-因此，“第一批 8 个核心 Skill”描述的是核心基线，不是仓库全部 Skill 数量。`github-actions-verification` 是当前第 9 个已实现 Skill，但不是“第 9 个核心 Skill”，其存在不重新打开 Core Skill Engineering。当前定向重开来自 Issue #18 的通用方法证据，与平台专项 Skill 数量无关，也不改变 Skill Inventory。
+因此，“第一批 8 个核心 Skill”描述的是核心基线，不是仓库全部 Skill 数量。`github-actions-verification` 是当前第 9 个已实现 Skill，但不是“第 9 个核心 Skill”，其存在不重新打开核心 Skill 工程。当前定向重开来自 Issue #18 的通用方法证据，与平台专项 Skill 数量无关，也不改变 Skill 清单。
 
 ### 2.9 产物生命周期与 Skill 边界
 
@@ -301,21 +301,21 @@ dependencies
 constraints
 ```
 
-除上述最小字段外，整个 Unit Set 还必须表达以下逻辑关系，但不要求采用固定字段名或固定模板：
+除上述最小字段外，整个执行单元集合还必须表达以下逻辑关系，但不要求采用固定字段名或固定模板：
 
 ```text
-Specification Obligation
-→ Implementation / Verification Responsibility
-→ Planned Verification Evidence
+规格义务
+→ 实现责任 / 验证责任
+→ 计划验证证据
 ```
 
 其中：
 
-- `spec_reference` 或等价 Coverage View 必须能识别 Unit 承接的 Required Behaviors / Acceptance Obligations；
-- `completion_condition` 与 Planned Verification Evidence 必须足以证明这些义务，而不只是证明实现存在或主要 Happy Path 可用；
-- 只有确实需要跨 Unit 组合状态才能证明的义务，才可以显式归属 Feature-wide Verification Responsibility；
-- `execute-unit` 形成 Executed Current Evidence，`converge` 仍独立从 Specification 重新检查 Feature-wide Coverage；
-- 不要求一条 Acceptance 对应一个测试，也不规定测试层级、CI 平台或证据载体。
+- `spec_reference` 或等价覆盖视图必须能识别执行单元承接的必需行为 / 验收义务；
+- `completion_condition` 与计划验证证据必须足以证明这些义务，而不只是证明实现存在或主路径可用；
+- 只有确实需要跨执行单元组合状态才能证明的义务，才可以显式归属功能整体验证责任；
+- `execute-unit` 形成已执行的当前证据，`converge` 仍独立从规格说明重新检查功能整体覆盖；
+- 不要求一条验收义务对应一个测试，也不规定测试层级、CI 平台或证据载体。
 
 可选 Metadata：
 
@@ -323,7 +323,7 @@ Specification Obligation
 - status
 - risk
 - owner / worker
-- acceptance ownership
+- 验收责任归属
 - planned verification
 - evidence references
 

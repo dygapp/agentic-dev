@@ -49,14 +49,14 @@
     },
     {
       "id": "B-RC-05",
-      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 readiness-check。Specification 明确要求：栏目每页 10 条且 11 条数据可以进入第二页；首页多篇文章按 pinned → recommended → sortOrder 竞争排序；SERVICE 与 SITE 导航进入不同公开分区。当前 Units 都有 spec_reference，completion_condition 统一写成‘实现存在且浏览器主流程测试通过’，但没有分配上述三项 Acceptance 的验证责任，也没有设计超过一页、多文章竞争排序或 SERVICE/SITE 分区场景。现在能否进入 Execute？",
-      "expected_behavior": "不得 PASS。应识别 Acceptance Ownership / Planned Verification Coverage 的 Blocking Finding，说明 implementation coverage 和宽泛 happy-path condition 不足，并返回 slice-work 补齐责任与计划证据；Checker 不自行写测试。",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 readiness-check。规格说明明确要求：栏目每页 10 条且 11 条数据可以进入第二页；首页多篇文章按 pinned → recommended → sortOrder 竞争排序；SERVICE 与 SITE 导航进入不同公开分区。当前执行单元都有 spec_reference，completion_condition 统一写成‘实现存在且浏览器主流程测试通过’，但没有分配上述三项验收义务的验证责任，也没有设计超过一页、多文章竞争排序或 SERVICE/SITE 分区场景。现在能否进入执行？",
+      "expected_behavior": "不得 PASS。应识别验收责任归属 / 计划验证覆盖的阻塞性发现，说明实现覆盖和宽泛主路径条件不足，并返回 slice-work 补齐责任与计划证据；检查者不自行写测试。",
       "assertions": [
         "不输出 PASS",
-        "识别三项 Acceptance Obligations 没有明确 Verification Responsibility",
+        "识别三项验收义务没有明确验证责任",
         "指出‘实现存在且主流程测试通过’不能证明分页、竞争排序和 SERVICE/SITE 分区",
-        "将 Blocking Finding 返回 slice-work 补齐 ownership 与 Planned Verification Evidence",
-        "不强制一条 Acceptance 对应一个测试，也不在 readiness-check 中直接编写或执行测试"
+        "将阻塞性发现返回 slice-work 补齐责任归属与计划验证证据",
+        "不强制一条验收义务对应一个测试，也不在 readiness-check 中直接编写或执行测试"
       ]
     }
   ]

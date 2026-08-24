@@ -196,18 +196,18 @@ Domain Context 保存跨功能持续有效的业务语言与领域事实，由 C
 
 **决定：**
 
-Slice & Ready 必须为 Specification 中的 Required Behavior / Acceptance Obligation 建立明确的实现责任、验证责任与计划证据；Readiness 必须判断这些计划证据是否足以证明义务；Execute 只能在当前证据支持 Current Unit 所承担的验证义务时声明 Unit Completed。
+切分与就绪阶段必须为规格说明中的必需行为 / 验收义务建立明确的实现责任、验证责任与计划证据；就绪检查必须判断这些计划证据是否足以证明义务；执行只能在当前证据支持当前执行单元所承担的验证义务时声明执行单元 `Completed`。
 
-只有确实依赖多个 Units 组合状态的行为，才可以显式归属 Feature-wide Verification Responsibility；这些义务必须由 `converge` 独立重新检查，并在缺少 Executed Current Evidence 时阻止 `READY`。
+只有确实依赖多个执行单元组合状态的行为，才可以显式归属功能整体验证责任；这些义务必须由 `converge` 独立重新检查，并在缺少已执行的当前证据时阻止 `READY`。
 
 **不采用：**
 
-- 将 Implementation Coverage 自动视为 Verification Coverage；
-- 用“代码完成”“测试通过”或主要 Happy Path 代替具体 Acceptance Obligation 的证据责任；
-- 强制每条 Acceptance 对应一个测试、固定证据格式或特定测试层级；
+- 将实现覆盖自动视为验证覆盖；
+- 用“代码完成”“测试通过”或主路径代替具体验收义务的证据责任；
+- 强制每条验收义务对应一个测试、固定证据格式或特定测试层级；
 - 通过新增独立 `verify-evidence` Skill 接管闭环；
-- 因为前置检查增强而弱化 `converge` 的 Feature-wide Safety Net。
+- 因为前置检查增强而弱化 `converge` 的功能整体安全网。
 
 **原因：**
 
-真实 Consumer Experiment 证明，Execution Units 可以在主要纵向路径通过后进入 Completed / Integrated，但仍有分页、竞争排序和多类导航等已实现 Acceptance Obligations 缺少执行过的当前证据。后续只补验证、不修改产品实现即可使 Feature-wide `converge` 从 `GAPS` 转为 `READY`，说明缺口位于 Acceptance Ownership 与 Verification Planning / Closure，而不是 Consumer Implementation 或 `converge` 职责。
+真实 Consumer 实验证明，执行单元可以在主要纵向路径通过后进入 `Completed` / `Integrated`，但仍有分页、竞争排序和多类导航等已实现验收义务缺少已执行的当前证据。后续只补验证、不修改产品实现即可使功能整体 `converge` 从 `GAPS` 转为 `READY`，说明缺口位于验收责任归属与验证规划与闭环，而不是 Consumer 项目实现或 `converge` 职责。

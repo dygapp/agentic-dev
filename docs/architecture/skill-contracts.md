@@ -13,8 +13,8 @@
 
 1. `clarify-intent` 与 `specify` 保持独立 Skill。前者解决 Product Intent 层关键歧义，后者负责形成或更新 WHAT / WHY 权威。小型安全修改可以采用轻量路径，但不合并两者的语义职责。
 2. `technical-plan` 处理跨 Execution Unit 有持续协调价值的长期技术决定，维护跨功能持续有效的 Architecture Context 变化，并对其中的重要长期架构决定执行 ADR 评估；ADR 只在需要保留决定背景、权衡或替代关系时按条件形成或更新。Execute 内的 JIT Execution Plan 只服务当前 Unit，默认不持久化。
-3. `slice-work` 负责生成和塑形 Execution Units，并为每项 Required Behavior / Acceptance Obligation 建立 Unit-level 或合法且显式的 Feature-wide Verification Responsibility；`readiness-check` 是独立 Gate，检查跨 Artifact 一致性、Acceptance Ownership、Planned Verification Coverage 与阻塞项，不静默修改权威 Artifact。
-4. `execute-unit` 只执行并证明一个 Execution Unit；只有 Current Evidence 支持当前 Unit 承担验证责任的 Acceptance Obligations 时才能声明 Completed。它不自动执行整个 Feature，也不自动进入 `converge` 或 Integration。
+3. `slice-work` 负责生成和塑形执行单元，并为每项必需行为 / 验收义务建立执行单元级或合法且显式的功能整体验证责任；`readiness-check` 是独立门禁，检查跨产物一致性、验收责任归属、计划验证覆盖与阻塞项，不静默修改权威产物。
+4. `execute-unit` 只执行并证明一个执行单元；只有当前证据支持当前执行单元承担验证责任的验收义务时才能声明 `Completed`。它不自动执行整个功能，也不自动进入 `converge` 或集成。
 5. `systematic-debug` 是 Defect / Unexpected Failure 的调查路径，可以由 `execute-unit` 调用，也可以独立用于缺陷工作；它不替代普通 TDD 的预期失败步骤。
 6. `converge` 负责 Feature-wide 收敛检查。发现 Gap 时描述缺口并触发必要的重新切分或阶段回退，不通过静默修改 Specification / Technical Plan / Domain / Architecture / ADR Authority 来“修平”差异。
 7. Verification-before-claim、Code Review、TDD、Context Discipline 和 Human Escalation 暂继续作为内嵌纪律，不进入第一批独立 Skill。
@@ -27,9 +27,9 @@
 | `clarify-intent` | User Intent + Authority Context | Clarified Goal / Scope / Product Decisions + 可选 Domain Authority Candidates | 不再存在阻塞 Intent 的关键歧义，长期领域事实候选已交给 `specify` 验证 | 多种解释会导致 materially different User-visible Behavior，或 Scope / Intent 需要改变 |
 | `specify` | Clarified Intent + Governance / Domain Context + Existing Specification（如有） | WHAT / WHY Specification + 可选 Domain Authority Update / Required Authority Action | Fresh Agent 能判断 Required Behavior、Boundary 与 Completion，长期领域事实候选已完成验证和授权路由 | Requirement / Authority Conflict、Product Decision 未解决或无权确认长期领域事实 |
 | `technical-plan` | Specification + Architecture / ADR / Code Constraints | Durable Technical Decisions + 必要 Architecture Authority Update + 条件性 ADR，或确认无需长期 Technical Plan | 技术不确定性已解决，需要更新的 Architecture Context 与条件性 ADR 已进入适当 Repository Authority | Major Architecture、Destructive / Irreversible Trade-off 或未授权 External Effect |
-| `slice-work` | Specification + Optional Technical Plan | Vertical Context-fit Execution Units + Acceptance / Verification Responsibility Mapping | Requirements 获得 Implementation 与 Verification Coverage，每项义务已有责任与 Planned Evidence，Units 可进入 Readiness Gate | 无法在不改变 Scope / Intent / Required Design 的情况下安全拆分 |
-| `readiness-check` | Spec + Optional Plan + Units + Relevant Domain / Architecture / Governance Authority | `PASS` 或 Blocking / Non-blocking Findings | 无 Blocking Finding，包括 Acceptance Ownership / Planned Verification Coverage、Domain / Architecture Authority 或 Artifact Lifecycle Gap | Authoritative Sources Conflict 或高影响 Choice 无权自主裁决 |
-| `execute-unit` | One Unit + Owned Acceptance Obligations + Planned Verification + Minimum Authority Context + Current Code / Tests | Implementation + Executed Current Evidence + Result State / Required Stage Return | Completion Condition 与 Unit-owned Verification Obligations 有当前证据支持，且发现的长期权威缺口已返回相应职责 | 必须改变 Product Intent / Major Design，或动作超出授权 / 不可逆 / 安全隐私敏感 |
+| `slice-work` | 规格说明 + 可选技术计划 | 上下文适配的纵向执行单元 + 验收责任 / 验证责任映射 | 需求获得实现与验证覆盖，每项义务已有责任与计划证据，执行单元可进入就绪门禁 | 无法在不改变范围 / 意图 / 必需设计的情况下安全拆分 |
+| `readiness-check` | 规格说明 + 可选计划 + 执行单元 + 相关领域 / 架构 / 治理权威 | `PASS` 或阻塞性 / 非阻塞性发现 | 无阻塞性发现，包括验收责任归属 / 计划验证覆盖、领域 / 架构权威或产物生命周期缺口 | 权威来源冲突或高影响决策无权自主裁决 |
+| `execute-unit` | 单个执行单元 + 负责的验收义务 + 计划验证 + 最小权威上下文 + 当前代码 / 测试 | 实现 + 已执行的当前证据 + 结果状态 / 必需阶段返回 | 完成条件与执行单元负责的验证义务有当前证据支持，且发现的长期权威缺口已返回相应职责 | 必须改变产品意图 / 重大设计，或动作超出授权 / 不可逆 / 安全隐私敏感 |
 | `systematic-debug` | Observed Problem + Expected Behavior + Runnable Context | Root Cause + Minimal Fix + Regression Evidence / Required Stage Return | Root Cause 已处理且 Regression Evidence 通过，发现的长期权威缺口已返回相应职责 | Expected Behavior 未定义/冲突，或修复要求重大设计变更 |
 | `converge` | Specification + Optional Plan + Units + Relevant Domain / Architecture Authority + System State + Evidence | `READY` 或 `GAPS` | Feature 与权威 Intent、Domain / Architecture Authority、Artifact Lifecycle 和 Current Evidence 收敛 | Gap 需要 Product / Domain / Architecture Authority，或权威来源冲突 |
 
@@ -315,14 +315,14 @@ Specification 决定需求覆盖范围；Technical Plan（如存在）提供跨 
 
 ### Procedure
 
-1. 建立 Specification Coverage 视图，同时区分 Implementation Coverage 与 Verification Coverage。
-2. 对每项 Required Behavior / Acceptance Obligation 明确 Implementation / Verification Responsibility；默认归属能独立证明该行为的 Unit，只有确实依赖跨 Unit 组合状态时才显式归属 Feature-wide Verification Responsibility。
-3. 按 Observable Behavior / Verifiable Outcome 优先形成 Vertical Units。
-4. 为每个 Unit 定义 Goal、Spec Trace、Completion Condition、Dependencies、Constraints，并让 Spec Trace 或等价 Coverage View 能识别其承接的 Acceptance Obligations。
-5. 为各项 Verification Responsibility 定义足以区分义务是否满足的 Planned Verification Evidence；不能只写“代码完成”“测试通过”或主要 Happy Path。
-6. 检查 Bounded、Context-fit、Independent Verification、Verification Sufficiency 与 Hidden Dependency。
-7. 调整过大、横向分层、高度耦合、验证责任未归属或 Planned Evidence 不充分的 Unit。
-8. 形成可交给 Readiness Gate 的完整 Unit Set。
+1. 建立规格覆盖视图，同时区分实现覆盖与验证覆盖。
+2. 对每项必需行为 / 验收义务明确实现责任 / 验证责任；默认归属能独立证明该行为的执行单元，只有确实依赖跨执行单元组合状态时才显式归属功能整体验证责任。
+3. 按可观察行为 / 可验证结果优先形成纵向执行单元。
+4. 为每个执行单元定义目标、规格追踪、完成条件、依赖、约束，并让规格追踪或等价覆盖视图能识别其承接的验收义务。
+5. 为各项验证责任定义足以区分义务是否满足的计划验证证据；不能只写“代码完成”“测试通过”或主路径。
+6. 检查边界明确、上下文适配、独立验证、验证充分性与隐藏依赖。
+7. 调整过大、横向分层、高度耦合、验证责任未归属或计划证据不充分的执行单元。
+8. 形成可交给就绪门禁的完整执行单元集合。
 
 ### Outputs
 
@@ -337,21 +337,21 @@ dependencies
 constraints
 ```
 
-整个 Unit Set 还必须表达：
+整个执行单元集合还必须表达：
 
 ```text
-Specification Obligation
-→ Implementation / Verification Responsibility
-→ Planned Verification Evidence
+规格义务
+→ 实现责任 / 验证责任
+→ 计划验证证据
 ```
 
-上述关系可以进入 Unit 字段、Coverage View 或 Consumer Repository 选择的等价载体，不要求固定字段名、测试层级或证据格式，也不要求一条 Acceptance 对应一个测试。
+上述关系可以进入执行单元字段、覆盖视图或 Consumer 项目仓库选择的等价载体，不要求固定字段名、测试层级或证据格式，也不要求一条验收义务对应一个测试。
 
 ### Exit Conditions
 
-- Requirements 同时获得合理 Implementation Coverage 与 Verification Coverage；
-- 每项 Required Behavior / Acceptance Obligation 都有明确责任，或有合法且显式的 Feature-wide Verification Responsibility；
-- Planned Verification Evidence 足以证明所承接义务；
+- 需求同时获得合理实现覆盖与验证覆盖；
+- 每项必需行为 / 验收义务都有明确责任，或有合法且显式的功能整体验证责任；
+- 计划验证证据足以证明所承接义务；
 - Unit 边界、依赖与 Completion Condition 足够明确；
 - Unit Set 可以进入 `readiness-check`。
 
@@ -407,7 +407,7 @@ Specification Obligation
 
 1. 检查 Specification Readiness：Clarity、Boundary、Acceptance Observability。
 2. 检查 Design Readiness：覆盖 Specification，无 Silent Redefinition；Technical Planning 产生或更新 Architecture Context / ADR 时，相关 Units 必须遵守当前有效的架构约束。
-3. 检查 Execution Readiness：Implementation / Verification Coverage、Acceptance Ownership、Planned Verification Sufficiency、Orphan Work、Dependencies、Context-fit、Completion Conditions；分页、排序、Boundary / Failure、多状态、跨入口等差异不能只由宽泛 Happy-path Evidence 代替。
+3. 检查执行就绪度：实现覆盖 / 验证覆盖、验收责任归属、计划验证充分性、孤立工作项、依赖、上下文适配、完成条件；分页、排序、边界 / 失败、多状态、跨入口等差异不能只由宽泛主路径证据代替。
 4. 检查 Authority / Governance Readiness：不违反 Repository Instructions、Domain Authority、Engineering Rules、Architecture Context / ADR；存在未解决的 Domain / Architecture Authority Gap，或当前工作已经要求创建 / 重大更新长期权威产物却无法确定其生命周期责任时，判为 Blocking 并返回拥有相应事实或决定的职责层。
 5. 将 Findings 区分为 Blocking / Non-blocking。
 6. 若无 Blocking Finding，输出 `PASS`。
@@ -421,7 +421,7 @@ Specification Obligation
 
 ### Exit Conditions
 
-不存在 Blocking Finding，包括未归属的 Acceptance / Verification Responsibility、无法证明所承接义务的 Planned Verification Coverage，以及未处理的 Domain / Architecture Authority 或 Artifact Lifecycle Gap。
+不存在阻塞性发现，包括未归属的验收责任 / 验证责任、无法证明所承接义务的计划验证覆盖，以及未处理的领域 / 架构权威或产物生命周期缺口。
 
 ### Escalation Conditions
 
@@ -463,8 +463,8 @@ Specification Obligation
 
 - Current Execution Unit
 - Relevant Specification Sections
-- Current Unit 承担验证责任的 Acceptance Obligations
-- Planned Verification Evidence
+- 当前执行单元承担验证责任的验收义务
+- 计划验证证据
 - Relevant Technical Plan Decisions
 - Relevant Governance / Domain Context
 - Actual Current Code / Tests
@@ -481,13 +481,13 @@ Specification Obligation
 4. Create JIT Execution Plan if useful。
 5. Establish Expected / Failing Evidence when there is a stable behavior seam。
 6. Implement 当前 Unit 所需最小变更。
-7. 回到 Specification Trace / Acceptance Ownership 检查 obligation closure，并执行足以证明 Current Unit 所承担义务的 Targeted Verification。
-8. 不把 Implementation Existence、Code Inspection、历史证据或未覆盖关键差异的 Happy-path Evidence 当作 obligation closure。
-9. 对 Unexpected Failure 调用 `systematic-debug`。
-10. 如果实施暴露长期领域事实缺失、冲突或失效，不在代码 / 测试中提升业务权威；返回 `clarify-intent` / `specify` 完成候选验证和 Domain Authority 路由。
-11. 如果实施暴露新的长期架构状态、长期架构决定或 Architecture Context 失效，不在代码或局部 JIT Plan 中静默固化；返回 `technical-plan` 完成 Architecture Authority 更新与必要 ADR 评估。
-12. Review when risk warrants，并逻辑区分 Specification Compliance 与 Engineering Quality。
-13. Record Executed Current Evidence，并逐项说明其支持哪些 Unit-owned Acceptance Obligations；显式 Feature-wide Responsibilities 保持 Pending，不得由 Unit Completion 冒充已验证。
+7. 回到规格追踪 / 验收责任归属检查义务闭环，并执行足以证明当前执行单元所承担义务的定向验证。
+8. 不把实现存在、代码检查、历史证据或未覆盖关键差异的主路径证据当作义务闭环。
+9. 对意外失败调用 `systematic-debug`。
+10. 如果实施暴露长期领域事实缺失、冲突或失效，不在代码 / 测试中提升业务权威；返回 `clarify-intent` / `specify` 完成候选验证和领域权威路由。
+11. 如果实施暴露新的长期架构状态、长期架构决定或架构上下文失效，不在代码或局部即时计划中静默固化；返回 `technical-plan` 完成架构权威更新与必要 ADR 评估。
+12. 按风险需要进行复核，并逻辑区分规格符合性与工程质量。
+13. 记录已执行的当前证据，并逐项说明其支持哪些执行单元负责的验收义务；显式归属功能整体验证责任的义务保持 `Pending`，不得由执行单元完成状态冒充已验证。
 
 ### Outputs
 
@@ -500,9 +500,9 @@ Specification Obligation
 
 ### Exit Conditions
 
-当前证据支持该 Unit 的 Observable Completion Condition，并逐项支持由 Current Unit 承担验证责任的 Required Behaviors / Acceptance Obligations。
+当前证据支持该执行单元的可观察完成条件，并逐项支持由当前执行单元承担验证责任的必需行为 / 验收义务。
 
-显式归属 Feature-wide Verification Responsibility 的义务可以保持 Pending，但不能被 Unit Result 陈述为已经验证；Implementation Existence 或 Code Inspection 不能替代必要的 Executed Current Evidence。
+显式归属功能整体验证责任的义务可以保持 `Pending`，但不能被执行单元结果陈述为已经验证；实现存在或代码检查不能替代必要的已执行的当前证据。
 
 ### Escalation Conditions
 
@@ -645,20 +645,20 @@ Specification 是 Feature Intent 的主要权威；Technical Plan 不能覆盖 P
 
 ### Procedure
 
-1. 独立从 Specification 重建 Feature-wide Coverage，不把 Unit Status、Acceptance Ownership 或 Planned Verification 当作完成证据；此前显式归属 Feature-wide Verification Responsibility 的义务在本阶段必须具有 Executed Current Evidence。
-2. 检查 Missing Behavior。
-3. 检查 Partial Implementation。
-4. 检查 Contradiction with Specification。
-5. 检查 Unrequested Behavior。
-6. 检查 Obsolete Technical Plan。
-7. 检查 Unverified Critical Behavior。
-8. 检查 Cross-unit Integration Gap。
-9. 检查 Domain Authority Gap，包括长期领域事实缺失、冲突、失效，或候选事实尚未完成 Specification 验证和授权路由。
-10. 检查 Architecture / ADR Gap，包括实现违反当前有效架构权威，Architecture Context 尚未更新，或满足 ADR 条件的决定尚未形成 / 更新 / 取代 ADR。
-11. 检查 Artifact Lifecycle Gap：本次新增或重大修改的长期权威产物是否缺少 Producer、Trigger、Consumer、Persistence、Update、Supersede 或 Escalation 责任。
+1. 独立从规格说明重建功能整体覆盖，不把执行单元状态、验收责任归属或计划验证当作完成证据；此前显式归属功能整体验证责任的义务在本阶段必须具有已执行的当前证据。
+2. 检查缺失行为。
+3. 检查部分实现。
+4. 检查与规格说明冲突。
+5. 检查未请求行为。
+6. 检查过时技术计划。
+7. 检查未验证的关键行为。
+8. 检查跨执行单元集成缺口。
+9. 检查领域权威缺口，包括长期领域事实缺失、冲突、失效，或候选事实尚未完成规格说明验证和授权路由。
+10. 检查架构 / ADR 缺口，包括实现违反当前有效架构权威，架构上下文尚未更新，或满足 ADR 条件的决定尚未形成 / 更新 / 取代 ADR。
+11. 检查产物生命周期缺口：本次新增或重大修改的长期权威产物是否缺少生产者、触发条件、使用方、持久化、更新、取代或升级责任。
 12. 形成 `READY` 或 `GAPS`。
-13. 对可在现有 Intent / Design 下修正的 Gap，描述补充/修正 Execution Work，并交回 `slice-work` 塑形为 Units。
-14. 对 Domain Authority Gap 返回 `clarify-intent` / `specify`；对 Architecture Authority / ADR Gap 返回 `technical-plan`；涉及 Product Intent、重大架构方向或授权冲突时升级 Human Authority。
+13. 对可在现有意图 / 设计下修正的缺口，描述补充/修正执行工作，并交回 `slice-work` 塑形为执行单元。
+14. 对领域权威缺口返回 `clarify-intent` / `specify`；对架构权威 / ADR 缺口返回 `technical-plan`；涉及产品意图、重大架构方向或授权冲突时升级人工权威。
 
 ### Outputs
 
