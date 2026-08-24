@@ -81,7 +81,7 @@ Artifact Lifecycle Behavior: 7 / 7 PASS
 
 ## 验收到验证的闭环针对性扩展
 
-Issue #18 的 Consumer 项目实验在 `agentic-dev@3e0b99d85d968f138e6eae9bc51ea1b7a710748e` 上证明：执行单元可以具有实现覆盖并完成主路径，但部分验收义务仍缺少计划验证证据和已执行的当前证据；功能整体 `converge` 能正确阻止 `READY`，但发现时机偏晚。
+Issue #18 的 Consumer 实验在 `agentic-dev@3e0b99d85d968f138e6eae9bc51ea1b7a710748e` 上证明：执行单元可以具有实现覆盖并完成主路径，但部分验收义务仍缺少计划验证证据和已执行的当前证据；功能整体 `converge` 能正确阻止 `READY`，但发现时机偏晚。
 
 为验证本次受影响行为，只增加 4 个针对性行为场景：
 

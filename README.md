@@ -145,7 +145,7 @@ Ready to Integrate
 - 实施工作拆分为纵向、可验证、适合 Fresh Context 的执行单元（Execution Unit）。
 - 具体文件路径、测试命令和施工步骤优先在执行时通过即时计划（JIT Plan）临时生成。
 - 所有“完成、通过、修复成功”等状态声明必须有当前证据（Current Evidence）。
-- 每项规格验收义务必须闭环到明确的实现 / 验证责任、计划证据与已执行当前证据；实现覆盖不自动等同于验证覆盖。
+- 每项规格验收义务必须闭环到明确的实现 / 验证责任、计划验证证据与已执行的当前证据；实现覆盖不自动等同于验证覆盖。
 - 会话历史（Conversation History）不是权威知识库。
 - 人工升级（Human Escalation）依据 Authority、Impact、Reversibility 判断。
 - 普通、低影响、可逆的局部实现选择由 Agent 自主处理。

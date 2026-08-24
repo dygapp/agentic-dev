@@ -27,7 +27,7 @@
 | `clarify-intent` | User Intent + Authority Context | Clarified Goal / Scope / Product Decisions + 可选 Domain Authority Candidates | 不再存在阻塞 Intent 的关键歧义，长期领域事实候选已交给 `specify` 验证 | 多种解释会导致 materially different User-visible Behavior，或 Scope / Intent 需要改变 |
 | `specify` | Clarified Intent + Governance / Domain Context + Existing Specification（如有） | WHAT / WHY Specification + 可选 Domain Authority Update / Required Authority Action | Fresh Agent 能判断 Required Behavior、Boundary 与 Completion，长期领域事实候选已完成验证和授权路由 | Requirement / Authority Conflict、Product Decision 未解决或无权确认长期领域事实 |
 | `technical-plan` | Specification + Architecture / ADR / Code Constraints | Durable Technical Decisions + 必要 Architecture Authority Update + 条件性 ADR，或确认无需长期 Technical Plan | 技术不确定性已解决，需要更新的 Architecture Context 与条件性 ADR 已进入适当 Repository Authority | Major Architecture、Destructive / Irreversible Trade-off 或未授权 External Effect |
-| `slice-work` | 规格说明 + 可选技术计划 | 上下文适配的纵向执行单元 + 验收责任 / 验证责任映射 | 需求获得实现与验证覆盖，每项义务已有责任与计划证据，执行单元可进入就绪门禁 | 无法在不改变范围 / 意图 / 必需设计的情况下安全拆分 |
+| `slice-work` | 规格说明 + 可选技术计划 | 上下文适配的纵向执行单元 + 验收责任 / 验证责任映射 | 需求获得实现与验证覆盖，每项义务已有责任与计划验证证据，执行单元可进入就绪门禁 | 无法在不改变范围 / 意图 / 必需设计的情况下安全拆分 |
 | `readiness-check` | 规格说明 + 可选计划 + 执行单元 + 相关领域 / 架构 / 治理权威 | `PASS` 或阻塞性 / 非阻塞性发现 | 无阻塞性发现，包括验收责任归属 / 计划验证覆盖、领域 / 架构权威或产物生命周期缺口 | 权威来源冲突或高影响决策无权自主裁决 |
 | `execute-unit` | 单个执行单元 + 负责的验收义务 + 计划验证 + 最小权威上下文 + 当前代码 / 测试 | 实现 + 已执行的当前证据 + 结果状态 / 必需阶段返回 | 完成条件与执行单元负责的验证义务有当前证据支持，且发现的长期权威缺口已返回相应职责 | 必须改变产品意图 / 重大设计，或动作超出授权 / 不可逆 / 安全隐私敏感 |
 | `systematic-debug` | Observed Problem + Expected Behavior + Runnable Context | Root Cause + Minimal Fix + Regression Evidence / Required Stage Return | Root Cause 已处理且 Regression Evidence 通过，发现的长期权威缺口已返回相应职责 | Expected Behavior 未定义/冲突，或修复要求重大设计变更 |
@@ -340,12 +340,12 @@ constraints
 整个执行单元集合还必须表达：
 
 ```text
-规格义务
+规格验收义务
 → 实现责任 / 验证责任
 → 计划验证证据
 ```
 
-上述关系可以进入执行单元字段、覆盖视图或 Consumer 项目仓库选择的等价载体，不要求固定字段名、测试层级或证据格式，也不要求一条验收义务对应一个测试。
+上述关系可以进入执行单元字段、覆盖视图或 Consumer 仓库选择的等价载体，不要求固定字段名、测试层级或证据格式，也不要求一条验收义务对应一个测试。
 
 ### Exit Conditions
 
