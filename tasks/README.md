@@ -2,13 +2,13 @@
 
 Tasks 只承担工作协调职责，不构成 Method、Architecture 或 Skill Contract 权威。
 
-## 当前阶段
+## 项目状态入口
 
-当前项目处于：
+项目演进路线、当前阶段、已完成里程碑、当前核心目标和下一步工作统一维护在：
 
-> **Skill Operationalization & Method Validation**
+`docs/project/project-roadmap.md`
 
-第一批 8 个核心 Skill 的历史 Skill 工程基线已关闭。Issue #18 的真实 Consumer 项目证据触发了验收到验证的闭环定向强化，仅涉及已有方法 / 契约与 `slice-work`、`readiness-check`、`execute-unit`；针对性全新运行时评估已经 `4 / 4 PASS`，最终 AI 复核已通过，本次定向强化达到 `Ready to Integrate`。当前不扩展 Skill 清单、运行时层级或与证据无关的评估。
+Tasks 不重复维护这些易变化的项目状态；这里只定义工作协调规则。
 
 ## Plan 使用规则
 
