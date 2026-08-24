@@ -57,7 +57,7 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 > **Skill Operationalization & Method Validation**
 
-第一批 8 个核心 Skill 的历史 Skill Engineering Baseline 已关闭。Issue #18 触发的验收到验证闭环定向强化也已完成评估、复核和人工集成；这没有改变核心 Skill 清单，没有新增独立 `verify-evidence`，也没有弱化 `converge`。
+第一批 8 个核心 Skill 的历史 Skill 工程（Skill Engineering）基线已关闭。Issue #18 触发的验收到验证闭环定向强化也已完成评估、复核和人工集成；这没有改变核心 Skill 清单，没有新增独立 `verify-evidence`，也没有弱化 `converge`。
 
 项目演进路线、已完成里程碑、当前证据基线、当前核心目标和下一步工作统一记录在 `docs/project/project-roadmap.md`。新的工作上下文必须先读取该文档，并通过当前 GitHub `master` 验证其中的状态。
 
