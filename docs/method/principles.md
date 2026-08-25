@@ -49,6 +49,7 @@ Conversation、scratch reasoning、探索过程和临时 implementation plan 都
 需要长期保留的信息，应进入合适的权威载体，例如：
 
 - Repository Instructions；
+- 项目路线图（Project Roadmap，满足跨里程碑 / 阶段 / Fresh Context 的长期协调与恢复条件时）；
 - Domain Context / Glossary；
 - Architecture Context；
 - ADR；
@@ -56,7 +57,7 @@ Conversation、scratch reasoning、探索过程和临时 implementation plan 都
 - 必要的 Technical Plan；
 - Code / Tests。
 
-其中，ADR 只用于保留需要跨功能（Feature）长期约束后续工作的架构决定及其关键理由，不用于记录普通局部实现选择或尚未收敛的探索过程。
+其中，项目路线图只承载项目整体的已完成里程碑、当前阶段 / 核心目标、已决定的下一步和条件性方向，不替代 Feature Specification、Technical Plan 或临时任务计划；ADR 只用于保留需要跨功能（Feature）长期约束后续工作的架构决定及其关键理由，不用于记录普通局部实现选择或尚未收敛的探索过程。
 
 没有长期价值的信息可以随 context 一起结束。
 

@@ -1,13 +1,13 @@
 ---
 name: converge
-description: Performs feature-wide convergence against specification, domain and architecture authority, artifact lifecycle responsibilities, current implementation, and verification evidence. Use after required execution work is complete enough for final review; return READY or route evidence-backed gaps to the responsible layer, then stop at Ready to Integrate.
+description: Performs feature-wide convergence against specification, domain and architecture authority, applicable project-roadmap state, artifact lifecycle responsibilities, current implementation, and verification evidence. Use after required execution work is complete enough for final review; return READY or route evidence-backed gaps to the responsible layer, then stop at Ready to Integrate.
 ---
 
 # converge
 
 ## Purpose
 
-从 Feature-wide 视角判断 Current Implemented System 与 Current Verification Evidence 是否真正符合权威 Specification、Domain Context 以及当前有效 Architecture / ADR Authority，确认本次工作产生或改变的长期权威事实已经完成生命周期闭环，并形成 `READY` 或 `GAPS`。
+从 Feature-wide 视角判断 Current Implemented System 与 Current Verification Evidence 是否真正符合权威 Specification、Domain Context 以及当前有效 Architecture / ADR Authority，确认本次工作产生或改变的长期权威事实已经完成生命周期闭环，并在本次工作触发项目级路线更新时检查已有且适用的 Project Roadmap 是否仍然准确，最终形成 `READY` 或 `GAPS`。
 
 本 Skill 负责 Feature 收敛，不负责单个 Execution Unit 的实施，也不把 Unit / Ticket 状态汇总当作完成结论。
 
@@ -18,7 +18,7 @@ description: Performs feature-wide convergence against specification, domain and
 - 相关 Execution Units 已完成或已经达到可进行 Feature-wide 收敛检查的状态；
 - 需要判断整个 Feature，而不是单个 Unit；
 - 需要在 Ready to Integrate 前进行 Feature-wide Review / Full Verification；
-- 需要确认 Specification、Optional Technical Plan、Current System、Current Evidence、相关 Domain / Architecture / ADR Authority 与 Artifact Lifecycle 是否彼此收敛。
+- 需要确认 Specification、Optional Technical Plan、Current System、Current Evidence、相关 Domain / Architecture / ADR Authority、适用的 Project Roadmap 与 Artifact Lifecycle 是否彼此收敛。
 
 ## Do Not Use When
 
@@ -38,6 +38,7 @@ description: Performs feature-wide convergence against specification, domain and
 - Technical Plan（如存在）
 - Relevant Domain Authority（如存在）
 - Relevant Architecture / ADR Authority（如存在）
+- Relevant Project Roadmap（如存在，且本次工作可能触发其更新）
 - Execution Units / Status
 - Current Implemented System
 - Current Verification Evidence
@@ -62,7 +63,8 @@ description: Performs feature-wide convergence against specification, domain and
 4. Current Implemented System 用于判断实际系统状态，不能反向覆盖更高层 Product / Domain / Architecture / ADR Authority。
 5. Current Verification Evidence 用于证明当前系统行为是否满足 Specification；历史证据、旧日志或未执行的验证不能替代当前证据。
 6. Domain Context 提供长期业务事实，Architecture Context 提供当前有效架构状态，ADR 提供满足条件的重要架构决定及其理由；当前实现必须符合仍然有效的长期权威。
-7. Conversation History 不构成权威事实或完成证据。
+7. Project Roadmap（如适用）只说明当前项目整体路线、阶段、核心目标与已决定的下一步，不能覆盖 Specification、Domain Context、Architecture Context 或 ADR。
+8. Conversation History 不构成权威事实或完成证据。
 
 如果权威来源冲突，停止相关 `READY` 判断并按 Escalation Conditions 处理；不得为了收敛而选择一个方便的解释。
 
@@ -79,6 +81,7 @@ description: Performs feature-wide convergence against specification, domain and
 - Optional Technical Plan 中仍然有效的 Durable Decisions；
 - Relevant Domain Authority；
 - Relevant Architecture / ADR Authority；
+- Relevant Project Roadmap 及其更新触发条件（如适用）；
 - Execution Unit Set 及其当前状态；
 - Current Implemented System；
 - Current Verification Evidence。
@@ -227,7 +230,33 @@ Critical Behavior 缺少当前证据时形成 `Unverified Critical Behavior` Gap
 
 只有当前工作实际产生或改变长期权威时才执行该检查；不要求每个阶段机械创建 Artifact。任何会使后续 Agent 无法可靠产生、维护或识别当前有效事实的责任缺口都形成 Artifact Lifecycle Gap，并返回拥有相应事实或决定的职责层。
 
-### 13. Classify Each Gap by Required Return Direction
+### 13. Check Applicable Project Roadmap State
+
+只有同时满足以下条件时才执行本检查：
+
+- Consumer Repository 已有可发现且仍适用的 Project Roadmap；以及
+- 本次工作完成、取消或取代项目级里程碑，改变当前阶段 / 核心目标，使已决定的下一步顺序失效，或使条件性方向正式进入当前路线。
+
+检查 Roadmap 是否已经由当前证据同步反映：
+
+- 相关里程碑的真实状态；
+- 当前阶段与当前核心目标；
+- 已决定的下一步及其顺序；
+- 已进入当前路线的条件性方向；
+- 继续恢复工作所需的权威入口。
+
+如果更新触发条件已经成立，但 Roadmap 仍然陈旧或缺少必要更新，形成 `Project Roadmap / Artifact Lifecycle Gap` 并阻止 `READY`。
+
+本 Skill 只识别和路由该 Gap：
+
+- 返回 Consumer Repository 授权的项目治理 / Project Initialization / Bootstrap 维护职责；
+- 不自行创建或重写 Project Roadmap；
+- 不根据代码、测试或 Feature 状态发明下一阶段、项目目标或路线顺序；
+- 如果路线变化涉及产品范围、重大方向或 Authority Conflict，按 Escalation Conditions 升级。
+
+与项目路线无关的普通局部工作不触发本检查。没有 Project Roadmap、且项目也未满足 Method 中创建条件时，不把“缺少 Roadmap”制造成 Gap。
+
+### 14. Classify Each Gap by Required Return Direction
 
 对每个 Gap 判断应该回到哪个职责层。
 
@@ -262,6 +291,14 @@ Critical Behavior 缺少当前证据时形成 `Unverified Critical Behavior` Gap
 - 由 `technical-plan` 完成 Architecture Authority 更新与必要 ADR 评估；
 - Major Architecture Direction 需要 Human Authority 时升级。
 
+**Project Roadmap / Artifact Lifecycle Gap**
+
+如果已有且适用的 Project Roadmap 因本次工作跨越更新触发条件而陈旧：
+
+- 返回 Consumer Repository 授权的项目治理 / Project Initialization / Bootstrap 维护职责；
+- 不在 `converge` 中创建、修改或补写路线；
+- 底层事实本身仍有 Product / Domain / Architecture Authority Gap 时，先按相应职责层处理。
+
 **Authority / External Action Gap**
 
 如果需要未授权 Shared / Production / External Side Effect、不可逆操作或存在 Authority Conflict：
@@ -269,7 +306,7 @@ Critical Behavior 缺少当前证据时形成 `Unverified Critical Behavior` Gap
 - 停止相关动作；
 - 按 Escalation Conditions 处理。
 
-### 14. Form the Main Verdict
+### 15. Form the Main Verdict
 
 主结果只能是：
 
@@ -294,6 +331,7 @@ GAPS
 - Current Implementation 未违反当前有效 Domain / Architecture / ADR Authority；
 - 不存在尚未处理的 Domain / Architecture Authority / ADR Gap；
 - 本次工作产生或改变的长期权威事实不存在 Artifact Lifecycle Gap；
+- 不存在因本次工作触发而仍然陈旧的适用 Project Roadmap；
 - Critical Behavior 有 Current Verification Evidence；
 - 不存在 Cross-unit Integration Gap；
 - 当前 Feature 不存在需要阶段回退的 Blocking Gap；
@@ -301,7 +339,7 @@ GAPS
 
 #### GAPS
 
-只要存在阻止 Feature 与 Specification、Domain / Architecture Authority 或 Artifact Lifecycle 收敛的 Gap，就输出 `GAPS`。
+只要存在阻止 Feature 与 Specification、Domain / Architecture Authority、适用的 Project Roadmap 或 Artifact Lifecycle 收敛的 Gap，就输出 `GAPS`。
 
 每个 Gap 至少包含：
 
@@ -311,7 +349,7 @@ GAPS
 
 按需还可包含 Gap Type、Impact、相关 Units 等辅助信息，但不要求固定机器协议。
 
-### 15. Apply Verification-before-claim
+### 16. Apply Verification-before-claim
 
 在输出 `READY` 前再次检查：
 
@@ -320,18 +358,18 @@ GAPS
 - 是否遗漏关键 Boundary / Failure / Integration Behavior；
 - 是否存在未经验证但被假设成立的 Critical Behavior；
 - 是否把 Historical Evidence 当作 Current Evidence；
-- 是否存在未处理的 Domain / Architecture / ADR 或 Artifact Lifecycle Gap；
+- 是否存在未处理的 Domain / Architecture / ADR、适用的 Project Roadmap 或其他 Artifact Lifecycle Gap；
 - 是否通过忽略 Gap 或静默改写权威获得“收敛”。
 
 没有当前证据，或存在未处理的 Domain / Architecture / ADR Authority 或 Artifact Lifecycle Gap，不得声明 `READY`。
 
-### 16. Stop at Ready to Integrate
+### 17. Stop at Ready to Integrate
 
 输出 `READY` 后，本 Skill 到此结束。
 
 `READY` 的含义是：
 
-> Feature Behavior、Implementation State 和 Current Verification Evidence 已与 Specification 收敛，实现未违反当前有效 Domain / Architecture / ADR Authority，且本次工作产生或改变的长期权威事实已完成适当生命周期闭环，可以进入 **Ready to Integrate**。
+> Feature Behavior、Implementation State 和 Current Verification Evidence 已与 Specification 收敛，实现未违反当前有效 Domain / Architecture / ADR Authority，本次工作产生或改变的长期权威事实已完成适当生命周期闭环，且不存在因本次工作触发而仍然陈旧的适用 Project Roadmap，可以进入 **Ready to Integrate**。
 
 它不意味着：
 
@@ -367,7 +405,7 @@ GAPS
 
 存在多个 Gap 时，逐项组织；可以按阻塞程度或影响排序。
 
-`converge` 不在输出 Gaps 的同时静默修改 Specification、Technical Plan、Domain / Architecture / ADR Authority 或执行实现工作。
+`converge` 不在输出 Gaps 的同时静默修改 Specification、Technical Plan、Domain / Architecture / ADR Authority、Project Roadmap 或执行实现工作，也不发明下一步项目路线。
 
 ## Exit Conditions
 
@@ -377,7 +415,7 @@ GAPS
 - Current Implementation State 与权威 Intent 一致；
 - Current Implementation 未违反当前有效 Domain / Architecture / ADR Authority；
 - Critical Behavior 有 Current Verification Evidence；
-- 不存在阻塞性的 Missing / Partial / Contradicting / Unrequested / Obsolete-plan / Unverified / Cross-unit Integration / Domain / Architecture / ADR / Artifact Lifecycle Gap；
+- 不存在阻塞性的 Missing / Partial / Contradicting / Unrequested / Obsolete-plan / Unverified / Cross-unit Integration / Domain / Architecture / ADR / Project Roadmap / Artifact Lifecycle Gap；
 - `READY` 由当前证据支持。
 
 满足后进入：
@@ -411,6 +449,7 @@ GAPS
 - 不因 Unit / Ticket 状态为 Done 就声明 `READY`；
 - `READY` 必须由 Current System + Current Evidence 支持；
 - Gaps 只定位与路由，不由本 Skill 静默修复权威 Artifact 或自动执行新 Units；
+- 只有本次工作触发项目级路线更新时才检查已有且适用的 Project Roadmap；不要求每个项目或每个 Feature 创建 / 更新 Roadmap；
 - 不绑定特定语言、框架、Issue Tracker、CI、Agent Runtime 或 Verification Command；
 - 不自动 Merge / Push / Release / Deploy；
 - `Ready to Integrate` 是本 Skill 的终点。

@@ -73,6 +73,18 @@
         "输出 `GAPS` 并明确缺少多文章竞争排序的已执行的当前证据",
         "保持 converge 的独立功能整体的安全网职责，并把纯验证缺口路由回 slice-work / 执行路径"
       ]
+    },
+    {
+      "id": "B-CG-07",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 converge。Consumer Repository 已有权威且可发现的 `docs/project/project-roadmap.md`：当前核心目标是“完成会员搜索发布”，对应项目级里程碑仍标记为“当前 / 进行中”，下一步仍写着“继续实现会员搜索”。Specification 已完整实现，所有 Execution Units 均已完成，当前功能验证也全部通过；完成本 Feature 已满足该项目级里程碑，并命中 Roadmap 中“里程碑完成后更新当前阶段、核心目标和下一步”的触发条件，但 Roadmap 尚未更新。请给出 Feature Verdict，并说明这个检查是否意味着每个项目或每个 Feature 都必须创建 / 更新 Roadmap。不要假设或发明完成该里程碑之后的新项目路线。",
+      "expected_behavior": "不能仅因功能实现和证据完整就输出 READY；应把已有且适用的陈旧 Project Roadmap 识别为 Artifact Lifecycle Gap，输出 GAPS，路由到 Consumer 授权的项目治理 / Bootstrap 维护职责，不在 converge 中自行修改 Roadmap 或发明下一步，也不把 Roadmap 变成所有项目 / Feature 的强制产物。",
+      "assertions": [
+        "承认 Specification、实现、Execution Units 与当前验证证据已经满足 Feature 行为，但不把这些事实自动等同于完整收敛",
+        "识别项目级里程碑完成已经触发既有 Project Roadmap 的更新责任",
+        "因 Roadmap 仍陈旧而输出 `GAPS`，并明确分类为 Project Roadmap / Artifact Lifecycle Gap",
+        "不在 `converge` 中创建、重写 Roadmap 或发明新的阶段、核心目标和下一步路线",
+        "Return Direction 指向 Consumer Repository 授权的项目治理 / Project Initialization / Bootstrap 维护职责，并保持该检查只对已有且适用、且命中更新触发条件的 Roadmap 生效"
+      ]
     }
   ]
 }

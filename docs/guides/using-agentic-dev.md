@@ -97,6 +97,7 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 - 项目目标与当前范围；
 - Repository Authority / Knowledge Boundary；
 - 当前允许 Agent 自主处理与必须升级给人工的边界；
+- 项目是否需要可跨里程碑、阶段或 Fresh Context 恢复的项目路线图（Project Roadmap）；
 - 基本验证与集成策略（Verification / Integration Policy）；
 - 当前 Requirement / Specification 应保存在哪里；
 - 当前项目文档需要遵循的主导语言规则（如已有）；
@@ -112,6 +113,16 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 ```
 
 这只是最小示例，不是固定模板。
+
+如果项目预计会跨越多个里程碑、方法阶段或 Fresh Context，且仅凭当前 Feature / Task Artifact 无法可靠恢复整体路线，应在初始化时建立一个薄的项目路线图。初始内容只需明确：
+
+- 已知项目目标与初步路线；
+- 已完成、当前、下一步、条件性和未知部分；
+- 当前阶段与当前核心目标；
+- 触发路线更新的项目级变化；
+- Fresh Agent 应继续读取的权威入口。
+
+可以使用 `docs/project/project-roadmap.md` 等一眼可识别的名称，但 Consumer Repository 可以选择其他可发现载体。README 只链接到当前路线，不并行复制易变化的详细状态。对于小型、一次性或仅含单一局部工作的项目，不要为了套用模板创建项目路线图。
 
 如果 Consumer Repository 尚未明确自然语言规则，人类可读的项目文档默认应沿用当前权威需求与主要项目协作输入的主导语言，避免把 `agentic-dev` 自身或某个 Runtime 的语言习惯无意复制到目标项目。
 
@@ -138,6 +149,7 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 - Technical Planning 改变跨功能持续有效的系统结构、组件 / 数据 / 契约边界或集成 / 部署约束时，更新适当的 Architecture Authority；
 - Architecture Context 中的重要决定只有在保留选择理由、主要权衡或替代关系具有持续价值时，才形成或更新 ADR / Architecture Decision Artifact；
 - 不为了“项目应该有 ADR”预建固定 `adr/` 目录、空 ADR 或统一模板；
+- 当项目演进首次满足跨里程碑 / 阶段 / Fresh Context 的长期恢复条件时，再建立或补齐 Project Roadmap；
 - 工作复杂到需要跨 Fresh Context 协调时，再建立临时 Plan / Coordination Artifact；
 - 进入实现阶段后，再按实际技术栈创建源码、测试与构建结构。
 
@@ -344,7 +356,7 @@ converge
 Ready to Integrate
 ```
 
-如果收敛阶段发现 Domain Authority Gap，应返回 `clarify-intent` / `specify`；发现 Architecture Authority / ADR Gap，应返回 `technical-plan`；发现 Artifact Lifecycle Gap，应返回拥有相应事实或决定的职责层。不能用 `READY` 绕过。
+如果收敛阶段发现 Domain Authority Gap，应返回 `clarify-intent` / `specify`；发现 Architecture Authority / ADR Gap，应返回 `technical-plan`；发现 Artifact Lifecycle Gap，应返回拥有相应事实或决定的职责层。已有且适用的 Project Roadmap 因本次工作跨越项目级更新触发条件而陈旧时，也属于阻塞性 Artifact Lifecycle Gap；`converge` 只识别并路由到 Consumer 授权的项目治理 / Bootstrap 维护职责，不自行规划路线。不能用 `READY` 绕过。
 
 Merge / Push / Release / Deploy 仍由 Consumer Repository 的人工权威（Human Authority）或仓库策略（Repository Policy）决定。
 
@@ -355,6 +367,7 @@ Consumer Repository 应随着真实工作逐步丰富，而不是在初始化时
 可以新增：
 
 - 新的项目规则（Project Rules）；
+- Project Roadmap（满足项目级长期协调与恢复条件时）；
 - Domain / Requirement Artifacts；
 - Architecture / Decision Artifacts，包括按条件产生的 ADR；
 - Coordination Artifacts；
@@ -369,6 +382,8 @@ Consumer Repository 应随着真实工作逐步丰富，而不是在初始化时
 
 新增或重大修改长期权威产物时，还应能从当前 Method 与 Consumer Repository Authority 中确定：谁负责确认和形成、什么变化触发、谁会消费、保存在哪里、何时更新、如何取代旧内容，以及哪些情况必须升级。具体载体和写入权限由 Consumer 决定，不要求为此创建统一目录、模板或 Artifact Management Skill。
 
+Project Roadmap 一旦存在并仍然适用，就应在以下项目级变化发生时同步维护：里程碑完成、取消或被取代，当前阶段 / 核心目标改变，已决定的下一步顺序改变，或条件性方向正式进入当前路线。路线尚不确定时记录 Unknown / Conditional，不用猜测填满未来；README、任务清单和状态摘要不应并行维护另一份竞争性的当前路线。
+
 对 ADR 还应额外确认：它记录的是跨功能长期架构约束，而不是当前 Feature 的普通 Technical Plan Decision。已有 ADR 被新决定替代时，应显式维护其状态或替代关系，避免后续 Fresh Agent 同时把新旧决定都当作有效权威。
 
 Project Rule 可以选择、要求或限制 Skills，但 Skill 不得覆盖 Project Authority。
@@ -380,13 +395,14 @@ Project Rule 可以选择、要求或限制 Skills，但 Skill 不得覆盖 Proj
 工作中断或切换 Context 时，应依赖 Consumer Repository 中已经持久化的：
 
 - Project Rules；
+- Project Roadmap（如存在且适用）；
 - 当前 Specification / Technical Plan（如存在）；
 - 相关 Domain / Architecture / ADR Authority（如存在）；
 - Current Unit / Coordination State；
 - Verification Evidence；
 - 必要的代码与配置。
 
-新的 Agent Context 应从这些 Artifact 恢复工作，而不是要求提供完整旧聊天。
+新的 Agent Context 应从这些 Artifact 恢复工作，而不是要求提供完整旧聊天。存在 Project Roadmap 时，应先用它定位当前阶段、核心目标、下一步和权威入口，再按 Progressive Disclosure 读取当前工作所需的 Specification、Plan、Unit、Evidence 与代码；Roadmap 不替代这些事实来源。
 
 Fresh Context 是逻辑隔离，不要求某一种特定 Runtime 形式。可以是新 Chat、新 Codex session、isolated worker 或其他能够避免依赖未持久化历史 reasoning 的执行环境。
 

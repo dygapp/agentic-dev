@@ -211,3 +211,27 @@ Domain Context 保存跨功能持续有效的业务语言与领域事实，由 C
 **原因：**
 
 真实 Consumer 实验证明，执行单元可以在主要纵向路径通过后进入 `Completed` / `Integrated`，但仍有分页、竞争排序和多类导航等已实现验收义务缺少已执行的当前证据。后续只补验证、不修改产品实现即可使功能整体 `converge` 从 `GAPS` 转为 `READY`，说明缺口位于验收责任归属、验证规划与闭环机制，而不是 Consumer 项目实现或 `converge` 职责。
+
+## D-021 — 项目路线图（Project Roadmap）是条件性长期项目级产物
+
+**决定：**
+
+当项目跨越多个里程碑、方法阶段或 Fresh Context，且仅凭功能级与任务级产物无法可靠恢复整体路线、当前阶段和下一步工作时，建立并持续维护项目路线图。初始路线可以不完整，但必须区分已完成、当前、下一步、条件性与未知内容，并把具体载体交给 Consumer Repository Authority 决定。
+
+Project Roadmap 不替代 Specification、Technical Plan、Execution Unit、临时 Coordination Plan 或项目管理排期。普通小型、一次性或单一局部工作不要求创建它。
+
+已有且适用的 Project Roadmap 因当前工作完成、取消或取代项目级里程碑，改变当前阶段 / 核心目标、已决定的下一步顺序，或使条件性方向进入当前路线而失效时，`converge` 将其识别为 Artifact Lifecycle Gap 并路由到授权的项目治理 / Bootstrap 维护职责；`converge` 不自行规划路线或发明下一步。
+
+**不采用：**
+
+- 把 Project Roadmap 设为所有 Consumer 的必需文件；
+- 强制固定路径、模板或完整前置路线；
+- 用 README、任务清单和状态摘要并行维护多份当前路线；
+- 新增 Project Roadmap Skill、项目管理阶段或 Artifact Management Super-skill；
+- 让 `converge` 创建或重写项目路线。
+
+**原因：**
+
+在 agentic-dev 与首个 Consumer 的持续演进中，聊天记忆混乱或进入 Fresh Context 后，仅靠 README、功能产物和任务状态无法稳定恢复真正的项目阶段、当前核心目标与已决定的下一步，常常需要重新分析整个仓库且仍可能得出错误状态。通用的“只检查本次新增或重大修改产物”规则也无法发现一个根本未被修改、却已因里程碑完成而陈旧的既有路线图。
+
+条件性 Project Roadmap 补足的是项目级发现与恢复入口；窄范围的收敛检查闭合其更新责任，同时避免把所有项目模板化或扩张 Skill 清单。

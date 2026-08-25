@@ -574,7 +574,36 @@ Producer 是逻辑责任，不要求对应独立 Skill、固定人员或固定�
 - Engineering Principles
 - Authority Rules
 
-### 11.3 Domain Context
+### 11.3 项目路线图（Project Roadmap）上下文
+
+项目路线图（Project Roadmap）是一种**条件性长期项目级产物**。当项目预计或已经跨越多个里程碑、方法阶段或 Fresh Context，且仅凭 Feature / Execution / Coordination 产物无法可靠恢复整体演进路线、当前阶段和下一步工作时，才建立或继续维护 Project Roadmap。
+
+它至少应让 Fresh Agent 区分：
+
+- 已完成的项目里程碑及其可追溯证据；
+- 当前阶段与当前核心目标；
+- 已决定的下一步工作及其顺序；
+- 尚未确认、仅在条件成立时进入的后续方向；
+- 触发更新的项目级变化；
+- 从哪里恢复当前工作的权威入口。
+
+初始路线不要求预知项目的完整未来。未知内容应明确标为 Unknown / Conditional，并随着真实证据和已授权决定逐步完善，不得用推测制造虚假的确定性。
+
+Project Roadmap 不替代 Specification、Technical Plan、Execution Unit、临时 Coordination Plan 或项目管理排期。它说明项目整体“已经走到哪里、当前以什么为核心、接下来沿什么已确认方向演进”，不重新定义 Feature WHAT / WHY，也不拥有覆盖 Domain / Architecture / ADR Authority 的权限。
+
+其生命周期规则是：
+
+- **Producer：** Project Initialization / Bootstrap Capability，或 Consumer Repository Authority 授权的项目治理 / 维护职责；
+- **Trigger：** 初始化时已能合理判断项目会跨多个里程碑、阶段或 Fresh Context，且缺少该产物会使整体状态难以恢复；也可以在后续演进中首次出现这种长期协调需要时再创建；
+- **Consumer：** Fresh Agent、项目治理、后续项目级规划以及进入新 Feature / Change 的工作；
+- **Persistence：** 使用 Consumer Repository 选择的、可发现且受仓库权威管理的载体；可以采用 `docs/project/project-roadmap.md` 等清晰名称，但 Method 不强制固定路径或模板；
+- **Update：** 项目级里程碑完成、取消或被取代，当前阶段 / 核心目标改变，已决定的下一步顺序改变，或条件性方向正式进入当前路线时，由有权维护项目路线的职责同步更新；
+- **Supersede：** 文档只表达当前有效路线和必要历史关系；旧状态由版本历史保留，README、任务清单或状态摘要不得并行维护另一份相互竞争的当前路线；
+- **Escalation：** 路线变化会改变产品范围、重大方向或现有 Authority，或涉及未经授权的高影响决定时，升级到相应 Human / Repository Authority。
+
+普通小型、一次性或仅含单一局部工作的项目不要求 Project Roadmap。是否创建取决于能否提供真实、持续的项目级协调与恢复价值，而不是为了满足模板。
+
+### 11.4 Domain Context
 
 领域上下文保存跨功能持续有效的业务语言与领域事实，例如：
 
@@ -592,7 +621,7 @@ Producer 是逻辑责任，不要求对应独立 Skill、固定人员或固定�
 
 Feature Context 中出现的业务信息不会仅因被实现或验证就自动成为 Domain Context。代码和测试可以提供当前系统行为证据，但不能单独授予业务事实长期权威。
 
-### 11.4 Architecture Context
+### 11.5 Architecture Context
 
 架构上下文保存跨功能持续有效的系统结构、组件与数据边界、共享 / 公共契约、集成与部署约束以及其他当前架构状态。它与 Domain Context 的边界是：Domain Context 说明业务世界中必须成立的事实，Architecture Context 说明技术系统为满足权威意图而采用并持续受约束的结构与状态。
 
@@ -606,14 +635,14 @@ Feature Context 中出现的业务信息不会仅因被实现或验证就自动�
 
 ADR 是 Architecture Context 中按条件产生的决策记录：它解释重要架构决定的背景、选择、权衡、后果与替代关系，但不是全部当前架构状态。架构事实变化不必机械创建 ADR；只有满足第 5 节条件的长期决定才创建或更新 ADR。
 
-### 11.5 Feature Context
+### 11.6 Feature Context
 
 Feature 生命周期：
 
 - Specification
 - Optional Technical Plan
 
-### 11.6 Execution Context
+### 11.7 Execution Context
 
 单 Execution Unit 生命周期：
 
@@ -624,7 +653,7 @@ Feature 生命周期：
 - JIT Execution Plan
 - 已执行的当前证据
 
-### 11.7 Coordination Context
+### 11.8 Coordination Context
 
 当前 Workflow / Session 生命周期：
 
@@ -682,6 +711,7 @@ Worker 每次只获得一个 Execution Unit 所需的 Fresh Execution Context。
 |---|---|
 | Repository Rules | 长期 |
 | Governance / Engineering Principles | 长期 |
+| Project Roadmap | 条件长期；仅在项目跨里程碑、阶段或 Fresh Context 且需要可恢复的整体路线时建立，由授权的项目治理 / 维护职责持续更新 |
 | Domain Context | 按需长期；Clarify / Specification 识别和验证候选，由 Repository Authority 授权的领域责任方确认并维护更新与取代关系 |
 | Architecture Context | 按需长期；由 Technical Planning 维护跨功能持续有效的架构状态 |
 | ADR | 条件长期；属于 Architecture Context 中的决策记录，只在需要跨功能保留架构约束与决策理由时产生 |
