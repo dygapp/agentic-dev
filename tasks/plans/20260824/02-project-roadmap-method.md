@@ -1,6 +1,6 @@
 # 项目路线图（Project Roadmap）方法修订计划
 
-**状态：** In Progress  
+**状态：** Completed  
 **日期：** 2026-08-24  
 **分支：** `codex/project-roadmap-method`
 
@@ -61,3 +61,13 @@
 - `converge` 只识别和路由 Gap，不自行修改路线权威。
 - 新增场景 `B-CG-07` 经过 Fresh Runtime 执行并完成语义评分。
 - 修改文档通过中文规范、权威边界、交叉引用和状态一致性复核。
+
+
+## 完成证据
+
+- PR：#32；
+- Fresh Runtime：`codex-cli 0.148.0`；
+- 回归与定向场景：`B-CG-05`、`B-CG-06`、`B-CG-07`，`3 / 3 PASS`；
+- 语义断言：`16 / 16 PASS`；
+- 隔离检查：仅读取独立临时工作区中的 Skill 与题面上下文，无 Eval 定义、历史结果或仓库外内容污染；
+- 中文规范、术语表达、Contract / Skill / Guide 对齐和 Markdown / JSON 结构检查：PASS。
