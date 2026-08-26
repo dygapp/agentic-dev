@@ -25,7 +25,7 @@
 | 完成首轮真实 Consumer Experiment | 已完成 | `dygapp/jilinjobs-cms` 完成 Greenfield Bootstrap、信息发布纵向切片与功能整体收敛 |
 | 补齐验收到验证的闭环 | 已完成 | PR #30 已合并，Issue #18 已按 `completed` 关闭 |
 | 建立通用 Project Roadmap 规则 | 已完成 | PR #32 完成 Method、Bootstrap、Fresh Context 与 `converge` 定向强化；行为评估 `3 / 3 PASS`、断言 `16 / 16 PASS` |
-| 验证已有 Consumer 的继续演进 | 下一步 | 在 `dygapp/jilinjobs-cms` 中验证项目状态恢复、权威增量演进和新的真实纵向工作 |
+| 验证已有 Consumer 的继续演进 | 当前 | 已通过 Issue #33 在 `dygapp/jilinjobs-cms` 中启动验证，并进入 Consumer 治理证据的分类与定向处理 |
 | Distribution、Bootstrap 自动化或 Controller / Runtime Orchestration | 条件性后续 | 只有真实使用证明存在稳定、独立且可复用的职责缺口时才评估 |
 | 重新进入 Skill Engineering | 条件性后续 | 只有新的真实证据暴露稳定 Skill Implementation / Contract / Method Gap 时才定向重开 |
 
@@ -51,8 +51,11 @@
 - Skill 清单（Skill Inventory）：8 个 Core Skills、1 个 Platform-specific Skill；
 - 首轮 Consumer Experiment：已完成；
 - Issue #18：已关闭；
-- 新的继续演进实验：尚未启动；
-- 新的实验跟踪 Issue（Tracking Issue）：尚未创建。
+- 已有 Consumer 继续演进实验：已启动；
+- 实验跟踪 Issue（Tracking Issue）：Issue #33，保持 `open`；
+- Consumer 实验基线：`dygapp/jilinjobs-cms` `main@77958e5af7f8a60f8e09848ec0a3e837970fefa3`；
+- 实验使用的 `agentic-dev` baseline：`master@b4e5b2027bdbbe97cc0b7153be65c5afb7a0274e`；
+- Issue #33 当前已提交 5 类项目治理证据，其中已有 Consumer 的采用与升级边界、跨 Repository 操作授权粒度、异步外部执行闭环进入定向处理；README / Project Roadmap / GitHub Evidence 分工与无 Issue Template 的反馈契约作为正向验证保留。
 
 上述提交是已完成里程碑的证据锚点，不是要求后续工作永久固定使用的静态版本。新的实验或修订开始时，必须读取并记录当时实际使用的精确 `agentic-dev` baseline。
 
@@ -72,10 +75,11 @@
 
 ## 下一步工作
 
-1. 使用合并后的精确 `agentic-dev` baseline，在 `dygapp/jilinjobs-cms` 中按条件建立 Consumer 自己的 Project Roadmap；
-2. 通过新的 Tracking Issue 开展已有 Consumer 继续演进验证；
-3. 让 Fresh Agent 仅依靠 Consumer Repository Authority 恢复项目整体状态，再进入新的真实纵向工作；
-4. 根据真实纵向工作的执行与收敛结果，判断是否暴露新的 Method、Contract、Skill Implementation 或 Consumer Governance Gap。
+1. 根据 Issue #33 Evidence，明确已有 Consumer 选择性采用 `agentic-dev` 与进行 baseline 升级的生命周期；
+2. 强化多 Repository 操作的逐仓库授权边界，以及异步外部执行持续到验证结论或真实阻塞的闭环；
+3. 对受影响的 `github-actions-verification` 行为增加定向 Fresh Runtime Eval，并由人工完成语义分级；
+4. 将处理结论、PR、集成提交与评估结果回写 Issue #33；实验形成 Final Summary 前保持 Issue `open`；
+5. 继续让 Fresh Agent 依靠 Consumer Repository Authority 恢复项目状态，并以新的真实纵向工作验证其增量演进能力。
 
 ## 尚未确定与条件性后续
 
