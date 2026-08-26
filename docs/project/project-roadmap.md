@@ -57,7 +57,7 @@
 - 实验跟踪 Issue（Tracking Issue）：Issue #33，保持 `open`；
 - Consumer 实验基线：`dygapp/jilinjobs-cms` `main@77958e5af7f8a60f8e09848ec0a3e837970fefa3`；
 - 实验使用的 `agentic-dev` baseline：`master@b4e5b2027bdbbe97cc0b7153be65c5afb7a0274e`；
-- Issue #33 当前已提交 5 类项目治理证据；已有 Consumer 的采用与升级边界已通过 PR #34 集成，跨 Repository 操作授权粒度与异步外部执行闭环正在定向修订，`B-GA-01` Fresh Runtime Eval 与人工语义分级仍为 `PENDING`；README / Project Roadmap / GitHub Evidence 分工与无 Issue Template 的反馈契约作为正向验证保留。
+- Issue #33 当前已提交 5 类项目治理证据；已有 Consumer 的采用与升级边界已通过 PR #34 集成，跨 Repository 操作授权粒度与异步外部执行闭环已形成 PR #35 候选修订；`B-GA-01` 与 3 个当前证据回归场景均为 `PASS`，合计断言 `20 / 20 PASS`，等待 PR #35 最终复核与人工集成；README / Project Roadmap / GitHub Evidence 分工与无 Issue Template 的反馈契约作为正向验证保留。
 
 上述提交是已完成里程碑的证据锚点，不是要求后续工作永久固定使用的静态版本。新的实验或修订开始时，必须读取并记录当时实际使用的精确 `agentic-dev` baseline。
 
@@ -77,10 +77,9 @@
 
 ## 下一步工作
 
-1. 完成多 Repository 逐仓库授权边界与异步外部执行闭环的定向修订和复核；
-2. 执行 `B-GA-01` Fresh Runtime Eval，并由人工逐项完成语义分级；
-3. 将第二阶段 PR、集成提交与评估结果回写 Issue #33；实验形成 Final Summary 前保持 Issue `open`；
-4. 继续让 Fresh Agent 依靠 Consumer Repository Authority 恢复项目状态，并以新的真实纵向工作验证其增量演进能力。
+1. 完成 PR #35 的最终 AI Review，并停在人工集成边界；
+2. PR #35 合并后记录精确集成提交，并将第二阶段结果回写 Issue #33；实验形成 Final Summary 前保持 Issue `open`；
+3. 继续让 Fresh Agent 依靠 Consumer Repository Authority 恢复项目状态，并以新的真实纵向工作验证其增量演进能力。
 
 ## 尚未确定与条件性后续
 
