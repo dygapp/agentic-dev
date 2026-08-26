@@ -364,6 +364,30 @@ Merge / Push / Release / Deploy 仍由 Consumer Repository 的人工权威（Hum
 
 Consumer Repository 应随着真实工作逐步丰富，而不是在初始化时一次设计完成。
 
+### 6.1 已有 Consumer 的采用与基线升级
+
+`agentic-dev` 是可复用 Method、Skills 与 Operating Guide 的上游知识源，不是已有 Consumer 日常开发必须持续读取的运行依赖。
+
+已有 Consumer 在以下情况按需重新读取 `agentic-dev`：
+
+- 明确执行 `agentic-dev` baseline 升级；
+- Consumer-local Authority 无法回答当前真正需要的方法或 Skill 问题；
+- 当前工作被明确标记为 `agentic-dev` Experiment / Validation；
+- Consumer Repository Authority 另有明确要求。
+
+采用或升级时应完成以下最小闭环：
+
+1. 读取并记录当前实际使用的精确 `agentic-dev` baseline；
+2. 区分可跨项目复用的 Method、Skills、Operating Guide，与只属于 `agentic-dev` 仓库自身的 Project Rules；
+3. 根据 Consumer 的真实需要与现有 Authority 选择性采纳，不机械复制完整文档体系；
+4. 将需要长期约束后续工作的已采纳规则固化到 Consumer 自己可发现的 Repository Authority 中，并按需保留来源与 baseline 关系；
+5. 由 Consumer Authority 明确本地规则的优先级、更新触发条件与适用范围；
+6. 完成升级后，普通开发恢复以 Consumer-local Authority 为主要工作入口。
+
+Consumer 可以使用 `AGENTS.md`、项目开发方法文档、配置或其他合适载体完成本地固化；本指南不要求固定文件名或目录。只服务一次升级判断、没有持续约束价值的分析过程不需要进入长期项目知识。
+
+Consumer-local 规则不能静默改写 `agentic-dev` 的通用 Method 或 Skill Contract；反过来，新的 `agentic-dev` 提交也不会仅因存在就自动覆盖 Consumer 已采纳的项目规则。再次升级必须重新比较当前 Consumer Authority 与新的精确 baseline，并显式处理需要更新、保留或取代的内容。
+
 可以新增：
 
 - 新的项目规则（Project Rules）；
