@@ -50,5 +50,7 @@
 - PR B 分支：`fix/issue-33-external-operation-closure`；
 - External Operation Guide、`github-actions-verification` 与 `B-GA-01`：已形成候选修订；
 - Eval JSON 结构、Runner 语法、场景注册与 Markdown 结构：`PASS`；
-- `B-GA-01` Fresh Runtime Run 与人工语义分级：`PENDING`；
-- PR B AI Review 与集成：尚未完成。
+- Fresh Runtime：`B-GA-01`、`B-EU-04`、`B-EU-06`、`B-CG-06` 均为 `PASS`，合计断言 `20 / 20 PASS`；
+- 隔离、污染与运行时有效性检查：`PASS`；
+- PR B 最终 AI Review：等待最终变更集复核；
+- PR B 集成：尚未完成。
