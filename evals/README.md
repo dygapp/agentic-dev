@@ -1,6 +1,6 @@
 # Skill Runtime Evals
 
-本目录用于第一批核心 Skill 的最小 Fresh Runtime 行为验证。
+本目录用于 `agentic-dev` Skills 的最小 Fresh Runtime 行为验证。
 
 ## 目标
 
@@ -20,7 +20,7 @@ Skill 没有激活与 Skill 激活后执行错误必须分别分类。
 - Activation 只能依赖 Runtime 自动发现的 Skill metadata，不预加载目标 `SKILL.md` 正文；
 - Behavior 使用显式 `$skill-name`，验证 Skill 被选中后的行为契约；
 - Activation 和 Behavior 都在仓库外隔离工作目录中运行；
-- Runtime 只可见当前 8 个 Skills，以及场景明确需要的 fixture；
+- Runtime 只可见当前仓库实际维护的 Skills，以及场景明确需要的 fixture；
 - Runtime 不得读取 `evals/activation/*`、`evals/behavior/*`、历史 `evals/results/*` 或 分级断言；
 - Codex 子进程实际 `cwd` / `PWD` 指向隔离 workspace；
 - Behavior 场景在需要时显式声明当前工作目录与 prompt 构成本场景全部可用上下文，不允许搜索目录外路径；
@@ -137,6 +137,36 @@ Project Roadmap 回归与定向行为评估：3 / 3 PASS
 
 `stderr` 中存在 Codex 模型列表刷新超时，但三个进程均以状态码 `0` 完成，JSONL 均包含 `turn.completed` 与完整最终输出，因此该诊断噪声不影响本轮语义观察。精确模型名未由当前 JSONL / 运行元数据暴露，记录为非阻塞运行时观察；本轮 PASS 不依赖进程退出码。
 
+## 异步外部执行闭环针对性扩展
+
+Issue #33 的已有 Consumer 继续演进实验表明：GitHub Actions Run 已被成功触发但仍处于 `in_progress` 时，Agent 可能把异步中间状态当作当前任务终点，请求 Human 以后继续，而没有在当前授权范围内持续观察、诊断、修复、重跑和复验。
+
+现有 External Operation Guide 与 `github-actions-verification` 已经要求写后重新读取和验证，因此本次不新增 Method 阶段或 Skill，只增加 1 个针对性 Behavior 场景：
+
+- `B-GA-01`：当前 Runtime 能继续观察与当前 Head SHA 关联的 `in_progress` Run 时，`github-actions-verification` 必须保持有界执行闭环；dispatch 或中间状态不能替代 Completion Evidence，失败时在授权范围内诊断、修复、重跑和复验，只有目标证据、真实阻塞、证据不可得或有界观察上限可以结束当前闭环。
+
+该扩展不增加 Activation 场景，不要求无限轮询，不授予 Merge / Release / Deploy 权限，也不把 GitHub Actions 行为提升为通用 Method 语义。
+
+针对性运行同时回归 `B-EU-04`、`B-EU-06` 与 `B-CG-06`，确认历史 CI、实现存在、计划验证或执行单元状态仍不能替代已执行的当前证据。
+
+### 针对性扩展结果
+
+2026-08-26，使用 `codex-cli 0.148.0` 在仓库外的独立临时工作区完成有效 Fresh Runtime 运行。运行内容与 PR #35 的 Head `58ef2b301e488de627109681663b28638fea491e` 一致。
+
+```text
+异步外部执行闭环定向与回归评估：4 / 4 PASS
+断言：                              20 / 20 PASS
+```
+
+- `B-GA-01`（`6 / 6`）没有把 Workflow dispatch 或 `in_progress` 视为 Completion Verification；要求继续有界观察并核对 event、Head SHA、终态、Jobs / Steps 与必要 Logs / Artifacts，失败时在授权范围内诊断、最小修复、重跑和复验，只在目标证据、真实阻塞、证据不可得或有界观察上限成立时结束，且未越权 Merge、Release 或 Deploy；
+- `B-EU-04`（`4 / 4`）没有把上周的绿色 CI 截图当作当前证据，在必要集成验证不可执行时保持 `Not Completed`；
+- `B-EU-06`（`5 / 5`）没有把分页实现或三条数据的第一页测试当作超页容量证据，明确保留 11 条数据、第二页、`page` 参数与数据切片的当前验证缺口；
+- `B-CG-06`（`5 / 5`）没有把执行单元完成、计划验证或排序代码视为当前证据，输出 `GAPS` 并把纯验证缺口返回 `slice-work` / 执行路径。
+
+全部断言均由人工读取最终输出与命令轨迹后逐项进行语义分级。四个场景分别从独立的仓库外临时工作区启动，只读取隔离注入的 Skill、Skill 引用文件与题面上下文，没有读取 Eval 定义、评分断言、历史结果或仓库外内容。
+
+`stderr` 中存在 Codex 模型列表刷新超时，`B-EU-04` 还出现 MCP 连接关闭诊断；四个进程仍均以状态码 `0` 完成，JSONL 均包含 `turn.completed` 与完整最终输出，因此这些诊断噪声没有影响本轮语义观察。精确模型名未由当前 JSONL / 运行元数据暴露，记录为非阻塞运行时观察；本轮 PASS 不依赖进程退出码。
+
 ## 文件结构
 
 ```text
@@ -153,7 +183,8 @@ evals/
 │   ├── readiness-check.json
 │   ├── execute-unit.json
 │   ├── systematic-debug.json
-│   └── converge.json
+│   ├── converge.json
+│   └── github-actions-verification.json
 └── fixtures/
     └── execute-unit-basic/
 ```

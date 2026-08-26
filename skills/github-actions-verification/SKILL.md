@@ -193,7 +193,30 @@ Completion E2E when required
 
 只使用与当前目标提交真实关联的 Evidence。
 
-### 10. Return Verification Result to the Caller
+### 10. Continue Through Asynchronous Intermediate States
+
+如果当前调用要求实际取得 GitHub Actions 结果或完成验证，Workflow 触发（dispatch）/ 重跑（rerun）响应只表示操作已经进入 `Act`，不是本 Skill 的默认退出条件。
+
+当 Run 处于 `queued`、`pending` 或 `in_progress`，并且当前 Runtime 能继续读取 Actions 状态时：
+
+1. 使用与正常运行基线相称的间隔重新读取 Run；
+2. 持续核对 event、Head SHA、status / conclusion 与当前 PR / Branch 的关联；
+3. Run 进入失败终态时取得必要 Jobs、Steps、Logs 或 Artifacts；
+4. 如果修复属于当前 Scope 且已经授权，使用 `systematic-debug` 取得 Root Cause、执行最小修复并重新运行验证；
+5. 重新进入观察与证据核对，直到取得目标证据或出现真实阻塞。
+
+等待必须有界：结合正常耗时、Job / Step timeout、当前运行进度和 Repository Policy 设置轮询间隔与观察上限。不得无限轮询，也不得仅因为异步运行尚未结束就要求 Human “继续执行”。
+
+当前执行闭环可以在以下情况结束：
+
+- Completion Condition 所需证据已经从当前 Run 取得并核对；
+- 出现需要 Human Authority 的权限、业务、架构、安全或高影响决定；
+- Runtime 无法继续取得必要证据，且没有 Repository Policy 允许的替代路径；
+- 达到有界观察上限，当前状态被准确记录为 `Executed but not fully verified`（已执行但未完全验证），没有声明完成。
+
+如果调用范围只要求设计或优化验证路径，而不要求实际触发并等待运行，应明确输出 Evidence Retrieval Plan 和尚未执行的验证状态；不得把计划写成已经取得的 Completion Evidence。
+
+### 11. Return Verification Result to the Caller
 
 返回：
 
@@ -222,10 +245,11 @@ Completion E2E when required
 当以下条件满足时，本 Skill 可以结束：
 
 - 当前验证路径符合 Consumer Repository Policy；
-- Agent 能够取得或明确知道如何取得完成声明需要的当前证据；
+- 如果调用只要求设计验证路径，Agent 已明确如何取得完成声明需要的当前证据，并保持实际验证为未执行状态；
+- 如果调用要求实际完成验证，必要的 Current Evidence 已经取得并核对，或者已经准确记录真实阻塞 / 有界观察上限；仍可观察的 `queued`、`pending` 或 `in_progress` Run 本身不满足退出条件；
 - Workflow 成本与当前验证风险基本相称，不存在已知的无界长运行路径；
 - 需要的 Runtime / Integration 验证边界清晰；
-- 当前失败如果仍存在，已经具备足以进入 `systematic-debug` 的可观察证据；
+- 当前失败如果仍存在且修复已获授权，已经取得足以进入 `systematic-debug` 的可观察证据，并保持修复、重跑与复验仍属于当前执行闭环；
 - 未越权执行 Integration / Release / Deploy。
 
 ## Escalation Conditions
@@ -239,6 +263,8 @@ Completion E2E when required
 - 需要不可逆或高影响 External / Data Operation；
 - 需要 Release / Deploy / Merge 权限但当前未授权；
 - 当前 Runtime 无法取得必要 Completion Evidence，且没有仓库允许的可替代路径。
+
+Run 仍在正常异步执行、且 Runtime 仍可观察，不单独构成 Human Escalation Condition。
 
 ## Context Rules
 
