@@ -38,6 +38,7 @@ BEHAVIOR_FILES = [
     EVALS / "behavior" / "execute-unit.json",
     EVALS / "behavior" / "systematic-debug.json",
     EVALS / "behavior" / "converge.json",
+    EVALS / "behavior" / "github-actions-verification.json",
 ]
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
