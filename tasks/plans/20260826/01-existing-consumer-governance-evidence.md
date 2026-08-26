@@ -43,3 +43,12 @@
 - 定向 Behavior Eval 通过 Fresh Runtime 执行，并由人工逐项完成语义分级；进程退出状态不代替 Eval PASS。
 - 中文规范、术语表达、权威边界、范围控制与 Roadmap 状态通过最终 AI Review。
 - PR 与 Issue 保留足够的当前证据，后续 Fresh Context 不依赖聊天恢复处理状态。
+
+## 当前状态
+
+- PR A：PR #34 已合并，集成提交为 `b1ed6f1b78eb664e6dcae619b23e2ac1b7c5b522`；
+- PR B 分支：`fix/issue-33-external-operation-closure`；
+- External Operation Guide、`github-actions-verification` 与 `B-GA-01`：已形成候选修订；
+- Eval JSON 结构、Runner 语法、场景注册与 Markdown 结构：`PASS`；
+- `B-GA-01` Fresh Runtime Run 与人工语义分级：`PENDING`；
+- PR B AI Review 与集成：尚未完成。
