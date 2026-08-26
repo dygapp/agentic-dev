@@ -60,6 +60,22 @@ Read
 - destructive cleanup；
 - 不可逆或高影响修改。
 
+### 2.2 多 Repository 操作分别确认授权
+
+同一任务涉及多个 Repository 时，Agent 必须分别确认每个 Repository 的操作授权。某个 Repository 的读写权限、当前认证身份或 Runtime 工具能力，不会自动授予对另一个 Repository 的同类操作权限。
+
+应根据当前 Human Authority 与各 Repository Authority，按需区分：
+
+- 读取文件、提交、PR、Issue 与 Actions 状态；
+- 创建或更新 Issue / Evidence；
+- 修改文件、Branch、Commit 或 PR；
+- 触发、重跑或取消 Workflow；
+- Merge、Release、Deploy 或 destructive cleanup。
+
+具体授权组合由当前项目决定，本指南不要求所有 Consumer 使用统一权限矩阵，也不把“上游 Repository 只读”设为通用规则。如果某项跨 Repository 操作的授权不明确，应停止该项操作并确认边界；其他已经明确授权且不依赖该操作的工作可以继续，不应把局部授权缺口扩大成整个任务的默认停止条件。
+
+当这类边界会持续约束后续工作时，应按当前 Repository Authority 固化到可发现的 Project Rule 或等价载体，不能只依赖当前聊天或 Runtime 的临时授权印象。
+
 ## 3. 人工介入边界（Human Intervention Boundary）
 
 Agent 不应把所有中间判断都升级给人工。人工介入应集中在真正需要 Human Authority 或人工判断的节点。
@@ -146,6 +162,33 @@ Analyze Again
 ```
 
 不得继续基于错误状态执行后续操作。
+
+### 5.1 异步外部操作属于闭环中间状态
+
+触发 Workflow、Deployment、远程 Job 或其他异步操作，只表示 `Act` 已被接受，不代表 `Verify` 已完成。`queued`、`pending`、`in_progress` 等非终态不能被当作目标状态，也不应仅因为外部系统仍在运行就默认把当前任务交回人工。
+
+当当前目标包含取得执行结果或验证证据，且 Runtime 能继续观察状态时，应在授权范围内保持同一闭环：
+
+```text
+Act
+→ Observe
+→ Collect Current Evidence
+→ Diagnose
+→ Fix / Retry when authorized
+→ Verify
+→ Report
+```
+
+具体要求：
+
+- 使用与正常运行基线相称的轮询间隔、等待上限、timeout 与 cancellation 策略，避免无限等待；
+- 每次观察重新读取当前事实来源，不使用旧状态推断运行已经结束；
+- 运行失败时先取得必要日志或诊断证据，再在当前授权范围内修复和重试；
+- 只有需要 Human Authority 的权限、业务、架构或高影响决定才升级人工；“仍在运行”本身不是人工决策；
+- Runtime 无法继续取得必要证据且不存在已授权的替代路径时，记录为真实阻塞；
+- 达到有界观察上限而运行仍未结束时，只能汇报“已执行但未完全验证”的当前状态，不能声明目标完成。
+
+异步闭环可以在以下任一条件成立时结束：目标状态已由当前证据验证；出现真实阻塞；或达到有界观察上限并准确保留未验证状态。后两种结果都不能伪装成完成结论。
 
 ## 6. 汇报（Report）：汇报已验证状态
 
