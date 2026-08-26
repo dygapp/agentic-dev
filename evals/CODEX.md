@@ -1,6 +1,6 @@
-# 使用 Codex CLI 执行第一轮 Runtime Eval
+# 使用 Codex CLI 执行 Runtime Eval
 
-本指南只用于 B3 第一轮真实 Runtime 执行，不改变 `agentic-dev` 的通用 Skill 架构。
+本指南用于 B3 第一轮及后续基于真实证据增加的针对性 Runtime Eval，不改变 `agentic-dev` 的通用 Skill 架构。
 
 ## 1. 使用隔离工作副本
 
@@ -9,7 +9,7 @@
 ```bash
 git clone <agentic-dev-repo> agentic-dev-eval
 cd agentic-dev-eval
-git checkout test/first-batch-skill-runtime-evals
+git checkout <current-eval-branch-or-commit>
 ```
 
 建议将 Runtime 临时内容加入本地 exclude，而不是修改仓库 `.gitignore`：
@@ -24,14 +24,14 @@ printf '\n.agents/\nevals/workspace/\nevals/results/\n' >> .git/info/exclude
 
 Runner 对两类 Eval 都使用仓库外临时 workspace：
 
-- **Activation Eval**：只复制当前 8 个 Skill 到临时 `.agents/skills/`，Runtime 看不到 `evals/activation/core-first-pass.json`、Behavior assertions 或其他答案文件；
-- **Behavior Eval**：同样只复制当前 8 个 Skill，并使用显式 `$skill-name`。`B-EU-01` 额外复制真实 fixture，运行结束后再保存最终 fixture 快照。
+- **Activation Eval**：只复制当前仓库实际维护的 Skill packages 到临时 `.agents/skills/`，Runtime 看不到 `evals/activation/core-first-pass.json`、Behavior assertions 或其他答案文件；
+- **Behavior Eval**：同样只复制当前仓库实际维护的 Skill packages，并使用显式 `$skill-name`。`B-EU-01` 额外复制真实 fixture，运行结束后再保存最终 fixture 快照。
 
 此外，Runner 启动 Codex 子进程时，会把进程级 `cwd` 与 `PWD` 一并切到临时 workspace，并移除 `OLDPWD` 与常见 `GIT_*` 环境线索。只使用 `-C` 而让 launcher 自身仍停留在仓库根目录，会留下反向定位本地仓库的环境线索，不满足本轮严格隔离要求。
 
 这些 Runtime 临时内容不提交到源码 PR。
 
-如果希望人工确认 Skill Discovery，可以启动一个新的 Codex CLI 会话，使用 `/skills` 或 `$` 检查 8 个 Skill 是否可见。
+如果希望人工确认 Skill Discovery，可以启动一个新的 Codex CLI 会话，使用 `/skills` 或 `$` 检查当前 Skill packages 是否可见。
 
 ## 3. 推荐：使用薄 Runner
 
@@ -61,6 +61,16 @@ python3 evals/run_codex_evals.py --activation --scenario A-CI-01
 
 ```bash
 python3 evals/run_codex_evals.py --behavior --scenario B-EU-01
+```
+
+运行 Issue #33 的异步外部执行闭环场景及相关当前证据回归：
+
+```bash
+python3 evals/run_codex_evals.py --behavior \
+  --scenario B-GA-01 \
+  --scenario B-EU-04 \
+  --scenario B-EU-06 \
+  --scenario B-CG-06
 ```
 
 Pilot 与环境确认后运行第一轮完整 corpus：
@@ -120,10 +130,7 @@ NOT_OBSERVABLE: activation trace unavailable
 
 输入：
 
-- `evals/behavior/clarify-intent.json`
-- `evals/behavior/readiness-check.json`
-- `evals/behavior/execute-unit.json`
-- `evals/behavior/converge.json`
+- `evals/behavior/*.json` 中已经登记到 `run_codex_evals.py` 的场景文件。
 
 Behavior Eval 使用显式 `$skill-name`，目的是隔离验证：
 
