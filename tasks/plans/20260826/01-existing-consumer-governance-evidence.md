@@ -1,6 +1,6 @@
 # 已有 Consumer 治理证据定向处理计划
 
-**状态：** In Progress
+**状态：** Completed
 **日期：** 2026-08-26
 **Tracking Issue：** Issue #33
 
@@ -44,13 +44,13 @@
 - 中文规范、术语表达、权威边界、范围控制与 Roadmap 状态通过最终 AI Review。
 - PR 与 Issue 保留足够的当前证据，后续 Fresh Context 不依赖聊天恢复处理状态。
 
-## 当前状态
+## 完成状态
 
 - PR A：PR #34 已合并，集成提交为 `b1ed6f1b78eb664e6dcae619b23e2ac1b7c5b522`；
-- PR B 分支：`fix/issue-33-external-operation-closure`；
-- External Operation Guide、`github-actions-verification` 与 `B-GA-01`：已形成候选修订；
+- PR B：PR #35 已合并，集成提交为 `282358c2f6590a2e8e7634cdd16458d89d1ba3b7`；
+- External Operation Guide、`github-actions-verification` 与 `B-GA-01`：已完成集成；
 - Eval JSON 结构、Runner 语法、场景注册与 Markdown 结构：`PASS`；
 - Fresh Runtime：`B-GA-01`、`B-EU-04`、`B-EU-06`、`B-CG-06` 均为 `PASS`，合计断言 `20 / 20 PASS`；
 - 隔离、污染与运行时有效性检查：`PASS`；
-- PR B 最终 AI Review：`PASS`，Blocking Finding 0、Medium Finding 0；
-- PR B 集成：等待 Human Review。
+- PR #35 最终 AI Review：`PASS`，Blocking Finding 0、Medium Finding 0；
+- 本计划的两个定向修订阶段均已完成；Issue #33 在已有 Consumer 继续演进实验形成 Final Summary 前保持开放。
