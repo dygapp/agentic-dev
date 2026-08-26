@@ -1,7 +1,7 @@
 # 已有 Consumer 治理证据定向处理计划
 
-**状态：** In Progress  
-**日期：** 2026-08-26  
+**状态：** In Progress
+**日期：** 2026-08-26
 **Tracking Issue：** Issue #33
 
 ## 目标
