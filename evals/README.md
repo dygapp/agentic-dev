@@ -1,6 +1,6 @@
 # Skill Runtime Evals
 
-本目录用于第一批核心 Skill 的最小 Fresh Runtime 行为验证。
+本目录用于 `agentic-dev` Skills 的最小 Fresh Runtime 行为验证。
 
 ## 目标
 
@@ -20,7 +20,7 @@ Skill 没有激活与 Skill 激活后执行错误必须分别分类。
 - Activation 只能依赖 Runtime 自动发现的 Skill metadata，不预加载目标 `SKILL.md` 正文；
 - Behavior 使用显式 `$skill-name`，验证 Skill 被选中后的行为契约；
 - Activation 和 Behavior 都在仓库外隔离工作目录中运行；
-- Runtime 只可见当前 8 个 Skills，以及场景明确需要的 fixture；
+- Runtime 只可见当前仓库实际维护的 Skills，以及场景明确需要的 fixture；
 - Runtime 不得读取 `evals/activation/*`、`evals/behavior/*`、历史 `evals/results/*` 或 分级断言；
 - Codex 子进程实际 `cwd` / `PWD` 指向隔离 workspace；
 - Behavior 场景在需要时显式声明当前工作目录与 prompt 构成本场景全部可用上下文，不允许搜索目录外路径；
@@ -137,6 +137,25 @@ Project Roadmap 回归与定向行为评估：3 / 3 PASS
 
 `stderr` 中存在 Codex 模型列表刷新超时，但三个进程均以状态码 `0` 完成，JSONL 均包含 `turn.completed` 与完整最终输出，因此该诊断噪声不影响本轮语义观察。精确模型名未由当前 JSONL / 运行元数据暴露，记录为非阻塞运行时观察；本轮 PASS 不依赖进程退出码。
 
+## 异步外部执行闭环针对性扩展
+
+Issue #33 的已有 Consumer 继续演进实验表明：GitHub Actions Run 已被成功触发但仍处于 `in_progress` 时，Agent 可能把异步中间状态当作当前任务终点，请求 Human 以后继续，而没有在当前授权范围内持续观察、诊断、修复、重跑和复验。
+
+现有 External Operation Guide 与 `github-actions-verification` 已经要求写后重新读取和验证，因此本次不新增 Method 阶段或 Skill，只增加 1 个针对性 Behavior 场景：
+
+- `B-GA-01`：当前 Runtime 能继续观察与当前 Head SHA 关联的 `in_progress` Run 时，`github-actions-verification` 必须保持有界执行闭环；dispatch 或中间状态不能替代 Completion Evidence，失败时在授权范围内诊断、修复、重跑和复验，只有目标证据、真实阻塞、证据不可得或有界观察上限可以结束当前闭环。
+
+该扩展不增加 Activation 场景，不要求无限轮询，不授予 Merge / Release / Deploy 权限，也不把 GitHub Actions 行为提升为通用 Method 语义。
+
+针对性运行同时回归 `B-EU-04`、`B-EU-06` 与 `B-CG-06`，确认历史 CI、实现存在、计划验证或执行单元状态仍不能替代已执行的当前证据。
+
+### 当前验证状态
+
+- Eval JSON 结构、Runner 语法与场景注册：`PASS`；
+- Fresh Runtime Run：`B-GA-01` 及 3 个相关回归场景均为 `PENDING`；
+- 人工语义分级：`PENDING`；
+- 进程退出 `0` 仍不等于 Eval PASS。
+
 ## 文件结构
 
 ```text
@@ -153,7 +172,8 @@ evals/
 │   ├── readiness-check.json
 │   ├── execute-unit.json
 │   ├── systematic-debug.json
-│   └── converge.json
+│   ├── converge.json
+│   └── github-actions-verification.json
 └── fixtures/
     └── execute-unit-basic/
 ```
