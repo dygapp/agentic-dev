@@ -25,7 +25,7 @@
 | 完成首轮真实 Consumer Experiment | 已完成 | `dygapp/jilinjobs-cms` 完成 Greenfield Bootstrap、信息发布纵向切片与功能整体收敛 |
 | 补齐验收到验证的闭环 | 已完成 | PR #30 已合并，Issue #18 已按 `completed` 关闭 |
 | 建立通用 Project Roadmap 规则 | 已完成 | PR #32 完成 Method、Bootstrap、Fresh Context 与 `converge` 定向强化；行为评估 `3 / 3 PASS`、断言 `16 / 16 PASS` |
-| 验证已有 Consumer 的继续演进 | 当前 | Issue #33 已收到 PR #15 / #16 的新增验证证据，正在定向收敛验证契约、Human Review Baseline 与 Visual Fidelity 证据边界 |
+| 验证已有 Consumer 的继续演进 | 当前 | Issue #33 新增验证证据已通过 PR #37 完成定向修订与 Fresh Runtime 评估，正在进入最终 AI Review 和人工集成边界 |
 | Distribution、Bootstrap 自动化或 Controller / Runtime Orchestration | 条件性后续 | 只有真实使用证明存在稳定、独立且可复用的职责缺口时才评估 |
 | 重新进入 Skill Engineering | 条件性后续 | 只有新的真实证据暴露稳定 Skill Implementation / Contract / Method Gap 时才定向重开 |
 
@@ -61,7 +61,7 @@
 - Consumer 最新集成证据：PR #15、PR #16 均已合并，当前 `main@a7807f689db32b6094e1afd70f453b28a59f387b`；
 - 实验使用的 `agentic-dev` baseline：`master@b4e5b2027bdbbe97cc0b7153be65c5afb7a0274e`；
 - Issue #33 首批 5 类项目治理证据已完成处理：已有 Consumer 的采用与升级边界已通过 PR #34 集成，跨 Repository 操作授权粒度与异步外部执行闭环已通过 PR #35 集成；`B-GA-01` 与 3 个当前证据回归场景均为 `PASS`，合计断言 `20 / 20 PASS`；README / Project Roadmap / GitHub Evidence 分工与无 Issue Template 的反馈契约作为正向验证保留。
-- Issue #33 后续新增 6 个验证相关 Finding：Stale Verification Contract、Workflow 重复产品语义、Fresh Database Migration 启动链、Automated Verification / Human Review 状态隔离、Functional Browser / Visual Fidelity 证据边界和 bind mount 可重复恢复；当前已进入定向修订，Fresh Runtime Eval 与人工语义评分保持 `PENDING`；
+- Issue #33 后续新增 6 个验证相关 Finding：Stale Verification Contract、Workflow 重复产品语义、Fresh Database Migration 启动链、Automated Verification / Human Review 状态隔离、Functional Browser / Visual Fidelity 证据边界和 bind mount 可重复恢复；PR #37 已完成定向修订，Fresh Runtime Eval `6 / 6 PASS`、断言 `35 / 35 PASS`，最终 AI Review 尚待完成；
 - 异步外部执行闭环在 PR #15 / #16 中再次得到正向验证，不重复立项。
 
 上述提交是已完成里程碑的证据锚点，不是要求后续工作永久固定使用的静态版本。新的实验或修订开始时，必须读取并记录当时实际使用的精确 `agentic-dev` baseline。
@@ -82,7 +82,7 @@
 
 ## 下一步工作
 
-1. 完成 Issue #33 新增验证证据的定向 Guide / Skill 修订、Fresh Runtime Eval、人工语义评分与最终 AI Review；
+1. 完成 PR #37 最终 AI Review，并由 Human Authority 决定是否集成；
 2. 定向处理集成后，继续让 Fresh Agent 依靠 Consumer Repository Authority 恢复项目状态，并以新的真实纵向工作验证其增量演进能力；
 3. 实验形成 Final Summary 前保持 Issue #33 `open`；当已有 Consumer 继续演进实验取得足够的纵向工作证据后，形成 Final Summary，并据此判断 Issue 的关闭状态与后续条件性工作。
 
