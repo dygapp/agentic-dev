@@ -19,6 +19,7 @@ description: Establishes or optimizes an observable, traceable, cost-aware GitHu
 - 当前 Agent 无法可靠枚举、读取或关联某类 GitHub Actions Run；
 - 需要在 direct push 与 Branch → PR 路径之间选择更可观察的验证路径；
 - CI 同时包含后端、前端、数据库、浏览器或其他多 Runtime 集成验证；
+- 自动化验证与人工评审共用 Runtime，但测试数据、静态资源或容器写入可能污染 Human Review Baseline；
 - 环境准备、镜像构建或依赖安装显著拖慢反馈周期；
 - 需要区分 Fast Feedback 与 Completion Verification；
 - 需要通过 Artifact、日志、trace、截图或 Runtime diagnostics 增强失败可诊断性；
@@ -45,7 +46,8 @@ description: Establishes or optimizes an observable, traceable, cost-aware GitHu
 - 当前 Branch / PR / Commit 状态；
 - 当前 GitHub Runtime / Connector 能力；
 - Current CI Runs、Jobs、Steps、Logs、Artifacts；
-- 与失败直接相关的 Runtime / container / service configuration。
+- 与失败直接相关的 Runtime / container / service configuration；
+- Human Review Baseline / fixtures，以及自动测试可能修改的数据库、文件、缓存或其他共享状态。
 
 ## Authority Sources
 
@@ -117,6 +119,14 @@ Task / Feature Branch
 
 Diagnostic / Runtime Observation 可以支持 diagnose、abort、reroute 和 workflow optimization，但不能单独替代 Completion Evidence。
 
+证据类型必须与声明类型匹配：
+
+- Functional Browser Verification 可以证明路由、交互、资源加载和已编码断言；
+- Visual Fidelity 需要与视觉 Requirement 对应的参考证据和判断路径；没有完整机器可判定容差时，Functional Browser PASS 不能单独替代 AI 视觉对照与 Human Visual Review；
+- Human Review 的原始结论应按实际范围记录，不得把“基本通过、暂未发现新的阻塞问题”扩大为“完全一致”或无条件验收。
+
+Workflow 应优先承载运行环境、部署链路和正式测试套件的执行语义，例如构建、服务就绪、HTTP / API 可达和测试结果。具体产品展示语义应尽量由正式测试套件承担；如果 Workflow 必须重复同一产品语义，应共享同一配置或契约来源，避免形成第二份 hard-coded assertion。
+
 详细规则见 `references/evidence-observability.md`。
 
 ### 5. Layer Fast Feedback and Completion Verification
@@ -135,6 +145,16 @@ Completion E2E when required
 
 中间修复迭代不要求无条件重复最高成本环境准备；但在声明 Completed 前，仍必须取得 Completion Condition 所要求的完整当前证据。
 
+当当前变更包含数据库 Migration，且 Runtime / CI 条件允许时，Completion Verification 至少应覆盖一次：
+
+```text
+Fresh Database
+→ Full Migration Chain
+→ Application Startup
+```
+
+SQL 文件检查、编译、单元测试或只在已有数据库上执行增量 Migration，不能单独证明新环境初始化可用。
+
 ### 6. Reuse Stable Runtime Instead of Rebuilding It Repeatedly
 
 当数据库、浏览器、Java/Node Runtime、HTTP Server 或其他稳定依赖反复准备且成本较高时，优先评估：
@@ -150,7 +170,33 @@ Completion E2E when required
 
 详细 Pattern 见 `references/containerized-e2e.md`。
 
-### 7. Bound Runtime Cost and Stale Work
+### 7. Separate Automated Verification State from Human Review Baseline
+
+如果自动化验证完成后还要暴露同一 Runtime 供人工评审，不得默认把测试结束时的数据库、文件、导航、缓存或会话状态直接作为 Human Review Baseline。
+
+优先建立以下可验证闭环：
+
+```text
+Automated Verification
+→ Collect Current Evidence
+→ Recreate / Reset Known Baseline
+→ Seed Explicit Human Review Fixtures
+→ Start / Expose Review Runtime
+→ Verify Review Baseline and Access Path
+```
+
+具体要求：
+
+- 明确自动测试会修改哪些共享状态，以及 Human Review 实际需要哪些示例数据；
+- 基线应来源明确、可重复构建；优先从 Versioned Static Baseline、migration / seed 或等价权威来源恢复；
+- 自动测试数据只有在被明确采纳为 Human Review Fixture 时才可以保留，不能因共用环境而意外泄漏；
+- 对容器可写的 host bind mount，显式处理 UID / GID、ownership、permissions 与 cleanup；不得假设 runner 普通权限的 `rm -rf` 一定成功；
+- 清理和恢复必须重新验证，包括测试数据已移除、版本化资源已恢复、人工示例数据已准备、服务健康与评审地址可访问；
+- Reset 路径应在授权的临时 / 评审环境中具备可重复执行性；不得把该规则解释为对生产或未授权共享数据执行 destructive cleanup。
+
+详细 Pattern 见 `references/containerized-e2e.md`。
+
+### 8. Bound Runtime Cost and Stale Work
 
 对于长运行或昂贵验证：
 
@@ -159,7 +205,7 @@ Completion E2E when required
 - 避免新的提交继续等待已经失去价值的旧 Run；
 - 对可缓存或可复用的稳定依赖使用 Repository Policy 允许的复用机制。
 
-### 8. Make Failures Diagnosable
+### 9. Make Failures Diagnosable
 
 如果原始 Job Log、Connector 日志读取或远程 Runtime 可观察性不足，不根据 Step 名称猜根因。
 
@@ -176,7 +222,7 @@ Completion E2E when required
 
 详细 Pattern 见 `references/diagnostics-and-runtime-cost.md`。
 
-### 9. Run, Re-read, and Verify
+### 10. Run, Re-read, and Verify
 
 执行或调整 Workflow 后，重新读取 GitHub Source of Truth：
 
@@ -193,7 +239,7 @@ Completion E2E when required
 
 只使用与当前目标提交真实关联的 Evidence。
 
-### 10. Continue Through Asynchronous Intermediate States
+### 11. Continue Through Asynchronous Intermediate States
 
 如果当前调用要求实际取得 GitHub Actions 结果或完成验证，Workflow 触发（dispatch）/ 重跑（rerun）响应只表示操作已经进入 `Act`，不是本 Skill 的默认退出条件。
 
@@ -216,7 +262,7 @@ Completion E2E when required
 
 如果调用范围只要求设计或优化验证路径，而不要求实际触发并等待运行，应明确输出 Evidence Retrieval Plan 和尚未执行的验证状态；不得把计划写成已经取得的 Completion Evidence。
 
-### 11. Return Verification Result to the Caller
+### 12. Return Verification Result to the Caller
 
 返回：
 
