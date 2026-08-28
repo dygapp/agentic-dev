@@ -1,6 +1,6 @@
 # Issue #33 验证证据边界定向处理计划
 
-**状态：** In Progress
+**状态：** In Review
 
 ## Goal
 
@@ -40,6 +40,14 @@
 5. 完成静态检查并创建 PR；
 6. 在隔离 Fresh Runtime 中运行定向与回归场景并进行人工语义评分；
 7. 完成最终 AI Review、Issue 回写和路线图收敛。
+
+## Current Evidence
+
+- PR #37 Head：`1ea5ebf2f720a3e5fde89356b437ecf4356c4532`；
+- Fresh Runtime Eval：`6 / 6 PASS`；
+- 人工语义评分：`35 / 35 PASS`；
+- 隔离与污染检查：PASS；
+- 最终 AI Review：In Progress。
 
 ## Completion Criteria
 
