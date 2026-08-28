@@ -225,7 +225,23 @@ Issue #33 的 Consumer PR #18 表明：完整 Runtime / Human Review 之后可�
 - `B-GA-01`：当前仍需取得的异步证据继续保持有界观察与复验闭环；
 - `B-CG-06`：未执行且不可复用的当前证据仍阻止 `READY`。
 
-Fresh Runtime 与逐断言人工语义评分当前为 `PENDING`；Codex 进程退出成功不能替代 Eval PASS。
+### 针对性扩展结果
+
+2026-08-28，使用 `codex-cli 0.150.1` 在仓库外的独立临时工作区完成有效 Fresh Runtime 运行。运行内容对应 PR #38 语义基线 `4e07451647471142de873afacb2aef735c8726e7`。
+
+```text
+后继提交证据影响定向与回归评估：4 / 4 PASS
+断言：                              25 / 25 PASS
+```
+
+- `B-GA-04`（`7 / 7`）没有按 `docs-only` 或当前 CI success 整体继承祖先证据；建立 Evidence SHA、Current SHA、compare range、原 Run / Review 与声明映射，允许复用未受影响的 Runtime / Human Review 声明，同时识别 Roadmap / Architecture 语义变化需要当前 Authority / Architecture Review，且未把祖先 Run 冒充当前 Head Run；
+- `B-GA-03`（`7 / 7`）继续隔离 Automated Verification State 与 Human Review Baseline，覆盖数据库、版本化资源、fixtures、bind mount ownership / cleanup / repeatable reset，并拒绝用 Functional Browser PASS 替代 Visual Fidelity；
+- `B-GA-01`（`6 / 6`）继续把 `in_progress` 视为异步中间状态，在授权范围内保持有界观察、诊断、修复、重跑与复验闭环；
+- `B-CG-06`（`5 / 5`）继续拒绝用 Completed Unit、计划验证或代码表达式替代多文章竞争排序的已执行当前证据，输出 `GAPS` 并返回执行 / 验证路径。
+
+全部断言均由人工读取最终回答和命令轨迹后逐项语义评分。四个场景分别从独立的 `/tmp/agentic-dev-behavior-*` 工作区启动，只读取隔离注入的 Skill、Skill references 与题面上下文，没有读取 Eval 定义、评分断言、历史结果或仓库外内容。`B-GA-01` 在隔离空目录中读取 Git 状态并以 `128` 正常失败，没有越出隔离边界，也不影响最终语义。
+
+附件 SHA-256：`e92748e16b242c0c9f9b874bd43c1327cfcb248b7ba67455f253d3346bd0185d`。所有进程均以状态码 `0` 完成，JSONL 均包含完整最终回答与 `turn.completed`；进程退出码未被当作 PASS。stderr 中的 Codex 模型列表刷新超时没有中断场景执行，记录为非阻塞 Runtime Observation。
 
 ## 文件结构
 
