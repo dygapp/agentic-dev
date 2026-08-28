@@ -189,14 +189,27 @@ Issue #33 在 Consumer PR #15 与 PR #16 中进一步表明：
 - `B-GA-01`：异步外部执行保持有界观察、诊断、重跑与复验闭环；
 - `B-CG-06`：未执行的当前证据仍阻止 `READY`。
 
-当前状态：
+### 针对性扩展结果
+
+2026-08-28，使用 `codex-cli 0.148.0` 在仓库外的独立临时工作区完成有效 Fresh Runtime 运行。运行内容与 PR #37 Head `01b5838d618819dbcfc034e1d3229dd0274eb4e1` 一致。
 
 ```text
-Fresh Runtime Eval: PENDING
-人工语义评分:       PENDING
+验证证据边界定向与回归评估：6 / 6 PASS
+断言：                         35 / 35 PASS
 ```
 
-进程退出 `0` 仍不构成 Eval PASS；必须完成隔离与污染检查，并逐项读取最终输出和命令轨迹进行语义评分。
+- `B-SD-02`（`6 / 6`）以当前 Repository Authority / Specification 定义 Expected Behavior，将旧标题和旧路径断言识别为 Stale Verification Contract，修正验证层而不回退产品行为，并要求当前 Regression Evidence；
+- `B-GA-02`（`6 / 6`）拒绝用 compile、build 或已有数据库增量执行证明新环境初始化，要求 `Fresh Database → Full Migration Chain → Application Startup`，同时移除 Workflow 中与正式 Playwright 重复的旧标题断言；
+- `B-GA-03`（`7 / 7`）分离 Automated Verification State 与 Human Review Baseline，覆盖数据库与版本化静态资源恢复、Human Review fixtures、bind mount ownership / cleanup / repeatable reset，并明确 Functional Browser PASS 不能单独证明 Visual Fidelity；
+- `B-SD-01`（`5 / 5`）继续拒绝根据代码或测试发明跨功能长期领域定义，返回 `clarify-intent` / `specify`；
+- `B-GA-01`（`6 / 6`）继续保持异步外部操作的有界观察、诊断、修复、重跑与复验闭环；
+- `B-CG-06`（`5 / 5`）继续将未执行的多文章竞争排序证据判为 `GAPS`，不以实现或执行单元状态替代当前证据。
+
+全部断言均由人工读取最终输出与命令轨迹后逐项进行语义评分。六个场景分别从独立的 `/tmp/agentic-dev-behavior-*` 工作区启动，只读取隔离注入的 Skill、Skill references 与题面上下文，没有读取 Eval 定义、评分断言、历史结果或仓库外内容。
+
+附件 SHA-256：`ae34b74c636a1491d620a6d0a2bd28153c6a0e4d76cb8bec4d74b17f3ea17d58`。所有进程均以状态码 `0` 完成，JSONL 均包含完整最终回答与 `turn.completed`；进程退出码未被当作 PASS。
+
+`B-GA-03` 出现一次 stream reconnect 后自动恢复，没有丢失命令轨迹或最终回答。部分 stderr 存在 Codex 模型列表刷新超时，未中断场景执行；精确模型名未由运行元数据暴露，以上均记录为非阻塞 Runtime Observation。
 
 ## 文件结构
 
