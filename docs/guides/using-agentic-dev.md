@@ -333,12 +333,14 @@ systematic-debug
 - 验证失败出现时，先重新对照当前 Repository Authority / Specification，区分实现缺陷（Implementation Defect）、陈旧验证契约（Stale Verification Contract）、Runtime / Environment Problem 与 External Dependency Problem；测试、Workflow assertion 和其他验证 Artifact 只有与当前权威一致时才定义有效 Expected Behavior；
 - 验证证据类型必须与完成声明匹配；功能浏览器验证（Functional Browser Verification）可以证明路由、交互、资源和可机器判定行为，但不能单独证明视觉一致性（Visual Fidelity）。当需求是现网站点复刻、设计稿还原或品牌视觉一致性时，应按风险使用原始运行证据、参考截图、真实资源、AI 视觉对照和 Human Visual Review；除非 Requirement 已提供可机器判定的完整视觉容差契约，不得把功能 PASS 扩大成视觉 PASS；
 - Automated Verification State 与 Human Review Baseline 应按用途隔离。自动测试会写入数据库、文件、导航、缓存或其他共享状态时，在暴露人工评审环境前应先保留自动验证证据，再从来源明确、可重复构建的基线恢复环境，并只准备明确用于人工评审的示例数据；
+- Human Review Finding 不受评审名称限制。视觉评审也可能暴露实现缺陷、Product / Requirement Ambiguity、Domain / Architecture Authority Gap 或 Runtime Problem；Agent 应保留人工观察的原始范围，重新读取当前 Authority 与 Product Intent 后分类并路由。人工观察是重要 Evidence，但不会仅因来自 Human Review 就自动成为新 Requirement，也不能被静默压缩成纯视觉调整；
 - 变更数据库 Migration 时，如果 Runtime / CI 条件允许，最终验证应至少覆盖一次 `Fresh Database → Full Migration Chain → Application Startup`；SQL 文件检查、编译、单元测试或只在已有数据库上执行增量 migration，不能单独证明新环境可初始化；
 - 显式归属功能整体验证责任的义务保持 `Pending`，必须由后续 `converge` 独立重新检查；
 - 验证路径应具有足够的证据可观察性（Evidence Observability）；Agent 不应选择自己无法重新取得必要完成证据（Completion Evidence）的执行路径；
 - 如果当前 Runtime 对某类 CI trigger 或验证结果不可观察，应在仓库策略（Repository Policy）允许范围内切换到可观察路径，而不是把未知状态当作通过；
 - 快速反馈（Fast Feedback）与完成验证（Completion Verification）可以分层；中间修复优先取得低成本、针对性的反馈，最终完成声明仍必须满足必要的完整验证；
 - 中间修复迭代不要求每次重复支付最高成本的环境准备，但不能因此降低最终 Completion Evidence 的覆盖；
+- 已验证提交之后出现新提交时，不按“文件扩展名”或“docs-only”机械决定旧证据是否仍有效。只有能够取得祖先证据提交到当前目标提交的精确差异、逐项证明差异不会影响该 Evidence Claim、与该声明相关的 Authority / Requirement / Specification / Architecture / Acceptance 语义未改变，并且 Repository Policy 允许时，才可以按声明复用未受影响的证据；必须记录祖先 SHA、当前 SHA、差异范围和声明映射。受影响或无法证明不受影响的声明必须重新取得定向验证或相应 Review；祖先 Run 不得被描述为当前 Head 的 Run；
 - 高成本且稳定的环境依赖可以通过预构建 Runtime、Artifact 复用、缓存或其他当前平台支持的方式降低重复准备成本；
 - 长运行环境准备和验证应具有与正常基线相称的 timeout / cancellation 策略，避免把异常等待当作正常执行；
 - Diagnostic / Runtime Observation 可以支持 diagnose、abort、reroute 或调整验证路径，但不能因为同样属于 Current Evidence 就自动替代 Completion Evidence；

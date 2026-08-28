@@ -8,7 +8,7 @@
 
 用于证明 Execution Unit / Feature 完成条件的证据，应满足：
 
-- 来自当前目标提交或当前可验证系统状态；
+- 来自当前目标提交、当前可验证系统状态，或来自已验证祖先状态且已经通过完整后继差异证明不会影响该具体声明；
 - 实际执行，而不是计划执行；
 - 与 Completion Condition 直接对应；
 - 达到仓库要求的必要验证范围；
@@ -53,7 +53,20 @@ Relevant Jobs / Steps
 Required Artifacts / Logs
 ```
 
-如果 Evidence 与当前目标提交不匹配，不用于当前 Completion Claim。
+如果 Evidence 的 Head SHA 与当前目标提交不一致，不能直接用于当前 Completion Claim。只有在祖先关系和完整差异可确认、差异对具体声明无影响、相关 Authority / Requirement / Specification / Architecture / Acceptance 语义未改变，并且 Repository Policy 允许时，才可以按声明复用。
+
+复用时至少记录：
+
+```text
+Evidence Commit SHA
+Current Target SHA
+Compare Range
+Original Run / Review
+Reusable Claim
+Invalidated / Re-run Claim
+```
+
+文件扩展名、`docs-only` 标签、变更文件数量或“最终提交只改文档”不能代替影响分析。祖先 Run 仍是祖先提交的 Run，不得重命名为当前 Head Evidence；当前 Head 自身需要的 CI、Authority Review 或其他检查仍应按 Repository Policy 取得。
 
 ## Artifact 实体验证
 

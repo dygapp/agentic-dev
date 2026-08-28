@@ -237,7 +237,27 @@ Automated Verification
 
 该规则只在 Artifact 本身承担必要证据职责时适用，不要求所有 Completion Verification 都生成 Artifact。
 
-只使用与当前目标提交真实关联的 Evidence。
+Evidence 必须与当前目标提交和具体声明建立可审计关联；关联不等于所有 Evidence 都必须由同一个 Head SHA 的同一种 Run 产生。
+
+### 10.1 Evaluate Evidence Reuse Across Descendant Commits
+
+当高成本 Runtime / Human Review Evidence 来自当前目标提交的祖先提交时，默认先把它视为待重新验证的旧证据，不因后继提交看起来是 `docs-only`、文件数量少或 CI 仍为绿色就自动继承。
+
+只有同时满足以下条件，才可以按 Evidence Claim 复用未受影响的祖先证据：
+
+1. 已确认祖先 Evidence Commit 是当前目标提交的祖先，并取得两者之间的完整、精确差异；
+2. 逐项说明差异为什么不能改变该证据所支持的行为、环境、数据、资源或人工判断对象；
+3. 差异没有改变与该声明相关的 Repository Authority、Requirement、Specification、Architecture、Acceptance、Workflow、Runtime 配置、Migration、Fixture 或版本化资源；
+4. 当前 Repository Policy 允许按影响范围分层验证，并且当前 Head 已完成其自身需要的检查；
+5. 记录 Evidence Commit SHA、Current Target SHA、compare range、原 Run / Review 引用、可复用的具体声明和仍需重新验证的声明。
+
+Evidence reuse 是**按声明**的，不是给整个提交一次性盖章：
+
+- 祖先 Runtime Run 可以继续证明未受后继差异影响的既有 Runtime 行为，但不能被改称为当前 Head 的 Run；
+- Human Review 只能复用未改变评审对象、基线和判断语义的部分；Human Review 暴露的新 Product / Requirement / Domain / Architecture Finding 必须重新读取 Authority 后路由；
+- 文档文件也可能改变 Requirement、Specification、Architecture、Acceptance 或 Project State；文件扩展名不能证明无影响；
+- 如果差异触及或可能触及某项声明，或者无法证明无影响，则重跑该声明所需的验证或重新取得相应 Human / Authority Review；
+- Review Runtime 的偶发启动失败可以记录为 Runtime Observation；只有它阻断当前仍需取得的证据时才阻止完成，不用于否定已经正确关联且未受影响的其他证据。
 
 ### 11. Continue Through Asynchronous Intermediate States
 
