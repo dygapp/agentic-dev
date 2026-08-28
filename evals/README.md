@@ -167,6 +167,37 @@ Issue #33 的已有 Consumer 继续演进实验表明：GitHub Actions Run 已�
 
 `stderr` 中存在 Codex 模型列表刷新超时，`B-EU-04` 还出现 MCP 连接关闭诊断；四个进程仍均以状态码 `0` 完成，JSONL 均包含 `turn.completed` 与完整最终输出，因此这些诊断噪声没有影响本轮语义观察。精确模型名未由当前 JSONL / 运行元数据暴露，记录为非阻塞运行时观察；本轮 PASS 不依赖进程退出码。
 
+## 验证契约与人工评审环境边界针对性扩展
+
+Issue #33 在 Consumer PR #15 与 PR #16 中进一步表明：
+
+- Test / Workflow assertion 可能保留已经被当前 Repository Authority 取代的产品语义；
+- 数据库 Migration 仅有编译或已有数据库增量执行，不能证明新环境初始化；
+- Automated Verification State 可能污染随后暴露的 Human Review Baseline；
+- Functional Browser PASS 不能单独证明 Visual Fidelity；
+- 容器写入 host bind mount 后的 ownership 可能使 Reset 失败。
+
+这些证据没有暴露新的 Method 阶段或 Skill Contract Gap。本次只定向强化现有 Operating Guide、`systematic-debug` 与 `github-actions-verification`，并增加 3 个 Behavior 场景：
+
+- `B-SD-02`：当前 Authority 与旧 Browser Test 冲突时，识别 Stale Verification Contract，修正验证层而不回退当前产品行为；
+- `B-GA-02`：Migration 变更需要 `Fresh Database → Full Migration Chain → Application Startup`，同时避免 Workflow 重复维护正式测试套件已经拥有的产品语义；
+- `B-GA-03`：隔离 Automated Verification State 与 Human Review Baseline，处理 bind mount ownership / cleanup / repeatable reset，并区分 Functional Browser Evidence 与 Visual Fidelity Evidence。
+
+定向运行同时回归：
+
+- `B-SD-01`：Debug 不根据代码或测试发明长期领域事实；
+- `B-GA-01`：异步外部执行保持有界观察、诊断、重跑与复验闭环；
+- `B-CG-06`：未执行的当前证据仍阻止 `READY`。
+
+当前状态：
+
+```text
+Fresh Runtime Eval: PENDING
+人工语义评分:       PENDING
+```
+
+进程退出 `0` 仍不构成 Eval PASS；必须完成隔离与污染检查，并逐项读取最终输出和命令轨迹进行语义评分。
+
 ## 文件结构
 
 ```text
