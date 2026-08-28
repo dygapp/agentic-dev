@@ -40,6 +40,16 @@
 6. 在隔离 Fresh Runtime 中运行定向与必要回归场景，逐断言人工语义评分；
 7. 完成最终 AI Review 并判断 Ready to Integrate。
 
+## Current Evidence
+
+- PR #38 Fresh Runtime 语义基线：`4e07451647471142de873afacb2aef735c8726e7`；
+- `codex-cli 0.150.1`；
+- 定向与回归场景：`4 / 4 PASS`；
+- 人工逐断言语义评分：`25 / 25 PASS`；
+- 隔离与污染检查：PASS；
+- 附件 SHA-256：`e92748e16b242c0c9f9b874bd43c1327cfcb248b7ba67455f253d3346bd0185d`；
+- 最终 AI Review：PENDING。
+
 ## Completion Criteria
 
 - 规则按 Evidence Claim 与精确差异影响判断，不按文件扩展名机械复用或失效；
