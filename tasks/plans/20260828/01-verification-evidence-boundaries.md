@@ -43,7 +43,7 @@
 
 ## Current Evidence
 
-- PR #37 Head：`1ea5ebf2f720a3e5fde89356b437ecf4356c4532`；
+- Fresh Runtime 运行内容对应 PR #37 语义基线：`01b5838d618819dbcfc034e1d3229dd0274eb4e1`；
 - Fresh Runtime Eval：`6 / 6 PASS`；
 - 人工语义评分：`35 / 35 PASS`；
 - 隔离与污染检查：PASS；
