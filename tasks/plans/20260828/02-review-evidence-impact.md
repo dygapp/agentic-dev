@@ -49,7 +49,8 @@
 - 隔离与污染检查：PASS；
 - 附件 SHA-256：`e92748e16b242c0c9f9b874bd43c1327cfcb248b7ba67455f253d3346bd0185d`；
 - 最终 AI Review：PASS，Blocking / Medium Finding 为 `0 / 0`；
-- PR #38：Ready to Integrate，合并仍由 Human Authority 决定。
+- PR #38：已通过 `88a5d7e391be6fa2b61fbe4a5140c082e6ad9f95` 集成；
+- 临时分支 `fix/issue-33-evidence-impact`：已删除。
 
 ## Completion Criteria
 
