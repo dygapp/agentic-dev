@@ -178,7 +178,6 @@ skills/
 - `github-actions-verification`：当 Consumer 使用 GitHub Actions 取得验证证据，且 Branch / PR trigger、CI 可观察性、验证分层、容器化 Runtime、Artifact 复用、timeout / cancellation 或 diagnostics 会实质影响验证可靠性时按需使用。
 
 Agent 应根据当前 Runtime 支持的方式读取、安装或暴露所需 Skills。
-
 本文不规定固定的分发 / 安装机制（Distribution / Installation）。只要求：
 
 - 使用来自已确认 `agentic-dev` baseline 的 Skill；
@@ -357,7 +356,6 @@ converge
 ```
 
 只有当前 Intent、Specification、Implementation 与验证证据（Verification Evidence）一致，不违反当前有效的 Domain / Architecture / ADR Authority，本次工作产生或改变的长期权威事实已完成适当生命周期闭环，且不存在阻塞缺口（Blocking Gap），才能达到：
-
 ```text
 Ready to Integrate
 ```
@@ -413,6 +411,21 @@ Consumer-local 规则不能静默改写 `agentic-dev` 的通用 Method 或 Skill
 新增或重大修改长期权威产物时，还应能从当前 Method 与 Consumer Repository Authority 中确定：谁负责确认和形成、什么变化触发、谁会消费、保存在哪里、何时更新、如何取代旧内容，以及哪些情况必须升级。具体载体和写入权限由 Consumer 决定，不要求为此创建统一目录、模板或 Artifact Management Skill。
 
 Project Roadmap 一旦存在并仍然适用，就应在以下项目级变化发生时同步维护：里程碑完成、取消或被取代，当前阶段 / 核心目标改变，已决定的下一步顺序改变，或条件性方向正式进入当前路线。路线尚不确定时记录 Unknown / Conditional，不用猜测填满未来；README、任务清单和状态摘要不应并行维护另一份竞争性的当前路线。
+
+#### Project Roadmap 与集成状态
+
+Project Roadmap 维护项目的持久路线和可恢复状态，不逐项复制 Pull Request 的 open / merged 状态、精确 Merge Commit、临时分支删除等 GitHub 原生事实。相关事实优先由 Pull Request、Issue、Commit History 或其他 Repository Source of Truth 保存。
+
+进入 Ready to Integrate 前，应在当前拟集成变更中同步收敛本次工作已经确定的长期路线，使该版本合并后不会立即因“等待当前 PR 合并”“由人工决定是否集成”等短期描述而陈旧。可以引用承载集成状态的 Pull Request，但不要让 Roadmap 依赖复制其瞬时状态才能正确表达当前阶段、核心目标和已决定的下一步。
+
+合并后按以下边界处理：
+
+- 如果集成结果没有改变 Roadmap 中的项目阶段、核心目标、里程碑状态或已决定的下一步，不仅为了补记 Merge Commit、分支删除或“已合并”状态创建 Repository Change；
+- 如果需要保留精确集成证据，优先记录在对应 Pull Request、Tracking Issue 或 Git History；只有它同时是后续路线恢复所需的长期证据锚点时，才在 Roadmap 后续正常更新中补充；
+- 如果合并确实使 Roadmap 的长期路线发生变化，优先并入紧随其后的实质工作；只有陈旧状态会立即阻塞或误导 Fresh Context 时，才创建独立修复；
+- 状态修复本身不得继续触发另一个仅用于记录该修复已经合并的状态修复，避免形成递归的尾部 Pull Request。
+
+这些约束不允许在合并前虚构尚未发生的集成事实，也不改变 Human Authority 或 Repository Policy 对 Merge 的控制。
 
 对 ADR 还应额外确认：它记录的是跨功能长期架构约束，而不是当前 Feature 的普通 Technical Plan Decision。已有 ADR 被新决定替代时，应显式维护其状态或替代关系，避免后续 Fresh Agent 同时把新旧决定都当作有效权威。
 
@@ -538,7 +551,6 @@ Recommended Follow-up:
 ```
 
 Consumer Agent 可以提出 Classification Candidate，但不能自行把实验观察提升为 `agentic-dev` 的 Method / Contract 结论。
-
 最终是否修改 `agentic-dev`，应回到新的 `agentic-dev` Context，重新读取：
 
 - 当前 `agentic-dev` Authority；
