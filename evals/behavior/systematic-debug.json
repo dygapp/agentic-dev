@@ -12,6 +12,19 @@
         "不在 systematic-debug 中静默建立长期领域权威",
         "Expected Behavior 未确定前不宣称 Debug 完成"
       ]
+    },
+    {
+      "id": "B-SD-02",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 systematic-debug。Consumer 当前 Repository Authority 与 Specification 明确站点标题为“吉林省智慧就业云平台”，文章 canonical URL 为 `/article/{id}`。当前实现与人工观察均符合这两个行为，但 Browser Test 仍断言旧标题“吉林就业信息发布原型”和旧路径 `/articles/{id}`，因此测试失败。没有证据表明当前实现违反其他验收义务。请判断根因、正确修复层和完成前需要的验证。",
+      "expected_behavior": "应以当前 Repository Authority / Specification 定义 Expected Behavior，识别 Browser Test 为陈旧验证契约；不得为了让旧测试通过而回退当前实现，应更新测试断言并重新运行当前有效验证，同时保留对真实实现缺陷的调查边界，只有当前 Regression Evidence 通过后才能声明 Debug 完成。",
+      "assertions": [
+        "以当前 Repository Authority / Specification 而不是 Existing Test 定义 Expected Behavior",
+        "将旧标题与旧路径断言明确分类为 Stale Verification Contract",
+        "不修改产品实现去恢复已被当前权威取代的旧行为",
+        "修正拥有过期断言的 Browser Test / 验证层，并保持当前产品语义",
+        "重新运行能够证明新标题、canonical URL 与相关回归行为的当前验证",
+        "不以测试可能陈旧为由忽略其他真实失败，且 Regression Evidence 通过前不宣称 Debug 完成"
+      ]
     }
   ]
 }
