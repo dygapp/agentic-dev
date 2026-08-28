@@ -340,7 +340,7 @@ systematic-debug
 - 如果当前 Runtime 对某类 CI trigger 或验证结果不可观察，应在仓库策略（Repository Policy）允许范围内切换到可观察路径，而不是把未知状态当作通过；
 - 快速反馈（Fast Feedback）与完成验证（Completion Verification）可以分层；中间修复优先取得低成本、针对性的反馈，最终完成声明仍必须满足必要的完整验证；
 - 中间修复迭代不要求每次重复支付最高成本的环境准备，但不能因此降低最终 Completion Evidence 的覆盖；
-- 已验证提交之后出现新提交时，不按“文件扩展名”或“docs-only”机械决定旧证据是否仍有效。只有能够取得祖先证据提交到当前目标提交的精确差异、逐项证明差异不会影响该 Evidence Claim、当前 Authority / Requirement / Specification / Architecture / Acceptance 语义未改变，并且 Repository Policy 允许时，才可以按声明复用未受影响的证据；必须记录祖先 SHA、当前 SHA、差异范围和声明映射。受影响或无法证明不受影响的验证必须重跑；祖先 Run 不得被描述为当前 Head 的 Run；
+- 已验证提交之后出现新提交时，不按“文件扩展名”或“docs-only”机械决定旧证据是否仍有效。只有能够取得祖先证据提交到当前目标提交的精确差异、逐项证明差异不会影响该 Evidence Claim、与该声明相关的 Authority / Requirement / Specification / Architecture / Acceptance 语义未改变，并且 Repository Policy 允许时，才可以按声明复用未受影响的证据；必须记录祖先 SHA、当前 SHA、差异范围和声明映射。受影响或无法证明不受影响的声明必须重新取得定向验证或相应 Review；祖先 Run 不得被描述为当前 Head 的 Run；
 - 高成本且稳定的环境依赖可以通过预构建 Runtime、Artifact 复用、缓存或其他当前平台支持的方式降低重复准备成本；
 - 长运行环境准备和验证应具有与正常基线相称的 timeout / cancellation 策略，避免把异常等待当作正常执行；
 - Diagnostic / Runtime Observation 可以支持 diagnose、abort、reroute 或调整验证路径，但不能因为同样属于 Current Evidence 就自动替代 Completion Evidence；
