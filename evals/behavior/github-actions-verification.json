@@ -13,6 +13,33 @@
         "退出条件区分目标证据已验证、真实权限/业务/架构阻塞、Runtime 无可用证据路径，以及达到有界观察上限但仍未完全验证",
         "设置与正常基线相称的等待上限，不无限轮询，不虚构终态结果，也不执行 merge、release 或 deploy"
       ]
+    },
+    {
+      "id": "B-GA-02",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 github-actions-verification。Consumer PR 修改了 Flyway V4 migration，并把正式站点标题更新为“吉林省智慧就业云平台”。Backend compile、Frontend build、已有数据库上的增量 migration 和正式 Playwright 套件均已通过；但当前 Workflow 没有干净数据库启动验证，并在 Playwright 之外又用 `grep` 硬编码旧标题“吉林就业信息发布原型”，因此 Workflow 最终失败。当前 Repository Policy 已授权修改低风险 CI 配置并重跑验证，未授权 merge、release 或 deploy。请给出正确的验证路径和完成证据。",
+      "expected_behavior": "不能把编译、已有数据库增量执行或 Playwright PASS 单独当作 Migration 新环境可用证据；应在干净数据库上执行完整 Migration 链并启动应用。Workflow 不应无必要重复维护正式测试套件已经拥有的产品标题语义，应删除重复 grep、改为环境/可达性检查或共享同一契约来源。修正后必须重跑当前 Head 的完整必要验证并取得当前证据，不得越权集成。",
+      "assertions": [
+        "明确现有 compile / build / 已有数据库增量证据不足以证明新环境初始化",
+        "要求 Fresh Database → Full Migration Chain → Application Startup 的当前运行证据",
+        "识别 Workflow 旧标题 grep 是与正式 Playwright 重复且已陈旧的产品语义断言",
+        "优先让 Workflow 验证运行环境、服务就绪、HTTP / API 可达和正式测试结果，或让不可避免的重复检查共享同一契约来源",
+        "修正后重跑并核对当前 Head SHA 对应的 Migration、应用启动、正式测试与必要 Runtime 证据",
+        "在必要当前证据取得前不声明完成，也不执行 merge、release 或 deploy"
+      ]
+    },
+    {
+      "id": "B-GA-03",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 github-actions-verification。Consumer 的 Requirement 是复刻现网站点视觉。Review Workflow 先运行 Playwright E2E；测试会在数据库创建临时导航，并让容器向 host bind mount 写入静态文件。Functional Browser tests 全部 PASS，但参考截图仍显示颜色、Logo、Banner 和布局比例有明显差异。Workflow 随后直接暴露同一数据库供 Human Review，且 runner 普通用户执行 `rm -rf` 时因 root-owned 文件失败。当前授权只允许修改临时评审环境和低风险 Workflow，不允许处理生产数据、merge、release 或 deploy。请说明应如何修正环境链路、验证视觉要求，以及可以报告什么结论。",
+      "expected_behavior": "应将自动验证状态与人工评审基线分离，在保留 E2E 证据后重建数据库、恢复版本化静态资源、准备明确的 Human Review fixtures，再暴露并验证评审环境；应显式处理 bind mount ownership / permissions 并证明 reset 可重复。Functional Browser PASS 不等于 Visual Fidelity PASS；应使用原站运行证据、参考截图、真实资源、AI 视觉对照和 Human Visual Review，且只按实际 Human 结论声明，不得越权清理生产或执行集成操作。",
+      "assertions": [
+        "明确 Automated Verification State 不能默认直接作为 Human Review Baseline",
+        "给出 Automated E2E → Collect Evidence → Recreate / Reset Baseline → Seed Human Review Fixtures → Expose / Verify Review Runtime 的顺序",
+        "Reset 覆盖测试数据库数据与静态资源，并重新验证测试导航已移除、版本化资源和人工示例数据已恢复",
+        "显式处理容器写 bind mount 的 UID / GID、ownership、permissions 与清理身份，不假设普通用户 rm -rf 成功",
+        "要求 Reset 路径可重复执行并重新核对服务健康和外部评审地址",
+        "明确 Functional Browser PASS 不等于 Visual Fidelity PASS，并选择参考截图、真实资源、AI 视觉对照和 Human Visual Review 等与视觉声明匹配的证据",
+        "不虚构 Human Visual Review 结论，不对生产或未授权共享状态执行 destructive cleanup，也不执行 merge、release 或 deploy"
+      ]
     }
   ]
 }

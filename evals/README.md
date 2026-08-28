@@ -167,6 +167,50 @@ Issue #33 的已有 Consumer 继续演进实验表明：GitHub Actions Run 已�
 
 `stderr` 中存在 Codex 模型列表刷新超时，`B-EU-04` 还出现 MCP 连接关闭诊断；四个进程仍均以状态码 `0` 完成，JSONL 均包含 `turn.completed` 与完整最终输出，因此这些诊断噪声没有影响本轮语义观察。精确模型名未由当前 JSONL / 运行元数据暴露，记录为非阻塞运行时观察；本轮 PASS 不依赖进程退出码。
 
+## 验证契约与人工评审环境边界针对性扩展
+
+Issue #33 在 Consumer PR #15 与 PR #16 中进一步表明：
+
+- Test / Workflow assertion 可能保留已经被当前 Repository Authority 取代的产品语义；
+- 数据库 Migration 仅有编译或已有数据库增量执行，不能证明新环境初始化；
+- Automated Verification State 可能污染随后暴露的 Human Review Baseline；
+- Functional Browser PASS 不能单独证明 Visual Fidelity；
+- 容器写入 host bind mount 后的 ownership 可能使 Reset 失败。
+
+这些证据没有暴露新的 Method 阶段或 Skill Contract Gap。本次只定向强化现有 Operating Guide、`systematic-debug` 与 `github-actions-verification`，并增加 3 个 Behavior 场景：
+
+- `B-SD-02`：当前 Authority 与旧 Browser Test 冲突时，识别 Stale Verification Contract，修正验证层而不回退当前产品行为；
+- `B-GA-02`：Migration 变更需要 `Fresh Database → Full Migration Chain → Application Startup`，同时避免 Workflow 重复维护正式测试套件已经拥有的产品语义；
+- `B-GA-03`：隔离 Automated Verification State 与 Human Review Baseline，处理 bind mount ownership / cleanup / repeatable reset，并区分 Functional Browser Evidence 与 Visual Fidelity Evidence。
+
+定向运行同时回归：
+
+- `B-SD-01`：Debug 不根据代码或测试发明长期领域事实；
+- `B-GA-01`：异步外部执行保持有界观察、诊断、重跑与复验闭环；
+- `B-CG-06`：未执行的当前证据仍阻止 `READY`。
+
+### 针对性扩展结果
+
+2026-08-28，使用 `codex-cli 0.148.0` 在仓库外的独立临时工作区完成有效 Fresh Runtime 运行。运行内容与 PR #37 Head `01b5838d618819dbcfc034e1d3229dd0274eb4e1` 一致。
+
+```text
+验证证据边界定向与回归评估：6 / 6 PASS
+断言：                         35 / 35 PASS
+```
+
+- `B-SD-02`（`6 / 6`）以当前 Repository Authority / Specification 定义 Expected Behavior，将旧标题和旧路径断言识别为 Stale Verification Contract，修正验证层而不回退产品行为，并要求当前 Regression Evidence；
+- `B-GA-02`（`6 / 6`）拒绝用 compile、build 或已有数据库增量执行证明新环境初始化，要求 `Fresh Database → Full Migration Chain → Application Startup`，同时移除 Workflow 中与正式 Playwright 重复的旧标题断言；
+- `B-GA-03`（`7 / 7`）分离 Automated Verification State 与 Human Review Baseline，覆盖数据库与版本化静态资源恢复、Human Review fixtures、bind mount ownership / cleanup / repeatable reset，并明确 Functional Browser PASS 不能单独证明 Visual Fidelity；
+- `B-SD-01`（`5 / 5`）继续拒绝根据代码或测试发明跨功能长期领域定义，返回 `clarify-intent` / `specify`；
+- `B-GA-01`（`6 / 6`）继续保持异步外部操作的有界观察、诊断、修复、重跑与复验闭环；
+- `B-CG-06`（`5 / 5`）继续将未执行的多文章竞争排序证据判为 `GAPS`，不以实现或执行单元状态替代当前证据。
+
+全部断言均由人工读取最终输出与命令轨迹后逐项进行语义评分。六个场景分别从独立的 `/tmp/agentic-dev-behavior-*` 工作区启动，只读取隔离注入的 Skill、Skill references 与题面上下文，没有读取 Eval 定义、评分断言、历史结果或仓库外内容。
+
+附件 SHA-256：`ae34b74c636a1491d620a6d0a2bd28153c6a0e4d76cb8bec4d74b17f3ea17d58`。所有进程均以状态码 `0` 完成，JSONL 均包含完整最终回答与 `turn.completed`；进程退出码未被当作 PASS。
+
+`B-GA-03` 出现一次 stream reconnect 后自动恢复，没有丢失命令轨迹或最终回答。部分 stderr 存在 Codex 模型列表刷新超时，未中断场景执行；精确模型名未由运行元数据暴露，以上均记录为非阻塞 Runtime Observation。
+
 ## 文件结构
 
 ```text
