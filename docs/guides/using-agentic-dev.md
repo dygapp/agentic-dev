@@ -178,6 +178,7 @@ skills/
 - `github-actions-verification`：当 Consumer 使用 GitHub Actions 取得验证证据，且 Branch / PR trigger、CI 可观察性、验证分层、容器化 Runtime、Artifact 复用、timeout / cancellation 或 diagnostics 会实质影响验证可靠性时按需使用。
 
 Agent 应根据当前 Runtime 支持的方式读取、安装或暴露所需 Skills。
+
 本文不规定固定的分发 / 安装机制（Distribution / Installation）。只要求：
 
 - 使用来自已确认 `agentic-dev` baseline 的 Skill；
@@ -356,6 +357,7 @@ converge
 ```
 
 只有当前 Intent、Specification、Implementation 与验证证据（Verification Evidence）一致，不违反当前有效的 Domain / Architecture / ADR Authority，本次工作产生或改变的长期权威事实已完成适当生命周期闭环，且不存在阻塞缺口（Blocking Gap），才能达到：
+
 ```text
 Ready to Integrate
 ```
@@ -420,7 +422,7 @@ Project Roadmap 维护项目的持久路线和可恢复状态，不逐项复制 
 
 合并后按以下边界处理：
 
-- 如果集成结果没有改变 Roadmap 中的项目阶段、核心目标、里程碑状态或已决定的下一步，不仅为了补记 Merge Commit、分支删除或“已合并”状态创建 Repository Change；
+- 如果集成结果没有改变 Roadmap 中的项目阶段、核心目标、里程碑状态或已决定的下一步，不应仅为了补记 Merge Commit、分支删除或“已合并”状态创建 Repository Change；
 - 如果需要保留精确集成证据，优先记录在对应 Pull Request、Tracking Issue 或 Git History；只有它同时是后续路线恢复所需的长期证据锚点时，才在 Roadmap 后续正常更新中补充；
 - 如果合并确实使 Roadmap 的长期路线发生变化，优先并入紧随其后的实质工作；只有陈旧状态会立即阻塞或误导 Fresh Context 时，才创建独立修复；
 - 状态修复本身不得继续触发另一个仅用于记录该修复已经合并的状态修复，避免形成递归的尾部 Pull Request。
@@ -551,6 +553,7 @@ Recommended Follow-up:
 ```
 
 Consumer Agent 可以提出 Classification Candidate，但不能自行把实验观察提升为 `agentic-dev` 的 Method / Contract 结论。
+
 最终是否修改 `agentic-dev`，应回到新的 `agentic-dev` Context，重新读取：
 
 - 当前 `agentic-dev` Authority；
