@@ -211,6 +211,22 @@ Issue #33 在 Consumer PR #15 与 PR #16 中进一步表明：
 
 `B-GA-03` 出现一次 stream reconnect 后自动恢复，没有丢失命令轨迹或最终回答。部分 stderr 存在 Codex 模型列表刷新超时，未中断场景执行；精确模型名未由运行元数据暴露，以上均记录为非阻塞 Runtime Observation。
 
+## 后继提交证据影响判断针对性扩展
+
+Issue #33 的 Consumer PR #18 表明：完整 Runtime / Human Review 之后可能出现低运行影响的后继提交，但“最终提交只改文档”既不能自动要求无差别重建全部高成本环境，也不能自动继承全部旧证据。文档仍可能改变 Requirement、Architecture、Acceptance 或 Human Review 的判断语义。
+
+本次不修改 Method 或 Skill Contract，只定向强化 Operating Guide、`github-actions-verification` 与 Evidence Reference，并增加 1 个 Behavior 场景：
+
+- `B-GA-04`：对祖先 Evidence Commit 到当前 Head 的完整差异进行按声明影响分析；允许复用未受影响且可审计关联的 Runtime Evidence，但不得把祖先 Run 改称当前 Head Run；涉及 Product / Requirement / Architecture / Acceptance 或 Human Review 语义的变化必须重新复核或定向重验。
+
+定向运行同时回归：
+
+- `B-GA-03`：Automated Verification State、Human Review Baseline 与 Human Visual Review 声明边界保持有效；
+- `B-GA-01`：当前仍需取得的异步证据继续保持有界观察与复验闭环；
+- `B-CG-06`：未执行且不可复用的当前证据仍阻止 `READY`。
+
+Fresh Runtime 与逐断言人工语义评分当前为 `PENDING`；Codex 进程退出成功不能替代 Eval PASS。
+
 ## 文件结构
 
 ```text
