@@ -95,6 +95,16 @@ Database service/container
 - 不把“container started”等同于“service ready”；
 - E2E 失败时保存必要服务状态和日志。
 
+数据库 Migration 发生变化时，如果当前 Runtime 能提供干净数据库，应在最终验证中执行完整初始化链：
+
+```text
+Fresh Database
+→ Full Migration Chain
+→ Application Startup
+```
+
+已有数据库上的增量执行仍可作为补充证据，但不能替代新环境初始化证据。
+
 ## Consumer 自有镜像
 
 只有当：
@@ -106,6 +116,41 @@ Database service/container
 才考虑维护 Consumer 自有镜像。
 
 自有镜像应保持薄、可追溯、可更新，避免构建包含所有工具的万能 Runtime。
+
+## Automated Verification 与 Human Review 状态隔离
+
+同一 Workflow 同时承担自动 E2E 和人工评审环境时，优先分离状态生命周期：
+
+```text
+Automated E2E
+→ collect reports / traces / screenshots
+→ recreate database and restore versioned assets
+→ seed explicit Human Review fixtures
+→ expose review runtime
+```
+
+人工评审环境应能说明：
+
+- 当前数据库和静态资源来自哪个已知基线；
+- 哪些数据是明确的 Human Review Fixture；
+- 自动测试创建的数据、导航、文件、缓存和会话是否已经清除；
+- Reset 后的服务健康、关键入口和外部访问路径是否重新验证。
+
+除非 Consumer Repository 明确将自动测试数据采纳为人工示例数据，否则不能直接暴露测试结束状态。
+
+## Bind Mount Ownership 与可重复恢复
+
+容器可写 host bind mount 时，容器内 UID / GID 可能在 runner 文件系统留下普通用户无法删除或覆盖的文件。设计 Reset 时应显式确认：
+
+- 哪个 Runtime 创建文件，以及最终 ownership / permissions；
+- 清理动作由哪个已授权身份执行；
+- 是否需要在容器内清理、固定 UID / GID、调整 mount 模式，或采用其他当前平台允许的恢复方式；
+- 清理后是否重新复制或重建版本化基线；
+- 相同 Reset 能否再次执行并得到同一已知状态。
+
+`rm -rf` 命令被调用不构成 Cleanup Evidence。应重新检查目标路径、预期基线内容和后续 Runtime 启动结果。
+
+这些规则只用于已授权的临时验证 / 评审环境，不授予生产数据或共享状态的破坏性清理权限。
 
 ## 非目标
 
