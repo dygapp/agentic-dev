@@ -64,7 +64,7 @@
 - 当前证据处理使用的 `agentic-dev` baseline：`master@df4d6a607597eeb3684279e269cb073fcb398f83`；
 - Issue #33 首批 5 类项目治理证据已完成处理：已有 Consumer 的采用与升级边界已通过 PR #34 集成，跨 Repository 操作授权粒度与异步外部执行闭环已通过 PR #35 集成；`B-GA-01` 与 3 个当前证据回归场景均为 `PASS`，合计断言 `20 / 20 PASS`；README / Project Roadmap / GitHub Evidence 分工与无 Issue Template 的反馈契约作为正向验证保留。
 - Issue #33 后续新增 6 个验证相关 Finding：Stale Verification Contract、Workflow 重复产品语义、Fresh Database Migration 启动链、Automated Verification / Human Review 状态隔离、Functional Browser / Visual Fidelity 证据边界和 bind mount 可重复恢复；PR #37 已集成，Fresh Runtime Eval `6 / 6 PASS`、断言 `35 / 35 PASS`，最终 AI Review `PASS`，Blocking / Medium Finding 为 `0 / 0`；
-- Consumer PR #18 新增 4 个候选 Finding：Human Review 暴露产品语义作为现有 `converge → clarify-intent / specify` 路由的正向验证并补充使用说明；内容能力与投放策略分层已由现有 `specify` 规则覆盖，不新增通用模型；外部媒体资源真实类型属于 External Operation Guide 缺口；后继提交证据复用属于 `github-actions-verification` 的影响判断缺口。Runtime Head 到最终 Head 的完整差异包含 Project Roadmap 与 Architecture 语义变化，因此不能按 `docs-only` 无条件继承旧 Human Review / Authority 结论；PR #38 定向修订的 Fresh Runtime Eval 为 `4 / 4 PASS`、断言 `25 / 25 PASS`，隔离与污染检查为 `PASS`，最终 AI Review 仍为 `PENDING`；
+- Consumer PR #18 新增 4 个候选 Finding：Human Review 暴露产品语义作为现有 `converge → clarify-intent / specify` 路由的正向验证并补充使用说明；内容能力与投放策略分层已由现有 `specify` 规则覆盖，不新增通用模型；外部媒体资源真实类型属于 External Operation Guide 缺口；后继提交证据复用属于 `github-actions-verification` 的影响判断缺口。Runtime Head 到最终 Head 的完整差异包含 Project Roadmap 与 Architecture 语义变化，因此不能按 `docs-only` 无条件继承旧 Human Review / Authority 结论；PR #38 定向修订的 Fresh Runtime Eval 为 `4 / 4 PASS`、断言 `25 / 25 PASS`，隔离与污染检查为 `PASS`，最终 AI Review 为 `PASS`，Blocking / Medium Finding 为 `0 / 0`，等待 Human Authority 决定集成；
 - 异步外部执行闭环在 PR #15 / #16 中再次得到正向验证，不重复立项。
 
 上述提交是已完成里程碑的证据锚点，不是要求后续工作永久固定使用的静态版本。新的实验或修订开始时，必须读取并记录当时实际使用的精确 `agentic-dev` baseline。
@@ -85,8 +85,8 @@
 
 ## 下一步工作
 
-1. 完成 Consumer PR #18 新增证据的定向 Guide / Skill 修订、Fresh Runtime Eval 与最终 AI Review；
-2. 由 Human Authority 决定定向修订是否集成；集成后继续让 Fresh Agent 依靠 Consumer Repository Authority 恢复项目状态，并以新的真实纵向工作验证其增量演进能力；
+1. 由 Human Authority 决定 PR #38 是否集成；
+2. 集成后继续让 Fresh Agent 依靠 Consumer Repository Authority 恢复项目状态，并以新的真实纵向工作验证其增量演进能力；
 3. 实验形成 Final Summary 前保持 Issue #33 `open`；当已有 Consumer 继续演进实验取得足够的纵向工作证据后，形成 Final Summary，并据此判断 Issue 的关闭状态与后续条件性工作。
 
 ## 尚未确定与条件性后续
