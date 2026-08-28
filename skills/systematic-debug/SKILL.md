@@ -45,7 +45,7 @@ Debug 时遵守以下规则：
 
 1. Expected Behavior 必须来自 Applicable Product / Domain / Governance / Specification Authority。
 2. Current Code、Tests、Runtime State 和日志用于解释 Actual Behavior，不得自行定义 Expected Behavior。
-3. Existing Test 只有在其行为与更高权威一致时才能作为 Expected Behavior 的证据。
+3. Existing Test、Workflow assertion 或其他 Verification Artifact 只有在其行为与更高权威一致时才能作为 Expected Behavior 的证据；它们自身也可能陈旧。
 4. Technical Plan / Architecture Context / ADR 可以约束修复方式，但不得覆盖 Product Intent；当前 Debug Fix 不得静默覆盖当前有效 Domain / Architecture / ADR Authority。
 5. Conversation History 不构成权威事实来源。
 6. 如果 Expected Behavior 与权威来源冲突或本身未定义，停止 Debug Fix，返回上游处理。
@@ -92,6 +92,13 @@ Actual:
 ```
 
 检查 Expected Behavior 是否有明确 Authority Trace。
+
+如果当前 Failure 来自 Test、Workflow assertion、fixture、snapshot 或其他 Verification Artifact，而该 Artifact 与当前更高优先级 Authority / Specification 冲突，应将根因候选明确分类为 **陈旧验证契约（Stale Verification Contract）**：
+
+- 修正拥有过期断言的验证层，不修改产品实现去恢复已被取代的旧行为；
+- 如果同一产品语义在多个验证层重复维护，识别真正的契约所有者，并删除无必要重复或让重复检查共享同一权威来源；
+- 修正后重新运行当前有效验证，确认新契约能证明当前 Expected Behavior，同时没有掩盖真实实现缺陷；
+- 不因为“测试可能陈旧”就默认忽略失败；分类仍必须由 Authority Trace 与当前证据支持。
 
 如果 Expected Behavior：
 
