@@ -330,6 +330,10 @@ systematic-debug
 
 - 执行单元完成前回到规格追踪，确认当前证据逐项支持当前执行单元承担验证责任的验收义务；
 - 实现存在、代码检查、历史证据或未覆盖关键差异的主路径证据不能代替必要的完成证据；
+- 验证失败出现时，先重新对照当前 Repository Authority / Specification，区分实现缺陷（Implementation Defect）、陈旧验证契约（Stale Verification Contract）、Runtime / Environment Problem 与 External Dependency Problem；测试、Workflow assertion 和其他验证 Artifact 只有与当前权威一致时才定义有效 Expected Behavior；
+- 验证证据类型必须与完成声明匹配；功能浏览器验证（Functional Browser Verification）可以证明路由、交互、资源和可机器判定行为，但不能单独证明视觉一致性（Visual Fidelity）。当需求是现网站点复刻、设计稿还原或品牌视觉一致性时，应按风险使用原始运行证据、参考截图、真实资源、AI 视觉对照和 Human Visual Review；除非 Requirement 已提供可机器判定的完整视觉容差契约，不得把功能 PASS 扩大成视觉 PASS；
+- Automated Verification State 与 Human Review Baseline 应按用途隔离。自动测试会写入数据库、文件、导航、缓存或其他共享状态时，在暴露人工评审环境前应先保留自动验证证据，再从来源明确、可重复构建的基线恢复环境，并只准备明确用于人工评审的示例数据；
+- 变更数据库 Migration 时，如果 Runtime / CI 条件允许，最终验证应至少覆盖一次 `Fresh Database → Full Migration Chain → Application Startup`；SQL 文件检查、编译、单元测试或只在已有数据库上执行增量 migration，不能单独证明新环境可初始化；
 - 显式归属功能整体验证责任的义务保持 `Pending`，必须由后续 `converge` 独立重新检查；
 - 验证路径应具有足够的证据可观察性（Evidence Observability）；Agent 不应选择自己无法重新取得必要完成证据（Completion Evidence）的执行路径；
 - 如果当前 Runtime 对某类 CI trigger 或验证结果不可观察，应在仓库策略（Repository Policy）允许范围内切换到可观察路径，而不是把未知状态当作通过；
