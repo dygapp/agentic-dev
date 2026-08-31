@@ -23,7 +23,7 @@ description: Establishes or optimizes an observable, traceable, cost-aware GitHu
 - 环境准备、镜像构建或依赖安装显著拖慢反馈周期；
 - 需要区分 Fast Feedback 与 Completion Verification；
 - 需要通过 Artifact、日志、trace、截图或 Runtime diagnostics 增强失败可诊断性；
-- 长运行、过期 Run 或重复环境准备正在降低验证效率。
+- 长运行、过期 Run、共享外部资源争用或重复环境准备正在降低验证效率。
 
 ## Do Not Use When
 
@@ -47,6 +47,7 @@ description: Establishes or optimizes an observable, traceable, cost-aware GitHu
 - 当前 GitHub Runtime / Connector 能力；
 - Current CI Runs、Jobs、Steps、Logs、Artifacts；
 - 与失败直接相关的 Runtime / container / service configuration；
+- Workflow 使用的固定域名、代理名、端口、部署 / 评审槽位、临时数据库或其他共享外部资源及其 owner / lifecycle；
 - Human Review Baseline / fixtures，以及自动测试可能修改的数据库、文件、缓存或其他共享状态。
 
 ## Authority Sources
@@ -196,7 +197,7 @@ Automated Verification
 
 详细 Pattern 见 `references/containerized-e2e.md`。
 
-### 8. Bound Runtime Cost and Stale Work
+### 8. Bound Runtime Cost, Stale Work, and Shared Resource Contention
 
 对于长运行或昂贵验证：
 
@@ -204,6 +205,24 @@ Automated Verification
 - 对同一 PR/ref 的过期 Run 使用可用的 cancellation / concurrency 机制；
 - 避免新的提交继续等待已经失去价值的旧 Run；
 - 对可缓存或可复用的稳定依赖使用 Repository Policy 允许的复用机制。
+
+如果不同 PR、Branch、ref 或 trigger 会争用固定域名、代理名、端口、部署 / 评审槽位、临时数据库、单例服务或其他排他资源，先区分 Workflow 的逻辑标识与资源的真实冲突域：
+
+1. 列出当前 Run 会取得、修改或暴露的共享外部资源及其 owner / lifecycle；
+2. 让 concurrency group、lock、lease 或等价机制覆盖所有争用同一资源的触发路径，而不是默认只按 PR / ref 分组；
+3. 对资源彼此独立的运行保留并行能力，不把 Repository 级单例并发推广为通用默认；
+4. 把 Run cancellation 与外部资源释放分别验证；取消 Run 或终止进程后，外部资源仍可能短暂残留；
+5. 只对当前 Workflow 拥有且授权可处理的资源执行有界等待、重试、释放或接管，不盲目清理生产资源或其他 owner 的资源；
+6. 取得资源或启动进程后，重新核对资源归属，并验证目标地址、服务或结果对应当前 Run / Head 和预期环境。
+
+```text
+Identify Shared Resource
+→ Match Lock Scope
+→ Acquire / Release with Ownership
+→ Verify Target Availability
+```
+
+详细 Pattern 见 `references/diagnostics-and-runtime-cost.md`。
 
 ### 9. Make Failures Diagnosable
 
@@ -314,6 +333,7 @@ Evidence reuse 是**按声明**的，不是给整个提交一次性盖章：
 - 如果调用只要求设计验证路径，Agent 已明确如何取得完成声明需要的当前证据，并保持实际验证为未执行状态；
 - 如果调用要求实际完成验证，必要的 Current Evidence 已经取得并核对，或者已经准确记录真实阻塞 / 有界观察上限；仍可观察的 `queued`、`pending` 或 `in_progress` Run 本身不满足退出条件；
 - Workflow 成本与当前验证风险基本相称，不存在已知的无界长运行路径；
+- 已识别的排他外部资源具有匹配真实冲突域的并发 / 锁边界，以及有界、可验证且符合 owner / 授权约束的释放路径；
 - 需要的 Runtime / Integration 验证边界清晰；
 - 当前失败如果仍存在且修复已获授权，已经取得足以进入 `systematic-debug` 的可观察证据，并保持修复、重跑与复验仍属于当前执行闭环；
 - 未越权执行 Integration / Release / Deploy。
@@ -327,6 +347,7 @@ Evidence reuse 是**按声明**的，不是给整个提交一次性盖章：
 - 需要 Major Architecture / Deployment Topology Decision；
 - 涉及 secrets、production credentials、security-sensitive permission；
 - 需要不可逆或高影响 External / Data Operation；
+- 共享资源 owner 不明确，或继续操作需要清理、接管生产 / 其他 owner 的资源；
 - 需要 Release / Deploy / Merge 权限但当前未授权；
 - 当前 Runtime 无法取得必要 Completion Evidence，且没有仓库允许的可替代路径。
 
