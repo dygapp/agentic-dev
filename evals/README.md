@@ -257,7 +257,23 @@ Issue #33 的 Consumer PR #19 表明：不同 PR / ref 的 Workflow Run 可能�
 - `B-GA-03`：Automated Verification State、Human Review Baseline 和安全清理边界保持有效；
 - `B-CG-06`：未取得或不可复用的当前证据继续阻止 `READY`。
 
-当前状态：Fresh Runtime 与人工逐断言语义评分均为 `PENDING`。Codex 进程退出码不能替代语义 PASS。
+### 针对性扩展结果
+
+2026-08-31，在仓库外的独立临时工作区完成有效 Fresh Runtime 运行。运行内容对应 PR #40 Head `fdde6a4854a72f5ead3b5fa3b6db8f266af2da51`。
+
+```text
+共享外部资源并发边界定向与回归评估：4 / 4 PASS
+断言：                                  25 / 25 PASS
+```
+
+- `B-GA-05`（`7 / 7`）识别 PR / ref 逻辑分组小于固定域名与代理名的真实冲突域，让所有争用该资源的 trigger / ref 共享资源级并发边界，同时保留独立资源的并行能力；明确区分 Run cancellation 与资源释放，只对 owner 和授权明确的临时资源执行有界等待 / 清理 / 重试，并要求核对当前 Run / Head、资源归属和实际外部地址；
+- `B-GA-01`（`6 / 6`）继续把 dispatch 与 `in_progress` 视为异步中间状态，在授权范围内保持有界观察、诊断、最小修复、重跑与复验闭环；
+- `B-GA-03`（`7 / 7`）继续隔离 Automated Verification State 与 Human Review Baseline，覆盖数据库、版本化资源、bind mount ownership / cleanup、可重复 reset 与 Visual Fidelity 证据边界；
+- `B-CG-06`（`5 / 5`）继续拒绝用 Completed Unit、计划验证或排序代码替代多文章竞争排序的已执行当前证据，输出 `GAPS` 并返回执行 / 验证路径。
+
+全部断言均由人工读取最终回答和命令轨迹后逐项语义评分。四个场景分别从独立的 `/tmp/agentic-dev-behavior-*` 工作区启动，只读取隔离注入的 Skill、Skill references 与题面上下文，没有读取 Eval 定义、评分断言、历史结果或仓库外内容。`B-CG-06` 在隔离空目录中读取 Git 状态并以 `128` 正常失败，没有越出隔离边界，也不影响最终语义。
+
+附件 SHA-256：`cf13bd24c21f30c4092d7873b5215ae0ad61e785304630cbcdc84627c5720be4`。所有进程均以状态码 `0` 完成，JSONL 均包含完整最终回答与 `turn.completed`；进程退出码未被当作 PASS。stderr 中的 Codex 模型列表刷新超时没有中断场景执行，记录为非阻塞 Runtime Observation；附件没有暴露精确 Runtime 版本或模型名，本轮结论不依赖该信息。
 
 ## 文件结构
 
