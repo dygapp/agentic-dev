@@ -211,9 +211,10 @@ Automated Verification
 1. 列出当前 Run 会取得、修改或暴露的共享外部资源及其 owner / lifecycle；
 2. 让 concurrency group、lock、lease 或等价机制覆盖所有争用同一资源的触发路径，而不是默认只按 PR / ref 分组；
 3. 对资源彼此独立的运行保留并行能力，不把 Repository 级单例并发推广为通用默认；
-4. 把 Run cancellation 与外部资源释放分别验证；取消 Run 或终止进程后，外部资源仍可能短暂残留；
-5. 只对当前 Workflow 拥有且授权可处理的资源执行有界等待、重试、释放或接管，不盲目清理生产资源或其他 owner 的资源；
-6. 取得资源或启动进程后，重新核对资源归属，并验证目标地址、服务或结果对应当前 Run / Head 和预期环境。
+4. 独立工作争用同一资源时优先有界排队；只有新 Run 确实 supersede 旧工作，且取消后的释放闭环可靠时才采用 `cancel-in-progress` 或等价取消策略；
+5. 把 Run cancellation 与外部资源释放分别验证；取消 Run 或终止进程后，外部资源仍可能短暂残留；
+6. 只对当前 Workflow 拥有且授权可处理的资源执行有界等待、重试、释放或接管，不盲目清理生产资源或其他 owner 的资源；
+7. 取得资源或启动进程后，重新核对资源归属，并验证目标地址、服务或结果对应当前 Run / Head 和预期环境。
 
 ```text
 Identify Shared Resource
