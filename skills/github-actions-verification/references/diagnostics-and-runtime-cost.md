@@ -2,7 +2,7 @@
 
 ## 目的
 
-当 GitHub Actions 的失败日志不足、环境准备异常耗时或 Run 被新提交淘汰时，本参考说明如何让 CI 产生足够诊断证据，同时控制无价值等待和重复成本。
+当 GitHub Actions 的失败日志不足、环境准备异常耗时、Run 被新提交淘汰或不同 Run 争用共享外部资源时，本参考说明如何让 CI 产生足够诊断证据，同时控制无价值等待、重复成本和资源竞争。
 
 ## 显式 Timeout
 
@@ -17,7 +17,7 @@
 
 Timeout 的目标是区分“正常慢”与“当前 Runtime 已失去继续等待价值”，不是为了机械追求更短。
 
-## 取消过期 Run
+## 取消过期 Run 与匹配共享资源并发
 
 当同一 PR/ref 出现新提交时，如果旧 Run 已不能证明最新状态，应使用当前 Repository Policy 允许的 concurrency / cancellation 机制终止过期工作。
 
@@ -30,6 +30,26 @@ concurrency:
 ```
 
 具体 key 由 Consumer Workflow 决定，不在 Skill 中固定。
+
+稳定 PR / ref key 解决的是“同一逻辑工作的新 Run 淘汰旧 Run”。如果不同 ref 会取得同一个固定域名、代理名、端口、部署槽位、评审环境或临时数据库，该 key 仍可能比真实冲突域更窄。
+
+此时应以共享资源标识或环境槽位建立排他边界，例如：
+
+```yaml
+concurrency:
+  group: review-environment-<stable-resource-key>
+  cancel-in-progress: true
+```
+
+要求：
+
+- 每个可能使用同一资源的 trigger / ref 采用同一资源 key；
+- 资源不同的运行可以使用不同 key，避免无必要的 Repository 全局串行；
+- key 只协调 GitHub Run，不能单独证明外部资源已经释放；
+- Run 被取消或进程退出后，按正常释放基线进行有界观察；若资源残留，只在 owner、环境和授权明确时执行有界重试、释放或接管；
+- 取得资源后重新读取 owner / status，并验证对外地址或目标服务实际可用且对应当前 Run / Head。
+
+如果资源 owner 不明确，或处理需要清理生产 / 其他 owner 的资源，应停止该项操作并升级，而不是通过扩大 destructive cleanup 绕过竞争。
 
 ## 失败诊断 Artifact
 
