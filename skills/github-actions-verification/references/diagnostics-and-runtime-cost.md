@@ -38,13 +38,14 @@ concurrency:
 ```yaml
 concurrency:
   group: review-environment-<stable-resource-key>
-  cancel-in-progress: true
+  cancel-in-progress: <true-or-false-by-consumer-policy>
 ```
 
 要求：
 
 - 每个可能使用同一资源的 trigger / ref 采用同一资源 key；
 - 资源不同的运行可以使用不同 key，避免无必要的 Repository 全局串行；
+- 不同 ref 的工作彼此独立时应排队而不是互相取消；只有新 Run 确实取代旧工作，且资源释放路径可靠时才启用 `cancel-in-progress`；
 - key 只协调 GitHub Run，不能单独证明外部资源已经释放；
 - Run 被取消或进程退出后，按正常释放基线进行有界观察；若资源残留，只在 owner、环境和授权明确时执行有界重试、释放或接管；
 - 取得资源后重新读取 owner / status，并验证对外地址或目标服务实际可用且对应当前 Run / Head。
