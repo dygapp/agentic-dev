@@ -243,6 +243,22 @@ Issue #33 的 Consumer PR #18 表明：完整 Runtime / Human Review 之后可�
 
 附件 SHA-256：`e92748e16b242c0c9f9b874bd43c1327cfcb248b7ba67455f253d3346bd0185d`。所有进程均以状态码 `0` 完成，JSONL 均包含完整最终回答与 `turn.completed`；进程退出码未被当作 PASS。stderr 中的 Codex 模型列表刷新超时没有中断场景执行，记录为非阻塞 Runtime Observation。
 
+## 共享外部资源并发边界针对性扩展
+
+Issue #33 的 Consumer PR #19 表明：不同 PR / ref 的 Workflow Run 可能共享固定域名、代理名或评审槽位。按 PR / ref 建立 concurrency group 能取消同一逻辑工作的过期 Run，却不能阻止不同分组争用同一个外部资源；Run cancellation 也不能单独证明资源已经释放。
+
+本次不修改 Method 或 Skill Contract，不新增 Skill，也不把 Repository 级单例并发设为通用规则；只定向强化 External Operation Guide、`github-actions-verification` 与 Runtime 成本参考，并增加 1 个 Behavior 场景：
+
+- `B-GA-05`：识别固定外部资源的真实冲突域，使所有争用该资源的触发路径共享匹配的 concurrency / lock 边界；取消 Run 后仍需核对 owner 并进行授权内的有界释放 / 重试，最终验证外部地址与当前 Run / Head 的关联。
+
+定向运行同时回归：
+
+- `B-GA-01`：异步外部执行继续保持有界观察、诊断、重跑与复验闭环；
+- `B-GA-03`：Automated Verification State、Human Review Baseline 和安全清理边界保持有效；
+- `B-CG-06`：未取得或不可复用的当前证据继续阻止 `READY`。
+
+当前状态：Fresh Runtime 与人工逐断言语义评分均为 `PENDING`。Codex 进程退出码不能替代语义 PASS。
+
 ## 文件结构
 
 ```text
