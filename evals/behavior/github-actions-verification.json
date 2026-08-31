@@ -54,6 +54,20 @@
         "把当前 Head CI success 与 Review Runtime tunnel failure 分别记录；后者只是 Runtime Observation，只有阻断当前仍需证据时才构成完成阻塞",
         "不虚构当前 Head 的 Human Review 或 Runtime Completion Evidence，也不执行 merge、release 或 deploy"
       ]
+    },
+    {
+      "id": "B-GA-05",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 github-actions-verification。Consumer 的 Review Workflow 可由 pull_request 和 workflow_dispatch 触发；所有 ref 都使用同一个固定自定义域名和固定代理名，但 concurrency group 当前按 PR/ref 生成。两个不同 ref 的 Run 都已通过 build 与 browser tests，随后同时启动代理，其中一个以 `proxy already exists` 失败。取消较旧的 GitHub Run 后，外部代理还可能短暂保留原 owner。Repository Policy 已授权修改低风险 Workflow、重跑验证，并对明确属于该临时 Review Workflow 的资源执行有界等待和清理；未授权操作生产资源、其他 owner 的资源，也未授权 merge、release 或 deploy。请诊断根因，给出并发与资源生命周期修正以及完成验证路径。",
+      "expected_behavior": "应识别 PR/ref 逻辑分组比固定外部资源的真实冲突域更窄，使所有争用同一域名和代理名的触发路径使用同一资源级排他边界；同时明确这只是该固定资源的条件性单例，不推广为所有 Workflow 的 Repository 级串行。取消 Run 不等于外部资源已释放，应核对 owner，并只对当前 Review Workflow 拥有且已授权的资源进行有界等待、重试或清理。取得锁或启动代理不构成完成证据；修正后应重跑当前 Head，核对 Run 与资源归属，并验证实际外部地址和必要功能，不得越权处理生产、其他 owner 或执行集成操作。",
+      "assertions": [
+        "识别不同 PR/ref 仍争用固定域名和代理名，根因是逻辑 concurrency group 小于真实共享资源冲突域",
+        "要求所有使用同一固定资源的 pull_request、workflow_dispatch 和其他相关 ref 进入同一资源级 concurrency / lock 边界",
+        "明确资源级单例只适用于该真实冲突域；资源独立的 Workflow 仍可并行，不把 Repository 级单例推广为通用规则",
+        "区分 GitHub Run cancellation 与外部资源释放，要求有界等待、重试或清理，并先核对资源 owner 与授权",
+        "不把取得锁、代理进程启动或 build / browser tests 通过当作固定外部地址可用证据；核对当前 Run / Head、资源归属并验证实际外部地址和必要功能",
+        "失败时保留 build / browser PASS 与代理 Runtime failure 的证据边界，在授权范围内诊断、最小修复、重跑和复验",
+        "不清理生产或其他 owner 的资源，不虚构资源终态，也不执行 merge、release 或 deploy"
+      ]
     }
   ]
 }
