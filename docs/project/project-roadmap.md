@@ -25,6 +25,8 @@
 
 已经完成其主要使命：第一批核心 Skill 已完成工程闭环，首轮 Greenfield Consumer Experiment 已完成，已有 Consumer 的继续演进又进一步验证并强化了 baseline 升级、外部操作、验证证据、Human Review、共享资源、配置责任和已有能力复用等边界。
 
+这里的“阶段使命完成”不等同于 Issue #33 已经关闭。Issue #33 仍可按其原始实验目标独立形成 Final Summary 并收尾；其已经形成的多轮有效证据足以支持 `agentic-dev` 不再把持续等待该实验新增 Finding 作为下一阶段启动条件。
+
 `dygapp/jilinjobs-cms` 后续主要进入模块化重构、页面内容完善和大平台集成准备，其继续开发仍可提供实践反馈，但不再适合作为 `agentic-dev` 唯一或主要的能力创新来源。
 
 因此当前阶段切换为：
@@ -39,7 +41,7 @@
 |---|---|---|
 | 建立通用 AI Agent 开发方法基线 | 已完成 | Method、Principles 与第一批 Skill 设计、契约形成稳定基线 |
 | 完成第一批核心 Skill 工程 | 已完成 | 8 个 Core Skills 实现、Packaging Hardening、Fresh Runtime Eval 与 Closure Review 完成 |
-| 完成首轮 Consumer Method Validation | 已完成 | Greenfield Experiment 与已有 Consumer 持续演进验证形成充分的第一轮真实工程证据 |
+| 完成首轮方法与 Skill 实证验证 | 已完成 | Greenfield Experiment 已完成；Existing Consumer 多轮证据已足以支持阶段切换，Issue #33 独立收尾 |
 | Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
 | Track B — Engineering Discipline Expansion | 下一步 | 主动研究并提炼最小实现、Review、Testing、Refactoring、Performance、Security、Dependency、API Evolution 等跨技术栈工程纪律 |
 | Track C — Technology Engineering Profiles | 下一步 | 建立 Technology Profile / Verification Profile 机制，并逐步研究 Vue 3、TypeScript、Element Plus、Spring、Gradle 等当前高价值技术栈 |
