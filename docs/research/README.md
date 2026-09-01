@@ -29,6 +29,7 @@
 当前已增加：
 
 - `andrej-karpathy-skills-analysis.md`：分析 `multica-ai/andrej-karpathy-skills`，主要提供最小实现、推测性复杂度控制、精准修改和运行时打包等工程纪律参考；当前结论是不新增同名 Skill，也不直接修改 Method。
+- `implementation-minimality-and-speculative-complexity-analysis.md`：WI-02 首项工程纪律研究。综合 YAGNI、Simple Design、Google Engineering Practices、Sandi Metz、Go 官方工程实践以及本地 PR #41 / #42，形成“实现最小化与推测性复杂度控制”的 Candidate Capability 和 Targeted Eval 设计；当前状态为 **Candidate / Pending Targeted Eval**，尚未进入规范性工程能力基线。
 
 后续 Research 可以包括：
 
