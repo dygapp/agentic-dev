@@ -25,7 +25,7 @@
 | 完成首轮真实 Consumer Experiment | 已完成 | `dygapp/jilinjobs-cms` 完成 Greenfield Bootstrap、信息发布纵向切片与功能整体收敛 |
 | 补齐验收到验证的闭环 | 已完成 | PR #30 已合并，Issue #18 已按 `completed` 关闭 |
 | 建立通用 Project Roadmap 规则 | 已完成 | PR #32 完成 Method、Bootstrap、Fresh Context 与 `converge` 定向强化；行为评估 `3 / 3 PASS`、断言 `16 / 16 PASS` |
-| 验证已有 Consumer 的继续演进 | 当前 | PR #37 与 PR #38 已完成新增治理证据的定向处理和集成；继续通过 Consumer 的真实纵向工作验证增量演进 |
+| 验证已有 Consumer 的继续演进 | 当前 | PR #37、PR #38、PR #40 与 PR #41 已完成新增治理证据的定向处理；继续通过 Consumer 的真实纵向工作验证增量演进 |
 | Distribution、Bootstrap 自动化或 Controller / Runtime Orchestration | 条件性后续 | 只有真实使用证明存在稳定、独立且可复用的职责缺口时才评估 |
 | 重新进入 Skill Engineering | 条件性后续 | 只有新的真实证据暴露稳定 Skill Implementation / Contract / Method Gap 时才定向重开 |
 
@@ -45,6 +45,8 @@
 | 2026-08-26 | 完成跨 Repository 授权与异步外部执行闭环强化 | PR #35、`282358c2f659`，行为评估 `4 / 4 PASS`、断言 `20 / 20 PASS` |
 | 2026-08-28 | 完成验证证据边界定向强化 | PR #37、`df4d6a607597`，行为评估 `6 / 6 PASS`、断言 `35 / 35 PASS` |
 | 2026-08-28 | 完成 Human Review、外部媒体输入与后继提交证据影响定向强化 | PR #38、`88a5d7e391be`，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
+| 2026-08-31 | 完成共享外部资源并发与释放边界定向强化 | PR #40、`c8903f2ee437`，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
+| 2026-09-01 | 明确配置责任与已有能力复用边界 | PR #41，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
 
 ## 当前阶段与证据基线
 
@@ -55,6 +57,7 @@
 - PR #35 跨 Repository 授权与异步验证闭环集成提交：`282358c2f6590a2e8e7634cdd16458d89d1ba3b7`；
 - PR #37 验证证据边界集成提交：`df4d6a607597eeb3684279e269cb073fcb398f83`；
 - PR #38 后继提交证据影响集成提交：`88a5d7e391be6fa2b61fbe4a5140c082e6ad9f95`；
+- PR #40 共享外部资源并发边界集成提交：`c8903f2ee437ede1ebfa60bb1d34d23dbc29481c`；
 - Project Roadmap 定向评估：`B-CG-05`、`B-CG-06`、`B-CG-07` 均为 `PASS`，合计断言 `16 / 16 PASS`；
 - Skill 清单（Skill Inventory）：8 个 Core Skills、1 个 Platform-specific Skill；
 - 首轮 Consumer Experiment：已完成；
@@ -62,12 +65,13 @@
 - 已有 Consumer 继续演进实验：已启动；
 - 实验跟踪 Issue（Tracking Issue）：Issue #33，保持 `open`；
 - Consumer 实验基线：`dygapp/jilinjobs-cms` `main@77958e5af7f8a60f8e09848ec0a3e837970fefa3`；
-- Consumer 最新集成证据：PR #18 已合并，当前 `main@6c8a98e62e73425b0915d2f01d12ee84a9eb4fa2`；Runtime Candidate Head 为 `25006e1281f16c30458566286cb8bca8de306540`，最终 PR Head 为 `23d2b4f5094de1dbf98673c743b9ae8bd620fb6a`；
+- Consumer 最新集成证据：PR #19 已合并，最终 Head 为 `fc35eae18246ceb949f17e944e844be36e27afcc`，集成提交为 `c9280e5b9a8ab12f6b961766753c92b442fa11f4`；对应 CI #355 Run `33468614931` 与 Human Review #308 Run `33468614936` 均为 `completed / success`；
 - PR #38 证据处理使用的 `agentic-dev` baseline：`master@df4d6a607597eeb3684279e269cb073fcb398f83`；
 - Issue #33 首批 5 类项目治理证据已完成处理：已有 Consumer 的采用与升级边界已通过 PR #34 集成，跨 Repository 操作授权粒度与异步外部执行闭环已通过 PR #35 集成；`B-GA-01` 与 3 个当前证据回归场景均为 `PASS`，合计断言 `20 / 20 PASS`；README / Project Roadmap / GitHub Evidence 分工与无 Issue Template 的反馈契约作为正向验证保留。
 - Issue #33 后续新增 6 个验证相关 Finding：Stale Verification Contract、Workflow 重复产品语义、Fresh Database Migration 启动链、Automated Verification / Human Review 状态隔离、Functional Browser / Visual Fidelity 证据边界和 bind mount 可重复恢复；PR #37 已集成，Fresh Runtime Eval `6 / 6 PASS`、断言 `35 / 35 PASS`，最终 AI Review `PASS`，Blocking / Medium Finding 为 `0 / 0`；
 - Consumer PR #18 新增 4 个候选 Finding：Human Review 暴露产品语义作为现有 `converge → clarify-intent / specify` 路由的正向验证并补充使用说明；内容能力与投放策略分层已由现有 `specify` 规则覆盖，不新增通用模型；外部媒体资源真实类型属于 External Operation Guide 缺口；后继提交证据复用属于 `github-actions-verification` 的影响判断缺口。Runtime Head 到最终 Head 的完整差异包含 Project Roadmap 与 Architecture 语义变化，因此不能按 `docs-only` 无条件继承旧 Human Review / Authority 结论；PR #38 已通过集成提交 `88a5d7e391be6fa2b61fbe4a5140c082e6ad9f95` 合并；Fresh Runtime Eval 为 `4 / 4 PASS`、断言 `25 / 25 PASS`，隔离与污染检查为 `PASS`，最终 AI Review 为 `PASS`，Blocking / Medium Finding 为 `0 / 0`；
-- Consumer PR #19 新增共享外部资源并发 Finding：不同 PR / ref 的 Review Run 仍争用固定域名与代理名，按 PR / ref 建立 concurrency group 小于真实资源冲突域；Issue 评论标注的 `d2e0b0f47b46` 是当时 Consumer Head，实际修复证据为 `f350ff24ed2169e41dd838c973a1e2ceebe2c761`。PR #40 已定向强化 External Operation Guide 与现有 `github-actions-verification`，不新增 Method / Contract / Skill，也不推广无条件 Repository 级单例；Fresh Runtime Eval 为 `4 / 4 PASS`、断言 `25 / 25 PASS`，隔离与污染检查、最终 AI Review 均为 `PASS`，Blocking / Medium Finding 为 `0 / 0`，当前达到 Ready to Integrate；
+- Consumer PR #19 新增共享外部资源并发 Finding：不同 PR / ref 的 Review Run 仍争用固定域名与代理名，按 PR / ref 建立 concurrency group 小于真实资源冲突域；Issue 评论标注的 `d2e0b0f47b46` 是当时 Consumer Head，实际修复证据为 `f350ff24ed2169e41dd838c973a1e2ceebe2c761`。PR #40 已定向强化 External Operation Guide 与现有 `github-actions-verification`，不新增 Method / Contract / Skill，也不推广无条件 Repository 级单例；Fresh Runtime Eval 为 `4 / 4 PASS`、断言 `25 / 25 PASS`，隔离与污染检查、最终 AI Review 均为 `PASS`，Blocking / Medium Finding 为 `0 / 0`，并已通过集成提交 `c8903f2ee437ede1ebfa60bb1d34d23dbc29481c` 合并；
+- Consumer PR #19 后续新增 2 个实施判断 Finding：配置治理需要先按维护者、变化来源、稳定性和安全 / 协议约束区分代码常量、产品运营数据、结构元数据、部署配置和流程变量，不能把字面量本身视为缺陷；通用 UI 能力应先核对当前仓库、框架和依赖，只封装项目特有差异，同时保留真实契约不匹配时的自有实现边界。Consumer 已在 `docs/technical/configuration-governance.md` 固化本地规则，并以配置化静态资源保护和复用既有 Image Viewer 提供实现 / 测试证据；PR #41 已定向强化 Operating Guide 与现有 `execute-unit`，不修改 Method / Contract，也不新增 Skill；Fresh Runtime Eval 为 `4 / 4 PASS`、断言 `25 / 25 PASS`，隔离与污染检查、最终 AI Review 均为 `PASS`，Blocking / Medium Finding 为 `0 / 0`；
 - 异步外部执行闭环在 PR #15 / #16 中再次得到正向验证，不重复立项。
 
 上述提交是已完成里程碑的证据锚点，不是要求后续工作永久固定使用的静态版本。新的实验或修订开始时，必须读取并记录当时实际使用的精确 `agentic-dev` baseline。

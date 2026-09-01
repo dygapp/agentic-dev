@@ -127,6 +127,8 @@ Fresh Execution Context 是逻辑上下文边界，不要求绑定某个特定 A
 - Existing Tests / Fixtures / Build Configuration；
 - Repository-specific Engineering Rules；
 - 已存在的实现入口与扩展点；
+- 当前代码、框架、标准库与已引入依赖已经提供的相关能力；
+- 与当前 Unit 有关的配置、产品数据、部署参数和 Repository / Environment Variables 的现有责任边界；
 - 当前分支 / 工作状态中与 Unit 相关的已有变化；
 - 当前可用的 Build / Test / Lint / Verification 机制。
 
@@ -218,6 +220,10 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 - 不为了绕过实现困难静默改变 Major Technical Design；
 - 不静默覆盖当前有效 Domain / Architecture / ADR Authority，也不在代码或测试中直接确立新的跨功能长期权威；
 - 不把当前 Unit 变成整个 Feature 的重构机会。
+
+当 Unit 包含“消除硬编码”、配置审计或类似要求时，不把每个字面量机械外部化。先根据当前 Repository Authority 和实际变化证据判断：谁负责维护、何时变化、变化来自产品运营、结构定义、部署实例还是 CI / 评审 / 发布环境，以及是否受稳定领域规则、安全、协议、模板或算法约束。稳定且没有已证明外部维护责任的值默认保留在代码或既有权威载体中；管理员维护的运营数据、低频结构元数据、部署差异和流程参数分别进入 Consumer 已有的适当责任层。不得只为消除字面量而新增数据库字段、设置页面、环境变量或配置机制。
+
+实现通用技术能力前，先检查当前代码库、框架、标准库和已引入依赖。已有能力满足当前功能契约及安全、可观察性、性能和生命周期约束时，优先复用，并只用最薄适配层承载项目特有差异。存在可证明的不匹配时可以采用自有实现；不机械执行“框架优先”，也不为了复用扩大依赖面、改变产品行为或覆盖当前 Architecture Authority。
 
 发现超出 Unit 边界但会阻塞完成的问题时，记录并返回相应职责层，而不是顺手接管。
 
