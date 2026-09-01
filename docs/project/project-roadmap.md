@@ -43,10 +43,10 @@
 | 完成第一批核心 Skill 工程 | 已完成 | 8 个 Core Skills 实现、Packaging Hardening、Fresh Runtime Eval 与 Closure Review 完成 |
 | 完成首轮方法与 Skill 实证验证 | 已完成 | Greenfield Experiment 已完成；Existing Consumer 多轮证据已足以支持阶段切换，Issue #33 独立收尾 |
 | Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
-| Track B — Engineering Discipline Expansion | 下一步 | 主动研究并提炼最小实现、Review、Testing、Refactoring、Performance、Security、Dependency、API Evolution 等跨技术栈工程纪律 |
-| Track C — Technology Engineering Profiles | 下一步 | 建立 Technology Profile / Verification Profile 机制，并逐步研究 Vue 3、TypeScript、Element Plus、Spring、Gradle 等当前高价值技术栈 |
-| Track D — Engineering Skills & Verification | 下一步 | 从稳定工程过程提炼 Task-oriented Skill，建立对应专项评估，不按框架名称机械创建 Skill |
-| Track E — Adoption / Runtime / Distribution | 下一步 | 推动 Existing Consumer baseline upgrade、运行时适配和后续分发能力；不要求立即实现 Marketplace 或统一 Controller |
+| Track B — Engineering Discipline Expansion | **当前** | 首批范围已确定；当前研究“实现最小化与推测性复杂度控制”，随后条件性研究“精准修改与差异范围控制” |
+| Track C — Technology Engineering Profiles | 下一步 | 完成首批 Discipline 后建立 Technology Profile / Verification Profile 最小契约，并逐步研究 Vue 3、TypeScript、Element Plus、Spring、Gradle |
+| Track D — Engineering Skills & Verification | 后续 | 从稳定工程过程提炼 Task-oriented Skill，建立对应专项评估，不按框架名称机械创建 Skill |
+| Track E — Adoption / Runtime / Distribution | 后续 | 推动 Existing Consumer baseline upgrade、运行时适配和后续分发能力；不要求立即实现 Marketplace 或统一 Controller |
 
 ## 工程能力扩展模型
 
@@ -112,18 +112,26 @@ agentic-dev 才开始研究
 | 2026-08-31 | 完成共享外部资源并发与释放边界强化 | PR #40，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
 | 2026-09-01 | 明确配置责任与已有能力复用边界 | PR #41，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
 | 2026-09-01 | 增加 Karpathy Skills 定向研究并确认“工程纪律可主动研究、无需机械 Skill 化” | PR #42，集成提交 `e1f56238f95a75d95a87b1ad510587d770ae4a63` |
+| 2026-09-02 | 建立主动工程能力演进架构并完成 Phase 1 / Phase 2 | PR #43，集成提交 `1eb729333b4aa239dfbb1906b623b61e7c1524a9` |
 
 ## 当前证据基线
 
 - 当前阶段：**Engineering Capability Expansion & Method Evolution**；
-- 当前阶段切换起点：`master@e1f56238f95a75d95a87b1ad510587d770ae4a63`；
+- 当前集成基线：`master@1eb729333b4aa239dfbb1906b623b61e7c1524a9`；
+- 阶段切换前基线：`master@e1f56238f95a75d95a87b1ad510587d770ae4a63`；
 - Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；
+- Phase 1 — 演进路线重构：已完成；
+- Phase 2 — Engineering Capability Architecture：已完成；
+- Phase 3 — Engineering Discipline Research：当前；
+- WI-01 — 工程纪律范围设计：已完成，结果见 `docs/project/engineering-discipline-scope.md`；
+- 当前 WI-02：实现最小化与推测性复杂度控制；
+- 条件性 WI-03：精准修改与差异范围控制；
 - 首轮 Greenfield Consumer Experiment：已完成并关闭 Issue #18；
 - Existing Consumer 继续演进实验：Issue #33 当前仍为 `open`；
 - Issue #33 已经形成多轮有效证据，并推动 PR #34、#35、#37、#38、#40、#41 的定向强化；
 - Issue #33 后续是否关闭可以按其自身实验总结独立处理，不再阻塞工程能力扩展阶段；
 - `dygapp/jilinjobs-cms` 继续作为 Reference / Integration Consumer，可用于验证新的 `agentic-dev` baseline、Profile、Skill 与验证能力，但不承担唯一创新来源职责；
-- PR #42 已证明 Research 可以在不改变 Method / Skill Inventory 的情况下主动引入新的工程纪律候选视角。
+- PR #42 提供首批 Engineering Discipline 的外部研究起点，PR #43 已允许成熟外部证据主动驱动候选能力设计。
 
 上述提交和 Issue 是历史证据锚点，不要求后续工作永久固定使用这些静态版本。新的研究、评估或 Consumer Adoption 开始时，必须记录当时实际使用的精确 baseline。
 
@@ -131,7 +139,7 @@ agentic-dev 才开始研究
 
 当前核心目标是：
 
-> **在保持 Core Method 稳定和既有权威边界的前提下，建立可主动演进的工程能力体系；从成熟外部实践中提炼 Engineering Discipline、Technology Profile、Verification Profile、Task-oriented Skill 与 Runtime Adapter，并通过专项评估和 Consumer Integration 双重验证持续完善。**
+> **在保持 Core Method 稳定和既有权威边界的前提下，建立可主动演进的工程能力体系；当前先完成首批 Engineering Discipline 的研究、候选能力与专项评估闭环，再进入 Technology Profile。**
 
 当前阶段特别避免两种极端：
 
@@ -170,20 +178,18 @@ agentic-dev 才开始研究
 
 目标：从成熟外部项目、官方工程实践和既有 Research 中主动研究跨技术栈工程纪律。
 
-首批优先方向：
+WI-01 已完成首批范围设计，当前顺序为：
 
-- Implementation Minimality；
-- Surgical Change / Diff Scope；
-- Code Review；
-- Testing；
-- Refactoring；
-- Dependency Management；
-- API Evolution；
-- Performance / Security / Error Handling。
+1. **WI-02 — 实现最小化与推测性复杂度控制**；
+2. **WI-03 — 精准修改与差异范围控制（条件性）**。
 
-每个方向应先 Research，再判断是否属于现有 Embedded Discipline 的补强、独立规范，或真正需要 Skill 化。
+选择依据与其他候选方向的后置原因见：
 
-状态：**下一步**。
+`docs/project/engineering-discipline-scope.md`
+
+每个方向必须先 Research，再判断是否属于现有 Embedded Discipline 的补强、独立规范，或真正需要 Skill 化，并建立有辨识力的 Targeted Eval。
+
+状态：**当前**。
 
 ### Phase 4 — Technology Profile Research
 
@@ -232,13 +238,19 @@ agentic-dev 才开始研究
 
 ## 下一步工作
 
-当前 Phase 1 与 Phase 2 完成并集成后，按以下顺序继续：
+1. **执行 WI-02：实现最小化与推测性复杂度控制。**
+   - 获取高质量官方 / 成熟开源 / 专家原始来源；
+   - 对照当前 `execute-unit`、PR #41 和 PR #42；
+   - 形成 Candidate Capability；
+   - 设计有辨识力的 Targeted Eval；
+   - 判断最终落点，不预先假定需要新增 Skill。
+2. WI-02 完成且能力架构无需先调整时，执行 **WI-03：精准修改与差异范围控制**。
+3. 首批 Engineering Discipline 收敛后，进入 **WI-04：Technology Profile 最小契约**。
+4. WI-04 完成后进入 **Vue 3 + TypeScript Technology Profile** 研究。
 
-1. 对 Engineering Discipline Expansion 做一次范围设计，避免一次研究全部纪律；
-2. 选择第一批 1～2 个高价值纪律完成独立 Research → Candidate → Eval 设计闭环；
-3. 建立 Technology Profile 的最小通用结构和质量门槛；
-4. 进入 Vue 3 + TypeScript 的第一项 Technology Profile 研究；
-5. 完成一项 Profile 后再判断是否进入 Element Plus 或 Spring，不把所有技术栈塞入同一执行任务。
+详细工作项与进入条件见：
+
+`tasks/plans/20260901/01-engineering-capability-expansion.md`
 
 ## Issue #33 的后续角色
 
@@ -256,10 +268,11 @@ Issue #33 继续作为 Existing Consumer continuous-evolution experiment 的历�
 2. 读取本文，确认当前阶段、演进 Track 和下一步工作；
 3. 读取当前 GitHub `master`，验证是否存在晚于本文的新集成状态；
 4. 涉及工程能力分层时读取 `docs/architecture/engineering-capability-architecture.md`；
-5. 涉及 Skill 时继续读取 `skill-architecture.md`、`skill-contracts.md` 与相关 Skill；
-6. 涉及具体研究时只加载相关 Research / Profile / Eval，不默认加载所有技术资料；
-7. 进入 Consumer Adoption 时切换到 Consumer Repository 并读取其当前默认分支与 Repository Authority；
-8. 不依赖历史聊天或个人记忆补充未固化的项目事实。
+5. 进入 Phase 3 工程纪律研究时读取 `docs/project/engineering-discipline-scope.md` 与当前 Plan；
+6. 涉及 Skill 时继续读取 `skill-architecture.md`、`skill-contracts.md` 与相关 Skill；
+7. 涉及具体研究时只加载相关 Research / Profile / Eval，不默认加载所有技术资料；
+8. 进入 Consumer Adoption 时切换到 Consumer Repository 并读取其当前默认分支与 Repository Authority；
+9. 不依赖历史聊天或个人记忆补充未固化的项目事实。
 
 ## 更新触发条件
 

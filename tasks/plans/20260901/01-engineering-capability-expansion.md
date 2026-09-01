@@ -16,11 +16,19 @@
 
 本 Plan 只协调实施顺序，不定义新的 Method、Architecture 或 Skill Contract。
 
+## 当前状态
+
+- **WI-01 — 工程纪律范围设计：已完成。** 结果固化于 `docs/project/engineering-discipline-scope.md`；
+- **当前工作项：WI-02 — 实现最小化与推测性复杂度控制。**
+- **WI-03 条件性候选：精准修改与差异范围控制。** 只有 WI-02 未暴露需要先修订能力架构的问题时进入。
+
 ## 范围
 
 本轮长期工作拆为以下独立工作项（Work Item）。每个 Work Item 完成后先形成当前证据和必要的 AI Review，再决定是否进入下一项。
 
 ### WI-01 — 工程纪律范围设计
+
+**状态：已完成。**
 
 目标：定义首批 Engineering Discipline 研究范围和选择标准，不一次研究全部工程纪律。
 
@@ -30,34 +38,45 @@
 - 将候选方向按当前价值、与现有规则重叠度、可形成 Targeted Eval 的程度排序；
 - 只选择首批 1～2 个方向进入详细研究。
 
-完成条件：
+完成结果：
 
-- 有明确候选清单和优先级；
-- 说明为什么首批只选择 1～2 个方向；
-- 没有因为列出候选就自动新增 Skill。
+- 首项确定为 **Implementation Minimality & Speculative Complexity Control（实现最小化与推测性复杂度控制）**；
+- 第二项条件性确定为 **Surgical Change & Diff Scope Control（精准修改与差异范围控制）**；
+- Code Review、Testing、Refactoring、Dependency Management、API Evolution、Performance、Security、Error Handling 等方向保留后续优先级，不在首批一次展开；
+- 没有因为范围选择新增 Skill 或修改 Method。
+
+详细依据见 `docs/project/engineering-discipline-scope.md`。
 
 ### WI-02 — 首项工程纪律研究与候选能力
 
-目标：对 WI-01 选择的第一项工程纪律完成 Research → Candidate Capability 收敛。
+**状态：当前。**
+
+研究对象：**实现最小化与推测性复杂度控制**。
+
+目标：完成 Research → Candidate Capability 收敛。
 
 主要工作：
 
 - 优先读取高质量原始 / 官方 / 成熟来源；
 - 按 Engineering Capability Architecture 记录来源、基线、证据类型、适用范围、时效性、冲突和可验证性；
+- 与当前 `execute-unit`、PR #41 配置 / 已有能力复用规则、PR #42 `Simplicity First` 研究结论做详细对照；
 - 判断结论属于现有 Embedded Discipline 补强、独立 Discipline 规范，还是 Task-oriented Skill 候选；
 - 设计有辨识力的 Targeted Eval。
 
 完成条件：
 
 - Research 与候选能力职责边界清晰；
+- 能区分必要复杂度与推测性复杂度，而不是机械追求“代码越少越好”；
 - 存在可执行的 Eval 设计；
 - 没有未经验证直接修改 Method / Skill Implementation。
 
 ### WI-03 — 第二项工程纪律研究（条件性）
 
+**候选对象：精准修改与差异范围控制。**
+
 只有 WI-02 完成且第一项研究没有暴露需要先调整能力架构的问题时再进入。
 
-目标与完成条件同 WI-02，但必须与第一项形成独立职责，避免为了数量重复建设。
+目标与完成条件同 WI-02，但必须与第一项保持职责独立：WI-02 关注方案复杂度是否必要，WI-03 关注最终变更区域是否属于当前工作及必要连带清理。
 
 ### WI-04 — Technology Profile 最小契约
 
