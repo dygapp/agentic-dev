@@ -152,7 +152,7 @@ agentic-dev 才开始研究
 - 更新本文；
 - 更新 README / Skill 入口中的当前阶段表达。
 
-状态：**当前工作范围**。
+状态：**已完成**。
 
 ### Phase 2 — Engineering Capability Architecture
 
@@ -164,7 +164,7 @@ agentic-dev 才开始研究
 - 对齐 `skill-architecture.md` 的新 Skill 准入证据规则；
 - 明确能力生命周期和评估要求。
 
-状态：**当前工作范围**。
+状态：**已完成**。
 
 ### Phase 3 — Engineering Discipline Research
 
