@@ -19,9 +19,9 @@
 ## 当前状态
 
 - **WI-01 — 工程纪律范围设计：已完成。** 结果固化于 `docs/project/engineering-discipline-scope.md`；
-- **WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成。** Candidate 状态为 `Pending Targeted Eval`，尚未进入规范性能力基线；
+- **WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成。** 当前状态为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`，尚未形成 Draft，也未进入规范性能力基线；
 - **当前工作项：WI-03 — 精准修改与差异范围控制。** WI-02 未暴露 Engineering Capability Architecture 缺口，条件已满足；
-- **WI-03V — 首批工程纪律验证与基线集成门禁：待 WI-03 完成后执行。**
+- **WI-03V — 首批工程纪律 Draft 验证与集成门禁：待 WI-03 完成后执行。**
 
 ## 范围
 
@@ -50,22 +50,20 @@
 
 ### WI-02 — 首项工程纪律研究与候选能力
 
-**状态：Research / Candidate Design 已完成；Candidate Pending Targeted Eval。**
+**状态：Research / Candidate Design 已完成；Pending Draft Capability。**
 
 研究对象：**实现最小化与推测性复杂度控制**。
-
-目标：完成 Research → Candidate Capability 收敛。
 
 完成结果：
 
 - 综合 Martin Fowler YAGNI、Kent Beck Simple Design、Google Engineering Practices、Sandi Metz、Go 官方工程实践与本地 PR #41 / PR #42 形成多来源证据；
 - 明确“最低必要复杂度”不是机械追求最少代码，而是在当前正确性、可理解性、安全、验证、可修改性和长期权威约束下，拒绝仅服务假想未来的额外功能 / 抽象 / 配置 / 扩展点 / 依赖 / 层次；
-- 候选落点判断为 **独立 Engineering Discipline + `execute-unit` 薄执行引用**，当前没有新增 Skill 或 Method 的职责证据；
-- 设计 4 个 Candidate Targeted Eval，并要求回归 `B-EU-07` / `B-EU-08`；
+- 初步 Architecture Fit 判断为 **独立 Engineering Discipline + `execute-unit` 薄执行引用**，当前没有新增 Skill 或 Method 的职责证据；
+- 设计 4 个 Candidate Eval，并要求后续 Draft 验证时回归 `B-EU-07` / `B-EU-08`；
 - 当前没有修改 Method / Architecture / Contract / Skill Implementation；
 - 研究结果固化于 `docs/research/implementation-minimality-and-speculative-complexity-analysis.md`。
 
-Candidate 只有通过后续 WI-03V 的有效 Targeted Eval 和 AI Review 后，才允许进入规范性工程能力基线。
+当前 Candidate 不直接进入 Targeted Eval。按照 Engineering Capability Architecture，必须先在 WI-03V 重新执行 Architecture Fit Review，并形成可被验证但尚未集成的 Draft Capability，再以该 Draft 为对象运行 Targeted Eval。
 
 ### WI-03 — 第二项工程纪律研究
 
@@ -86,41 +84,56 @@ WI-02 已完成 Research / Candidate Design，且没有暴露需要先调整 Eng
 - 研究最终 diff 可追溯性、必要连带清理、生成 / 格式化差异和顺带修改边界；
 - 与当前 Execution Unit 边界、PR #42 `Surgical Changes`、代码复核和 Refactoring 候选关系做对照；
 - 形成 Candidate Capability；
-- 设计有辨识力的 Targeted Eval；
-- 不在 Candidate 未验证时直接修改 Method / Skill Implementation。
+- 设计有辨识力的 Candidate Eval；
+- 不在 Candidate 尚未形成 Draft 并完成验证时直接修改 Method / Skill Implementation。
 
-### WI-03V — 首批工程纪律验证与基线集成门禁
+### WI-03V — 首批工程纪律 Draft 验证与集成门禁
 
 **状态：待执行。**
 
 触发条件：WI-02 与 WI-03 的 Research / Candidate Design 均完成。
 
-目标：防止“研究完成”被错误等同于“工程纪律已经成为规范权威”。
+目标：落实 Engineering Capability Architecture 的正式生命周期，防止“研究完成”或“Candidate 看起来合理”被错误等同于规范能力已经生效。
+
+必须按以下顺序执行：
+
+```text
+Candidate
+→ Architecture Fit Review
+→ Draft Capability
+→ Targeted Eval
+→ AI Review
+→ Ready to Integrate
+→ Human / Repository Integration Decision
+```
 
 主要工作：
 
-1. 复核两个 Candidate 的职责是否真正独立且能组合；
-2. 将审核后的 Candidate Eval 设计转换为正式隔离 Runtime Behavior Eval；
-3. 回归与候选能力直接相关的历史场景，尤其是 PR #41 已验证的配置责任和已有能力复用边界；
-4. 在 Fresh Runtime 中执行 Targeted Eval，并按断言进行语义判分；
-5. 如果 Eval 暴露边界错误，返回对应 Research / Candidate 修订，不为推进计划强行集成；
-6. 只有取得有效当前证据后，才创建或更新规范性 Engineering Discipline，并按需要对 `execute-unit` 等消费者做薄引用 / 执行强化；
-7. 对最终规范变更执行 AI Review，确认无 Method / Architecture / Contract / Human Boundary 回归。
+1. **Architecture Fit Review**：复核两个 Candidate 的职责是否真正独立、能够组合，并确认应落在 Engineering Discipline 而不是 Method、Profile 或 Skill；
+2. **Draft Capability**：创建尚未集成的规范性 Draft，并按需要形成 `execute-unit` 等消费者的薄 Draft 引用 / 执行强化；Draft 不因存在于分支就成为当前 Repository Authority；
+3. **Eval Materialization**：将审核后的 Candidate Eval 设计转换为针对 Draft Capability 的正式隔离 Runtime Behavior Eval；
+4. **Regression Selection**：回归与候选能力直接相关的历史场景，至少包含 PR #41 已验证的 `B-EU-07` 配置责任和 `B-EU-08` 已有能力复用边界；
+5. **Fresh Runtime Targeted Eval**：在隔离 Fresh Runtime 中执行新场景和必要回归，并按断言进行语义判分；
+6. **Failure Loop**：如果 Eval 暴露边界错误，返回 Candidate / Draft 修订并重新验证，不为推进计划强行集成；
+7. **Final AI Review**：只有 Draft 获得有效当前 PASS 证据后，才对最终拟集成变更执行 AI Review，确认无 Method / Architecture / Contract / Human Boundary 回归；
+8. **Integration Decision**：AI Review PASS 只表示 `Ready to Integrate`。是否 Merge / Integrate 仍由 Human Authority 或 Repository Policy 决定，不自动集成。
 
 完成条件：
 
-- 每个进入正式基线的 Discipline 都有可追溯 Research、Candidate、Targeted Eval 和当前 PASS 证据；
+- 每个拟进入正式基线的 Discipline 都有可追溯 Research、Candidate、Architecture Fit、Draft、Targeted Eval 和当前 PASS 证据；
 - Pending / Failed Candidate 不被描述为正式能力；
+- Draft 未合并前不被描述为当前 Repository Authority；
 - 没有因为两个 Discipline 都有价值就机械创建两个 Skill；
-- 首批 Discipline 的正式消费者、持久化、更新和取代责任已经闭环。
+- 首批 Discipline 的正式消费者、持久化、更新和取代责任已经闭环；
+- 最终拟集成状态通过适用的 AI Review，并明确停在 `Ready to Integrate`，等待人工 / 仓库策略的集成决策。
 
-只有 WI-03V 完成后，才把“首批 Engineering Discipline 已完成”作为进入 WI-04 的事实前提。
+只有 WI-03V 的规范性变更实际完成集成后，才把“首批 Engineering Discipline 已完成”作为进入 WI-04 的事实前提。
 
 ### WI-04 — Technology Profile 最小契约
 
 目标：在研究具体框架前，定义 Technology Profile 的最小结构与质量门槛。
 
-进入条件：**WI-03V 已完成，首批 Engineering Discipline 已经过专项评估并完成适用的规范集成。**
+进入条件：**WI-03V 已完成且首批适用 Engineering Discipline 已完成实际集成。**
 
 至少解决：
 
@@ -146,7 +159,7 @@ WI-02 已完成 Research / Candidate Design，且没有暴露需要先调整 Eng
 - 证据满足质量门槛；
 - 明确版本、适用范围、默认工程规则、常见误用和 Verification Profile；
 - 形成 Targeted Eval；
-- 通过 AI Review 后才进入正式能力基线。
+- 通过完整能力生命周期后才进入正式能力基线。
 
 ### WI-06 — 下一项技术选择
 
@@ -204,6 +217,6 @@ Consumer Adoption 不是前面所有研究的启动条件，而是正式能力�
 
 每个 Work Item 应单独关闭并留下当前可验证结果；跨 Fresh Context 时，新的 Agent 从 `AGENTS.md`、Project Roadmap、Engineering Capability Architecture 和本 Plan 的下一个未完成 Work Item 恢复，不依赖历史聊天。
 
-Research / Candidate Design 完成不等于规范集成完成。凡候选能力需要进入正式能力基线，必须经过对应 Targeted Eval 和规范集成门禁；不能为了推进 Work Item 状态绕过验证。
+Research / Candidate Design 完成不等于 Draft，不等于 Targeted Eval PASS，也不等于规范集成。凡候选能力需要进入正式能力基线，必须遵循当前 Engineering Capability Architecture 的完整生命周期；不能为了推进 Work Item 状态绕过 Draft、验证、AI Review 或人工 / Repository Integration Boundary。
 
 如果长期路线、能力分层或 Work Item 顺序发生实质变化，应优先更新对应长期权威；本 Plan 只同步必要的协调状态，不维护第二份项目路线图。
