@@ -45,6 +45,24 @@ Consumer Adoption / Feedback
 
 Consumer Evidence 在新的演进模型中主要承担现实验证、纠偏、优先级调整和长期适用性确认，不再承担所有能力建设的唯一启动职责。
 
+### 2.1 证据质量门槛
+
+允许主动使用外部成熟经验，不等于降低证据要求。候选能力在离开 Research、进入规范性设计前，至少应能够说明：
+
+- **来源（Provenance）**：可以追溯到官方文档、明确的仓库 / 文件 / 版本、专家原始材料、专项评估结果或具体 Consumer Evidence；
+- **基线（Baseline）**：记录研究时实际使用的版本、Commit、发布日期或其他能够识别当时状态的锚点；
+- **证据类型**：区分官方规范 / 官方推荐、成熟工程实践、专家观点、专项评估结论和 Consumer 观察，不把不同强度的来源混成同一等级；
+- **适用范围**：明确该结论适用于哪些框架版本、运行条件、任务类型或工程假设，避免把局部实践直接泛化为通用规则；
+- **时效性（Freshness）**：对快速演进的框架、Runtime、API 或工具检查当前有效性，不能仅凭已经过时的最佳实践建立新的长期能力；
+- **冲突与替代方案**：当官方实践、成熟项目或专家观点存在实质冲突时，应保留冲突事实并说明选择依据，不得静默挑选最符合预期的单一来源；
+- **可验证性**：能够把候选规则转换为有辨识力的 Targeted Eval、Review Heuristic 或其他可观察检查，而不是只形成无法验证的口号。
+
+对于框架语义、API 使用方式、生命周期和官方支持边界，当前有效的官方资料通常具有最高外部参考优先级；成熟开源项目和专家经验用于补充工程化实践，而不应无依据覆盖官方语义。
+
+单一低权威观点、二手总结、缺少版本信息的旧文章或无法复现的个案，可以继续作为 Research 线索，但通常不足以单独把候选结论提升为规范性 Technology Profile、Verification Profile 或 Skill。
+
+外部证据之间存在重大冲突，且现有 Repository Authority、专项评估和 Consumer Evidence 都不足以裁决时，应保持候选状态或升级，而不是为了推进路线强行固化。
+
 ## 3. 能力分层
 
 `agentic-dev` 的工程能力分为以下层次：
@@ -221,7 +239,7 @@ framework-upgrade
 
 如果以下条件已经满足，也可以进入候选设计和专项评估：
 
-- 官方或成熟外部实践支持该职责长期稳定存在；
+- 官方或成熟外部实践支持该职责长期稳定存在，并满足本架构的证据质量门槛；
 - 该职责可以从 Method / Architecture 中明确定位；
 - 输入、过程、输出和退出条件可以独立定义；
 - 与现有 Skill 不形成职责重叠或 Super-skill；
@@ -302,10 +320,11 @@ Feedback / Revision / Supersede
 
 ### 11.1 Producer
 
-- Research 负责形成证据和候选结论；
-- Architecture 负责确定能力层次和职责边界；
-- 对应能力维护者负责形成 Profile、Skill 或 Adapter；
-- Consumer 负责自身项目采用与本地化事实。
+- Research 可以由当前仓库授权的 Agent、维护者或研究工作形成；研究结果只产生证据和候选结论，不自动写入更高权威；
+- Architecture 由当前 `agentic-dev` Repository Authority 授权的架构职责确定能力层次和职责边界；
+- Profile、Skill 或 Adapter 的正式建立与重大修改必须由当前仓库授权的对应维护职责执行，并遵循其上游 Architecture / Contract；
+- Consumer 可以提交实践证据和采用反馈，但不能通过 Consumer-local 文档直接改写 `agentic-dev` 上游权威；
+- Consumer 负责自身项目采用、本地化事实和项目规则。
 
 ### 11.2 Trigger
 
@@ -336,9 +355,19 @@ Research 只保存证据；Architecture 决定职责；Profile / Skill / Adapter
 
 ### 11.5 Update 与 Supersede
 
-当官方框架版本、成熟实践、Eval 或 Consumer Evidence 发生变化时，应重新检查能力是否仍然有效。
+以下变化会触发对应能力的重新检查：
 
-旧 Profile、Skill 或 Adapter 被替换时必须显式处理取代关系，避免多个冲突版本同时被视为当前有效能力。
+- 官方框架、语言、Runtime 或 API 版本变化；
+- 原始外部依据被撤回、取代或证明已经过时；
+- Targeted Eval 暴露新的失败模式；
+- Consumer Adoption 证明默认规则不适用或出现回归；
+- 上游 Method、Architecture、Contract 或 Repository Authority 发生相关变化。
+
+更新责任仍属于当前 `agentic-dev` Repository Authority 授权的对应能力维护职责。Consumer 或外部来源只能提供 Trigger / Evidence，不能直接完成上游权威更新。
+
+重大更新应重新检查证据基线、适用范围和 Targeted Eval；如果属于 `AGENTS.md`、Method、Architecture、Contract、核心 Skill 或其他高影响规则变更，还必须重新执行适用的 AI Review。
+
+旧 Profile、Skill 或 Adapter 被新版本取代时，必须更新当前可发现入口并显式处理 Superseded / Replaced 关系，避免旧版与新版同时被解释为当前规范性能力。历史内容可以保留用于追溯，但只能有一个明确的当前有效入口。
 
 ### 11.6 Escalation
 
