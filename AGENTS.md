@@ -6,7 +6,7 @@
 
 **方法定义高于 Skill 实现。**
 
-Skill 只能实现方法，不允许通过修改 `SKILL.md` 暗中改变方法。
+Skill 必须实现 Method / Architecture 已明确允许的可复用职责，不允许通过修改 `SKILL.md` 暗中改变 Method、Architecture 或 Repository Authority。
 
 ## 权威顺序
 
