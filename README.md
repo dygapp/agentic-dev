@@ -1,6 +1,6 @@
 # agentic-dev
 
-面向 AI Agent 驱动软件开发的方法体系与可组合 Skills 实现仓库。
+面向 AI Agent 驱动软件开发的方法体系、工程能力架构与可组合 Skills 实现仓库。
 
 ## 快速开始
 
@@ -50,25 +50,33 @@ Requirement Source / 初始业务输入（如有）：
 ## 当前状态
 
 **基线版本：** v0.1  
-**当前阶段：** **Skill Operationalization & Method Validation**
+**当前阶段：** **Engineering Capability Expansion & Method Evolution（工程能力扩展与方法演进）**
 
-第一批 8 个核心 Skill 的 Skill 工程（Skill Engineering）基线、首轮真实 Consumer Experiment 以及 Issue #18 触发的验收到验证闭环定向强化均已完成。仓库当前共有 9 个 Skill，其中包括 8 个 Core Skills 和 1 个由真实 Consumer Evidence 支持的 Platform-specific Skill：`github-actions-verification`。
+第一批 8 个核心 Skill 的历史 Skill 工程基线、首轮真实 Consumer Experiment，以及围绕验收闭环、外部操作、验证证据、Human Review、共享资源、配置责任与已有能力复用的多轮定向强化均已完成。仓库当前共有 9 个 Skill，其中包括 8 个 Core Skills 和 1 个 Platform-specific Skill：`github-actions-verification`。
+
+项目当前从“主要等待 Consumer 暴露问题后定向修补”切换为主动工程能力演进：可以从官方权威实践、成熟开源工程经验、专家研究、专项评估和 Consumer Evidence 中提炼候选能力，再通过工程能力分层、Targeted Eval、AI Review 和 Consumer Adoption 持续完善。
+
+Consumer Evidence 仍然重要，但不再是所有工程能力、Technology Profile 或候选 Skill 的唯一前置条件。
 
 项目演进路线、完整里程碑、当前证据基线与下一步工作统一维护在：
 
 `docs/project/project-roadmap.md`
 
-后续变化继续由真实 Consumer Evidence 驱动，不以机械增加核心 Skill 数量为目标。
+工程能力分层与能力生命周期统一维护在：
+
+`docs/architecture/engineering-capability-architecture.md`
 
 ## 研究来源
 
-本仓库的方法基线主要由以下三个项目的对照研究收敛形成：
+本仓库最初的方法基线主要由以下三个项目的对照研究收敛形成：
 
 - `mattpocock/skills`
 - `github/spec-kit`
 - `obra/superpowers`
 
-此外，`Agent Skills Specification` 作为 Skill 打包与互操作（Packaging / Interoperability）的外部规范参考。
+此外，`Agent Skills Specification` 作为 Skill 打包与互操作（Packaging / Interoperability）的外部规范参考；后续也已经通过 `multica-ai/andrej-karpathy-skills` 等定向研究补充工程纪律视角。
+
+进入工程能力扩展阶段后，Research 不再局限于最初的方法论样本。官方框架文档、成熟开源工程实践、专家方法与专项技术研究都可以成为候选能力输入，但必须经过当前 Repository Authority 的分层、评估与固化，不能因为外部来源成熟就自动覆盖本仓库规则。
 
 这些来源都是研究输入，不是本仓库的运行时依赖，也不直接构成本仓库的方法权威。
 
@@ -150,7 +158,9 @@ Ready to Integrate
 
 ## Skill 清单（Skill Inventory）
 
-当前仓库共实现 9 个 Skill：第一批 8 个核心 Skill，以及 1 个平台专项非核心 Skill。Future Experimental Skills 当前为 0，只有真实使用证据暴露新的稳定职责缺口时才评估。
+当前仓库共实现 9 个 Skill：第一批 8 个核心 Skill，以及 1 个平台专项非核心 Skill。Future Experimental Skills 当前为 0。
+
+新的实验性 Skill 不再要求必须先由多个 Consumer 重复暴露同一问题；可以由官方权威实践、成熟外部经验、专项评估或 Consumer Evidence 触发候选设计，但仍必须满足工程能力架构和 Skill 架构定义的职责、边界、专项评估与 AI Review 要求。
 
 ### 第一批核心 Skills
 
@@ -200,6 +210,7 @@ converge
 │   │   ├── ai-development-method.md
 │   │   └── principles.md
 │   ├── architecture/
+│   │   ├── engineering-capability-architecture.md
 │   │   ├── skill-architecture.md
 │   │   ├── skill-contracts.md
 │   │   └── first-batch-skill-design.md
@@ -219,7 +230,8 @@ converge
 │       ├── mattpocock-skills-analysis.md
 │       ├── spec-kit-analysis.md
 │       ├── superpowers-analysis.md
-│       └── agent-skills-specification-analysis.md
+│       ├── agent-skills-specification-analysis.md
+│       └── andrej-karpathy-skills-analysis.md
 ├── skills/
 │   ├── README.md
 │   ├── clarify-intent/
@@ -248,7 +260,9 @@ converge
 
 ## 项目演进路线
 
-当前核心目标是基于已有真实 Consumer Repository 开展继续演进验证。具体路线、当前进度、下一步工作、条件性后续方向和新上下文恢复入口见：
+当前核心目标是建立可主动演进的工程能力体系：在保持 Core Method 稳定的前提下，逐步建设 Engineering Discipline、Technology Profile、Verification Profile、Task-oriented Skill 与 Runtime Adapter，并通过专项评估和 Consumer Integration 双重验证持续完善。
+
+具体路线、当前进度、下一步工作和新上下文恢复入口见：
 
 `docs/project/project-roadmap.md`
 

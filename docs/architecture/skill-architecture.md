@@ -7,6 +7,8 @@
 
 Skills 用于实现已经确定的开发方法，而不是另外定义一套生命周期。
 
+工程能力的更高层分层、证据进入方式和能力生命周期由 `engineering-capability-architecture.md` 定义；本文专门定义 Skill 的分类、调用关系、契约形状和当前 Skill Inventory。
+
 当前架构明确避免创建类似 `develop-feature` 的超级 Skill。
 
 ## 2. Skill 分类
@@ -89,14 +91,12 @@ Bootstrap 只有在项目预计跨越多个里程碑、方法阶段或 Fresh Con
 
 Project Bootstrap 不属于正常 Feature Workflow。
 
-仅当真实使用证明某个 Bootstrap Capability：
+仅当成熟外部实践、专项评估或真实使用证据能够支持某个 Bootstrap Capability 具有以下性质时，才考虑将其升级为正式 Skill：
 
 - 能跨多个项目重复使用；
 - 具有独立、稳定的 Procedure；
 - 输入、输出与 Exit Condition 可以明确；
-- 主要承载可复用能力，而不是某个项目自己的事实与决策；
-
-时，才考虑将其升级为正式 Skill。
+- 主要承载可复用能力，而不是某个项目自己的事实与决策。
 
 **“可复用”本身不足以成为新增 Skill 的理由。**
 
@@ -128,28 +128,31 @@ Project Rule 可以选择、要求或限制 Reusable Skills，但 Skill 不得�
 
 Bootstrap / Setup Capability 使用可复用流程帮助项目建立或更新 Project Rules。其产物通常是项目实例自己的 `AGENTS.md`、配置、目录约定或其他 Repository Artifact。
 
-它可能最终实现为 Skill，但只有跨项目真实使用证据证明其具有稳定独立职责时才这样做；不得因为某条规则“可能在别的项目也有用”就提前创建 Skill。
+它可能最终实现为 Skill，但必须先有足够证据证明其具有稳定独立职责，并按工程能力架构完成分层与专项验证；不得因为某条规则“可能在别的项目也有用”就提前创建 Skill。
 
-### 2.7 平台专项 Reusable Skills
+### 2.7 平台 / 技术专项 Reusable Skills
 
-当真实 Consumer Evidence 证明某个平台或工具生态存在稳定、可复用且足够复杂的操作能力时，可以建立**平台专项非核心 Skill**。
+当官方权威实践、成熟外部工程经验、专项评估或 Consumer Evidence 能够证明某个平台、技术或工具生态存在稳定、可复用且足够复杂的操作能力时，可以建立**平台 / 技术专项非核心 Skill**。
 
 这类 Skill：
 
 - 实现既有 Method / Contract / Governance 语义，不新增 Method 阶段；
-- 可以包含平台专有对象、API、CI/CD 机制和运行模式；
+- 可以包含平台或技术专有对象、API、CI/CD 机制和运行模式；
 - 只有在 Consumer 实际满足触发条件时才加载，不成为所有项目的默认依赖；
 - 必须服从 Consumer Repository Authority、Repository Policy 与 Runtime 实际能力；
-- 不得把平台实现细节反向升级为通用 Method 强制规则；
-- 不得接管完整 Feature 生命周期、Integration、Release 或 Deploy。
+- 不得把平台或技术实现细节反向升级为通用 Method 强制规则；
+- 不得接管完整 Feature 生命周期、Integration、Release 或 Deploy；
+- 不得仅因为某项技术重要就把完整框架知识打包成一个 Skill。
 
-平台专项 Skill 与第一批核心 Skill 是组合关系，而不是替代关系。核心 Workflow Skill 可以在当前工作确实需要时调用平台专项 Skill，以取得更可靠的实现或验证能力。
+平台 / 技术专项 Skill 与第一批核心 Skill 是组合关系，而不是替代关系。核心 Workflow Skill 可以在当前工作确实需要时调用专项 Skill，以取得更可靠的实现或验证能力。
 
-真实 Consumer Experiment 已证明 GitHub Actions 验证存在独立可复用的路径选择、证据可观察性、Runtime 成本控制和诊断流程，因此允许新增：
+`github-actions-verification` 的历史准入证据来自真实 Consumer Experiment：GitHub Actions 验证被证明存在独立可复用的路径选择、证据可观察性、Runtime 成本控制和诊断流程，因此允许新增：
 
 - `github-actions-verification`：面向使用 GitHub Actions 的 Consumer，建立或优化可观察、可追踪、成本可控的 CI 验证路径。
 
 该 Skill 属于平台专项非核心 Discipline Skill，不计入第一批 8 个核心 Skill，也不意味着重新打开核心 Skill Engineering。
+
+后续新的平台 / 技术专项 Skill 可以按照 `engineering-capability-architecture.md` 使用成熟外部证据、Targeted Eval 和 Consumer Evidence 的组合进行准入判断，不再把既有 `github-actions-verification` 的 Consumer 驱动形成路径机械复制为唯一模式。
 
 ### 2.8 当前 Skill 清单（Skill Inventory）
 
@@ -158,10 +161,10 @@ Bootstrap / Setup Capability 使用可复用流程帮助项目建立或更新 Pr
 | 分类 | 数量 | 当前成员 | 状态语义 |
 |---|---:|---|---|
 | 核心 Skills | 8 | `clarify-intent`、`specify`、`technical-plan`、`slice-work`、`readiness-check`、`execute-unit`、`systematic-debug`、`converge` | 历史基线已关闭；Issue #18 触发的定向强化已完成，针对性行为评估 `4 / 4 PASS` |
-| Platform-specific Skills | 1 | `github-actions-verification` | 由真实 Consumer Evidence 支持的非核心 Skill |
-| Future Experimental Skills | 0 | 无 | 只在新的真实证据暴露稳定职责缺口时评估 |
+| Platform-specific Skills | 1 | `github-actions-verification` | 由真实 Consumer Evidence 支持形成的现有非核心 Skill |
+| Future Experimental Skills | 0 | 无 | 按工程能力架构，在成熟外部证据、专项评估或 Consumer Evidence 支持稳定职责时评估 |
 
-因此，“第一批 8 个核心 Skill”描述的是核心基线，不是仓库全部 Skill 数量。`github-actions-verification` 是当前第 9 个已实现 Skill，但不是“第 9 个核心 Skill”，其存在不重新打开核心 Skill 工程。本次定向重开来自 Issue #18 的通用方法证据，与平台专项 Skill 数量无关，也没有改变 Skill 清单；定向强化已经完成并达到 `Ready to Integrate`。
+因此，“第一批 8 个核心 Skill”描述的是核心基线，不是仓库全部 Skill 数量。`github-actions-verification` 是当前第 9 个已实现 Skill，但不是“第 9 个核心 Skill”，其存在不重新打开核心 Skill 工程。Issue #18 的历史定向强化已经完成并达到 `Ready to Integrate`；后续工程能力扩展也不等于无条件重新设计这 8 个核心 Skill。
 
 ### 2.9 产物生命周期与 Skill 边界
 
@@ -204,7 +207,7 @@ Bootstrap / Setup Capability 使用可复用流程帮助项目建立或更新 Pr
 - 独立 `human-escalation`；
 - `handoff`。
 
-其中前五项继续作为 Embedded Discipline；`handoff` 继续保留为 Transition Skill 候选，待核心 Feature / Defect 路径稳定后再评估。
+其中前五项继续作为 Embedded Discipline；`handoff` 继续保留为 Transition Skill 候选，待出现足够的独立职责和验证证据后再评估。
 
 ## 4. 暂不独立 Skill 化的横切规则
 
@@ -395,6 +398,6 @@ Allowed Sub-skills / Disciplines
 - Automatic Integration
 - Project Bootstrap 必须实现为 Skill
 - Project Rule 必须采用一种固定文件布局
-- 所有 Consumer 使用同一个平台专项 Skill
+- 所有 Consumer 使用同一个平台 / 技术专项 Skill
 
 标准化的是语义职责，而不是具体工具 Harness。

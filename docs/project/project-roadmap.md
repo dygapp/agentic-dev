@@ -1,6 +1,8 @@
 # 项目演进路线与当前状态
 
-本文是 `agentic-dev` 仓库自身的项目路线图（Project Roadmap），统一记录项目演进路线、已完成里程碑、当前阶段、当前证据基线、当前核心目标与下一步工作。本文属于 `docs/project/*` 项目级权威，不修改也不覆盖更高优先级的 Method、Architecture 或 Contract Authority，Consumer Repository 也不得自动继承其中的项目事实。
+本文是 `agentic-dev` 仓库自身的项目路线图（Project Roadmap），统一记录项目演进路线、已完成里程碑、当前阶段、当前证据基线、当前核心目标与下一步工作。
+
+本文属于 `docs/project/*` 项目级权威，不修改也不覆盖更高优先级的 Method、Architecture 或 Contract Authority，Consumer Repository 也不得自动继承其中的项目事实。
 
 ## 路线图使用规则
 
@@ -11,116 +13,263 @@
 - **已完成**：已有 Git、PR、Issue 或评估证据支持；
 - **当前**：正在持续推进的阶段或核心目标；
 - **下一步**：已经确定但尚未开始或尚未完成的近期工作；
-- **条件性后续**：只有新的真实证据满足触发条件时才评估，不构成既定承诺。
+- **条件性后续**：需要后续证据或阶段成果才能决定是否进入，不构成当前承诺。
 
 路线、里程碑或当前目标发生变化时更新本文。Git 历史保留旧版本，不在 README、Tasks 或聊天中长期维护第二份详细状态。
 
+## 阶段切换
+
+此前阶段：
+
+> **Skill Operationalization & Method Validation**
+
+已经完成其主要使命：第一批核心 Skill 已完成工程闭环，首轮 Greenfield Consumer Experiment 已完成，已有 Consumer 的继续演进又进一步验证并强化了 baseline 升级、外部操作、验证证据、Human Review、共享资源、配置责任和已有能力复用等边界。
+
+这里的“阶段使命完成”不等同于 Issue #33 已经关闭。Issue #33 仍可按其原始实验目标独立形成 Final Summary 并收尾；其已经形成的多轮有效证据足以支持 `agentic-dev` 不再把持续等待该实验新增 Finding 作为下一阶段启动条件。
+
+`dygapp/jilinjobs-cms` 后续主要进入模块化重构、页面内容完善和大平台集成准备，其继续开发仍可提供实践反馈，但不再适合作为 `agentic-dev` 唯一或主要的能力创新来源。
+
+因此当前阶段切换为：
+
+> **Engineering Capability Expansion & Method Evolution（工程能力扩展与方法演进）**
+
+本阶段从“主要等待 Consumer 暴露问题后定向修补”，转向“主动研究成熟外部实践、形成工程能力、建立专项评估，再推动 Consumer 采用和纠偏”。
+
 ## 总体演进路线
 
-| 路线 | 状态 | 结果或进入条件 |
+| 路线 | 状态 | 当前目标 |
 |---|---|---|
-| 建立通用 AI Agent 开发方法基线 | 已完成 | Method、Principles 与第一批 Skill 设计、契约形成基线 |
-| 完成第一批核心 Skill 工程 | 已完成 | 8 个 Core Skills 实现、元数据标准化并完成 Fresh Runtime Eval |
-| 开展 Skill Operationalization & Method Validation | 当前 | 使用真实 Consumer Evidence 验证方法、Skills 组合与项目渐进演进 |
-| 完成首轮真实 Consumer Experiment | 已完成 | `dygapp/jilinjobs-cms` 完成 Greenfield Bootstrap、信息发布纵向切片与功能整体收敛 |
-| 补齐验收到验证的闭环 | 已完成 | PR #30 已合并，Issue #18 已按 `completed` 关闭 |
-| 建立通用 Project Roadmap 规则 | 已完成 | PR #32 完成 Method、Bootstrap、Fresh Context 与 `converge` 定向强化；行为评估 `3 / 3 PASS`、断言 `16 / 16 PASS` |
-| 验证已有 Consumer 的继续演进 | 当前 | PR #37、PR #38、PR #40 与 PR #41 已完成新增治理证据的定向处理；继续通过 Consumer 的真实纵向工作验证增量演进 |
-| Distribution、Bootstrap 自动化或 Controller / Runtime Orchestration | 条件性后续 | 只有真实使用证明存在稳定、独立且可复用的职责缺口时才评估 |
-| 重新进入 Skill Engineering | 条件性后续 | 只有新的真实证据暴露稳定 Skill Implementation / Contract / Method Gap 时才定向重开 |
+| 建立通用 AI Agent 开发方法基线 | 已完成 | Method、Principles 与第一批 Skill 设计、契约形成稳定基线 |
+| 完成第一批核心 Skill 工程 | 已完成 | 8 个 Core Skills 实现、Packaging Hardening、Fresh Runtime Eval 与 Closure Review 完成 |
+| 完成首轮方法与 Skill 实证验证 | 已完成 | Greenfield Experiment 已完成；Existing Consumer 多轮证据已足以支持阶段切换，Issue #33 独立收尾 |
+| Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
+| Track B — Engineering Discipline Expansion | 下一步 | 主动研究并提炼最小实现、Review、Testing、Refactoring、Performance、Security、Dependency、API Evolution 等跨技术栈工程纪律 |
+| Track C — Technology Engineering Profiles | 下一步 | 建立 Technology Profile / Verification Profile 机制，并逐步研究 Vue 3、TypeScript、Element Plus、Spring、Gradle 等当前高价值技术栈 |
+| Track D — Engineering Skills & Verification | 下一步 | 从稳定工程过程提炼 Task-oriented Skill，建立对应专项评估，不按框架名称机械创建 Skill |
+| Track E — Adoption / Runtime / Distribution | 下一步 | 推动 Existing Consumer baseline upgrade、运行时适配和后续分发能力；不要求立即实现 Marketplace 或统一 Controller |
+
+## 工程能力扩展模型
+
+新的主动演进模型采用：
+
+```text
+官方权威实践 / 成熟开源实践 / 专家研究
+                    ↓
+               Research
+                    ↓
+         Engineering Capability Fit
+                    ↓
+      Discipline / Profile / Skill / Adapter
+                    ↓
+             Targeted Eval
+                    ↓
+               AI Review
+                    ↓
+               Integrate
+                    ↓
+          Consumer Adoption
+                    ↓
+          Feedback / Revision
+```
+
+Consumer Evidence 仍然是重要输入，但主要承担：
+
+- 验证通用能力是否适合真实工程环境；
+- 发现 Profile 或 Skill 与项目实际约束之间的冲突；
+- 纠正过度抽象或错误默认值；
+- 调整能力优先级；
+- 验证 Existing Consumer baseline upgrade 是否可靠。
+
+不再采用：
+
+```text
+等待 Consumer 出现问题
+        ↓
+agentic-dev 才开始研究
+```
+
+作为项目唯一的演进模式。
+
+工程能力分层的正式架构见：
+
+`docs/architecture/engineering-capability-architecture.md`
 
 ## 已完成里程碑
 
 | 日期 | 里程碑 | 证据 |
 |---|---|---|
 | 2026-08-17 | 建立 Method 基线并冻结第一批核心 Skill 设计与契约 | `8fccf7232c21`、`b5480db06940`、`992f13a2ed49` |
-| 2026-08-17 | 完成 8 个 Core Skills 的首轮实现 | `99314b70c05c` 至 `c96cc7e2ac30` 的 Skill 实现提交 |
-| 2026-08-18 | 完成首轮 Fresh Runtime Eval 并关闭历史 Skill 工程（Skill Engineering）基线 | `498bdfc543bf`、`bf4f4b5e7ba6` |
-| 2026-08-18 | 启动首个真实 Consumer Repository 验证 | `d8b90b1880a1`、Issue #18 |
-| 2026-08-19 至 2026-08-20 | 根据真实使用补齐外部操作、平台验证、ADR 与长期权威产物生命周期边界 | `080cbe660db3` 至 `3e0b99d85d96` 的相关提交 |
-| 2026-08-24 | 完成验收到验证闭环定向强化及运行时评估 | PR #30、`a6ea8ccfb23c`，行为评估 `4 / 4 PASS`、断言 `21 / 21 PASS` |
-| 2026-08-24 | 完成首轮 Consumer Experiment 收敛 | Issue #18 按 `completed` 关闭 |
-| 2026-08-24 | 完成通用 Project Roadmap 方法修订及运行时评估 | PR #32，行为评估 `3 / 3 PASS`、断言 `16 / 16 PASS` |
-| 2026-08-26 | 明确已有 Consumer 的采用与 baseline 升级生命周期 | PR #34、`b1ed6f1b78eb` |
-| 2026-08-26 | 完成跨 Repository 授权与异步外部执行闭环强化 | PR #35、`282358c2f659`，行为评估 `4 / 4 PASS`、断言 `20 / 20 PASS` |
-| 2026-08-28 | 完成验证证据边界定向强化 | PR #37、`df4d6a607597`，行为评估 `6 / 6 PASS`、断言 `35 / 35 PASS` |
-| 2026-08-28 | 完成 Human Review、外部媒体输入与后继提交证据影响定向强化 | PR #38、`88a5d7e391be`，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
-| 2026-08-31 | 完成共享外部资源并发与释放边界定向强化 | PR #40、`c8903f2ee437`，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
+| 2026-08-17 | 完成 8 个 Core Skills 首轮实现 | `99314b70c05c` 至 `c96cc7e2ac30` |
+| 2026-08-18 | 完成首轮 Fresh Runtime Eval 并关闭第一批历史 Skill Engineering 基线 | `498bdfc543bf`、`bf4f4b5e7ba6` |
+| 2026-08-18 | 启动首个真实 Consumer Repository 验证 | Issue #18 |
+| 2026-08-24 | 完成验收到验证闭环定向强化 | PR #30，行为评估 `4 / 4 PASS`、断言 `21 / 21 PASS` |
+| 2026-08-24 | 完成首轮 Consumer Experiment 收敛 | Issue #18 `completed` |
+| 2026-08-24 | 建立通用 Project Roadmap 规则 | PR #32，行为评估 `3 / 3 PASS`、断言 `16 / 16 PASS` |
+| 2026-08-26 | 明确 Existing Consumer baseline upgrade 生命周期 | PR #34 |
+| 2026-08-26 | 完成跨 Repository 授权与异步执行闭环强化 | PR #35，行为评估 `4 / 4 PASS`、断言 `20 / 20 PASS` |
+| 2026-08-28 | 完成验证证据边界定向强化 | PR #37，行为评估 `6 / 6 PASS`、断言 `35 / 35 PASS` |
+| 2026-08-28 | 完成 Human Review、外部媒体输入和后继提交证据强化 | PR #38，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
+| 2026-08-31 | 完成共享外部资源并发与释放边界强化 | PR #40，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
 | 2026-09-01 | 明确配置责任与已有能力复用边界 | PR #41，行为评估 `4 / 4 PASS`、断言 `25 / 25 PASS` |
+| 2026-09-01 | 增加 Karpathy Skills 定向研究并确认“工程纪律可主动研究、无需机械 Skill 化” | PR #42，集成提交 `e1f56238f95a75d95a87b1ad510587d770ae4a63` |
 
-## 当前阶段与证据基线
+## 当前证据基线
 
-- 当前阶段：**Skill Operationalization & Method Validation**；
-- PR #30 能力集成提交：`a6ea8ccfb23cb0837d4721192470e3bd11597059`；
-- PR #31 路线图基线集成提交：`f15d3b42fd56498ffa08633c66b338e28e046542`；
-- PR #34 已有 Consumer 采用边界集成提交：`b1ed6f1b78eb664e6dcae619b23e2ac1b7c5b522`；
-- PR #35 跨 Repository 授权与异步验证闭环集成提交：`282358c2f6590a2e8e7634cdd16458d89d1ba3b7`；
-- PR #37 验证证据边界集成提交：`df4d6a607597eeb3684279e269cb073fcb398f83`；
-- PR #38 后继提交证据影响集成提交：`88a5d7e391be6fa2b61fbe4a5140c082e6ad9f95`；
-- PR #40 共享外部资源并发边界集成提交：`c8903f2ee437ede1ebfa60bb1d34d23dbc29481c`；
-- Project Roadmap 定向评估：`B-CG-05`、`B-CG-06`、`B-CG-07` 均为 `PASS`，合计断言 `16 / 16 PASS`；
-- Skill 清单（Skill Inventory）：8 个 Core Skills、1 个 Platform-specific Skill；
-- 首轮 Consumer Experiment：已完成；
-- Issue #18：已关闭；
-- 已有 Consumer 继续演进实验：已启动；
-- 实验跟踪 Issue（Tracking Issue）：Issue #33，保持 `open`；
-- Consumer 实验基线：`dygapp/jilinjobs-cms` `main@77958e5af7f8a60f8e09848ec0a3e837970fefa3`；
-- Consumer 最新集成证据：PR #19 已合并，最终 Head 为 `fc35eae18246ceb949f17e944e844be36e27afcc`，集成提交为 `c9280e5b9a8ab12f6b961766753c92b442fa11f4`；对应 CI #355 Run `33468614931` 与 Human Review #308 Run `33468614936` 均为 `completed / success`；
-- PR #38 证据处理使用的 `agentic-dev` baseline：`master@df4d6a607597eeb3684279e269cb073fcb398f83`；
-- Issue #33 首批 5 类项目治理证据已完成处理：已有 Consumer 的采用与升级边界已通过 PR #34 集成，跨 Repository 操作授权粒度与异步外部执行闭环已通过 PR #35 集成；`B-GA-01` 与 3 个当前证据回归场景均为 `PASS`，合计断言 `20 / 20 PASS`；README / Project Roadmap / GitHub Evidence 分工与无 Issue Template 的反馈契约作为正向验证保留。
-- Issue #33 后续新增 6 个验证相关 Finding：Stale Verification Contract、Workflow 重复产品语义、Fresh Database Migration 启动链、Automated Verification / Human Review 状态隔离、Functional Browser / Visual Fidelity 证据边界和 bind mount 可重复恢复；PR #37 已集成，Fresh Runtime Eval `6 / 6 PASS`、断言 `35 / 35 PASS`，最终 AI Review `PASS`，Blocking / Medium Finding 为 `0 / 0`；
-- Consumer PR #18 新增 4 个候选 Finding：Human Review 暴露产品语义作为现有 `converge → clarify-intent / specify` 路由的正向验证并补充使用说明；内容能力与投放策略分层已由现有 `specify` 规则覆盖，不新增通用模型；外部媒体资源真实类型属于 External Operation Guide 缺口；后继提交证据复用属于 `github-actions-verification` 的影响判断缺口。Runtime Head 到最终 Head 的完整差异包含 Project Roadmap 与 Architecture 语义变化，因此不能按 `docs-only` 无条件继承旧 Human Review / Authority 结论；PR #38 已通过集成提交 `88a5d7e391be6fa2b61fbe4a5140c082e6ad9f95` 合并；Fresh Runtime Eval 为 `4 / 4 PASS`、断言 `25 / 25 PASS`，隔离与污染检查为 `PASS`，最终 AI Review 为 `PASS`，Blocking / Medium Finding 为 `0 / 0`；
-- Consumer PR #19 新增共享外部资源并发 Finding：不同 PR / ref 的 Review Run 仍争用固定域名与代理名，按 PR / ref 建立 concurrency group 小于真实资源冲突域；Issue 评论标注的 `d2e0b0f47b46` 是当时 Consumer Head，实际修复证据为 `f350ff24ed2169e41dd838c973a1e2ceebe2c761`。PR #40 已定向强化 External Operation Guide 与现有 `github-actions-verification`，不新增 Method / Contract / Skill，也不推广无条件 Repository 级单例；Fresh Runtime Eval 为 `4 / 4 PASS`、断言 `25 / 25 PASS`，隔离与污染检查、最终 AI Review 均为 `PASS`，Blocking / Medium Finding 为 `0 / 0`，并已通过集成提交 `c8903f2ee437ede1ebfa60bb1d34d23dbc29481c` 合并；
-- Consumer PR #19 后续新增 2 个实施判断 Finding：配置治理需要先按维护者、变化来源、稳定性和安全 / 协议约束区分代码常量、产品运营数据、结构元数据、部署配置和流程变量，不能把字面量本身视为缺陷；通用 UI 能力应先核对当前仓库、框架和依赖，只封装项目特有差异，同时保留真实契约不匹配时的自有实现边界。Consumer 已在 `docs/technical/configuration-governance.md` 固化本地规则，并以配置化静态资源保护和复用既有 Image Viewer 提供实现 / 测试证据；PR #41 已定向强化 Operating Guide 与现有 `execute-unit`，不修改 Method / Contract，也不新增 Skill；Fresh Runtime Eval 为 `4 / 4 PASS`、断言 `25 / 25 PASS`，隔离与污染检查、最终 AI Review 均为 `PASS`，Blocking / Medium Finding 为 `0 / 0`；
-- 异步外部执行闭环在 PR #15 / #16 中再次得到正向验证，不重复立项。
+- 当前阶段：**Engineering Capability Expansion & Method Evolution**；
+- 当前阶段切换起点：`master@e1f56238f95a75d95a87b1ad510587d770ae4a63`；
+- Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；
+- 首轮 Greenfield Consumer Experiment：已完成并关闭 Issue #18；
+- Existing Consumer 继续演进实验：Issue #33 当前仍为 `open`；
+- Issue #33 已经形成多轮有效证据，并推动 PR #34、#35、#37、#38、#40、#41 的定向强化；
+- Issue #33 后续是否关闭可以按其自身实验总结独立处理，不再阻塞工程能力扩展阶段；
+- `dygapp/jilinjobs-cms` 继续作为 Reference / Integration Consumer，可用于验证新的 `agentic-dev` baseline、Profile、Skill 与验证能力，但不承担唯一创新来源职责；
+- PR #42 已证明 Research 可以在不改变 Method / Skill Inventory 的情况下主动引入新的工程纪律候选视角。
 
-上述提交是已完成里程碑的证据锚点，不是要求后续工作永久固定使用的静态版本。新的实验或修订开始时，必须读取并记录当时实际使用的精确 `agentic-dev` baseline。
+上述提交和 Issue 是历史证据锚点，不要求后续工作永久固定使用这些静态版本。新的研究、评估或 Consumer Adoption 开始时，必须记录当时实际使用的精确 baseline。
 
 ## 当前核心目标
 
-当前核心目标是：**基于已有真实 Consumer Repository 开展继续演进验证；不重复 Greenfield Bootstrap，也不机械扩展方法与 Skill 清单。**
+当前核心目标是：
 
-当前优先验证载体是 `dygapp/jilinjobs-cms`。它只提供 Consumer Evidence，其项目事实仍由自身 Repository Authority 决定。
+> **在保持 Core Method 稳定和既有权威边界的前提下，建立可主动演进的工程能力体系；从成熟外部实践中提炼 Engineering Discipline、Technology Profile、Verification Profile、Task-oriented Skill 与 Runtime Adapter，并通过专项评估和 Consumer Integration 双重验证持续完善。**
 
-重点验证：
+当前阶段特别避免两种极端：
 
-1. Fresh Agent 能否只依靠已持久化的 Consumer Authority、当前代码与验证证据恢复工作；
-2. 项目路线、Consumer Authority、Specification、必要的 Technical Plan 和长期产物能否随新需求正确增量演进；
-3. 新的真实纵向工作能否完成 `slice-work → readiness-check → execute-unit → converge` 闭环；
-4. 验收义务能否持续闭环到实现责任、验证责任、计划验证证据与已执行的当前证据；
-5. 人工介入是否继续受 Authority、Impact、Reversibility 与 Consumer Repository Policy 约束。
+1. **闭门等待型演进**：只有 Consumer 再次踩坑才允许研究和建设能力；
+2. **机械扩张型演进**：看到一个框架、一个外部 Skill 或一条最佳实践就立即新增 Skill。
+
+正确方向是：成熟证据可以主动推动能力建设，但必须经过分层、边界设计、Targeted Eval、AI Review 和仓库权威固化。
+
+## 分阶段实施计划
+
+### Phase 1 — 演进路线重构
+
+目标：结束“Consumer 持续验证作为唯一核心目标”的阶段定位，明确新的主动演进模型和五条长期 Track。
+
+产物：
+
+- 更新 `AGENTS.md`；
+- 更新本文；
+- 更新 README / Skill 入口中的当前阶段表达。
+
+状态：**已完成**。
+
+### Phase 2 — Engineering Capability Architecture
+
+目标：建立工程能力分层，明确 Method、Engineering Discipline、Technology Profile、Verification Profile、Task-oriented Skill、Runtime Adapter 与 Consumer Project Rule 的职责边界。
+
+产物：
+
+- `docs/architecture/engineering-capability-architecture.md`；
+- 对齐 `skill-architecture.md` 的新 Skill 准入证据规则；
+- 明确能力生命周期和评估要求。
+
+状态：**已完成**。
+
+### Phase 3 — Engineering Discipline Research
+
+目标：从成熟外部项目、官方工程实践和既有 Research 中主动研究跨技术栈工程纪律。
+
+首批优先方向：
+
+- Implementation Minimality；
+- Surgical Change / Diff Scope；
+- Code Review；
+- Testing；
+- Refactoring；
+- Dependency Management；
+- API Evolution；
+- Performance / Security / Error Handling。
+
+每个方向应先 Research，再判断是否属于现有 Embedded Discipline 的补强、独立规范，或真正需要 Skill 化。
+
+状态：**下一步**。
+
+### Phase 4 — Technology Profile Research
+
+目标：先建立 Technology Profile 通用结构，再逐项研究技术栈，不在一个大任务中一次完成全部框架。
+
+建议首批顺序：
+
+1. Vue 3 + TypeScript；
+2. Element Plus；
+3. Spring Framework / Spring Boot / Spring MVC；
+4. Gradle。
+
+每个技术研究应优先使用官方权威资料，再以成熟开源项目和工程实践补充，并明确版本、适用边界、默认规则、常见误用和 Verification Profile。
+
+状态：**后续阶段**。
+
+### Phase 5 — Engineering Skills & Targeted Eval
+
+目标：从 Discipline / Profile 中识别真正具有稳定过程的任务型能力，并建立专项行为评估。
+
+候选形态可以包括：
+
+- frontend component change；
+- frontend visual convergence；
+- Spring web endpoint change；
+- database schema change；
+- dependency / framework upgrade。
+
+这些只是候选任务形态，不表示已经决定创建对应 Skill。
+
+状态：**后续阶段**。
+
+### Phase 6 — Consumer Adoption & Runtime Evolution
+
+目标：推动 Reference Consumer 主动升级并采用新能力，同时逐步建设运行时适配与分发方案。
+
+主要验证：
+
+- Existing Consumer baseline upgrade 是否能正确选择新 Profile / Skill；
+- 通用 Profile 与 Consumer-local Authority 是否能正确组合；
+- 新能力是否真实改善实现和验证质量；
+- 是否存在需要回写 `agentic-dev` 的冲突或缺口；
+- Codex / Claude Code / Cursor 等 Runtime 是否需要独立 Adapter。
+
+状态：**后续阶段**。
 
 ## 下一步工作
 
-1. 继续让 Fresh Agent 依靠 Consumer Repository Authority 恢复项目状态，并以新的真实纵向工作验证其增量演进能力；
-2. 实验形成 Final Summary 前保持 Issue #33 `open`；当已有 Consumer 继续演进实验取得足够的纵向工作证据后，形成 Final Summary，并据此判断 Issue 的关闭状态与后续条件性工作。
+当前 Phase 1 与 Phase 2 完成并集成后，按以下顺序继续：
 
-## 尚未确定与条件性后续
+1. 对 Engineering Discipline Expansion 做一次范围设计，避免一次研究全部纪律；
+2. 选择第一批 1～2 个高价值纪律完成独立 Research → Candidate → Eval 设计闭环；
+3. 建立 Technology Profile 的最小通用结构和质量门槛；
+4. 进入 Vue 3 + TypeScript 的第一项 Technology Profile 研究；
+5. 完成一项 Profile 后再判断是否进入 Element Plus 或 Spring，不把所有技术栈塞入同一执行任务。
 
-- `dygapp/jilinjobs-cms` 的下一个真实纵向切片尚未选择，应由其当前 Repository Authority 和真实项目需要决定；
-- 当前证据不支持新增独立 Project Roadmap / Bootstrap Skill；只有后续跨项目真实使用证明存在稳定、独立且可复用的操作职责缺口时才重新评估；
-- 不继续扩大方法论研究样本；
-- Distribution、Bootstrap 自动化、Controller / Runtime Orchestration 和新的 Skill 只在真实证据满足触发条件时评估。
+## Issue #33 的后续角色
+
+Issue #33 继续作为 Existing Consumer continuous-evolution experiment 的历史与剩余证据跟踪，不再承担 `agentic-dev` 下一阶段路线的总控职责。
+
+如果该实验已经达到原始 Goal，可以独立形成 Final Summary 并决定是否关闭；即使保持 `open`，也不阻止 Engineering Capability Expansion 的主动研究与建设。
+
+未来新的能力采用实验可以复用 `jilinjobs-cms`，但应围绕具体 Profile、Skill 或 baseline upgrade 建立清晰目标，而不是无限延长一个总 Experiment 来承载所有后续演进。
 
 ## 新上下文恢复顺序
 
 新的 `agentic-dev` 工作上下文应：
 
 1. 读取根目录 `AGENTS.md`；
-2. 读取本文，确认当前路线、已完成里程碑、当前基线和下一步工作；
+2. 读取本文，确认当前阶段、演进 Track 和下一步工作；
 3. 读取当前 GitHub `master`，验证是否存在晚于本文的新集成状态；
-4. 如果执行 Method 修订，重新读取 Method、Architecture、Contract、Decision、Operating Guide 与相关 Skills；
-5. 如果进入 Consumer 验证，切换到 Consumer Repository 并读取其当前默认分支与 Repository Authority；
-6. 不依赖 Issue #18、历史聊天或个人记忆补充未固化的项目事实。
+4. 涉及工程能力分层时读取 `docs/architecture/engineering-capability-architecture.md`；
+5. 涉及 Skill 时继续读取 `skill-architecture.md`、`skill-contracts.md` 与相关 Skill；
+6. 涉及具体研究时只加载相关 Research / Profile / Eval，不默认加载所有技术资料；
+7. 进入 Consumer Adoption 时切换到 Consumer Repository 并读取其当前默认分支与 Repository Authority；
+8. 不依赖历史聊天或个人记忆补充未固化的项目事实。
 
 ## 更新触发条件
 
 出现以下任一情况时，应更新本文：
 
-- 一个项目级里程碑完成、取消或被替代；
-- 当前阶段或当前核心目标改变；
-- 已确定的下一步工作完成或顺序发生变化；
-- 新的真实证据使条件性后续工作进入正式计划；
+- 一个项目级 Phase 或 Track 完成、取消或被替代；
+- 当前阶段或核心目标改变；
+- 首批 Engineering Discipline / Technology Profile 进入正式基线；
+- 新 Skill 或 Runtime Adapter 进入正式 Inventory；
+- Consumer Adoption 产生会改变总体演进方向的重要证据；
 - 当前路线与 GitHub `master`、Issue、PR 或评估证据不再一致。
 
 普通局部实现、单个 Execution Unit 状态变化或没有项目级影响的修订，不要求更新本文。

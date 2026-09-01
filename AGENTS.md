@@ -2,11 +2,11 @@
 
 ## 仓库目标
 
-本仓库用于定义一套通用的 AI Agent（以下简称 Agent）驱动软件开发方法，并实现一组小型、可组合的 Skill。
+本仓库用于定义一套通用的 AI Agent（以下简称 Agent）驱动软件开发方法，并维护工程纪律、技术栈 Profile、验证 Profile、小型可组合 Skill 与运行时适配等可复用工程能力。
 
 **方法定义高于 Skill 实现。**
 
-Skill 只能实现方法，不允许通过修改 `SKILL.md` 暗中改变方法。
+Skill 必须实现 Method / Architecture 已明确允许的可复用职责，不允许通过修改 `SKILL.md` 暗中改变 Method、Architecture 或 Repository Authority。
 
 ## 权威顺序
 
@@ -15,13 +15,14 @@ Skill 只能实现方法，不允许通过修改 `SKILL.md` 暗中改变方法�
 1. `AGENTS.md`
 2. `docs/method/ai-development-method.md`
 3. `docs/method/principles.md`
-4. `docs/architecture/skill-architecture.md`
-5. `docs/architecture/skill-contracts.md`
-6. `docs/decisions/method-decisions.md`
-7. `docs/project/*`
-8. `docs/guides/git-commit-guidelines.md`
-9. `docs/research/*`
-10. Tasks 与临时工作记录
+4. `docs/architecture/engineering-capability-architecture.md`
+5. `docs/architecture/skill-architecture.md`
+6. `docs/architecture/skill-contracts.md`
+7. `docs/decisions/method-decisions.md`
+8. `docs/project/*`
+9. `docs/guides/git-commit-guidelines.md`
+10. `docs/research/*`
+11. Tasks 与临时工作记录
 
 `docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行规则，不得覆盖更高优先级 Method、Architecture 或 Contract Authority，也不得被 Consumer Repository 自动继承。
 
@@ -55,13 +56,17 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 当前处于：
 
-> **Skill Operationalization & Method Validation**
+> **Engineering Capability Expansion & Method Evolution（工程能力扩展与方法演进）**
 
-第一批 8 个核心 Skill 的历史 Skill 工程（Skill Engineering）基线已关闭。Issue #18 触发的验收到验证闭环定向强化也已完成评估、复核和人工集成；这没有改变核心 Skill 清单，没有新增独立 `verify-evidence`，也没有弱化 `converge`。
+第一批 8 个核心 Skill 的历史 Skill 工程（Skill Engineering）基线、首轮真实 Consumer Experiment，以及随后针对验收闭环、外部操作、验证证据、Human Review、共享资源和配置责任等问题的定向强化均已完成。核心开发方法已经经过一轮真实 Consumer 的充分验证，进入相对稳定的持续维护阶段。
 
-项目演进路线、已完成里程碑、当前证据基线、当前核心目标和下一步工作统一记录在 `docs/project/project-roadmap.md`。新的工作上下文必须先读取该文档，并通过当前 GitHub `master` 验证其中的状态。
+当前项目不再把“等待 Consumer 暴露新问题”作为主要演进模式。后续可以主动研究并吸收官方权威实践、成熟开源工程经验、专家方法和其他高质量外部证据；在通过能力分层、专项评估、AI Review 和当前仓库权威固化后，再推动 Consumer 采用并以真实实践持续纠偏。
 
-现阶段的核心目标是基于已有真实 Consumer Repository 开展继续演进验证。后续只有新的真实使用证据暴露稳定职责缺口时，才重新评估 Method、Contract 或 Skill；不得为了形式完整性新增 Skill、Super-skill 或不必要的流程层级。
+Consumer Evidence 仍然是重要证据来源，但主要承担现实验证、纠偏、优先级调整和长期适用性确认，不再是新增工程能力、Technology Profile 或候选 Skill 的唯一前置条件。
+
+项目演进路线、当前阶段、证据基线、能力建设顺序和下一步工作统一记录在 `docs/project/project-roadmap.md`。工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。
+
+不得因为进入工程能力扩展阶段就机械增加 Skill、Super-skill、Technology Profile 或流程层级。任何候选能力都必须先判断其应属于 Core Method、Engineering Discipline、Technology Profile、Verification Profile、Task-oriented Skill 还是 Runtime Adapter，并保持既有 Authority 与 Integration Boundary。
 
 ## 核心规则
 
@@ -147,10 +152,11 @@ Report
 必须先区分：
 
 - Method / Contract 语义；
+- Engineering Discipline / Technology Profile / Verification Profile / Skill 的职责层次；
 - Skill Packaging / Interoperability 约束；
 - Runtime / Tool-specific 实现细节。
 
-任何外部来源都不能自动覆盖本仓库的方法权威（Method Authority）；需要改变方法时必须通过显式方法决策（Method Decision）。
+外部成熟证据可以主动触发候选能力研究和设计，但任何外部来源都不能自动覆盖本仓库的方法权威（Method Authority）或其他 Repository Authority。需要改变 Method 时必须通过显式方法决策（Method Decision）；需要建立其他长期能力时必须按工程能力架构完成分层、验证和权威固化。
 
 ## Git Commit
 

@@ -8,17 +8,21 @@
 
 ## D-001 — 停止继续横向扩展参考框架
 
-**决定：**
+**状态：** Superseded by D-022
 
-当前对照样本固定为：
+**历史决定：**
+
+当时的核心方法对照样本固定为：
 
 - `mattpocock/skills`
 - `github/spec-kit`
 - `obra/superpowers`
 
-**原因：**
+**历史原因：**
 
-核心方法维度已经得到交叉验证。继续增加框架的边际收益较低，并容易重新陷入无法收敛的比较。
+核心方法维度当时已经得到交叉验证。继续增加总体方法框架的边际收益较低，并容易重新陷入无法收敛的比较。
+
+该决定约束的是当时“继续扩大总体方法论样本”的研究阶段。随着第一批 Core Method / Skills 和真实 Consumer 验证完成，项目进入工程能力扩展阶段；继续把它解释为“不得主动研究新的框架、技术、工程纪律或专家实践”已经不再适用，因此由 D-022 取代。
 
 ## D-002 — 采用 Method-first 架构
 
@@ -191,7 +195,6 @@ Domain Context 保存跨功能持续有效的业务语言与领域事实，由 C
 
 只有消费者而没有 Producer、Trigger、Update 与 Supersede 等责任，会使 Fresh Agent 无法可靠判断长期事实如何产生以及哪个版本当前有效。将职责分配给拥有相应事实或决定的方法层，同时把具体载体和写入权限留给 Consumer Repository Authority，可以闭合生命周期而不引入新的流程层级或集中式超级能力。
 
-
 ## D-020 — 验收义务必须闭环到当前验证证据
 
 **决定：**
@@ -235,3 +238,27 @@ Project Roadmap 不替代 Specification、Technical Plan、Execution Unit、临�
 在 agentic-dev 与首个 Consumer 的持续演进中，聊天记忆混乱或进入 Fresh Context 后，仅靠 README、功能产物和任务状态无法稳定恢复真正的项目阶段、当前核心目标与已决定的下一步，常常需要重新分析整个仓库且仍可能得出错误状态。通用的“只检查本次新增或重大修改产物”规则也无法发现一个根本未被修改、却已因里程碑完成而陈旧的既有路线图。
 
 条件性 Project Roadmap 补足的是项目级发现与恢复入口；窄范围的收敛检查闭合其更新责任，同时避免把所有项目模板化或扩张 Skill 清单。
+
+## D-022 — 工程能力演进采用主动研究与双重验证
+
+**决定：**
+
+在第一批 Core Method / Skills 和首轮真实 Consumer 验证完成后，`agentic-dev` 不再把 Consumer Evidence 作为所有后续工程能力建设的唯一前置条件。
+
+官方权威实践、成熟开源工程经验、专家方法与研究可以主动触发 Research 和候选能力设计；候选能力必须先按 Engineering Capability Architecture 判断属于 Engineering Discipline、Technology Profile、Verification Profile、Task-oriented Skill 或 Runtime Adapter，再经过适用的 Targeted Eval、AI Review 和 Repository Authority 固化。
+
+Consumer Adoption 继续承担真实工程环境中的验证与纠偏职责。成熟外部证据与 Consumer Evidence 构成互补关系：前者可以主动提供经过行业实践积累的起点，后者检验这些能力在具体 Repository Authority 和真实约束下是否成立。
+
+**不采用：**
+
+- 只有 Consumer 再次出现缺陷或失败，才允许研究新的工程能力；
+- 看到一个外部项目、框架或 Skill 就直接复制到本仓库；
+- 把每个 Technology Profile 机械转换成 Skill；
+- 因为进入工程能力扩展阶段就重新设计已经稳定的 Core Method；
+- 用单一低权威、过时或不可追溯的外部观点直接建立规范性能力。
+
+**原因：**
+
+首轮 Consumer 已经充分验证核心方法与 Skill 组合的可运行性，并通过 Existing Consumer 的多轮增量实践推动了若干定向强化。继续把同一个 Consumer 当作唯一创新来源会使 `agentic-dev` 被动等待偶发问题，也无法系统吸收框架官方实践和成熟工程经验。
+
+另一方面，外部成熟实践只有经过来源、基线、适用范围、时效性、冲突和可验证性检查，并经过专项评估与当前仓库权威固化，才能成为 `agentic-dev` 的长期能力。该边界使项目能够主动站在成熟实践基础上演进，同时避免重新回到无边界横向比较和机械 Skill 扩张。
