@@ -1,6 +1,6 @@
 # agentic-dev
 
-面向 AI Agent 驱动软件开发的方法体系与可组合 Skills 实现仓库。
+面向 AI Agent 驱动软件开发的方法体系、工程能力架构与可组合 Skills 实现仓库。
 
 ## 快速开始
 
