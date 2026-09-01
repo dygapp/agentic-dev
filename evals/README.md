@@ -275,6 +275,24 @@ Issue #33 的 Consumer PR #19 表明：不同 PR / ref 的 Workflow Run 可能�
 
 附件 SHA-256：`cf13bd24c21f30c4092d7873b5215ae0ad61e785304630cbcdc84627c5720be4`。所有进程均以状态码 `0` 完成，JSONL 均包含完整最终回答与 `turn.completed`；进程退出码未被当作 PASS。stderr 中的 Codex 模型列表刷新超时没有中断场景执行，记录为非阻塞 Runtime Observation；附件没有暴露精确 Runtime 版本或模型名，本轮结论不依赖该信息。
 
+## 实施判断责任边界针对性扩展
+
+Issue #33 的 Consumer PR #19 进一步表明：把“硬编码审计”机械理解为外部化所有字面量，会混淆稳定代码常量、管理员运营数据、结构元数据、部署差异和 CI / 评审参数的维护责任；从零实现框架已经提供的通用 UI 能力，也会把项目特有差异与通用生命周期重复耦合。
+
+本次不修改 Method 或 Skill Contract，不新增 Skill，也不推广 Consumer 的 Spring、CMS 或 Element Plus 选择；只定向强化 Operating Guide 与现有 `execute-unit`，并增加 2 个 Behavior 场景：
+
+- `B-EU-07`：按维护者、变化来源、稳定性和安全 / 协议约束分类配置责任，拒绝只为消除字面量而创建万能设置表；
+- `B-EU-08`：先核对仓库、框架、标准库与已有依赖的能力，只用薄适配层承载项目差异，同时保留基于真实契约不匹配采用自有实现的边界。
+
+定向运行同时回归：
+
+- `B-EU-01`：真实 one-unit 实施、仓库验证与当前证据闭环保持有效；
+- `B-EU-06`：实现存在和主路径仍不能替代执行单元承担义务的当前验证。
+
+### 当前状态
+
+Fresh Runtime Eval 与人工逐断言语义评分：`PENDING`。进程退出成功不能替代语义评分，场景运行前不得将本节记为 PASS。
+
 ## 文件结构
 
 ```text
