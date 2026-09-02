@@ -136,7 +136,7 @@ agentic-dev 才开始研究
 - Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；
 - Phase 1 — 演进路线重构：已完成；
 - Phase 2 — Engineering Capability Architecture：已完成；
-- Phase 3 — Engineering Discipline Research：当前；
+- Phase 3 — Engineering Discipline Formalization：当前；
 - WI-01 — 工程纪律范围设计：已完成，结果见 `docs/project/engineering-discipline-scope.md`；
 - WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成，状态为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
 - WI-03 — 精准修改与差异范围控制：Research / Candidate Design 已完成，状态同样为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
