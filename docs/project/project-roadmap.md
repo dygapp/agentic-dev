@@ -35,6 +35,14 @@
 
 本阶段从“主要等待 Consumer 暴露问题后定向修补”，转向“主动研究成熟外部实践、形成工程能力、建立专项评估，再推动 Consumer 采用和纠偏”。
 
+当前阶段采用一个明确有限的项目里程碑作为收敛边界：
+
+> **Engineering Capability Foundation v1（工程能力基础版 v1）**
+
+其完成定义、五个剩余阶段、范围冻结规则和 Post-v1 Backlog 统一见：
+
+`docs/project/engineering-capability-foundation-v1.md`
+
 ## 总体演进路线
 
 | 路线 | 状态 | 当前目标 |
@@ -43,10 +51,11 @@
 | 完成第一批核心 Skill 工程 | 已完成 | 8 个 Core Skills 实现、Packaging Hardening、Fresh Runtime Eval 与 Closure Review 完成 |
 | 完成首轮方法与 Skill 实证验证 | 已完成 | Greenfield Experiment 已完成；Existing Consumer 多轮证据已足以支持阶段切换，Issue #33 独立收尾 |
 | Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
-| Track B — Engineering Discipline Expansion | **当前** | WI-02 / WI-03 的 Research / Candidate Design 均已完成；当前进入 WI-03V，按 `Candidate → Architecture Fit → Draft → Targeted Eval → AI Review → Integration Decision` 验证和集成首批 Discipline |
-| Track C — Technology Engineering Profiles | 下一步 | 只有首批 Discipline 经 WI-03V 验证并实际集成后，才建立 Technology Profile / Verification Profile 最小契约 |
-| Track D — Engineering Skills & Verification | 后续 | 从稳定工程过程提炼 Task-oriented Skill，建立对应专项评估，不按框架名称机械创建 Skill |
-| Track E — Adoption / Runtime / Distribution | 后续 | 推动 Existing Consumer baseline upgrade、运行时适配和后续分发能力；不要求立即实现 Marketplace 或统一 Controller |
+| Track B — Engineering Discipline Expansion | **当前** | WI-02 / WI-03 的 Research / Candidate Design 均已完成；当前进入 WI-03V，验证和集成 Foundation v1 固定的首批两个 Discipline |
+| Track C — Technology Engineering Profiles | 下一步 | Foundation v1 只建立 Technology Profile 最小契约并完成一个 Vue 3 + TypeScript Profile；第二个及后续 Profile 进入 Post-v1 Backlog |
+| Track D — Consumer Adoption | 下一步 | Foundation v1 只执行一次受控 Existing Consumer Adoption，用于验证已集成 Discipline / Profile 与 Consumer-local Authority 的组合 |
+| Track E — Engineering Skills | 条件性后续 | Post-v1 候选；Skill 数量不是 Foundation v1 完成指标，只有出现独立稳定职责时才在后续里程碑评估 |
+| Track F — Runtime / Distribution | 条件性后续 | Post-v1 候选；Runtime Adapter、Marketplace、Plugin Bundle、Controller 与统一安装器不属于 Foundation v1 Completion Gate |
 
 ## 工程能力扩展模型
 
@@ -117,15 +126,17 @@ agentic-dev 才开始研究
 | 2026-09-02 | 建立主动工程能力演进架构并完成 Phase 1 / Phase 2 | PR #43，集成提交 `1eb729333b4aa239dfbb1906b623b61e7c1524a9` |
 | 2026-09-02 | 完成 WI-01 工程纪律范围设计并确定首批两个研究方向 | PR #44，集成提交 `070cbb448118a6ee0494063c2d2c8ae689bfb5f3` |
 | 2026-09-02 | 完成 WI-02 实现最小化工程纪律 Research / Candidate Design | PR #45，集成提交 `710ebcbf32d1222c4578c4e2fffe90408070e3d8` |
+| 2026-09-02 | 完成 WI-03 精准修改工程纪律 Research / Candidate Design | PR #46，集成提交 `350e6607bae6101869d97903b56993820ba73265` |
 
 ## 当前证据基线
 
 - 当前阶段：**Engineering Capability Expansion & Method Evolution**；
-- 当前已集成起点：`master@710ebcbf32d1222c4578c4e2fffe90408070e3d8`；
+- 当前有限里程碑：**Engineering Capability Foundation v1**；
+- 当前已集成起点：`master@350e6607bae6101869d97903b56993820ba73265`；
 - Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；
 - Phase 1 — 演进路线重构：已完成；
 - Phase 2 — Engineering Capability Architecture：已完成；
-- Phase 3 — Engineering Discipline Research：当前；
+- Phase 3 — Engineering Discipline Formalization：当前；
 - WI-01 — 工程纪律范围设计：已完成，结果见 `docs/project/engineering-discipline-scope.md`；
 - WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成，状态为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
 - WI-03 — 精准修改与差异范围控制：Research / Candidate Design 已完成，状态同样为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
@@ -133,8 +144,8 @@ agentic-dev 才开始研究
 - 首轮 Greenfield Consumer Experiment：已完成并关闭 Issue #18；
 - Existing Consumer 继续演进实验：Issue #33 当前仍为 `open`；
 - Issue #33 已经形成多轮有效证据，并推动 PR #34、#35、#37、#38、#40、#41 的定向强化；
-- Issue #33 后续是否关闭可以按其自身实验总结独立处理，不再阻塞工程能力扩展阶段；
-- `dygapp/jilinjobs-cms` 继续作为 Reference / Integration Consumer，可用于验证新的 `agentic-dev` baseline、Profile、Skill 与验证能力，但不承担唯一创新来源职责；
+- Issue #33 后续是否关闭可以按其自身实验总结独立处理，不再阻塞 Foundation v1；
+- `dygapp/jilinjobs-cms` 继续作为 Reference / Integration Consumer，并作为 Foundation v1 一次受控 Consumer Adoption 的优先候选；
 - WI-02 研究综合 YAGNI、Simple Design、Google Engineering Practices、Sandi Metz、Go 官方实践和本地证据，当前没有发现需要修改 Core Method 或 Engineering Capability Architecture 的缺口；
 - WI-03 研究综合 Google Small CL / Review Practices、Linux Patch Discipline、Martin Fowler Opportunistic / Preparatory Refactoring 与 PR #42，当前同样没有发现新的 Method / Architecture / Skill 职责缺口；
 - 两个 Candidate 已证明职责可独立描述：WI-02 处理复杂度正当性，WI-03 处理最终差异范围正当性；是否正式组合进入基线由 WI-03V 的 Architecture Fit Review 与 Targeted Eval 决定。
@@ -145,21 +156,40 @@ agentic-dev 才开始研究
 
 当前核心目标是：
 
-> **对首批两个 Engineering Discipline Candidate 执行正式 Architecture Fit Review，形成未集成 Draft Capability 和必要的薄消费入口，通过 Fresh Runtime Targeted Eval 与回归验证，再对通过验证的 Draft 执行最终 AI Review；在真正集成前不进入 Technology Profile。**
+> **完成 Engineering Capability Foundation v1 的五个剩余阶段，并在预先定义的完成边界处正式关闭本轮工程能力基础建设，而不是持续增加新的 Discipline、Profile、Skill 或 Runtime 范围。**
 
-当前阶段特别避免三种极端：
+五个剩余阶段固定为：
+
+1. **F1 — 首批 Engineering Discipline 正式化：当前**；
+2. **F2 — Technology Profile 最小契约：待开始**；
+3. **F3 — Vue 3 + TypeScript Profile：待开始**；
+4. **F4 — 一次 Existing Consumer Adoption：待开始**；
+5. **F5 — Foundation v1 Closure：待开始**。
+
+范围冻结规则为：
+
+- Foundation v1 的首批 Engineering Discipline 固定为两个；
+- Foundation v1 的 Technology Profile 固定为一个：Vue 3 + TypeScript；
+- 新增 Skill 数量不是 Foundation v1 完成指标；
+- Runtime / Distribution 不属于 Foundation v1 Completion Gate。
+
+完整规则见 `docs/project/engineering-capability-foundation-v1.md`。
+
+当前阶段继续避免三种极端：
 
 1. **闭门等待型演进**：只有 Consumer 再次踩坑才允许研究和建设能力；
 2. **机械扩张型演进**：看到一个框架、一个外部 Skill 或一条最佳实践就立即新增 Skill；
 3. **研究即规范型演进**：Research / Candidate Design 一完成，就在没有 Draft / Targeted Eval 的情况下直接提升为长期权威。
 
-正确方向是：成熟证据可以主动推动能力建设，但必须经过分层、Architecture Fit、Draft Capability、Targeted Eval、AI Review 和人工 / Repository Integration Boundary。
+此外，本里程碑显式避免第四种风险：
+
+4. **无限扩展型演进**：不断把新发现的有价值方向追加为当前里程碑前置条件，导致完成定义持续后移。
 
 ## 分阶段实施计划
 
 ### Phase 1 — 演进路线重构
 
-目标：结束“Consumer 持续验证作为唯一核心目标”的阶段定位，明确新的主动演进模型和五条长期 Track。
+目标：结束“Consumer 持续验证作为唯一核心目标”的阶段定位，明确新的主动演进模型和长期 Track。
 
 状态：**已完成**。
 
@@ -169,23 +199,13 @@ agentic-dev 才开始研究
 
 状态：**已完成**。
 
-### Phase 3 — Engineering Discipline Research
+### Phase 3 — Engineering Discipline Formalization
 
-目标：从成熟外部项目、官方工程实践和既有 Research 中主动研究跨技术栈工程纪律，并把 Research、Candidate、Draft、Validated Draft 与正式集成能力严格分开。
+目标：把已经完成 Research / Candidate Design 的首批两个 Discipline 按现行能力生命周期正式验证和集成。
 
-当前顺序为：
+当前：**WI-03V**。
 
-1. **WI-01 — 工程纪律范围设计：已完成**；
-2. **WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成，Pending Draft Capability**；
-3. **WI-03 — 精准修改与差异范围控制：Research / Candidate Design 已完成，Pending Draft Capability**；
-4. **WI-03V — 首批工程纪律 Draft 验证与集成门禁：当前**。
-
-两个研究结果见：
-
-- `docs/research/implementation-minimality-and-speculative-complexity-analysis.md`；
-- `docs/research/surgical-change-and-diff-scope-control-analysis.md`。
-
-WI-03V 必须遵循：
+必须遵循：
 
 ```text
 Candidate
@@ -197,71 +217,57 @@ Candidate
 → Human / Repository Integration Decision
 ```
 
+Foundation v1 不增加第三个 Engineering Discipline。
+
 状态：**当前**。
 
-### Phase 4 — Technology Profile Research
+### Phase 4 — Technology Profile Foundation
 
-目标：先建立 Technology Profile 通用结构，再逐项研究技术栈，不在一个大任务中一次完成全部框架。
+目标分两步：
 
-进入前提：**WI-03V 已完成且首批适用 Engineering Discipline 已经实际集成。**
+1. **WI-04**：建立 Technology Profile / Verification Profile 最小契约；
+2. **WI-05**：只完成一个代表性 **Vue 3 + TypeScript** Profile，并走通完整能力生命周期。
 
-建议首批顺序：
-
-1. Vue 3 + TypeScript；
-2. Element Plus；
-3. Spring Framework / Spring Boot / Spring MVC；
-4. Gradle。
-
-每个技术研究应优先使用官方权威资料，再以成熟开源项目和工程实践补充，并明确版本、适用边界、默认规则、常见误用和 Verification Profile。
+Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 以及其他技术 Profile 全部进入 Post-v1 Backlog，不属于当前完成条件。
 
 状态：**后续阶段**。
 
-### Phase 5 — Engineering Skills & Targeted Eval
+### Phase 5 — Consumer Adoption
 
-目标：从 Discipline / Profile 中识别真正具有稳定过程的任务型能力，并建立专项行为评估。
+目标：只执行一次受控 Existing Consumer Adoption，验证正式 Discipline、Vue 3 + TypeScript Profile 与 Consumer-local Authority 的组合。
 
-候选形态可以包括：
-
-- frontend component change；
-- frontend visual convergence；
-- Spring web endpoint change；
-- database schema change；
-- dependency / framework upgrade。
-
-这些只是候选任务形态，不表示已经决定创建对应 Skill。
+Consumer Adoption 出现的 Blocking / Medium 通用问题应修复并重新验证；Low / Future Improvement 可以进入 Post-v1 Backlog，不要求在当前里程碑继续扩展。
 
 状态：**后续阶段**。
 
-### Phase 6 — Consumer Adoption & Runtime Evolution
+### Phase 6 — Foundation v1 Closure
 
-目标：推动 Reference Consumer 主动升级并采用新能力，同时逐步建设运行时适配与分发方案。
+目标：执行 Closure Review，确认 Discipline、Profile、Verification 和一次 Consumer Adoption 已形成完整能力链，并正式标记 Foundation v1 完成。
 
-主要验证：
-
-- Existing Consumer baseline upgrade 是否能正确选择新 Profile / Skill；
-- 通用 Profile 与 Consumer-local Authority 是否能正确组合；
-- 新能力是否真实改善实现和验证质量；
-- 是否存在需要回写 `agentic-dev` 的冲突或缺口；
-- Codex / Claude Code / Cursor 等 Runtime 是否需要独立 Adapter。
+Closure 后才决定下一项目里程碑。Task-oriented Skill 扩展、第二个 Technology Profile、Runtime Adapter 与 Distribution 不自动续接为当前任务。
 
 状态：**后续阶段**。
 
 ## 下一步工作
 
-1. **执行 WI-03V：首批工程纪律 Draft 验证与集成门禁。**
+1. **执行 F1 / WI-03V：首批工程纪律 Draft 验证与集成门禁。**
    - 对 WI-02 / WI-03 Candidate 执行正式 Architecture Fit Review；
-   - 确认两者职责独立、可组合，且落点仍应为 Engineering Discipline 而非 Method / Profile / Skill；
-   - 形成尚未集成的 Draft Capability，以及 `execute-unit` 等消费者需要的最薄 Draft 引用 / 检查；
-   - 将 Candidate Eval 设计物化为针对 Draft 的正式隔离 Runtime Eval；
-   - 至少回归 `B-EU-02`、`B-EU-07`、`B-EU-08` 与 WI-02 必要重构边界；
-   - 执行 Fresh Runtime Targeted Eval 并按断言语义判分；
-   - 失败时返回 Candidate / Draft 修订，不能为推进路线强行集成；
+   - 形成尚未集成的 Draft Capability 与必要薄消费入口；
+   - 将 Candidate Eval 物化为针对 Draft 的正式隔离 Runtime Eval；
+   - 执行 Fresh Runtime Targeted Eval 和必要历史回归；
+   - 失败时返回 Candidate / Draft 修订；
    - PASS 后执行最终 AI Review，达到 `Ready to Integrate`；
    - 最终 Merge / Integration 仍由 Human Authority / Repository Policy 决定。
-2. **只有 WI-03V 的规范性变更实际集成后**，进入 WI-04：Technology Profile 最小契约。
-3. WI-04 完成后进入 Vue 3 + TypeScript Technology Profile 研究。
+2. **F1 实际集成后执行 F2 / WI-04：Technology Profile 最小契约。**
+3. **F2 完成后执行 F3 / WI-05：Vue 3 + TypeScript Profile。**
+4. **F3 实际集成后执行 F4：一次 Existing Consumer Adoption。**
+5. **F4 完成后执行 F5：Foundation v1 Closure Review。**
 
-详细工作项与进入条件见：
+详细范围冻结和完成条件见：
+
+`docs/project/engineering-capability-foundation-v1.md`
+
+具体工作项见：
 
 `tasks/plans/20260901/01-engineering-capability-expansion.md`
 
@@ -269,34 +275,35 @@ Candidate
 
 Issue #33 继续作为 Existing Consumer continuous-evolution experiment 的历史与剩余证据跟踪，不再承担 `agentic-dev` 下一阶段路线的总控职责。
 
-如果该实验已经达到原始 Goal，可以独立形成 Final Summary 并决定是否关闭；即使保持 `open`，也不阻止 Engineering Capability Expansion 的主动研究与建设。
+如果该实验已经达到原始 Goal，可以独立形成 Final Summary 并决定是否关闭；即使保持 `open`，也不阻止 Foundation v1 的主动建设和收敛。
 
-未来新的能力采用实验可以复用 `jilinjobs-cms`，但应围绕具体 Profile、Skill 或 baseline upgrade 建立清晰目标，而不是无限延长一个总 Experiment 来承载所有后续演进。
+Foundation v1 的 Consumer Adoption 应围绕正式 Discipline / Profile 的采用建立清晰目标，不无限延长 Issue #33 来承载所有后续演进。
 
 ## 新上下文恢复顺序
 
 新的 `agentic-dev` 工作上下文应：
 
 1. 读取根目录 `AGENTS.md`；
-2. 读取本文，确认当前阶段、演进 Track 和下一步工作；
-3. 读取当前 GitHub `master`，验证是否存在晚于本文的新集成状态；
-4. 涉及工程能力分层时读取 `docs/architecture/engineering-capability-architecture.md`；
-5. 进入 Phase 3 工程纪律研究时读取 `docs/project/engineering-discipline-scope.md` 与当前 Plan；
-6. 读取已经完成的相关 Discipline Research，明确当前对象处于 Research / Candidate / Draft / Validated Draft / Integrated 中的哪一状态；
-7. 涉及 Skill 时继续读取 `skill-architecture.md`、`skill-contracts.md` 与相关 Skill；
-8. 涉及具体研究时只加载相关 Research / Profile / Eval，不默认加载所有技术资料；
-9. 进入 Consumer Adoption 时切换到 Consumer Repository 并读取其当前默认分支与 Repository Authority；
-10. 不依赖历史聊天或个人记忆补充未固化的项目事实。
+2. 读取本文，确认当前阶段、当前有限里程碑和下一步工作；
+3. 读取 `docs/project/engineering-capability-foundation-v1.md`，确认 F1～F5、范围冻结规则和当前 Completion Scope；
+4. 读取当前 GitHub `master`，验证是否存在晚于本文的新集成状态；
+5. 涉及工程能力分层时读取 `docs/architecture/engineering-capability-architecture.md`；
+6. 进入首批 Discipline 正式化时读取 `docs/project/engineering-discipline-scope.md`、两个相关 Research 与当前 Plan；
+7. 明确当前对象处于 Research / Candidate / Draft / Validated Draft / Integrated 中的哪一状态；
+8. 涉及 Skill 时继续读取 `skill-architecture.md`、`skill-contracts.md` 与相关 Skill；
+9. 涉及具体研究时只加载相关 Research / Profile / Eval，不默认加载所有技术资料；
+10. 进入 Consumer Adoption 时切换到 Consumer Repository 并读取其当前默认分支与 Repository Authority；
+11. 不依赖历史聊天或个人记忆补充未固化的项目事实。
 
 ## 更新触发条件
 
 出现以下任一情况时，应更新本文：
 
-- 一个项目级 Phase 或 Track 完成、取消或被替代；
-- 当前阶段或核心目标改变；
-- 首批 Engineering Discipline / Technology Profile 进入正式基线；
-- 新 Skill 或 Runtime Adapter 进入正式 Inventory；
-- Consumer Adoption 产生会改变总体演进方向的重要证据；
+- 一个项目级 Phase、Track 或 Foundation v1 的 F1～F5 完成、取消或被替代；
+- 当前阶段、当前里程碑或核心目标改变；
+- 首批 Engineering Discipline / Vue 3 + TypeScript Profile 进入正式基线；
+- Foundation v1 Consumer Adoption 产生会改变当前完成定义的重要证据；
+- Foundation v1 Closure 完成；
 - 当前路线与 GitHub `master`、Issue、PR 或评估证据不再一致。
 
-普通局部实现、单个 Execution Unit 状态变化或没有项目级影响的修订，不要求更新本文。
+普通局部实现、单个 Execution Unit 状态变化或 Post-v1 Backlog 新增候选，不要求更新本文，也不得据此扩大当前 Foundation v1 Completion Scope。
