@@ -18,7 +18,8 @@
 5. `systematic-debug` 是 Defect / Unexpected Failure 的调查路径，可以由 `execute-unit` 调用，也可以独立用于缺陷工作；它不替代普通 TDD 的预期失败步骤。
 6. `converge` 负责 Feature-wide 收敛检查。发现 Gap 时描述缺口并触发必要的重新切分或阶段回退，不通过静默修改 Specification / Technical Plan / Domain / Architecture / ADR Authority 来“修平”差异。
 7. Verification-before-claim、Code Review、TDD、Context Discipline 和 Human Escalation 暂继续作为内嵌纪律，不进入第一批独立 Skill。
-8. `handoff` 暂不进入第一批核心 Skill。它属于 Transition Skill，后续在核心 Feature / Defect 路径稳定后再评估。
+8. Implementation Minimality & Speculative Complexity Control 与 Surgical Change & Diff Scope Control 作为独立 Engineering Discipline 由 `execute-unit` 薄消费，不形成新的独立 Skill，也不改变 `execute-unit` 的输入、输出、Stage Return 或 Exit Condition。
+9. `handoff` 暂不进入第一批核心 Skill。它属于 Transition Skill，后续在核心 Feature / Defect 路径稳定后再评估。
 
 ## 2. Contract Matrix
 
@@ -480,13 +481,13 @@ constraints
 3. 从 Repository Rules 与实际仓库状态发现可用 Build / Test / Lint / Verification 方式；不硬编码通用命令，不把未经验证的命令当作事实。
 4. Create JIT Execution Plan if useful。
 5. Establish Expected / Failing Evidence when there is a stable behavior seam。
-6. Implement 当前 Unit 所需最小变更。
+6. Implement 当前 Unit 所需最小变更，并应用当前适用的 Engineering Discipline：新增复杂度应有当前正当性；最终有意义的差异区域应能追溯到当前逻辑变化及其必要责任。该检查不以最少行数 / 文件数为目标，也不得排除当前必要测试、范围受控的行为保持重构、已授权权威同步或本次修改直接产生的 cleanup。
 7. 回到规格追踪 / 验收责任归属检查义务闭环，并执行足以证明当前执行单元所承担义务的定向验证。
 8. 不把实现存在、代码检查、历史证据或未覆盖关键差异的主路径证据当作义务闭环。
 9. 对意外失败调用 `systematic-debug`。
 10. 如果实施暴露长期领域事实缺失、冲突或失效，不在代码 / 测试中提升业务权威；返回 `clarify-intent` / `specify` 完成候选验证和领域权威路由。
 11. 如果实施暴露新的长期架构状态、长期架构决定或架构上下文失效，不在代码或局部即时计划中静默固化；返回 `technical-plan` 完成架构权威更新与必要 ADR 评估。
-12. 按风险需要进行复核，并逻辑区分规格符合性与工程质量。
+12. 按风险需要进行复核，并逻辑区分规格符合性与工程质量；工程质量复核至少确认新增复杂度的当前正当性与最终 diff 的责任可追溯性。
 13. 记录已执行的当前证据，并逐项说明其支持哪些执行单元负责的验收义务；显式归属功能整体验证责任的义务保持 `Pending`，不得由执行单元完成状态冒充已验证。
 
 ### Outputs
@@ -531,6 +532,8 @@ constraints
 ### Allowed Sub-skills / Disciplines
 
 - `systematic-debug`
+- Implementation Minimality & Speculative Complexity Control
+- Surgical Change & Diff Scope Control
 - Verification-before-claim
 - TDD（when useful）
 - Code Review（risk-based discipline）
