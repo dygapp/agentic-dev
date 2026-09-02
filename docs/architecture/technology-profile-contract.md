@@ -185,13 +185,13 @@ Technology Profile 不要求“一项技术一个文件”，也不允许为了�
 - 拆分会产生重复、冲突或使 Agent 无法可靠应用规则；
 - 每个组成技术仍保留独立的版本 / 适用范围和证据锚点。
 
-例如 Foundation v1 可以建立：
+Foundation v1 已冻结唯一代表性 Profile 目标名称为：
 
 > **Vue 3 + TypeScript Technology Profile**
 
-因为组件模型、响应式状态、模板类型检查、Composition API 与 TypeScript 类型边界会共同影响前端实现和验证。
+这一名称只定义当前里程碑的研究对象，不预先证明 Vue 3 与 TypeScript 的哪些具体规则必须合并。WI-05 必须通过当时当前的官方资料、成熟实践和 Targeted Eval 判断联合规则的真实边界；如果部分知识可以独立表达，应在同一代表性 Profile 内保持清晰分区、独立版本 / 适用范围和证据锚点，而不是为了“组合”制造不存在的共同规则。
 
-但 Element Plus 不因为常与 Vue 一起使用就自动进入同一 Profile；只有研究证明它与 Profile 当前职责存在不可合理分离的稳定工程边界时才可调整，否则保持 Post-v1 独立候选。
+Element Plus 不因为常与 Vue 一起使用就自动进入同一 Profile；只有未来独立研究证明其与当前 Profile 职责存在不可合理分离的稳定工程边界，并且新的项目里程碑允许扩大范围时才可调整。Foundation v1 内继续保持 Post-v1 候选。
 
 当一个组合 Profile 逐渐包含多个可独立演进的框架、工具和大量无关规则时，应评估拆分，而不是继续扩充一个“前端大全”。
 
