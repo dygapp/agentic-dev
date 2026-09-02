@@ -29,8 +29,9 @@
 当前进度快照：
 
 - **F1 / WI-03V 已完成**：PR #48 已合并，集成提交为 `6130d7251d81bbfc9f13b2dd827b6a40dfd09076`；首批两个 Engineering Discipline 已完成 Fresh Runtime `13 / 13 PASS`、`62 / 62 assertions PASS` 并进入当前 Repository Authority；
-- **F2 / WI-04 当前**：建立 Technology Profile / Verification Profile 最小契约；
-- F3 / WI-05、F4、F5 尚未开始。
+- **F2 / WI-04 已完成**：PR #49 已合并，集成提交为 `16151149ab52211e266839a110fc9a3c73415623`；Technology Profile / Verification Profile 最小契约与 `docs/technology-profiles/` 实例入口已进入当前 Repository Authority；
+- **F3 / WI-05 当前**：PR #50 已形成 Vue 3 + TypeScript Validated Draft，Fresh Runtime Targeted Eval 为 `9 / 9 PASS`、`41 / 41 assertions PASS`，当前待最终 AI Review 与 Integration Decision；
+- F4、F5 尚未开始。
 
 当前状态以 `docs/project/project-roadmap.md` 为准；本节只提供与本里程碑完成边界对应的进度快照，不另建第二套路线路径。
 
@@ -70,7 +71,7 @@ Foundation v1 **不以能力数量最大化为目标**，也不要求在一个�
 
 ### F1 — 首批 Engineering Discipline 正式化
 
-对应 WI-03V。**当前已完成。**
+对应 WI-03V。**已完成。**
 
 目标：
 
@@ -95,7 +96,7 @@ Foundation v1 **不以能力数量最大化为目标**，也不要求在一个�
 
 ### F2 — Technology Profile 最小契约
 
-对应 WI-04。**当前。**
+对应 WI-04。**已完成。**
 
 目标：定义 Technology Profile / Verification Profile 的最小结构和治理边界，而不是开始堆叠具体框架知识。
 
@@ -115,11 +116,15 @@ Foundation v1 **不以能力数量最大化为目标**，也不要求在一个�
 - 不形成框架百科模板；
 - 不预设任何 Profile 必须生成 Skill。
 
+当前证据：PR #49 已将 `docs/architecture/technology-profile-contract.md`、Profile 实例目录和相关 Authority 实际集成，因此 F2 已关闭。
+
 ### F3 — 一个代表性 Technology Profile
 
 对应 WI-05，Foundation v1 固定使用：
 
 > **Vue 3 + TypeScript**
+
+**当前：Validated Draft / Targeted Eval PASS / Pending Integration。**
 
 目标：以官方当前有效资料为主、成熟工程实践为辅，完整走通一次：
 
@@ -133,6 +138,16 @@ Research
 → AI Review
 → Integration Decision
 ```
+
+当前证据：
+
+- Vue stable research anchor：`3.5.42`；
+- TypeScript research anchor：`7.0.2`；
+- Vue Language Tools research anchor：`3.3.11`；
+- `C-VTS-01`～`C-VTS-09`：`9 / 9 PASS`；
+- assertions：`41 / 41 PASS`；
+- 未发现 Eval contamination；
+- PR #50 实际合并前仍不能把 F3 标记为已完成。
 
 完成条件：
 
@@ -273,8 +288,8 @@ Foundation v1 的进度只使用固定五个阶段表达：
 
 ```text
 F1 Discipline Formalization       已完成
-F2 Technology Profile Contract    当前
-F3 Vue 3 + TypeScript Profile     待开始
+F2 Technology Profile Contract    已完成
+F3 Vue 3 + TypeScript Profile     当前（Validated Draft / Pending Integration）
 F4 Consumer Adoption              待开始
 F5 Foundation v1 Closure          待开始
 ```
