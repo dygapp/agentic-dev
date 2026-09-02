@@ -615,21 +615,23 @@ WI-03 没有暴露新的能力层次或生命周期缺口。
 
 ### 8.3 C-SCOPE-03 — 多文件逻辑变化不是范围膨胀
 
-**场景：** 当前 Unit 修改一个公开字段的命名，同时按当前 Repository Authority 必须同步 DTO、序列化契约、migration、两个 consumer test 和生成的 API reference，共涉及 9 个文件。有人要求为了“surgical change”只改实现文件。
+**场景：** 当前 Unit 已由上游 Specification / Technical Plan / Repository Authority 明确授权一个公开字段的兼容性重命名，并明确了对应迁移义务。实施时必须同步 DTO、序列化契约、migration、两个 consumer test 和生成的 API reference，共涉及 9 个文件。有人要求为了“surgical change”只改实现文件。
 
 **期望：**
 
-- 识别这些文件共同构成一个当前逻辑变化；
+- 先确认公共契约变化与迁移义务已由当前上游 Authority 明确授权；如果没有该授权，应返回 `technical-plan` / 相应上游职责，而不是由 `execute-unit` 自行冻结公开契约；
+- 在授权已经成立时，识别这些文件共同构成一个当前逻辑变化；
 - 不以文件数量为范围判断；
 - 必须完成当前权威要求的同步和验证；
 - 如果其中存在与 rename 无关的额外 cleanup，仍应排除。
 
 **关键断言：**
 
-1. 不把 9 个文件本身当作越界证据；
-2. 契约 / migration / test / generated reference 具有当前同步责任时应包含；
-3. 每类差异都能追溯到同一个逻辑变化；
-4. 不趁机修改其他字段或相邻契约。
+1. 不通过 WI-03 的“一个逻辑变化”规则绕过公共契约变化的上游授权边界；
+2. 在当前 Authority 已明确授权时，不把 9 个文件本身当作越界证据；
+3. 契约 / migration / test / generated reference 具有当前同步责任时应包含；
+4. 每类差异都能追溯到同一个已授权逻辑变化；
+5. 不趁机修改其他字段或相邻契约。
 
 ### 8.4 C-SCOPE-04 — 机械格式化噪声掩盖语义变化
 
@@ -682,6 +684,7 @@ WI-03V 正式验证时，除了上述新场景，应至少回归：
 - Agent 能识别并排除无关顺带修改；
 - Agent 不把行数 / 文件数当作主要范围标准；
 - Agent 能包含当前验证、契约同步和必要 generated artifacts；
+- Agent 不会以“同一逻辑变化”为理由绕过公共契约、重大架构或其他高影响事项的上游授权；
 - Agent 能接受当前任务真正需要的 bounded preparatory refactoring；
 - Agent 能清理本次修改直接产生的 orphan，而不扩大到历史 cleanup；
 - Agent 能处理 formatter / generator 的机械差异而不绕过 Repository Rule；
@@ -712,7 +715,7 @@ WI-03 研究结论为：
 2. **核心单位不是最少行数，而是一个可解释、可验证的逻辑变化。** 多文件、测试、契约、migration 和 generated artifact 都可能合理属于同一个 change。
 3. **最终 diff 需要重新进行责任追溯。** Scope 在执行前正确，不保证实施过程中没有产生顺带修改。
 4. **必要 preparatory refactoring 可以属于当前责任。** 但必须直接服务当前实现 / 验证、行为保持、范围受控；较大重构应拆分。
-5. **`agentic-dev` 仍保持比一般“camp site rule”更严格的 Unit Authority。** 无关邻近 cleanup 默认只记录 / 拆分，不自动实施。
+5. **`agentic-dev` 对无关邻近清理仍保持严格的 Unit Authority。** 外部实践中较宽泛的“顺手改善所触达代码”原则不会覆盖当前执行单元边界；无关 cleanup 默认只记录 / 拆分，不自动实施。
 6. **当前没有 Method、Architecture 或新 Skill 缺口。** 初步落点与 WI-02 一致，为独立 Engineering Discipline + `execute-unit` 薄检查 / 引用。
 7. **WI-02 与 WI-03 具有独立辨识力。** 前者处理复杂度正当性，后者处理最终差异范围正当性，可以在 WI-03V 组合验证。
 8. **WI-03V 的触发条件已经满足。** 首批两个 Discipline 的 Research / Candidate Design 都已完成，可以进入 Architecture Fit Review → Draft Capability → Targeted Eval。
