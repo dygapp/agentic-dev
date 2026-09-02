@@ -21,10 +21,11 @@ Skill 必须实现 Method / Architecture 已明确允许的可复用职责，不
 7. `docs/decisions/method-decisions.md`
 8. `docs/architecture/engineering-disciplines.md`
 9. `docs/architecture/technology-profile-contract.md`
-10. `docs/project/*`
-11. `docs/guides/git-commit-guidelines.md`
-12. `docs/research/*`
-13. Tasks 与临时工作记录
+10. `docs/technology-profiles/*`
+11. `docs/project/*`
+12. `docs/guides/git-commit-guidelines.md`
+13. `docs/research/*`
+14. Tasks 与临时工作记录
 
 `docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行规则，不得覆盖更高优先级 Method、Architecture、Contract、Engineering Discipline 或 Technology Profile Authority，也不得被 Consumer Repository 自动继承。
 
