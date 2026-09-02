@@ -6,9 +6,27 @@
 
 本 Plan 只协调当前 WI-05，不改变 Foundation v1 的完成边界。
 
+## 当前状态
+
+**Validated Draft / Targeted Eval PASS / Pending Final AI Review & Integration**
+
+- Research：已完成；
+- Architecture Fit：已完成；
+- Draft Profile + Verification Profile：已完成；
+- Capability Eval harness：已完成；
+- Fresh Runtime Targeted Eval：`9 / 9 PASS`；
+- Assertions：`41 / 41 PASS`；
+- Runtime contamination：未发现；
+- Final AI Review：待完成；
+- Integration：待 Human / Repository Decision。
+
+PR #50 实际合并前，F3 仍不能标记为已完成，也不能进入 F4 Consumer Adoption。
+
 ## 当前基线
 
 - `agentic-dev`: `master@16151149ab52211e266839a110fc9a3c73415623`
+- 待集成 PR：#50
+- 受测 Profile 语义 Blob：`999911e83b23389d16f9cbbadeb4d5c29f56de75`
 - Vue 稳定研究锚点：`vue@3.5.42`
 - Vue 3.6：当前仍为 RC，不进入本轮规范基线
 - TypeScript 稳定研究锚点：`7.0.2`
@@ -19,6 +37,10 @@
 研究证据：
 
 `docs/research/vue3-typescript-profile-analysis.md`
+
+Runtime 结果包 SHA-256：
+
+`abf788b5e51db9fdc145d73dd6eafc16a99a6d3417dbd81b0aa00e538e22a088`
 
 ## 权威输入
 
@@ -32,7 +54,7 @@
 - `docs/project/engineering-capability-foundation-v1.md`
 - `docs/project/project-roadmap.md`
 - `docs/research/vue3-typescript-profile-analysis.md`
-- `evals/README.md`
+- `evals/capability/README.md`
 - `evals/run_codex_evals.py`
 
 ## 范围
@@ -77,9 +99,17 @@ Research
 → Human / Repository Integration Decision
 ```
 
+当前已推进到：
+
+```text
+Fresh Runtime Eval PASS
+→ Final AI Review（当前）
+→ Ready to Integrate
+```
+
 ## Architecture Fit
 
-当前 Candidate 初步判断：
+当前结论：
 
 - 层次：Technology Profile；
 - 形式：一个 Vue 3 + TypeScript 组合 Profile；
@@ -88,15 +118,23 @@ Research
 - Skill：新增 0；
 - Method：不变。
 
-正式 Draft 前必须重新确认：
+已确认：
 
 - Vue-specific、TypeScript-specific 与联合工具链规则可以清晰分区；
 - 组合不是因为“常一起使用”，而是存在 SFC 类型检查、Vue macros、template typing、Vue Language Tools 等真实联合决策边界；
-- Consumer-local versions / architecture / commands 继续高于 Profile Engineering Defaults。
+- Consumer-local versions / architecture / commands 继续高于 Profile Engineering Defaults；
+- Element Plus-specific API 继续位于本 Profile Authority 之外。
 
-## Targeted Eval 门禁
+## Targeted Eval 结果
 
-计划物化 `C-VTS-01`～`C-VTS-09`，至少覆盖：
+`C-VTS-01`～`C-VTS-09` 已全部执行并逐 assertion 语义判分：
+
+```text
+Capability scenarios: 9 / 9 PASS
+Assertions:           41 / 41 PASS
+```
+
+覆盖：
 
 - Vite build 与 Vue-aware type-check 分离；
 - computed / watcher 职责；
@@ -108,14 +146,17 @@ Research
 - Element Plus authority boundary；
 - 风险驱动的验证扩展。
 
-Eval 必须：
+Eval 完整性：
 
 - 每个场景使用独立 Fresh `codex exec --ephemeral --json`；
-- Runtime 只看到声明的 Profile / context，不看到 expected behavior / assertions / 历史结果；
-- 不通过创建 Skill 来激活 Profile；
-- 进程退出码不等于 PASS；
-- 人工逐 assertion 语义判分；
-- Draft 语义修改后，旧 Runtime 结果不得自动覆盖新 Head。
+- Runtime 只读取声明的 Profile / context；
+- 未读取 expected behavior / assertions / Research / 历史结果；
+- 未通过创建 Skill 激活 Profile；
+- 进程退出码未作为 PASS；
+- 结果包中的 9 个 stderr 均为空；
+- 受测 Profile 内容重建后的 Git Blob SHA 与 PR #50 冻结 Blob 完全一致。
+
+Targeted Eval 后未修改 Profile 的 Technology Constraint、Engineering Default、Conditional Guidance、Known Misuse、Consumer Override 或 Verification Profile 语义，因此本轮证据仍覆盖当前规范行为；后续只允许证据 / 状态 / Project Governance 收口，不得在不重跑的情况下修改受测语义。
 
 ## 完成条件
 
@@ -130,5 +171,7 @@ WI-05 只有在以下条件同时成立时才达到 `Ready to Integrate`：
 - 没有未解决 Blocking / Medium Finding；
 - Final AI Review: PASS；
 - PR 只停在 `Ready to Integrate`，不自动 Merge。
+
+当前除 Final AI Review / PR 状态收口外均已满足。
 
 只有 WI-05 的 Profile 实际合并后，才把 F3 标记完成并进入 F4 Existing Consumer Adoption。
