@@ -43,7 +43,7 @@
 | 完成第一批核心 Skill 工程 | 已完成 | 8 个 Core Skills 实现、Packaging Hardening、Fresh Runtime Eval 与 Closure Review 完成 |
 | 完成首轮方法与 Skill 实证验证 | 已完成 | Greenfield Experiment 已完成；Existing Consumer 多轮证据已足以支持阶段切换，Issue #33 独立收尾 |
 | Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
-| Track B — Engineering Discipline Expansion | **当前** | WI-02 已完成 Research / Candidate Design，当前进入 WI-03；两个 Candidate 完成后通过 WI-03V 按 `Candidate → Architecture Fit → Draft → Targeted Eval → AI Review → Integration Decision` 验证和集成 |
+| Track B — Engineering Discipline Expansion | **当前** | WI-02 / WI-03 的 Research / Candidate Design 均已完成；当前进入 WI-03V，按 `Candidate → Architecture Fit → Draft → Targeted Eval → AI Review → Integration Decision` 验证和集成首批 Discipline |
 | Track C — Technology Engineering Profiles | 下一步 | 只有首批 Discipline 经 WI-03V 验证并实际集成后，才建立 Technology Profile / Verification Profile 最小契约 |
 | Track D — Engineering Skills & Verification | 后续 | 从稳定工程过程提炼 Task-oriented Skill，建立对应专项评估，不按框架名称机械创建 Skill |
 | Track E — Adoption / Runtime / Distribution | 后续 | 推动 Existing Consumer baseline upgrade、运行时适配和后续分发能力；不要求立即实现 Marketplace 或统一 Controller |
@@ -116,26 +116,28 @@ agentic-dev 才开始研究
 | 2026-09-01 | 增加 Karpathy Skills 定向研究并确认“工程纪律可主动研究、无需机械 Skill 化” | PR #42，集成提交 `e1f56238f95a75d95a87b1ad510587d770ae4a63` |
 | 2026-09-02 | 建立主动工程能力演进架构并完成 Phase 1 / Phase 2 | PR #43，集成提交 `1eb729333b4aa239dfbb1906b623b61e7c1524a9` |
 | 2026-09-02 | 完成 WI-01 工程纪律范围设计并确定首批两个研究方向 | PR #44，集成提交 `070cbb448118a6ee0494063c2d2c8ae689bfb5f3` |
+| 2026-09-02 | 完成 WI-02 实现最小化工程纪律 Research / Candidate Design | PR #45，集成提交 `710ebcbf32d1222c4578c4e2fffe90408070e3d8` |
 
 ## 当前证据基线
 
 - 当前阶段：**Engineering Capability Expansion & Method Evolution**；
-- 当前已集成起点：`master@070cbb448118a6ee0494063c2d2c8ae689bfb5f3`；
+- 当前已集成起点：`master@710ebcbf32d1222c4578c4e2fffe90408070e3d8`；
 - Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；
 - Phase 1 — 演进路线重构：已完成；
 - Phase 2 — Engineering Capability Architecture：已完成；
 - Phase 3 — Engineering Discipline Research：当前；
 - WI-01 — 工程纪律范围设计：已完成，结果见 `docs/project/engineering-discipline-scope.md`；
 - WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成，状态为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
-- 当前 WI-03 — 精准修改与差异范围控制：进入条件已满足；
-- WI-03V — 首批工程纪律 Draft 验证与集成门禁：待两个 Candidate 研究完成后执行；
+- WI-03 — 精准修改与差异范围控制：Research / Candidate Design 已完成，状态同样为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
+- **当前 WI-03V — 首批工程纪律 Draft 验证与集成门禁：触发条件已满足**；
 - 首轮 Greenfield Consumer Experiment：已完成并关闭 Issue #18；
 - Existing Consumer 继续演进实验：Issue #33 当前仍为 `open`；
 - Issue #33 已经形成多轮有效证据，并推动 PR #34、#35、#37、#38、#40、#41 的定向强化；
 - Issue #33 后续是否关闭可以按其自身实验总结独立处理，不再阻塞工程能力扩展阶段；
 - `dygapp/jilinjobs-cms` 继续作为 Reference / Integration Consumer，可用于验证新的 `agentic-dev` baseline、Profile、Skill 与验证能力，但不承担唯一创新来源职责；
-- PR #42 提供首批 Engineering Discipline 的外部研究起点，PR #43 已允许成熟外部证据主动驱动候选能力设计；
-- WI-02 新研究综合 YAGNI、Simple Design、Google Engineering Practices、Sandi Metz、Go 官方实践和本地证据，当前没有发现需要修改 Core Method 或 Engineering Capability Architecture 的缺口。
+- WI-02 研究综合 YAGNI、Simple Design、Google Engineering Practices、Sandi Metz、Go 官方实践和本地证据，当前没有发现需要修改 Core Method 或 Engineering Capability Architecture 的缺口；
+- WI-03 研究综合 Google Small CL / Review Practices、Linux Patch Discipline、Martin Fowler Opportunistic / Preparatory Refactoring 与 PR #42，当前同样没有发现新的 Method / Architecture / Skill 职责缺口；
+- 两个 Candidate 已证明职责可独立描述：WI-02 处理复杂度正当性，WI-03 处理最终差异范围正当性；是否正式组合进入基线由 WI-03V 的 Architecture Fit Review 与 Targeted Eval 决定。
 
 上述提交和 Issue 是历史证据锚点，不要求后续工作永久固定使用这些静态版本。新的研究、评估或 Consumer Adoption 开始时，必须记录当时实际使用的精确 baseline。
 
@@ -143,7 +145,7 @@ agentic-dev 才开始研究
 
 当前核心目标是：
 
-> **在保持 Core Method 稳定和既有权威边界的前提下，完成首批两个 Engineering Discipline 的 Research / Candidate Design，再按现行能力生命周期形成 Draft、执行 Targeted Eval 和 AI Review，将通过验证的 Draft 推进到 Ready to Integrate；在正式集成前不进入 Technology Profile。**
+> **对首批两个 Engineering Discipline Candidate 执行正式 Architecture Fit Review，形成未集成 Draft Capability 和必要的薄消费入口，通过 Fresh Runtime Targeted Eval 与回归验证，再对通过验证的 Draft 执行最终 AI Review；在真正集成前不进入 Technology Profile。**
 
 当前阶段特别避免三种极端：
 
@@ -175,12 +177,13 @@ agentic-dev 才开始研究
 
 1. **WI-01 — 工程纪律范围设计：已完成**；
 2. **WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成，Pending Draft Capability**；
-3. **WI-03 — 精准修改与差异范围控制：当前**；
-4. **WI-03V — 首批工程纪律 Draft 验证与集成门禁：下一步**。
+3. **WI-03 — 精准修改与差异范围控制：Research / Candidate Design 已完成，Pending Draft Capability**；
+4. **WI-03V — 首批工程纪律 Draft 验证与集成门禁：当前**。
 
-WI-02 研究结果见：
+两个研究结果见：
 
-`docs/research/implementation-minimality-and-speculative-complexity-analysis.md`
+- `docs/research/implementation-minimality-and-speculative-complexity-analysis.md`；
+- `docs/research/surgical-change-and-diff-scope-control-analysis.md`。
 
 WI-03V 必须遵循：
 
@@ -245,21 +248,18 @@ Candidate
 
 ## 下一步工作
 
-1. **执行 WI-03：精准修改与差异范围控制。**
-   - 获取多来源成熟工程证据；
-   - 对照当前 Execution Unit 边界、PR #42 `Surgical Changes` 和相关 Review / Refactoring 语义；
-   - 形成 Candidate Capability；
-   - 设计有辨识力的 Candidate Eval；
-   - 保持与 WI-02“复杂度正当性”职责独立。
-2. WI-03 完成后执行 **WI-03V：首批工程纪律 Draft 验证与集成门禁**。
-   - 重新执行 Architecture Fit Review；
-   - 形成未集成 Draft Capability 和必要的 Draft 消费入口；
-   - 将 Candidate Eval 设计转换为针对 Draft 的正式隔离 Runtime Eval；
-   - 执行 Fresh Runtime Targeted Eval 和必要回归；
-   - 通过后执行最终 AI Review，达到 `Ready to Integrate`；
-   - 最终集成仍等待 Human Authority / Repository Policy 决策。
-3. 首批 Engineering Discipline 实际集成后进入 **WI-04：Technology Profile 最小契约**。
-4. WI-04 完成后进入 **Vue 3 + TypeScript Technology Profile** 研究。
+1. **执行 WI-03V：首批工程纪律 Draft 验证与集成门禁。**
+   - 对 WI-02 / WI-03 Candidate 执行正式 Architecture Fit Review；
+   - 确认两者职责独立、可组合，且落点仍应为 Engineering Discipline 而非 Method / Profile / Skill；
+   - 形成尚未集成的 Draft Capability，以及 `execute-unit` 等消费者需要的最薄 Draft 引用 / 检查；
+   - 将 Candidate Eval 设计物化为针对 Draft 的正式隔离 Runtime Eval；
+   - 至少回归 `B-EU-02`、`B-EU-07`、`B-EU-08` 与 WI-02 必要重构边界；
+   - 执行 Fresh Runtime Targeted Eval 并按断言语义判分；
+   - 失败时返回 Candidate / Draft 修订，不能为推进路线强行集成；
+   - PASS 后执行最终 AI Review，达到 `Ready to Integrate`；
+   - 最终 Merge / Integration 仍由 Human Authority / Repository Policy 决定。
+2. **只有 WI-03V 的规范性变更实际集成后**，进入 WI-04：Technology Profile 最小契约。
+3. WI-04 完成后进入 Vue 3 + TypeScript Technology Profile 研究。
 
 详细工作项与进入条件见：
 
