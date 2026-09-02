@@ -33,6 +33,12 @@
 
 目标：定义首批 Engineering Discipline 研究范围和选择标准，不一次研究全部工程纪律。
 
+主要工作：
+
+- 对现有 Embedded Discipline、PR #41 配置 / 能力复用结论、PR #42 Karpathy Research 做覆盖检查；
+- 将候选方向按当前价值、与现有规则重叠度、可形成 Targeted Eval 的程度排序；
+- 只选择首批 1～2 个方向进入详细研究。
+
 完成结果：
 
 - 首项确定为 **Implementation Minimality & Speculative Complexity Control（实现最小化与推测性复杂度控制）**；
