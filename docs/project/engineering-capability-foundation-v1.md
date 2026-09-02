@@ -30,8 +30,9 @@
 
 - **F1 / WI-03V 已完成**：PR #48 已合并，集成提交为 `6130d7251d81bbfc9f13b2dd827b6a40dfd09076`；首批两个 Engineering Discipline 已完成 Fresh Runtime `13 / 13 PASS`、`62 / 62 assertions PASS` 并进入当前 Repository Authority；
 - **F2 / WI-04 已完成**：PR #49 已合并，集成提交为 `16151149ab52211e266839a110fc9a3c73415623`；Technology Profile / Verification Profile 最小契约与 `docs/technology-profiles/` 实例入口已进入当前 Repository Authority；
-- **F3 / WI-05 当前**：PR #50 已形成 Vue 3 + TypeScript Validated Draft，Fresh Runtime Targeted Eval 为 `9 / 9 PASS`、`41 / 41 assertions PASS`，当前待最终 AI Review 与 Integration Decision；
-- F4、F5 尚未开始。
+- **F3 / WI-05 已完成**：PR #50 已合并，集成提交为 `b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`；Vue 3 + TypeScript Profile Fresh Runtime Targeted Eval 为 `9 / 9 PASS`、`41 / 41 assertions PASS`，并进入当前 Repository Authority；
+- **F4 当前**：一次受控 Existing Consumer Adoption，当前等待 Consumer 自己的项目会话完成正在进行的工作后执行并回传证据；
+- F5 尚未开始。
 
 当前状态以 `docs/project/project-roadmap.md` 为准；本节只提供与本里程碑完成边界对应的进度快照，不另建第二套路线路径。
 
@@ -124,7 +125,7 @@ Foundation v1 **不以能力数量最大化为目标**，也不要求在一个�
 
 > **Vue 3 + TypeScript**
 
-**当前：Validated Draft / Targeted Eval PASS / Pending Integration。**
+**已完成。**
 
 目标：以官方当前有效资料为主、成熟工程实践为辅，完整走通一次：
 
@@ -147,7 +148,7 @@ Research
 - `C-VTS-01`～`C-VTS-09`：`9 / 9 PASS`；
 - assertions：`41 / 41 PASS`；
 - 未发现 Eval contamination；
-- PR #50 实际合并前仍不能把 F3 标记为已完成。
+- PR #50 已实际合并，集成提交为 `b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`。
 
 完成条件：
 
@@ -156,11 +157,13 @@ Research
 - Targeted Eval 有当前 PASS 证据；
 - Consumer-local Authority 的覆盖关系明确。
 
+上述条件已经满足，因此 F3 已关闭。
+
 Foundation v1 到此**不得自动继续 Element Plus、Spring、Gradle 或其他 Technology Profile**。
 
 ### F4 — 一次 Existing Consumer Adoption
 
-对应 WI-08，但在 Foundation v1 内只执行一次受控 Adoption。
+对应 WI-08，但在 Foundation v1 内只执行一次受控 Adoption。**当前。**
 
 优先 Reference Consumer：
 
@@ -173,6 +176,17 @@ Foundation v1 到此**不得自动继续 Element Plus、Spring、Gradle 或其�
 - Vue 3 + TypeScript Profile 的实际可用性；
 - Verification Profile 是否能够指导真实验证；
 - 是否出现错误默认值、过度约束或通用能力缺口。
+
+F4 的 Repository Boundary：
+
+- `agentic-dev` 项目工作只负责 Adoption 目标、上游能力基线、Evidence 要求和通用 Finding 处理；
+- Consumer Repository 的 baseline upgrade、文件 / Branch / PR / Workflow、真实 Feature 实施与验证必须在 Consumer 自己的项目会话和 Repository Authority 下执行；
+- 不因为跨 Repository 工具可用就从 `agentic-dev` 项目会话直接修改 Consumer；
+- Consumer 正在进行中的独立任务不因 F4 被打断或抢占；如果当前没有可进入的真实 Adoption Unit，F4 保持 Pending Consumer Execution，不因此扩展到第二个 Consumer 或人工制造实验 Feature。
+
+当前执行交接：
+
+`tasks/plans/20260902/03-foundation-v1-consumer-adoption-handoff.md`
 
 完成条件：
 
@@ -289,8 +303,8 @@ Foundation v1 的进度只使用固定五个阶段表达：
 ```text
 F1 Discipline Formalization       已完成
 F2 Technology Profile Contract    已完成
-F3 Vue 3 + TypeScript Profile     当前（Validated Draft / Pending Integration）
-F4 Consumer Adoption              待开始
+F3 Vue 3 + TypeScript Profile     已完成
+F4 Consumer Adoption              当前（Pending Consumer Execution）
 F5 Foundation v1 Closure          待开始
 ```
 
