@@ -1,12 +1,12 @@
 # Vue 3 + TypeScript Technology Profile
 
 **Profile ID：** `vue3-typescript`  
-**状态：** Validated Draft v0.1 — WI-05 Targeted Eval PASS / Pending Integration  
-**性质：** Technology Profile + Verification Profile 规范性 Draft
+**状态：** Baseline v0.1 — WI-05 Targeted Eval PASS  
+**性质：** Technology Profile + Verification Profile 规范性基线
 
 ## 1. 目的与适用范围
 
-本文定义 `agentic-dev` 对 **Vue 3 + TypeScript** 工程开发的首个代表性 Technology Profile Validated Draft。
+本文定义 `agentic-dev` 对 **Vue 3 + TypeScript** 工程开发的首个代表性 Technology Profile Baseline v0.1。
 
 当前研究与验证锚点：
 
@@ -387,7 +387,7 @@ Profile 是默认工程基线，不是 Consumer 的最终项目事实。
 
 ## 11. Targeted Eval Gate
 
-本 Draft 在正式集成前必须通过 Fresh Runtime Capability Targeted Eval：
+本 Baseline 在首次进入当前 Repository Authority 前必须通过 Fresh Runtime Capability Targeted Eval：
 
 - `C-VTS-01` — Vite build 与 type-check 分离；
 - `C-VTS-02` — computed / watcher 职责；
@@ -405,9 +405,9 @@ Profile 是默认工程基线，不是 Consumer 的最终项目事实。
 - 只读取当前 Profile 和场景材料；
 - 不读取 expected behavior / assertions / 历史结果；
 - 逐 assertion 语义判分；
-- 失败后修订 Draft，并用新的 Fresh Runtime 重新验证受影响场景。
+- 失败后修订规则，并用新的 Fresh Runtime 重新验证受影响场景。
 
-本 Draft 已在冻结语义 Blob `999911e83b23389d16f9cbbadeb4d5c29f56de75` 上完成 Fresh Runtime Targeted Eval：
+本 Baseline 已在冻结语义 Blob `999911e83b23389d16f9cbbadeb4d5c29f56de75` 上完成 Fresh Runtime Targeted Eval：
 
 - 运行场景：`C-VTS-01`～`C-VTS-09`；
 - 场景结果：`9 / 9 PASS`；
@@ -416,18 +416,18 @@ Profile 是默认工程基线，不是 Consumer 的最终项目事实。
 - 结果包 SHA-256：`abf788b5e51db9fdc145d73dd6eafc16a99a6d3417dbd81b0aa00e538e22a088`；
 - 语义判分完成后没有修改本 Profile 的 Technology Constraint、Engineering Default、Conditional Guidance、Known Misuse、Consumer Override 或 Verification Profile 规则。
 
-因此当前状态提升为：
+因此本文件内容已满足：
 
-`Validated Draft v0.1 — WI-05 Targeted Eval PASS / Pending Integration`
+`Baseline v0.1 — WI-05 Targeted Eval PASS`
 
-该状态表示 Targeted Eval Gate 已通过，但在 PR 实际集成前仍不是 `master` 的现行 Profile Authority。
+该版本是否构成现行 Profile Authority，以本文件是否已进入当前 Repository 集成分支为准；PR / feature branch 上的同一内容不会自行生效。
 
 ## 12. Lifecycle
 
 - **Producer：** 当前 `agentic-dev` Repository Authority 授权的 Technology Profile 维护职责；
 - **Trigger：** Foundation v1 F2 已集成 Technology Profile Contract，并冻结首个代表性 Vue 3 + TypeScript Profile；
 - **Consumer：** 执行 Vue / TypeScript 工作的 Agent、`execute-unit` 的技术上下文、未来适用 Task-oriented Skill、Foundation v1 Existing Consumer Adoption；
-- **Persistence：** 实际集成后，以 `docs/technology-profiles/vue3-typescript.md` 作为当前唯一 Profile 入口；Research 只保留证据，不竞争规范性权威；
+- **Persistence：** `docs/technology-profiles/vue3-typescript.md` 是本 Profile 的唯一实例入口；只有当前 Repository 集成分支中的版本构成现行 Profile Authority，Research 只保留证据，不竞争规范性权威；
 - **Update：** Vue / TypeScript / Vue Language Tools 版本变化、官方语义变化、Targeted Eval、Consumer Adoption 或上游 Contract 变化触发重新检查；
 - **Supersede：** 新版本必须明确取代当前 Baseline；历史版本可以追溯，但只能有一个当前有效入口；
 - **Escalation：** 如果修订要求改变 Core Method、Engineering Capability Architecture、Consumer Architecture、公共难逆契约或安全 / 隐私高风险默认，返回对应更高权威处理。
