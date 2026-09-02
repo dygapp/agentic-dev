@@ -1,12 +1,12 @@
 # Vue 3 + TypeScript Technology Profile
 
 **Profile ID：** `vue3-typescript`  
-**状态：** Draft v0.1 — WI-05 Targeted Eval Pending  
+**状态：** Validated Draft v0.1 — WI-05 Targeted Eval PASS / Pending Integration  
 **性质：** Technology Profile + Verification Profile 规范性 Draft
 
 ## 1. 目的与适用范围
 
-本文定义 `agentic-dev` 对 **Vue 3 + TypeScript** 工程开发的首个代表性 Technology Profile Draft。
+本文定义 `agentic-dev` 对 **Vue 3 + TypeScript** 工程开发的首个代表性 Technology Profile Validated Draft。
 
 当前研究与验证锚点：
 
@@ -407,9 +407,20 @@ Profile 是默认工程基线，不是 Consumer 的最终项目事实。
 - 逐 assertion 语义判分；
 - 失败后修订 Draft，并用新的 Fresh Runtime 重新验证受影响场景。
 
-在该门禁完成前，状态保持：
+本 Draft 已在冻结语义 Blob `999911e83b23389d16f9cbbadeb4d5c29f56de75` 上完成 Fresh Runtime Targeted Eval：
 
-`Draft v0.1 — WI-05 Targeted Eval Pending`
+- 运行场景：`C-VTS-01`～`C-VTS-09`；
+- 场景结果：`9 / 9 PASS`；
+- assertion：`41 / 41 PASS`；
+- 所有 Runtime 进程均正常完成，未发现读取 Eval corpus、assertions、Research 或历史结果的污染；
+- 结果包 SHA-256：`abf788b5e51db9fdc145d73dd6eafc16a99a6d3417dbd81b0aa00e538e22a088`；
+- 语义判分完成后没有修改本 Profile 的 Technology Constraint、Engineering Default、Conditional Guidance、Known Misuse、Consumer Override 或 Verification Profile 规则。
+
+因此当前状态提升为：
+
+`Validated Draft v0.1 — WI-05 Targeted Eval PASS / Pending Integration`
+
+该状态表示 Targeted Eval Gate 已通过，但在 PR 实际集成前仍不是 `master` 的现行 Profile Authority。
 
 ## 12. Lifecycle
 
