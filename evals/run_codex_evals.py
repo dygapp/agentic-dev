@@ -4,7 +4,7 @@
 This runner deliberately stays thin:
 - one `codex exec --ephemeral --json` process per scenario;
 - Skill activation / behavior runs use external temporary workspaces with Skill copies;
-- non-Skill capability runs copy only the context paths declared by that corpus;
+- non-Skill capability runs are explicit and copy only context paths declared by that corpus;
 - the Codex process cwd/PWD matches the isolated workspace so repository paths do not leak through the launcher;
 - behavior runs use explicit Skill invocation, while capability runs do not invent a Skill;
 - B-EU-01 additionally receives a fresh writable fixture and its final snapshot is preserved;
@@ -72,13 +72,17 @@ def populate_isolated_skill_copies(workspace: Path) -> None:
 def copy_capability_context(workspace: Path, context_paths: list[str]) -> None:
     """Copy only declared non-Skill capability context, preserving repo-relative paths."""
     for relative in context_paths:
-        source = (ROOT / relative).resolve()
+        relative_path = Path(relative)
+        if relative_path.is_absolute() or ".." in relative_path.parts:
+            raise RuntimeError(f"Invalid capability context path: {relative}")
+
+        source = (ROOT / relative_path).resolve()
         if not source.is_relative_to(ROOT):
             raise RuntimeError(f"Capability context escapes repository root: {relative}")
         if not source.exists():
             raise RuntimeError(f"Capability context does not exist: {relative}")
 
-        target = workspace / relative
+        target = workspace / relative_path
         target.parent.mkdir(parents=True, exist_ok=True)
         if source.is_dir():
             shutil.copytree(source, target)
@@ -347,7 +351,7 @@ def parse_args() -> argparse.Namespace:
     mode.add_argument(
         "--all",
         action="store_true",
-        help="run activation, behavior, then capability corpora",
+        help="run Skill activation then Skill behavior corpora (historical behavior)",
     )
     parser.add_argument(
         "--scenario",
@@ -388,7 +392,6 @@ def main() -> int:
     else:
         failures = run_activation(args.codex_bin, selected)
         failures += run_behavior(args.codex_bin, selected)
-        failures += run_capability(args.codex_bin, selected)
 
     if failures:
         print(f"Codex process failures: {failures}", file=sys.stderr)
