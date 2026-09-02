@@ -1,6 +1,6 @@
 # Technology Profiles
 
-本目录保存已经进入 `agentic-dev` Repository Authority 的 Technology Profile 实例。
+本目录保存已经进入 `agentic-dev` Repository Authority 的 Technology Profile 实例，并作为 Profile 实例的唯一直接发现入口。
 
 上位契约：
 
@@ -22,4 +22,10 @@ Foundation v1 只允许建立一个代表性 Profile：
 
 > Vue 3 + TypeScript
 
-当前 WI-04 只建立 Profile Contract 与本持久化入口，不在本目录提前创建 Vue / TypeScript Profile 内容。只有 WI-04 实际集成后，WI-05 才可以基于当前官方证据开始该 Profile 的 Research / Candidate / Draft 生命周期。
+当前 F3 / WI-05 正在独立分支中形成：
+
+`docs/technology-profiles/vue3-typescript.md`
+
+其当前状态为 **Draft / Targeted Eval Pending**。在对应变更实际合并到当前集成分支之前，本条只用于发现正在评估的 Profile 路径，不表示该 Draft 已经成为 `master` 的现行 Technology Profile Authority。
+
+Element Plus、Spring、Gradle 和其他 Profile 继续属于 Post-v1 Backlog，不因本 Draft 出现而进入当前 Foundation v1 Completion Scope。
