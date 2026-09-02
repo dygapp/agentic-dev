@@ -1,0 +1,112 @@
+{
+  "capability_name": "Vue 3 + TypeScript Technology Profile",
+  "context_paths": [
+    "docs/technology-profiles/vue3-typescript.md"
+  ],
+  "evals": [
+    {
+      "id": "C-VTS-01",
+      "prompt": "这是隔离 Capability Eval。当前目录中的 Technology Profile 与本提示构成本场景全部可用上下文，不要读取目录外路径。Consumer 使用 Vue 3.5 + TypeScript，`vite build` 当前 PASS，但没有任何 Vue-aware type-check 的当前结果。当前 Unit 修改了 `<script setup lang=\"ts\">` 的 props 类型和 template 绑定；维护者说‘构建过了就算类型也验证了’。请给出 Completion Evidence 判断和最小验证责任。",
+      "expected_behavior": "拒绝把 Vite build 当成 Vue SFC type-check evidence；解析 Consumer 当前 Vue-aware type-check 机制并要求实际当前证据，同时不发明固定命令。",
+      "assertions": [
+        "明确指出 Vite build / transpilation 不能单独证明 Vue SFC / template 类型正确",
+        "要求解析并实际运行 Consumer 当前 Vue-aware type-check 机制，而不是凭 Profile 发明固定命令",
+        "在缺少必要当前 type-check evidence 时不宣称类型验收已完成",
+        "保留 build 作为构建集成证据的一部分，而不是把它描述为完全无价值"
+      ]
+    },
+    {
+      "id": "C-VTS-02",
+      "prompt": "这是隔离 Capability Eval。当前目录中的 Technology Profile 与本提示构成本场景全部可用上下文，不要读取目录外路径。Vue 3.5 组件把 `fullName` 写成一个 watcher：监听 `firstName` 和 `lastName` 后回写 `fullName`；同一组件另有 watcher 根据 `userId` 异步请求用户详情。有人要求‘Profile 说 watcher 有问题，所以两个 watcher 都改成 computed’。请给出最小实施判断和验证重点。",
+      "expected_behavior": "把纯派生 fullName 收敛为 computed；保留真正副作用 watcher，并要求 stale async work / cleanup 责任；不机械禁止 watcher。",
+      "assertions": [
+        "识别 fullName 是纯派生状态，优先使用 computed 而不是 watcher 回写 state",
+        "识别 userId 异步请求属于副作用，不机械改成 computed",
+        "对异步 watcher 要求 stale request 的 cleanup / cancellation / currentness guard",
+        "验证应覆盖快速 userId 变化下旧请求不能覆盖新状态，而不只做 type-check"
+      ]
+    },
+    {
+      "id": "C-VTS-03",
+      "prompt": "这是隔离 Capability Eval。当前目录中的 Technology Profile 与本提示构成本场景全部可用上下文，不要读取目录外路径。Vue 3.5 子组件接收 `modelValue` prop，并在输入事件里直接执行 `props.modelValue = value`。当前需求是标准双向编辑；Consumer 没有自定义兼容 contract。有人建议为了最少代码继续直接改 prop。请给出实施边界。",
+      "expected_behavior": "保持 props 单向，使用标准 component v-model contract；Vue 3.4+ 可优先 defineModel，或明确 prop+emit；不能以最少代码为理由直接改 prop。",
+      "assertions": [
+        "明确禁止直接修改 prop 本身",
+        "识别当前是标准 component v-model 契约，并优先复用 Vue 当前能力",
+        "Vue 3.4+ 可以选择 defineModel，也接受明确的 modelValue + update:modelValue contract",
+        "不会把 defineModel 绝对化为所有既有自定义 contract 都必须迁移"
+      ]
+    },
+    {
+      "id": "C-VTS-04",
+      "prompt": "这是隔离 Capability Eval。当前目录中的 Technology Profile 与本提示构成本场景全部可用上下文，不要读取目录外路径。一个 composable 使用 `reactive<MyState>(initial)`，然后直接返回这个 reactive object；调用方写 `const { loading, data } = useData()`，发现后续 source 更新时解构值不再按预期变化。有人建议给 reactive 返回值加 `as MyState`，再把 loading/data 标成 `any`。请给出修复方向。",
+      "expected_behavior": "分别识别 reactive 泛型返回类型边界和解构 reactivity 问题；不使用 assertion/any 掩盖；优先以 refs/普通对象或保持对象访问等方式保留真实 reactivity。",
+      "assertions": [
+        "指出不应使用 reactive<T>() 泛型或 assertion 强行定义实际返回类型",
+        "指出解构 reactive object 会丢失 property access 的 reactivity 连接",
+        "拒绝用 any 作为修复方式",
+        "给出保持真实 reactivity 的最小方向，例如返回 refs 的普通对象、toRefs 或保持对象属性访问，并根据现有 contract 选择",
+        "验证覆盖 source 更新后调用方观察到的新值，而不是只证明类型能编译"
+      ]
+    },
+    {
+      "id": "C-VTS-05",
+      "prompt": "这是隔离 Capability Eval。当前目录中的 Technology Profile 与本提示构成本场景全部可用上下文，不要读取目录外路径。Consumer 使用 Vue 3.5.42。组件有 `<input v-if=\"editing\" ref=\"field\">`，代码希望在进入编辑模式后 focus。当前实现为 `const field = ref<HTMLInputElement>(null!)` 并在任意时刻 `field.value!.focus()`。请给出 Profile 下的最小修复与验证重点。",
+      "expected_behavior": "Vue3.5+ 静态 ref 可优先 useTemplateRef；无论 API 选择都必须保留挂载/条件卸载的 null lifecycle，不用无条件 non-null assertion；验证 editing 切换时机。",
+      "assertions": [
+        "识别 Vue 3.5+ 静态 template ref 可以优先 useTemplateRef",
+        "明确 ref 在挂载前和 v-if 卸载后可能为空",
+        "拒绝用 null! / 无条件 ! 掩盖生命周期",
+        "focus 必须发生在 DOM 实际可用的时机，并按当前实现选择 nextTick / lifecycle / watcher 等适当机制",
+        "验证应覆盖 editing false→true 以及卸载后的生命周期，而不只是 type-check"
+      ]
+    },
+    {
+      "id": "C-VTS-06",
+      "prompt": "这是隔离 Capability Eval。当前目录中的 Technology Profile 与本提示构成本场景全部可用上下文，不要读取目录外路径。Consumer 当前为 Vue 3.5.42、TypeScript 7.0.2、`vue-tsc@3.3.7`。`vite build` PASS，但运行项目既有 type-check script 时 `vue-tsc` 在启动阶段报 TypeScript API 兼容错误。有人说‘TS7 不支持 Vue，只能降回 TS6’，也有人说‘build 已过，忽略 vue-tsc 即可’。请给出当前判断。",
+      "expected_behavior": "把它识别为具体 tooling compatibility / verification gap，不泛化为 TS7 不支持 Vue，也不以 build 替代 type-check；解析当前官方 language-tools 版本与 Consumer 升级/pin 约束，再获得实际 typecheck evidence。",
+      "assertions": [
+        "不把 vue-tsc@3.3.7 的具体失败泛化成 TypeScript 7 整体不支持 Vue",
+        "不把 Vite build PASS 当作必要 Vue-aware type-check 的替代证据",
+        "识别需要检查当前 Vue Language Tools / vue-tsc 的官方兼容版本与 Consumer lockfile / scripts",
+        "允许基于项目约束升级 vue-tsc、调整兼容版本或暂时 pin，但必须以新的当前 type-check 结果裁决",
+        "在 type-check 仍不可获得时保留 Verification Gap，不宣称 Completed"
+      ]
+    },
+    {
+      "id": "C-VTS-07",
+      "prompt": "这是隔离 Capability Eval。当前目录中的 Technology Profile 与本提示构成本场景全部可用上下文，不要读取目录外路径。Consumer Repository Authority 明确规定：当前重构阶段继续使用 Options API，只对新模块评估 Composition API，禁止在普通缺陷修复中做语法迁移。现在一个 Options API 组件只有一个空值显示 Bug。有人要求‘Profile 推荐 `<script setup>`，修 Bug 时一起迁移’。请给出实施范围。",
+      "expected_behavior": "服从 Consumer 当前架构/迁移规则，只修当前 Bug；Profile 的 script setup recommendation 是默认值，不覆盖 Consumer Authority，也不制造 drive-by migration。",
+      "assertions": [
+        "明确 Consumer Architecture / migration rule 高于 Profile Engineering Default",
+        "当前缺陷修复不应顺带迁移 Options API 到 script setup",
+        "承认 script setup 在适用的新 SFC + Composition API 场景仍是有效默认，而不是因为本次不用就否定 Profile",
+        "最终 diff 范围保持与当前 Bug 及必要验证责任可追溯"
+      ]
+    },
+    {
+      "id": "C-VTS-08",
+      "prompt": "这是隔离 Capability Eval。当前目录中的 Technology Profile 与本提示构成本场景全部可用上下文，不要读取目录外路径。Consumer 使用 Vue + TypeScript + Element Plus。需求问：`el-table` 某个特定 prop 是否会在虚拟滚动模式下改变行复用生命周期。当前上下文没有 Element Plus 文档或版本事实。请直接给出组件 API 结论并实施。",
+      "expected_behavior": "拒绝从 Vue+TS Profile 编造 Element Plus-specific API 事实；可以说明通用 Vue/TS/verification 边界，但需要当前 Consumer 版本和 Element Plus 权威后才能冻结具体行为。",
+      "assertions": [
+        "明确当前 Vue 3 + TypeScript Profile 不拥有 Element Plus-specific prop / lifecycle 事实",
+        "不编造 el-table 当前 prop 的具体行为",
+        "要求解析 Consumer 当前 Element Plus 版本与对应官方权威后再做具体判断",
+        "仍可应用通用 Vue 生命周期、类型和验证原则，但不把它们冒充为组件库 API 结论",
+        "在具体外部组件契约未确认前不宣称该实施判断 Completed"
+      ]
+    },
+    {
+      "id": "C-VTS-09",
+      "prompt": "这是隔离 Capability Eval。当前目录中的 Technology Profile 与本提示构成本场景全部可用上下文，不要读取目录外路径。Vue 组件的 type-check 与 build 都 PASS。此次变更修改 watcher：用户快速切换筛选条件时会发多个请求，并在页面展示 loading / result。当前验收要求最终只能显示最新筛选条件结果。有人认为静态检查和构建都绿色，可以 Completed。请判断还需要什么证据。",
+      "expected_behavior": "识别 watcher async race + 用户可见状态是 runtime behavior obligation；要求覆盖快速切换/stale response/loading 的当前行为证据，按 Consumer 机制选择 component/integration/browser 层，不机械要求固定工具。",
+      "assertions": [
+        "不把 type-check + build PASS 当作异步竞态验收完成",
+        "识别快速筛选切换、stale response 和最终最新结果属于 runtime behavior responsibility",
+        "要求当前行为证据覆盖至少一次旧请求晚于新请求完成的差异路径",
+        "根据 Consumer 当前机制选择 component / integration / browser 等合适层，而不是发明固定工具",
+        "只有当前证据证明最终 UI 不被 stale result 覆盖后才可闭合该验收义务"
+      ]
+    }
+  ]
+}
