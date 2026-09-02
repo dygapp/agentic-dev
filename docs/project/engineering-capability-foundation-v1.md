@@ -273,7 +273,7 @@ F5 Foundation v1 Closure          待开始
 
 ## 9. 生命周期责任
 
-- **Producer：** `agentic-dev` Project Roadmap / Engineering Capability Expansion 项目治理；
+- **Producer：** Human Authority，或在当前项目级治理下获授权维护 Project Roadmap / Milestone 的 Agent；
 - **Trigger：** PR #46 完成首批两个 Discipline Candidate Research，同时需要给当前工程能力扩展建立明确有限终点；
 - **Consumer：** Project Roadmap、当前 Engineering Capability Expansion Plan、后续 Fresh Agent、Human Review / Integration Decision；
 - **Persistence：** 作为 `docs/project/*` 项目级权威长期保存，直到 Foundation v1 Closure 或被显式取代；
