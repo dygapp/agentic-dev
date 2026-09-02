@@ -52,8 +52,8 @@
 | 完成首轮方法与 Skill 实证验证 | 已完成 | Greenfield Experiment 已完成；Existing Consumer 多轮证据已足以支持阶段切换，Issue #33 独立收尾 |
 | Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
 | Track B — Engineering Discipline Expansion | 已完成 | Foundation v1 首批两个 Engineering Discipline 已通过 Targeted Eval 并由 PR #48 正式集成 |
-| Track C — Technology Engineering Profiles | **当前** | 当前执行 WI-04 Technology Profile / Verification Profile 最小契约；完成后只进入一个 Vue 3 + TypeScript Profile |
-| Track D — Consumer Adoption | 下一步 | Foundation v1 只执行一次受控 Existing Consumer Adoption，用于验证已集成 Discipline / Profile 与 Consumer-local Authority 的组合 |
+| Track C — Technology Engineering Profiles | **当前** | WI-04 Technology Profile Contract 已由 PR #49 正式集成；当前收口唯一代表性 Vue 3 + TypeScript Profile，Targeted Eval 已通过，待 PR #50 最终 AI Review / Integration Decision |
+| Track D — Consumer Adoption | 下一步 | PR #50 实际集成后，Foundation v1 只执行一次受控 Existing Consumer Adoption，用于验证已集成 Discipline / Profile 与 Consumer-local Authority 的组合 |
 | Track E — Engineering Skills | 条件性后续 | Post-v1 候选；Skill 数量不是 Foundation v1 完成指标，只有出现独立稳定职责时才在后续里程碑评估 |
 | Track F — Runtime / Distribution | 条件性后续 | Post-v1 候选；Runtime Adapter、Marketplace、Plugin Bundle、Controller 与统一安装器不属于 Foundation v1 Completion Gate |
 
@@ -129,12 +129,13 @@ agentic-dev 才开始研究
 | 2026-09-02 | 完成 WI-03 精准修改工程纪律 Research / Candidate Design | PR #46，集成提交 `350e6607bae6101869d97903b56993820ba73265` |
 | 2026-09-02 | 冻结 Engineering Capability Foundation v1 有限完成边界 | PR #47，F1～F5 与范围冻结规则进入项目权威 |
 | 2026-09-02 | 正式集成首批两个 Engineering Discipline 并关闭 F1 / WI-03V | PR #48，集成提交 `6130d7251d81bbfc9f13b2dd827b6a40dfd09076`；Fresh Runtime `13 / 13 PASS`、断言 `62 / 62 PASS` |
+| 2026-09-02 | 建立 Technology Profile / Verification Profile 最小契约并关闭 F2 / WI-04 | PR #49，集成提交 `16151149ab52211e266839a110fc9a3c73415623` |
 
 ## 当前证据基线
 
 - 当前阶段：**Engineering Capability Expansion & Method Evolution**；
 - 当前有限里程碑：**Engineering Capability Foundation v1**；
-- 当前已集成基线：`master@6130d7251d81bbfc9f13b2dd827b6a40dfd09076`；
+- 当前已集成基线：`master@16151149ab52211e266839a110fc9a3c73415623`；
 - Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；
 - Phase 1 — 演进路线重构：已完成；
 - Phase 2 — Engineering Capability Architecture：已完成；
@@ -145,8 +146,13 @@ agentic-dev 才开始研究
 - Surgical Change & Diff Scope Control：已正式集成；
 - PR #48 Targeted Eval：13 个场景、62 个 assertions 全部 PASS；
 - `execute-unit` 以薄规则消费两个 Discipline，没有新增独立 Skill，没有改变 one-unit、Stage Return、Human Escalation、Completion Evidence 或 Integration Boundary；
-- **当前 F2 / WI-04 — Technology Profile 最小契约：正在执行**；
-- F3 / WI-05 — Vue 3 + TypeScript Technology Profile：待 WI-04 实际集成后开始；
+- F2 / WI-04 — Technology Profile 最小契约：**已完成**；
+- `docs/architecture/technology-profile-contract.md` 与 `docs/technology-profiles/` 实例入口已由 PR #49 正式集成；
+- **当前 F3 / WI-05 — Vue 3 + TypeScript Technology Profile：Validated Draft / Targeted Eval PASS / Pending Integration**；
+- PR #50 Targeted Eval：`C-VTS-01`～`C-VTS-09` 共 `9 / 9 PASS`、`41 / 41 assertions PASS`；
+- 受测 Profile 语义 Blob：`999911e83b23389d16f9cbbadeb4d5c29f56de75`；
+- Eval 结果包 SHA-256：`abf788b5e51db9fdc145d73dd6eafc16a99a6d3417dbd81b0aa00e538e22a088`；
+- Vue 3.6 RC / Vapor Mode、Element Plus、第二个 Technology Profile、Task-oriented Skill 均未进入 Foundation v1 当前范围；
 - 首轮 Greenfield Consumer Experiment：已完成并关闭 Issue #18；
 - Existing Consumer 继续演进实验：Issue #33 当前仍为 `open`；
 - Issue #33 已经形成多轮有效证据，并推动 PR #34、#35、#37、#38、#40、#41 的定向强化；
@@ -159,18 +165,18 @@ agentic-dev 才开始研究
 
 当前核心目标是：
 
-> **完成 Engineering Capability Foundation v1 的剩余四个阶段，并在预先定义的完成边界处正式关闭本轮工程能力基础建设，而不是持续增加新的 Discipline、Profile、Skill 或 Runtime 范围。**
+> **完成 Engineering Capability Foundation v1 的剩余三个阶段，并在预先定义的完成边界处正式关闭本轮工程能力基础建设，而不是持续增加新的 Discipline、Profile、Skill 或 Runtime 范围。**
 
 当前剩余阶段为：
 
-1. **F2 — Technology Profile 最小契约：当前**；
-2. **F3 — Vue 3 + TypeScript Profile：待开始**；
-3. **F4 — 一次 Existing Consumer Adoption：待开始**；
-4. **F5 — Foundation v1 Closure：待开始**。
+1. **F3 — Vue 3 + TypeScript Profile：当前（Validated Draft / Pending Integration）**；
+2. **F4 — 一次 Existing Consumer Adoption：待开始**；
+3. **F5 — Foundation v1 Closure：待开始**。
 
 已完成：
 
 - **F1 — 首批 Engineering Discipline 正式化：已完成。**
+- **F2 — Technology Profile 最小契约：已完成。**
 
 范围冻结规则保持不变：
 
@@ -218,12 +224,12 @@ agentic-dev 才开始研究
 
 目标分两步：
 
-1. **WI-04：当前** — 建立 Technology Profile / Verification Profile 最小契约；
-2. **WI-05：下一步** — 只完成一个代表性 **Vue 3 + TypeScript** Profile，并走通完整能力生命周期。
+1. **WI-04：已完成** — Technology Profile / Verification Profile 最小契约已由 PR #49 实际集成；
+2. **WI-05：当前** — 唯一代表性 **Vue 3 + TypeScript** Profile 已完成 Research、Architecture Fit、Draft、Verification Profile 和 Fresh Runtime Targeted Eval，当前待 Final AI Review 与 PR #50 Integration Decision。
 
-WI-04 只定义 Profile Contract，不研究 Vue / TypeScript 具体工程规则。
+PR #50 当前 Targeted Eval 为 `9 / 9 PASS`、`41 / 41 assertions PASS`。在 PR #50 实际合并前，Phase 4 / F3 仍不能标记完成。
 
-Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 以及其他技术 Profile 全部进入 Post-v1 Backlog，不属于当前完成条件。
+Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 以及其他 Technology Profile 全部进入 Post-v1 Backlog，不属于当前完成条件。
 
 状态：**当前**。
 
@@ -233,7 +239,9 @@ Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 以及其他
 
 Consumer Adoption 出现的 Blocking / Medium 通用问题应修复并重新验证；Low / Future Improvement 可以进入 Post-v1 Backlog，不要求在当前里程碑继续扩展。
 
-状态：**后续阶段**。
+只有 PR #50 实际合并并关闭 F3 后才能进入本阶段。
+
+状态：**下一步**。
 
 ### Phase 6 — Foundation v1 Closure
 
@@ -245,21 +253,18 @@ Closure 后才决定下一项目里程碑。Task-oriented Skill 扩展、第二�
 
 ## 下一步工作
 
-1. **执行 F2 / WI-04：Technology Profile 最小契约。**
-   - 从现行 Engineering Capability Architecture 收敛 Technology Profile / Verification Profile 最小职责；
-   - 明确 Identity / Version / Applicability、Evidence Baseline、Official Semantics、Engineering Defaults、Common Misuse、Capability Reuse 与 Consumer Override；
-   - 明确 Technology Profile 组合 / 拆分边界，允许 Vue 3 + TypeScript 形成一个有证据支持的组合 Profile，但不自动吸收 Element Plus；
-   - 明确 Verification Profile 的 Change Type、Verification Layers、Evidence Responsibility、Risk Escalation 和 Consumer Resolution；
-   - 明确 Research → Profile 准入、Targeted Eval、Update / Supersede 与 Profile / Skill 非一一对应关系；
-   - 完成最终 AI Review，达到 `Ready to Integrate`；
+1. **收口 F3 / WI-05：Vue 3 + TypeScript Technology Profile。**
+   - 以 PR #50 最终 Head 重新执行高影响 AI Review；
+   - 确认 Runtime 后只发生 Evidence / Status / Project Governance 收口，没有改变受测 Technology Constraint、Engineering Default、Conditional Guidance、Known Misuse、Consumer Override 或 Verification Profile 语义；
+   - 确认 Capability Eval harness 没有改变既有 Skill Eval 默认命令语义；
+   - Blocking / Medium = 0 后达到 `Ready to Integrate`；
    - 最终 Merge / Integration 仍由 Human Authority / Repository Policy 决定。
-2. **WI-04 实际集成后执行 F3 / WI-05：Vue 3 + TypeScript Technology Profile。**
-3. **F3 实际集成后执行 F4：一次 Existing Consumer Adoption。**
-4. **F4 完成后执行 F5：Foundation v1 Closure Review。**
+2. **PR #50 实际集成后执行 F4：一次 Existing Consumer Adoption。**
+3. **F4 完成后执行 F5：Foundation v1 Closure Review。**
 
-当前 WI-04 详细 Plan：
+当前 WI-05 详细 Plan：
 
-`tasks/plans/20260902/01-technology-profile-contract.md`
+`tasks/plans/20260902/02-vue-typescript-profile.md`
 
 Foundation v1 总体范围冻结和完成条件见：
 
@@ -286,12 +291,11 @@ Foundation v1 的 Consumer Adoption 应围绕正式 Discipline / Profile 的采�
 3. 读取 `docs/project/engineering-capability-foundation-v1.md`，确认 F1～F5、范围冻结规则和当前 Completion Scope；
 4. 读取当前 GitHub `master`，验证是否存在晚于本文的新集成状态；
 5. 涉及工程能力分层时读取 `docs/architecture/engineering-capability-architecture.md`；
-6. 当前 WI-04 读取 `docs/architecture/engineering-disciplines.md`、`docs/architecture/technology-profile-contract.md` 与 `tasks/plans/20260902/01-technology-profile-contract.md`；
-7. WI-04 实际集成后进入 WI-05 时，重新读取 Technology Profile Contract，并只加载 Vue 3 / TypeScript 当前 Research、官方资料和相关 Eval；
-8. 涉及 Skill 时继续读取 `skill-architecture.md`、`skill-contracts.md` 与相关 Skill；
-9. 明确当前对象处于 Research / Candidate / Draft / Validated Draft / Integrated 中的哪一状态；
-10. 进入 Consumer Adoption 时切换到 Consumer Repository 并读取其当前默认分支与 Repository Authority；
-11. 不依赖历史聊天或个人记忆补充未固化的项目事实。
+6. 当前 WI-05 读取 `docs/architecture/technology-profile-contract.md`、`docs/technology-profiles/vue3-typescript.md`、`docs/research/vue3-typescript-profile-analysis.md`、`evals/capability/README.md` 与 `tasks/plans/20260902/02-vue-typescript-profile.md`；
+7. 明确当前对象处于 Research / Candidate / Draft / Validated Draft / Integrated 中的哪一状态；
+8. PR #50 实际集成后进入 F4 时，切换到 Consumer Repository 并读取其当前默认分支、Repository Authority 与记录的 `agentic-dev` baseline；
+9. 涉及 Skill 时继续读取 `skill-architecture.md`、`skill-contracts.md` 与相关 Skill；
+10. 不依赖历史聊天或个人记忆补充未固化的项目事实。
 
 ## 更新触发条件
 
