@@ -4,12 +4,19 @@
 
 在项目路线图（Project Roadmap）与工程能力架构（Engineering Capability Architecture）完成集成后，按可独立复核的小阶段推进 `agentic-dev` 工程能力扩展，避免把工程纪律（Engineering Discipline）、技术配置档（Technology Profile）、Skill、专项评估（Targeted Eval）、Consumer Adoption 和运行时分发混在一个大任务中实施。
 
+当前 Plan 的本轮有限完成边界由：
+
+`docs/project/engineering-capability-foundation-v1.md`
+
+统一定义。Plan 可以继续拆分内部 Work Item，但不得自行扩大 Foundation v1 Completion Scope。
+
 ## 权威与输入
 
 执行本 Plan 时必须重新读取当时当前有效的：
 
 - `AGENTS.md`；
 - `docs/project/project-roadmap.md`；
+- `docs/project/engineering-capability-foundation-v1.md`；
 - `docs/architecture/engineering-capability-architecture.md`；
 - 涉及 Skill 时的 `docs/architecture/skill-architecture.md` 与 `skill-contracts.md`；
 - 涉及 Research 时的 `docs/research/README.md` 与相关研究材料。
@@ -21,7 +28,21 @@
 - **WI-01 — 工程纪律范围设计：已完成。** 结果固化于 `docs/project/engineering-discipline-scope.md`；
 - **WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成。** 当前状态为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
 - **WI-03 — 精准修改与差异范围控制：Research / Candidate Design 已完成。** 当前状态同样为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
-- **当前工作项：WI-03V — 首批工程纪律 Draft 验证与集成门禁。** 两个 Candidate 的研究与候选设计均已完成，触发条件已满足。
+- **当前工作项：WI-03V — 首批工程纪律 Draft 验证与集成门禁。** 两个 Candidate 的研究与候选设计均已完成，触发条件已满足；
+- Foundation v1 之后只要求依次完成 WI-04、WI-05、一次 WI-08 Consumer Adoption 和 WI-10 Closure；
+- WI-06、WI-07、WI-09 已明确移入 **Post-v1 Backlog**，不阻塞当前里程碑完成。
+
+## Foundation v1 工作项映射
+
+| Foundation v1 阶段 | 当前 Plan 工作项 | 状态 |
+|---|---|---|
+| F1 首批 Engineering Discipline 正式化 | WI-03V | 当前 |
+| F2 Technology Profile 最小契约 | WI-04 | 待开始 |
+| F3 Vue 3 + TypeScript Profile | WI-05 | 待开始 |
+| F4 一次 Existing Consumer Adoption | WI-08（仅一次受控采用） | 待开始 |
+| F5 Foundation v1 Closure | WI-10 | 待开始 |
+
+WI-06、WI-07、WI-09 仍保留其研究价值和未来工作描述，但不再位于 Foundation v1 的必经路径上。
 
 ## 范围
 
@@ -138,6 +159,8 @@ Candidate
 
 ### WI-04 — Technology Profile 最小契约
 
+**Foundation v1：必需。**
+
 目标：在研究具体框架前，定义 Technology Profile 的最小结构与质量门槛。
 
 进入条件：**WI-03V 已完成且首批适用 Engineering Discipline 已完成实际集成。**
@@ -159,6 +182,8 @@ Candidate
 
 ### WI-05 — Vue 3 + TypeScript Profile 研究
 
+**Foundation v1：必需且是唯一 Technology Profile。**
+
 目标：以当前有效的 Vue 3 / TypeScript 官方资料为主，成熟工程实践为辅，完成第一项 Technology Profile 研究和候选 Profile。
 
 完成条件：
@@ -166,22 +191,32 @@ Candidate
 - 证据满足质量门槛；
 - 明确版本、适用范围、默认工程规则、常见误用和 Verification Profile；
 - 形成 Targeted Eval；
-- 通过完整能力生命周期后才进入正式能力基线。
+- 通过完整能力生命周期并实际集成后才视为完成。
+
+完成 WI-05 后，Foundation v1 **不得自动进入第二个 Technology Profile**。
 
 ### WI-06 — 下一项技术选择
 
-只有 WI-05 完成后才决定下一项：
+**状态：Post-v1 Backlog。**
 
-- Element Plus；或
-- Spring Framework / Spring Boot / Spring MVC。
+候选包括：
 
-选择依据应来自 WI-05 的实际结果、当前 Consumer / 项目价值和研究复用关系，不在本 Plan 中提前锁死全部顺序。
+- Element Plus；
+- Spring Framework / Spring Boot / Spring MVC；
+- Gradle；
+- 其他后续证明有价值的技术栈。
+
+只有 Foundation v1 Closure 后的新 Roadmap / Milestone Decision 才能将其中某项提升为当前工作。WI-05 完成不再自动触发 WI-06。
 
 ### WI-07 — 任务型 Skill 提炼
 
-当至少一个 Discipline 或 Technology Profile 已经稳定，并且出现具有独立输入、过程、输出和退出条件的重复工程职责时，再评估是否提炼 Task-oriented Skill。
+**状态：Post-v1 Backlog。**
 
-完成条件：
+Foundation v1 不要求新增 Task-oriented Skill。
+
+当后续至少一个 Discipline 或 Technology Profile 已经稳定，并且出现具有独立输入、过程、输出和退出条件的重复工程职责时，再评估是否提炼 Task-oriented Skill。
+
+准入要求保持：
 
 - Skill 职责与 Profile / Discipline 边界清晰；
 - Contract 与 Targeted Eval 完整；
@@ -190,40 +225,92 @@ Candidate
 
 ### WI-08 — Consumer 采用
 
-选择已经进入 `agentic-dev` 正式基线的能力，通过 Existing Consumer baseline upgrade 推动 Reference Consumer 采用。
+**Foundation v1：必需，但只执行一次受控 Adoption。**
 
-优先验证：
+选择已经进入 `agentic-dev` 正式基线的首批 Discipline 与 Vue 3 + TypeScript Profile，通过 Existing Consumer baseline upgrade 推动 Reference Consumer 采用。
+
+优先 Reference Consumer：`dygapp/jilinjobs-cms`。
+
+验证目标限定为：
 
 - 通用能力与 Consumer-local Authority 的组合；
-- Profile / Skill 是否真实改善实现和验证质量；
-- 是否出现错误默认值、过度约束或能力缺口；
-- 是否需要回写上游能力。
+- 新 Discipline 是否真实约束实现最小化与 diff 范围；
+- Vue 3 + TypeScript Profile 是否改善真实实现和验证质量；
+- Verification Profile 是否可执行；
+- 是否出现错误默认值、过度约束或通用能力缺口。
 
-Consumer Adoption 不是前面所有研究的启动条件，而是正式能力的重要现实验证阶段。
+Consumer Adoption 不是无限 Experiment。Blocking / Medium 的通用问题应回写并重新验证；Low / Future Improvement 可以进入 Post-v1 Backlog，不要求继续扩展当前里程碑。
 
 ### WI-09 — 运行时与分发规划
 
-只有前述能力已经证明存在跨 Runtime 交付价值时，才进入 Runtime Adapter / Distribution 的独立规划。
+**状态：Post-v1 Backlog。**
 
-不得在此前阶段顺带实现 Marketplace、Plugin Bundle、Controller 或统一安装器。
+Runtime Adapter / Distribution 的独立规划不属于 Foundation v1 Completion Gate。
+
+未来只有前述能力已经证明存在跨 Runtime 交付价值，并经新的 Roadmap / Milestone Decision 提升后，才进入 Runtime Adapter / Distribution 工作。
+
+不得在 Foundation v1 中顺带实现 Marketplace、Plugin Bundle、Controller 或统一安装器。
+
+### WI-10 — Engineering Capability Foundation v1 Closure
+
+**Foundation v1：必需。**
+
+进入条件：
+
+- WI-03V 实际集成完成；
+- WI-04 完成；
+- WI-05 的 Vue 3 + TypeScript Profile 已实际集成；
+- WI-08 一次受控 Existing Consumer Adoption 已完成并收敛 Blocking / Medium 通用问题。
+
+目标：执行项目级 Closure Review，确认本轮已经形成可复用的完整工程能力基础闭环。
+
+至少检查：
+
+- Core Method 未产生不必要变化；
+- Engineering Capability Architecture 已真实支撑 Discipline、Profile、Verification 和 Consumer Adoption；
+- 首批两个 Engineering Discipline 已正式集成；
+- Vue 3 + TypeScript Technology Profile 已正式集成；
+- 新能力具备当前 Targeted Eval 证据；
+- Existing Consumer Adoption 已完成；
+- 没有形成 Super-skill 或框架百科 Skill；
+- WI-06、WI-07、WI-09 与其他 Post-v1 候选未被误当作当前完成条件。
+
+完成后：
+
+- 更新 Project Roadmap：`Engineering Capability Foundation v1 = Completed`；
+- 记录最终集成 baseline；
+- 根据 Human / Repository Policy 决定 Tag / Release 标记；
+- 关闭本 Plan 的 Foundation v1 执行职责；
+- 下一里程碑必须通过新的 Roadmap / Milestone Decision 明确启动。
 
 ## 非目标
 
-本 Plan 不负责：
+Foundation v1 不负责：
 
-- 一次完成所有工程纪律；
-- 一次完成 Vue、Element Plus、Spring、Gradle 等全部 Profile；
-- 预先确定一批新的 Skill 名单；
+- 增加第三个 Engineering Discipline；
+- 完成 Element Plus、Spring、Gradle 或其他第二个 Technology Profile；
+- 为完成数量目标新增 Skill；
+- 实现 Runtime Adapter / Marketplace / Plugin Bundle / Controller / 统一安装器；
 - 修改已稳定的 Core Method 以适应某个框架；
-- 让 `jilinjobs-cms` 再次成为唯一实验来源；
+- 让 `jilinjobs-cms` 再次成为无限实验来源；
 - 在 Research 阶段直接把外部最佳实践升级为规范权威。
+
+如果当前工作发现新的高价值方向，但它不阻塞 F1～F5 已定义完成条件，应记录为 Post-v1 Backlog，而不是加入当前 Work Item 链。
 
 ## 完成与交接
 
-本 Plan 不以“所有 WI 一次完成”为单次执行目标。
+Foundation v1 的固定剩余路径是：
 
-每个 Work Item 应单独关闭并留下当前可验证结果；跨 Fresh Context 时，新的 Agent 从 `AGENTS.md`、Project Roadmap、Engineering Capability Architecture 和本 Plan 的下一个未完成 Work Item 恢复，不依赖历史聊天。
+```text
+WI-03V
+→ WI-04
+→ WI-05
+→ WI-08（一次）
+→ WI-10 Closure
+```
+
+每个 Work Item 应单独关闭并留下当前可验证结果；跨 Fresh Context 时，新的 Agent 从 `AGENTS.md`、Project Roadmap、`engineering-capability-foundation-v1.md`、Engineering Capability Architecture 和本 Plan 的下一个未完成 Foundation v1 Work Item 恢复，不依赖历史聊天。
 
 Research / Candidate Design 完成不等于 Draft，不等于 Targeted Eval PASS，也不等于规范集成。凡候选能力需要进入正式能力基线，必须遵循当前 Engineering Capability Architecture 的完整生命周期；不能为了推进 Work Item 状态绕过 Draft、验证、AI Review 或人工 / Repository Integration Boundary。
 
-如果长期路线、能力分层或 Work Item 顺序发生实质变化，应优先更新对应长期权威；本 Plan 只同步必要的协调状态，不维护第二份项目路线图。
+如果 F1～F5 的完成定义必须发生实质变化，应优先修改 `docs/project/engineering-capability-foundation-v1.md` 与 Project Roadmap，并解释原完成定义为什么失效。本 Plan 不得通过新增 Work Item 静默扩大当前里程碑。
