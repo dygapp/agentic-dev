@@ -53,9 +53,9 @@
 | Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
 | Track B — Engineering Discipline Expansion | **当前** | WI-02 / WI-03 的 Research / Candidate Design 均已完成；当前进入 WI-03V，验证和集成 Foundation v1 固定的首批两个 Discipline |
 | Track C — Technology Engineering Profiles | 下一步 | Foundation v1 只建立 Technology Profile 最小契约并完成一个 Vue 3 + TypeScript Profile；第二个及后续 Profile 进入 Post-v1 Backlog |
-| Track D — Consumer Adoption | 后续 | Foundation v1 只执行一次受控 Existing Consumer Adoption，用于验证已集成 Discipline / Profile 与 Consumer-local Authority 的组合 |
-| Track E — Engineering Skills | Post-v1 | Skill 数量不是 Foundation v1 完成指标；只有出现独立稳定职责时才在后续里程碑评估 |
-| Track F — Runtime / Distribution | Post-v1 | Runtime Adapter、Marketplace、Plugin Bundle、Controller 与统一安装器不属于 Foundation v1 Completion Gate |
+| Track D — Consumer Adoption | 下一步 | Foundation v1 只执行一次受控 Existing Consumer Adoption，用于验证已集成 Discipline / Profile 与 Consumer-local Authority 的组合 |
+| Track E — Engineering Skills | 条件性后续 | Post-v1 候选；Skill 数量不是 Foundation v1 完成指标，只有出现独立稳定职责时才在后续里程碑评估 |
+| Track F — Runtime / Distribution | 条件性后续 | Post-v1 候选；Runtime Adapter、Marketplace、Plugin Bundle、Controller 与统一安装器不属于 Foundation v1 Completion Gate |
 
 ## 工程能力扩展模型
 
@@ -143,9 +143,12 @@ agentic-dev 才开始研究
 - **当前 WI-03V — 首批工程纪律 Draft 验证与集成门禁：触发条件已满足**；
 - 首轮 Greenfield Consumer Experiment：已完成并关闭 Issue #18；
 - Existing Consumer 继续演进实验：Issue #33 当前仍为 `open`；
+- Issue #33 已经形成多轮有效证据，并推动 PR #34、#35、#37、#38、#40、#41 的定向强化；
 - Issue #33 后续是否关闭可以按其自身实验总结独立处理，不再阻塞 Foundation v1；
 - `dygapp/jilinjobs-cms` 继续作为 Reference / Integration Consumer，并作为 Foundation v1 一次受控 Consumer Adoption 的优先候选；
-- WI-02 / WI-03 两个 Candidate 已证明职责可独立描述：前者处理复杂度正当性，后者处理最终差异范围正当性；是否正式组合进入基线由 WI-03V 的 Architecture Fit Review 与 Targeted Eval 决定。
+- WI-02 研究综合 YAGNI、Simple Design、Google Engineering Practices、Sandi Metz、Go 官方实践和本地证据，当前没有发现需要修改 Core Method 或 Engineering Capability Architecture 的缺口；
+- WI-03 研究综合 Google Small CL / Review Practices、Linux Patch Discipline、Martin Fowler Opportunistic / Preparatory Refactoring 与 PR #42，当前同样没有发现新的 Method / Architecture / Skill 职责缺口；
+- 两个 Candidate 已证明职责可独立描述：WI-02 处理复杂度正当性，WI-03 处理最终差异范围正当性；是否正式组合进入基线由 WI-03V 的 Architecture Fit Review 与 Targeted Eval 决定。
 
 上述提交和 Issue 是历史证据锚点，不要求后续工作永久固定使用这些静态版本。新的研究、评估或 Consumer Adoption 开始时，必须记录当时实际使用的精确 baseline。
 
