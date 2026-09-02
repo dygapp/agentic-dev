@@ -65,9 +65,10 @@ Current Unit 应至少能提供：
 3. Relevant Specification 定义当前 Unit 必须满足的 WHAT / WHY。
 4. Relevant Technical Plan（如存在）提供跨 Unit Durable Technical Constraints，不应被当前局部实现静默改写。
 5. Domain Context 提供长期业务事实，Architecture Context 提供当前有效架构状态，ADR 提供满足条件的重要架构决定及其理由；当前 Unit 不得静默覆盖这些长期权威。
-6. Current Code / Tests 用于确定 Actual Current System State，但不能反向定义或覆盖 Product Requirement。
-7. Conversation History 不构成权威事实来源。
-8. 未经当前仓库证据确认的 Build / Test / Lint / Verification 命令不能被当作仓库事实。
+6. 当前适用的 Engineering Discipline Authority 约束阶段内部工程质量，但不得覆盖上述 Product / Technical / Architecture Authority，也不得自行扩大 Unit Scope。
+7. Current Code / Tests 用于确定 Actual Current System State，但不能反向定义或覆盖 Product Requirement。
+8. Conversation History 不构成权威事实来源。
+9. 未经当前仓库证据确认的 Build / Test / Lint / Verification 命令不能被当作仓库事实。
 
 如果权威来源冲突，停止当前 Unit 的相关实施并按 Escalation Conditions 处理；不要通过局部 Patch 选择一个方便实现的解释。
 
@@ -221,6 +222,11 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 - 不静默覆盖当前有效 Domain / Architecture / ADR Authority，也不在代码或测试中直接确立新的跨功能长期权威；
 - 不把当前 Unit 变成整个 Feature 的重构机会。
 
+应用当前 Engineering Discipline 时，只保留以下薄执行判断：
+
+- **实现最小化：** 新增功能、抽象、配置、扩展点、依赖或层次必须能够追溯到当前需求、当前长期约束、当前非功能责任、真实消费者 / 变体、Repository Rule 或正确复用已有能力的需要；仅服务假想未来的复杂度默认不进入当前实现。不要把“最小化”机械解释成最少代码，也不要据此跳过当前必要的安全、测试、验证或范围受控的行为保持重构。
+- **精准修改：** 当前逻辑变化可以包含直接实现、验证、已授权权威同步、必要准备性重构、本次修改直接产生的 cleanup 和 Repository Rule 确定触发的机械伴随变化；多文件本身不是越界证据，但“同一逻辑变化”不能绕过公共契约、重大架构或其他高影响事项的上游授权。
+
 当 Unit 包含“消除硬编码”、配置审计或类似要求时，不把每个字面量机械外部化。先根据当前 Repository Authority 和实际变化证据判断：谁负责维护、何时变化、变化来自产品运营、结构定义、部署实例还是 CI / 评审 / 发布环境，以及是否受稳定领域规则、安全、协议、模板或算法约束。稳定且没有已证明外部维护责任的值默认保留在代码或既有权威载体中；管理员维护的运营数据、低频结构元数据、部署差异和流程参数分别进入 Consumer 已有的适当责任层。不得只为消除字面量而新增数据库字段、设置页面、环境变量或配置机制。
 
 实现通用技术能力前，先检查当前代码库、框架、标准库和已引入依赖。已有能力满足当前功能契约及安全、可观察性、性能和生命周期约束时，优先复用，并只用最薄适配层承载项目特有差异。存在可证明的不匹配时可以采用自有实现；不机械执行“框架优先”，也不为了复用扩大依赖面、改变产品行为或覆盖当前 Architecture Authority。
@@ -285,8 +291,12 @@ Review 逻辑上至少区分两个维度：
 **Engineering Quality**
 
 - 实现是否与当前 Architecture / Repository Rules 一致；
+- 新增复杂度是否有当前正当性，而不是只服务假想未来；
+- 最终有意义的 changed regions 是否都能追溯到当前逻辑变化及其必要责任；
 - 是否引入明显隐藏耦合、脆弱性或不可维护结构；
 - 测试 / 验证是否与变更风险相称。
+
+在声明 Completed 前，对最终 diff 做轻量 Scope Check：识别主要变更区域，确认它们属于当前直接实现、验证、已授权权威同步、必要准备性重构、本次修改直接产生的 cleanup 或确定性机械伴随变化；无法形成当前责任链的顺带修改应移除、记录或拆分。不要使用行数 / 文件数作为主要判断标准。
 
 这两个维度不要求两个独立 Reviewer Agent，也不要求每个低风险 Unit 都执行重型 Review 流程。
 
@@ -406,6 +416,8 @@ Review 逻辑上至少区分两个维度：
 
 - `systematic-debug`
 - `github-actions-verification`（when applicable）
+- Implementation Minimality & Speculative Complexity Control
+- Surgical Change & Diff Scope Control
 - Verification-before-claim
 - TDD（when useful）
 - Code Review（risk-based discipline）
