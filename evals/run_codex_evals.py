@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Run first-pass agentic-dev Skill evals with fresh Codex CLI sessions.
+"""Run agentic-dev Fresh Runtime evals with isolated Codex CLI sessions.
 
 This runner deliberately stays thin:
 - one `codex exec --ephemeral --json` process per scenario;
-- activation and behavior runs use external temporary workspaces containing only Skill copies;
+- Skill activation / behavior runs use external temporary workspaces with Skill copies;
+- non-Skill capability runs copy only the context paths declared by that corpus;
 - the Codex process cwd/PWD matches the isolated workspace so repository paths do not leak through the launcher;
-- behavior runs use explicit Skill invocation;
+- behavior runs use explicit Skill invocation, while capability runs do not invent a Skill;
 - B-EU-01 additionally receives a fresh writable fixture and its final snapshot is preserved;
 - saves raw JSONL/stdout and stderr;
 - does NOT grade semantic assertions automatically.
@@ -40,6 +41,9 @@ BEHAVIOR_FILES = [
     EVALS / "behavior" / "converge.json",
     EVALS / "behavior" / "github-actions-verification.json",
 ]
+CAPABILITY_FILES = [
+    EVALS / "capability" / "vue3-typescript-profile.json",
+]
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
@@ -63,6 +67,23 @@ def populate_isolated_skill_copies(workspace: Path) -> None:
 
     for skill_dir in iter_skill_dirs():
         shutil.copytree(skill_dir, skill_root / skill_dir.name)
+
+
+def copy_capability_context(workspace: Path, context_paths: list[str]) -> None:
+    """Copy only declared non-Skill capability context, preserving repo-relative paths."""
+    for relative in context_paths:
+        source = (ROOT / relative).resolve()
+        if not source.is_relative_to(ROOT):
+            raise RuntimeError(f"Capability context escapes repository root: {relative}")
+        if not source.exists():
+            raise RuntimeError(f"Capability context does not exist: {relative}")
+
+        target = workspace / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if source.is_dir():
+            shutil.copytree(source, target)
+        else:
+            shutil.copy2(source, target)
 
 
 def copy_fixture_into(workspace: Path) -> None:
@@ -200,6 +221,15 @@ def behavior_cases() -> Iterable[tuple[str, dict]]:
             yield skill_name, case
 
 
+def capability_cases() -> Iterable[tuple[str, list[str], dict]]:
+    for path in CAPABILITY_FILES:
+        document = load_json(path)
+        capability_name = document["capability_name"]
+        context_paths = document["context_paths"]
+        for case in document["evals"]:
+            yield capability_name, context_paths, case
+
+
 def run_activation(codex_bin: str, selected: set[str] | None) -> int:
     failures = 0
 
@@ -267,14 +297,58 @@ def run_behavior(codex_bin: str, selected: set[str] | None) -> int:
     return failures
 
 
+def run_capability(codex_bin: str, selected: set[str] | None) -> int:
+    failures = 0
+
+    for capability_name, context_paths, case in capability_cases():
+        scenario_id = case["id"]
+        if selected and scenario_id not in selected:
+            continue
+
+        with tempfile.TemporaryDirectory(
+            prefix=f"agentic-dev-capability-{scenario_id}-"
+        ) as temp_dir:
+            cwd = Path(temp_dir)
+            copy_capability_context(cwd, context_paths)
+
+            context_list = "\n".join(f"- {path}" for path in context_paths)
+            prompt = (
+                f"当前评估对象：{capability_name}。\n"
+                "先读取以下当前 Capability Context；这些文件与本提示构成本场景"
+                "全部可用上下文，不要读取当前工作目录之外的路径：\n"
+                f"{context_list}\n\n"
+                f"{case['prompt']}"
+            )
+
+            failures += run_codex(
+                codex_bin=codex_bin,
+                scenario_id=scenario_id,
+                prompt=prompt,
+                result_group="capability",
+                cwd=cwd,
+                skip_git_repo_check=True,
+            ) != 0
+
+    return failures
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run first-pass agentic-dev Skill evals with fresh Codex CLI sessions."
+        description="Run agentic-dev Fresh Runtime evals with isolated Codex sessions."
     )
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--activation", action="store_true", help="run activation corpus")
-    mode.add_argument("--behavior", action="store_true", help="run behavior corpus")
-    mode.add_argument("--all", action="store_true", help="run activation then behavior")
+    mode.add_argument("--activation", action="store_true", help="run Skill activation corpus")
+    mode.add_argument("--behavior", action="store_true", help="run Skill behavior corpus")
+    mode.add_argument(
+        "--capability",
+        action="store_true",
+        help="run non-Skill capability targeted-eval corpus",
+    )
+    mode.add_argument(
+        "--all",
+        action="store_true",
+        help="run activation, behavior, then capability corpora",
+    )
     parser.add_argument(
         "--scenario",
         action="append",
@@ -295,6 +369,7 @@ def main() -> int:
 
     known = {case["id"] for case in activation_cases()}
     known.update(case["id"] for _, case in behavior_cases())
+    known.update(case["id"] for _, _, case in capability_cases())
     if selected:
         unknown = selected - known
         if unknown:
@@ -308,9 +383,12 @@ def main() -> int:
         failures = run_activation(args.codex_bin, selected)
     elif args.behavior:
         failures = run_behavior(args.codex_bin, selected)
+    elif args.capability:
+        failures = run_capability(args.codex_bin, selected)
     else:
         failures = run_activation(args.codex_bin, selected)
         failures += run_behavior(args.codex_bin, selected)
+        failures += run_capability(args.codex_bin, selected)
 
     if failures:
         print(f"Codex process failures: {failures}", file=sys.stderr)
