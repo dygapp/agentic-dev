@@ -1,18 +1,18 @@
 # 工程纪律基线
 
-**状态：** Draft v0.1 — WI-03V Targeted Eval Pending  
-**性质：** 工程纪律（Engineering Discipline）规范性 Draft
+**状态：** Baseline v0.1  
+**性质：** 工程纪律（Engineering Discipline）规范性基线
 
 ## 1. 目的
 
-本文定义 `agentic-dev` 首批两个跨技术栈工程纪律的规范性 Draft：
+本文定义 `agentic-dev` 首批两个跨技术栈工程纪律：
 
 1. **Implementation Minimality & Speculative Complexity Control（实现最小化与推测性复杂度控制）**；
 2. **Surgical Change & Diff Scope Control（精准修改与差异范围控制）**。
 
 本文不增加新的 Method Stage，不改变 Execution Unit、Human Escalation、Ready to Integrate 或 Integration Boundary，也不创建新的 Task-oriented Skill。
 
-在 WI-03V 完成 Fresh Runtime Targeted Eval、必要回归和最终 AI Review 之前，本文仅为拟集成 Draft；只有实际合并到当前 Repository Authority 后，才成为 `agentic-dev` 的正式工程纪律基线。
+WI-03V 已完成 Fresh Runtime Targeted Eval 与必要历史回归；本文作为拟集成 Baseline 接受最终 AI Review。只有实际进入当前 Repository Authority 的集成分支后，它才成为 `agentic-dev` 的现行工程纪律基线；未合并 PR / Draft 分支中的副本不自动改变 `master` 权威。
 
 ## 2. Architecture Fit Review
 
@@ -230,16 +230,45 @@ WI-02 / WI-03 的 Research 与 Candidate Design 在当前 `master` 上重新复�
 - **Supersede：** 后续版本必须明确取代当前内容，并保持单一当前规范入口；
 - **Escalation：** 如果修订要求改变 Method 生命周期、Execution Unit 定义、重大架构、Skill Contract、Human / Integration Boundary 或 Consumer Authority，返回对应更高权威处理。
 
-## 10. WI-03V 验证门禁
+## 10. WI-03V Targeted Eval 证据
 
-本 Draft 只有在以下条件同时成立时才可以改为正式 Baseline 并进入最终 AI Review：
+2026-09-02，在 PR #48 的待测语义 Head：
 
-- 4 个 Implementation Minimality 新场景通过；
-- 5 个 Diff Scope 新场景通过；
-- 至少回归 `B-EU-02`、`B-EU-07`、`B-EU-08`；
-- 必要重构组合边界通过；
-- 不产生新的 Human Confirmation Loop；
-- 不削弱配置责任、已有能力复用、Stage Return、Human Escalation 或 Integration Boundary；
-- 失败场景完成 Fresh Runtime 修订与重跑，而不是使用当前聊天推演替代。
+`a7d50795a968f279a68d9dfd62df57b7c1480de5`
 
-在上述门禁完成前，状态保持 `Draft v0.1 — WI-03V Targeted Eval Pending`。
+上完成 Fresh Runtime Targeted Eval 与回归。提交的运行产物包含 13 个场景各自的 `.jsonl`、`.run.json` 和 `.stderr.txt`：
+
+```text
+场景：  13 / 13 PASS
+断言：  62 / 62 PASS
+```
+
+新增 Engineering Discipline 场景：
+
+- `B-EU-09`～`B-EU-12`：Implementation Minimality；
+- `B-EU-13`～`B-EU-17`：Surgical Change / Diff Scope。
+
+历史回归：
+
+- `B-EU-01`：真实 one-unit fixture 修改、预期失败证据与当前 unittest 闭环；
+- `B-EU-02`：one-unit boundary；
+- `B-EU-07`：配置责任；
+- `B-EU-08`：已有框架能力复用与项目差异薄适配。
+
+关键观察：
+
+- `B-EU-01` 实际先取得空字符串 / 纯空白输入的失败证据，再完成最小实现并执行仓库声明的 `python3 -m unittest discover -s tests -v`，3 项测试全部通过后才声明 `Completed`；
+- 9 个新场景均能区分“当前复杂度 / 范围正当性”与机械少代码、少文件、DRY、YAGNI 或顺手 cleanup；
+- 必要 preparatory refactoring、当前测试、安全责任、已授权公共契约同步、直接产生的 orphan cleanup 和 Repository Rule 确定触发的机械差异没有被错误排除；
+- 无关 TODO / typo / 历史 dead code、假想扩展结构和无证据动态配置没有被自动吸收；
+- `B-EU-02`、`B-EU-07`、`B-EU-08` 没有发生语义回归；
+- 所有 Run 均使用独立隔离 workspace，没有发现读取 `evals/behavior/*`、`evals/results/*`、grading assertions、历史答案或当前工作区之外路径的污染轨迹；
+- 13 个进程均以状态码 `0` 结束并包含 `turn.completed`，但退出码没有被作为 PASS 依据；
+- `B-EU-02` 的 stderr 出现一次模型列表刷新 timeout，未中断场景执行，也未影响最终语义判断；其余 stderr 为空；
+- 提交产物没有暴露精确 Runtime 版本或模型名，本轮结论不依赖该信息。
+
+运行结果压缩包 SHA-256：
+
+`17133821e31077f6196296298e371f897f4dc180f72b0471d0afe0e32806388e`
+
+本次 Targeted Eval Gate 已通过。后续如果只回写证据、Roadmap / Plan 或 PR Review 状态，而不改变 `skills/execute-unit/SKILL.md`、`docs/architecture/skill-contracts.md` 或 `evals/behavior/execute-unit.json` 的受测语义，上述证据仍适用于该拟集成能力；如果受测语义发生实质变化，必须重新运行受影响场景和必要回归。
