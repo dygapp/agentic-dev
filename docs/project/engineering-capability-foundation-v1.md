@@ -2,7 +2,7 @@
 
 ## 1. 目的
 
-本文定义 `agentic-dev` 当前 **Engineering Capability Foundation v1（工程能力基础版 v1）** 的有限里程碑范围、剩余实施步骤、完成条件和范围冻结规则。
+本文定义 `agentic-dev` 当前 **Engineering Capability Foundation v1（工程能力基础版 v1）** 的有限里程碑范围、实施步骤、完成条件和范围冻结规则。
 
 它解决的问题不是“未来还有哪些能力值得研究”，而是：
 
@@ -10,9 +10,9 @@
 
 本文属于 `docs/project/*` 项目级权威，用于约束 `agentic-dev` 自身当前里程碑；不修改 Core Method、Engineering Capability Architecture、Skill Contract，也不由 Consumer Repository 自动继承。
 
-## 2. 当前起点
+## 2. 里程碑起点与当前进度
 
-本里程碑的当前起点为 PR #46 合并后的：
+本里程碑的起点为 PR #46 合并后的：
 
 `master@350e6607bae6101869d97903b56993820ba73265`
 
@@ -24,7 +24,15 @@
 - WI-02 实现最小化与推测性复杂度控制 Research / Candidate Design；
 - WI-03 精准修改与差异范围控制 Research / Candidate Design。
 
-因此 Foundation v1 不重新研究已经关闭的前置问题，直接从 WI-03V 开始收敛。
+因此 Foundation v1 不重新研究已经关闭的前置问题，从 WI-03V 开始收敛。
+
+当前进度快照：
+
+- **F1 / WI-03V 已完成**：PR #48 已合并，集成提交为 `6130d7251d81bbfc9f13b2dd827b6a40dfd09076`；首批两个 Engineering Discipline 已完成 Fresh Runtime `13 / 13 PASS`、`62 / 62 assertions PASS` 并进入当前 Repository Authority；
+- **F2 / WI-04 当前**：建立 Technology Profile / Verification Profile 最小契约；
+- F3 / WI-05、F4、F5 尚未开始。
+
+当前状态以 `docs/project/project-roadmap.md` 为准；本节只提供与本里程碑完成边界对应的进度快照，不另建第二套路线路径。
 
 ## 3. Foundation v1 的完成定义
 
@@ -58,11 +66,11 @@ Foundation v1 Closure Review
 
 Foundation v1 **不以能力数量最大化为目标**，也不要求在一个里程碑中覆盖所有工程纪律、技术栈、Skill 或 Runtime。
 
-## 4. 剩余五个阶段
+## 4. 固定五个阶段
 
 ### F1 — 首批 Engineering Discipline 正式化
 
-对应当前 WI-03V。
+对应 WI-03V。**当前已完成。**
 
 目标：
 
@@ -83,9 +91,11 @@ Foundation v1 **不以能力数量最大化为目标**，也不要求在一个�
 - 没有为了完成数量目标机械新增 Skill；
 - Phase 3 可以关闭。
 
+当前证据：PR #48 已完成上述闭环并实际集成，因此 F1 已关闭。
+
 ### F2 — Technology Profile 最小契约
 
-对应 WI-04。
+对应 WI-04。**当前。**
 
 目标：定义 Technology Profile / Verification Profile 的最小结构和治理边界，而不是开始堆叠具体框架知识。
 
@@ -189,7 +199,7 @@ Foundation v1 只正式化：
 
 Code Review、Testing、Refactoring、Dependency Management、API Evolution、Performance、Security、Error Handling 等仍可作为未来候选，但**不得成为 Foundation v1 的新增完成前置条件**。
 
-如果 F1 验证暴露真正 Blocking 的高层设计缺口，可以修复该缺口；不得把“发现另一个有价值纪律”当作扩大首批数量的理由。
+F1 已按该范围完成。后续阶段不得因为发现新的工程纪律而重新打开 F1 或增加第三个 Discipline 作为 Foundation v1 前置条件。
 
 ### 5.2 首批 Technology Profile 固定为一个
 
@@ -259,17 +269,17 @@ Foundation v1 执行期间，新增工作只有以下情况可以进入当前 Co
 
 ## 8. 进度表达
 
-Foundation v1 的进度只使用以下五个剩余阶段表达：
+Foundation v1 的进度只使用固定五个阶段表达：
 
 ```text
-F1 Discipline Formalization       当前
-F2 Technology Profile Contract    待开始
+F1 Discipline Formalization       已完成
+F2 Technology Profile Contract    当前
 F3 Vue 3 + TypeScript Profile     待开始
 F4 Consumer Adoption              待开始
 F5 Foundation v1 Closure          待开始
 ```
 
-内部可以继续拆成小 Work Item 或 PR，但不得通过增加内部步骤改变“五个剩余阶段”的总体完成定义。
+内部可以继续拆成小 Work Item 或 PR，但不得通过增加内部步骤改变五个阶段的总体完成定义。
 
 ## 9. 生命周期责任
 

@@ -20,12 +20,14 @@ Skill 必须实现 Method / Architecture 已明确允许的可复用职责，不
 6. `docs/architecture/skill-contracts.md`
 7. `docs/decisions/method-decisions.md`
 8. `docs/architecture/engineering-disciplines.md`
-9. `docs/project/*`
-10. `docs/guides/git-commit-guidelines.md`
-11. `docs/research/*`
-12. Tasks 与临时工作记录
+9. `docs/architecture/technology-profile-contract.md`
+10. `docs/technology-profiles/*`
+11. `docs/project/*`
+12. `docs/guides/git-commit-guidelines.md`
+13. `docs/research/*`
+14. Tasks 与临时工作记录
 
-`docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行规则，不得覆盖更高优先级 Method、Architecture、Contract 或 Engineering Discipline Authority，也不得被 Consumer Repository 自动继承。
+`docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行规则，不得覆盖更高优先级 Method、Architecture、Contract、Engineering Discipline 或 Technology Profile Authority，也不得被 Consumer Repository 自动继承。
 
 如果某个 Skill 的设计要求改变方法本身，必须先显式修改方法文档，再修改 Skill。
 
