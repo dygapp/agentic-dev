@@ -19,9 +19,9 @@
 ## 当前状态
 
 - **WI-01 — 工程纪律范围设计：已完成。** 结果固化于 `docs/project/engineering-discipline-scope.md`；
-- **WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成。** 当前状态为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`，尚未形成 Draft，也未进入规范性能力基线；
-- **当前工作项：WI-03 — 精准修改与差异范围控制。** WI-02 未暴露 Engineering Capability Architecture 缺口，条件已满足；
-- **WI-03V — 首批工程纪律 Draft 验证与集成门禁：待 WI-03 完成后执行。**
+- **WI-02 — 实现最小化与推测性复杂度控制：Research / Candidate Design 已完成。** 当前状态为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
+- **WI-03 — 精准修改与差异范围控制：Research / Candidate Design 已完成。** 当前状态同样为 `Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability`；
+- **当前工作项：WI-03V — 首批工程纪律 Draft 验证与集成门禁。** 两个 Candidate 的研究与候选设计均已完成，触发条件已满足。
 
 ## 范围
 
@@ -42,7 +42,7 @@
 完成结果：
 
 - 首项确定为 **Implementation Minimality & Speculative Complexity Control（实现最小化与推测性复杂度控制）**；
-- 第二项条件性确定为 **Surgical Change & Diff Scope Control（精准修改与差异范围控制）**；
+- 第二项确定为 **Surgical Change & Diff Scope Control（精准修改与差异范围控制）**；
 - Code Review、Testing、Refactoring、Dependency Management、API Evolution、Performance、Security、Error Handling 等方向保留后续优先级，不在首批一次展开；
 - 没有因为范围选择新增 Skill 或修改 Method。
 
@@ -67,31 +67,33 @@
 
 ### WI-03 — 第二项工程纪律研究
 
-**状态：当前。**
+**状态：Research / Candidate Design 已完成；Pending Draft Capability。**
 
 研究对象：**精准修改与差异范围控制**。
 
-WI-02 已完成 Research / Candidate Design，且没有暴露需要先调整 Engineering Capability Architecture 的问题，因此原条件性进入门槛已满足。
+完成结果：
 
-目标：完成该方向的 Research → Candidate Capability 收敛，并与 WI-02 保持职责独立：
+- 综合 Google Small CL / Review Practices、Linux Patch Discipline、Martin Fowler Opportunistic / Preparatory Refactoring 与 PR #42 形成多来源证据；
+- 明确差异范围的核心单位是**一个可解释、可验证的逻辑变化**，而不是最少行数、最少文件或用户请求的逐字映射；
+- 建立最终 diff 的责任追溯类别：直接实现、验证责任、当前权威同步、必要准备性重构、当前修改直接产生的 cleanup、确定性机械伴随变更；
+- 明确无关 TODO、typo、历史 dead code、邻近独立 bug、个人风格调整等默认不得自动进入当前 diff；
+- 允许直接服务当前实现 / 验证且范围受控、有行为保持证据的 preparatory refactoring，但较大重构应拆成独立前置 Unit / change；
+- 初步 Architecture Fit 判断为 **独立 Engineering Discipline + `execute-unit` 完成前的薄 Diff Scope Check / 引用**，当前没有新增 Skill 或 Method 的职责证据；
+- 设计 5 个 Candidate Eval，并明确回归 one-unit boundary、配置责任、已有能力复用和 WI-02 必要重构边界；
+- 研究结果固化于 `docs/research/surgical-change-and-diff-scope-control-analysis.md`。
 
-- WI-02 关注**方案复杂度是否具有当前正当性**；
-- WI-03 关注**最终变更区域是否属于当前工作、验证责任或必要连带清理**。
+WI-02 与 WI-03 的职责保持独立：
 
-至少应：
+- WI-02 判断**方案复杂度是否具有当前正当性**；
+- WI-03 判断**最终变更区域是否属于当前逻辑变化及其必要责任**。
 
-- 获取多来源成熟工程证据；
-- 研究最终 diff 可追溯性、必要连带清理、生成 / 格式化差异和顺带修改边界；
-- 与当前 Execution Unit 边界、PR #42 `Surgical Changes`、代码复核和 Refactoring 候选关系做对照；
-- 形成 Candidate Capability；
-- 设计有辨识力的 Candidate Eval；
-- 不在 Candidate 尚未形成 Draft 并完成验证时直接修改 Method / Skill Implementation。
+两个 Candidate 现在都只停在 Research / Candidate 阶段，尚未形成 Draft Capability，也尚未成为当前 Repository Authority。
 
 ### WI-03V — 首批工程纪律 Draft 验证与集成门禁
 
-**状态：待执行。**
+**状态：当前。**
 
-触发条件：WI-02 与 WI-03 的 Research / Candidate Design 均完成。
+触发条件：WI-02 与 WI-03 的 Research / Candidate Design 均已完成，现已满足。
 
 目标：落实 Engineering Capability Architecture 的正式生命周期，防止“研究完成”或“Candidate 看起来合理”被错误等同于规范能力已经生效。
 
@@ -111,8 +113,12 @@ Candidate
 
 1. **Architecture Fit Review**：复核两个 Candidate 的职责是否真正独立、能够组合，并确认应落在 Engineering Discipline 而不是 Method、Profile 或 Skill；
 2. **Draft Capability**：创建尚未集成的规范性 Draft，并按需要形成 `execute-unit` 等消费者的薄 Draft 引用 / 执行强化；Draft 不因存在于分支就成为当前 Repository Authority；
-3. **Eval Materialization**：将审核后的 Candidate Eval 设计转换为针对 Draft Capability 的正式隔离 Runtime Behavior Eval；
-4. **Regression Selection**：回归与候选能力直接相关的历史场景，至少包含 PR #41 已验证的 `B-EU-07` 配置责任和 `B-EU-08` 已有能力复用边界；
+3. **Eval Materialization**：将两个 Research 中审核后的 Candidate Eval 设计转换为针对 Draft Capability 的正式隔离 Runtime Behavior Eval；
+4. **Regression Selection**：至少回归：
+   - `B-EU-02` one-unit boundary；
+   - `B-EU-07` 配置责任；
+   - `B-EU-08` 已有能力复用；
+   - WI-02 Candidate 中“必要重构不是 YAGNI 禁止对象”的边界场景；
 5. **Fresh Runtime Targeted Eval**：在隔离 Fresh Runtime 中执行新场景和必要回归，并按断言进行语义判分；
 6. **Failure Loop**：如果 Eval 暴露边界错误，返回 Candidate / Draft 修订并重新验证，不为推进计划强行集成；
 7. **Final AI Review**：只有 Draft 获得有效当前 PASS 证据后，才对最终拟集成变更执行 AI Review，确认无 Method / Architecture / Contract / Human Boundary 回归；
@@ -123,6 +129,7 @@ Candidate
 - 每个拟进入正式基线的 Discipline 都有可追溯 Research、Candidate、Architecture Fit、Draft、Targeted Eval 和当前 PASS 证据；
 - Pending / Failed Candidate 不被描述为正式能力；
 - Draft 未合并前不被描述为当前 Repository Authority；
+- 两个 Discipline 的职责独立且组合后不产生冲突：一个约束复杂度正当性，一个约束 diff 范围正当性；
 - 没有因为两个 Discipline 都有价值就机械创建两个 Skill；
 - 首批 Discipline 的正式消费者、持久化、更新和取代责任已经闭环；
 - 最终拟集成状态通过适用的 AI Review，并明确停在 `Ready to Integrate`，等待人工 / 仓库策略的集成决策。

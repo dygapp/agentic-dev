@@ -30,6 +30,7 @@
 
 - `andrej-karpathy-skills-analysis.md`：分析 `multica-ai/andrej-karpathy-skills`，主要提供最小实现、推测性复杂度控制、精准修改和运行时打包等工程纪律参考；当前结论是不新增同名 Skill，也不直接修改 Method。
 - `implementation-minimality-and-speculative-complexity-analysis.md`：WI-02 首项工程纪律研究。综合 YAGNI、Simple Design、Google Engineering Practices、Sandi Metz、Go 官方工程实践以及本地 PR #41 / #42，形成“实现最小化与推测性复杂度控制”的 Candidate Capability 和 Candidate Eval 设计；当前状态为 **Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability**，尚未形成用于 Targeted Eval 的 Draft，也未进入规范性工程能力基线。
+- `surgical-change-and-diff-scope-control-analysis.md`：WI-03 第二项工程纪律研究。综合 Google Small CL / Review Practices、Linux Patch Discipline、Martin Fowler Opportunistic / Preparatory Refactoring 与 PR #42，形成“精准修改与差异范围控制”的 Candidate Capability 和 Candidate Eval 设计；当前状态同样为 **Candidate / Preliminary Architecture Fit Assessed / Pending Draft Capability**。其核心判断单位是“一个可解释、可验证的逻辑变化”，而不是机械的最少行数或文件数。
 
 后续 Research 可以包括：
 
