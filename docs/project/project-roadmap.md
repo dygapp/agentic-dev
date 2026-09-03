@@ -25,7 +25,7 @@
 
 已经完成其主要使命：第一批核心 Skill 已完成工程闭环，首轮 Greenfield Consumer Experiment 已完成，已有 Consumer 的继续演进又进一步验证并强化了 baseline 升级、外部操作、验证证据、Human Review、共享资源、配置责任和已有能力复用等边界。
 
-这里的“阶段使命完成”不等同于 Issue #33 已经关闭。Issue #33 仍可按其原始实验目标独立形成 Final Summary 并收尾；其已经形成的多轮有效证据足以支持 `agentic-dev` 不再把持续等待该实验新增 Finding 作为下一阶段启动条件。
+Issue #33 已按原始实验目标形成 Final Summary，并以 `PASS / Completed` 关闭；其多轮有效证据足以支持 `agentic-dev` 不再把持续等待该实验新增 Finding 作为下一阶段启动条件。完整结论见 [Issue #33 Final Summary](https://github.com/dygapp/agentic-dev/issues/33#issuecomment-5527800060)。
 
 `dygapp/jilinjobs-cms` 后续主要进入模块化重构、页面内容完善和大平台集成准备，其继续开发仍可提供实践反馈，但不再适合作为 `agentic-dev` 唯一或主要的能力创新来源。
 
@@ -52,7 +52,7 @@ Foundation v1 完成后**不自动启动下一里程碑**。下一项工程能�
 |---|---|---|
 | 建立通用 AI Agent 开发方法基线 | 已完成 | Method、Principles 与第一批 Skill 设计、契约形成稳定基线 |
 | 完成第一批核心 Skill 工程 | 已完成 | 8 个 Core Skills 实现、Packaging Hardening、Fresh Runtime Eval 与 Closure Review 完成 |
-| 完成首轮方法与 Skill 实证验证 | 已完成 | Greenfield Experiment 已完成；Existing Consumer 多轮证据已足以支持阶段切换，Issue #33 独立收尾 |
+| 完成首轮方法与 Skill 实证验证 | 已完成 | Greenfield Experiment 与 Existing Consumer continuous-evolution experiment 均已完成，Issue #18 / #33 已关闭 |
 | Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
 | Track B — Engineering Discipline Expansion | 已完成 | Foundation v1 首批两个 Engineering Discipline 已通过 Targeted Eval 并由 PR #48 正式集成 |
 | Track C — Technology Engineering Profiles | 已完成 | Technology Profile Contract 由 PR #49 集成；唯一代表性 Vue 3 + TypeScript Profile 已由 PR #50 正式集成 |
@@ -62,7 +62,7 @@ Foundation v1 完成后**不自动启动下一里程碑**。下一项工程能�
 
 **Engineering Capability Foundation v1：Completed。**
 
-当前没有被自动选择的下一扩展 Track；在新的 Milestone Decision 前，只继续 Track A 的稳定维护和既有 Issue 的独立收尾。
+当前没有被自动选择的下一扩展 Track；在新的 Milestone Decision 前，只继续 Track A 的稳定维护，并保留已分类的 Post-v1 候选作为路线输入。
 
 ## 工程能力扩展模型
 
@@ -141,6 +141,7 @@ agentic-dev 才开始研究
 | 2026-09-03 | 建立 F4 Existing Consumer Adoption Handoff | PR #51，集成提交 `18a48bcada8b4eeb0e6d8c3043b21c54aa8e492b` |
 | 2026-09-03 | 完成 F4 Existing Consumer Adoption Evidence Review | Issue #52；Consumer PR #49 为唯一 Adoption Unit，Blocking / Medium General Finding = `0 / 0` |
 | 2026-09-03 | Engineering Capability Foundation v1 Closure Review PASS | `docs/project/engineering-capability-foundation-v1-closure.md`；F1～F5 全部满足冻结完成条件 |
+| 2026-09-03 | 完成 Existing Consumer continuous-evolution experiment 收敛 | Issue #33 `completed`；Final Summary 结论 `PASS / Completed`，Blocking / Medium Finding = `0 / 0` |
 
 ## 当前证据基线
 
@@ -163,7 +164,7 @@ agentic-dev 才开始研究
 - Vue 3.6 RC / Vapor Mode、Element Plus、第二个 Technology Profile、新 Task-oriented Skill、Runtime / Distribution 均未进入 Foundation v1 Completion Scope；
 - WI-06、WI-07、WI-09 保持 Post-v1 Backlog；
 - 首轮 Greenfield Consumer Experiment：已完成并关闭 Issue #18；
-- Existing Consumer continuous-evolution experiment Issue #33 仍可独立收尾，但不阻塞 Foundation v1，也不自动成为下一里程碑。
+- Existing Consumer continuous-evolution experiment Issue #33 已形成 Final Summary，并以 `PASS / Completed` 关闭；其结果不改变 Foundation v1 完成状态，也不自动成为下一里程碑。
 
 Foundation v1 的最终 Closure Evidence：
 
@@ -180,7 +181,7 @@ Foundation v1 已在预先定义的完成边界处收敛。
 在新的 Milestone Decision 前：
 
 - Track A — Method Consolidation 保持稳定维护；
-- Issue #33 可以按其原始目标独立形成 Final Summary / Closure；
+- Issue #33 已按其原始目标完成 Final Summary / Closure，其结果不自动启动下一里程碑；
 - WI-06、WI-07、WI-09 与其他 Post-v1 候选只作为路线输入，不构成当前工作承诺；
 - 新外部研究、Consumer Finding 或技术候选可以记录，但不能静默提升为当前 Completion Scope。
 
@@ -258,6 +259,8 @@ Foundation v1 Closure 实际集成后，**不自动进入 WI-06、WI-07 或 WI-0
 - WI-07：有真实重复职责后提炼 Task-oriented Skill；
 - WI-09：Runtime Adapter / Distribution；
 - 新 Engineering Discipline；
+- Issue #33 后续候选：在 Stacked PR 与 Squash Merge 并用时区分 Review Ancestry 与 Integration Ancestry，并评估是否需要平台专项治理；
+- Issue #33 后续候选：研究 Data Access Scope / Boundedness / Lifecycle，评估其适合进入 Engineering Discipline、Technology Profile 还是仅保留实施指导；
 - 继续只做 Core Method 稳定维护，而暂不扩展新能力。
 
 这些方向在被显式选择前都不是当前执行任务。
@@ -268,13 +271,23 @@ Foundation v1 Closure Plan：
 
 `tasks/plans/20260903/01-foundation-v1-closure.md`
 
-## Issue #33 的后续角色
+## Issue #33 的收敛结果
 
-Issue #33 继续作为 Existing Consumer continuous-evolution experiment 的历史与剩余证据跟踪，不再承担 `agentic-dev` 路线总控职责。
+Issue #33 已按 Existing Consumer continuous-evolution experiment 的原始目标完成 Final Summary，并以 `completed` 关闭：
 
-如果该实验已经达到原始 Goal，可以独立形成 Final Summary 并决定是否关闭；即使保持 `open`，也不影响 Foundation v1 的 Completed 判定。
+[Issue #33 Final Summary](https://github.com/dygapp/agentic-dev/issues/33#issuecomment-5527800060)
 
-后续新的 Consumer Evidence 如需进入新的工程能力里程碑，应由新的 Roadmap / Milestone Decision 明确其职责，不能默认继续挂载到 Foundation v1。
+最终结论：
+
+- Experiment：`PASS / Completed`；
+- Blocking / Medium Finding：`0 / 0`；
+- 未解决的 Method / Contract 缺口：`0`；
+- 待补 Skill / Eval：`0`；
+- Reference Evidence / Runtime Asset Ownership 属于现有规则的正向验证；
+- Authority 变化导致 Verification Contract 陈旧已由现有规则与评估覆盖；
+- Stacked PR / Squash Merge 的双重祖先关系与 Data Access Scope / Boundedness / Lifecycle 保留为 Post-v1 Milestone Decision 输入，不构成当前工作承诺。
+
+Issue #33 现作为已关闭的历史证据来源，不再承担活动跟踪或路线总控职责。后续新的 Consumer Evidence 如需进入新的工程能力里程碑，应由新的 Roadmap / Milestone Decision 明确其职责，不能默认继续挂载到 Foundation v1。
 
 ## 新上下文恢复顺序
 
@@ -287,7 +300,7 @@ Issue #33 继续作为 Existing Consumer continuous-evolution experiment 的历�
 5. 读取当前 GitHub `master`，验证是否存在晚于本文的新 Milestone Decision；
 6. 如果 Human Authority 已选择新的里程碑，只加载该里程碑真正需要的 Architecture / Profile / Skill / Research；
 7. 如果尚未选择新里程碑，不把 WI-06、WI-07、WI-09 或其他 Post-v1 候选自动当作当前任务；
-8. Issue #33 只按其自身实验目标独立恢复，不让其覆盖当前 Project Roadmap；
+8. 将 Issue #33 作为已关闭的历史证据来源；只有评估其 Post-v1 候选时才按需读取 Final Summary，不再恢复为活动实验；
 9. 不依赖历史聊天或个人记忆补充未固化的项目事实。
 
 ## 更新触发条件
@@ -298,6 +311,6 @@ Issue #33 继续作为 Existing Consumer continuous-evolution experiment 的历�
 - 当前阶段、核心目标或 Track 状态发生实质改变；
 - Foundation v1 Closure 的关键 Evidence 被证明无效；
 - 新的通用 Method / Architecture Finding 需要改变当前稳定维护状态；
-- Issue #33 的独立关闭结果对项目级路线产生真实影响。
+- 已关闭实验的新证据或结论对项目级路线产生真实影响。
 
 普通局部实现、Consumer-local Finding、单个 Post-v1 候选或新外部研究，不要求更新本文，也不得据此静默启动新的当前里程碑。
