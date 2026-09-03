@@ -1,6 +1,6 @@
 # 工程纪律基线
 
-**状态：** Baseline v0.2 Draft  
+**状态：** Baseline v0.2 Validated Draft / Pending Integration  
 **性质：** 工程纪律（Engineering Discipline）规范性基线
 
 ## 1. 目的
@@ -13,7 +13,7 @@
 
 本文不增加新的 Method Stage，不改变 Execution Unit、Human Escalation、Ready to Integrate 或 Integration Boundary，也不因为新增工程纪律创建新的 Task-oriented Skill。
 
-首批两个 Discipline 已由 PR #48 完成 Fresh Runtime Targeted Eval 并进入当前 Repository Authority。第三项 Discipline 当前处于 Engineering Discipline Expansion v1 的 Draft / Targeted Eval 阶段；只有包含本 Draft 的变更实际进入当前集成分支后，第三项 Discipline 才成为现行 Repository Authority，未合并 PR / Draft 分支不提前覆盖 `master`。
+首批两个 Discipline 已由 PR #48 完成 Fresh Runtime Targeted Eval 并进入当前 Repository Authority。第三项 Discipline 已在 Engineering Discipline Expansion v1 中完成 Draft 与 Fresh Runtime Targeted Eval，当前为 Validated Draft / Pending Integration；只有包含本 Draft 的变更实际进入当前集成分支后，第三项 Discipline 才成为现行 Repository Authority，未合并 PR / Draft 分支不提前覆盖 `master`。
 
 ## 2. Architecture Fit Review
 
@@ -211,7 +211,7 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 2. **Boundedness**：集合是否有当前证据支持的真实稳定上界，还是会随业务持续增长 / 无法可靠界定？
 3. **Lifecycle / Freshness**：数据是 request-local、page-local、application snapshot，还是要求持续刷新 / invalidation？同一生命周期是否重复获取同一稳定快照？
 4. **Filter / Ordering Boundary**：哪些条件定义集合成员资格或业务顺序？window / pagination 前是否已经形成正确候选集合？
-5. **Window Strategy**：是否需要 page、cursor、chunk、Top-N？是否存在稳定 ordering / continuation 语义？
+5. **Window Strategy**：是否需要 page、cursor、chunk、Top-N？是否存在 stable ordering / continuation 语义？
 6. **Representation**：list 是否只需要 summary/basic fields？detail 是否需要 full representation？额外 projection 的复杂度是否由当前成本或契约支持？
 7. **Verification Boundary**：当前验证是否真正越过 page / Top-N / scope 边界，并包含足以暴露截断 / 顺序问题的 competing records？
 
@@ -434,24 +434,62 @@ representation 选择同时受：
 
 ## 12. Engineering Discipline Expansion v1 Targeted Eval
 
-第三项 Discipline 当前进入 Fresh Runtime 前 Draft 状态。
+2026-09-04，在 PR #56 冻结待测 Head：
 
-拟新增场景：
+`31e8d7597cbe9ea37746b34a6c50907e6dea37b0`
+
+完成第三项 Discipline 的 Fresh Runtime Targeted Eval 与必要历史回归：
+
+```text
+新场景： 8 / 8 PASS，41 / 41 assertions PASS
+历史回归：4 / 4 PASS，19 / 19 assertions PASS
+合计：   12 / 12 PASS，60 / 60 assertions PASS
+```
+
+新增场景：
 
 - `B-EU-18`：global Top-N 后 client filter 的 scope truncation；
-- `B-EU-19`：bounded stable snapshot，拒绝机械 pagination；
+- `B-EU-19`：bounded stable snapshot，拒绝机械 pagination，并在没有 freshness Authority 时不发明实时刷新；
 - `B-EU-20`：unbounded operational collection 的 server filtering / pagination / summary；
 - `B-EU-21`：presentation N 与 retrieval scope 分离；
 - `B-EU-22`：Authority 明确 global ranking 时允许 window-first 业务语义；
 - `B-EU-23`：验证数据必须越过 page / Top-N / competing-scope boundary；
 - `B-EU-24`：pagination ordering / continuation stability；
-- `B-EU-25`：bounded snapshot 仍需遵守 freshness / invalidation responsibility。
+- `B-EU-25`：bounded snapshot 仍需遵守明确 freshness / invalidation responsibility。
 
-必要历史回归：
+历史回归：
 
 - `B-EU-01`；
 - `B-EU-06`；
 - `B-EU-09`；
 - `B-EU-13`。
 
-Fresh Runtime、逐 assertion 评分和最终 AI Review 当前均为 `PENDING`。如果本节所依赖的 `execute-unit` 薄消费语义、Engineering Discipline Draft 或 Eval corpus 在评估后发生实质变化，必须重新运行受影响场景与必要回归。
+关键观察：
+
+- `B-EU-18` 与 `B-EU-21` 均正确识别页面展示 N 与真实 retrieval scope 不等价，没有用扩大固定 Top-N 魔法数字掩盖错误集合边界；
+- `B-EU-19` 正确使用明确 Domain Authority 上界判断 boundedness，保留完整 snapshot，并复用既有 app store；没有因为缺少 freshness Authority 而发明 TTL、轮询或实时刷新；
+- `B-EU-20` 正确把持续增长 operational collection 的筛选与分页责任放到服务端，并保持 summary/full representation 的当前证据边界，没有创建通用分页框架；
+- `B-EU-22` 正确保留 Specification 明确的 global Top-100 → sponsored 派生语义，证明本 Discipline 没有退化为“所有 filter 必须先于 limit”的教条；
+- `B-EU-23` 没有把小数据 fixture 或实现形状当作 scope + pagination Completion Evidence；
+- `B-EU-24` 要求稳定 `createdAt` ordering 与必要 tie-break，并检查跨页无重复 / 无遗漏；cursor / snapshot 只作为一致性语义明确要求时的条件路径，没有因 OFFSET 潜在性能成本机械引入 cursor framework；
+- `B-EU-25` 正确区分 boundedness 与 freshness：保留完整 12 条 snapshot，同时依据明确 30 秒 Product Authority 复用现有 refresh 机制；
+- `B-EU-01` 实际建立预期失败证据，完成最小实现并运行当前 unittest；2 个测试方法覆盖空字符串、纯空白与非空名称并 PASS；
+- `B-EU-06`、`B-EU-09`、`B-EU-13` 的验收证据、推测性复杂度控制与 diff scope 行为没有回归；
+- 12 个 Run 均使用独立隔离 workspace，只访问场景提供的 Skill / fixture，没有发现读取 `evals/behavior/*`、`evals/results/*`、grading assertions、历史答案或工作区外路径的污染轨迹；
+- 12 个进程均以状态码 `0` 完成并包含 `turn.completed`，但退出码没有被作为 PASS 依据；
+- 12 个 stderr 全空。
+
+运行结果 ZIP SHA-256：
+
+`d32233916e2ce923f2f052fe6750eda4bf0674992906bd18223b43f83f21a855`
+
+冻结 Head 的关键受测 / 契约 Blob：
+
+- `skills/execute-unit/SKILL.md`：`c71ddd23d20b3a14c9cb19a38f6e8d6cbedcf46e`；
+- `docs/architecture/skill-contracts.md`：`b68e9c9cd6f47d9433f22bd5aab78ae3c8a21a42`；
+- `evals/behavior/execute-unit.json`：`39676d46a1502d6da3050e7cbba484ad58733fa4`；
+- 本文 Draft 规范语义 Blob：`cc7e44ba42f4f2cee90f8535eac2111d30856fc2`。
+
+Fresh Runtime Gate：**PASS**。
+
+当前只允许继续回写 Evidence / Project Status / Review metadata。若第三项 Discipline 的规范语义、`execute-unit` 薄消费语义、Skill Contract 或 Eval corpus 发生实质变化，必须重新运行受影响场景与必要回归；纯证据和状态回写不使上述 Runtime Evidence 失效。
