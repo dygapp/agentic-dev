@@ -57,20 +57,20 @@ Research：`docs/research/data-access-scope-boundedness-analysis.md`。
 - 不新增 Skill；
 - 不修改 Core Method。
 
-状态：**Completed / Pending Targeted Eval**。
+状态：**Completed**。
 
 ### Step 4 — Targeted Eval
 
-已新增：
+已新增并完成 Fresh Runtime：
 
 - `B-EU-18`：global Top-N 后 client filtering 的正确性截断；
-- `B-EU-19`：bounded stable snapshot 不应机械分页；
+- `B-EU-19`：bounded stable snapshot 不应机械分页，且没有 freshness Authority 时不发明实时刷新；
 - `B-EU-20`：unbounded operational collection 的 server filtering / pagination / summary；
 - `B-EU-21`：presentation N 与 retrieval scope 分离；
 - `B-EU-22`：明确全局 ranking contract 时允许 window-first 业务语义；
 - `B-EU-23`：超过 page / window 与 competing scope 边界的数据验证；
 - `B-EU-24`：pagination ordering / continuation stability；
-- `B-EU-25`：bounded snapshot 仍受 freshness / lifecycle invalidation 责任约束。
+- `B-EU-25`：bounded snapshot 仍受明确 freshness / lifecycle invalidation 责任约束。
 
 必要回归：
 
@@ -79,9 +79,25 @@ Research：`docs/research/data-access-scope-boundedness-analysis.md`。
 - `B-EU-09`
 - `B-EU-13`
 
-状态：**Fresh Runtime Pending**。
+Fresh Runtime 结果：
 
-Fresh Runtime 必须逐 assertion 语义评分；进程退出 0 不等于 PASS。
+```text
+新场景： 8 / 8 PASS，41 / 41 assertions PASS
+历史回归：4 / 4 PASS，19 / 19 assertions PASS
+合计：   12 / 12 PASS，60 / 60 assertions PASS
+```
+
+冻结待测 Head：
+
+`31e8d7597cbe9ea37746b34a6c50907e6dea37b0`
+
+结果 ZIP SHA-256：
+
+`d32233916e2ce923f2f052fe6750eda4bf0674992906bd18223b43f83f21a855`
+
+隔离检查：**PASS**。12 个 stderr 全空；未发现读取 Eval 定义、历史结果、grading assertions 或隔离 workspace 外上下文。
+
+状态：**Completed / PASS**。
 
 ### Step 5 — AI Review / Integration
 
@@ -95,11 +111,13 @@ Fresh Runtime 必须逐 assertion 语义评分；进程退出 0 不等于 PASS�
 - Targeted Eval Evidence freshness；
 - Human / Integration Boundary。
 
-Blocking / Medium = 0 后达到 Ready to Integrate。
+当前状态：**Final AI Review / Integration Decision**。
+
+只有最终 AI Review 的 Blocking / Medium = 0 后达到 Ready to Integrate；实际 Merge 继续由 Human Authority / Repository Policy 决定。
 
 ## 4. 当前状态
 
-`ED1 Completed → ED2 Completed → ED3 Draft / Fresh Runtime Targeted Eval Pending`
+`ED1 Completed → ED2 Completed → ED3 Completed / Runtime PASS → ED4 Final AI Review / Integration Decision`
 
 当前不得启动 WI-06、WI-07、WI-09 或 stacked-PR topology 工作。
 
