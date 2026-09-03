@@ -1,5 +1,7 @@
 # Foundation v1 F4 — Existing Consumer Adoption Handoff
 
+**状态：Completed / Superseded by Foundation v1 Closure Plan。**
+
 ## 1. 目的
 
 本文为 Engineering Capability Foundation v1 的 **F4 — 一次 Existing Consumer Adoption** 提供跨 Repository 交接与证据回传边界。
@@ -7,6 +9,8 @@
 F4 的目标不是由 `agentic-dev` 会话直接开发 Consumer，而是验证已经集成的 Engineering Discipline、Vue 3 + TypeScript Technology Profile 与 Consumer-local Authority 在一个真实工作单元中的组合是否可用。
 
 Foundation v1 只执行一次受控 Adoption，不把该阶段扩展成新的长期 Experiment。
+
+F4 已由 Issue #52 完成 Evidence Review 并判定 PASS；本文件保留为历史 Handoff 与 Evidence Contract，不再承担当前执行职责。
 
 ## 2. 当前 agentic-dev 基线
 
@@ -49,6 +53,8 @@ Consumer 会话只有在以下条件成立后才启动 F4 实施：
 5. 选择一个真实、边界明确、会实际触达 Vue 3 + TypeScript 的工作单元。
 
 如果 Consumer 当前任务仍在进行中，F4 保持 **Pending Consumer Execution**，`agentic-dev` 不以等待为理由启动第二个 Consumer 或增加新的 Profile / Discipline。
+
+上述启动条件已经由 `dygapp/jilinjobs-cms` F4 Adoption 满足，保留为历史复核依据。
 
 ## 5. Consumer baseline upgrade 要求
 
@@ -110,6 +116,8 @@ Foundation v1 只选择 **一个**真实工作单元。
 - 不要求为了实验新增第二个 Technology Profile、Task-oriented Skill 或 Runtime Adapter。
 
 如果 Consumer 当前已有合适的下一 Vue / TypeScript 实施 Unit，应直接采用；如果没有，不为完成 F4 人工制造虚假 Feature，等待下一个真实适用 Unit。
+
+实际采用的唯一 Unit：**Party Column Route Currentness Execution Unit**，Consumer PR #49。
 
 ## 7. Adoption Evidence
 
@@ -175,30 +183,33 @@ F4 可以关闭，当且仅当：
 7. Consumer-local Finding 没有被错误回写为 `agentic-dev` 通用规则；
 8. F4 没有扩展到第二个 Consumer 或第二个 Adoption Unit。
 
-满足后，`agentic-dev` 进入 F5 — Foundation v1 Closure。
+Issue #52 Evidence Review 已确认上述条件全部满足：
 
-## 9. 当前状态
+- Blocking General Finding：`0`；
+- Medium General Finding：`0`；
+- Consumer-local Finding 保持 Consumer-local；
+- Consumer PR #52 只作为 post-adoption evidence，不计为第二个 Adoption Unit。
 
-当前状态：
+因此 F4 已关闭并进入 F5 Closure。
 
-`F4 — Current / Pending Consumer Execution`
+## 9. 最终状态
 
-等待 Consumer 自己的项目会话完成其当前正在进行的工作，并在合适的下一真实 Vue 3 + TypeScript Unit 中执行本 Handoff。
+`F4 — PASS / Completed`
 
-在收到 Consumer Evidence 前，`agentic-dev` 不启动：
+正式 Evidence Review：Issue #52（completed）。
 
-- 第二个 Consumer Adoption；
-- 第二个 Technology Profile；
-- 第三个 Engineering Discipline；
-- 新 Task-oriented Skill；
-- Runtime / Distribution 工作。
+本文件不再是当前执行入口。Foundation v1 后续执行职责由：
+
+`tasks/plans/20260903/01-foundation-v1-closure.md`
+
+接替。
 
 ## 10. 生命周期
 
 - **Producer：** `agentic-dev` Foundation v1 项目治理职责；
 - **Trigger：** PR #50 实际合并，F3 完成并进入一次受控 Consumer Adoption；
 - **Consumer：** Consumer 项目会话、`agentic-dev` F4 Evidence Review、F5 Closure Review；
-- **Persistence：** 本文件作为 F4 当前执行 / handoff Plan 保存；Consumer 不需要复制本文全文，只需按其自身 Authority 固化实际 baseline upgrade 和必要本地规则；
-- **Update：** Consumer Evidence 表明当前 Evidence 要求不足、F4 出现 Blocking / Medium General Finding、或 Human Authority 改变 Consumer / Adoption 范围时更新；
-- **Supersede：** F4 完成后由 Foundation v1 Closure Plan 接替当前执行职责；
-- **Escalation：** 如果 Adoption 暴露需要改变 Core Method、Engineering Capability Architecture、重大安全边界或 Foundation v1 完成定义的问题，返回相应 Authority，不在 Consumer 会话中静默改写 `agentic-dev`。
+- **Persistence：** 作为 F4 历史执行 / handoff Plan 保存；
+- **Update：** F4 已关闭，后续只在其 Evidence 被证明无效时修正，不继续承载新 Adoption；
+- **Supersede：** 已由 `tasks/plans/20260903/01-foundation-v1-closure.md` 接替当前执行职责；
+- **Escalation：** 后续新的 Consumer Adoption 需要新的 Milestone / Roadmap Decision，不能继续扩展 Foundation v1。
