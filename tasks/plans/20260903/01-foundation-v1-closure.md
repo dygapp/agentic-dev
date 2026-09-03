@@ -65,18 +65,23 @@ F4 Issue #52 已完成独立复核：
 - PR 达到 `Ready to Integrate`；
 - Integration 仍由 Human Authority / Repository Policy 决定。
 
-## 7. 当前状态
+## 7. 最终状态
 
-`Closure Review in progress`
+`Closure Review PASS / Ready to Integrate`
 
-本 Plan 在 Closure PR 达到 Ready to Integrate 后即完成；PR 实际进入当前集成分支时，Foundation v1 的 Completed 状态生效。
+- Blocking Closure Finding：`0`；
+- Medium Closure Finding：`0`；
+- Foundation v1 的 F1～F5 冻结完成条件全部满足；
+- 当前 PR 没有修改 Method、Architecture、Discipline、Technology Profile、Skill 或 Eval 语义；
+- 本 PR 实际进入当前集成分支时，Foundation v1 的 `Completed` 状态正式生效；
+- Merge 仍由 Human Authority / Repository Policy 决定。
 
 ## 8. 生命周期
 
 - **Producer：** Foundation v1 F5 Closure；
 - **Trigger：** F4 Issue #52 Evidence Review PASS；
 - **Consumer：** Closure Report、Project Roadmap、Human Integration Decision；
-- **Persistence：** 作为本次 F5 实施记录保留；
-- **Update：** 仅在 Closure Review 暴露 Blocking / Medium Finding 或最终 diff 改变时更新；
+- **Persistence：** 作为本次 F5 实施与 Closure Review 记录保留；
+- **Update：** Closure Review 已完成，后续只在关键 Evidence 或拟集成 diff 发生实质变化时重新打开；
 - **Supersede：** Foundation v1 Closure 实际集成后，由后续显式 Milestone Decision 接替当前执行职责；
 - **Escalation：** 下一里程碑选择不在本 Plan 内自动决定。
