@@ -226,6 +226,7 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 
 - **实现最小化：** 新增功能、抽象、配置、扩展点、依赖或层次必须能够追溯到当前需求、当前长期约束、当前非功能责任、真实消费者 / 变体、Repository Rule 或正确复用已有能力的需要；仅服务假想未来的复杂度默认不进入当前实现。不要把“最小化”机械解释成最少代码，也不要据此跳过当前必要的安全、测试、验证或范围受控的行为保持重构。
 - **精准修改：** 当前逻辑变化可以包含直接实现、验证、已授权权威同步、必要准备性重构、本次修改直接产生的 cleanup 和 Repository Rule 确定触发的机械伴随变化；多文件本身不是越界证据，但“同一逻辑变化”不能绕过公共契约、重大架构或其他高影响事项的上游授权。
+- **数据访问作用域与有界性：** 当 Unit 涉及集合、列表或 snapshot 数据访问时，先确认真实 consumer scope、集合 boundedness / growth 与 lifecycle / freshness，再决定 filtering、stable ordering、window / pagination、representation 和复用方式。页面最终展示 N 条、已有 `LIMIT/OFFSET` 或客户端过滤不能替代业务 scope；若业务 scope 决定集合成员资格，应先形成该 scope 再 window / paginate，但当前 Authority 明确定义 global Top-N / ranking 本身为业务语义时不得机械改写。规模稳定有界的共享 snapshot 可以在当前证据支持下完整读取并按合适生命周期复用，不为了形式一致机械分页。
 
 当 Unit 包含“消除硬编码”、配置审计或类似要求时，不把每个字面量机械外部化。先根据当前 Repository Authority 和实际变化证据判断：谁负责维护、何时变化、变化来自产品运营、结构定义、部署实例还是 CI / 评审 / 发布环境，以及是否受稳定领域规则、安全、协议、模板或算法约束。稳定且没有已证明外部维护责任的值默认保留在代码或既有权威载体中；管理员维护的运营数据、低频结构元数据、部署差异和流程参数分别进入 Consumer 已有的适当责任层。不得只为消除字面量而新增数据库字段、设置页面、环境变量或配置机制。
 
@@ -242,6 +243,7 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 - 最小、针对性的验证；
 - 能直接覆盖当前必需行为 / 验收义务的证据；
 - 能证明分页、排序、边界 / 失败、多状态、跨入口等关键差异的场景（如适用）；
+- 涉及集合 / 列表 / snapshot 时，能越过 page / Top-N / scope 边界并包含足以暴露截断、顺序或 freshness 问题的数据规模（如适用）；
 - 仓库规则要求的必要检查。
 
 根据变更风险和仓库约束，再按需扩大到：
@@ -293,6 +295,7 @@ Review 逻辑上至少区分两个维度：
 - 实现是否与当前 Architecture / Repository Rules 一致；
 - 新增复杂度是否有当前正当性，而不是只服务假想未来；
 - 最终有意义的 changed regions 是否都能追溯到当前逻辑变化及其必要责任；
+- 涉及集合型数据访问时，scope、boundedness / growth、lifecycle / freshness、ordering、window / pagination 与 representation 是否匹配当前消费者和权威，而不是机械套用全量或分页策略；
 - 是否引入明显隐藏耦合、脆弱性或不可维护结构；
 - 测试 / 验证是否与变更风险相称。
 
@@ -418,6 +421,7 @@ Review 逻辑上至少区分两个维度：
 - `github-actions-verification`（when applicable）
 - Implementation Minimality & Speculative Complexity Control
 - Surgical Change & Diff Scope Control
+- Data Access Scope & Boundedness Control
 - Verification-before-claim
 - TDD（when useful）
 - Code Review（risk-based discipline）
