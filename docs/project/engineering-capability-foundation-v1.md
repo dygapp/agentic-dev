@@ -26,15 +26,15 @@
 
 因此 Foundation v1 不重新研究已经关闭的前置问题，从 WI-03V 开始收敛。
 
-当前进度快照：
+最终进度快照：
 
 - **F1 / WI-03V 已完成**：PR #48 已合并，集成提交为 `6130d7251d81bbfc9f13b2dd827b6a40dfd09076`；首批两个 Engineering Discipline 已完成 Fresh Runtime `13 / 13 PASS`、`62 / 62 assertions PASS` 并进入当前 Repository Authority；
 - **F2 / WI-04 已完成**：PR #49 已合并，集成提交为 `16151149ab52211e266839a110fc9a3c73415623`；Technology Profile / Verification Profile 最小契约与 `docs/technology-profiles/` 实例入口已进入当前 Repository Authority；
 - **F3 / WI-05 已完成**：PR #50 已合并，集成提交为 `b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`；Vue 3 + TypeScript Profile Fresh Runtime Targeted Eval 为 `9 / 9 PASS`、`41 / 41 assertions PASS`，并进入当前 Repository Authority；
-- **F4 当前**：一次受控 Existing Consumer Adoption，当前等待 Consumer 自己的项目会话完成正在进行的工作后执行并回传证据；
-- F5 尚未开始。
+- **F4 / WI-08 已完成**：Issue #52 已完成 `dygapp/jilinjobs-cms` 单次 Existing Consumer Adoption Evidence Review，Blocking / Medium General Finding 均为 `0`；
+- **F5 Closure Review 已通过**：最终结论见 `docs/project/engineering-capability-foundation-v1-closure.md`。
 
-当前状态以 `docs/project/project-roadmap.md` 为准；本节只提供与本里程碑完成边界对应的进度快照，不另建第二套路线路径。
+当包含上述 Closure Artifact 的变更实际进入当前集成分支时，**Engineering Capability Foundation v1 = Completed**。当前分支中的完成声明不提前覆盖 `master` Authority。
 
 ## 3. Foundation v1 的完成定义
 
@@ -163,11 +163,17 @@ Foundation v1 到此**不得自动继续 Element Plus、Spring、Gradle 或其�
 
 ### F4 — 一次 Existing Consumer Adoption
 
-对应 WI-08，但在 Foundation v1 内只执行一次受控 Adoption。**当前。**
+对应 WI-08，但在 Foundation v1 内只执行一次受控 Adoption。**已完成。**
 
-优先 Reference Consumer：
+Reference Consumer：
 
 `dygapp/jilinjobs-cms`
+
+正式 Evidence Review：Issue #52。
+
+唯一 Adoption Unit：
+
+**Party Column Route Currentness Execution Unit**，Consumer PR #49。
 
 目标：选择一个真实、边界明确的开发工作单元，验证：
 
@@ -180,42 +186,57 @@ Foundation v1 到此**不得自动继续 Element Plus、Spring、Gradle 或其�
 F4 的 Repository Boundary：
 
 - `agentic-dev` 项目工作只负责 Adoption 目标、上游能力基线、Evidence 要求和通用 Finding 处理；
-- Consumer Repository 的 baseline upgrade、文件 / Branch / PR / Workflow、真实 Feature 实施与验证必须在 Consumer 自己的项目会话和 Repository Authority 下执行；
-- 不因为跨 Repository 工具可用就从 `agentic-dev` 项目会话直接修改 Consumer；
-- Consumer 正在进行中的独立任务不因 F4 被打断或抢占；如果当前没有可进入的真实 Adoption Unit，F4 保持 Pending Consumer Execution，不因此扩展到第二个 Consumer 或人工制造实验 Feature。
+- Consumer Repository 的 baseline upgrade、文件 / Branch / PR / Workflow、真实 Feature 实施与验证由 Consumer 自己的项目会话和 Repository Authority 执行；
+- Consumer-local Finding 不因为进入 F4 就自动上升为 `agentic-dev` 通用规则。
 
-当前执行交接：
+完成证据：
+
+- Consumer 从 `agentic-dev@a82e559...` 升级并采用 `b80b2b1...`；
+- Consumer PR #49 已实际合并；
+- Final Adoption Head：`41c756bfd14d8baa96044809e779bd96b7f4bb6e`；
+- CI #502 与 Review Environment #439 均绑定最终 Head 且 success；
+- Minimality、Diff Scope、Vue 3 + TypeScript Profile、Consumer Override 与 Verification Profile 均在真实 Unit 中得到正向采用证据；
+- Blocking General Finding：`0`；
+- Medium General Finding：`0`；
+- Issue #52 已完成 Evidence Review 并关闭。
+
+Consumer PR #52 的 post-adoption evidence 进一步证明不同 Evidence Claim 需要独立断言，但不构成第二次 Adoption，也没有暴露新的 Method / Contract 级缺口。
+
+因此 F4 完成条件已经满足并关闭。
+
+原执行交接保留为历史实施记录：
 
 `tasks/plans/20260902/03-foundation-v1-consumer-adoption-handoff.md`
 
-完成条件：
-
-- 只完成一次明确目标的 Adoption；
-- Blocking / Medium 的通用问题已经回写并重新验证；
-- Low / Future Improvement 可以记录为后续 Backlog，不要求在本里程碑继续扩展；
-- 不把 Consumer Adoption 重新扩展成无限 Experiment。
-
 ### F5 — Foundation v1 Closure
 
-目标：执行一次项目级 Closure Review，并正式关闭本轮工程能力基础建设。
+**Closure Review：PASS。**
 
-至少确认：
+最终 Closure Evidence：
 
-- Core Method 未因技术能力扩展产生不必要变化；
-- Engineering Capability Architecture 已真实承载 Discipline、Profile、Verification 和 Consumer Adoption；
-- 首批两个 Engineering Discipline 已正式集成；
-- 至少一个 Technology Profile 已正式集成；
-- 新增能力具备当前专项评估证据；
-- Existing Consumer Adoption 已完成；
-- 没有形成 Super-skill 或框架百科 Skill；
-- Post-v1 Backlog 已与当前完成条件分离。
+`docs/project/engineering-capability-foundation-v1-closure.md`
 
-Closure Review 通过后：
+检查结果：
 
-- 在 `project-roadmap.md` 标记 **Engineering Capability Foundation v1 = Completed**；
-- 记录最终集成 baseline；
-- 根据 Human / Repository Policy 创建适当 Tag 或 Release 标记；
-- 再决定下一里程碑，而不是在当前里程碑末尾自动续接新范围。
+- Core Method 未因技术能力扩展产生不必要变化：PASS；
+- Engineering Capability Architecture 已真实承载 Discipline、Profile、Verification 和 Consumer Adoption：PASS；
+- 首批两个 Engineering Discipline 已正式集成：PASS；
+- Technology Profile Contract 已正式集成：PASS；
+- Vue 3 + TypeScript Technology Profile 已正式集成并具备当前 Targeted Eval：PASS；
+- Existing Consumer Adoption 已完成：PASS；
+- 没有形成 Super-skill 或框架百科 Skill：PASS；
+- Post-v1 Backlog 已与当前完成条件分离：PASS；
+- Blocking Closure Finding：`0`；
+- Medium Closure Finding：`0`。
+
+当包含 Closure Report 的变更实际进入当前集成分支时，本里程碑正式关闭。
+
+Closure 后：
+
+- `project-roadmap.md` 标记 **Engineering Capability Foundation v1 = Completed**；
+- 最终集成 commit 由 GitHub Commit History 作为 Source of Truth 保存，不为记录瞬时 merge SHA 再制造尾部治理 PR；
+- Tag / Release 由 Human Authority / Repository Policy 在 Closure 实际集成后按需决定，不是自动副作用；
+- 下一里程碑必须显式决定，不从 Foundation v1 尾部自动续接。
 
 ## 5. 四条范围冻结规则
 
@@ -298,24 +319,24 @@ Foundation v1 执行期间，新增工作只有以下情况可以进入当前 Co
 
 ## 8. 进度表达
 
-Foundation v1 的进度只使用固定五个阶段表达：
+Foundation v1 的最终进度为：
 
 ```text
 F1 Discipline Formalization       已完成
 F2 Technology Profile Contract    已完成
 F3 Vue 3 + TypeScript Profile     已完成
-F4 Consumer Adoption              当前（Pending Consumer Execution）
-F5 Foundation v1 Closure          待开始
+F4 Consumer Adoption              已完成
+F5 Foundation v1 Closure          PASS / Completed
 ```
 
-内部可以继续拆成小 Work Item 或 PR，但不得通过增加内部步骤改变五个阶段的总体完成定义。
+**Engineering Capability Foundation v1 = Completed**，以 Closure Report 实际进入当前集成分支为生效条件。
 
 ## 9. 生命周期责任
 
 - **Producer：** Human Authority，或在当前项目级治理下获授权维护 Project Roadmap / Milestone 的 Agent；
 - **Trigger：** PR #46 完成首批两个 Discipline Candidate Research，同时需要给当前工程能力扩展建立明确有限终点；
-- **Consumer：** Project Roadmap、当前 Engineering Capability Expansion Plan、后续 Fresh Agent、Human Review / Integration Decision；
-- **Persistence：** 作为 `docs/project/*` 项目级权威长期保存，直到 Foundation v1 Closure 或被显式取代；
-- **Update：** F1～F5 状态变化、完成定义被验证证明无效、或 Human Authority 明确调整里程碑时更新；
-- **Supersede：** Foundation v1 Closure 后，由新的项目里程碑 / Roadmap 状态接替当前执行职责；本文保留历史完成边界，不继续承担下一里程碑总控；
-- **Escalation：** 如果范围变化需要改变 Core Method、Engineering Capability Architecture、Skill Contract 或重大项目方向，返回对应更高权威处理，不在本文中静默改变。
+- **Consumer：** Project Roadmap、Closure Report、后续 Fresh Agent、Human Milestone Decision；
+- **Persistence：** 作为 Foundation v1 历史完成边界长期保存；
+- **Update：** Foundation v1 Closure 后只在关键 Evidence 被证明无效或 Human Authority 明确撤销完成判定时更新，不继续承担下一里程碑总控；
+- **Supersede：** 后续新的项目里程碑 / Roadmap 状态接替当前执行职责；本文继续保存 Foundation v1 的完成定义和历史边界；
+- **Escalation：** 后续新增能力必须通过新的 Roadmap / Milestone Decision，不在本文静默扩展 Foundation v1。

@@ -29,19 +29,22 @@
 
 `dygapp/jilinjobs-cms` 后续主要进入模块化重构、页面内容完善和大平台集成准备，其继续开发仍可提供实践反馈，但不再适合作为 `agentic-dev` 唯一或主要的能力创新来源。
 
-因此当前阶段切换为：
+因此当前阶段为：
 
 > **Engineering Capability Expansion & Method Evolution（工程能力扩展与方法演进）**
 
 本阶段从“主要等待 Consumer 暴露问题后定向修补”，转向“主动研究成熟外部实践、形成工程能力、建立专项评估，再推动 Consumer 采用和纠偏”。
 
-当前阶段采用一个明确有限的项目里程碑作为收敛边界：
+本阶段首个有限里程碑：
 
 > **Engineering Capability Foundation v1（工程能力基础版 v1）**
 
-其完成定义、当前剩余阶段、范围冻结规则和 Post-v1 Backlog 统一见：
+已经完成固定 F1～F5 闭环。完成定义与历史范围冻结见：
 
-`docs/project/engineering-capability-foundation-v1.md`
+- `docs/project/engineering-capability-foundation-v1.md`
+- `docs/project/engineering-capability-foundation-v1-closure.md`
+
+Foundation v1 完成后**不自动启动下一里程碑**。下一项工程能力扩展必须通过新的 Project Roadmap / Milestone Decision 显式选择。
 
 ## 总体演进路线
 
@@ -53,9 +56,13 @@
 | Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
 | Track B — Engineering Discipline Expansion | 已完成 | Foundation v1 首批两个 Engineering Discipline 已通过 Targeted Eval 并由 PR #48 正式集成 |
 | Track C — Technology Engineering Profiles | 已完成 | Technology Profile Contract 由 PR #49 集成；唯一代表性 Vue 3 + TypeScript Profile 已由 PR #50 正式集成 |
-| Track D — Consumer Adoption | **当前** | Foundation v1 只执行一次受控 Existing Consumer Adoption；当前等待 Consumer 自己的项目会话完成正在进行的工作后执行并回传 Evidence |
-| Track E — Engineering Skills | 条件性后续 | Post-v1 候选；Skill 数量不是 Foundation v1 完成指标，只有出现独立稳定职责时才在后续里程碑评估 |
-| Track F — Runtime / Distribution | 条件性后续 | Post-v1 候选；Runtime Adapter、Marketplace、Plugin Bundle、Controller 与统一安装器不属于 Foundation v1 Completion Gate |
+| Track D — Consumer Adoption | 已完成 | Issue #52 F4 Evidence Review PASS；唯一 Existing Consumer Adoption 已完成且 Blocking / Medium General Finding = 0 |
+| Track E — Engineering Skills | 条件性后续 | Post-v1 候选；只有新的 Milestone Decision 证明存在独立稳定任务职责时才进入 |
+| Track F — Runtime / Distribution | 条件性后续 | Post-v1 候选；Runtime Adapter、Marketplace、Plugin Bundle、Controller 与统一安装器不自动续接 |
+
+**Engineering Capability Foundation v1：Completed。**
+
+当前没有被自动选择的下一扩展 Track；在新的 Milestone Decision 前，只继续 Track A 的稳定维护和既有 Issue 的独立收尾。
 
 ## 工程能力扩展模型
 
@@ -131,206 +138,166 @@ agentic-dev 才开始研究
 | 2026-09-02 | 正式集成首批两个 Engineering Discipline 并关闭 F1 / WI-03V | PR #48，集成提交 `6130d7251d81bbfc9f13b2dd827b6a40dfd09076`；Fresh Runtime `13 / 13 PASS`、断言 `62 / 62 PASS` |
 | 2026-09-02 | 建立 Technology Profile / Verification Profile 最小契约并关闭 F2 / WI-04 | PR #49，集成提交 `16151149ab52211e266839a110fc9a3c73415623` |
 | 2026-09-02 | 正式集成 Vue 3 + TypeScript Technology Profile 并关闭 F3 / WI-05 | PR #50，集成提交 `b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`；Capability Eval `9 / 9 PASS`、断言 `41 / 41 PASS` |
+| 2026-09-03 | 建立 F4 Existing Consumer Adoption Handoff | PR #51，集成提交 `18a48bcada8b4eeb0e6d8c3043b21c54aa8e492b` |
+| 2026-09-03 | 完成 F4 Existing Consumer Adoption Evidence Review | Issue #52；Consumer PR #49 为唯一 Adoption Unit，Blocking / Medium General Finding = `0 / 0` |
+| 2026-09-03 | Engineering Capability Foundation v1 Closure Review PASS | `docs/project/engineering-capability-foundation-v1-closure.md`；F1～F5 全部满足冻结完成条件 |
 
 ## 当前证据基线
 
 - 当前阶段：**Engineering Capability Expansion & Method Evolution**；
-- 当前有限里程碑：**Engineering Capability Foundation v1**；
-- 当前已集成基线：`master@b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`；
-- Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；
-- Phase 1 — 演进路线重构：已完成；
-- Phase 2 — Engineering Capability Architecture：已完成；
-- Phase 3 — Engineering Discipline Formalization：已完成；
-- F1 / WI-03V：已完成；
-- `docs/architecture/engineering-disciplines.md` 已成为首批 Engineering Discipline 当前规范入口；
-- Implementation Minimality & Speculative Complexity Control：已正式集成；
-- Surgical Change & Diff Scope Control：已正式集成；
-- PR #48 Targeted Eval：13 个场景、62 个 assertions 全部 PASS；
-- `execute-unit` 以薄规则消费两个 Discipline，没有新增独立 Skill，没有改变 one-unit、Stage Return、Human Escalation、Completion Evidence 或 Integration Boundary；
-- F2 / WI-04 — Technology Profile 最小契约：已完成；
-- `docs/architecture/technology-profile-contract.md` 与 `docs/technology-profiles/` 实例入口已由 PR #49 正式集成；
-- F3 / WI-05 — Vue 3 + TypeScript Technology Profile：**已完成**；
-- `docs/technology-profiles/vue3-typescript.md` 已由 PR #50 正式进入当前 Repository Authority；
-- PR #50 Capability Eval：`C-VTS-01`～`C-VTS-09` 共 `9 / 9 PASS`、`41 / 41 assertions PASS`；
-- 受测 Profile 语义 Blob：`999911e83b23389d16f9cbbadeb4d5c29f56de75`；
-- Eval 结果包 SHA-256：`abf788b5e51db9fdc145d73dd6eafc16a99a6d3417dbd81b0aa00e538e22a088`；
-- Vue 3.6 RC / Vapor Mode、Element Plus、第二个 Technology Profile、Task-oriented Skill 均未进入 Foundation v1 当前范围；
-- **当前 F4 — Existing Consumer Adoption：Pending Consumer Execution**；
-- F4 执行边界与 Evidence 要求见 `tasks/plans/20260902/03-foundation-v1-consumer-adoption-handoff.md`；
-- F4 的 Consumer 文件、Branch、PR、Workflow 和真实 Feature 实施由 Consumer 自己的项目会话与 Repository Authority 执行；`agentic-dev` 项目工作不直接修改 Consumer；
+- **Engineering Capability Foundation v1：Completed**；
+- Foundation v1 起点：`350e6607bae6101869d97903b56993820ba73265`；
+- Foundation v1 正式 Capability baseline：`b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`；
+- F4 Handoff 集成基线：`18a48bcada8b4eeb0e6d8c3043b21c54aa8e492b`；
+- Foundation v1 最终集成 commit 由包含 Closure Report 的当前集成 commit 在 GitHub Commit History 中唯一确定，不在 Roadmap 复制瞬时 merge SHA；
+- Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；Foundation v1 没有因数量目标增加 Task-oriented Skill；
+- F1 / WI-03V：已完成；PR #48 Targeted Eval `13 / 13 PASS`、`62 / 62 assertions PASS`；
+- F2 / WI-04：已完成；Technology Profile / Verification Profile Contract 已集成；
+- F3 / WI-05：已完成；Vue 3 + TypeScript Profile 已集成，Capability Eval `9 / 9 PASS`、`41 / 41 assertions PASS`；
+- F4 / WI-08：已完成；Issue #52 F4 Evidence Review PASS；
+- F4 Reference Consumer：`dygapp/jilinjobs-cms`；唯一 Adoption Unit 为 Consumer PR #49；
+- F4 Blocking / Medium General Finding：`0 / 0`；
+- Consumer post-adoption PR #52 作为补充证据验证 Evidence Claim granularity，不计为第二次 Adoption，不触发新 Method / Contract；
+- F5 Closure Review：PASS；Blocking / Medium Closure Finding：`0 / 0`；
+- 从 Foundation v1 起点到 F4 Handoff 集成基线的 compare 没有 `docs/method/*` 变化，Core Method 未被技术能力扩展不必要改写；
+- Vue 3.6 RC / Vapor Mode、Element Plus、第二个 Technology Profile、新 Task-oriented Skill、Runtime / Distribution 均未进入 Foundation v1 Completion Scope；
+- WI-06、WI-07、WI-09 保持 Post-v1 Backlog；
 - 首轮 Greenfield Consumer Experiment：已完成并关闭 Issue #18；
-- Existing Consumer 继续演进实验：Issue #33 当前仍为 `open`；
-- Issue #33 已经形成多轮有效证据，并推动 PR #34、#35、#37、#38、#40、#41 的定向强化；
-- Issue #33 后续是否关闭可以按其自身实验总结独立处理，不再阻塞 Foundation v1；
-- `dygapp/jilinjobs-cms` 继续作为 Reference / Integration Consumer，并作为 Foundation v1 一次受控 Consumer Adoption 的优先候选。
+- Existing Consumer continuous-evolution experiment Issue #33 仍可独立收尾，但不阻塞 Foundation v1，也不自动成为下一里程碑。
 
-上述提交和 Issue 是历史证据锚点，不要求后续工作永久固定使用这些静态版本。新的研究、评估或 Consumer Adoption 开始时，必须记录当时实际使用的精确 baseline。
+Foundation v1 的最终 Closure Evidence：
+
+`docs/project/engineering-capability-foundation-v1-closure.md`
 
 ## 当前核心目标
 
-当前核心目标是：
+Foundation v1 已在预先定义的完成边界处收敛。
 
-> **完成 Engineering Capability Foundation v1 的剩余两个阶段，并在预先定义的完成边界处正式关闭本轮工程能力基础建设，而不是持续增加新的 Discipline、Profile、Skill 或 Runtime 范围。**
+当前不自动继续第二个 Technology Profile、Task-oriented Skill、Runtime / Distribution 或新的 Engineering Discipline。
 
-当前剩余阶段为：
+> **当前没有已批准的下一工程能力里程碑。**
 
-1. **F4 — 一次 Existing Consumer Adoption：当前（Pending Consumer Execution）**；
-2. **F5 — Foundation v1 Closure：待开始**。
+在新的 Milestone Decision 前：
 
-已完成：
+- Track A — Method Consolidation 保持稳定维护；
+- Issue #33 可以按其原始目标独立形成 Final Summary / Closure；
+- WI-06、WI-07、WI-09 与其他 Post-v1 候选只作为路线输入，不构成当前工作承诺；
+- 新外部研究、Consumer Finding 或技术候选可以记录，但不能静默提升为当前 Completion Scope。
 
-- F1 — 首批 Engineering Discipline 正式化；
-- F2 — Technology Profile 最小契约；
-- F3 — Vue 3 + TypeScript Technology Profile。
+下一里程碑必须显式回答：
 
-范围冻结规则保持不变：
+1. 现在最值得扩展的是**能力覆盖面**、**任务执行能力**还是**运行时交付能力**；
+2. 是否已有足够当前证据支持进入该方向；
+3. 新里程碑的有限完成定义是什么；
+4. 哪些相邻候选必须明确保持 Backlog，避免再次形成无限扩展。
 
-- Foundation v1 的首批 Engineering Discipline 固定为两个，现已完成；
-- Foundation v1 的 Technology Profile 固定为一个：Vue 3 + TypeScript，现已完成；
-- 新增 Skill 数量不是 Foundation v1 完成指标；
-- Runtime / Distribution 不属于 Foundation v1 Completion Gate。
-
-完整规则见 `docs/project/engineering-capability-foundation-v1.md`。
-
-当前阶段继续避免四种极端：
-
-1. **闭门等待型演进**：只有 Consumer 再次踩坑才允许研究和建设能力；
-2. **机械扩张型演进**：看到一个框架、一个外部 Skill 或一条最佳实践就立即新增 Skill；
-3. **研究即规范型演进**：Research / Candidate Design 一完成，就在没有 Draft / Targeted Eval 的情况下直接提升为长期权威；
-4. **无限扩展型演进**：不断把新发现的有价值方向追加为当前里程碑前置条件，导致完成定义持续后移。
-
-## 分阶段实施计划
+## Foundation v1 分阶段结果
 
 ### Phase 1 — 演进路线重构
-
-目标：结束“Consumer 持续验证作为唯一核心目标”的阶段定位，明确新的主动演进模型和长期 Track。
 
 状态：**已完成**。
 
 ### Phase 2 — Engineering Capability Architecture
 
-目标：建立工程能力分层，明确 Method、Engineering Discipline、Technology Profile、Verification Profile、Task-oriented Skill、Runtime Adapter 与 Consumer Project Rule 的职责边界。
-
 状态：**已完成**。
 
 ### Phase 3 — Engineering Discipline Formalization
 
-目标：把已经完成 Research / Candidate Design 的首批两个 Discipline 按现行能力生命周期正式验证和集成。
-
-结果：
-
-- 两个 Discipline 已完成 Architecture Fit、Draft、Fresh Runtime Targeted Eval、AI Review 与 Integration；
-- PR #48 已合并；
-- Foundation v1 没有增加第三个 Engineering Discipline。
-
 状态：**已完成**。
+
+结果：首批两个 Discipline 完成 Architecture Fit、Draft、Fresh Runtime Targeted Eval、AI Review 与 Integration，没有增加第三个 Discipline。
 
 ### Phase 4 — Technology Profile Foundation
 
-目标分两步：
-
-1. WI-04：Technology Profile / Verification Profile 最小契约已由 PR #49 实际集成；
-2. WI-05：唯一代表性 Vue 3 + TypeScript Profile 已完成 Research、Architecture Fit、Draft、Verification Profile、Fresh Runtime Targeted Eval、最终 AI Review 和 Integration。
-
-PR #50 Capability Eval 为 `9 / 9 PASS`、`41 / 41 assertions PASS`，集成提交为 `b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`。
-
-Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 以及其他 Technology Profile 全部进入 Post-v1 Backlog，不属于当前完成条件。
-
 状态：**已完成**。
+
+结果：Technology Profile Contract 与唯一代表性 Vue 3 + TypeScript Profile 已集成；没有自动继续第二个 Profile。
 
 ### Phase 5 — Consumer Adoption
 
-目标：只执行一次受控 Existing Consumer Adoption，验证正式 Discipline、Vue 3 + TypeScript Profile 与 Consumer-local Authority 的组合。
+状态：**已完成**。
 
-Consumer Adoption 出现的 Blocking / Medium 通用问题应修复并重新验证；Low / Future Improvement 可以进入 Post-v1 Backlog，不要求在当前里程碑继续扩展。
+结果：
 
-执行边界：
-
-- `agentic-dev` 项目会话不直接修改 Consumer Repository；
-- Consumer 当前独立任务先按其自身项目流程完成，不因 F4 被打断；
-- 后续 baseline upgrade、真实 Vue 3 + TypeScript Unit、CI / Browser / Visual Evidence 和 Consumer PR 由 Consumer 自己的项目会话执行；
-- `agentic-dev` 仅接收 Adoption Evidence、分类通用 Finding，并在确有 Blocking / Medium General Finding 时修改自身能力后重新验证。
-
-当前 Handoff：
-
-`tasks/plans/20260902/03-foundation-v1-consumer-adoption-handoff.md`
-
-状态：**当前（Pending Consumer Execution）**。
+- `dygapp/jilinjobs-cms` 完成一次受控 Existing Consumer Adoption；
+- Consumer PR #49 是 Foundation v1 唯一 Adoption Unit；
+- Issue #52 Evidence Review PASS；
+- Blocking / Medium General Finding：`0 / 0`；
+- Consumer-local Finding 没有错误上升为 `agentic-dev` 通用规则；
+- post-adoption PR #52 只作为补充 Evidence，不扩展 F4 数量边界。
 
 ### Phase 6 — Foundation v1 Closure
 
-目标：执行 Closure Review，确认 Discipline、Profile、Verification 和一次 Consumer Adoption 已形成完整能力链，并正式标记 Foundation v1 完成。
+状态：**PASS / Completed**。
 
-Closure 后才决定下一项目里程碑。Task-oriented Skill 扩展、第二个 Technology Profile、Runtime Adapter 与 Distribution 不自动续接为当前任务。
+Closure 结果：
 
-状态：**下一步**。
+- Core Method 不必要变化：0；
+- Engineering Capability Architecture：已真实承载 Discipline、Profile、Verification、Consumer Adoption；
+- 首批两个 Discipline：Integrated + Targeted Eval PASS；
+- Technology Profile Contract：Integrated；
+- Vue 3 + TypeScript Profile：Integrated + Capability Eval PASS；
+- Existing Consumer Adoption：PASS；
+- Super-skill / framework encyclopedia Skill：未形成；
+- Post-v1 Backlog：与完成条件保持分离；
+- Blocking / Medium Closure Finding：`0 / 0`。
+
+完整 Closure Review：
+
+`docs/project/engineering-capability-foundation-v1-closure.md`
 
 ## 下一步工作
 
-1. **等待 Consumer 自己的项目会话完成当前正在进行的独立任务。**
-   - 当前 `agentic-dev` 项目工作不修改 Consumer Repository；
-   - 不触发、更新或接管 Consumer 正在执行的 PR / Workflow；
-   - 不因为等待而启动第二个 Consumer 或扩大 Foundation v1 范围。
-2. **由 Consumer 项目会话按 F4 Handoff 执行一次受控 Existing Consumer Adoption。**
-   - 比较 Consumer 实际旧 baseline 与 `agentic-dev@b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`；
-   - 选择一个真实、边界明确、实际触达 Vue 3 + TypeScript 的当前工作单元；
-   - 按 Consumer Repository Authority 固化必要 baseline upgrade 和本地规则；
-   - 取得与 Unit 声明匹配的 Current Evidence；
-   - 向 `agentic-dev` 回传最小充分的 Adoption Evidence / Finding Classification。
-3. **收到 Consumer Evidence 后在 `agentic-dev` 完成 F4 Evidence Review。**
-   - Blocking / Medium General Finding：在 `agentic-dev` 修复并重新验证；
-   - Consumer-local Finding：不错误上升为通用规则；
-   - Low / Future Improvement：进入 Post-v1 Backlog，不阻塞 F4。
-4. **F4 关闭后立即进入 F5：Foundation v1 Closure Review。**
+Foundation v1 Closure 实际集成后，**不自动进入 WI-06、WI-07 或 WI-09**。
 
-当前 F4 Handoff：
+下一项工作是一次独立的 **Post-Foundation Milestone Decision**，由 Human Authority / Project Roadmap 明确选择是否进入新的有限里程碑。
 
-`tasks/plans/20260902/03-foundation-v1-consumer-adoption-handoff.md`
+可供决策的既有方向包括但不限于：
 
-Foundation v1 总体范围冻结和完成条件见：
+- WI-06：第二个 Technology Profile / 技术覆盖面扩展；
+- WI-07：有真实重复职责后提炼 Task-oriented Skill；
+- WI-09：Runtime Adapter / Distribution；
+- 新 Engineering Discipline；
+- 继续只做 Core Method 稳定维护，而暂不扩展新能力。
 
-`docs/project/engineering-capability-foundation-v1.md`
+这些方向在被显式选择前都不是当前执行任务。
 
-WI-05 计划保留为已完成阶段记录：
+Tag / Release 由 Human Authority / Repository Policy 在 Closure 实际集成后按需决定，不作为本 Closure PR 的自动副作用。
 
-`tasks/plans/20260902/02-vue-typescript-profile.md`
+Foundation v1 Closure Plan：
 
-原总体实施计划保留为历史协调记录：
-
-`tasks/plans/20260901/01-engineering-capability-expansion.md`
+`tasks/plans/20260903/01-foundation-v1-closure.md`
 
 ## Issue #33 的后续角色
 
-Issue #33 继续作为 Existing Consumer continuous-evolution experiment 的历史与剩余证据跟踪，不再承担 `agentic-dev` 下一阶段路线的总控职责。
+Issue #33 继续作为 Existing Consumer continuous-evolution experiment 的历史与剩余证据跟踪，不再承担 `agentic-dev` 路线总控职责。
 
-如果该实验已经达到原始 Goal，可以独立形成 Final Summary 并决定是否关闭；即使保持 `open`，也不阻止 Foundation v1 的主动建设和收敛。
+如果该实验已经达到原始 Goal，可以独立形成 Final Summary 并决定是否关闭；即使保持 `open`，也不影响 Foundation v1 的 Completed 判定。
 
-Foundation v1 的 Consumer Adoption 应围绕正式 Discipline / Profile 的采用建立清晰目标，不无限延长 Issue #33 来承载所有后续演进。
+后续新的 Consumer Evidence 如需进入新的工程能力里程碑，应由新的 Roadmap / Milestone Decision 明确其职责，不能默认继续挂载到 Foundation v1。
 
 ## 新上下文恢复顺序
 
 新的 `agentic-dev` 工作上下文应：
 
 1. 读取根目录 `AGENTS.md`；
-2. 读取本文，确认当前阶段、当前有限里程碑和下一步工作；
-3. 读取 `docs/project/engineering-capability-foundation-v1.md`，确认 F1～F5、范围冻结规则和当前 Completion Scope；
-4. 读取当前 GitHub `master`，验证是否存在晚于本文的新集成状态；
-5. 涉及工程能力分层时读取 `docs/architecture/engineering-capability-architecture.md`；
-6. 当前 F4 读取 `docs/architecture/engineering-disciplines.md`、`docs/architecture/technology-profile-contract.md`、`docs/technology-profiles/vue3-typescript.md` 与 `tasks/plans/20260902/03-foundation-v1-consumer-adoption-handoff.md`；
-7. 不从 `agentic-dev` 项目会话直接修改 Consumer Repository；Consumer Adoption 的实施应在 Consumer 自己的项目会话中恢复其 Repository Authority 后执行；
-8. 收到 Consumer Evidence 后，只读取完成 F4 Evidence Review 所需的精确 Consumer 事实与证据，不把 Consumer 项目状态复制成 `agentic-dev` Authority；
-9. 涉及 Skill 时继续读取 `skill-architecture.md`、`skill-contracts.md` 与相关 Skill；
-10. 不依赖历史聊天或个人记忆补充未固化的项目事实。
+2. 读取本文，确认 Foundation v1 已完成且下一里程碑尚未自动选择；
+3. 读取 `docs/project/engineering-capability-foundation-v1-closure.md`，确认 F1～F5 Closure Evidence；
+4. 读取 `docs/project/engineering-capability-foundation-v1.md`，只在需要理解历史完成边界 / Scope Freeze 时使用；
+5. 读取当前 GitHub `master`，验证是否存在晚于本文的新 Milestone Decision；
+6. 如果 Human Authority 已选择新的里程碑，只加载该里程碑真正需要的 Architecture / Profile / Skill / Research；
+7. 如果尚未选择新里程碑，不把 WI-06、WI-07、WI-09 或其他 Post-v1 候选自动当作当前任务；
+8. Issue #33 只按其自身实验目标独立恢复，不让其覆盖当前 Project Roadmap；
+9. 不依赖历史聊天或个人记忆补充未固化的项目事实。
 
 ## 更新触发条件
 
 出现以下任一情况时，应更新本文：
 
-- 一个项目级 Phase、Track 或 Foundation v1 的 F1～F5 完成、取消或被替代；
-- 当前阶段、当前里程碑或核心目标改变；
-- Technology Profile Contract 或 Vue 3 + TypeScript Profile 进入正式基线；
-- Foundation v1 Consumer Adoption 产生会改变当前完成定义的重要证据；
-- Foundation v1 Closure 完成；
-- 当前路线与 GitHub `master`、Issue、PR 或评估证据不再一致。
+- Human Authority / Repository Policy 显式选择 Foundation v1 之后的新里程碑；
+- 当前阶段、核心目标或 Track 状态发生实质改变；
+- Foundation v1 Closure 的关键 Evidence 被证明无效；
+- 新的通用 Method / Architecture Finding 需要改变当前稳定维护状态；
+- Issue #33 的独立关闭结果对项目级路线产生真实影响。
 
-普通局部实现、单个 Execution Unit 状态变化或 Post-v1 Backlog 新增候选，不要求更新本文，也不得据此扩大当前 Foundation v1 Completion Scope。
+普通局部实现、Consumer-local Finding、单个 Post-v1 候选或新外部研究，不要求更新本文，也不得据此静默启动新的当前里程碑。
