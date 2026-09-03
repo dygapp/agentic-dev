@@ -211,7 +211,7 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 2. **Boundedness**：集合是否有当前证据支持的真实稳定上界，还是会随业务持续增长 / 无法可靠界定？
 3. **Lifecycle / Freshness**：数据是 request-local、page-local、application snapshot，还是要求持续刷新 / invalidation？同一生命周期是否重复获取同一稳定快照？
 4. **Filter / Ordering Boundary**：哪些条件定义集合成员资格或业务顺序？window / pagination 前是否已经形成正确候选集合？
-5. **Window Strategy**：是否需要 page、cursor、chunk、Top-N？是否存在 stable ordering / continuation 语义？
+5. **Window Strategy**：是否需要 page、cursor、chunk、Top-N？是否存在稳定 ordering / continuation 语义？
 6. **Representation**：list 是否只需要 summary/basic fields？detail 是否需要 full representation？额外 projection 的复杂度是否由当前成本或契约支持？
 7. **Verification Boundary**：当前验证是否真正越过 page / Top-N / scope 边界，并包含足以暴露截断 / 顺序问题的 competing records？
 
