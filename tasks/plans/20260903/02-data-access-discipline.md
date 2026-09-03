@@ -29,6 +29,10 @@
 - 记录来源、当前日期、适用范围、冲突与反例；
 - 不把“分页是好实践”直接提升成规则。
 
+状态：**Completed**。
+
+Research：`docs/research/data-access-scope-boundedness-analysis.md`。
+
 ### Step 2 — Candidate / Architecture Fit
 
 回答：
@@ -39,39 +43,43 @@
 4. 是否应成为 Engineering Discipline、Technology Profile、Verification Profile 或仅 Implementation Guidance？
 5. 与 Implementation Minimality、Surgical Change 是否职责重叠？
 
-预期但未预设的候选方向：**独立 Engineering Discipline + `execute-unit` 薄消费**。
+结论：**PASS — Independent Engineering Discipline + thin `execute-unit` consumption**。
+
+不修改 Core Method / Engineering Capability Architecture，不创建 Technology Profile、Verification Profile 或新 Skill。
 
 ### Step 3 — Draft
 
-如果 Architecture Fit 通过：
+已完成：
 
-- 更新 `docs/architecture/engineering-disciplines.md`；
-- 更新 `docs/architecture/skill-contracts.md` 的薄契约引用；
-- 更新 `skills/execute-unit/SKILL.md` 的实施 / 验证摘要；
+- `docs/architecture/engineering-disciplines.md` 增加第三项 Draft；
+- `docs/architecture/skill-contracts.md` 增加 `execute-unit` 薄契约引用；
+- `skills/execute-unit/SKILL.md` 增加实施 / 验证 / Engineering Quality 薄判断；
 - 不新增 Skill；
 - 不修改 Core Method。
 
+状态：**Completed / Pending Targeted Eval**。
+
 ### Step 4 — Targeted Eval
 
-新增数据访问专项场景，并保留必要历史回归。
+已新增：
 
-候选场景至少覆盖：
+- `B-EU-18`：global Top-N 后 client filtering 的正确性截断；
+- `B-EU-19`：bounded stable snapshot 不应机械分页；
+- `B-EU-20`：unbounded operational collection 的 server filtering / pagination / summary；
+- `B-EU-21`：presentation N 与 retrieval scope 分离；
+- `B-EU-22`：明确全局 ranking contract 时允许 window-first 业务语义；
+- `B-EU-23`：超过 page / window 与 competing scope 边界的数据验证；
+- `B-EU-24`：pagination ordering / continuation stability；
+- `B-EU-25`：bounded snapshot 仍受 freshness / lifecycle invalidation 责任约束。
 
-- global Top-N 后 client filtering 的正确性截断；
-- bounded stable snapshot 不应机械分页；
-- unbounded operational collection 的 server filtering / pagination；
-- presentation N 与 retrieval scope 分离；
-- 明确全局 ranking contract 时不机械执行 filter-before-limit；
-- 超过 page/window 边界的数据规模验证；
-- pagination / window 稳定 ordering；
-- bounded snapshot 的 freshness / lifecycle invalidation。
-
-必要回归至少包括：
+必要回归：
 
 - `B-EU-01`
 - `B-EU-06`
 - `B-EU-09`
 - `B-EU-13`
+
+状态：**Fresh Runtime Pending**。
 
 Fresh Runtime 必须逐 assertion 语义评分；进程退出 0 不等于 PASS。
 
@@ -91,7 +99,7 @@ Blocking / Medium = 0 后达到 Ready to Integrate。
 
 ## 4. 当前状态
 
-`ED1 Completed → ED2 Research / Candidate in progress`
+`ED1 Completed → ED2 Completed → ED3 Draft / Fresh Runtime Targeted Eval Pending`
 
 当前不得启动 WI-06、WI-07、WI-09 或 stacked-PR topology 工作。
 
