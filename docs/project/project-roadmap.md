@@ -64,7 +64,7 @@ Foundation v1 完成后没有自动续接原 Post-v1 Work Item。Human Authority
 | 完成第一批核心 Skill 工程 | 已完成 | 8 个 Core Skills 实现、Packaging Hardening、Fresh Runtime Eval 与 Closure Review 完成 |
 | 完成首轮方法与 Skill 实证验证 | 已完成 | Greenfield Experiment 与 Existing Consumer continuous-evolution experiment 均已完成，Issue #18 / #33 已关闭 |
 | Track A — Method Consolidation | 当前 | Core Method 进入稳定维护；只在高质量证据揭示通用生命周期或权威缺口时定向修改 |
-| Track B — Engineering Discipline Expansion | **当前** | Engineering Discipline Expansion v1 只验证并集成 Data Access Scope & Boundedness Control 一个候选 |
+| Track B — Engineering Discipline Expansion | **当前** | Engineering Discipline Expansion v1 已完成 Research / Draft / Targeted Eval，当前进入最终 AI Review、Integration Decision 与 Closure |
 | Track C — Technology Engineering Profiles | 已完成 / 条件性后续 | Foundation v1 的 Technology Profile Contract 与 Vue 3 + TypeScript Profile 已完成；WI-06 第二 Profile 未启动 |
 | Track D — Consumer Adoption | 已完成 | Issue #52 F4 Evidence Review PASS；唯一 Foundation v1 Existing Consumer Adoption 已完成且 Blocking / Medium General Finding = 0 |
 | Track E — Engineering Skills | 条件性后续 | WI-07 保持 Post-v1；只有新的 Milestone Decision 证明存在独立稳定任务职责时才进入 |
@@ -173,8 +173,9 @@ agentic-dev 才开始研究
 - **Engineering Discipline Expansion v1：Current**；
 - ED1 — Milestone Definition：已完成；
 - ED2 — Research / Candidate / Architecture Fit：已完成，Architecture Fit = Engineering Discipline；
-- ED3 — Draft / Targeted Eval：当前；Fresh Runtime 尚未执行；
-- ED4 — AI Review / Integration / Closure：待 ED3 当前证据后执行；
+- ED3 — Draft / Targeted Eval：**已完成 / PASS**；Fresh Runtime `12 / 12 PASS`、`60 / 60 assertions PASS`；
+- ED3 冻结待测 Head：`31e8d7597cbe9ea37746b34a6c50907e6dea37b0`；结果 ZIP SHA-256：`d32233916e2ce923f2f052fe6750eda4bf0674992906bd18223b43f83f21a855`；
+- ED4 — AI Review / Integration / Closure：**当前**；最终 Review 状态以 PR #56 当前讨论和 GitHub Integration State 为准；
 - 当前 Draft 不改变 Core Method，不创建新 Skill，不修改 Technology Profile Contract，不启动第二个 Profile；
 - WI-06、WI-07、WI-09 保持 Post-v1 Backlog。
 
@@ -194,7 +195,7 @@ agentic-dev 才开始研究
 
 当前核心目标是：
 
-> **在不扩大 Post-v1 范围的前提下，完成 Data Access Scope & Boundedness Control 单一 Engineering Discipline 的 Draft、Fresh Runtime Targeted Eval、AI Review 与 Integration Closure。**
+> **在不扩大 Post-v1 范围的前提下，完成 Data Access Scope & Boundedness Control 单一 Engineering Discipline 的最终 AI Review、Integration Decision 与 Closure。**
 
 当前不启动：
 
@@ -205,7 +206,7 @@ agentic-dev 才开始研究
 - 第二个新的 Engineering Discipline；
 - 新的正式 Consumer Adoption Gate。
 
-如果当前 Candidate 在 Architecture / Eval 中证明不成立，可以重分类或拒绝并关闭本里程碑，不为了产物数量强行固化。
+如果当前 Candidate 在最终 Review 中证明不成立，可以重分类或拒绝并关闭本里程碑，不为了产物数量强行固化。
 
 ## Foundation v1 分阶段结果
 
@@ -264,7 +265,7 @@ agentic-dev 才开始研究
 
 ### ED3 — Draft / Targeted Eval
 
-状态：**当前**。
+状态：**PASS / 已完成**。
 
 当前 Draft：
 
@@ -273,30 +274,28 @@ agentic-dev 才开始研究
 - `skills/execute-unit/SKILL.md`：只补实施、验证和 Engineering Quality 判断；
 - `evals/behavior/execute-unit.json`：新增 `B-EU-18`～`B-EU-25`。
 
-待验证：
+Fresh Runtime Evidence：
 
-- 新场景 `B-EU-18`～`B-EU-25`；
-- 历史回归 `B-EU-01`、`B-EU-06`、`B-EU-09`、`B-EU-13`；
-- Fresh Runtime 后逐 assertion 语义评分；
-- 进程退出 0 不等于 Eval PASS。
+- 新场景 `B-EU-18`～`B-EU-25`：`8 / 8 PASS`、`41 / 41 assertions PASS`；
+- 历史回归 `B-EU-01/06/09/13`：`4 / 4 PASS`、`19 / 19 assertions PASS`；
+- 合计：`12 / 12 PASS`、`60 / 60 assertions PASS`；
+- 12 个 stderr 全空，未发现 contamination；
+- ZIP SHA-256：`d32233916e2ce923f2f052fe6750eda4bf0674992906bd18223b43f83f21a855`。
 
 ### ED4 — AI Review / Integration / Closure
 
-状态：**待开始**。
+状态：**当前**。
 
-只有 ED3 Fresh Runtime Evidence 通过后才进入最终 AI Review / Ready to Integrate。实际 Merge 继续由 Human Authority / Repository Policy 决定。
+Fresh Runtime Gate 已 PASS。下一门禁是最终高影响 AI Review；只有 Blocking / Medium = 0 才能达到 Ready to Integrate。实际 Merge 继续由 Human Authority / Repository Policy 决定；只有实际 Integration 后才关闭本里程碑。
 
 ## 下一步工作
 
-1. 对当前 Draft / Contract / Skill / Eval corpus 执行 Runtime 前 AI Review；
-2. 修复所有 Blocking / Medium Finding；
-3. 冻结被测 Head；
-4. Fresh Runtime 运行 `B-EU-18`～`B-EU-25` 与 `B-EU-01/06/09/13`；
-5. 逐 assertion 语义判分并检查隔离 / contamination；
-6. 如 PASS，只回写 Evidence、Roadmap / Plan 与 Closure 状态，不在验证后改变受测语义；
-7. 最终高影响 AI Review；
-8. Ready to Integrate 后等待 Human Integration Decision；
-9. 实际集成后关闭 Engineering Discipline Expansion v1，再独立决定下一 Milestone。
+1. 对 Runtime Evidence 回写后的最终 PR diff 执行高影响 AI Review；
+2. 确认 Runtime 后未改变受测 Discipline / Skill / Contract / Eval 语义；
+3. Blocking / Medium = 0 时将 PR #56 标记为 Ready to Integrate；
+4. 等待 Human Integration Decision；
+5. 实际集成后更新 Engineering Discipline 当前 Baseline、Project Roadmap / Plan 与简短 Closure 记录；
+6. 关闭 Engineering Discipline Expansion v1 后，再独立决定下一 Milestone。
 
 WI-06、WI-07、WI-09 以及 stacked-PR topology 在本里程碑中均不启动。
 
@@ -328,7 +327,7 @@ Issue #33 现作为已关闭的历史证据来源，不再承担活动跟踪或�
 3. 读取 `docs/project/engineering-discipline-expansion-v1.md` 与 `tasks/plans/20260903/02-data-access-discipline.md`；
 4. 读取当前 GitHub `master` / 活动 PR，验证是否存在晚于本文的新集成状态；
 5. 读取 `docs/research/data-access-scope-boundedness-analysis.md` 了解 Research / Candidate，不把 Research 当作规范权威；
-6. 当前 ED3 读取 `docs/architecture/engineering-disciplines.md`、`docs/architecture/skill-contracts.md`、`skills/execute-unit/SKILL.md` 与 `evals/behavior/execute-unit.json`；
+6. 当前 ED4 读取 PR #56 Runtime Evidence / Final AI Review，以及 `docs/architecture/engineering-disciplines.md`、`docs/architecture/skill-contracts.md`、`skills/execute-unit/SKILL.md` 与 `evals/behavior/execute-unit.json`；
 7. 不把 WI-06、WI-07、WI-09、stacked PR topology 或其他 Post-v1 候选自动并入当前范围；
 8. Issue #33 只作为已关闭 Evidence Source 按需读取，不恢复为活动 Experiment；
 9. 不依赖历史聊天或个人记忆补充未固化的项目事实。
