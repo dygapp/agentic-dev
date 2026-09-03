@@ -33,7 +33,8 @@ Research 文档可以保留“研究形成时”的 Candidate / Pending 状态�
 - `andrej-karpathy-skills-analysis.md`：分析 `multica-ai/andrej-karpathy-skills`，主要提供最小实现、推测性复杂度控制、精准修改和运行时打包等工程纪律参考；当前结论是不新增同名 Skill，也不直接修改 Method。
 - `implementation-minimality-and-speculative-complexity-analysis.md`：WI-02 首项工程纪律研究。该 Research 形成“实现最小化与推测性复杂度控制”的 Candidate；其历史 Candidate 状态已经由后续 WI-03V 推进，当前规范性能力已通过 PR #48 集成到 `docs/architecture/engineering-disciplines.md`。
 - `surgical-change-and-diff-scope-control-analysis.md`：WI-03 第二项工程纪律研究。该 Research 形成“精准修改与差异范围控制”的 Candidate；其历史 Candidate 状态同样已经由 PR #48 推进为当前规范性 Engineering Discipline。其核心判断单位仍是“一个可解释、可验证的逻辑变化”，而不是机械的最少行数或文件数。
-- `vue3-typescript-profile-analysis.md`：WI-05 首个 Technology Profile 研究。以 Vue `3.5.42`、TypeScript `7.0.2`、Vue Language Tools `3.3.11`、Vue 官方 docs 与 `@vue/tsconfig` 当前证据为主要基线，形成 Vue 3 + TypeScript 组合 Profile 的 Architecture Fit、规则候选与 Targeted Eval 设计。当前规范性实例位于 `docs/technology-profiles/vue3-typescript.md`；PR #50 已完成 Fresh Runtime `9 / 9 PASS`、`41 / 41 assertions PASS`，当前为 **Validated Draft / Pending Integration**。
+- `vue3-typescript-profile-analysis.md`：WI-05 首个 Technology Profile 研究。以 Vue `3.5.42`、TypeScript `7.0.2`、Vue Language Tools `3.3.11`、Vue 官方 docs 与 `@vue/tsconfig` 当前证据为主要基线，形成 Vue 3 + TypeScript 组合 Profile 的 Architecture Fit、规则候选与 Targeted Eval 设计。当前规范性实例位于 `docs/technology-profiles/vue3-typescript.md`；PR #50 已完成 Fresh Runtime `9 / 9 PASS`、`41 / 41 assertions PASS` 并正式集成，当前 Profile 生命周期状态以规范性实例和 Project Roadmap 为准。
+- `data-access-scope-boundedness-analysis.md`：Engineering Discipline Expansion v1 的单一候选研究。结合 Issue #33 已核验的多个 Consumer 数据访问实例，以及 Google AIP、Relay Connections、PostgreSQL 和 Kubernetes API 的当前外部证据，研究 Consumer Scope、集合 Boundedness / Growth、Lifecycle / Freshness、Filtering / Ordering、Window / Pagination、Representation 与 Verification 的组合判断。Architecture Fit 当前结论为 **Engineering Discipline + thin `execute-unit` consumption**；Draft 与 Targeted Eval 仍需完成验证后才能进入现行 Repository Authority。
 
 后续 Research 可以包括：
 
@@ -44,7 +45,7 @@ Research 文档可以保留“研究形成时”的 Candidate / Pending 状态�
 - Verification Profile 与 Targeted Eval 设计依据；
 - Runtime / Packaging / Distribution 研究。
 
-新增研究样本不自动意味着扩大 Method 样本，也不自动要求新增 Skill。Foundation v1 当前范围仍受 `docs/project/engineering-capability-foundation-v1.md` 的冻结规则约束。
+新增研究样本不自动意味着扩大 Method 样本，也不自动要求新增 Skill。当前工程能力扩展仍必须受对应有限 Milestone 与 Project Roadmap 约束；Research 不能自行把 Post-v1 候选提升为当前工作。
 
 ## 针对性复核：Reusable Capability 与 Project Rule
 

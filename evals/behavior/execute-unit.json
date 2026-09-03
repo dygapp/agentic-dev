@@ -208,6 +208,111 @@
         "不继续删除本次修改之前就存在且无因果关系的其他 dead code",
         "明确 cleanup 的因果边界，而不是以删除行数多少判断范围"
       ]
+    },
+    {
+      "id": "B-EU-18",
+      "origin": "C-DATA-01",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。首页要分别显示‘通知公告’、‘就业动态’、‘招聘公告’各最新 5 条已发布内容。当前 API 先取全站最新 50 条已发布文章，浏览器再按 columnAlias 过滤。最近其他栏目可以连续发布 80 条内容，因此目标栏目文章可能完全不在这 50 条里。有人建议把 50 改成 500 就算修复。请给出当前实施判断、边界和验证重点。",
+      "expected_behavior": "识别三个栏目是三个明确业务 scope，不能用全局固定窗口代替集合成员资格；应把栏目/已发布 scope 进入查询或数据访问契约，再在各自 scope 内取最新 5 条，并用足以让其他栏目挤满全局窗口的数据验证截断问题；拒绝仅扩大魔法数字和无必要通用查询框架。",
+      "assertions": [
+        "明确当前业务集合是各目标栏目中的已发布内容，而不是全站最新 50 条",
+        "不把 50 提高到 500 或其他更大固定数当作可靠正确性修复",
+        "在当前 Authority 语义下先形成栏目 / 发布状态 scope，再在该 scope 内取最新 5 条",
+        "验证包含足够多其他栏目 competing records，能够暴露全局窗口后过滤的静默截断",
+        "不为了修复该问题额外创建无当前责任的通用 query framework、cache 或 registry"
+      ]
+    },
+    {
+      "id": "B-EU-19",
+      "origin": "C-DATA-02",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。当前站点 Domain Authority 明确导航树最多 20 个节点、SiteConfig 最多 30 个键；二者由整个 SPA 共用。当前 Main App 每次路由切换都会重新请求这两个完整集合。现有 Authority 没有规定已经打开的 SPA 必须在管理员修改后实时或定时刷新。Review Finding 要求‘所有列表都改成服务端分页才规范’。项目现有 app store 已能保存共享状态。请给出实施判断和验证重点。",
+      "expected_behavior": "依据明确上界识别为稳定有界的共享 snapshot；保留完整读取，不机械分页，并利用已有 app store 在合适应用生命周期复用，而不是新建缓存框架；没有当前 freshness / invalidation Authority 时不顺便发明实时刷新责任，验证首次装配与路由间复用即可，并说明未来真实 freshness 责任出现时应重新评估生命周期。",
+      "assertions": [
+        "以 Domain Authority 的明确上界而不是当前测试样本大小证明 boundedness",
+        "拒绝仅因数据是列表就机械改成服务端分页",
+        "识别整个 SPA 共享与重复路由请求的 lifecycle 问题，并优先复用现有 app store",
+        "不为了 snapshot 复用新建无必要全局 cache / registry / repository abstraction",
+        "没有当前 freshness / invalidation Authority 时不发明实时刷新要求；验证首次加载与路由复用，并保留未来有真实 freshness 责任时重新评估的边界"
+      ]
+    },
+    {
+      "id": "B-EU-20",
+      "origin": "C-DATA-03",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。后台文章集合会持续增长，管理员按栏目、发布状态、关键字筛选，每页显示 20 条。当前实现一次取回全部文章和正文，再在浏览器筛选、搜索和分页。文章正文可能很大。仓库没有通用分页框架需求。请给出当前数据访问方案、范围和验证重点。",
+      "expected_behavior": "把明确栏目/状态/关键字筛选与持续增长集合的有界读取放到服务端契约，使用稳定排序和分页；列表只在当前成本/契约支持时返回 summary 字段，详情继续获取完整内容；不为单一当前需求建立通用分页框架，并用超过单页的数据和组合筛选验证。",
+      "assertions": [
+        "识别持续增长的 operational collection 不应依赖永远完整加载到客户端",
+        "将当前明确的栏目 / 状态 / 关键字过滤放入服务端数据访问边界，并与分页共同工作",
+        "要求分页具有稳定、可解释的 ordering / continuation 语义",
+        "在正文体积与列表消费字段有当前证据时允许 list summary / detail full 分层，但不机械创建额外抽象",
+        "不为本 Unit 建立无当前消费者的通用分页框架或新依赖",
+        "验证数据量超过 20 条，并覆盖筛选条件与跨页结果正确性"
+      ]
+    },
+    {
+      "id": "B-EU-21",
+      "origin": "C-DATA-04",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。Specification 明确首页区域显示‘最新 3 条通知公告’。当前查询先取全站最新 3 条文章，再在客户端过滤 notice；最近 3 条恰好来自其他栏目，所以区域为空。有人坚持‘页面只显示 3 条，查询 3 条就是最小实现’。请判断。",
+      "expected_behavior": "区分 presentation count 与 retrieval collection：‘最新 3 条通知公告’先由 notice membership 定义集合，再在该集合中取 3 条；不能用最小化或页面展示数量为错误全局 scope 辩护，同时保持修复范围直接且可验证。",
+      "assertions": [
+        "明确页面显示 3 条不等于数据源可以先从全站只取 3 条",
+        "把 notice membership 视为当前业务 scope，并在该 scope 内计算最新 3 条",
+        "不把 Implementation Minimality 解释成选择错误但读取更少的数据集合",
+        "验证至少包含最近全站记录均非 notice、但较早存在 notice 的反例数据",
+        "不扩展到与当前通知区域无关的全站数据访问重构"
+      ]
+    },
+    {
+      "id": "B-EU-22",
+      "origin": "C-DATA-05",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。当前 Specification 明确业务规则：先按全站 score 排名取前 100 条内容，之后只在这 100 条中展示 sponsored 子集。Reviewer 看到新的数据访问纪律后要求‘任何过滤都必须在 limit 前，所以 sponsored 一定要先过滤再取 100 条’。请给出实施判断和验证重点。",
+      "expected_behavior": "保护当前 Product Authority：这里 global top-100 本身就是业务集合形成规则，不能机械把 sponsored filter 前移；应保持稳定、可复现的全局 ranking / tie-break，再从已限定 100 条中派生 sponsored 子集，并用边界排名数据验证。",
+      "assertions": [
+        "明确 Data Access Discipline 不能覆盖 Specification 已定义的 global top-100 业务语义",
+        "不把‘scope before window’绝对化为所有 filter 永远必须在 limit 前",
+        "保持先形成全局 top-100、再筛 sponsored 的当前业务顺序",
+        "要求全局 ranking 具有稳定 ordering / tie-break，避免窗口成员不可预测",
+        "验证包含第 100 / 101 名和 sponsored / non-sponsored 的边界组合，证明当前业务语义"
+      ]
+    },
+    {
+      "id": "B-EU-23",
+      "origin": "C-DATA-06",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。当前 Unit 的验收义务是：栏目 A 每页 20 条，其他栏目无论发布多少内容都不能让栏目 A 的分页遗漏；第二页必须连续。实现已经看起来是‘按栏目过滤 + 分页’，但当前测试库只有栏目 A 6 条、栏目 B 4 条，全部在第一页。请判断是否 Completed，并说明最小充分证据。",
+      "expected_behavior": "实现形状和小数据主路径不足以证明 scope + pagination 边界；应要求当前证据同时越过 page capacity 并包含大量 competing scope records，证明栏目 A 第一/第二页连续且不受栏目 B 数量影响；证据缺失时 Not Completed。",
+      "assertions": [
+        "不因代码已经有栏目过滤和分页就直接声明验收义务完成",
+        "不把 A=6、B=4 的单页 fixture 当作分页与 competing-scope 证据",
+        "最小充分验证需要栏目 A 超过 20 条并出现第二页，同时存在足够多栏目 B competing records",
+        "验证应证明栏目 A 的页间连续性、成员资格和无遗漏，而不只是页面数量",
+        "在上述当前证据缺失时结果为 Not Completed / Evidence Gap，而不是降低完成条件"
+      ]
+    },
+    {
+      "id": "B-EU-24",
+      "origin": "C-DATA-07",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。一个持续更新的订单列表使用 LIMIT/OFFSET，每页 50 条，但查询没有任何确定性 ORDER BY；数据库当前返回顺序在测试环境中碰巧稳定。现有测试只断言第一页和第二页各有 50 条，没有检查重复、遗漏或排序。当前 Specification 要求按 createdAt 降序浏览全部订单。请给出判断和验证重点。",
+      "expected_behavior": "识别 pagination 需要与当前业务排序一致的稳定确定性 ordering；按 createdAt 降序并在必要时增加稳定 tie-break，验证跨页无重复/遗漏和顺序。OFFSET 的潜在性能成本只有在当前规模/责任证据支持时才进一步处理，不因此自动改成 cursor 框架。",
+      "assertions": [
+        "不把数据库碰巧稳定的无 ORDER BY 返回顺序当作分页契约",
+        "依据 Specification 建立 createdAt 降序，并在并列值可能导致不确定性时使用稳定 tie-break",
+        "验证跨页顺序、成员连续性以及无重复 / 无遗漏，而不只断言每页条数",
+        "不因发现 OFFSET 潜在成本就无证据改造成 cursor framework 或扩大当前 Unit",
+        "如果当前规模证据表明 OFFSET 已成为实际问题，可以记录或按当前职责处理，而不是机械忽略性能责任"
+      ]
+    },
+    {
+      "id": "B-EU-25",
+      "origin": "C-DATA-08",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。首页有固定 12 个业务分类，集合长期稳定有界，完整读取成本很低；但 Product Authority 明确要求管理员修改分类名称后，已经打开的 SPA 最迟 30 秒内必须看到更新。当前实现只在应用启动时取一次 snapshot。有人说‘既然是 bounded snapshot，就永远不需要刷新’，也有人要求改成分页。项目已有轻量定时 refresh 机制可复用。请给出实施判断和验证重点。",
+      "expected_behavior": "boundedness 支持完整读取但不豁免 freshness：保持完整 snapshot，不机械分页，复用现有轻量 refresh 机制满足 30 秒更新责任，不新建缓存/事件框架；验证应用保持打开时更新在时限内可见，并保留初始加载与复用行为。",
+      "assertions": [
+        "明确 bounded collection 可以完整读取，但 boundedness 不等于允许无限陈旧",
+        "不因为需要 freshness 就把 12 条稳定集合机械改成分页",
+        "让 30 秒 Product Authority 决定 refresh / invalidation 生命周期，并优先复用现有轻量机制",
+        "不为了当前 30 秒刷新责任新建无必要 cache bus、event framework 或 registry",
+        "验证 SPA 保持打开时管理员更新在 30 秒内可见，同时覆盖初始 snapshot 与正常复用"
+      ]
     }
   ]
 }
