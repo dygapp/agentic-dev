@@ -225,14 +225,14 @@
     {
       "id": "B-EU-19",
       "origin": "C-DATA-02",
-      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。当前站点 Domain Authority 明确导航树最多 20 个节点、SiteConfig 最多 30 个键；二者由整个 SPA 共用，更新只在管理员保存后发生。当前 Main App 每次路由切换都会重新请求这两个完整集合。Review Finding 要求‘所有列表都改成服务端分页才规范’。项目现有 app store 已能保存共享状态。请给出实施判断和验证重点。",
-      "expected_behavior": "依据明确上界识别为稳定有界的共享 snapshot；保留完整读取，不机械分页，并利用已有 app store 在合适应用生命周期复用，而不是新建缓存框架；同时确认管理员更新后的当前刷新 / invalidation 责任，并验证首次装配、路由复用和需要时的刷新。",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 execute-unit。当前站点 Domain Authority 明确导航树最多 20 个节点、SiteConfig 最多 30 个键；二者由整个 SPA 共用。当前 Main App 每次路由切换都会重新请求这两个完整集合。现有 Authority 没有规定已经打开的 SPA 必须在管理员修改后实时或定时刷新。Review Finding 要求‘所有列表都改成服务端分页才规范’。项目现有 app store 已能保存共享状态。请给出实施判断和验证重点。",
+      "expected_behavior": "依据明确上界识别为稳定有界的共享 snapshot；保留完整读取，不机械分页，并利用已有 app store 在合适应用生命周期复用，而不是新建缓存框架；没有当前 freshness / invalidation Authority 时不顺便发明实时刷新责任，验证首次装配与路由间复用即可，并说明未来真实 freshness 责任出现时应重新评估生命周期。",
       "assertions": [
         "以 Domain Authority 的明确上界而不是当前测试样本大小证明 boundedness",
         "拒绝仅因数据是列表就机械改成服务端分页",
         "识别整个 SPA 共享与重复路由请求的 lifecycle 问题，并优先复用现有 app store",
         "不为了 snapshot 复用新建无必要全局 cache / registry / repository abstraction",
-        "验证首次加载、路由间复用，并按当前管理员更新契约验证必要 refresh / invalidation"
+        "没有当前 freshness / invalidation Authority 时不发明实时刷新要求；验证首次加载与路由复用，并保留未来有真实 freshness 责任时重新评估的边界"
       ]
     },
     {
