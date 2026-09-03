@@ -1,22 +1,25 @@
 # 工程纪律基线
 
-**状态：** Baseline v0.1  
+**状态：** Baseline v0.2 Draft  
 **性质：** 工程纪律（Engineering Discipline）规范性基线
 
 ## 1. 目的
 
-本文定义 `agentic-dev` 首批两个跨技术栈工程纪律：
+本文定义 `agentic-dev` 当前三个跨技术栈工程纪律：
 
 1. **Implementation Minimality & Speculative Complexity Control（实现最小化与推测性复杂度控制）**；
-2. **Surgical Change & Diff Scope Control（精准修改与差异范围控制）**。
+2. **Surgical Change & Diff Scope Control（精准修改与差异范围控制）**；
+3. **Data Access Scope & Boundedness Control（数据访问作用域与有界性控制）**。
 
-本文不增加新的 Method Stage，不改变 Execution Unit、Human Escalation、Ready to Integrate 或 Integration Boundary，也不创建新的 Task-oriented Skill。
+本文不增加新的 Method Stage，不改变 Execution Unit、Human Escalation、Ready to Integrate 或 Integration Boundary，也不因为新增工程纪律创建新的 Task-oriented Skill。
 
-WI-03V 已完成 Fresh Runtime Targeted Eval 与必要历史回归；本文作为拟集成 Baseline 接受最终 AI Review。只有实际进入当前 Repository Authority 的集成分支后，它才成为 `agentic-dev` 的现行工程纪律基线；未合并 PR / Draft 分支中的副本不自动改变 `master` 权威。
+首批两个 Discipline 已由 PR #48 完成 Fresh Runtime Targeted Eval 并进入当前 Repository Authority。第三项 Discipline 当前处于 Engineering Discipline Expansion v1 的 Draft / Targeted Eval 阶段；只有包含本 Draft 的变更实际进入当前集成分支后，第三项 Discipline 才成为现行 Repository Authority，未合并 PR / Draft 分支不提前覆盖 `master`。
 
 ## 2. Architecture Fit Review
 
-WI-02 / WI-03 的 Research 与 Candidate Design 在当前 `master` 上重新复核后，Architecture Fit 结论为：
+### 2.1 首批两个 Discipline
+
+WI-02 / WI-03 的 Research 与 Candidate Design 复核结论为：
 
 - 两个 Candidate 都描述**阶段内部如何高质量实施**，而不是新的开发生命周期，因此属于 Engineering Discipline；
 - 两者跨 Vue、Spring、数据库等具体技术栈成立，不属于 Technology Profile；
@@ -24,6 +27,23 @@ WI-02 / WI-03 的 Research 与 Candidate Design 在当前 `master` 上重新复�
 - 两者可以被 `execute-unit`、未来 Engineering Quality Review、Refactoring Discipline 和 Technology Profile 共同消费，因此不应只写死在单个 Skill 内；
 - `execute-unit` 仍是当前主要执行消费者，只需要保留薄执行规则，不复制完整纪律正文；
 - 两个纪律职责独立且可组合：前者判断**复杂度为什么需要存在**，后者判断**最终变更为什么属于当前逻辑变化**。
+
+### 2.2 Data Access Scope & Boundedness Control
+
+Engineering Discipline Expansion v1 的 Research / Candidate 见：
+
+`docs/research/data-access-scope-boundedness-analysis.md`
+
+Architecture Fit 结论：**PASS — Engineering Discipline**。
+
+理由：
+
+- 该判断跨前端、后端、REST / GraphQL、数据库和后台任务成立，不依赖单一技术栈，因此不是 Technology Profile；
+- 它决定数据访问的正确集合边界、增长 / 有界性、生命周期、window / pagination 和验证边界，不只是数据库性能技巧；
+- 它发生在 Execution Unit 实施内部，不改变 Core Method lifecycle；
+- 它没有独立任务入口、稳定独立输出或单独调度价值，不满足 Task-oriented Skill 条件；
+- `execute-unit` 可以以薄判断消费，不需要新的 Stage Return、持久化 Checklist 或人工确认步骤；
+- 它与 Implementation Minimality、Surgical Change 职责独立：分别判断数据边界、复杂度正当性和 diff 责任链。
 
 当前没有证据要求修改 Core Method 或 Engineering Capability Architecture。
 
@@ -175,9 +195,139 @@ WI-02 / WI-03 的 Research 与 Candidate Design 在当前 `master` 上重新复�
 
 不要求为每个 Unit 生成新的持久化 Diff Scope Artifact。
 
-## 6. 两个纪律的组合
+## 6. 数据访问作用域与有界性控制
 
-两个纪律必须组合使用，但不能合并为一个模糊的“保持简单”口号：
+### 6.1 核心规则
+
+> 设计或修改集合型数据访问时，应先确认当前消费者真正需要的数据作用域，以及集合是稳定有界、可能持续增长还是当前无法可靠界定；再根据 freshness、consistency 和应用生命周期选择过滤、排序、window / pagination、字段表示与复用方式。页面最终展示数量、现有 `LIMIT/OFFSET` 或客户端过滤不能替代业务作用域。若业务 scope 决定集合成员资格，应在 window / pagination 之前形成该 scope；只有当前权威明确把全局 window / ranking 本身定义为业务语义时才例外。规模稳定有界且语义上属于共享快照的数据可以完整读取并按当前生命周期复用，不应为了形式一致机械分页。
+
+该规则首先保护正确性，其次才是性能优化。
+
+### 6.2 判断模型
+
+按当前 Unit 风险和数据路径复杂度，按需检查：
+
+1. **Consumer Scope**：当前页面、API、Job 或模块真正消费哪个业务集合？是否存在 parent、tenant、栏目、状态、组织或其他明确 membership boundary？
+2. **Boundedness**：集合是否有当前证据支持的真实稳定上界，还是会随业务持续增长 / 无法可靠界定？
+3. **Lifecycle / Freshness**：数据是 request-local、page-local、application snapshot，还是要求持续刷新 / invalidation？同一生命周期是否重复获取同一稳定快照？
+4. **Filter / Ordering Boundary**：哪些条件定义集合成员资格或业务顺序？window / pagination 前是否已经形成正确候选集合？
+5. **Window Strategy**：是否需要 page、cursor、chunk、Top-N？是否存在稳定 ordering / continuation 语义？
+6. **Representation**：list 是否只需要 summary/basic fields？detail 是否需要 full representation？额外 projection 的复杂度是否由当前成本或契约支持？
+7. **Verification Boundary**：当前验证是否真正越过 page / Top-N / scope 边界，并包含足以暴露截断 / 顺序问题的 competing records？
+
+不是每个 Unit 都需要显式回答七项；只有当数据访问策略会影响当前正确性、规模、生命周期或验收义务时才加载这一判断。
+
+### 6.3 Scope 与 Window 的边界
+
+当业务规则定义了明确集合，例如：
+
+- 某栏目文章；
+- 某租户资源；
+- 某组织成员；
+- 某状态下订单；
+- 某项目下任务；
+
+则该 scope 应进入数据访问契约或查询边界，不能默认先读取一个全局固定窗口再由客户端补救式过滤。
+
+尤其禁止把：
+
+```text
+全局 Top-N
+→ client filter
+→ 页面显示某 scope 的少量条目
+```
+
+机械解释为“页面只显示 N 条，所以查询 N 条已经足够”。
+
+但如果 Specification / Domain Authority 明确定义：
+
+> 先选全局排名前 N，再在该已限定集合上进行派生展示
+
+则 global window 本身属于业务语义，不应被本纪律擅自改写为 scope-first。
+
+### 6.4 Bounded / Unbounded 判断
+
+**稳定有界集合**可以包括当前 Authority 能解释其长期上界或小规模性质的数据，例如有限导航树、稳定站点配置、枚举式结构数据。
+
+在当前证据支持下，可以：
+
+- 完整获取；
+- 在 application / request 的适当生命周期内作为 snapshot 复用；
+- 不为了统一接口外形机械分页。
+
+但“当前测试数据只有十几条”不是有界性的充分证据。
+
+**持续增长或无法可靠界定的集合**默认不能依赖永远完整加载。应结合当前产品与技术责任考虑：
+
+- server-side filtering；
+- page / cursor / chunk；
+- stable ordering；
+- summary representation；
+- freshness / consistency；
+- 可接受的响应与资源成本。
+
+本纪律不固定具体 pagination 技术、page size、cursor 格式或数据库方案。
+
+### 6.5 Lifecycle / Freshness
+
+完整 snapshot 是否合理，不能只由集合大小决定。
+
+还应检查：
+
+- 同一 application lifecycle 是否重复装配同一稳定数据；
+- 当前 Product / Architecture 是否要求实时、定时或事件驱动刷新；
+- cache / memoization / shared state 是否已经由当前框架或项目架构提供；
+- snapshot 复用是否会违反 freshness、tenant、security 或 consistency boundary。
+
+不因为“避免重复请求”就机械创建全局 cache、registry 或新状态层；新增机制继续受 Implementation Minimality 约束。
+
+### 6.6 Representation
+
+List / collection consumer 与 detail consumer 可以需要不同表示。
+
+当完整 resource 很大、昂贵或包含列表不需要的信息时，可以在当前证据支持下采用 summary/basic representation；但不因为存在 list/detail 两种入口就机械创建第二套 DTO、projection 或 mapping layer。
+
+representation 选择同时受：
+
+- 当前消费字段；
+- 响应 / 计算成本；
+- 公共契约；
+- 兼容性；
+- Implementation Minimality；
+
+约束。
+
+### 6.7 Verification
+
+验证必须针对本 Discipline 声称解决的边界，而不是只在小数据主路径上检查“页面有内容”。
+
+按风险需要覆盖：
+
+- 数据数量超过单页 / Top-N / 当前 window；
+- competing records 来自其他 scope，足以暴露“global window 后过滤”截断；
+- page / cursor / chunk 的 stable ordering 与 continuation；
+- bounded snapshot 在当前 lifecycle 中的装配 / refresh 行为；
+- list summary 与 detail full representation 的契约；
+- 当前 Consumer Authority 明确的 freshness / consistency 责任。
+
+如果验收义务要求分页或 scope correctness，少量 fixture、代码存在 `LIMIT/OFFSET` 或客户端过滤实现都不能单独成为 Completion Evidence。
+
+### 6.8 非规则
+
+本 Discipline 不等于：
+
+- 所有接口必须分页；
+- 所有列表必须 server-side pagination；
+- 所有 filter 必须无条件先于所有 limit；
+- 所有小型结构数据都禁止全量读取；
+- 所有 list 都必须建立 Summary DTO；
+- 必须引入 cache / repository abstraction / cursor framework；
+- 固定任何 page size；
+- 仅凭性能猜测扩大当前 Product Scope。
+
+## 7. 三个纪律的组合
+
+三个纪律可以组合使用，但不得合并成一个模糊的“工程最佳实践”口号：
 
 ```text
 实现最小化
@@ -189,48 +339,57 @@ WI-02 / WI-03 的 Research 与 Candidate Design 在当前 `master` 上重新复�
 最终这些改动为什么属于当前变化？
         ↓
 差异范围正当性
+
+数据访问作用域与有界性
+当前消费者真正属于哪个数据集合？
+该集合的增长 / 生命周期性质要求怎样的访问边界？
+        ↓
+数据边界正当性
 ```
 
 典型结果：
 
-- 假想插件接口可能同时违反两个纪律；
-- 当前必要的 preparatory refactoring 可能增加 diff，但可以同时满足两个纪律；
-- 无关 typo 几乎没有复杂度成本，却仍违反差异范围纪律。
+- 为持续增长集合增加分页可能由 Data Access Discipline 证明需要，同时仍需 Minimality 防止引入不必要的通用 pagination framework；
+- 修正 global Top-N 截断可能跨 API、service、client 和 test，多文件由 Surgical Change 判断是否仍属于同一逻辑变化；
+- 小型稳定 snapshot 可以被 Data Access Discipline 允许完整读取，同时 Minimality 可以阻止为了“规范统一”新增无必要分页层。
 
-## 7. `execute-unit` 消费边界
+## 8. `execute-unit` 消费边界
 
 `execute-unit` 是当前主要执行消费者，但只应保留足够实施本纪律的薄规则：
 
 - 实施前 / JIT 判断新增复杂度是否有当前正当性；
 - 完成前检查最终 diff 是否只有当前逻辑变化及必要责任；
+- 当 Unit 涉及集合 / 列表 / snapshot 数据访问时，按风险判断 consumer scope、boundedness / growth、lifecycle / freshness、filter / ordering、window / pagination、representation 与验证边界；
 - 继续服从现有 Unit Boundary、Stage Return、Human Escalation、配置责任、已有能力复用和 Evidence Before Claim；
-- 不因两个纪律新增独立 Skill invocation、持久化检查表或人工确认步骤。
+- 不因三个纪律新增独立 Skill invocation、持久化检查表或人工确认步骤。
 
 完整规范以本文为准；`SKILL.md` 的执行摘要不得覆盖或放宽本文。
 
-## 8. 非目标
+## 9. 非目标
 
 本文不定义：
 
 - 完整 Code Review Discipline；
 - 完整 Testing Discipline；
 - 完整 Refactoring Discipline；
+- 完整 Data Architecture Method；
 - 固定复杂度分数、行数、文件数或 diff 大小阈值；
 - 所有项目统一的 formatter / generator / test command；
-- 新的 `minimality`、`surgical-change` 或 `diff-scope` Skill；
-- Consumer 项目的具体目录、代码风格或架构事实。
+- 所有技术栈统一的分页 API / cursor / page size / cache strategy；
+- 新的 `minimality`、`surgical-change`、`diff-scope`、`data-access` 或 `pagination` Skill；
+- Consumer 项目的具体目录、代码风格、数据模型或架构事实。
 
-## 9. 生命周期
+## 10. 生命周期
 
 - **Producer：** 当前 `agentic-dev` Repository Authority 授权的 Engineering Capability / Architecture 维护职责；
-- **Trigger：** WI-02 / WI-03 Research Candidate 经 WI-03V Architecture Fit Review 确认适合 Engineering Discipline；
+- **Trigger：** 首批两个 Discipline 由 WI-02 / WI-03 Research 触发；第三项由 Foundation v1 Closure 后 Issue #33 已核验 Data Access Candidate 与 Engineering Discipline Expansion v1 触发；
 - **Consumer：** `execute-unit`、未来 Engineering Quality Review / Refactoring Discipline / Technology Profile，以及采用当前 baseline 的 Consumer Agent；
 - **Persistence：** 实际集成后，本文作为当前工程纪律规范入口；Research 继续只保存证据，不与本文竞争权威；
-- **Update：** 新 Targeted Eval、Consumer Adoption、上游 Method / Architecture / Contract 变化或高质量外部证据暴露边界问题时重新检查；
+- **Update：** 新 Targeted Eval、Consumer Feedback、上游 Method / Architecture / Contract 变化或高质量外部证据暴露边界问题时重新检查；
 - **Supersede：** 后续版本必须明确取代当前内容，并保持单一当前规范入口；
 - **Escalation：** 如果修订要求改变 Method 生命周期、Execution Unit 定义、重大架构、Skill Contract、Human / Integration Boundary 或 Consumer Authority，返回对应更高权威处理。
 
-## 10. WI-03V Targeted Eval 证据
+## 11. WI-03V Targeted Eval 证据
 
 2026-09-02，在 PR #48 的待测语义 Head：
 
@@ -271,4 +430,28 @@ WI-02 / WI-03 的 Research 与 Candidate Design 在当前 `master` 上重新复�
 
 `17133821e31077f6196296298e371f897f4dc180f72b0471d0afe0e32806388e`
 
-本次 Targeted Eval Gate 已通过。后续如果只回写证据、Roadmap / Plan 或 PR Review 状态，而不改变 `skills/execute-unit/SKILL.md`、`docs/architecture/skill-contracts.md` 或 `evals/behavior/execute-unit.json` 的受测语义，上述证据仍适用于该拟集成能力；如果受测语义发生实质变化，必须重新运行受影响场景和必要回归。
+该历史 Targeted Eval Gate 已通过。
+
+## 12. Engineering Discipline Expansion v1 Targeted Eval
+
+第三项 Discipline 当前进入 Fresh Runtime 前 Draft 状态。
+
+拟新增场景：
+
+- `B-EU-18`：global Top-N 后 client filter 的 scope truncation；
+- `B-EU-19`：bounded stable snapshot，拒绝机械 pagination；
+- `B-EU-20`：unbounded operational collection 的 server filtering / pagination / summary；
+- `B-EU-21`：presentation N 与 retrieval scope 分离；
+- `B-EU-22`：Authority 明确 global ranking 时允许 window-first 业务语义；
+- `B-EU-23`：验证数据必须越过 page / Top-N / competing-scope boundary；
+- `B-EU-24`：pagination ordering / continuation stability；
+- `B-EU-25`：bounded snapshot 仍需遵守 freshness / invalidation responsibility。
+
+必要历史回归：
+
+- `B-EU-01`；
+- `B-EU-06`；
+- `B-EU-09`；
+- `B-EU-13`。
+
+Fresh Runtime、逐 assertion 评分和最终 AI Review 当前均为 `PENDING`。如果本节所依赖的 `execute-unit` 薄消费语义、Engineering Discipline Draft 或 Eval corpus 在评估后发生实质变化，必须重新运行受影响场景与必要回归。
