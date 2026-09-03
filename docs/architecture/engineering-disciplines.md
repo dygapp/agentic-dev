@@ -1,6 +1,6 @@
 # 工程纪律基线
 
-**状态：** Baseline v0.2 Validated Draft / Pending Integration  
+**状态：** Baseline v0.2  
 **性质：** 工程纪律（Engineering Discipline）规范性基线
 
 ## 1. 目的
@@ -13,7 +13,7 @@
 
 本文不增加新的 Method Stage，不改变 Execution Unit、Human Escalation、Ready to Integrate 或 Integration Boundary，也不因为新增工程纪律创建新的 Task-oriented Skill。
 
-首批两个 Discipline 已由 PR #48 完成 Fresh Runtime Targeted Eval 并进入当前 Repository Authority。第三项 Discipline 已在 Engineering Discipline Expansion v1 中完成 Draft 与 Fresh Runtime Targeted Eval，当前为 Validated Draft / Pending Integration；只有包含本 Draft 的变更实际进入当前集成分支后，第三项 Discipline 才成为现行 Repository Authority，未合并 PR / Draft 分支不提前覆盖 `master`。
+首批两个 Discipline 已由 PR #48 完成 Fresh Runtime Targeted Eval 并进入当前 Repository Authority。第三项 Discipline 已在 Engineering Discipline Expansion v1 中完成 Draft、Fresh Runtime Targeted Eval 与 Final AI Review，并由 PR #56 集成进入 Repository Authority。本文当前三个 Discipline 均为现行 Repository Authority。
 
 ## 2. Architecture Fit Review
 
@@ -384,7 +384,7 @@ representation 选择同时受：
 - **Producer：** 当前 `agentic-dev` Repository Authority 授权的 Engineering Capability / Architecture 维护职责；
 - **Trigger：** 首批两个 Discipline 由 WI-02 / WI-03 Research 触发；第三项由 Foundation v1 Closure 后 Issue #33 已核验 Data Access Candidate 与 Engineering Discipline Expansion v1 触发；
 - **Consumer：** `execute-unit`、未来 Engineering Quality Review / Refactoring Discipline / Technology Profile，以及采用当前 baseline 的 Consumer Agent；
-- **Persistence：** 实际集成后，本文作为当前工程纪律规范入口；Research 继续只保存证据，不与本文竞争权威；
+- **Persistence：** 本文作为当前工程纪律规范入口；Research 继续只保存证据，不与本文竞争权威；
 - **Update：** 新 Targeted Eval、Consumer Feedback、上游 Method / Architecture / Contract 变化或高质量外部证据暴露边界问题时重新检查；
 - **Supersede：** 后续版本必须明确取代当前内容，并保持单一当前规范入口；
 - **Escalation：** 如果修订要求改变 Method 生命周期、Execution Unit 定义、重大架构、Skill Contract、Human / Integration Boundary 或 Consumer Authority，返回对应更高权威处理。
@@ -492,4 +492,6 @@ representation 选择同时受：
 
 Fresh Runtime Gate：**PASS**。
 
-当前只允许继续回写 Evidence / Project Status / Review metadata。若第三项 Discipline 的规范语义、`execute-unit` 薄消费语义、Skill Contract 或 Eval corpus 发生实质变化，必须重新运行受影响场景与必要回归；纯证据和状态回写不使上述 Runtime Evidence 失效。
+PR #56 已通过 Final AI Review 并实际集成，merge commit 为 `8d0c7ccd1b13db05540fefc619725f9d1f7fc2de`。因此第三项 Discipline 已完成 Integration Gate，当前 Runtime Evidence 是 Baseline v0.2 的验证证据。
+
+后续如果第三项 Discipline 的规范语义、`execute-unit` 薄消费语义、Skill Contract 或 Eval corpus 发生实质变化，必须重新运行受影响场景与必要回归；纯 Evidence / Project Status 更新不使上述 Runtime Evidence 失效。
