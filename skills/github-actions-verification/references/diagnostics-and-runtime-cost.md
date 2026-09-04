@@ -45,9 +45,12 @@ concurrency:
 
 - 每个可能使用同一资源的 trigger / ref 采用同一资源 key；
 - 资源不同的运行可以使用不同 key，避免无必要的 Repository 全局串行；
-- 不同 ref 的工作彼此独立时应排队而不是互相取消；只有新 Run 确实取代旧工作，且资源释放路径可靠时才启用 `cancel-in-progress`；
+- 长生命周期单实例环境显式记录当前 owner、用途、目标 Head、lease 开始 / 续期 / 到期 / 释放和 stale 判定；不能只从 Run 是否仍为 `in_progress` 推断 Human session 仍然有效；
+- PR 自动 Verification 通常只保留完成自动检查和外部地址验证所需的短生命周期；manual Human Review 可以拥有更长且可观察的 lease，但具体时长与续期信号由 Consumer Repository Policy 决定；
+- 保护有效 Human lease 与让最新 Head 取得环境是不同目标。只有当前策略判定新 Run supersede 旧工作，且释放闭环可靠时才启用 `cancel-in-progress`；否则有界排队或升级真实优先级冲突，不默认采用 `latest-head-wins`；
 - key 只协调 GitHub Run，不能单独证明外部资源已经释放；
-- Run 被取消或进程退出后，按正常释放基线进行有界观察；若资源残留，只在 owner、环境和授权明确时执行有界重试、释放或接管；
+- Run 被取消或进程退出后，按正常释放基线进行有界观察；若资源残留，只在 owner、lease / activity、环境和授权明确时执行有界重试、释放或接管；
+- 一次性 unlock / recovery Workflow 应使用最小权限、记录目标资源和旧 owner，使用后删除或禁用；它不能成为绕过正常 ownership policy 的长期后门；
 - 取得资源后重新读取 owner / status，并验证对外地址或目标服务实际可用且对应当前 Run / Head。
 
 如果资源 owner 不明确，或处理需要清理生产 / 其他 owner 的资源，应停止该项操作并升级，而不是通过扩大 destructive cleanup 绕过竞争。
@@ -120,6 +123,24 @@ Human 提供的 UI 截图、可见日志、持续时间或人工取消记录，�
 - verification strategy adjustment。
 
 但被卡住、取消或失败的 Run 不能作为 Completion PASS。
+
+## Artifact 的临时证据与持久输入边界
+
+不要因为 Artifact 已通过 Human Review，就让长期 Importer、Review Environment 或 Runtime 永久依赖该 Actions 对象。先判断角色：
+
+| 角色 | 适合的载体与生命周期 |
+|---|---|
+| 单次运行证明 / transport / diagnostics / review snapshot | 当前 Run Artifact；允许受 retention / expiry 约束，但要保留 Run、Head、名称 / ID 和 digest 等 Evidence Reference |
+| 已被适当 Authority 接受、后续稳定消费的输入 | Consumer 可长期发现和维护的 versioned source / Authority；不以临时 Artifact 作为唯一来源 |
+
+Promotion 的平台实现可以是将已接受内容无损复制、解包或重组到 Consumer 选择的持久载体，但必须：
+
+1. 在复制前后核对 digest、manifest、数量或当前声明需要的完整性属性；
+2. 记录 source Run / Head / Artifact、接受责任和 Promotion 目标；
+3. 让后续 Workflow 显式读取持久输入，避免隐式回退到即将过期的 Artifact；
+4. 对 Promotion 后的最终 Head 重跑受影响的 Importer、fresh environment、Review Runtime 或其他 Completion Verification；
+5. 不版本化无持续价值的完整日志、临时诊断或 debug reasoning；
+6. 受敏感数据、许可、体积或保留政策限制时，不机械写入 Git，按 Repository Policy 选择对象存储、制品库或其他持久载体。
 
 ## 环境准备成本
 

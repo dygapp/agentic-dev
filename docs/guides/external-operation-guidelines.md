@@ -219,9 +219,10 @@ Act
 
 - 同一资源的所有触发路径与 ref 必须进入同一排他边界，不能只按 PR / ref 分组而留下跨组竞争；
 - 不共享资源的运行应保留合理并行能力，不能把 Repository 级单例机械推广为所有 Workflow 的固定政策；
+- 长生命周期单实例环境应定义可观察的 owner、lease 取得 / 续期 / 到期 / 释放条件和 stale 判定。自动 Verification 与 Human Review 可以按用途采用不同的保活生命周期；“保护仍在进行的人工评审”和“让最新 Head 取得验证环境”是不同目标，应由 Consumer Repository Policy 显式决定优先级，不能机械采用 `latest-head-wins`；
 - 排他边界只回答“谁不能同时使用资源”，不自动决定竞争 Run 应排队还是取消；只有新 Run 确实取代旧工作，且取消后的资源释放闭环可靠时才使用 cancellation，否则应让独立工作有界排队；
 - 取消 Workflow、终止本地进程或成功取得锁，只能证明对应动作发生，不能单独证明外部资源已经释放、归属正确或目标服务可用；
-- 对残留资源采用有界等待、重试、释放或接管路径，并在清理前核对资源标识、当前 owner、环境与操作授权；不得盲目清理生产资源、其他 owner 的资源或授权范围外的共享状态；
+- 对残留资源采用有界等待、重试、释放或接管路径，并在清理前核对资源标识、当前 owner、lease / activity 状态、环境与操作授权；释放或接管机制应可审计、使用最小权限，并在一次性机制完成后清理；不得盲目清理生产资源、仍处于有效人工评审租约的资源、其他 owner 的资源或授权范围外的共享状态；
 - 取得资源后重新读取其当前归属和状态，并验证目标地址、服务或结果确实对应当前 Run / Head 和预期环境。
 
 并发与资源生命周期应形成：
@@ -234,6 +235,31 @@ Identify Shared Resource
 ```
 
 具体实现由 Consumer Repository、平台能力与资源拓扑决定。本指南不固定 concurrency key，也不要求所有 Consumer 使用同一种锁或清理策略。
+
+### 5.3 区分临时执行证据与已接受持久输入
+
+Workflow Artifact、远程 Job 输出、临时快照或其他执行产物，默认可以承担一次运行的证明、传输、诊断或审查职责。它们具有明确的 Run / Head 关联，但可能受 retention、expiry、平台可用性或访问权限限制，不能因此自动成为 Consumer 的长期运行输入或仓库权威。
+
+当其中的数据、资源或配置被适当的 Human / Product Authority 接受，并将被后续稳定重放、迁移、评审或运行流程持续消费时，应执行显式 Promotion：
+
+```text
+Ephemeral Execution Evidence
+→ Authority Acceptance
+→ Promote Accepted Durable Input
+→ Verify Integrity / Provenance
+→ Re-run Affected Current Evidence
+```
+
+具体要求：
+
+- Acceptance 必须来自当前 Consumer Repository Authority 允许确认该内容的职责；Artifact 上传成功、下载成功或一次 Review PASS 不会自动完成 Authority Promotion；
+- 只晋升后续消费者真正需要的已接受内容，不要求把所有日志、诊断文件、临时快照或完整 Workflow 输出版本化；
+- 持久输入应进入 Consumer 可长期发现和维护的 Authority / versioned source，具体目录、格式、拆分方式和存储介质由 Consumer 决定；
+- 保留足以追溯内容身份与接受来源的 provenance，例如 source Run、Head SHA、Artifact ID / name、digest、生成规则或等价锚点，并在复制、解包、规范化或重组后核对完整性；
+- Actions Artifact 等临时载体可以继续作为 historical evidence / provenance，但长期消费者不得把即将过期或不可稳定取得的临时对象作为唯一输入；
+- Promotion 如果改变 Repository Head、输入内容、Workflow、Importer、Review Environment 或其支持的 Evidence Claim，应在最终目标状态重新取得相匹配的 Current Evidence；
+- 如果执行产物只具有历史证明或短期诊断价值，不应为了形式完整性晋升为长期 Authority；
+- 敏感数据、第三方许可、体积成本或保留义务会影响持久化时，按当前安全、隐私、法律与 Repository Policy 升级或选择合适载体。
 
 ## 6. 汇报（Report）：汇报已验证状态
 

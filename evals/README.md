@@ -307,6 +307,44 @@ Issue #33 的 Consumer PR #19 进一步表明：把“硬编码审计”机械�
 
 附件 SHA-256：`04af9397a71b51828b45486605d02ddc529ef3547e0ea85a66f6b4f5744a2415`。4 个进程均以状态码 `0` 完成，JSONL 均包含完整最终回答与 `turn.completed`，stderr 为空；进程退出码未被当作 PASS。附件没有暴露精确 Runtime 版本或模型名，本轮结论不依赖该信息。评估后的提交只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不改变 Skill 或场景语义，因此上述行为声明保持有效。
 
+## 外部证据与评审环境生命周期针对性扩展
+
+Issue #58 的 Consumer Evidence 表明：具有 retention / expiry 的 Workflow Artifact 在被适当 Authority 接受并成为稳定迁移或运行输入后，需要从临时执行证据显式晋升为 Consumer 可持续维护的持久输入；长生命周期单实例 Review Environment 还需要区分自动 Verification 与 Human Review 的 owner、lease、保活和 stale-run policy。
+
+本次不修改 Method、Skill Contract 或 Data Access Engineering Discipline，不新增 Skill，也不把 Consumer 的目录结构、固定域名、解锁 Workflow 或 `latest-head-wins` 设为通用规则。只定向强化 Usage Guide、External Operation Guide、`github-actions-verification` 与平台参考，并增加 2 个 Behavior 场景：
+
+- `B-GA-06`：区分 Ephemeral Execution Evidence 与 Accepted Durable Input，完成 Authority Acceptance、provenance / integrity、长期消费者切换和最终 Head 复验；
+- `B-GA-07`：为单实例 Review Environment 建立可观察的 owner / lease / stale-run policy，区分自动验证与有效 Human Review lease，并验证最小权限释放与最新 Head 环境归属。
+
+定向运行同时回归：
+
+- `B-GA-01`：异步外部执行继续保持有界观察、诊断、重跑与复验闭环；
+- `B-GA-05`：共享外部资源的真实冲突域、owner 与释放验证保持有效；
+- `B-CG-05`：未闭环的长期 Authority / Artifact Lifecycle Gap 继续阻止 `READY`。
+
+### 针对性扩展结果
+
+最终状态：**PASS**。
+
+| 场景 | 结果 |
+|---|---:|
+| `B-GA-06` | 8 / 8 assertions PASS |
+| `B-GA-07` | 7 / 7 assertions PASS |
+| `B-GA-01` | 6 / 6 assertions PASS |
+| `B-GA-05` | 7 / 7 assertions PASS |
+| `B-CG-05` | 6 / 6 assertions PASS |
+| **合计** | **5 / 5 scenarios，34 / 34 assertions PASS** |
+
+5 个场景均在独立 `/tmp/agentic-dev-behavior-*` 工作区完成 Fresh Runtime。JSONL 均包含完整最终回答与 `turn.completed`；命令轨迹只读取隔离注入的 Skill、Reference 与空工作区事实，没有读取 Eval 定义、断言、历史结果、Consumer Repository 或工作区外路径。所有回答均保持“路径已设计、尚未在隔离目录实际修改 Consumer / Actions”的证据边界，没有虚构目标 Head、外部资源释放或 Workflow 终态。
+
+5 个进程均以状态码 `0` 完成；`B-CG-05` 与 `B-GA-01` 的 stderr 各包含一次模型列表刷新超时，但没有中断场景执行，其余 stderr 为空。进程退出码未被当作 PASS，最终结论来自逐项人工语义评分、隔离 / 污染检查和运行时完整性检查。
+
+评估附件：`pr59-external-lifecycle-eval-results.zip`
+
+附件 SHA-256：`26ddf975a181438071cfb8453cc30fa877943c9bb652f190999e761d0fca56cc`
+
+附件未记录可独立核验的 Codex CLI / 模型版本，本轮语义结论不依赖该信息。评估后只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不再改变 Guide、Skill、Reference 或场景语义，因此上述行为证据继续对应当前评估内容。
+
 ## 文件结构
 
 ```text

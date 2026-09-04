@@ -23,7 +23,9 @@ description: Establishes or optimizes an observable, traceable, cost-aware GitHu
 - 环境准备、镜像构建或依赖安装显著拖慢反馈周期；
 - 需要区分 Fast Feedback 与 Completion Verification；
 - 需要通过 Artifact、日志、trace、截图或 Runtime diagnostics 增强失败可诊断性；
-- 长运行、过期 Run、共享外部资源争用或重复环境准备正在降低验证效率。
+- Workflow Artifact 即将过期，但其中已接受的内容需要成为后续稳定重放、迁移、评审或运行输入；
+- 长运行、过期 Run、共享外部资源争用或重复环境准备正在降低验证效率；
+- 单实例 Review Environment 需要区分自动验证与人工评审的 owner、lease、保活和 stale-run policy。
 
 ## Do Not Use When
 
@@ -45,7 +47,8 @@ description: Establishes or optimizes an observable, traceable, cost-aware GitHu
 - `.github/workflows/` 中与当前验证相关的 Workflow；
 - 当前 Branch / PR / Commit 状态；
 - 当前 GitHub Runtime / Connector 能力；
-- Current CI Runs、Jobs、Steps、Logs、Artifacts；
+- Current CI Runs、Jobs、Steps、Logs、Artifacts，以及相关 retention / expiry；
+- Artifact 当前只承担执行证据 / 传输职责，还是已经被适当 Authority 接受并成为长期输入；
 - 与失败直接相关的 Runtime / container / service configuration；
 - Workflow 使用的固定域名、代理名、端口、部署 / 评审槽位、临时数据库或其他共享外部资源及其 owner / lifecycle；
 - Human Review Baseline / fixtures，以及自动测试可能修改的数据库、文件、缓存或其他共享状态。
@@ -210,11 +213,13 @@ Automated Verification
 
 1. 列出当前 Run 会取得、修改或暴露的共享外部资源及其 owner / lifecycle；
 2. 让 concurrency group、lock、lease 或等价机制覆盖所有争用同一资源的触发路径，而不是默认只按 PR / ref 分组；
-3. 对资源彼此独立的运行保留并行能力，不把 Repository 级单例并发推广为通用默认；
-4. 独立工作争用同一资源时优先有界排队；只有新 Run 确实 supersede 旧工作，且取消后的释放闭环可靠时才采用 `cancel-in-progress` 或等价取消策略；
-5. 把 Run cancellation 与外部资源释放分别验证；取消 Run 或终止进程后，外部资源仍可能短暂残留；
-6. 只对当前 Workflow 拥有且授权可处理的资源执行有界等待、重试、释放或接管，不盲目清理生产资源或其他 owner 的资源；
-7. 取得资源或启动进程后，重新核对资源归属，并验证目标地址、服务或结果对应当前 Run / Head 和预期环境。
+3. 对长生命周期单实例环境定义可观察的 owner、lease 取得 / 续期 / 到期 / 释放条件和 stale 判定；自动 Verification 与 Human Review 可以按用途使用不同 hold lifetime；
+4. 显式区分“保护仍在进行的 Human Review session”与“让最新 Head 取得验证环境”，由 Consumer Repository Policy 决定 precedence，不机械采用 `latest-head-wins`；
+5. 对资源彼此独立的运行保留并行能力，不把 Repository 级单例并发推广为通用默认；
+6. 独立工作争用同一资源时优先有界排队；只有新 Run 确实 supersede 旧工作，且取消后的释放闭环可靠时才采用 `cancel-in-progress` 或等价取消策略；
+7. 把 Run cancellation 与外部资源释放分别验证；取消 Run 或终止进程后，外部资源仍可能短暂残留；
+8. 只对当前 Workflow 拥有且授权可处理的资源执行可审计、最小权限的有界等待、重试、释放或接管；一次性 unlock / recovery 机制使用后应清理，不盲目清理生产资源、有效 Human lease 或其他 owner 的资源；
+9. 取得资源或启动进程后，重新核对资源归属，并验证目标地址、服务或结果对应当前 Run / Head 和预期环境。
 
 ```text
 Identify Shared Resource
@@ -259,7 +264,22 @@ Identify Shared Resource
 
 Evidence 必须与当前目标提交和具体声明建立可审计关联；关联不等于所有 Evidence 都必须由同一个 Head SHA 的同一种 Run 产生。
 
-### 10.1 Evaluate Evidence Reuse Across Descendant Commits
+### 10.1 Distinguish Ephemeral Evidence from Accepted Durable Input
+
+Workflow Artifact 默认可以承担 point-in-time evidence、transport、diagnostics 或 review snapshot，但 retention / expiry 和平台可用性使其不自动成为长期 Consumer Authority。
+
+如果 Artifact 中的数据、资源或配置已经被适当 Human / Product Authority 接受，并将成为后续稳定重放、迁移、评审或运行输入：
+
+1. 明确记录 Authority Acceptance；上传成功、下载成功或 Review PASS 本身不等于 Promotion；
+2. 只将后续消费者真正需要的内容晋升到 Consumer 可长期发现、维护和版本化的 Authority / source，不机械版本化全部日志或临时输出；
+3. 保留 source Run、Head SHA、Artifact ID / name、digest、生成规则或等价 provenance，并在复制、解包、规范化或重组后核对完整性；
+4. 让 Importer、Review Environment 或其他长期消费者读取晋升后的持久输入，不把会过期的 Actions Artifact 作为唯一运行依赖；
+5. Promotion 改变目标 Head、输入、Workflow 或 Evidence Claim 时，在最终目标状态重新运行受影响验证并核对 Current Evidence；
+6. 涉及敏感数据、第三方许可、体积成本或保留义务时，遵循 Consumer Repository Policy 并按需升级。
+
+如果 Artifact 只承担历史证明或短期诊断职责，保留可追溯 Evidence Reference 即可，不为了形式完整性执行 Promotion。
+
+### 10.2 Evaluate Evidence Reuse Across Descendant Commits
 
 当高成本 Runtime / Human Review Evidence 来自当前目标提交的祖先提交时，默认先把它视为待重新验证的旧证据，不因后继提交看起来是 `docs-only`、文件数量少或 CI 仍为绿色就自动继承。
 
@@ -322,6 +342,8 @@ Evidence reuse 是**按声明**的，不是给整个提交一次性盖章：
 - Observable GitHub Actions Verification Path；
 - Workflow / Runtime Optimization；
 - Evidence Retrieval Plan；
+- Artifact role / retention / promotion decision（如适用）；
+- Shared environment owner / lease / stale-run decision（如适用）；
 - Current Completion Evidence；
 - Diagnostic / Runtime Evidence；
 - Required follow-up / escalation。
@@ -334,7 +356,8 @@ Evidence reuse 是**按声明**的，不是给整个提交一次性盖章：
 - 如果调用只要求设计验证路径，Agent 已明确如何取得完成声明需要的当前证据，并保持实际验证为未执行状态；
 - 如果调用要求实际完成验证，必要的 Current Evidence 已经取得并核对，或者已经准确记录真实阻塞 / 有界观察上限；仍可观察的 `queued`、`pending` 或 `in_progress` Run 本身不满足退出条件；
 - Workflow 成本与当前验证风险基本相称，不存在已知的无界长运行路径；
-- 已识别的排他外部资源具有匹配真实冲突域的并发 / 锁边界，以及有界、可验证且符合 owner / 授权约束的释放路径；
+- 已识别的排他外部资源具有匹配真实冲突域的并发 / 锁边界；长生命周期单实例环境还具有可观察的 owner / lease / stale-run policy，以及有界、可验证且符合授权约束的释放或接管路径；
+- 如果执行产物已经成为后续稳定输入，已明确完成适当 Authority Promotion、provenance / integrity 核对和受影响最终状态复验；仅为临时证据的 Artifact 没有被机械持久化；
 - 需要的 Runtime / Integration 验证边界清晰；
 - 当前失败如果仍存在且修复已获授权，已经取得足以进入 `systematic-debug` 的可观察证据，并保持修复、重跑与复验仍属于当前执行闭环；
 - 未越权执行 Integration / Release / Deploy。

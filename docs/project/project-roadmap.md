@@ -126,6 +126,33 @@ Closure：
 
 第三项 Engineering Discipline 已进入 Repository Authority。
 
+### 4.4 Issue #58 外部证据与评审环境生命周期维护
+
+Issue #58 的 Consumer Evidence 触发了一次 **Stable Maintenance** 定向修订，而不是新的能力里程碑：
+
+- 临时执行证据被适当 Authority 接受并成为长期输入时，显式晋升为 Consumer 可持续维护的持久来源，保留 provenance / integrity，并对 Promotion 后的最终状态重新取得 Current Evidence；
+- 长生命周期单实例 Review Environment 显式定义 owner、lease、stale-run 与释放 / 接管策略，区分自动 Verification 和有效 Human Review lease；
+- 不修改 Core Method、Principles、Skill Contract、Data Access Engineering Discipline，不新增 Skill，也不采用机械 `latest-head-wins`。
+
+Fresh Runtime Targeted Eval：
+
+```text
+新场景：   2 / 2 PASS，15 / 15 assertions PASS
+历史回归： 3 / 3 PASS，19 / 19 assertions PASS
+合计：     5 / 5 PASS，34 / 34 assertions PASS
+```
+
+ZIP SHA-256：
+
+`26ddf975a181438071cfb8453cc30fa877943c9bb652f190999e761d0fca56cc`
+
+Integration Reference：
+
+- PR #59；
+- 是否已经进入默认分支，以 GitHub 中 PR #59 的 merged 状态和 merge commit 为准；本文不复制“等待合并 / 已合并”的瞬态状态，避免为记录上一个 PR 的合并事实机械创建后续状态 PR。
+
+该维护不改变当前 **Post-Milestone Decision / Stable Maintenance** 状态，也不自动启动 WI-06、WI-07、WI-09 或新的 Engineering Discipline。
+
 ## 5. 当前 Engineering Discipline Inventory
 
 当前正式 Engineering Disciplines：
