@@ -365,6 +365,7 @@ systematic-debug
 - 中间修复迭代不要求每次重复支付最高成本的环境准备，但不能因此降低最终 Completion Evidence 的覆盖；
 - 已验证提交之后出现新提交时，不按“文件扩展名”或“docs-only”机械决定旧证据是否仍有效。只有能够取得祖先证据提交到当前目标提交的精确差异、逐项证明差异不会影响该 Evidence Claim、与该声明相关的 Authority / Requirement / Specification / Architecture / Acceptance 语义未改变，并且 Repository Policy 允许时，才可以按声明复用未受影响的证据；必须记录祖先 SHA、当前 SHA、差异范围和声明映射。受影响或无法证明不受影响的声明必须重新取得定向验证或相应 Review；祖先 Run 不得被描述为当前 Head 的 Run；
 - 高成本且稳定的环境依赖可以通过预构建 Runtime、Artifact 复用、缓存或其他当前平台支持的方式降低重复准备成本；
+- 临时执行证据（Ephemeral Execution Evidence）默认只承担单次运行的证明、传输或审查职责。如果其中的数据、资源或配置被适当的 Human / Product Authority 接受，并成为后续稳定重放、迁移、评审或运行输入，应按 Consumer Repository Authority 晋升为已接受持久输入（Accepted Durable Input），保留来源 Run、Head、Artifact、digest 等必要 provenance 和完整性关系；长期消费者不得继续以会过期的临时 Artifact 作为唯一输入。Promotion 改变目标 Head、输入内容或 Evidence Claim 时，必须对最终状态重新取得匹配的 Current Evidence；
 - 长运行环境准备和验证应具有与正常基线相称的 timeout / cancellation 策略，避免把异常等待当作正常执行；
 - Diagnostic / Runtime Observation 可以支持 diagnose、abort、reroute 或调整验证路径，但不能因为同样属于 Current Evidence 就自动替代 Completion Evidence；
 - 平台专项实现细节按需下沉到相应 Skill；例如 GitHub Actions 场景可使用 `github-actions-verification`，而不是把 PR、容器或特定 registry 提升为所有 Consumer 的通用规则。
