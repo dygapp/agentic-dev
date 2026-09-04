@@ -307,6 +307,27 @@ Issue #33 的 Consumer PR #19 进一步表明：把“硬编码审计”机械�
 
 附件 SHA-256：`04af9397a71b51828b45486605d02ddc529ef3547e0ea85a66f6b4f5744a2415`。4 个进程均以状态码 `0` 完成，JSONL 均包含完整最终回答与 `turn.completed`，stderr 为空；进程退出码未被当作 PASS。附件没有暴露精确 Runtime 版本或模型名，本轮结论不依赖该信息。评估后的提交只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不改变 Skill 或场景语义，因此上述行为声明保持有效。
 
+## 外部证据与评审环境生命周期针对性扩展
+
+Issue #58 的 Consumer Evidence 表明：具有 retention / expiry 的 Workflow Artifact 在被适当 Authority 接受并成为稳定迁移或运行输入后，需要从临时执行证据显式晋升为 Consumer 可持续维护的持久输入；长生命周期单实例 Review Environment 还需要区分自动 Verification 与 Human Review 的 owner、lease、保活和 stale-run policy。
+
+本次不修改 Method、Skill Contract 或 Data Access Engineering Discipline，不新增 Skill，也不把 Consumer 的目录结构、固定域名、解锁 Workflow 或 `latest-head-wins` 设为通用规则。只定向强化 Usage Guide、External Operation Guide、`github-actions-verification` 与平台参考，并增加 2 个 Behavior 场景：
+
+- `B-GA-06`：区分 Ephemeral Execution Evidence 与 Accepted Durable Input，完成 Authority Acceptance、provenance / integrity、长期消费者切换和最终 Head 复验；
+- `B-GA-07`：为单实例 Review Environment 建立可观察的 owner / lease / stale-run policy，区分自动验证与有效 Human Review lease，并验证最小权限释放与最新 Head 环境归属。
+
+定向运行同时回归：
+
+- `B-GA-01`：异步外部执行继续保持有界观察、诊断、重跑与复验闭环；
+- `B-GA-05`：共享外部资源的真实冲突域、owner 与释放验证保持有效；
+- `B-CG-05`：未闭环的长期 Authority / Artifact Lifecycle Gap 继续阻止 `READY`。
+
+### 针对性扩展结果
+
+当前状态：**Fresh Runtime PENDING / Semantic Grading PENDING**。
+
+只有上述 5 个场景在仓库外独立临时工作区完成全新运行，且逐项断言、污染检查和运行时有效性均通过后，才能记录为 Eval PASS。Codex 进程退出码 `0` 不能替代人工语义评分。
+
 ## 文件结构
 
 ```text
