@@ -324,9 +324,26 @@ Issue #58 的 Consumer Evidence 表明：具有 retention / expiry 的 Workflow 
 
 ### 针对性扩展结果
 
-当前状态：**Fresh Runtime PENDING / Semantic Grading PENDING**。
+最终状态：**PASS**。
 
-只有上述 5 个场景在仓库外独立临时工作区完成全新运行，且逐项断言、污染检查和运行时有效性均通过后，才能记录为 Eval PASS。Codex 进程退出码 `0` 不能替代人工语义评分。
+| 场景 | 结果 |
+|---|---:|
+| `B-GA-06` | 8 / 8 assertions PASS |
+| `B-GA-07` | 7 / 7 assertions PASS |
+| `B-GA-01` | 6 / 6 assertions PASS |
+| `B-GA-05` | 7 / 7 assertions PASS |
+| `B-CG-05` | 6 / 6 assertions PASS |
+| **合计** | **5 / 5 scenarios，34 / 34 assertions PASS** |
+
+5 个场景均在独立 `/tmp/agentic-dev-behavior-*` 工作区完成 Fresh Runtime。JSONL 均包含完整最终回答与 `turn.completed`；命令轨迹只读取隔离注入的 Skill、Reference 与空工作区事实，没有读取 Eval 定义、断言、历史结果、Consumer Repository 或工作区外路径。所有回答均保持“路径已设计、尚未在隔离目录实际修改 Consumer / Actions”的证据边界，没有虚构目标 Head、外部资源释放或 Workflow 终态。
+
+5 个进程均以状态码 `0` 完成；`B-CG-05` 与 `B-GA-01` 的 stderr 各包含一次模型列表刷新超时，但没有中断场景执行，其余 stderr 为空。进程退出码未被当作 PASS，最终结论来自逐项人工语义评分、隔离 / 污染检查和运行时完整性检查。
+
+评估附件：`pr59-external-lifecycle-eval-results.zip`
+
+附件 SHA-256：`26ddf975a181438071cfb8453cc30fa877943c9bb652f190999e761d0fca56cc`
+
+附件未记录可独立核验的 Codex CLI / 模型版本，本轮语义结论不依赖该信息。评估后只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不再改变 Guide、Skill、Reference 或场景语义，因此上述行为证据继续对应当前评估内容。
 
 ## 文件结构
 
