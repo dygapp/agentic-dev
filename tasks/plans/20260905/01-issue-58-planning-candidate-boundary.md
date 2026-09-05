@@ -76,5 +76,5 @@ SHA-256：
 - Guide 与两个 Skills 语义一致且不改变 Method：PASS；
 - Planning Candidate、Candidate Execution Unit、Ready Execution Unit 三种状态可明确区分：PASS；
 - 新场景与回归场景全部通过 Fresh Runtime 和人工语义评分：PASS（`5 / 5`，`27 / 27`）；
-- 最终 PR 无 Blocking / Medium Finding：由最终 AI Review 确认；
+- 最终 PR 无 Blocking / Medium Finding：PASS；
 - 合并仍由 Human Authority 决定。
