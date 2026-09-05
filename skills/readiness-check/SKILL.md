@@ -51,7 +51,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 1. Repository Instructions、Method、Architecture 与其他更高优先级 Authority 约束低优先级 Artifact。
 2. Specification 定义 Product / Feature 的 WHAT / WHY；Technical Plan 与 Execution Units 不得反向改变已确认 Intent。
 3. Technical Plan 只在存在时作为 Design Readiness 输入；其内容不得通过 Silent Redefinition 改写 Specification。
-4. Execution Units 必须可追溯到 Specification，并遵守已确认的 Durable Technical Decisions、当前有效 Domain / Architecture / ADR Authority 与 Governance Rules。
+4. Execution Units 必须可追溯到 Specification，并遵循已确认的 Durable Technical Decisions、当前有效 Domain / Architecture / ADR Authority 与 Governance Rules。
 5. Domain Authority 提供跨功能持续有效的业务事实；Architecture Context 提供当前有效架构状态；ADR 提供满足条件的重要架构决定及其理由。低层 Artifact 不得静默覆盖。
 6. Conversation History 不构成权威来源。
 7. `readiness-check` 没有修改更高层 Authority 以消除 Finding 的权限。
@@ -64,7 +64,11 @@ description: Performs a read-only pre-execution gate across specification, optio
 
 确认存在可检查的 Specification 和至少一个由 `slice-work` 形成的 Candidate Execution Unit，并识别当前适用的 Domain / Architecture / Governance Authority。
 
+“可检查”是语义要求，不等于必须存在独立文件。当前场景、Repository Authority 或其他已授权输入如果已经明确提供足以判断本 Gate 的 Specification、Candidate Execution Units 与治理事实，应直接据此检查；不得仅因隔离工作目录中没有对应 Markdown / JSON 等 Artifact 文件而把已提供的输入判定为缺失。反之，不能从文件名、编号、标签或顺序推断未被权威输入明确提供的事实。
+
 Roadmap / Backlog / Issue 中的顺序、`EU-xx` / Unit ID、标签或“当前 / 下一项”名称不能证明这些输入存在，也不能证明 Readiness 已经通过。只有 Planning / Requirement Candidate 时，应按最早缺失职责返回 `clarify-intent` / `specify`；Specification Ready 后仍缺少 Candidate Execution Units 时才返回 `slice-work`。不得在 Gate 内根据编号补造 Specification 或 Units。
+
+当 Gate 因预编号的 Planning / Requirement Candidate 缺少上游输入而阻止继续时，结论应显式保持完整状态边界：Specification Ready 且必要 Technical Planning 完成后，才由 `slice-work` 形成 Candidate Execution Units，并可为这些 Candidate Units 分配稳定 Identifier；随后仍必须重新进入 `readiness-check`。Identifier 本身不构成 Readiness PASS，也不授予 Execute 权限。
 
 如果缺失：
 
