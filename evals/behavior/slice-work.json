@@ -13,6 +13,19 @@
         "导航计划证据能区分 SERVICE 与 SITE 的公开分区/类别行为",
         "不绑定固定测试框架、CI 平台或强制一条验收义务对应一个测试"
       ]
+    },
+    {
+      "id": "B-SW-02",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 slice-work。Consumer Project Roadmap 把“浏览器兼容性与 Runtime Guard”写成后续 `EU-31`，GitHub Issue 也保存了若干方向，但当前只有 Planning / Requirement Candidate：Product Intent、支持范围、Acceptance、必要 Research / Technical Planning 都尚未确认，没有 Ready Specification。Human 现在要求“继续执行 EU-31 并形成执行单元”。请判断能否沿用该身份进入 Slice，并给出正确返回方向。",
+      "expected_behavior": "不能因为 Roadmap 顺序、`EU-31` 名称或 Issue 存在就把 Planning Candidate 当作可切分、可执行的 Execution Unit。应指出上游 Specification 尚未 Ready，保留其 Planning / Backlog / Issue 身份并返回 clarify-intent / specify，必要 Technical Planning 在需求明确后按条件执行；不得猜测支持范围、Acceptance 或 Unit Boundary，也不得输出伪造的 Candidate Unit Set。还应说明：当 Specification Ready 后，slice-work 可以形成带稳定 Identifier 的 Candidate Execution Units，但 Identifier 不等于 Readiness PASS，仍需 readiness-check。",
+      "assertions": [
+        "拒绝把 Roadmap 顺序、`EU-31` 预编号或 GitHub Issue 存在当作 Execution Unit 身份或 Slice Readiness 证据",
+        "识别当前仍是 Planning / Requirement Candidate，且 Product Intent、支持范围、Acceptance 或必要 Planning 输入不完整",
+        "返回 `clarify-intent` / `specify`，并把 Technical Planning 保持为需求明确后的条件阶段",
+        "不猜测 Scope、Acceptance、Unit Boundary，不输出看似已完成 Slice 的 Candidate Unit Set，也不进入 Execute",
+        "允许保留独立 Backlog / Issue 身份作为规划追踪，但不把它描述为 Ready Execution Unit",
+        "明确 Specification Ready 后可由 slice-work 为 Candidate Execution Units 分配 Identifier，但仍需 readiness-check，Identifier 本身不代表 PASS"
+      ]
     }
   ]
 }
