@@ -124,6 +124,8 @@ Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或�
 
 可以使用 `docs/project/project-roadmap.md` 等一眼可识别的名称，但 Consumer Repository 可以选择其他可发现载体。README 只链接到当前路线，不并行复制易变化的详细状态。对于小型、一次性或仅含单一局部工作的项目，不要为了套用模板创建项目路线图。
 
+Project Roadmap、Backlog 或 Issue 可以保存 Future Work / Planning / Requirement Candidates，但这些候选在进入 `slice-work` 前不具有 Execution Unit 身份。不要通过 `EU-xx`、Execution Unit ID、顺序编号或“下一单元”等名称，让尚未完成 Intent / Specification 与必要 Technical Planning 的候选看起来已经切分或可执行。Consumer 可以继续使用独立的 Backlog / Issue ID，只需让其类型与状态不会被 Fresh Agent 误读为 Execution Readiness。
+
 如果 Consumer Repository 尚未明确自然语言规则，人类可读的项目文档默认应沿用当前权威需求与主要项目协作输入的主导语言，避免把 `agentic-dev` 自身或某个 Runtime 的语言习惯无意复制到目标项目。
 
 语言选择是 Consumer Project Rule，而不是 `agentic-dev` Method 约束：
@@ -259,6 +261,10 @@ technical-plan
 如果 Execute、`systematic-debug` 或 `converge` 才发现长期领域事实缺失、冲突或失效，应回到 `clarify-intent` / `specify`；发现新的长期架构状态、决定或现有 Architecture Context 失效时，应回到 `technical-plan` 完成 Architecture Authority 更新与必要 ADR 评估。不要把长期权威只留在代码、测试、当前聊天或局部 JIT Plan 中。
 
 ### 5.4 切分并检查执行单元（Execution Units）
+
+进入本阶段前，Future Work 继续保持 Planning / Requirement Candidate 身份。只有当上游 Specification 已经 Ready，且必要 Technical Planning 已完成或确认不需要时，才由 `slice-work` 形成 Candidate Execution Units。
+
+`slice-work` 可以为候选 Execution Unit 分配稳定 Identifier，以支持追踪、依赖和后续检查；该 Identifier 只表明“候选执行单元已经形成”，不等于 Readiness Gate 已通过，也不授予 Execute 权限。只有 `readiness-check` 返回 PASS 后，相关 Unit 才是可进入执行的 Ready Execution Unit。Roadmap 顺序、预编号、Issue 标签或名称中的 `EU-xx` 均不能替代这两个职责边界。
 
 使用：
 

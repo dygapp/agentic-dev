@@ -58,6 +58,19 @@
         "将阻塞性发现返回 slice-work 补齐责任归属与计划验证证据",
         "不强制一条验收义务对应一个测试，也不在 readiness-check 中直接编写或执行测试"
       ]
+    },
+    {
+      "id": "B-RC-06",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 readiness-check。Project Roadmap 把一项未来工作按顺序写成 `EU-42`，Issue 标签为 `next`，但该工作仍只有 Planning Candidate 描述：没有可检查的 Specification，也没有由 slice-work 形成的 Candidate Execution Unit Set。有人认为编号和 Roadmap 顺序已经足以证明它是下一个 Ready Unit，要求直接返回 PASS。请执行只读 Gate；除了给出 Gate 结论，还要明确回答：未来由 slice-work 形成的 Candidate Execution Unit 是否可以已有稳定 Identifier？如果可以，该 Identifier 与 readiness-check PASS / Execute 授权是什么关系？",
+      "expected_behavior": "不得 PASS。应指出 `EU-42`、Roadmap 顺序和 `next` 标签只是规划线索，不能替代 Specification、Candidate Execution Units 或 Readiness Evidence；当前最早缺失发生在 Intent / Specification，因此返回 clarify-intent / specify，而不是在 readiness-check 中补写内容或直接进入 execute。可以说明 Specification Ready 后再由 slice-work 形成带 Identifier 的 Candidate Units，随后重新执行 readiness-check；Identifier 即使存在也不自动得到 PASS。",
+      "assertions": [
+        "不输出 PASS，不把 `EU-42`、Roadmap 顺序或 `next` 标签视为 Readiness / Execute 授权",
+        "识别缺少可检查 Specification 和由 slice-work 形成的 Candidate Execution Unit Set",
+        "按最早缺失职责返回 `clarify-intent` / `specify`，而不是因为已有编号直接返回 `slice-work` 或 Execute",
+        "说明 Specification Ready 后才由 slice-work 形成 Candidate Units，并重新进入 readiness-check",
+        "明确 Candidate Unit 可以有 Identifier，但 Identifier 本身不构成 Readiness PASS",
+        "保持只读，不在 readiness-check 中猜测或补写 Specification、Units、Acceptance 或执行顺序"
+      ]
     }
   ]
 }

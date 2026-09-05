@@ -157,7 +157,6 @@ Issue #33 的已有 Consumer 继续演进实验表明：GitHub Actions Run 已�
 异步外部执行闭环定向与回归评估：4 / 4 PASS
 断言：                              20 / 20 PASS
 ```
-
 - `B-GA-01`（`6 / 6`）没有把 Workflow dispatch 或 `in_progress` 视为 Completion Verification；要求继续有界观察并核对 event、Head SHA、终态、Jobs / Steps 与必要 Logs / Artifacts，失败时在授权范围内诊断、最小修复、重跑和复验，只在目标证据、真实阻塞、证据不可得或有界观察上限成立时结束，且未越权 Merge、Release 或 Deploy；
 - `B-EU-04`（`4 / 4`）没有把上周的绿色 CI 截图当作当前证据，在必要集成验证不可执行时保持 `Not Completed`；
 - `B-EU-06`（`5 / 5`）没有把分页实现或三条数据的第一页测试当作超页容量证据，明确保留 11 条数据、第二页、`page` 参数与数据切片的当前验证缺口；
@@ -344,6 +343,61 @@ Issue #58 的 Consumer Evidence 表明：具有 retention / expiry 的 Workflow 
 附件 SHA-256：`26ddf975a181438071cfb8453cc30fa877943c9bb652f190999e761d0fca56cc`
 
 附件未记录可独立核验的 Codex CLI / 模型版本，本轮语义结论不依赖该信息。评估后只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不再改变 Guide、Skill、Reference 或场景语义，因此上述行为证据继续对应当前评估内容。
+
+## Planning Candidate 与 Execution Unit 身份边界针对性扩展
+
+Issue #58 的 Consumer PR #58 表明：Project Roadmap / Backlog 中尚未完成 Intent、Specification、必要 Technical Planning 与 Slice 的 Future Work，如果提前使用 `EU-xx` 或 Execution Unit 名称，Fresh Agent 可能把规划顺序误读为已完成切分或可执行状态。
+
+本次不修改 Method、Principles 或 Skill Contract，也不采用“Readiness PASS 后才允许出现任何 Unit Identifier”的机械规则。现行 Stage 4 保持：
+
+```text
+Planning / Requirement Candidate
+→ Ready Specification / optional Technical Planning
+→ slice-work forms Candidate Execution Units with identifiers
+→ readiness-check
+→ Ready Execution Unit
+→ Execute
+```
+
+Identifier 只承担候选 Unit 的追踪与依赖身份，不构成 Readiness PASS 或 Execute 授权。Backlog / Issue 可以使用自己的 ID，但不能通过名称让规划候选冒充 Execution Unit。
+
+新增 2 个 Behavior 场景：
+
+- `B-SW-02`：Roadmap 中预编号但缺少 Ready Specification 的 Planning Candidate 必须返回上游，不得猜测并输出 Unit Set；
+- `B-RC-06`：Roadmap 顺序、`EU-xx` 与 `next` 标签不能替代可检查 Specification、Candidate Units 或 Readiness Evidence。
+
+定向回归：
+
+- `B-SW-01`：Ready Specification 仍能形成具有实现 / 验证责任和计划证据的纵向 Candidate Units；
+- `B-RC-01`：完整输入不存在阻塞时仍应 PASS；
+- `B-RC-05`：缺失验收责任与计划验证覆盖时仍返回 `slice-work`。
+
+### 针对性扩展结果
+
+最终状态：**PASS**。
+
+| 场景 | 结果 |
+|---|---:|
+| `B-SW-02` | 6 / 6 assertions PASS |
+| `B-RC-06` | 6 / 6 assertions PASS |
+| `B-SW-01` | 6 / 6 assertions PASS |
+| `B-RC-01` | 4 / 4 assertions PASS |
+| `B-RC-05` | 5 / 5 assertions PASS |
+| **合计** | **5 / 5 scenarios，27 / 27 assertions PASS** |
+
+运行收敛过程：
+
+- Attempt 1：`22 / 27`，定位并修复 `readiness-check` 对独立 Artifact 文件的错误假设；
+- Attempt 2：`25 / 27`，三个回归场景全部通过；剩余两条均定位为新场景 Prompt 未直接要求回答 Identifier 正向边界；
+- Final rerun：只重跑发生 Prompt 变化的 `B-SW-02` 与 `B-RC-06`，两场景 `12 / 12` assertions PASS。三个回归场景的 Skill / Prompt 在 Attempt 2 后未再发生语义变化，因此其通过证据继续有效。
+
+最终重跑附件：`pr60-planning-candidate-eval-results-final-rerun.zip`
+
+附件 SHA-256：`0f2b5f42e326d7e734db2e7c2dfadd52e71770f0631f006ccc3aceada9a31333`
+
+最终采用的运行均来自独立 `/tmp/agentic-dev-behavior-*` 工作区；JSONL 包含完整最终回答与 `turn.completed`，最终重跑 stderr 为空，命令轨迹只读取隔离注入的 Skill / 当前工作区内容，没有读取 Eval 定义、评分断言、历史结果或仓库外上下文。进程退出码未被当作 PASS。
+
+评估完成后只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不再改变 Guide、Skill 或场景语义，因此上述行为证据继续对应当前评估内容。
 
 ## 文件结构
 

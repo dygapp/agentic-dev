@@ -51,7 +51,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 1. Repository Instructions、Method、Architecture 与其他更高优先级 Authority 约束低优先级 Artifact。
 2. Specification 定义 Product / Feature 的 WHAT / WHY；Technical Plan 与 Execution Units 不得反向改变已确认 Intent。
 3. Technical Plan 只在存在时作为 Design Readiness 输入；其内容不得通过 Silent Redefinition 改写 Specification。
-4. Execution Units 必须可追溯到 Specification，并遵守已确认的 Durable Technical Decisions、当前有效 Domain / Architecture / ADR Authority 与 Governance Rules。
+4. Execution Units 必须可追溯到 Specification，并遵循已确认的 Durable Technical Decisions、当前有效 Domain / Architecture / ADR Authority 与 Governance Rules。
 5. Domain Authority 提供跨功能持续有效的业务事实；Architecture Context 提供当前有效架构状态；ADR 提供满足条件的重要架构决定及其理由。低层 Artifact 不得静默覆盖。
 6. Conversation History 不构成权威来源。
 7. `readiness-check` 没有修改更高层 Authority 以消除 Finding 的权限。
@@ -62,7 +62,13 @@ description: Performs a read-only pre-execution gate across specification, optio
 
 ### 1. Confirm Checkable Inputs
 
-确认存在可检查的 Specification 和至少一个 Execution Unit，并识别当前适用的 Domain / Architecture / Governance Authority。
+确认存在可检查的 Specification 和至少一个由 `slice-work` 形成的 Candidate Execution Unit，并识别当前适用的 Domain / Architecture / Governance Authority。
+
+“可检查”是语义要求，不等于必须存在独立文件。当前场景、Repository Authority 或其他已授权输入如果已经明确提供足以判断本 Gate 的 Specification、Candidate Execution Units 与治理事实，应直接据此检查；不得仅因隔离工作目录中没有对应 Markdown / JSON 等 Artifact 文件而把已提供的输入判定为缺失。反之，不能从文件名、编号、标签或顺序推断未被权威输入明确提供的事实。
+
+Roadmap / Backlog / Issue 中的顺序、`EU-xx` / Unit ID、标签或“当前 / 下一项”名称不能证明这些输入存在，也不能证明 Readiness 已经通过。只有 Planning / Requirement Candidate 时，应按最早缺失职责返回 `clarify-intent` / `specify`；Specification Ready 后仍缺少 Candidate Execution Units 时才返回 `slice-work`。不得在 Gate 内根据编号补造 Specification 或 Units。
+
+当 Gate 因预编号的 Planning / Requirement Candidate 缺少上游输入而阻止继续时，结论应显式保持完整状态边界：Specification Ready 且必要 Technical Planning 完成后，才由 `slice-work` 形成 Candidate Execution Units，并可为这些 Candidate Units 分配稳定 Identifier；随后仍必须重新进入 `readiness-check`。Identifier 本身不构成 Readiness PASS，也不授予 Execute 权限。
 
 如果缺失：
 
@@ -108,6 +114,7 @@ description: Performs a read-only pre-execution gate across specification, optio
 
 检查 Execution Unit Set：
 
+- 每个 Unit 当前是否仍明确处于 Candidate 状态，且没有把 Identifier、Roadmap 顺序或历史命名当作 Readiness / Execute 授权；
 - 需求是否同时获得合理实现覆盖与验证覆盖；
 - 每项必需行为 / 验收义务是否有明确的实现责任 / 验证责任，或有真实跨执行单元原因支持的显式功能整体验证责任；
 - 计划验证证据是否足以区分所承接义务是否满足，而不是只写“代码完成”“测试通过”或覆盖主路径；
@@ -220,6 +227,8 @@ Non-blocking Findings:  # optional
 - Authority First；
 - 使用 Progressive Disclosure，只加载四维 Gate 判断所需上下文；
 - Conversation History 不作为权威知识；
+- Candidate Execution Unit 可以已有 Identifier，但 Identifier 本身不参与 PASS 推断；
+- Planning / Requirement Candidate 不因预编号进入本 Gate 的可检查 Unit Set；
 - 不默认加载完整 Codebase；只有当前 Authority / Design 判断确实需要时才读取相关上下文；
 - Findings 必须基于当前输入和当前权威证据，不能依据未经验证的假设；
 - 只检查当前工作已经暴露的生命周期责任，不为了形式完整性要求每个阶段创建 Artifact；
