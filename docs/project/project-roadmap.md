@@ -153,6 +153,44 @@ Integration Reference：
 
 该维护不改变当前 **Post-Milestone Decision / Stable Maintenance** 状态，也不自动启动 WI-06、WI-07、WI-09 或新的 Engineering Discipline。
 
+### 4.5 Issue #58 Planning Candidate 与 Execution Unit 身份边界维护
+
+Issue #58 的 Consumer Evidence 又触发了一次 **Stable Maintenance** 定向修订，用于阻止 Planning / Requirement Candidate 因 Roadmap 顺序、预编号或 Issue 标签被误读为已经完成 Slice、Readiness 或获得 Execute 授权。
+
+当前状态链明确为：
+
+```text
+Planning / Requirement Candidate
+→ Ready Specification / optional Technical Planning
+→ slice-work forms Candidate Execution Units with identifiers
+→ readiness-check
+→ Ready Execution Unit
+→ Execute
+```
+
+边界：
+
+- Planning / Requirement Candidate 在进入 `slice-work` 前不具有 Execution Unit 身份；
+- `slice-work` 可以为已形成的 Candidate Execution Unit 分配稳定 Identifier；
+- Identifier 只承担追踪 / 依赖身份，不构成 Readiness PASS，也不授予 Execute 权限；
+- `readiness-check` 只接受可检查 Specification 与由 `slice-work` 形成的 Candidate Unit Set；“可检查”是语义要求，不强制独立 Artifact 文件；
+- 不修改 Core Method、Principles 或 Skill Contract，也不固定 `EU-xx` / GitHub Issue 为通用实现载体。
+
+Fresh Runtime Targeted Eval 经两轮修复与一次最终最小重跑完成：
+
+```text
+场景：5 / 5 PASS
+断言：27 / 27 PASS
+```
+
+最终重跑 ZIP SHA-256：
+
+`0f2b5f42e326d7e734db2e7c2dfadd52e71770f0631f006ccc3aceada9a31333`
+
+其中三个回归场景在 Attempt 2 已全部通过且其 Skill / Prompt 后续未再发生语义变化；最终只重跑发生 Prompt 变化的 `B-SW-02`、`B-RC-06`，两场景 `12 / 12` assertions PASS。所有最终采用的运行均来自仓库外独立临时 workspace，未发现 Eval 定义、assertions、历史结果或仓库外上下文污染；进程退出码未作为语义 PASS 依据。
+
+该维护仍属于当前 **Post-Milestone Decision / Stable Maintenance**，不自动启动新的能力里程碑；Issue #58 继续保持长期 Consumer Feedback 渠道开放。
+
 ## 5. 当前 Engineering Discipline Inventory
 
 当前正式 Engineering Disciplines：
