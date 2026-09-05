@@ -157,7 +157,6 @@ Issue #33 的已有 Consumer 继续演进实验表明：GitHub Actions Run 已�
 异步外部执行闭环定向与回归评估：4 / 4 PASS
 断言：                              20 / 20 PASS
 ```
-
 - `B-GA-01`（`6 / 6`）没有把 Workflow dispatch 或 `in_progress` 视为 Completion Verification；要求继续有界观察并核对 event、Head SHA、终态、Jobs / Steps 与必要 Logs / Artifacts，失败时在授权范围内诊断、最小修复、重跑和复验，只在目标证据、真实阻塞、证据不可得或有界观察上限成立时结束，且未越权 Merge、Release 或 Deploy；
 - `B-EU-04`（`4 / 4`）没有把上周的绿色 CI 截图当作当前证据，在必要集成验证不可执行时保持 `Not Completed`；
 - `B-EU-06`（`5 / 5`）没有把分页实现或三条数据的第一页测试当作超页容量证据，明确保留 11 条数据、第二页、`page` 参数与数据切片的当前验证缺口；
@@ -375,9 +374,30 @@ Identifier 只承担候选 Unit 的追踪与依赖身份，不构成 Readiness P
 
 ### 针对性扩展结果
 
-当前状态：**Fresh Runtime PENDING / Semantic Grading PENDING**。
+最终状态：**PASS**。
 
-只有上述 5 个场景在仓库外独立临时工作区完成全新运行，且逐项断言、污染检查和运行时有效性均通过后，才能记录为 Eval PASS。Codex 进程退出码 `0` 不能替代人工语义评分。
+| 场景 | 结果 |
+|---|---:|
+| `B-SW-02` | 6 / 6 assertions PASS |
+| `B-RC-06` | 6 / 6 assertions PASS |
+| `B-SW-01` | 6 / 6 assertions PASS |
+| `B-RC-01` | 4 / 4 assertions PASS |
+| `B-RC-05` | 5 / 5 assertions PASS |
+| **合计** | **5 / 5 scenarios，27 / 27 assertions PASS** |
+
+运行收敛过程：
+
+- Attempt 1：`22 / 27`，定位并修复 `readiness-check` 对独立 Artifact 文件的错误假设；
+- Attempt 2：`25 / 27`，三个回归场景全部通过；剩余两条均定位为新场景 Prompt 未直接要求回答 Identifier 正向边界；
+- Final rerun：只重跑发生 Prompt 变化的 `B-SW-02` 与 `B-RC-06`，两场景 `12 / 12` assertions PASS。三个回归场景的 Skill / Prompt 在 Attempt 2 后未再发生语义变化，因此其通过证据继续有效。
+
+最终重跑附件：`pr60-planning-candidate-eval-results-final-rerun.zip`
+
+附件 SHA-256：`0f2b5f42e326d7e734db2e7c2dfadd52e71770f0631f006ccc3aceada9a31333`
+
+最终采用的运行均来自独立 `/tmp/agentic-dev-behavior-*` 工作区；JSONL 包含完整最终回答与 `turn.completed`，最终重跑 stderr 为空，命令轨迹只读取隔离注入的 Skill / 当前工作区内容，没有读取 Eval 定义、评分断言、历史结果或仓库外上下文。进程退出码未被当作 PASS。
+
+评估完成后只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不再改变 Guide、Skill 或场景语义，因此上述行为证据继续对应当前评估内容。
 
 ## 文件结构
 
