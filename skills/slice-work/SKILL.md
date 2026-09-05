@@ -22,6 +22,7 @@ description: Turns a ready specification and optional technical plan into bounde
 
 ## Do Not Use When
 
+- 当前只有 Roadmap / Backlog / Issue 中的 Future Work、Planning Candidate 或 Requirement Candidate，尚未形成 Ready Specification；
 - Product Intent 仍存在会 materially affect Goal、Scope、Behavior 或 Acceptance 的阻塞歧义；
 - 必要的 Technical Planning 尚未完成；
 - 当前工作只是单个 Execution Unit 内的临时 JIT 施工计划；
@@ -60,6 +61,8 @@ description: Turns a ready specification and optional technical plan into bounde
 - Specification 已足够明确，可以判断 Goal、Scope、Observable Behavior 与 Completion；
 - 如果存在实施前必须长期协调的重大技术决定，它们已经通过 Technical Planning 解决；
 - 当前工作确实需要形成 Execution Units，而不是当前 Unit 的 JIT Plan。
+
+Roadmap 顺序、预先出现的 `EU-xx` / Unit ID、Issue 标签或“下一项”名称只可作为待核验线索，不能替代 Specification Readiness。输入仍是 Planning / Requirement Candidate 时，保留其 Backlog / Issue 身份并返回 `clarify-intent` / `specify`；不得为了沿用编号而猜测 Scope、Acceptance 或 Unit Boundary。
 
 如果 Product Intent 仍阻塞，返回 `clarify-intent` / `specify`。
 
@@ -195,6 +198,8 @@ Coverage 不要求每个 Specification 条目机械映射到唯一 Unit；要求
 
 输出一个或多个候选 Execution Units。
 
+本阶段可以为已经形成的 Candidate Execution Unit 分配稳定 Identifier，以建立追踪、依赖和后续检查关系。该 Identifier 不表示 Readiness PASS；即使沿用或映射已有 Backlog / Issue ID，也必须继续显式保持候选状态，直到 `readiness-check` 给出最终 Verdict。
+
 `slice-work` 只能说明该 Unit Set 已完成拆分与塑形，可以交给 `readiness-check`；不得自行给出最终 `PASS`，也不自动进入 `execute-unit`。
 
 ## Outputs
@@ -254,6 +259,8 @@ constraints:
 - Authority First；
 - 使用 Progressive Disclosure，只加载确定 Coverage、Unit Boundary、Dependencies 与 Constraints 所需上下文；
 - Conversation History 不作为权威知识；
+- Planning / Requirement Candidate 不因 Roadmap 排序、预编号或名称自动成为 Execution Unit；
+- Candidate Execution Unit 的 Identifier 不构成 Readiness 或 Execute 授权；
 - 长期 Execution Unit Identity 不依赖易过时的精确 File Paths；
 - Unit 只保留执行所需的 Durable Constraints；
 - Exact File Paths、Edit Sequence、Test Commands 与 Local Implementation Details 留给 Execute 内 JIT Execution Plan；
