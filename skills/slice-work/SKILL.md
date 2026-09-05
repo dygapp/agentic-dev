@@ -64,6 +64,8 @@ description: Turns a ready specification and optional technical plan into bounde
 
 Roadmap 顺序、预先出现的 `EU-xx` / Unit ID、Issue 标签或“下一项”名称只可作为待核验线索，不能替代 Specification Readiness。输入仍是 Planning / Requirement Candidate 时，保留其 Backlog / Issue 身份并返回 `clarify-intent` / `specify`；不得为了沿用编号而猜测 Scope、Acceptance 或 Unit Boundary。
 
+如果因为上述 Planning / Requirement Candidate 状态返回上游，结论还应明确后续身份边界：Specification Ready 且必要 Technical Planning 完成后，`slice-work` 才形成 Candidate Execution Units，并可以为这些 Candidate Units 分配或确认稳定 Identifier；这些 Unit 仍保持 Candidate 状态，必须继续进入 `readiness-check`。Identifier 本身不构成 Readiness PASS，也不授予 Execute 权限。已有 Backlog / Issue ID 可以继续作为规划追踪标识，但不得因此提前把当前候选描述成 Execution Unit。
+
 如果 Product Intent 仍阻塞，返回 `clarify-intent` / `specify`。
 
 如果必须先解决跨 Unit 的 Major / Durable Technical Decision，返回 `technical-plan`，必要时按 Authority、Impact、Reversibility 升级。
