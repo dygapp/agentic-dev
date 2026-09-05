@@ -345,6 +345,40 @@ Issue #58 的 Consumer Evidence 表明：具有 retention / expiry 的 Workflow 
 
 附件未记录可独立核验的 Codex CLI / 模型版本，本轮语义结论不依赖该信息。评估后只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不再改变 Guide、Skill、Reference 或场景语义，因此上述行为证据继续对应当前评估内容。
 
+## Planning Candidate 与 Execution Unit 身份边界针对性扩展
+
+Issue #58 的 Consumer PR #58 表明：Project Roadmap / Backlog 中尚未完成 Intent、Specification、必要 Technical Planning 与 Slice 的 Future Work，如果提前使用 `EU-xx` 或 Execution Unit 名称，Fresh Agent 可能把规划顺序误读为已完成切分或可执行状态。
+
+本次不修改 Method、Principles 或 Skill Contract，也不采用“Readiness PASS 后才允许出现任何 Unit Identifier”的机械规则。现行 Stage 4 保持：
+
+```text
+Planning / Requirement Candidate
+→ Ready Specification / optional Technical Planning
+→ slice-work forms Candidate Execution Units with identifiers
+→ readiness-check
+→ Ready Execution Unit
+→ Execute
+```
+
+Identifier 只承担候选 Unit 的追踪与依赖身份，不构成 Readiness PASS 或 Execute 授权。Backlog / Issue 可以使用自己的 ID，但不能通过名称让规划候选冒充 Execution Unit。
+
+新增 2 个 Behavior 场景：
+
+- `B-SW-02`：Roadmap 中预编号但缺少 Ready Specification 的 Planning Candidate 必须返回上游，不得猜测并输出 Unit Set；
+- `B-RC-06`：Roadmap 顺序、`EU-xx` 与 `next` 标签不能替代可检查 Specification、Candidate Units 或 Readiness Evidence。
+
+定向回归：
+
+- `B-SW-01`：Ready Specification 仍能形成具有实现 / 验证责任和计划证据的纵向 Candidate Units；
+- `B-RC-01`：完整输入不存在阻塞时仍应 PASS；
+- `B-RC-05`：缺失验收责任与计划验证覆盖时仍返回 `slice-work`。
+
+### 针对性扩展结果
+
+当前状态：**Fresh Runtime PENDING / Semantic Grading PENDING**。
+
+只有上述 5 个场景在仓库外独立临时工作区完成全新运行，且逐项断言、污染检查和运行时有效性均通过后，才能记录为 Eval PASS。Codex 进程退出码 `0` 不能替代人工语义评分。
+
 ## 文件结构
 
 ```text
