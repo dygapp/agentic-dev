@@ -1,12 +1,12 @@
-# Vue 3 + TypeScript Technology Profile
+# Vue 3 + TypeScript 技术画像
 
-**Profile ID：** `vue3-typescript`  
-**状态：** Baseline v0.1 — WI-05 Targeted Eval PASS  
-**性质：** Technology Profile + Verification Profile 规范性基线
+**技术画像 ID：** `vue3-typescript`  
+**状态：** 基线 v0.1 — WI-05 专项评估通过  
+**性质：** 技术画像（`Technology Profile`）+ 验证画像（`Verification Profile`）规范性基线
 
 ## 1. 目的与适用范围
 
-本文定义 `agentic-dev` 对 **Vue 3 + TypeScript** 工程开发的首个代表性 Technology Profile Baseline v0.1。
+本文定义 `agentic-dev` 对 **Vue 3 + TypeScript** 工程开发的首个代表性技术画像基线 v0.1。
 
 当前研究与验证锚点：
 
@@ -16,24 +16,24 @@
 - Vue 官方文档：`vuejs/docs main@b75d188ab16bf83bd1f364a77dfd2315be8f3fa4`；
 - `@vue/tsconfig`：`vuejs/tsconfig main@dc7af0b6a1e8a66239950a65423c5456ef5ba739`。
 
-本文适合 Vue 3 SFC、Composition API、TypeScript、Vue-aware type checking 等场景。它不要求 Existing Consumer 把实际依赖升级到上述精确版本，而是用这些版本建立当前可追溯的证据基线。
+本文适合 Vue 3 SFC、Composition API、TypeScript、Vue-aware type checking 等场景。它不要求既有使用方把实际依赖升级到上述精确版本，而是用这些版本建立当前可追溯的证据基线。
 
 明确不覆盖：
 
 - Vue 3.6 RC / Vapor Mode；
 - Element Plus 或其他组件库 API；
 - Nuxt 等上层框架特有语义；
-- Consumer 的目录、构建脚本、测试框架、浏览器工具、CI 命令；
+- 使用方的目录、构建脚本、测试框架、浏览器工具、CI 命令；
 - Options API 到 Composition API 的强制迁移；
-- 新的 Task-oriented Skill。
+- 新的任务型技能。
 
-## 2. Evidence Baseline
+## 2. 证据基线
 
 完整来源、版本、新鲜度与候选形成过程统一记录在：
 
 `docs/research/vue3-typescript-profile-analysis.md`
 
-本 Profile 只保留规范性规则与必要证据锚点，不复制完整 Research。
+本技术画像只保留规范性规则与必要证据锚点，不复制完整研究记录。
 
 ### 2.1 Vue
 
@@ -41,21 +41,21 @@
 - Vue 3.6 当前仍为 `v3.6.0-rc.6` 预发布线；
 - Vue 官方文档主线：`vuejs/docs main@b75d188ab16bf83bd1f364a77dfd2315be8f3fa4`。
 
-主要官方语义来源：TypeScript with Composition API、`<script setup>`、Props / Events / Component `v-model`、Computed / Watchers / Template Refs、Composables。
+主要官方语义来源包括 TypeScript with Composition API、`<script setup>`、Props / Events / Component `v-model`、Computed / Watchers / Template Refs、Composables。
 
 ### 2.2 TypeScript
 
 - TypeScript stable release：`7.0.2`；
 - TypeScript 7.0 正式发布：2026-07-08；
-- TS7-specific 规则必须显式受版本边界约束；通用 TypeScript 类型规则不错误描述为 TS7 独有。
+- TS7 专项规则必须显式受版本边界约束；通用 TypeScript 类型规则不错误描述为 TS7 独有。
 
-主要官方来源：TypeScript Handbook、Narrowing、Type Inference、TSConfig strict / noImplicitAny、TypeScript 7.0 发布说明。
+主要官方来源包括 TypeScript Handbook、Narrowing、Type Inference、TSConfig `strict` / `noImplicitAny`、TypeScript 7.0 发布说明。
 
-### 2.3 Vue tooling
+### 2.3 Vue 工具链
 
 - Vue Language Tools：`v3.3.11`；
 - `vue-tsc` 是 Vue SFC 的 CLI type-check 工具；
-- TypeScript 7 切换期间存在真实工具兼容迁移，说明“semver 看起来满足”不能替代 Current Evidence。
+- TypeScript 7 切换期间存在真实工具兼容迁移，说明“semver 看起来满足”不能替代当前证据。
 
 ### 2.4 Vue 官方工程配置
 
@@ -67,43 +67,43 @@
 - `verbatimModuleSyntax: true`；
 - TypeScript `target` 不等同于 Vite 最终 build target。
 
-这些是新建 / 明确允许调整工程的重要默认参考，不自动覆盖 Existing Consumer 当前 tsconfig。
+这些是新建 / 明确允许调整工程的重要默认参考，不自动覆盖既有使用方当前 `tsconfig`。
 
-## 3. Architecture Fit
+## 3. 架构适配
 
-本 Profile 属于 Technology Profile，而不是 Core Method、Engineering Discipline 或 Task-oriented Skill：
+本技术画像属于技术画像，而不是核心方法、工程纪律或任务型技能：
 
 - 规则依赖 Vue 3.5、SFC、Vue reactivity、Vue macros、Vue Language Tools 和 TypeScript 语义；
-- 跨技术栈的复杂度正当性、已有能力复用和 diff scope 继续服从 `engineering-disciplines.md`；
-- 当前没有独立稳定任务入口、输出、Stage Return 或调度价值，因此新增 Skill 没有职责证据；
-- Verification Profile 与 Vue / TypeScript 的技术变更类型高度耦合，作为本 Profile 的组成部分维护。
+- 跨技术栈的复杂度正当性、已有能力复用和差异范围继续服从 `engineering-disciplines.md`；
+- 当前没有独立稳定任务入口、输出、阶段返回或调度价值，因此新增 Skill 没有职责证据；
+- 验证画像与 Vue / TypeScript 的技术变更类型高度耦合，作为本技术画像的组成部分维护。
 
 Vue 与 TypeScript 组合的真实联合边界包括：
 
 1. `.vue` template 与 `<script setup lang="ts">` 的类型检查；
 2. `defineProps` / `defineEmits` / template refs / reactivity API 与 TypeScript 类型推断的交互；
 3. Vite 转译与 Vue-aware type-check 的职责分离；
-4. TypeScript 主版本变化对 Vue Language Tools 和 type-check evidence 的影响。
+4. TypeScript 主版本变化对 Vue Language Tools 和 type-check 证据的影响。
 
-Vue-specific、TypeScript-specific 和联合工具链规则仍分别表达，不能为了组合制造不存在的共同语义。
+Vue 专项、TypeScript 专项和联合工具链规则仍分别表达，不能为了组合制造不存在的共同语义。
 
-## 4. Official Semantics & Technology Constraints
+## 4. 官方语义与技术约束
 
-本节只保存客观技术语义、支持边界或违反后会导致错误判断的约束。官方“推荐”但仍可被 Consumer 合理覆盖的内容放在 Engineering Defaults。
+本节只保存客观技术语义、支持边界或违反后会导致错误判断的约束。官方“推荐”但仍可被使用方合理覆盖的内容放在工程默认规则。
 
 ### TC-01 Props 是单向输入
 
 Props 遵循父 → 子单向数据流。子组件不得直接修改 prop 本身。
 
-需要可编辑语义时，根据当前 contract 选择本地 state、emit、标准 component `v-model` 或 Consumer 已定义的共享状态机制。
+需要可编辑语义时，根据当前契约选择本地 state、emit、标准 component `v-model` 或使用方已定义的共享状态机制。
 
-### TC-02 Props / Emits declaration mode
+### TC-02 Props / Emits 声明模式
 
 在 TypeScript SFC 中，`defineProps` / `defineEmits` 可以采用 runtime declaration 或 type declaration，但同一声明不能同时混用两种模式。
 
 如果当前契约需要 runtime validation，不得为了更简洁的 type declaration 删除运行时责任。
 
-### TC-03 Template ref 具有 nullable lifecycle
+### TC-03 Template ref 具有可空生命周期
 
 DOM / component template ref 在挂载前可能为空，`v-if` 等条件卸载后也可能再次为空。
 
@@ -125,17 +125,17 @@ Vite 对 TypeScript 的构建职责是 transpilation，不负责完整 type chec
 
 > `vite build` 成功不能单独证明 Vue SFC / TypeScript 类型责任已经闭环。
 
-需要类型证据时，应解析并实际执行 Consumer 当前 Vue-aware type-check 机制。
+需要类型证据时，应解析并实际执行使用方当前 Vue-aware type-check 机制。
 
-## 5. Engineering Defaults
+## 5. 工程默认规则
 
-Engineering Default 只在适用条件成立且 Consumer 没有更具体 Authority 时优先采用；不得描述成不可覆盖的技术事实。
+工程默认规则只在适用条件成立且使用方没有更具体权威时优先采用；不得描述成不可覆盖的技术事实。
 
 ### ED-01 SFC + Composition API 优先 `<script setup>`
 
 在 Vue SFC + Composition API 场景中，`<script setup>` 是 Vue 官方推荐语法。
 
-这不意味着 Options API 不受支持，也不构成 Existing Consumer 的批量迁移授权。当前 Unit 不得为了统一风格顺带改写无关组件。
+这不意味着 Options API 不受支持，也不构成既有使用方的批量迁移授权。当前执行单元不得为了统一风格顺带改写无关组件。
 
 ### ED-02 保留有效类型推断
 
@@ -152,15 +152,15 @@ Engineering Default 只在适用条件成立且 Consumer 没有更具体 Authori
 
 对真实未知输入，优先使用可收窄类型（如 `unknown`、union、runtime guard）并通过正常控制流 narrowing。
 
-Existing Consumer 已存在的无关 `any` 不因此进入当前 Unit cleanup。
+既有使用方已存在的无关 `any` 不因此进入当前执行单元清理范围。
 
 ### ED-04 新建 / 明确允许调整的工程优先 strict
 
 Vue 官方维护的 `@vue/tsconfig` 使用 `strict: true`。新建或明确允许调整的 Vue + TS 工程默认优先保持严格类型检查。
 
-Existing Consumer 是否开启、加强或迁移 strict 属于项目配置责任：普通 Feature Unit 不得为了 Profile 自动改写整个 tsconfig。
+既有使用方是否开启、加强或迁移 strict 属于项目配置责任：普通功能执行单元不得为了技术画像自动改写整个 `tsconfig`。
 
-TypeScript 主版本变化后必须重新读取 Consumer 显式配置，不依赖默认值假设。
+TypeScript 主版本变化后必须重新读取使用方显式配置，不依赖默认值假设。
 
 ### ED-05 不用 `reactive<T>()` 强行定义返回类型
 
@@ -188,7 +188,7 @@ Vue 官方不推荐用 `reactive<T>()` 泛型参数指定返回对象类型，�
 
 Vue 3.4+ 对标准 component `v-model` 推荐 `defineModel()`。
 
-只在当前确实是标准 `v-model` contract 且 Consumer 没有更具体兼容 / library contract 时采用。不得仅为了使用新 API 改写已有稳定自定义 prop / emit contract。
+只在当前确实是标准 `v-model` contract 且使用方没有更具体兼容 / library contract 时采用。不得仅为了使用新 API 改写已有稳定自定义 prop / emit contract。
 
 ### ED-09 Vue 3.5+ 静态 template ref 优先 `useTemplateRef`
 
@@ -200,9 +200,9 @@ Vue 3.4+ 对标准 component `v-model` 推荐 `defineModel()`。
 
 新建 Vue + TypeScript bundler-based 工程优先参考 `create-vue` / `@vue/tsconfig`，而不是手工拼装所谓“通用 TypeScript 最佳配置”。
 
-Existing Consumer 的 tsconfig、构建工具、target、alias 和 extends 链继续由项目权威决定。
+既有使用方的 `tsconfig`、构建工具、target、alias 和 extends 链继续由项目权威决定。
 
-## 6. Conditional Guidance
+## 6. 条件性指导
 
 ### CG-01 异步 watcher / effect 的失效与 cleanup
 
@@ -214,15 +214,15 @@ Vue 3.5+ 可以使用 `onWatcherCleanup`；现有 callback `onCleanup` 入口仍
 
 ### CG-02 Template ref focus / DOM 操作的时机
 
-只有当前行为确实依赖 DOM 已挂载时，才增加 `nextTick`、lifecycle 或 watcher 等时机控制。选择哪一种由当前 trigger 和 Consumer 代码结构决定，不固定单一模式。
+只有当前行为确实依赖 DOM 已挂载时，才增加 `nextTick`、lifecycle 或 watcher 等时机控制。选择哪一种由当前 trigger 和使用方代码结构决定，不固定单一模式。
 
-### CG-03 Runtime / Browser / Visual 验证按风险扩展
+### CG-03 运行时 / 浏览器 / 视觉验证按风险扩展
 
-当变化涉及用户交互、DOM 生命周期、异步竞态或视觉验收义务时，静态 type-check / build 通常不足；应按当前 Acceptance Obligation 扩展到 component、integration、browser 或 visual evidence。
+当变化涉及用户交互、DOM 生命周期、异步竞态或视觉验收义务时，静态 type-check / build 通常不足；应按当前验收义务扩展到 component、integration、browser 或 visual evidence。
 
 不存在对应风险时，不机械运行所有层级。
 
-## 7. Known Misuse / Avoid
+## 7. 已知误用 / 避免事项
 
 ### KM-01 Build green ⇒ type safe
 
@@ -254,15 +254,15 @@ Vue 3.5+ 可以使用 `onWatcherCleanup`；现有 callback `onCleanup` 入口仍
 
 ### KM-08 仅靠版本号假设 `vue-tsc` 兼容
 
-错误：只根据 semver 或“最新版”推断 TypeScript / Vue Language Tools 可用性，而不运行 Consumer 当前 type-check。
+错误：只根据 semver 或“最新版”推断 TypeScript / Vue Language Tools 可用性，而不运行使用方当前 type-check。
 
 ### KM-09 越权解释 Element Plus
 
-错误：把本 Profile 当成 Element Plus component props、events、lifecycle 或 behavior 的 Authority。
+错误：把本技术画像当成 Element Plus component props、events、lifecycle 或 behavior 的权威。
 
-遇到组件库特有事实时，本 Profile 只提供通用 Vue / TypeScript / verification 规则；具体组件语义必须从 Consumer 依赖和相应权威解析。
+遇到组件库特有事实时，本技术画像只提供通用 Vue / TypeScript / verification 规则；具体组件语义必须从使用方依赖和相应权威解析。
 
-## 8. Capability Reuse & Extension Boundary
+## 8. 能力复用与扩展边界
 
 优先检查并复用 Vue / TypeScript 当前已经提供的能力，例如：
 
@@ -272,7 +272,7 @@ Vue 3.5+ 可以使用 `onWatcherCleanup`；现有 callback `onCleanup` 入口仍
 - template refs；
 - TypeScript inference / narrowing；
 - Vue-aware type checking；
-- 官方维护 tsconfig defaults。
+- 官方维护 `tsconfig` defaults。
 
 但“框架已有能力”不是绝对禁止自有实现：当前功能、安全、性能、可观察性、生命周期或公共契约存在真实不匹配时，可以基于当前证据保留项目自有实现或薄适配。
 
@@ -280,40 +280,40 @@ Vue 3.5+ 可以使用 `onWatcherCleanup`；现有 callback `onCleanup` 入口仍
 
 - 扩大依赖面；
 - 改变产品行为；
-- 覆盖 Consumer Architecture / ADR；
+- 覆盖使用方架构 / ADR；
 - 顺带迁移无关代码。
 
-## 9. Consumer Override Boundary
+## 9. 使用方覆盖边界
 
-Profile 是默认工程基线，不是 Consumer 的最终项目事实。
+技术画像是默认工程基线，不是使用方的最终项目事实。
 
 裁决顺序：
 
 1. 当前客观 Vue / TypeScript 技术语义；
-2. Consumer 已确认的技术版本与 Architecture / ADR；
-3. Consumer-local engineering rules；
-4. 本 Profile Engineering Defaults / Conditional Guidance；
+2. 使用方已确认的技术版本与架构 / ADR；
+3. 使用方本地工程规则；
+4. 本技术画像的工程默认规则 / 条件性指导；
 5. 普通实现偏好。
 
 典型边界：
 
-- Consumer 当前继续使用 Options API：不得因为 ED-01 就批量迁移；
-- Consumer 使用 Vue 3.4：不得使用 3.5 才存在的 `useTemplateRef()`；
-- Consumer 使用 TypeScript 6：不得机械套用 TS7 版本特定规则；
-- Consumer 已有 type-check script：优先实际运行它，不凭 Profile 发明替代命令；
-- Consumer 没有 Vue-aware type-check，而 Completion 必须证明 SFC 类型：这是 Verification Gap，不是 Profile 自动授予完成证据。
+- 使用方当前继续使用 Options API：不得因为 ED-01 就批量迁移；
+- 使用方使用 Vue 3.4：不得使用 3.5 才存在的 `useTemplateRef()`；
+- 使用方使用 TypeScript 6：不得机械套用 TS7 版本特定规则；
+- 使用方已有 type-check script：优先实际运行它，不凭技术画像发明替代命令；
+- 使用方没有 Vue-aware type-check，而完成条件必须证明 SFC 类型：这是验证缺口，不是技术画像自动授予完成证据。
 
-普通项目规则可以合理覆盖 Engineering Default，但不能把客观技术语义改写为错误事实。
+普通项目规则可以合理覆盖工程默认规则，但不能把客观技术语义改写为错误事实。
 
-## 10. Verification Profile
+## 10. 验证画像
 
-本节只定义 **Change Type → Verification Responsibility**，具体命令从 Consumer Repository Authority 解析。
+本节只定义**变更类型 → 验证责任**，具体命令从使用方仓库权威解析。
 
 ### VP-01 SFC / template / props / emits 类型契约
 
 通常至少需要：
 
-- Consumer 当前 Vue-aware type-check；
+- 使用方当前 Vue-aware type-check；
 - 若同时改变 runtime component behavior，再增加当前行为验证。
 
 纯 `tsc` 对 `.ts` 文件通过不能自动证明 `.vue` template contract。
@@ -354,25 +354,25 @@ Profile 是默认工程基线，不是 Consumer 的最终项目事实。
 - 实际 type-check；
 - 实际 build；
 - 必要时 runtime / browser evidence；
-- 读取 Consumer 显式 tsconfig / extends 链，不用默认值代替项目事实。
+- 读取使用方显式 `tsconfig` / extends 链，不用默认值代替项目事实。
 
 ### VP-06 TypeScript-only 类型变化
 
 如果变化只影响纯 TS 类型且没有 runtime / SFC / build obligation：
 
 - 当前 type-check 可以作为核心证据；
-- 仍按 Acceptance Obligation 判断消费者是否需要行为验证。
+- 仍按验收义务判断消费者是否需要行为验证。
 
 ### VP-07 Vue tooling compatibility failure
 
 如果 `vue-tsc` / language tools / TypeScript 组合本身无法运行：
 
-- 工具失败不是业务 PASS；
+- 工具失败不是业务通过；
 - 不用 `vite build` 替代必要 type-check；
-- 检查 Consumer 实际版本、lockfile、scripts 和当前官方工具支持；
+- 检查使用方实际版本、lockfile、scripts 和当前官方工具支持；
 - 在授权范围内修复、升级或 pin，或者明确返回验证缺口。
 
-### Verification Risk Escalation
+### 验证风险升级
 
 出现以下风险时按需扩大验证：
 
@@ -385,9 +385,9 @@ Profile 是默认工程基线，不是 Consumer 的最终项目事实。
 
 不为了形式完整机械运行所有验证层。
 
-## 11. Targeted Eval Gate
+## 11. 专项评估门禁
 
-本 Baseline 在首次进入当前 Repository Authority 前必须通过 Fresh Runtime Capability Targeted Eval：
+本基线在首次进入当前仓库权威前必须通过全新运行时能力专项评估：
 
 - `C-VTS-01` — Vite build 与 type-check 分离；
 - `C-VTS-02` — computed / watcher 职责；
@@ -395,44 +395,44 @@ Profile 是默认工程基线，不是 Consumer 的最终项目事实。
 - `C-VTS-04` — `reactive<T>` 与 composable destructure；
 - `C-VTS-05` — template ref 生命周期；
 - `C-VTS-06` — TypeScript 7 tooling compatibility；
-- `C-VTS-07` — Consumer Override；
-- `C-VTS-08` — Element Plus Authority Boundary；
+- `C-VTS-07` — 使用方覆盖；
+- `C-VTS-08` — Element Plus 权威边界；
 - `C-VTS-09` — 风险驱动验证扩展。
 
 每个场景必须：
 
-- 独立 Fresh Runtime；
-- 只读取当前 Profile 和场景材料；
+- 独立全新运行时；
+- 只读取当前技术画像和场景材料；
 - 不读取 expected behavior / assertions / 历史结果；
 - 逐 assertion 语义判分；
-- 失败后修订规则，并用新的 Fresh Runtime 重新验证受影响场景。
+- 失败后修订规则，并用新的全新运行时重新验证受影响场景。
 
-本 Baseline 已在冻结语义 Blob `999911e83b23389d16f9cbbadeb4d5c29f56de75` 上完成 Fresh Runtime Targeted Eval：
+本基线已在冻结语义 Blob `999911e83b23389d16f9cbbadeb4d5c29f56de75` 上完成全新运行时专项评估：
 
 - 运行场景：`C-VTS-01`～`C-VTS-09`；
 - 场景结果：`9 / 9 PASS`；
-- assertion：`41 / 41 PASS`；
-- 所有 Runtime 进程均正常完成，未发现读取 Eval corpus、assertions、Research 或历史结果的污染；
+- 断言：`41 / 41 PASS`；
+- 所有运行时进程均正常完成，未发现读取评估语料、断言、研究或历史结果的污染；
 - 结果包 SHA-256：`abf788b5e51db9fdc145d73dd6eafc16a99a6d3417dbd81b0aa00e538e22a088`；
-- 语义判分完成后没有修改本 Profile 的 Technology Constraint、Engineering Default、Conditional Guidance、Known Misuse、Consumer Override 或 Verification Profile 规则。
+- 语义判分完成后没有修改本技术画像的技术约束、工程默认规则、条件性指导、已知误用、使用方覆盖或验证画像规则。
 
 因此本文件内容已满足：
 
-`Baseline v0.1 — WI-05 Targeted Eval PASS`
+`基线 v0.1 — WI-05 专项评估通过`
 
-该版本是否构成现行 Profile Authority，以本文件是否已进入当前 Repository 集成分支为准；PR / feature branch 上的同一内容不会自行生效。
+该版本是否构成现行技术画像权威，以本文件是否已进入当前仓库集成分支为准；PR / feature branch 上的同一内容不会自行生效。
 
-## 12. Lifecycle
+## 12. 生命周期
 
-- **Producer：** 当前 `agentic-dev` Repository Authority 授权的 Technology Profile 维护职责；
-- **Trigger：** Foundation v1 F2 已集成 Technology Profile Contract，并冻结首个代表性 Vue 3 + TypeScript Profile；
-- **Consumer：** 执行 Vue / TypeScript 工作的 Agent、`execute-unit` 的技术上下文、未来适用 Task-oriented Skill、Foundation v1 Existing Consumer Adoption；
-- **Persistence：** `docs/technology-profiles/vue3-typescript.md` 是本 Profile 的唯一实例入口；只有当前 Repository 集成分支中的版本构成现行 Profile Authority，Research 只保留证据，不竞争规范性权威；
-- **Update：** Vue / TypeScript / Vue Language Tools 版本变化、官方语义变化、Targeted Eval、Consumer Adoption 或上游 Contract 变化触发重新检查；
-- **Supersede：** 新版本必须明确取代当前 Baseline；历史版本可以追溯，但只能有一个当前有效入口；
-- **Escalation：** 如果修订要求改变 Core Method、Engineering Capability Architecture、Consumer Architecture、公共难逆契约或安全 / 隐私高风险默认，返回对应更高权威处理。
+- **产生者：** 当前 `agentic-dev` 仓库权威授权的技术画像维护职责；
+- **触发条件：** 工程能力基础 v1 F2 已集成技术画像契约，并冻结首个代表性 Vue 3 + TypeScript 技术画像；
+- **消费者：** 执行 Vue / TypeScript 工作的 Agent、`execute-unit` 的技术上下文、未来适用任务型技能、工程能力基础 v1 既有使用方采用；
+- **持久化：** `docs/technology-profiles/vue3-typescript.md` 是本技术画像的唯一实例入口；只有当前仓库集成分支中的版本构成现行技术画像权威，研究只保留证据，不竞争规范性权威；
+- **更新：** Vue / TypeScript / Vue Language Tools 版本变化、官方语义变化、专项评估、使用方采用或上游契约变化触发重新检查；
+- **取代：** 新版本必须明确取代当前基线；历史版本可以追溯，但只能有一个当前有效入口；
+- **升级：** 如果修订要求改变核心方法、工程能力架构、使用方架构、公共难逆契约或安全 / 隐私高风险默认，返回对应更高权威处理。
 
-## 13. Non-goals
+## 13. 非目标
 
 本文不定义：
 
@@ -441,6 +441,6 @@ Profile 是默认工程基线，不是 Consumer 的最终项目事实。
 - Nuxt、Pinia、Router、Vitest、Playwright 的完整规则；
 - 所有项目统一 lint / test / build 命令；
 - 所有组件必须采用 `<script setup>`；
-- 所有 Existing Consumer 必须升级 Vue / TypeScript；
+- 所有既有使用方必须升级 Vue / TypeScript；
 - `vue-skill` / `typescript-skill`；
-- Foundation v1 的第二个 Technology Profile。
+- 工程能力基础 v1 的第二个技术画像。

@@ -1,51 +1,51 @@
 # 工程纪律基线
 
-**状态：** Baseline v0.2  
-**性质：** 工程纪律（Engineering Discipline）规范性基线
+**状态：** 基线 v0.2  
+**性质：** 工程纪律（`Engineering Discipline`）规范性基线
 
 ## 1. 目的
 
 本文定义 `agentic-dev` 当前三个跨技术栈工程纪律：
 
-1. **Implementation Minimality & Speculative Complexity Control（实现最小化与推测性复杂度控制）**；
-2. **Surgical Change & Diff Scope Control（精准修改与差异范围控制）**；
-3. **Data Access Scope & Boundedness Control（数据访问作用域与有界性控制）**。
+1. **实现最小化与推测性复杂度控制**（`Implementation Minimality & Speculative Complexity Control`）；
+2. **精准修改与差异范围控制**（`Surgical Change & Diff Scope Control`）；
+3. **数据访问作用域与有界性控制**（`Data Access Scope & Boundedness Control`）。
 
-本文不增加新的 Method Stage，不改变 Execution Unit、Human Escalation、Ready to Integrate 或 Integration Boundary，也不因为新增工程纪律创建新的 Task-oriented Skill。
+本文不增加新的方法阶段，不改变执行单元、人工升级、已具备进入集成决策的条件或集成边界，也不因为新增工程纪律创建新的任务型技能。
 
-首批两个 Discipline 已由 PR #48 完成 Fresh Runtime Targeted Eval 并进入当前 Repository Authority。第三项 Discipline 已在 Engineering Discipline Expansion v1 中完成 Draft、Fresh Runtime Targeted Eval 与 Final AI Review，并由 PR #56 集成进入 Repository Authority。本文当前三个 Discipline 均为现行 Repository Authority。
+首批两个工程纪律已由 PR #48 完成全新运行时专项评估并进入当前仓库权威。第三项工程纪律已在“工程纪律扩展 v1”中完成草案、全新运行时专项评估与最终 AI 复核，并由 PR #56 集成进入仓库权威。本文当前三个工程纪律均为现行仓库权威。
 
-## 2. Architecture Fit Review
+## 2. 架构适配复核
 
-### 2.1 首批两个 Discipline
+### 2.1 首批两个工程纪律
 
-WI-02 / WI-03 的 Research 与 Candidate Design 复核结论为：
+WI-02 / WI-03 的研究与候选设计复核结论为：
 
-- 两个 Candidate 都描述**阶段内部如何高质量实施**，而不是新的开发生命周期，因此属于 Engineering Discipline；
-- 两者跨 Vue、Spring、数据库等具体技术栈成立，不属于 Technology Profile；
-- 两者没有独立任务入口、Stage Return、稳定独立输出或单独调度价值，不满足 Task-oriented Skill 的独立职责条件；
-- 两者可以被 `execute-unit`、未来 Engineering Quality Review、Refactoring Discipline 和 Technology Profile 共同消费，因此不应只写死在单个 Skill 内；
+- 两个候选都描述**阶段内部如何高质量实施**，而不是新的开发生命周期，因此属于工程纪律；
+- 两者跨 Vue、Spring、数据库等具体技术栈成立，不属于技术画像；
+- 两者没有独立任务入口、阶段返回、稳定独立输出或单独调度价值，不满足任务型技能的独立职责条件；
+- 两者可以被 `execute-unit`、未来工程质量复核、重构纪律和技术画像共同消费，因此不应只写死在单个 Skill 内；
 - `execute-unit` 仍是当前主要执行消费者，只需要保留薄执行规则，不复制完整纪律正文；
 - 两个纪律职责独立且可组合：前者判断**复杂度为什么需要存在**，后者判断**最终变更为什么属于当前逻辑变化**。
 
-### 2.2 Data Access Scope & Boundedness Control
+### 2.2 数据访问作用域与有界性控制
 
-Engineering Discipline Expansion v1 的 Research / Candidate 见：
+“工程纪律扩展 v1”的研究 / 候选见：
 
 `docs/research/data-access-scope-boundedness-analysis.md`
 
-Architecture Fit 结论：**PASS — Engineering Discipline**。
+架构适配结论：**通过 — 工程纪律**。
 
 理由：
 
-- 该判断跨前端、后端、REST / GraphQL、数据库和后台任务成立，不依赖单一技术栈，因此不是 Technology Profile；
-- 它决定数据访问的正确集合边界、增长 / 有界性、生命周期、window / pagination 和验证边界，不只是数据库性能技巧；
-- 它发生在 Execution Unit 实施内部，不改变 Core Method lifecycle；
-- 它没有独立任务入口、稳定独立输出或单独调度价值，不满足 Task-oriented Skill 条件；
-- `execute-unit` 可以以薄判断消费，不需要新的 Stage Return、持久化 Checklist 或人工确认步骤；
-- 它与 Implementation Minimality、Surgical Change 职责独立：分别判断数据边界、复杂度正当性和 diff 责任链。
+- 该判断跨前端、后端、REST / GraphQL、数据库和后台任务成立，不依赖单一技术栈，因此不是技术画像；
+- 它决定数据访问的正确集合边界、增长 / 有界性、生命周期、窗口 / 分页和验证边界，不只是数据库性能技巧；
+- 它发生在执行单元实施内部，不改变核心方法生命周期；
+- 它没有独立任务入口、稳定独立输出或单独调度价值，不满足任务型技能条件；
+- `execute-unit` 可以以薄判断消费，不需要新的阶段返回、持久化检查表或人工确认步骤；
+- 它与实现最小化、精准修改职责独立：分别判断数据边界、复杂度正当性和差异责任链。
 
-当前没有证据要求修改 Core Method 或 Engineering Capability Architecture。
+当前没有证据要求修改核心方法或工程能力架构。
 
 ## 3. 权威关系
 
@@ -61,10 +61,10 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 
 本文不得：
 
-- 覆盖 Specification / Technical Plan / Architecture / ADR / Consumer Repository Authority；
+- 覆盖规格说明、技术计划、架构、ADR 或使用方仓库权威；
 - 把低影响局部实现判断重新升级成人工确认循环；
 - 授予 Merge / Push / Release / Deploy 权限；
-- 以“工程质量”为理由扩大当前 Execution Unit 的授权范围。
+- 以“工程质量”为理由扩大当前执行单元的授权范围。
 
 ## 4. 实现最小化与推测性复杂度控制
 
@@ -78,11 +78,11 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 
 新增复杂度至少应能追溯到以下一种当前责任：
 
-- 当前 Specification / Execution Unit 的行为或验收义务；
-- 当前 Technical Plan、Architecture、ADR、公共契约或迁移义务；
+- 当前规格说明 / 执行单元的行为或验收义务；
+- 当前技术计划、架构、ADR、公共契约或迁移义务；
 - 当前安全、隐私、性能、可靠性、可观察性、测试性等非功能责任；
 - 当前真实存在的多个消费者、变体或共享语义；
-- 当前 Repository Rule / Engineering Rule；
+- 当前仓库规则 / 工程规则；
 - 正确复用现有框架、标准库或依赖所需的薄适配；
 - 有当前证据支持、几乎不增加持续理解和维护成本的低复杂度高收益准备。
 
@@ -98,7 +98,7 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 
 ### 4.3 判断规则
 
-实施前或 JIT Plan 中按需检查：
+实施前或即时执行计划中按需检查：
 
 1. 新增元素解决当前什么责任？
 2. 删除它后，当前正确性、验收、验证或有效长期约束会失去什么？
@@ -115,7 +115,7 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 - 当前变更所需测试和验证入口；
 - 为安全实施和可验证性直接服务的小规模行为保持重构；
 - 已经存在多个真实消费者且语义稳定的抽象；
-- Repository Authority 明确要求的配置、迁移、兼容性或非功能措施；
+- 仓库权威明确要求的配置、迁移、兼容性或非功能措施；
 - 为正确复用已有能力所需的薄适配。
 
 ### 4.5 配置与能力复用
@@ -132,24 +132,24 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 
 ### 5.1 核心规则
 
-> 当前 Execution Unit 完成前，应基于最终 diff 重新检查范围。每个有意义的变更区域都必须能够追溯到当前 Unit 的实现责任、验证责任、当前权威同步责任，或本次修改直接产生且必须闭合的必要清理。为当前变化建立安全实施路径所必需的、范围受控且可验证的行为保持重构可以属于当前责任；无法形成责任链的顺带修改应移除、记录或拆分。
+> 当前执行单元完成前，应基于最终差异重新检查范围。每个有意义的变更区域都必须能够追溯到当前执行单元的实现责任、验证责任、当前权威同步责任，或本次修改直接产生且必须闭合的必要清理。为当前变化建立安全实施路径所必需的、范围受控且可验证的行为保持重构可以属于当前责任；无法形成责任链的顺带修改应移除、记录或拆分。
 
 范围判断的基本单位是**一个可解释、可验证的逻辑变化**，不是最少行数、最少文件或用户请求的逐字映射。
 
-### 5.2 允许进入当前 diff 的责任类别
+### 5.2 允许进入当前差异的责任类别
 
 有意义的变更区域至少应属于以下一类：
 
-1. **直接实现**：满足当前 Unit Goal / Required Behavior / Completion Condition；
-2. **验证责任**：当前 test、fixture、reproduction、verification hook 或验证配置；
-3. **当前权威同步**：当前已授权行为变化要求同步的 API / contract / migration / schema / generated reference / operation doc；
-4. **必要准备性重构**：当前变化直接触发、行为保持、有当前证据、范围受控的 restructuring；
+1. **直接实现**：满足当前执行单元目标 / 必需行为 / 完成条件；
+2. **验证责任**：当前测试、fixture、复现、验证钩子或验证配置；
+3. **当前权威同步**：当前已授权行为变化要求同步的 API / 契约 / 迁移 / schema / generated reference / operation doc；
+4. **必要准备性重构**：当前变化直接触发、行为保持、有当前证据、范围受控的结构调整；
 5. **当前修改直接产生的必要清理**：unused import、orphan branch、stale renamed reference、失去最后消费者的局部 helper 等；
-6. **确定性机械伴随变更**：当前变化和 Repository Rule 确定触发的 formatter、generator、lockfile、schema compiler 等结果。
+6. **确定性机械伴随变更**：当前变化和仓库规则确定触发的 formatter、generator、lockfile、schema compiler 等结果。
 
-### 5.3 默认不进入当前 diff
+### 5.3 默认不进入当前差异
 
-以下理由默认不足以加入当前 change：
+以下理由默认不足以加入当前变更：
 
 - “就在旁边，顺手修了”；
 - 无关 TODO / typo；
@@ -160,7 +160,7 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 - “既然改这个文件，就全部格式化”；
 - 独立优化机会。
 
-如果相邻问题实际阻塞当前 Unit，应按现有 Stage Return / Reslicing 处理，而不是静默吸收。
+如果相邻问题实际阻塞当前执行单元，应按现有阶段返回 / 重新切分处理，而不是静默吸收。
 
 ### 5.4 必要重构边界
 
@@ -170,54 +170,54 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 - 不引入新的产品行为；
 - 有行为保持证据；
 - 不扩大到独立重大设计；
-- 当前 Reviewer 仍能区分结构变化与行为变化。
+- 当前复核者仍能区分结构变化与行为变化。
 
-如果重构已经形成独立目标、独立设计判断或显著降低当前 change 的可复核性，应拆成前置 Execution Unit / change。
+如果重构已经形成独立目标、独立设计判断或显著降低当前变更的可复核性，应拆成前置执行单元 / 变更。
 
 ### 5.5 多文件与机械差异
 
 - 多文件本身不是越界证据；
 - 当前已授权公共契约变化要求同步 DTO、migration、tests、generated reference 时，这些可以共同属于同一逻辑变化；
 - “同一逻辑变化”不能反过来绕过公共契约、重大架构或其他高影响事项的上游授权；
-- formatter / generator 产生大面积机械变化时，应确认最小合法范围，并在必要时分离机械 change 或提供清晰 Review 边界；
-- 不为了保持小 diff 跳过 Repository Rule 强制的机械产物和验证。
+- formatter / generator 产生大面积机械变化时，应确认最小合法范围，并在必要时分离机械变更或提供清晰复核边界；
+- 不为了保持小差异跳过仓库规则强制的机械产物和验证。
 
-### 5.6 Final Diff Scope Check
+### 5.6 最终差异范围检查
 
-在 `execute-unit` 声明 Completed 前，应能完成以下轻量检查：
+在 `execute-unit` 声明 `Completed` 前，应能完成以下轻量检查：
 
-1. 识别主要 changed regions；
+1. 识别主要变更区域；
 2. 为每个区域找到当前责任类别；
 3. 检查是否隐藏第二个独立逻辑变化；
-4. 检查 preparatory refactoring 是否仍受当前 Unit 约束；
-5. 检查 generated / formatting noise 是否掩盖语义变化；
+4. 检查准备性重构是否仍受当前执行单元约束；
+5. 检查生成 / 格式化噪音是否掩盖语义变化；
 6. 移除、记录或拆分无法形成当前责任链的顺带修改。
 
-不要求为每个 Unit 生成新的持久化 Diff Scope Artifact。
+不要求为每个执行单元生成新的持久化差异范围产物。
 
 ## 6. 数据访问作用域与有界性控制
 
 ### 6.1 核心规则
 
-> 设计或修改集合型数据访问时，应先确认当前消费者真正需要的数据作用域，以及集合是稳定有界、可能持续增长还是当前无法可靠界定；再根据 freshness、consistency 和应用生命周期选择过滤、排序、window / pagination、字段表示与复用方式。页面最终展示数量、现有 `LIMIT/OFFSET` 或客户端过滤不能替代业务作用域。若业务 scope 决定集合成员资格，应在 window / pagination 之前形成该 scope；只有当前权威明确把全局 window / ranking 本身定义为业务语义时才例外。规模稳定有界且语义上属于共享快照的数据可以完整读取并按当前生命周期复用，不应为了形式一致机械分页。
+> 设计或修改集合型数据访问时，应先确认当前消费者真正需要的数据作用域，以及集合是稳定有界、可能持续增长还是当前无法可靠界定；再根据新鲜度、一致性和应用生命周期选择过滤、排序、窗口 / 分页、字段表示与复用方式。页面最终展示数量、现有 `LIMIT/OFFSET` 或客户端过滤不能替代业务作用域。若业务作用域决定集合成员资格，应在窗口 / 分页之前形成该作用域；只有当前权威明确把全局窗口 / 排名本身定义为业务语义时才例外。规模稳定有界且语义上属于共享快照的数据可以完整读取并按当前生命周期复用，不应为了形式一致机械分页。
 
 该规则首先保护正确性，其次才是性能优化。
 
 ### 6.2 判断模型
 
-按当前 Unit 风险和数据路径复杂度，按需检查：
+按当前执行单元风险和数据路径复杂度，按需检查：
 
-1. **Consumer Scope**：当前页面、API、Job 或模块真正消费哪个业务集合？是否存在 parent、tenant、栏目、状态、组织或其他明确 membership boundary？
-2. **Boundedness**：集合是否有当前证据支持的真实稳定上界，还是会随业务持续增长 / 无法可靠界定？
-3. **Lifecycle / Freshness**：数据是 request-local、page-local、application snapshot，还是要求持续刷新 / invalidation？同一生命周期是否重复获取同一稳定快照？
-4. **Filter / Ordering Boundary**：哪些条件定义集合成员资格或业务顺序？window / pagination 前是否已经形成正确候选集合？
-5. **Window Strategy**：是否需要 page、cursor、chunk、Top-N？是否存在稳定 ordering / continuation 语义？
-6. **Representation**：list 是否只需要 summary/basic fields？detail 是否需要 full representation？额外 projection 的复杂度是否由当前成本或契约支持？
-7. **Verification Boundary**：当前验证是否真正越过 page / Top-N / scope 边界，并包含足以暴露截断 / 顺序问题的 competing records？
+1. **消费者作用域**：当前页面、API、任务或模块真正消费哪个业务集合？是否存在 parent、tenant、栏目、状态、组织或其他明确成员边界？
+2. **有界性**：集合是否有当前证据支持的真实稳定上界，还是会随业务持续增长 / 无法可靠界定？
+3. **生命周期 / 新鲜度**：数据是请求级、页面级、应用快照，还是要求持续刷新 / 失效？同一生命周期是否重复获取同一稳定快照？
+4. **过滤 / 排序边界**：哪些条件定义集合成员资格或业务顺序？窗口 / 分页前是否已经形成正确候选集合？
+5. **窗口策略**：是否需要 page、cursor、chunk、Top-N？是否存在稳定排序 / 连续性语义？
+6. **表示**：列表是否只需要摘要 / 基本字段？详情是否需要完整表示？额外 projection 的复杂度是否由当前成本或契约支持？
+7. **验证边界**：当前验证是否真正越过 page / Top-N / 作用域边界，并包含足以暴露截断 / 顺序问题的竞争记录？
 
-不是每个 Unit 都需要显式回答七项；只有当数据访问策略会影响当前正确性、规模、生命周期或验收义务时才加载这一判断。
+不是每个执行单元都需要显式回答七项；只有当数据访问策略会影响当前正确性、规模、生命周期或验收义务时才加载这一判断。
 
-### 6.3 Scope 与 Window 的边界
+### 6.3 作用域与窗口的边界
 
 当业务规则定义了明确集合，例如：
 
@@ -227,103 +227,103 @@ Architecture Fit 结论：**PASS — Engineering Discipline**。
 - 某状态下订单；
 - 某项目下任务；
 
-则该 scope 应进入数据访问契约或查询边界，不能默认先读取一个全局固定窗口再由客户端补救式过滤。
+则该作用域应进入数据访问契约或查询边界，不能默认先读取一个全局固定窗口再由客户端补救式过滤。
 
 尤其禁止把：
 
 ```text
 全局 Top-N
-→ client filter
-→ 页面显示某 scope 的少量条目
+→ 客户端过滤
+→ 页面显示某作用域的少量条目
 ```
 
 机械解释为“页面只显示 N 条，所以查询 N 条已经足够”。
 
-但如果 Specification / Domain Authority 明确定义：
+但如果规格说明 / 领域权威明确定义：
 
 > 先选全局排名前 N，再在该已限定集合上进行派生展示
 
-则 global window 本身属于业务语义，不应被本纪律擅自改写为 scope-first。
+则全局窗口本身属于业务语义，不应被本纪律擅自改写为“作用域优先”。
 
-### 6.4 Bounded / Unbounded 判断
+### 6.4 有界 / 无界判断
 
-**稳定有界集合**可以包括当前 Authority 能解释其长期上界或小规模性质的数据，例如有限导航树、稳定站点配置、枚举式结构数据。
+**稳定有界集合**可以包括当前权威能解释其长期上界或小规模性质的数据，例如有限导航树、稳定站点配置、枚举式结构数据。
 
 在当前证据支持下，可以：
 
 - 完整获取；
-- 在 application / request 的适当生命周期内作为 snapshot 复用；
+- 在应用 / 请求的适当生命周期内作为快照复用；
 - 不为了统一接口外形机械分页。
 
 但“当前测试数据只有十几条”不是有界性的充分证据。
 
 **持续增长或无法可靠界定的集合**默认不能依赖永远完整加载。应结合当前产品与技术责任考虑：
 
-- server-side filtering；
+- 服务端过滤；
 - page / cursor / chunk；
-- stable ordering；
-- summary representation；
-- freshness / consistency；
+- 稳定排序；
+- 摘要表示；
+- 新鲜度 / 一致性；
 - 可接受的响应与资源成本。
 
-本纪律不固定具体 pagination 技术、page size、cursor 格式或数据库方案。
+本纪律不固定具体分页技术、page size、cursor 格式或数据库方案。
 
-### 6.5 Lifecycle / Freshness
+### 6.5 生命周期 / 新鲜度
 
-完整 snapshot 是否合理，不能只由集合大小决定。
+完整快照是否合理，不能只由集合大小决定。
 
 还应检查：
 
-- 同一 application lifecycle 是否重复装配同一稳定数据；
-- 当前 Product / Architecture 是否要求实时、定时或事件驱动刷新；
+- 同一应用生命周期是否重复装配同一稳定数据；
+- 当前产品 / 架构是否要求实时、定时或事件驱动刷新；
 - cache / memoization / shared state 是否已经由当前框架或项目架构提供；
-- snapshot 复用是否会违反 freshness、tenant、security 或 consistency boundary。
+- 快照复用是否会违反新鲜度、租户、安全或一致性边界。
 
-不因为“避免重复请求”就机械创建全局 cache、registry 或新状态层；新增机制继续受 Implementation Minimality 约束。
+不因为“避免重复请求”就机械创建全局 cache、registry 或新状态层；新增机制继续受实现最小化约束。
 
-### 6.6 Representation
+### 6.6 表示
 
-List / collection consumer 与 detail consumer 可以需要不同表示。
+列表 / 集合消费者与详情消费者可以需要不同表示。
 
-当完整 resource 很大、昂贵或包含列表不需要的信息时，可以在当前证据支持下采用 summary/basic representation；但不因为存在 list/detail 两种入口就机械创建第二套 DTO、projection 或 mapping layer。
+当完整资源很大、昂贵或包含列表不需要的信息时，可以在当前证据支持下采用摘要 / 基本表示；但不因为存在 list/detail 两种入口就机械创建第二套 DTO、projection 或 mapping layer。
 
-representation 选择同时受：
+表示选择同时受：
 
 - 当前消费字段；
 - 响应 / 计算成本；
 - 公共契约；
 - 兼容性；
-- Implementation Minimality；
+- 实现最小化；
 
 约束。
 
-### 6.7 Verification
+### 6.7 验证
 
-验证必须针对本 Discipline 声称解决的边界，而不是只在小数据主路径上检查“页面有内容”。
+验证必须针对本工程纪律声称解决的边界，而不是只在小数据主路径上检查“页面有内容”。
 
 按风险需要覆盖：
 
-- 数据数量超过单页 / Top-N / 当前 window；
-- competing records 来自其他 scope，足以暴露“global window 后过滤”截断；
-- page / cursor / chunk 的 stable ordering 与 continuation；
-- bounded snapshot 在当前 lifecycle 中的装配 / refresh 行为；
-- list summary 与 detail full representation 的契约；
-- 当前 Consumer Authority 明确的 freshness / consistency 责任。
+- 数据数量超过单页 / Top-N / 当前窗口；
+- 竞争记录来自其他作用域，足以暴露“全局窗口后过滤”截断；
+- page / cursor / chunk 的稳定排序与连续性；
+- 有界快照在当前生命周期中的装配 / 刷新行为；
+- 列表摘要与详情完整表示的契约；
+- 当前使用方权威明确的新鲜度 / 一致性责任。
 
-如果验收义务要求分页或 scope correctness，少量 fixture、代码存在 `LIMIT/OFFSET` 或客户端过滤实现都不能单独成为 Completion Evidence。
+如果验收义务要求分页或作用域正确性，少量 fixture、代码存在 `LIMIT/OFFSET` 或客户端过滤实现都不能单独成为完成证据。
 
 ### 6.8 非规则
 
-本 Discipline 不等于：
+本工程纪律不等于：
 
 - 所有接口必须分页；
-- 所有列表必须 server-side pagination；
-- 所有 filter 必须无条件先于所有 limit；
+- 所有列表必须服务端分页；
+- 所有过滤必须无条件先于所有 limit；
 - 所有小型结构数据都禁止全量读取；
-- 所有 list 都必须建立 Summary DTO；
+- 所有列表都必须建立 Summary DTO；
 - 必须引入 cache / repository abstraction / cursor framework；
 - 固定任何 page size；
-- 仅凭性能猜测扩大当前 Product Scope。
+- 仅凭性能猜测扩大当前产品范围。
 
 ## 7. 三个纪律的组合
 
@@ -349,19 +349,19 @@ representation 选择同时受：
 
 典型结果：
 
-- 为持续增长集合增加分页可能由 Data Access Discipline 证明需要，同时仍需 Minimality 防止引入不必要的通用 pagination framework；
-- 修正 global Top-N 截断可能跨 API、service、client 和 test，多文件由 Surgical Change 判断是否仍属于同一逻辑变化；
-- 小型稳定 snapshot 可以被 Data Access Discipline 允许完整读取，同时 Minimality 可以阻止为了“规范统一”新增无必要分页层。
+- 为持续增长集合增加分页可能由数据访问纪律证明需要，同时仍需实现最小化防止引入不必要的通用 pagination framework；
+- 修正全局 Top-N 截断可能跨 API、service、client 和 test，多文件由精准修改判断是否仍属于同一逻辑变化；
+- 小型稳定快照可以被数据访问纪律允许完整读取，同时实现最小化可以阻止为了“规范统一”新增无必要分页层。
 
 ## 8. `execute-unit` 消费边界
 
 `execute-unit` 是当前主要执行消费者，但只应保留足够实施本纪律的薄规则：
 
-- 实施前 / JIT 判断新增复杂度是否有当前正当性；
-- 完成前检查最终 diff 是否只有当前逻辑变化及必要责任；
-- 当 Unit 涉及集合 / 列表 / snapshot 数据访问时，按风险判断 consumer scope、boundedness / growth、lifecycle / freshness、filter / ordering、window / pagination、representation 与验证边界；
-- 继续服从现有 Unit Boundary、Stage Return、Human Escalation、配置责任、已有能力复用和 Evidence Before Claim；
-- 不因三个纪律新增独立 Skill invocation、持久化检查表或人工确认步骤。
+- 实施前 / 即时执行判断新增复杂度是否有当前正当性；
+- 完成前检查最终差异是否只有当前逻辑变化及必要责任；
+- 当执行单元涉及集合 / 列表 / 快照数据访问时，按风险判断消费者作用域、有界性 / 增长、生命周期 / 新鲜度、过滤 / 排序、窗口 / 分页、表示与验证边界；
+- 继续服从现有执行单元边界、阶段返回、人工升级、配置责任、已有能力复用和声明前证据；
+- 不因三个纪律新增独立 Skill 调用、持久化检查表或人工确认步骤。
 
 完整规范以本文为准；`SKILL.md` 的执行摘要不得覆盖或放宽本文。
 
@@ -369,48 +369,48 @@ representation 选择同时受：
 
 本文不定义：
 
-- 完整 Code Review Discipline；
-- 完整 Testing Discipline；
-- 完整 Refactoring Discipline；
-- 完整 Data Architecture Method；
-- 固定复杂度分数、行数、文件数或 diff 大小阈值；
+- 完整代码复核纪律；
+- 完整测试纪律；
+- 完整重构纪律；
+- 完整数据架构方法；
+- 固定复杂度分数、行数、文件数或差异大小阈值；
 - 所有项目统一的 formatter / generator / test command；
 - 所有技术栈统一的分页 API / cursor / page size / cache strategy；
 - 新的 `minimality`、`surgical-change`、`diff-scope`、`data-access` 或 `pagination` Skill；
-- Consumer 项目的具体目录、代码风格、数据模型或架构事实。
+- 使用方项目的具体目录、代码风格、数据模型或架构事实。
 
 ## 10. 生命周期
 
-- **Producer：** 当前 `agentic-dev` Repository Authority 授权的 Engineering Capability / Architecture 维护职责；
-- **Trigger：** 首批两个 Discipline 由 WI-02 / WI-03 Research 触发；第三项由 Foundation v1 Closure 后 Issue #33 已核验 Data Access Candidate 与 Engineering Discipline Expansion v1 触发；
-- **Consumer：** `execute-unit`、未来 Engineering Quality Review / Refactoring Discipline / Technology Profile，以及采用当前 baseline 的 Consumer Agent；
-- **Persistence：** 本文作为当前工程纪律规范入口；Research 继续只保存证据，不与本文竞争权威；
-- **Update：** 新 Targeted Eval、Consumer Feedback、上游 Method / Architecture / Contract 变化或高质量外部证据暴露边界问题时重新检查；
-- **Supersede：** 后续版本必须明确取代当前内容，并保持单一当前规范入口；
-- **Escalation：** 如果修订要求改变 Method 生命周期、Execution Unit 定义、重大架构、Skill Contract、Human / Integration Boundary 或 Consumer Authority，返回对应更高权威处理。
+- **产生者：** 当前 `agentic-dev` 仓库权威授权的工程能力 / 架构维护职责；
+- **触发条件：** 首批两个纪律由 WI-02 / WI-03 研究触发；第三项由工程能力基础 v1 收尾后 Issue #33 已核验的数据访问候选与工程纪律扩展 v1 触发；
+- **消费者：** `execute-unit`、未来工程质量复核 / 重构纪律 / 技术画像，以及采用当前基线的使用方 Agent；
+- **持久化：** 本文作为当前工程纪律规范入口；研究继续只保存证据，不与本文竞争权威；
+- **更新：** 新专项评估、使用方反馈、上游方法 / 架构 / 契约变化或高质量外部证据暴露边界问题时重新检查；
+- **取代：** 后续版本必须明确取代当前内容，并保持单一当前规范入口；
+- **升级：** 如果修订要求改变方法生命周期、执行单元定义、重大架构、Skill 契约、人工 / 集成边界或使用方权威，返回对应更高权威处理。
 
-## 11. WI-03V Targeted Eval 证据
+## 11. WI-03V 专项评估证据
 
-2026-09-02，在 PR #48 的待测语义 Head：
+2026-09-02，在 PR #48 的待测语义提交：
 
 `a7d50795a968f279a68d9dfd62df57b7c1480de5`
 
-上完成 Fresh Runtime Targeted Eval 与回归。提交的运行产物包含 13 个场景各自的 `.jsonl`、`.run.json` 和 `.stderr.txt`：
+上完成全新运行时专项评估与回归。提交的运行产物包含 13 个场景各自的 `.jsonl`、`.run.json` 和 `.stderr.txt`：
 
 ```text
 场景：  13 / 13 PASS
 断言：  62 / 62 PASS
 ```
 
-新增 Engineering Discipline 场景：
+新增工程纪律场景：
 
-- `B-EU-09`～`B-EU-12`：Implementation Minimality；
-- `B-EU-13`～`B-EU-17`：Surgical Change / Diff Scope。
+- `B-EU-09`～`B-EU-12`：实现最小化；
+- `B-EU-13`～`B-EU-17`：精准修改 / 差异范围。
 
 历史回归：
 
-- `B-EU-01`：真实 one-unit fixture 修改、预期失败证据与当前 unittest 闭环；
-- `B-EU-02`：one-unit boundary；
+- `B-EU-01`：真实单执行单元 fixture 修改、预期失败证据与当前 unittest 闭环；
+- `B-EU-02`：单执行单元边界；
 - `B-EU-07`：配置责任；
 - `B-EU-08`：已有框架能力复用与项目差异薄适配。
 
@@ -418,27 +418,27 @@ representation 选择同时受：
 
 - `B-EU-01` 实际先取得空字符串 / 纯空白输入的失败证据，再完成最小实现并执行仓库声明的 `python3 -m unittest discover -s tests -v`，3 项测试全部通过后才声明 `Completed`；
 - 9 个新场景均能区分“当前复杂度 / 范围正当性”与机械少代码、少文件、DRY、YAGNI 或顺手 cleanup；
-- 必要 preparatory refactoring、当前测试、安全责任、已授权公共契约同步、直接产生的 orphan cleanup 和 Repository Rule 确定触发的机械差异没有被错误排除；
+- 必要准备性重构、当前测试、安全责任、已授权公共契约同步、直接产生的孤立清理和仓库规则确定触发的机械差异没有被错误排除；
 - 无关 TODO / typo / 历史 dead code、假想扩展结构和无证据动态配置没有被自动吸收；
 - `B-EU-02`、`B-EU-07`、`B-EU-08` 没有发生语义回归；
-- 所有 Run 均使用独立隔离 workspace，没有发现读取 `evals/behavior/*`、`evals/results/*`、grading assertions、历史答案或当前工作区之外路径的污染轨迹；
-- 13 个进程均以状态码 `0` 结束并包含 `turn.completed`，但退出码没有被作为 PASS 依据；
+- 所有运行均使用独立隔离工作区，没有发现读取 `evals/behavior/*`、`evals/results/*`、评分断言、历史答案或当前工作区之外路径的污染轨迹；
+- 13 个进程均以状态码 `0` 结束并包含 `turn.completed`，但退出码没有被作为通过依据；
 - `B-EU-02` 的 stderr 出现一次模型列表刷新 timeout，未中断场景执行，也未影响最终语义判断；其余 stderr 为空；
-- 提交产物没有暴露精确 Runtime 版本或模型名，本轮结论不依赖该信息。
+- 提交产物没有暴露精确运行时版本或模型名，本轮结论不依赖该信息。
 
 运行结果压缩包 SHA-256：
 
 `17133821e31077f6196296298e371f897f4dc180f72b0471d0afe0e32806388e`
 
-该历史 Targeted Eval Gate 已通过。
+该历史专项评估门禁已通过。
 
-## 12. Engineering Discipline Expansion v1 Targeted Eval
+## 12. 工程纪律扩展 v1 专项评估
 
-2026-09-04，在 PR #56 冻结待测 Head：
+2026-09-04，在 PR #56 冻结待测提交：
 
 `31e8d7597cbe9ea37746b34a6c50907e6dea37b0`
 
-完成第三项 Discipline 的 Fresh Runtime Targeted Eval 与必要历史回归：
+完成第三项工程纪律的全新运行时专项评估与必要历史回归：
 
 ```text
 新场景： 8 / 8 PASS，41 / 41 assertions PASS
@@ -448,14 +448,14 @@ representation 选择同时受：
 
 新增场景：
 
-- `B-EU-18`：global Top-N 后 client filter 的 scope truncation；
-- `B-EU-19`：bounded stable snapshot，拒绝机械 pagination，并在没有 freshness Authority 时不发明实时刷新；
-- `B-EU-20`：unbounded operational collection 的 server filtering / pagination / summary；
-- `B-EU-21`：presentation N 与 retrieval scope 分离；
-- `B-EU-22`：Authority 明确 global ranking 时允许 window-first 业务语义；
+- `B-EU-18`：全局 Top-N 后客户端过滤的作用域截断；
+- `B-EU-19`：稳定有界快照，拒绝机械分页，并在没有新鲜度权威时不发明实时刷新；
+- `B-EU-20`：无界运营集合的服务端过滤 / 分页 / 摘要；
+- `B-EU-21`：展示数量 N 与检索作用域分离；
+- `B-EU-22`：权威明确全局排名时允许窗口优先业务语义；
 - `B-EU-23`：验证数据必须越过 page / Top-N / competing-scope boundary；
-- `B-EU-24`：pagination ordering / continuation stability；
-- `B-EU-25`：bounded snapshot 仍需遵守明确 freshness / invalidation responsibility。
+- `B-EU-24`：分页排序 / 连续性稳定；
+- `B-EU-25`：有界快照仍需遵守明确新鲜度 / 失效责任。
 
 历史回归：
 
@@ -466,32 +466,32 @@ representation 选择同时受：
 
 关键观察：
 
-- `B-EU-18` 与 `B-EU-21` 均正确识别页面展示 N 与真实 retrieval scope 不等价，没有用扩大固定 Top-N 魔法数字掩盖错误集合边界；
-- `B-EU-19` 正确使用明确 Domain Authority 上界判断 boundedness，保留完整 snapshot，并复用既有 app store；没有因为缺少 freshness Authority 而发明 TTL、轮询或实时刷新；
-- `B-EU-20` 正确把持续增长 operational collection 的筛选与分页责任放到服务端，并保持 summary/full representation 的当前证据边界，没有创建通用分页框架；
-- `B-EU-22` 正确保留 Specification 明确的 global Top-100 → sponsored 派生语义，证明本 Discipline 没有退化为“所有 filter 必须先于 limit”的教条；
-- `B-EU-23` 没有把小数据 fixture 或实现形状当作 scope + pagination Completion Evidence；
-- `B-EU-24` 要求稳定 `createdAt` ordering 与必要 tie-break，并检查跨页无重复 / 无遗漏；cursor / snapshot 只作为一致性语义明确要求时的条件路径，没有因 OFFSET 潜在性能成本机械引入 cursor framework；
-- `B-EU-25` 正确区分 boundedness 与 freshness：保留完整 12 条 snapshot，同时依据明确 30 秒 Product Authority 复用现有 refresh 机制；
-- `B-EU-01` 实际建立预期失败证据，完成最小实现并运行当前 unittest；2 个测试方法覆盖空字符串、纯空白与非空名称并 PASS；
-- `B-EU-06`、`B-EU-09`、`B-EU-13` 的验收证据、推测性复杂度控制与 diff scope 行为没有回归；
-- 12 个 Run 均使用独立隔离 workspace，只访问场景提供的 Skill / fixture，没有发现读取 `evals/behavior/*`、`evals/results/*`、grading assertions、历史答案或工作区外路径的污染轨迹；
-- 12 个进程均以状态码 `0` 完成并包含 `turn.completed`，但退出码没有被作为 PASS 依据；
+- `B-EU-18` 与 `B-EU-21` 均正确识别页面展示 N 与真实检索作用域不等价，没有用扩大固定 Top-N 魔法数字掩盖错误集合边界；
+- `B-EU-19` 正确使用明确领域权威上界判断有界性，保留完整快照，并复用既有 app store；没有因为缺少新鲜度权威而发明 TTL、轮询或实时刷新；
+- `B-EU-20` 正确把持续增长运营集合的筛选与分页责任放到服务端，并保持摘要 / 完整表示的当前证据边界，没有创建通用分页框架；
+- `B-EU-22` 正确保留规格说明明确的 global Top-100 → sponsored 派生语义，证明本工程纪律没有退化为“所有 filter 必须先于 limit”的教条；
+- `B-EU-23` 没有把小数据 fixture 或实现形状当作作用域 + 分页完成证据；
+- `B-EU-24` 要求稳定 `createdAt` 排序与必要 tie-break，并检查跨页无重复 / 无遗漏；cursor / snapshot 只作为一致性语义明确要求时的条件路径，没有因 OFFSET 潜在性能成本机械引入 cursor framework；
+- `B-EU-25` 正确区分有界性与新鲜度：保留完整 12 条快照，同时依据明确 30 秒产品权威复用现有 refresh 机制；
+- `B-EU-01` 实际建立预期失败证据，完成最小实现并运行当前 unittest；2 个测试方法覆盖空字符串、纯空白与非空名称并通过；
+- `B-EU-06`、`B-EU-09`、`B-EU-13` 的验收证据、推测性复杂度控制与差异范围行为没有回归；
+- 12 个运行均使用独立隔离工作区，只访问场景提供的 Skill / fixture，没有发现读取 `evals/behavior/*`、`evals/results/*`、评分断言、历史答案或工作区外路径的污染轨迹；
+- 12 个进程均以状态码 `0` 完成并包含 `turn.completed`，但退出码没有被作为通过依据；
 - 12 个 stderr 全空。
 
 运行结果 ZIP SHA-256：
 
 `d32233916e2ce923f2f052fe6750eda4bf0674992906bd18223b43f83f21a855`
 
-冻结 Head 的关键受测 / 契约 Blob：
+冻结提交的关键受测 / 契约 Blob：
 
 - `skills/execute-unit/SKILL.md`：`c71ddd23d20b3a14c9cb19a38f6e8d6cbedcf46e`；
 - `docs/architecture/skill-contracts.md`：`b68e9c9cd6f47d9433f22bd5aab78ae3c8a21a42`；
 - `evals/behavior/execute-unit.json`：`39676d46a1502d6da3050e7cbba484ad58733fa4`；
-- 本文 Draft 规范语义 Blob：`cc7e44ba42f4f2cee90f8535eac2111d30856fc2`。
+- 本文草案规范语义 Blob：`cc7e44ba42f4f2cee90f8535eac2111d30856fc2`。
 
-Fresh Runtime Gate：**PASS**。
+全新运行时门禁：**通过**。
 
-PR #56 已通过 Final AI Review 并实际集成，merge commit 为 `8d0c7ccd1b13db05540fefc619725f9d1f7fc2de`。因此第三项 Discipline 已完成 Integration Gate，当前 Runtime Evidence 是 Baseline v0.2 的验证证据。
+PR #56 已通过最终 AI 复核并实际集成，合并提交为 `8d0c7ccd1b13db05540fefc619725f9d1f7fc2de`。因此第三项工程纪律已完成集成门禁，当前运行时证据是基线 v0.2 的验证证据。
 
-后续如果第三项 Discipline 的规范语义、`execute-unit` 薄消费语义、Skill Contract 或 Eval corpus 发生实质变化，必须重新运行受影响场景与必要回归；纯 Evidence / Project Status 更新不使上述 Runtime Evidence 失效。
+后续如果第三项工程纪律的规范语义、`execute-unit` 薄消费语义、Skill 契约或评估语料发生实质变化，必须重新运行受影响场景与必要回归；纯证据 / 项目状态更新不使上述运行时证据失效。

@@ -1,14 +1,14 @@
 # 方法决策记录
 
-**状态：** Baseline v0.1
+**状态：** 基线 v0.1
 
 本文轻量记录研究与收敛阶段已经确认的主要方法决策。
 
-只有真正需要独立 Trade-off 记录的事项，后续再升级为单独 ADR。
+只有真正需要独立权衡记录的事项，后续再升级为单独 ADR。
 
 ## D-001 — 停止继续横向扩展参考框架
 
-**状态：** Superseded by D-022
+**状态：** 已由 D-022 取代
 
 **历史决定：**
 
@@ -22,159 +22,159 @@
 
 核心方法维度当时已经得到交叉验证。继续增加总体方法框架的边际收益较低，并容易重新陷入无法收敛的比较。
 
-该决定约束的是当时“继续扩大总体方法论样本”的研究阶段。随着第一批 Core Method / Skills 和真实 Consumer 验证完成，项目进入工程能力扩展阶段；继续把它解释为“不得主动研究新的框架、技术、工程纪律或专家实践”已经不再适用，因此由 D-022 取代。
+该决定约束的是当时“继续扩大总体方法论样本”的研究阶段。随着第一批核心方法 / Skill 和真实使用方验证完成，项目进入工程能力扩展阶段；继续把它解释为“不得主动研究新的框架、技术、工程纪律或专家实践”已经不再适用，因此由 D-022 取代。
 
-## D-002 — 采用 Method-first 架构
+## D-002 — 采用方法优先架构
 
 **决定：**
 
-先定义开发方法，再由 Skills 实现。
+先定义开发方法，再由 Skill 实现。
 
 **不采用：**
 
 先写一组 `SKILL.md`，再从 Skill 反推方法。
 
-## D-003 — Workflow Control 必须显式
+## D-003 — 工作流控制必须显式
 
 **决定：**
 
-不创建从 Clarification 一路自动执行到 Integration 的超级 Skill。
+不创建从澄清一路自动执行到集成的超级 Skill。
 
 **原因：**
 
-小型、可组合 Skills 能保持阶段转换可观察，并保留 Human / Controller 的流程控制权。
+小型、可组合 Skill 能保持阶段转换可观察，并保留人工 / 控制者的流程控制权。
 
-## D-004 — WHAT / WHY 与 HOW 分离
-
-**决定：**
-
-Specification 负责 Required Behavior；Technical Plan 负责 Implementation Design。
-
-## D-005 — Technical Planning 按需触发
+## D-004 — “做什么 / 为什么”与“如何实现”分离
 
 **决定：**
 
-只有存在真实技术不确定性或跨 Unit 协调价值时，才创建长期 Technical Plan。
+规格说明负责必需行为；技术计划负责实现设计。
+
+## D-005 — 技术规划按需触发
+
+**决定：**
+
+只有存在真实技术不确定性或跨执行单元协调价值时，才创建长期技术计划。
 
 **不采用：**
 
 每次修改都固定生成 `plan.md`。
 
-## D-006 — Execution Unit 作为逻辑工作原子
+## D-006 — 执行单元作为逻辑工作原子
 
 **决定：**
 
-实施工作拆成纵向、可独立验证、Context-fit 的 Execution Units。
+实施工作拆成纵向、可独立验证、上下文适配的执行单元。
 
-## D-007 — Durable Work Item 以行为为中心
+## D-007 — 长期工作项以行为为中心
 
 **决定：**
 
-Exact File Paths 和 Low-level Edit Instructions 不作为长期 Execution Unit 的默认必填字段。
+精确文件路径和低层编辑指令不作为长期执行单元的默认必填字段。
 
 **原因：**
 
-这些细节容易过时，更适合查看当前仓库后通过 JIT Plan 生成。
+这些细节容易过时，更适合查看当前仓库后通过即时执行计划生成。
 
-## D-008 — Technical Plan 与 JIT Execution Plan 分离
-
-**决定：**
-
-Durable Design 与 Transient Construction Planning 是不同 Artifact，生命周期不同。
-
-## D-009 — 增加自动 Readiness Gate
+## D-008 — 技术计划与即时执行计划分离
 
 **决定：**
 
-实施前统一检查 Specification、Design、Execution Coverage 和 Governance。
+长期设计与临时施工规划是不同产物，生命周期不同。
 
-## D-010 — Evidence Before Completion Claims
-
-**决定：**
-
-“Build Pass”“Tests Pass”“Feature Complete”等声明必须基于当前证据。
-
-## D-011 — Verification、Review、Convergence 分离
+## D-009 — 增加自动就绪门禁
 
 **决定：**
 
-- Verification：确定当前事实；
-- Review：判断局部实现质量与符合性；
-- Convergence：判断 Feature 整体是否符合 Intent。
+实施前统一检查规格说明、设计、执行覆盖和治理。
 
-## D-012 — 每个 Execution Unit 使用 Fresh Context
+## D-010 — 证据先于完成声明
 
 **决定：**
 
-执行不得依赖此前未持久化的 reasoning history。
+“构建通过”“测试通过”“功能完成”等声明必须基于当前证据。
+
+## D-011 — 验证、复核、收敛分离
+
+**决定：**
+
+- 验证：确定当前事实；
+- 复核：判断局部实现质量与符合性；
+- 收敛：判断功能整体是否符合意图。
+
+## D-012 — 每个执行单元使用新上下文
+
+**决定：**
+
+执行不得依赖此前未持久化的推理历史。
 
 实现机制不限定为某一种产品能力。
 
-## D-013 — 使用 Progressive Disclosure
+## D-013 — 使用渐进式披露
 
 **决定：**
 
-只加载当前工作需要的 Authority 和 Code。
+只加载当前工作需要的权威和代码。
 
 **不采用：**
 
 给每个执行 Agent 预加载全部项目知识。
 
-## D-014 — Ambiguity 本身不自动触发人工介入
+## D-014 — 歧义本身不自动触发人工介入
 
 **决定：**
 
-Human Escalation 依据 Authority、Impact、Reversibility。
+人工升级依据权限、影响、可逆性。
 
 简化为：
 
-> Human owns irreversible intent; AI owns reversible execution.
+> 人工负责不可逆的意图决策；AI 负责可逆的执行判断。
 
-## D-015 — Defect 采用独立 Workflow
+## D-015 — 缺陷采用独立工作流
 
 **决定：**
 
 缺陷默认采用：
 
 ```text
-Reproduce
-→ Diagnose
-→ Hypothesis
-→ Evidence
-→ Minimal Fix
-→ Regression Verification
+复现
+→ 诊断
+→ 假设
+→ 证据
+→ 最小修复
+→ 回归验证
 ```
 
-## D-016 — 通用生命周期结束于 Ready to Integrate
+## D-016 — 通用生命周期结束于已具备进入集成决策的条件
 
 **决定：**
 
-Merge、Push、Release、Deploy 和 Destructive Cleanup 由 Project Policy 或 Human Authority 控制。
+Merge、Push、Release、Deploy 和破坏性清理由项目策略或人工权威控制。
 
-## D-017 — 不要求 Stage 与 File 一一对应
+## D-017 — 不要求阶段与文件一一对应
 
 **决定：**
 
-Artifact 是否持久化取决于知识价值，而不是 Stage 是否存在。
+产物是否持久化取决于知识价值，而不是阶段是否存在。
 
 ## D-018 — ADR 由长期架构决策按条件产生
 
 **决定：**
 
-Technical Planning 既消费已有 ADR，也负责判断新形成的长期技术决策（Durable Technical Decision）是否需要持久化为架构决策记录（Architecture Decision Record，ADR）。
+技术规划（`Technical Planning`）既消费已有 ADR，也负责判断新形成的长期技术决策是否需要持久化为架构决策记录（`Architecture Decision Record`，ADR）。
 
-ADR 不是新的方法阶段（Method Stage），也不是每次 Technical Planning 的固定输出。只有当技术决定需要跨越当前功能（Feature）长期约束后续工作，并且保留其选择理由、主要权衡（Trade-off）或替代关系具有持续价值时，才形成或更新 ADR。
+ADR 不是新的方法阶段，也不是每次技术规划的固定输出。只有当技术决定需要跨越当前功能长期约束后续工作，并且保留其选择理由、主要权衡或替代关系具有持续价值时，才形成或更新 ADR。
 
 **不采用：**
 
-- 为每个 Technical Plan 固定生成 ADR；
+- 为每个技术计划固定生成 ADR；
 - 把单个执行单元的局部实现选择记录为 ADR；
-- 规定所有 Consumer 必须预建固定 `adr/` 目录或统一模板；
-- 在 Execute / Debug / Converge 中静默建立长期架构约束而不回退 Technical Planning。
+- 规定所有使用方必须预建固定 `adr/` 目录或统一模板；
+- 在执行 / 调试 / 整体收敛中静默建立长期架构约束而不回退技术规划。
 
 **原因：**
 
-Technical Plan 主要服务当前功能与执行单元的 HOW 协调，而 ADR 服务跨功能的长期架构权威（Architecture Authority）。两者生命周期和权威用途不同；显式区分可以避免既把所有技术选择过度文档化，也避免重要架构决定只埋在阶段性计划或代码中。
+技术计划主要服务当前功能与执行单元的“如何实现”协调，而 ADR 服务跨功能的长期架构权威。两者生命周期和权威用途不同；显式区分可以避免既把所有技术选择过度文档化，也避免重要架构决定只埋在阶段性计划或代码中。
 
 ## D-019 — 长期权威产物必须具备生命周期闭环
 
@@ -182,18 +182,18 @@ Technical Plan 主要服务当前功能与执行单元的 HOW 协调，而 ADR �
 
 新增或重大修改长期权威产物时，必须能够从当前方法职责与仓库权威中确定其产生、触发、消费、持久化、更新、取代和升级责任。阶段可以识别或验证长期事实候选，但阶段转换本身不授予权威写入权限；下游执行职责发现长期事实缺失、冲突或失效时，应返回拥有该事实或决定的上游职责处理。
 
-Domain Context 保存跨功能持续有效的业务语言与领域事实，由 Clarify Intent 识别候选、Specification 验证候选，并由 Consumer Repository Authority 指定的领域责任方确认和维护。Architecture Context 保存跨功能持续有效的架构状态，由 Technical Planning 维护；ADR 只记录其中需要长期保留背景、权衡或替代关系的重要架构决定，不等同于全部 Architecture Context。
+领域上下文保存跨功能持续有效的业务语言与领域事实，由澄清意图识别候选、规格说明验证候选，并由使用方仓库权威指定的领域责任方确认和维护。架构上下文保存跨功能持续有效的架构状态，由技术规划维护；ADR 只记录其中需要长期保留背景、权衡或替代关系的重要架构决定，不等同于全部架构上下文。
 
 **不采用：**
 
 - 为每类长期权威产物新增独立方法阶段；
-- 创建接管所有产物产生、更新与取代的 Artifact Management Super-skill；
-- 强制 Consumer 使用固定目录、模板、文件名或审批流程；
-- 让代码、测试、临时 Plan 或 Conversation History 自动把候选事实提升为长期权威。
+- 创建接管所有产物产生、更新与取代的产物管理超级 Skill；
+- 强制使用方使用固定目录、模板、文件名或审批流程；
+- 让代码、测试、临时计划或会话历史自动把候选事实提升为长期权威。
 
 **原因：**
 
-只有消费者而没有 Producer、Trigger、Update 与 Supersede 等责任，会使 Fresh Agent 无法可靠判断长期事实如何产生以及哪个版本当前有效。将职责分配给拥有相应事实或决定的方法层，同时把具体载体和写入权限留给 Consumer Repository Authority，可以闭合生命周期而不引入新的流程层级或集中式超级能力。
+只有消费者而没有产生者、触发条件、更新与取代等责任，会使新的 Agent 上下文无法可靠判断长期事实如何产生以及哪个版本当前有效。将职责分配给拥有相应事实或决定的方法层，同时把具体载体和写入权限留给使用方仓库权威，可以闭合生命周期而不引入新的流程层级或集中式超级能力。
 
 ## D-020 — 验收义务必须闭环到当前验证证据
 
@@ -213,52 +213,52 @@ Domain Context 保存跨功能持续有效的业务语言与领域事实，由 C
 
 **原因：**
 
-真实 Consumer 实验证明，执行单元可以在主要纵向路径通过后进入 `Completed` / `Integrated`，但仍有分页、竞争排序和多类导航等已实现验收义务缺少已执行的当前证据。后续只补验证、不修改产品实现即可使功能整体 `converge` 从 `GAPS` 转为 `READY`，说明缺口位于验收责任归属、验证规划与闭环机制，而不是 Consumer 项目实现或 `converge` 职责。
+真实使用方实验证明，执行单元可以在主要纵向路径通过后进入 `Completed` / `Integrated`，但仍有分页、竞争排序和多类导航等已实现验收义务缺少已执行的当前证据。后续只补验证、不修改产品实现即可使功能整体 `converge` 从 `GAPS` 转为 `READY`，说明缺口位于验收责任归属、验证规划与闭环机制，而不是使用方项目实现或 `converge` 职责。
 
-## D-021 — 项目路线图（Project Roadmap）是条件性长期项目级产物
+## D-021 — 项目路线图是条件性长期项目级产物
 
 **决定：**
 
-当项目跨越多个里程碑、方法阶段或 Fresh Context，且仅凭功能级与任务级产物无法可靠恢复整体路线、当前阶段和下一步工作时，建立并持续维护项目路线图。初始路线可以不完整，但必须区分已完成、当前、下一步、条件性与未知内容，并把具体载体交给 Consumer Repository Authority 决定。
+当项目跨越多个里程碑、方法阶段或新上下文，且仅凭功能级与任务级产物无法可靠恢复整体路线、当前阶段和下一步工作时，建立并持续维护项目路线图（`Project Roadmap`）。初始路线可以不完整，但必须区分已完成、当前、下一步、条件性与未知内容，并把具体载体交给使用方仓库权威决定。
 
-Project Roadmap 不替代 Specification、Technical Plan、Execution Unit、临时 Coordination Plan 或项目管理排期。普通小型、一次性或单一局部工作不要求创建它。
+项目路线图不替代规格说明、技术计划、执行单元、临时协调计划或项目管理排期。普通小型、一次性或单一局部工作不要求创建它。
 
-已有且适用的 Project Roadmap 因当前工作完成、取消或取代项目级里程碑，改变当前阶段 / 核心目标、已决定的下一步顺序，或使条件性方向进入当前路线而失效时，`converge` 将其识别为 Artifact Lifecycle Gap 并路由到授权的项目治理 / Bootstrap 维护职责；`converge` 不自行规划路线或发明下一步。
+已有且适用的项目路线图因当前工作完成、取消或取代项目级里程碑，改变当前阶段 / 核心目标、已决定的下一步顺序，或使条件性方向进入当前路线而失效时，`converge` 将其识别为产物生命周期缺口并路由到授权的项目治理 / 启动维护职责；`converge` 不自行规划路线或发明下一步。
 
 **不采用：**
 
-- 把 Project Roadmap 设为所有 Consumer 的必需文件；
+- 把项目路线图设为所有使用方的必需文件；
 - 强制固定路径、模板或完整前置路线；
 - 用 README、任务清单和状态摘要并行维护多份当前路线；
-- 新增 Project Roadmap Skill、项目管理阶段或 Artifact Management Super-skill；
+- 新增项目路线图 Skill、项目管理阶段或产物管理超级 Skill；
 - 让 `converge` 创建或重写项目路线。
 
 **原因：**
 
-在 agentic-dev 与首个 Consumer 的持续演进中，聊天记忆混乱或进入 Fresh Context 后，仅靠 README、功能产物和任务状态无法稳定恢复真正的项目阶段、当前核心目标与已决定的下一步，常常需要重新分析整个仓库且仍可能得出错误状态。通用的“只检查本次新增或重大修改产物”规则也无法发现一个根本未被修改、却已因里程碑完成而陈旧的既有路线图。
+在 `agentic-dev` 与首个使用方的持续演进中，聊天记忆混乱或进入新上下文后，仅靠 README、功能产物和任务状态无法稳定恢复真正的项目阶段、当前核心目标与已决定的下一步，常常需要重新分析整个仓库且仍可能得出错误状态。通用的“只检查本次新增或重大修改产物”规则也无法发现一个根本未被修改、却已因里程碑完成而陈旧的既有路线图。
 
-条件性 Project Roadmap 补足的是项目级发现与恢复入口；窄范围的收敛检查闭合其更新责任，同时避免把所有项目模板化或扩张 Skill 清单。
+条件性项目路线图补足的是项目级发现与恢复入口；窄范围的收敛检查闭合其更新责任，同时避免把所有项目模板化或扩张 Skill 清单。
 
 ## D-022 — 工程能力演进采用主动研究与双重验证
 
 **决定：**
 
-在第一批 Core Method / Skills 和首轮真实 Consumer 验证完成后，`agentic-dev` 不再把 Consumer Evidence 作为所有后续工程能力建设的唯一前置条件。
+在第一批核心方法 / Skill 和首轮真实使用方验证完成后，`agentic-dev` 不再把使用方证据作为所有后续工程能力建设的唯一前置条件。
 
-官方权威实践、成熟开源工程经验、专家方法与研究可以主动触发 Research 和候选能力设计；候选能力必须先按 Engineering Capability Architecture 判断属于 Engineering Discipline、Technology Profile、Verification Profile、Task-oriented Skill 或 Runtime Adapter，再经过适用的 Targeted Eval、AI Review 和 Repository Authority 固化。
+官方权威实践、成熟开源工程经验、专家方法与研究可以主动触发研究和候选能力设计；候选能力必须先按工程能力架构判断属于工程纪律、技术画像、验证画像、任务型技能或运行时适配器，再经过适用的专项评估、AI 复核和仓库权威固化。
 
-Consumer Adoption 继续承担真实工程环境中的验证与纠偏职责。成熟外部证据与 Consumer Evidence 构成互补关系：前者可以主动提供经过行业实践积累的起点，后者检验这些能力在具体 Repository Authority 和真实约束下是否成立。
+使用方采用继续承担真实工程环境中的验证与纠偏职责。成熟外部证据与使用方证据构成互补关系：前者可以主动提供经过行业实践积累的起点，后者检验这些能力在具体仓库权威和真实约束下是否成立。
 
 **不采用：**
 
-- 只有 Consumer 再次出现缺陷或失败，才允许研究新的工程能力；
+- 只有使用方再次出现缺陷或失败，才允许研究新的工程能力；
 - 看到一个外部项目、框架或 Skill 就直接复制到本仓库；
-- 把每个 Technology Profile 机械转换成 Skill；
-- 因为进入工程能力扩展阶段就重新设计已经稳定的 Core Method；
+- 把每个技术画像机械转换成 Skill；
+- 因为进入工程能力扩展阶段就重新设计已经稳定的核心方法；
 - 用单一低权威、过时或不可追溯的外部观点直接建立规范性能力。
 
 **原因：**
 
-首轮 Consumer 已经充分验证核心方法与 Skill 组合的可运行性，并通过 Existing Consumer 的多轮增量实践推动了若干定向强化。继续把同一个 Consumer 当作唯一创新来源会使 `agentic-dev` 被动等待偶发问题，也无法系统吸收框架官方实践和成熟工程经验。
+首轮使用方已经充分验证核心方法与 Skill 组合的可运行性，并通过既有使用方的多轮增量实践推动了若干定向强化。继续把同一个使用方当作唯一创新来源会使 `agentic-dev` 被动等待偶发问题，也无法系统吸收框架官方实践和成熟工程经验。
 
 另一方面，外部成熟实践只有经过来源、基线、适用范围、时效性、冲突和可验证性检查，并经过专项评估与当前仓库权威固化，才能成为 `agentic-dev` 的长期能力。该边界使项目能够主动站在成熟实践基础上演进，同时避免重新回到无边界横向比较和机械 Skill 扩张。

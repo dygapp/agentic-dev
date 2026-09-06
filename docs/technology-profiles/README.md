@@ -1,6 +1,6 @@
-# Technology Profiles
+# 技术画像
 
-本目录保存已经进入 `agentic-dev` Repository Authority 的 Technology Profile 实例，以及在独立分支 / PR 中形成、尚待集成的 Profile Draft。
+本目录保存已经进入 `agentic-dev` 仓库权威的技术画像实例，以及在独立分支 / PR 中形成、尚待集成的技术画像草案。
 
 上位契约：
 
@@ -8,17 +8,17 @@
 
 ## 规则
 
-- 本目录只保存规范性 Profile 实例或待集成 Draft，不保存 Research、临时 Candidate、Eval result 或 Consumer-local 项目事实；
-- Profile 可以在独立分支 / PR 中形成 Draft、Validated Draft 或拟集成 Baseline，但只有实际存在于当前 Repository 集成分支中的版本才构成现行 Profile Authority；
-- 每个 Profile 必须满足 Technology Profile Contract 的 Identity、Applicability、Evidence、Rule Strength、Verification Profile、Consumer Override、Targeted Eval 与 Lifecycle 要求；
-- 一个 Profile 可以由一个文件或一个具有明确单一入口的小目录承载，但必须能够从本目录直接发现当前入口；
-- 同一 Profile 的多个历史版本不得同时被解释为当前规范。被取代内容必须明确 `Superseded / Replaced` 关系；
-- 本目录不按“技术数量”追求覆盖率，不因为某技术常用就自动建立 Profile；
-- Profile 不自动产生 Task-oriented Skill。
+- 本目录只保存规范性技术画像实例或待集成草案，不保存研究、临时候选、评估结果或使用方本地项目事实；
+- 技术画像可以在独立分支 / PR 中形成草案、已验证草案或拟集成基线，但只有实际存在于当前仓库集成分支中的版本才构成现行技术画像权威；
+- 每个技术画像必须满足技术画像契约的身份、适用范围、证据、规则强度、验证画像、使用方覆盖、专项评估与生命周期要求；
+- 一个技术画像可以由一个文件或一个具有明确单一入口的小目录承载，但必须能够从本目录直接发现当前入口；
+- 同一技术画像的多个历史版本不得同时被解释为当前规范。被取代内容必须明确 `Superseded / Replaced` 关系；
+- 本目录不按“技术数量”追求覆盖率，不因为某技术常用就自动建立技术画像；
+- 技术画像不自动产生任务型技能。
 
-## Foundation v1
+## 工程能力基础 v1
 
-Foundation v1 只建立一个代表性 Profile：
+工程能力基础 v1 只建立一个代表性技术画像：
 
 > Vue 3 + TypeScript
 
@@ -26,6 +26,6 @@ Foundation v1 只建立一个代表性 Profile：
 
 `vue3-typescript.md`
 
-该实例内容已满足 **Baseline v0.1 / Targeted Eval PASS**，`C-VTS-01`～`C-VTS-09` Fresh Runtime Targeted Eval 为 `9 / 9 PASS`、`41 / 41 assertions PASS`。它是否属于当前现行 Profile Authority，统一由该文件是否存在于当前 Repository 集成分支决定；feature / PR 分支上的同一 Baseline 不会自行取得现行 Authority。
+该实例内容已满足**基线 v0.1 / 专项评估通过**，`C-VTS-01`～`C-VTS-09` 全新运行时专项评估为 `9 / 9 PASS`、`41 / 41 assertions PASS`。它是否属于当前现行技术画像权威，统一由该文件是否存在于当前仓库集成分支决定；功能 / PR 分支上的同一基线不会自行取得现行权威。
 
-Foundation v1 不因此自动增加 Element Plus、Spring、Gradle 或第二个 Technology Profile。
+工程能力基础 v1 不因此自动增加 Element Plus、Spring、Gradle 或第二个技术画像。

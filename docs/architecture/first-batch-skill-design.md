@@ -1,11 +1,11 @@
 # 第一批核心 Skill 设计基线
 
-**状态：** Design Baseline v0.1  
+**状态：** 设计基线 v0.1  
 **输入权威：** `AGENTS.md`、`docs/method/ai-development-method.md`、`docs/architecture/skill-architecture.md`、`docs/architecture/skill-contracts.md`
 
 ## 1. 目的
 
-本文把已复核的 Skill Contract 转换为第一批 `SKILL.md` 的实现设计约束。它不新增开发方法，只说明第一批 Skill 应如何实现既有方法语义。
+本文把已复核的 Skill 契约转换为第一批 `SKILL.md` 的实现设计约束。它不新增开发方法，只说明第一批 Skill 应如何实现既有方法语义。
 
 第一批固定为：
 
@@ -20,7 +20,7 @@
 
 ## 2. 统一实现原则
 
-每个 Workflow / Investigation Skill 的 `SKILL.md` 应至少包含：
+每个工作流 / 调查型 Skill 的 `SKILL.md` 应至少包含：
 
 ```text
 Purpose
@@ -36,16 +36,18 @@ Context Rules
 Allowed Sub-skills / Disciplines
 ```
 
+这些标题属于当前 Skill 契约的结构身份，保持原样。
+
 实现时统一遵守：
 
 1. Skill 只实现一个清晰职责，不自动接管完整生命周期。
-2. Authority First，发生冲突时遵守 Repository Authority Hierarchy。
-3. 使用 Progressive Disclosure，只加载当前职责需要的上下文。
-4. Conversation History 不是权威知识。
-5. Exit Condition 必须可以明确判断，避免无限分析。
-6. Human Escalation 统一基于 Authority、Impact、Reversibility。
+2. 权威优先，发生冲突时遵守仓库权威层级。
+3. 使用渐进式披露，只加载当前职责需要的上下文。
+4. 会话历史不是权威知识。
+5. 退出条件必须可以明确判断，避免无限分析。
+6. 人工升级统一基于权限、影响、可逆性。
 7. 没有当前证据，不得声明实现、验证或收敛完成。
-8. Ready to Integrate 是通用方法终点；Skill 不自动 Merge / Push / Release / Deploy。
+8. “已具备进入集成决策的条件”是通用方法终点；Skill 不自动 Merge / Push / Release / Deploy。
 
 ## 3. 各 Skill 的最小实现重点
 
@@ -53,147 +55,147 @@ Allowed Sub-skills / Disciplines
 
 实现重点：
 
-- 只识别会 materially affect Product Intent / Acceptance 的问题；
+- 只识别会实质影响产品意图 / 验收的问题；
 - 自动忽略普通、低影响、可逆实现细节；
-- 输出必须可以直接喂给 `specify`；
-- 把可能跨多个功能持续有效的长期领域事实标记为候选并交给 `specify`，不在 Clarification 中直接提升权威；
+- 输出必须可以直接交给 `specify`；
+- 把可能跨多个功能持续有效的长期领域事实标记为候选并交给 `specify`，不在澄清阶段直接提升权威；
 - 如果没有阻塞问题，应快速退出，不制造讨论流程。
 
 首版不需要：
 
 - 技术方案模板；
-- Code Inspection 流程；
-- 单独永久 Clarification Artifact 强制要求。
+- 代码检查流程；
+- 单独永久澄清产物强制要求。
 
 ### 3.2 `specify`
 
 实现重点：
 
-- 强制 WHAT / WHY 边界；
-- 对 Existing Specification 支持增量更新；
-- 验证长期领域事实候选，并按 Consumer Repository Authority 处理确认、持久化、更新、取代或 Required Authority Action；
-- 必须包含 Fresh-Agent Spec Ready 自检；
-- 能明确发现 Requirement Conflict / Product Decision 缺失并停止。
+- 强制“做什么 / 为什么”边界；
+- 对既有规格说明支持增量更新；
+- 验证长期领域事实候选，并按使用方仓库权威处理确认、持久化、更新、取代或所需权威动作；
+- 必须包含新的 Agent 上下文规格就绪自检；
+- 能明确发现需求冲突 / 产品决定缺失并停止。
 
 首版不需要：
 
 - 固定文件名或目录；
 - 特定 Markdown / YAML 模板要求；
-- Framework / Persistence 设计字段。
+- 框架 / 持久化设计字段。
 
 ### 3.3 `technical-plan`
 
 实现重点：
 
-- 先判断是否真的需要 Technical Planning；
-- 只保留跨 Unit 有持续协调价值的决定；
-- 明确区分 Durable Technical Plan 与 JIT Execution Plan；
-- 明确区分 Architecture Context 更新与 ADR 条件产生；跨功能持续有效的架构状态进入 Architecture Authority，只有需要保留背景、权衡或替代关系的重要决定形成 ADR；
-- 检查是否 Silent Redefinition of Intent。
+- 先判断是否真的需要技术规划；
+- 只保留跨执行单元有持续协调价值的决定；
+- 明确区分长期技术计划与即时执行计划；
+- 明确区分架构上下文更新与 ADR 条件产生；跨功能持续有效的架构状态进入架构权威，只有需要保留背景、权衡或替代关系的重要决定形成 ADR；
+- 检查是否静默重定义产品意图。
 
 首版不需要：
 
 - 逐文件施工步骤；
 - 固定 ADR 生成要求；
-- 特定 Architecture Diagram 格式。
+- 特定架构图格式。
 
 ### 3.4 `slice-work`
 
 实现重点：
 
-- 以 Vertical / Independently Verifiable 为首要拆分方向；
-- 为每个 Unit 强制最小逻辑字段；
+- 以纵向 / 可独立验证为首要拆分方向；
+- 为每个执行单元强制最小逻辑字段；
 - 为必需行为 / 验收义务建立执行单元级或显式功能整体验证责任；
 - 让计划验证证据足以证明所承接义务，而不只描述实现范围；
-- 检查 Context-fit 与 Hidden Dependency；
-- 产生的是候选执行结构，不承担最终 Readiness Verdict。
+- 检查上下文适配与隐藏依赖；
+- 产生的是候选执行结构，不承担最终就绪裁决。
 
 首版不需要：
 
 - 绑定 Jira / GitHub / Markdown Task；
-- 强制精确 Source File Paths；
-- Runtime-specific Worker 分配协议。
+- 强制精确源文件路径；
+- 运行时专项执行者分配协议。
 
 ### 3.5 `readiness-check`
 
 实现重点：
 
-- 只读 Checker；
-- 四维 Gate：Specification / Design / Execution / Governance；
+- 只读检查者；
+- 四维门禁：规格 / 设计 / 执行 / 治理；
 - 执行就绪度同时检查验收责任归属与计划验证覆盖；
-- Finding 必须分 Blocking / Non-blocking；
-- Blocking Finding 要指出返回哪个职责层，而不是自己修文档；
-- 未处理的 Domain / Architecture Authority 或 Artifact Lifecycle Gap 必须阻止进入 Execute；
-- 允许 Controller / Runtime 自动调用。
+- 发现必须区分阻塞 / 非阻塞；
+- 阻塞发现要指出返回哪个职责层，而不是自己修改文档；
+- 未处理的领域 / 架构权威或产物生命周期缺口必须阻止进入执行；
+- 允许控制者 / 运行时自动调用。
 
 首版不需要：
 
-- 自动 Rewrite Specification / Plan / Units；
-- 人工 Review 作为默认步骤；
-- 独立 Reviewer Agent 强制要求。
+- 自动重写规格说明 / 计划 / 执行单元；
+- 人工复核作为默认步骤；
+- 独立复核 Agent 强制要求。
 
 ### 3.6 `execute-unit`
 
 实现重点：
 
-- 严格一次只执行一个 Unit；
-- Fresh Execution Context；
-- 先 Inspect Actual Repository State；
-- Repository-specific Verification Commands 运行时发现，不硬编码；
-- JIT Plan 临时化；
-- Unexpected Failure 转 `systematic-debug`；
+- 严格一次只执行一个执行单元；
+- 使用新执行上下文；
+- 先检查实际仓库状态；
+- 仓库专项验证命令在运行时发现，不硬编码；
+- 即时执行计划保持临时；
+- 非预期失败转 `systematic-debug`；
 - 发现长期领域事实或架构状态缺口时返回拥有相应权威的上游职责，不在代码 / 测试中静默提升长期权威；
 - 完成声明必须由当前证据支持，并逐项关闭当前执行单元承担验证责任的验收义务；
 - 实现存在或未覆盖关键差异的主路径证据不能代替义务闭环。
 
 首版不需要：
 
-- 自动遍历 Queue；
+- 自动遍历队列；
 - 自动 `converge`；
-- 自动 Integration；
-- 永久保存 JIT Plan。
+- 自动集成；
+- 永久保存即时执行计划。
 
 ### 3.7 `systematic-debug`
 
 实现重点：
 
-- Reproduce first；
-- Expected vs Actual 明确；
-- Falsifiable Hypothesis；
-- Minimal Root-cause Fix；
-- Regression Evidence；
-- Expected Behavior 不明确时必须回上游，而不是猜需求。
-- Root Cause 暴露长期 Domain / Architecture Authority 缺口时必须返回相应上游职责。
+- 先复现；
+- 明确预期与实际；
+- 建立可证伪假设；
+- 最小根因修复；
+- 回归证据；
+- 预期行为不明确时必须回上游，而不是猜需求；
+- 根因暴露长期领域 / 架构权威缺口时必须返回相应上游职责。
 
 首版不需要：
 
-- 独立 Bug Tracker 适配；
-- 特定 Debugger / Observability 工具；
-- 用连续 Patch 尝试替代 Root Cause Investigation。
+- 独立缺陷跟踪器适配；
+- 特定调试器 / 可观察性工具；
+- 用连续补丁尝试替代根因调查。
 
 ### 3.8 `converge`
 
 实现重点：
 
-- Feature-wide，而不是 Unit-wide；
-- READY / GAPS 二元主结果；
-- 检查 Missing / Partial / Contradicting / Unrequested / Obsolete Plan / Missing Verification / Integration Gap；
-- 检查 Domain / Architecture Authority 与 Artifact Lifecycle Gap；
-- 本次工作命中项目级更新触发条件时，检查已有且适用的 Project Roadmap 是否陈旧，并只把 Gap 路由到授权的项目治理 / Bootstrap 维护职责；
-- Gap 需要执行工作时交给 `slice-work` 塑形；
-- READY 必须基于 Current System + Current Evidence。
+- 功能整体，而不是执行单元局部；
+- `READY` / `GAPS` 二元主结果；
+- 检查缺失 / 部分实现 / 冲突 / 未请求行为 / 过时计划 / 缺失验证 / 集成缺口；
+- 检查领域 / 架构权威与产物生命周期缺口；
+- 本次工作命中项目级更新触发条件时，检查已有且适用的项目路线图是否陈旧，并只把缺口路由到授权的项目治理 / 启动维护职责；
+- 缺口需要执行工作时交给 `slice-work` 塑形；
+- `READY` 必须基于当前系统 + 当前证据。
 
 首版不需要：
 
-- 把 Unit Status 聚合为完成结论；
-- 自动修改 Specification / Technical Plan / Project Roadmap；
+- 把执行单元状态聚合为完成结论；
+- 自动修改规格说明 / 技术计划 / 项目路线图；
 - 发明下一阶段、项目核心目标或下一步路线；
-- 要求每个项目或每个 Feature 创建 / 更新 Project Roadmap；
-- 自动 Integration。
+- 要求每个项目或每个功能创建 / 更新项目路线图；
+- 自动集成。
 
 ## 4. 建议实现顺序
 
-为了尽早验证 Contract 结构，同时避免一次批量实现全部 Skills，建议按以下顺序逐个落地：
+为了尽早验证契约结构，同时避免一次批量实现全部 Skill，建议按以下顺序逐个落地：
 
 1. `readiness-check`
 2. `slice-work`
@@ -206,22 +208,22 @@ Allowed Sub-skills / Disciplines
 
 理由：
 
-- `readiness-check` 是只读 Gate，副作用最低，最适合验证统一 `SKILL.md` 结构、Authority / Exit / Escalation 写法；
-- `slice-work` 可以紧接着验证 Execution Unit 契约与 Gate 边界；
-- Intent / Specification / Technical Planning 再补齐上游 Workflow；
-- `systematic-debug` 先于 `execute-unit`，使 Execute 的 Unexpected Failure 路径在实现时已有可调用目标；
-- `converge` 最后实现，因为它依赖前述 Unit、Evidence 与阶段回退语义已经稳定。
+- `readiness-check` 是只读门禁，副作用最低，最适合验证统一 `SKILL.md` 结构、权威 / 退出 / 升级写法；
+- `slice-work` 可以紧接着验证执行单元契约与门禁边界；
+- 意图 / 规格说明 / 技术规划再补齐上游工作流；
+- `systematic-debug` 先于 `execute-unit`，使执行中的非预期失败路径在实现时已有可调用目标；
+- `converge` 最后实现，因为它依赖前述执行单元、证据与阶段回退语义已经稳定。
 
-该顺序是 Skill Engineering 的实现顺序，不改变方法阶段顺序。
+该顺序是 Skill 工程的实现顺序，不改变方法阶段顺序。
 
 ## 5. 第一批完成判定
 
-第一批 Skill Engineering 不以“8 个目录都存在”为完成标准。至少需要满足：
+第一批 Skill 工程不以“8 个目录都存在”为完成标准。至少需要满足：
 
-- 每个已实现 Skill 与 reviewed contract 一致；
+- 每个已实现 Skill 与已复核契约一致；
 - 没有新增超级 Skill 或职责重叠；
-- Authority Sources、Exit Conditions、Escalation Conditions、Context Rules 均明确；
-- Workflow 与 Embedded Discipline 没有错误混合；
-- Skill 不绑定特定语言、框架、Issue Tracker 或 Agent Runtime；
-- 能够仅凭 Method + Architecture + Contract 明确判断其行为边界；
+- `Authority Sources`、`Exit Conditions`、`Escalation Conditions`、`Context Rules` 均明确；
+- 工作流与内嵌纪律没有错误混合；
+- Skill 不绑定特定语言、框架、Issue 跟踪工具或 Agent 运行时；
+- 能够仅凭方法 + 架构 + 契约明确判断其行为边界；
 - 对完成状态的声明有当前证据。

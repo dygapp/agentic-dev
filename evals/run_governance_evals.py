@@ -21,6 +21,8 @@ from run_codex_evals import (
 
 GOVERNANCE_FILES = [
     EVALS / "governance" / "chinese-human-facing-output.json",
+    EVALS / "governance" / "formal-concept-semantic-safety.json",
+    EVALS / "governance" / "method-object-semantic-safety.json",
 ]
 
 
