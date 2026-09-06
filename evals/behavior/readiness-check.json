@@ -71,6 +71,20 @@
         "明确 Candidate Unit 可以有 Identifier，但 Identifier 本身不构成 Readiness PASS",
         "保持只读，不在 readiness-check 中猜测或补写 Specification、Units、Acceptance 或执行顺序"
       ]
+    },
+    {
+      "id": "B-RC-07",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 readiness-check。此前 Specification v1 与 Technical Plan v1 已形成 Candidate Unit `EU-36`，并曾在旧输入上得到 readiness PASS。v1 计划假定 Public 页面永远不会接触 Admin content URL，因此准备直接删除 Public 侧 Admin client 并加 source guard。现在 Execute 前重新检查 Current Evidence，发现 Admin authoring 实际会把 managed body image 的 Admin Resource URL 持久化进 `bodyHtml`，Public 页面当前靠浏览器侧 rewrite 才能显示图片；Backend Public projection 还没有承担该转换。有人建议为了保住既有 `EU-36` 和旧 PASS，直接给 source guard 加一个兼容例外并开始 Execute。请给出当前 Gate 结论、Return To，以及如果上游随后修订为“Backend Public projection 负责把当前 Article 关联的 managed resource URL 转成 Public URL”后，进入 Execute 前必须怎样重新建立就绪证据。不要修改任何 artifact。",
+      "expected_behavior": "不得 PASS，也不能为保留旧 Candidate/旧 PASS 在 Gate 内发明兼容例外。Current Evidence 已证明 v1 HOW / boundary premise 不成立，应把 Finding 返回 specify / technical-plan（按当前权威修正 WHAT/HOW 与 Architecture basis），而不是 Execute。上游实质修订后，旧 Candidate Unit Set 与旧 Readiness PASS 只对应 v1，不能继续授权；应基于新 Current Authority 重新进入 slice-work 核对/必要时重塑 Candidate Units，再重新 readiness-check。若 `EU-36` 的逻辑 identity 仍成立可以保留 Identifier，但 Identifier 不携带旧 PASS。",
+      "assertions": [
+        "不输出 PASS，不因历史 readiness PASS、`EU-36` Identifier 或既有 Work Artifact 直接进入 Execute",
+        "识别 Current Evidence 已推翻 v1 Technical Plan / boundary premise，形成 Specification / Design Readiness Blocking Finding",
+        "Return To 指向 `specify` / `technical-plan` 或相应 Architecture Authority 修订，而不是在 readiness-check 内补写兼容例外",
+        "拒绝仅为了保住既有 Candidate 或 source guard 而发明未经当前 Authority 支持的 Public Admin URL 兼容例外",
+        "明确上游 WHAT / HOW / Architecture basis 实质修订后，旧 Candidate Unit Set 与旧 readiness PASS 都只对应旧基础，不能继续授权 Execute",
+        "要求修订完成后重新进入 `slice-work` 核对并按需重塑 Candidate Units，再重新执行 `readiness-check`",
+        "允许在逻辑 Unit identity 仍真实成立时保留 `EU-36` Identifier，但明确 Identifier 不携带旧 PASS / Execute 授权，并保持 Gate 只读"
+      ]
     }
   ]
 }
