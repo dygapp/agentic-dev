@@ -2,11 +2,11 @@
 
 ## 仓库目标
 
-本仓库用于定义一套通用的 AI Agent（以下简称 Agent）驱动软件开发方法，并维护工程纪律、技术栈 Profile、验证 Profile、小型可组合 Skill 与运行时适配等可复用工程能力。
+本仓库用于定义一套通用的 AI Agent 驱动软件开发方法，并维护工程纪律、技术画像、验证画像、小型可组合技能与运行时适配等可复用工程能力。
 
-**方法定义高于 Skill 实现。**
+**方法定义高于技能实现。**
 
-Skill 必须实现 Method / Architecture 已明确允许的可复用职责，不允许通过修改 `SKILL.md` 暗中改变 Method、Architecture 或 Repository Authority。
+技能必须实现方法与架构已经明确允许的可复用职责，不允许通过修改 `SKILL.md` 暗中改变方法、架构或仓库权威。
 
 ## 权威顺序
 
@@ -25,85 +25,95 @@ Skill 必须实现 Method / Architecture 已明确允许的可复用职责，不
 11. `docs/project/*`
 12. `docs/guides/git-commit-guidelines.md`
 13. `docs/research/*`
-14. Tasks 与临时工作记录
+14. 任务与临时工作记录
 
-`docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行规则，不得覆盖更高优先级 Method、Architecture、Contract、Engineering Discipline 或 Technology Profile Authority，也不得被 Consumer Repository 自动继承。
+`docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行规则，不得覆盖更高优先级的方法、架构、契约、工程纪律或技术画像权威，也不得被使用方项目自动继承。
 
-如果某个 Skill 的设计要求改变方法本身，必须先显式修改方法文档，再修改 Skill。
+如果某个技能的设计要求改变方法本身，必须先显式修改方法文档，再修改技能。
 
-## 仓库事实来源（Repository Source of Truth）
+## 仓库事实来源
 
 GitHub 仓库是本仓库唯一的长期基线来源。
 
 规则：
 
-- Git commit 记录项目演进历史；
-- Branch 用于隔离实验、设计和实现过程；
+- Git 提交记录项目演进历史；
+- 分支用于隔离实验、设计和实现过程；
 - ZIP 快照只用于初始化、离线交换或临时备份，不作为持续开发上下文来源。
 
-所有后续方法（Method）、契约（Contract）和 Skill 实现变更，都应基于 Git 仓库当前状态进行。
+所有后续方法、契约和技能实现变更，都应基于 Git 仓库当前状态进行。
 
 ## 知识边界与项目自治
 
-当前仓库权威（Repository Authority）决定本项目的事实、规则与约束。
+当前仓库权威决定本项目的事实、规则与约束。
 
-- 会话历史（Conversation History）不构成项目权威；
+- 会话历史不构成项目权威；
 - 其他会话、其他项目或个人记忆中的规则，不得直接作为本项目事实继续执行；
-- 外部项目经验可以作为研究（Research）输入，但只有在当前仓库中按权威层级显式固化后，才能改变本项目的长期规则；
-- 项目规则（Project Rule）可以选择、要求或限制某些 Skills 的使用方式；Skill 实现不得覆盖当前仓库权威；
-- 新的长期结论应进入合适的 Method、Architecture、Contract、Decision、Guide 或其他项目级权威产物（Artifact），不能只停留在聊天或临时 Plan 中。
+- 外部项目经验可以作为研究输入，但只有在当前仓库中按权威层级显式固化后，才能改变本项目的长期规则；
+- 项目规则可以选择、要求或限制某些技能的使用方式；技能实现不得覆盖当前仓库权威；
+- 新的长期结论应进入合适的方法、架构、契约、决策、指南或其他项目级权威产物，不能只停留在聊天或临时计划中。
 
-复杂、多阶段或跨 Fresh Context 的工作协调遵循 `tasks/README.md`。简单工作不得为了形式完整性创建 Plan。
+项目的**表达风格同样不能从历史会话、其他项目或个人记忆继承**。当当前仓库已经规定面向人的主导语言时，Agent 必须以当前仓库规则为准，不得因为旧聊天、旧 PR、旧文档示例或运行环境输出大量英文，就恢复已经被取代的中英文混写习惯。
+
+复杂、多阶段或跨新上下文的工作协调遵循 `tasks/README.md`。简单工作不得为了形式完整性创建计划。
 
 ## 当前阶段
 
-当前处于：
+当前长期阶段是：
 
-> **Engineering Capability Expansion & Method Evolution（工程能力扩展与方法演进）**
+> **工程能力扩展与方法演进**
 
-第一批 8 个核心 Skill 的历史 Skill 工程（Skill Engineering）基线、首轮真实 Consumer Experiment，以及随后针对验收闭环、外部操作、验证证据、Human Review、共享资源和配置责任等问题的定向强化均已完成。核心开发方法已经经过一轮真实 Consumer 的充分验证，进入相对稳定的持续维护阶段。
+第一批 8 个核心技能的历史工程基线、首轮真实使用方实验，以及随后针对验收闭环、外部操作、验证证据、人工复核、共享资源和配置责任等问题的定向强化均已完成。核心开发方法已经经过真实使用方充分验证，进入相对稳定的持续维护阶段。
 
-当前项目不再把“等待 Consumer 暴露新问题”作为主要演进模式。后续可以主动研究并吸收官方权威实践、成熟开源工程经验、专家方法和其他高质量外部证据；在通过能力分层、专项评估、AI Review 和当前仓库权威固化后，再推动 Consumer 采用并以真实实践持续纠偏。
+当前项目不再把“等待使用方暴露新问题”作为主要演进模式。后续可以主动研究并吸收官方权威实践、成熟开源工程经验、专家方法和其他高质量外部证据；在通过能力分层、专项评估、AI 复核和当前仓库权威固化后，再推动使用方采用并以真实实践持续纠偏。
 
-Consumer Evidence 仍然是重要证据来源，但主要承担现实验证、纠偏、优先级调整和长期适用性确认，不再是新增工程能力、Technology Profile 或候选 Skill 的唯一前置条件。
+使用方证据仍然是重要证据来源，但主要承担现实验证、纠偏、优先级调整和长期适用性确认，不再是新增工程能力、技术画像或候选 Skill 的唯一前置条件。
 
-项目演进路线、当前阶段、证据基线、能力建设顺序和下一步工作统一记录在 `docs/project/project-roadmap.md`。工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。
+最近完成的有限里程碑是：
 
-不得因为进入工程能力扩展阶段就机械增加 Skill、Super-skill、Technology Profile 或流程层级。任何候选能力都必须先判断其应属于 Core Method、Engineering Discipline、Technology Profile、Verification Profile、Task-oriented Skill 还是 Runtime Adapter，并保持既有 Authority 与 Integration Boundary。
+> **中文交互与上下文清理 v1**
+
+该里程碑已经完成仓库侧实现、独立运行时评估、人工语义评分、最终 AI 复核和真正新上下文语言验收。当前没有活动有限里程碑，项目处于**待人工决策**状态；WI-06、WI-07、WI-09、第四工程纪律以及其他候选都不得自动启动。
+
+当前状态、里程碑结果、候选库和下一步边界统一记录在：
+
+- `docs/project/project-roadmap.md`
+- `docs/project/chinese-interaction-context-cleanup-v1.md`
+
+工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。
+
+不得因为进入工程能力扩展阶段就机械增加技能、超级技能、技术画像或流程层级。任何候选能力都必须先判断其应属于核心方法、工程纪律、技术画像、验证画像、任务型技能还是运行时适配器，并保持既有权威与集成边界。
 
 ## 核心规则
 
 - 阶段是状态，不是文件。
-- 规格说明（Specification）描述 WHAT / WHY，不默认包含 HOW。
-- 技术规划（Technical Planning）是条件阶段。
-- 执行单元（Execution Unit）应纵向、可独立验证、范围明确、可追溯并适合 Fresh Context。
-- Conversation History 不作为项目权威知识。
-- 使用渐进式披露（Progressive Disclosure），只加载当前工作真正需要的上下文。
+- 规格说明描述 WHAT / WHY，不默认包含 HOW。
+- 技术规划是条件阶段。
+- 执行单元应纵向、可独立验证、范围明确、可追溯并适合新上下文。
+- 会话历史不作为项目权威知识。
+- 使用渐进式披露，只加载当前工作真正需要的上下文。
 - 没有当前证据，不得声明完成。
 - 普通、低影响、可逆的实现歧义由 Agent 自主裁决并继续。
-- 会改变产品意图、具有破坏性或不可逆性、安全/隐私敏感、改变重大架构方向，或超出 Agent 授权的事项必须升级。
-- 不创建接管完整生命周期的超级 Skill。
-- 通用方法的终点是 `Ready to Integrate`（已具备进入集成决策的条件）；merge、push、release、deploy 和破坏性 cleanup 由人工权威（Human Authority）或仓库策略（Repository Policy）控制。
+- 会改变产品意图、具有破坏性或不可逆性、安全 / 隐私敏感、改变重大架构方向，或超出 Agent 授权的事项必须升级。
+- 不创建接管完整生命周期的超级技能。
+- 通用方法的终点是“已具备进入集成决策的条件”；合并、推送、发布、部署和破坏性清理由人工权威或仓库策略控制。
 
 ## 外部操作治理
 
-当 Agent 具备 GitHub、Repository、Issue、Pull Request、外部 API 或其他会产生外部状态变化的操作能力时，必须遵循：
+当 Agent 具备 GitHub、仓库、Issue、PR、外部 API 或其他会产生外部状态变化的操作能力时，必须遵循：
 
 ```text
-Analyze
-  ↓
-Act
-  ↓
-Verify
-  ↓
-Report
+分析
+→ 执行
+→ 验证
+→ 汇报
 ```
 
 基本要求：
 
 - 外部状态修改前先读取当前状态与权威来源；
 - 明确目标、权限和最小必要操作后再执行写操作；
-- 写操作完成后重新读取事实来源（Source of Truth）验证目标状态；
+- 写操作完成后重新读取事实来源验证目标状态；
 - 工具调用成功不等同于目标状态完成；
 - 只能汇报已经由当前证据确认的状态。
 
@@ -111,42 +121,44 @@ Report
 
 `docs/guides/external-operation-guidelines.md`
 
-## AI 复核（AI Review）
+## AI 复核
 
-本节只约束 `agentic-dev` 仓库自身，不属于通用 Method、Skill Contract 或 Consumer Operating Guide，Consumer Repository 不得自动继承。
+本节只约束 `agentic-dev` 仓库自身，不属于通用方法、技能契约或使用方项目使用指南，其他项目不得自动继承。
 
-对会改变方法（Method）、原则（Principles）、架构（Architecture）、契约（Contract）、核心 Skill 实现（Skill Implementation）、仓库权威（Repository Authority）、`docs/project/*`，或其他会实质改变后续 Agent 行为的高影响变更，在进入最终人工复核（Human Review）或集成决策前必须完成与风险相称的 AI Review。
+对会改变方法、原则、架构、契约、核心技能实现、仓库权威、`docs/project/*`，或其他会实质改变后续 Agent 行为的高影响变更，在进入最终人工复核或集成决策前必须完成与风险相称的 AI 复核。
 
 基本要求：
 
-- 重新读取当前集成目标基线的仓库权威与最终变更状态；采用 PR 时检查 PR 元数据、变更文件与最终 diff / patch，未采用 PR 时检查拟集成 ref 与目标基线之间的等价可验证变更集；
-- 根据变更性质检查权威一致性、语义回归、跨层一致性、范围控制、术语规范、人工 / 集成边界与证据一致性等必要维度；
-- Review 后如果发生会影响结论的实质修改，必须重新读取最终变更状态，并对受影响维度执行针对性重新复核；
-- 只有不存在未解决的 Blocking 或 Medium Finding 时，才可以报告 `AI Review: PASS`；
-- 采用 PR 时，最终 AI Review 摘要必须在进入合并决策前记录到 PR 讨论或正式 Review 中，不能只停留在聊天；
-- `AI Review: PASS` 不等于 Human Approval，也不授予 Merge 或其他集成权限。
+- 重新读取当前集成目标基线的仓库权威与最终变更状态；采用 PR 时检查 PR 元数据、变更文件与最终差异，未采用 PR 时检查拟集成引用与目标基线之间的等价可验证变更集；
+- 根据变更性质检查权威一致性、语义回归、跨层一致性、范围控制、中文表达规范、人工 / 集成边界与证据一致性等必要维度；
+- 复核后如果发生会影响结论的实质修改，必须重新读取最终变更状态，并对受影响维度执行针对性重新复核；
+- 只有不存在未解决的阻塞或中等级问题时，才可以报告“AI 复核通过”；
+- 采用 PR 时，最终 AI 复核摘要必须在进入合并决策前记录到 PR 讨论或正式复核中，不能只停留在聊天；
+- AI 复核通过不等于人工批准，也不授予合并或其他集成权限。
 
 完整说明见：
 
 `docs/project/ai-review-guidelines.md`
 
-## 文档语言与术语表达
+## 中文表达规则
 
-当前仓库面向人的说明性文档以中文作为主要叙述语言，同时保留对方法、技术和固定标识有必要的英文术语。
+当前仓库面向人的内容默认使用自然中文。这项规则同时约束文档和 Agent 的实际协作输出。
 
 基本要求：
 
-- 中文已有自然稳定表达、且英文需要精确对应时，首次重要出现优先使用“中文（English Term）”；
-- 英文本身是固定名称、状态或精确锚点时，可使用“English Term（中文解释）”；
-- Skill 名称、代码标识符、文件路径、命令、API 参数等保持原生形式；
-- 不要求每次重复中英对照，避免双语注释本身成为阅读噪声；
-- 新增内容直接遵守本规范；其他既有文档在实际修改时按触达逐步收敛。
+- 已有稳定中文表达的概念直接使用中文，不再机械附带英文；
+- 不把“中文（英文）”或“英文（中文解释）”作为默认术语模板；
+- 会话中的分析、进度汇报、规划、验证结论、AI 复核、人工决策说明，以及 Issue / PR / Review 等外部协作内容，都使用自然中文；
+- 代码标识符、文件路径、命令、API / CLI 参数、Git 引用、Skill 调用名、外部正式产品 / 协议名称、错误信息和必须精确匹配的固定值保持原样；
+- 即使句子中必须保留原始英文对象，动作、判断、因果和结论仍应使用中文；
+- 不从历史聊天、其他会话、个人记忆或旧示例恢复被当前规则取代的中英文混写语风；
+- 当前用户明确要求使用其他语言时，以该次明确要求为准。
 
 完整说明见：
 
 `docs/guides/terminology-guidelines.md`
 
-## Research 使用规则
+## 研究使用规则
 
 `docs/research/` 只保存研究依据和横向比较。
 
@@ -154,17 +166,17 @@ Report
 
 必须先区分：
 
-- Method / Contract 语义；
-- Engineering Discipline / Technology Profile / Verification Profile / Skill 的职责层次；
-- Skill Packaging / Interoperability 约束；
-- Runtime / Tool-specific 实现细节。
+- 方法 / 契约语义；
+- 工程纪律、技术画像、验证画像和技能的职责层次；
+- 技能打包与互操作约束；
+- 运行时或工具专项实现细节。
 
-外部成熟证据可以主动触发候选能力研究和设计，但任何外部来源都不能自动覆盖本仓库的方法权威（Method Authority）或其他 Repository Authority。需要改变 Method 时必须通过显式方法决策（Method Decision）；需要建立其他长期能力时必须按工程能力架构完成分层、验证和权威固化。
+外部成熟证据可以主动触发候选能力研究和设计，但任何外部来源都不能自动覆盖本仓库的方法权威或其他仓库权威。需要改变方法时必须通过显式方法决策；需要建立其他长期能力时必须按工程能力架构完成分层、验证和权威固化。
 
-## Git Commit
+## Git 提交
 
 所有提交必须遵循：
 
 `docs/guides/git-commit-guidelines.md`
 
-具体格式、Scope、摘要和分层提交规则只在该规范中维护，提交前应按该规范完成必要检查。
+具体格式、`scope`、摘要和分层提交规则只在该规范中维护，提交前应按该规范完成必要检查。

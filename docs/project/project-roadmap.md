@@ -1,336 +1,275 @@
 # 项目演进路线与当前状态
 
-本文是 `agentic-dev` 仓库自身的 Project Roadmap，记录当前有效的项目阶段、能力基线、已完成里程碑、当前决策状态与下一步边界。
+本文是 `agentic-dev` 仓库自身的项目路线图，记录当前有效的项目阶段、已完成里程碑、候选库与下一步边界。
 
-本文属于 `docs/project/*` 项目级权威，不覆盖更高优先级的 Method、Architecture、Contract、Engineering Discipline 或 Technology Profile Authority。Consumer Repository 不自动继承本文中的 `agentic-dev` 项目事实。
+本文属于 `docs/project/*` 项目级权威，不覆盖更高优先级的方法、架构、契约、工程纪律或技术画像权威。使用方项目不会自动继承本文中的 `agentic-dev` 项目事实。
 
 ## 1. 路线图使用规则
 
-本文只维护当前有效路线；历史细节由 Git 历史、已关闭 Issue / PR、Milestone / Closure 文档保留。
+本文只维护当前有效路线。历史细节由 Git 历史、已关闭 Issue / PR 和对应收尾文档保存，不在路线图中重复维护完整实验流水。
 
 状态语义：
 
-- **Completed**：完成条件已有当前 Git / PR / Issue / Eval / Review 证据支持；
-- **Current**：当前正在执行的有限里程碑；
-- **Decision Pending**：上一里程碑已完成，但下一有限里程碑尚未由 Human Authority 选择；
-- **Post-v1 Backlog**：保留为候选，但不是当前承诺。
+- **已完成**：完成条件已有当前 Git、PR、Issue、评估或复核证据支持；
+- **当前**：正在执行的有限里程碑；
+- **待人工决策**：上一有限里程碑已经完成，但下一项尚未由人工权威选择；
+- **v1 后候选库**：保留为后续候选，但不是当前承诺。
 
-不得因为出现新的外部资料、Consumer Finding 或有价值候选而静默扩展当前路线。
+不得因为出现新的外部资料、使用方反馈或有价值候选而静默扩展当前路线。
 
 ## 2. 当前阶段
 
 当前长期阶段仍为：
 
-> **Engineering Capability Expansion & Method Evolution（工程能力扩展与方法演进）**
+> **工程能力扩展与方法演进**
 
-该阶段已经完成两个有限里程碑：
+已经完成的主要有限里程碑：
 
-1. **Engineering Capability Foundation v1**；
-2. **Engineering Discipline Expansion v1**。
+1. 工程能力基础 v1；
+2. 工程纪律扩展 v1；
+3. 中文交互与上下文清理 v1。
 
-当前项目状态：
+当前有限里程碑状态：
 
-> **Post-Milestone Decision / Stable Maintenance**
+> **待人工决策**
 
-即：当前没有自动续接的活动能力里程碑。下一项正式能力建设必须由新的 Human Milestone Decision 显式启动。
+“中文交互与上下文清理 v1”已经完成全部仓库侧验证、人工语义评分、最终 AI 复核和真正新上下文语言验收。跟踪入口为 Issue #62，实施载体为 PR #63；PR 是否合并仍由人工权威决定，不因里程碑完成自动执行。
 
-## 3. 总体路线状态
+完成后的项目不自动续接 WI-06、WI-07、WI-09 或其他候选。下一有限里程碑必须由人工权威重新选择。
+
+## 3. 当前路线状态
 
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
-| Core Method | Stable Maintenance | 只有高质量通用证据揭示生命周期 / Authority 缺口时定向修改 |
-| Engineering Disciplines | Completed / Conditional Expansion | 当前已有三项 Discipline；不自动启动第四项 |
-| Technology Profiles | Foundation Completed / Post-v1 Backlog | Technology Profile Contract 与 Vue 3 + TypeScript Profile 已完成；WI-06 未启动 |
-| Consumer Adoption | Foundation Completed | Foundation v1 唯一 Existing Consumer Adoption 已完成；普通 Consumer Feedback 继续作为候选输入 |
-| Task-oriented Skills | Post-v1 Backlog | WI-07 未启动；只有出现独立稳定任务职责并经 Milestone Decision 才进入 |
-| Runtime / Distribution | Post-v1 Backlog | WI-09 未启动；Runtime Adapter、Marketplace、Plugin Bundle、Controller、统一安装器均不是当前工作 |
+| 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
+| 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
+| 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 未启动 |
+| 使用方采用 | 基础建设已完成 | 首次正式既有项目采用已完成；后续反馈继续作为候选输入 |
+| 任务型技能 | v1 后候选库 | WI-07 未启动 |
+| 运行时与分发 | v1 后候选库 | WI-09 未启动 |
+| 项目语言治理 | 已完成 | “中文交互与上下文清理 v1”完成，等待人工集成决策 |
 
-## 4. 当前能力基线
+## 4. 已完成能力基线
 
-### 4.1 Engineering Capability Foundation v1
+### 4.1 工程能力基础 v1
 
-**Completed**。
+已完成。
 
-主要集成事实：
+主要集成锚点：
 
-- 首批 Engineering Disciplines：PR #48，merge `6130d7251d81bbfc9f13b2dd827b6a40dfd09076`；
-- Technology Profile / Verification Profile Contract：PR #49，merge `16151149ab52211e266839a110fc9a3c73415623`；
-- Vue 3 + TypeScript Profile：PR #50，merge `b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`；
-- Existing Consumer Adoption Handoff：PR #51，merge `18a48bcada8b4eeb0e6d8c3043b21c54aa8e492b`；
-- F4 Evidence Review：Issue #52，Blocking / Medium General Finding = `0 / 0`；
-- Foundation Closure：`docs/project/engineering-capability-foundation-v1-closure.md`。
+- 首批工程纪律：PR #48，合并提交 `6130d7251d81bbfc9f13b2dd827b6a40dfd09076`；
+- 技术画像 / 验证画像契约：PR #49，合并提交 `16151149ab52211e266839a110fc9a3c73415623`；
+- Vue 3 + TypeScript 技术画像：PR #50，合并提交 `b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`；
+- 既有使用方采用交接：PR #51，合并提交 `18a48bcada8b4eeb0e6d8c3043b21c54aa8e492b`；
+- 采用证据复核：Issue #52，未解决的阻塞 / 中等级通用问题为 `0 / 0`。
 
-Foundation v1 正式能力基线：
+正式能力基线：
 
 `b80b2b1b7cea38eed0aef9807879e2a0d56afd2f`
 
-### 4.2 Existing Consumer continuous-evolution experiment
+收尾文档：
 
-Issue #33 已以：
+`docs/project/engineering-capability-foundation-v1-closure.md`
 
-> **PASS / Completed**
+### 4.2 既有使用方持续演进实验
 
-关闭。
+Issue #33 已完成并关闭。
 
-最终：
+最终未解决的问题：
 
-- Blocking / Medium Finding = `0 / 0`；
-- 未解决 Method / Contract Gap = `0`；
-- 待补 Skill / Eval = `0`。
+- 阻塞 / 中等级问题：`0 / 0`；
+- 方法 / 契约缺口：`0`；
+- 待补技能 / 评估：`0`。
 
-Issue #33 现在只作为历史 Evidence Source，不再承担活动路线总控职责。
+Issue #33 只作为历史证据来源，不再承担活动路线总控职责。
 
-### 4.3 Engineering Discipline Expansion v1
+### 4.3 工程纪律扩展 v1
 
-**PASS / Completed**。
+已完成。
 
-启动基线：
+唯一建设候选为“数据访问作用域与有界性控制”，最终形成第三项正式工程纪律。
 
-`master@a0aece02414aa36ca7421db391cb3124ad0780f2`
-
-唯一候选：
-
-> **Data Access Scope & Boundedness Control（数据访问作用域与有界性控制）**
-
-Architecture Fit：
-
-> **Independent Engineering Discipline + thin `execute-unit` consumption**
-
-Fresh Runtime Targeted Eval：
+专项运行时评估：
 
 ```text
-新场景：   8 / 8 PASS，41 / 41 assertions PASS
-历史回归： 4 / 4 PASS，19 / 19 assertions PASS
-合计：    12 / 12 PASS，60 / 60 assertions PASS
+新场景：   8 / 8 通过，41 / 41 断言通过
+历史回归： 4 / 4 通过，19 / 19 断言通过
+合计：    12 / 12 通过，60 / 60 断言通过
 ```
 
-ZIP SHA-256：
+最终 AI 复核未发现阻塞或中等级问题。
 
-`d32233916e2ce923f2f052fe6750eda4bf0674992906bd18223b43f83f21a855`
+集成锚点：PR #56，合并提交 `8d0c7ccd1b13db05540fefc619725f9d1f7fc2de`。
 
-AI Review：
-
-- Pre-Runtime：PASS，Blocking / Medium = `0 / 0`；
-- Final：PASS，Blocking / Medium = `0 / 0`；
-- Final Review ID：`5104594425`。
-
-Integration：
-
-- PR #56：merged；
-- merge commit：`8d0c7ccd1b13db05540fefc619725f9d1f7fc2de`。
-
-Closure：
+收尾文档：
 
 - `docs/project/engineering-discipline-expansion-v1.md`
 - `docs/project/engineering-discipline-expansion-v1-closure.md`
 
-第三项 Engineering Discipline 已进入 Repository Authority。
+### 4.4 中文交互与上下文清理 v1
 
-### 4.4 Issue #58 外部证据与评审环境生命周期维护
+已完成，等待人工集成决策。
 
-Issue #58 的 Consumer Evidence 触发了一次 **Stable Maintenance** 定向修订，而不是新的能力里程碑：
+启动基线：
 
-- 临时执行证据被适当 Authority 接受并成为长期输入时，显式晋升为 Consumer 可持续维护的持久来源，保留 provenance / integrity，并对 Promotion 后的最终状态重新取得 Current Evidence；
-- 长生命周期单实例 Review Environment 显式定义 owner、lease、stale-run 与释放 / 接管策略，区分自动 Verification 和有效 Human Review lease；
-- 不修改 Core Method、Principles、Skill Contract、Data Access Engineering Discipline，不新增 Skill，也不采用机械 `latest-head-wins`。
+`master@9818b3209a80bba22c6fbec2af740f49a17fa2d4`
 
-Fresh Runtime Targeted Eval：
+主要结果：
 
-```text
-新场景：   2 / 2 PASS，15 / 15 assertions PASS
-历史回归： 3 / 3 PASS，19 / 19 assertions PASS
-合计：     5 / 5 PASS，34 / 34 assertions PASS
-```
+- 当前高影响语言规则与示范入口完成严格中文收敛；
+- 新增项目治理定向运行时评估；
+- 独立运行时评估 6 / 6 场景通过；
+- 人工语义评分 30 / 30 断言通过；
+- 最终 AI 复核未解决阻塞 / 中等级问题为 `0 / 0`；
+- 账户级记忆清理后的真正新上下文语言验收通过；
+- PR #63 只推进到人工集成决策，不自动合并。
 
-ZIP SHA-256：
+跟踪与证据入口：
 
-`26ddf975a181438071cfb8453cc30fa877943c9bb652f190999e761d0fca56cc`
+- Issue #62；
+- PR #63；
+- `docs/project/chinese-interaction-context-cleanup-v1.md`；
+- `tasks/plans/20260906/02-chinese-interaction-context-cleanup.md`。
 
-Integration Reference：
+### 4.5 Issue #58 稳定维护结果
 
-- PR #59；
-- 是否已经进入默认分支，以 GitHub 中 PR #59 的 merged 状态和 merge commit 为准；本文不复制“等待合并 / 已合并”的瞬态状态，避免为记录上一个 PR 的合并事实机械创建后续状态 PR。
+Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮定向维护均属于稳定维护，不构成新的能力里程碑：
 
-该维护不改变当前 **Post-Milestone Decision / Stable Maintenance** 状态，也不自动启动 WI-06、WI-07、WI-09 或新的 Engineering Discipline。
+1. 临时执行证据晋升与长生命周期单实例评审环境治理；
+2. 规划候选与执行单元身份边界；
+3. 验证触发、就绪回退重入与既有项目协作约定可发现性。
 
-### 4.5 Issue #58 Planning Candidate 与 Execution Unit 身份边界维护
-
-Issue #58 的 Consumer Evidence 又触发了一次 **Stable Maintenance** 定向修订，用于阻止 Planning / Requirement Candidate 因 Roadmap 顺序、预编号或 Issue 标签被误读为已经完成 Slice、Readiness 或获得 Execute 授权。
-
-当前状态链明确为：
-
-```text
-Planning / Requirement Candidate
-→ Ready Specification / optional Technical Planning
-→ slice-work forms Candidate Execution Units with identifiers
-→ readiness-check
-→ Ready Execution Unit
-→ Execute
-```
-
-边界：
-
-- Planning / Requirement Candidate 在进入 `slice-work` 前不具有 Execution Unit 身份；
-- `slice-work` 可以为已形成的 Candidate Execution Unit 分配稳定 Identifier；
-- Identifier 只承担追踪 / 依赖身份，不构成 Readiness PASS，也不授予 Execute 权限；
-- `readiness-check` 只接受可检查 Specification 与由 `slice-work` 形成的 Candidate Unit Set；“可检查”是语义要求，不强制独立 Artifact 文件；
-- 不修改 Core Method、Principles 或 Skill Contract，也不固定 `EU-xx` / GitHub Issue 为通用实现载体。
-
-Fresh Runtime Targeted Eval 经两轮修复与一次最终最小重跑完成：
+最近一轮维护的运行时评估结果为：
 
 ```text
-场景：5 / 5 PASS
-断言：27 / 27 PASS
+新场景：   2 / 2 通过，14 / 14 断言通过
+直接回归： 4 / 4 通过，23 / 23 断言通过
+合计：     6 / 6 通过，37 / 37 断言通过
 ```
 
-最终重跑 ZIP SHA-256：
-
-`0f2b5f42e326d7e734db2e7c2dfadd52e71770f0631f006ccc3aceada9a31333`
-
-其中三个回归场景在 Attempt 2 已全部通过且其 Skill / Prompt 后续未再发生语义变化；最终只重跑发生 Prompt 变化的 `B-SW-02`、`B-RC-06`，两场景 `12 / 12` assertions PASS。所有最终采用的运行均来自仓库外独立临时 workspace，未发现 Eval 定义、assertions、历史结果或仓库外上下文污染；进程退出码未作为语义 PASS 依据。
-
-该维护仍属于当前 **Post-Milestone Decision / Stable Maintenance**，不自动启动新的能力里程碑；Issue #58 继续保持长期 Consumer Feedback 渠道开放。
-
-### 4.6 Issue #58 Verification Trigger / Readiness Re-entry / Adoption Convention 维护
-
-Issue #58 的 EU-31～EU-36 Consumer Evidence 触发第三次 **Stable Maintenance** 定向修订，处理三个可复用缺口：
-
-- GitHub Actions 高成本验证必须把 `Change / Authority Impact → Evidence Claim / Risk → Required Verification Layer → Actual Workflow Trigger / Gate` 对成真实执行路径；受影响 Claim 不能因 filter / label / manual gate 漏验，与高成本 Claim 无关的变化也不应机械重验；
-- Readiness 如果因 Current Evidence 返回上游，并导致 Specification、Technical Plan 或 Architecture basis 实质修订，则旧 Candidate Unit Set 与历史 Readiness Evidence 只对应旧基础；继续 Execute 前必须重新进入 `slice-work → readiness-check`；
-- Existing Consumer baseline upgrade 除 Method / Skill / Artifact 规则外，还应审计长期影响 Fresh Context 的 repository-facing conventions，并由 Consumer 明确 Adopt、Retain / Override 或 Reject / Not Applicable；`agentic-dev` 自身 Project Rule 不自动成为 Consumer Rule。
-
-证据分类边界：
-
-- Finding A、B、F 进入本次有限维护；
-- Finding C（Stale Verification Contract）与 E（Temporary mechanism vs Final Delivery Scope）只作为既有规则的 Positive Validation；
-- Finding D（Executable Architecture Boundary 三层证据）保留为 Deferred Pattern Candidate，当前证据不足以提升为 Method、Engineering Discipline 或强制 Verification Profile Rule。
-
-本次没有修改 Core Method、Principles、Skill Contract 或 Verification Profile Contract，没有新增 Skill / Engineering Discipline，也没有规定固定 GitHub Workflow adapter。
-
-Fresh Runtime Targeted Eval：
-
-```text
-新场景：   2 / 2 PASS，14 / 14 assertions PASS
-直接回归： 4 / 4 PASS，23 / 23 assertions PASS
-合计：     6 / 6 PASS，37 / 37 assertions PASS
-```
-
-场景：`B-GA-08`、`B-RC-07`、`B-GA-04`、`B-GA-01`、`B-RC-06`、`B-RC-01`。
-
-评估对应行为 Head：
+评估对应行为提交：
 
 `ade7a59c5bf3e0819e336beec1d223e174ec8bc2`
 
-评估附件 SHA-256：
+评估附件摘要：
 
 `f40a91054bc03ce3be92002f2c9623d0b25ea1dbad367c5ed76a7c388aa55cab`
 
-6 个场景均从独立 `/tmp/agentic-dev-behavior-*` workspace 启动；stderr 全部为空，JSONL 均包含完整最终回答与 `turn.completed`。命令轨迹只读取隔离注入的 Skill / Reference 与当前 workspace，没有发现 Eval 定义、assertions、历史结果、Consumer Repository 或工作区外上下文污染。所有进程退出码为 `0`，但退出码未作为语义 PASS 依据；最终结果来自逐项人工语义评分。
+其中“可执行架构边界证据模式”仍保留为延后候选。现有证据不足以把它提升为方法、工程纪律或强制验证画像规则。
 
-该维护继续保持当前 **Post-Milestone Decision / Stable Maintenance** 状态，不自动启动新的能力里程碑。Issue #58 继续作为长期 Consumer Feedback 渠道保持开放；PR #61 的瞬时 open / draft / merged 状态继续以 GitHub 为准，不在 Roadmap 复制。
+最新维护集成锚点：PR #61；其实际合并状态和提交以 GitHub 为准。
 
-## 5. 当前 Engineering Discipline Inventory
+## 5. 当前工程纪律清单
 
-当前正式 Engineering Disciplines：
+当前正式工程纪律：
 
-1. **Implementation Minimality & Speculative Complexity Control**；
-2. **Surgical Change & Diff Scope Control**；
-3. **Data Access Scope & Boundedness Control**。
+1. 实现最小化与推测性复杂度控制；
+2. 精准修改与差异范围控制；
+3. 数据访问作用域与有界性控制。
 
 规范入口：
 
 `docs/architecture/engineering-disciplines.md`
 
-当前没有第四项 Discipline 的活动 Research / Draft / Eval 计划。
+当前没有第四项工程纪律的活动研究、草案或评估计划。
 
-## 6. 当前 Skill / Profile 状态
+## 6. 当前技能与技术画像状态
 
-- Skill Inventory：8 个 Core Skills、1 个 Platform-specific Skill；
-- Engineering Discipline Expansion v1 未新增 Skill；
-- Technology Profile Contract 已集成；
-- 当前代表性 Technology Profile：Vue 3 + TypeScript；
+- 当前仓库共有 8 个核心技能和 1 个平台专项技能；
+- 工程纪律扩展 v1 没有新增技能；
+- 技术画像契约已经集成；
+- 当前代表性技术画像为 Vue 3 + TypeScript；
 - Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 等仍是未来候选，不构成当前路线承诺。
 
-## 7. Post-v1 Backlog
+## 7. v1 后候选库
 
-以下候选继续保留，但均为 **Decision Pending / Not Started**：
+以下候选继续保留，但都未启动。
 
-### WI-06 — 第二及后续 Technology Profile
+### WI-06 — 第二及后续技术画像
 
-候选可能包括：
+可能候选包括：
 
 - Spring Framework / Spring Boot / Spring MVC；
 - Gradle；
 - Element Plus；
 - 其他后续证据支持的技术栈。
 
-Vue Profile 完成或本次 Discipline Closure 都不会自动触发 WI-06。
+已有技术画像完成不会自动触发 WI-06。
 
-### WI-07 — Task-oriented Skill 提炼
+### WI-07 — 任务型技能提炼
 
-只有出现可证明的独立稳定任务职责，且具有明确 Inputs / Procedure / Outputs / Exit / Escalation，才重新评估。
+只有出现可证明的独立稳定任务职责，并具有明确输入、过程、输出、退出和升级边界时，才重新评估。
 
-不得机械创建 `vue-skill`、`spring-skill`、`data-access-skill` 等技术百科式 Skill。
+不得机械创建按技术名称组织的百科式技能。
 
-### WI-09 — Runtime Adapter / Distribution
+### WI-09 — 运行时适配与分发
 
 包括未来可能的：
 
-- Runtime Adapter；
+- 运行时适配器；
 - Marketplace；
 - Plugin Bundle；
 - Controller；
-- 统一安装 / 分发机制。
+- 统一安装或分发机制。
 
-当前没有真实多 Runtime 交付需求足以使其成为活动里程碑。
+当前没有真实多运行时交付需求足以使其成为活动里程碑。
 
 ### 其他候选
 
-- stacked PR + squash merge 的 review ancestry / integration ancestry topology；
-- 新的 Engineering Discipline Research Candidate；
-- Consumer Feedback 形成的通用能力候选。
+- stacked PR + squash merge 的复核祖先与集成祖先拓扑问题；
+- 新的工程纪律研究候选；
+- Issue #58 后续形成的通用能力候选；
+- 可执行架构边界证据模式。
 
-这些候选必须重新经过 Evidence / Architecture Fit / Milestone Decision，不能直接进入当前 Authority。
+这些候选都必须重新经过证据检查、架构适配评估和人工里程碑决策，不能直接进入当前权威。
 
-## 8. 下一步决策规则
+## 8. 当前边界
 
-下一正式 Milestone 必须：
+当前没有活动有限里程碑。以下方向全部保持候选，不自动启动：
 
-1. 由 Human Authority 显式选择；
+- 第二及后续技术画像建设；
+- 新任务型技能建设；
+- 运行时或分发实施；
+- 第四工程纪律建设；
+- 第二次基础型既有项目采用门禁；
+- 可执行架构边界证据模式的正式能力建设。
+
+如果这些方向产生新证据，只记录为后续候选，等待人工里程碑决策。
+
+## 9. 后续有限里程碑决策规则
+
+下一正式有限里程碑必须：
+
+1. 由人工权威显式选择；
 2. 有清晰的单一或有限目标；
-3. 在开始时冻结 Completion Definition；
+3. 在开始时冻结完成定义；
 4. 明确非目标与范围扩张门禁；
-5. 根据能力类型走 Research → Architecture Fit → Draft → Targeted Eval → AI Review → Integration；
+5. 根据候选类型完成必要的研究、架构适配评估、草案、专项评估、AI 复核和集成；
 6. 不因为新候选出现而自动追加到同一里程碑。
 
-在新的 Milestone Decision 之前，不进行：
+当前项目处于待人工决策状态，不自动续接候选库中的任何一项。
 
-- 第二 Technology Profile 正式建设；
-- 新 Task-oriented Skill 正式建设；
-- Runtime / Distribution 实施；
-- 第四 Engineering Discipline 正式建设；
-- 第二次正式 Foundation-style Consumer Adoption Gate。
-
-## 9. 新上下文恢复顺序
+## 10. 新上下文恢复顺序
 
 新的 `agentic-dev` 工作上下文应：
 
 1. 读取根目录 `AGENTS.md`；
-2. 读取本文确认当前状态为 **Post-Milestone Decision / Stable Maintenance**；
-3. 读取 `docs/project/engineering-capability-foundation-v1-closure.md` 与 `docs/project/engineering-discipline-expansion-v1-closure.md` 了解最近两个完成边界；
-4. 读取当前 GitHub `master`、Open PR / Issue，确认是否存在晚于本文的新 Milestone Decision；
-5. 按任务需要读取 Method / Architecture / Discipline / Technology Profile Authority；
-6. 不自动恢复 Issue #33 为活动 Experiment；
-7. 不把 WI-06、WI-07、WI-09 或其他 Post-v1 Candidate 当作已启动工作；
-8. 不依赖历史聊天或个人记忆补充未固化项目事实。
+2. 读取本文，确认当前长期阶段与是否存在活动有限里程碑；
+3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；
+4. 按当前任务需要读取方法、架构、工程纪律、技术画像或使用指南；
+5. 不自动恢复 Issue #33 为活动实验；
+6. 不把 WI-06、WI-07、WI-09 或其他候选库项目当作已启动工作；
+7. 不依赖历史聊天、其他会话或个人记忆补充未固化的项目事实；
+8. 面向人的输出遵循当前仓库严格中文表达规则，不从历史会话或个人记忆恢复旧的中英文混写语风。
 
-## 10. 更新触发条件
+## 11. 更新触发条件
 
 出现以下情况时更新本文：
 
-- Human Authority 选择新的有限 Milestone；
-- 当前 Repository Authority 发生新的能力集成；
-- 高质量 Evidence 导致现有 Method / Architecture / Discipline / Profile 需要正式修订；
+- 当前有限里程碑完成、取消或被取代；
+- 人工权威选择新的有限里程碑；
+- 当前仓库权威发生新的能力集成；
+- 高质量证据导致现有方法、架构、工程纪律或技术画像需要正式修订；
 - 当前路线与 GitHub 集成事实不再一致。
 
-普通 Consumer-local Finding、单个新外部来源或尚未 Architecture Fit 的 Candidate 不要求更新本文。
+普通使用方局部问题、单个外部来源或尚未完成架构适配评估的候选，不要求更新本文。
