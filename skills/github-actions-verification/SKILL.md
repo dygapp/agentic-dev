@@ -25,7 +25,8 @@ description: Establishes or optimizes an observable, traceable, cost-aware GitHu
 - 需要通过 Artifact、日志、trace、截图或 Runtime diagnostics 增强失败可诊断性；
 - Workflow Artifact 即将过期，但其中已接受的内容需要成为后续稳定重放、迁移、评审或运行输入；
 - 长运行、过期 Run、共享外部资源争用或重复环境准备正在降低验证效率；
-- 单实例 Review Environment 需要区分自动验证与人工评审的 owner、lease、保活和 stale-run policy。
+- 单实例 Review Environment 需要区分自动验证与人工评审的 owner、lease、保活和 stale-run policy；
+- 高成本或专项 Workflow 的实际 trigger topology 与当前 Evidence Claim / change risk 不匹配，导致无关变更机械重验或受影响声明可能漏验。
 
 ## Do Not Use When
 
@@ -45,6 +46,7 @@ description: Establishes or optimizes an observable, traceable, cost-aware GitHu
 - Current Execution Unit / Completion Condition；
 - Relevant Technical Plan / Verification Strategy（如存在）；
 - `.github/workflows/` 中与当前验证相关的 Workflow；
+- Workflow 的实际 trigger topology，包括 event、branch、path filter、label / manual gate、reusable workflow 或其他当前 adapter（如存在）；
 - 当前 Branch / PR / Commit 状态；
 - 当前 GitHub Runtime / Connector 能力；
 - Current CI Runs、Jobs、Steps、Logs、Artifacts，以及相关 retention / expiry；
@@ -132,6 +134,29 @@ Diagnostic / Runtime Observation 可以支持 diagnose、abort、reroute 和 wor
 Workflow 应优先承载运行环境、部署链路和正式测试套件的执行语义，例如构建、服务就绪、HTTP / API 可达和测试结果。具体产品展示语义应尽量由正式测试套件承担；如果 Workflow 必须重复同一产品语义，应共享同一配置或契约来源，避免形成第二份 hard-coded assertion。
 
 详细规则见 `references/evidence-observability.md`。
+
+### 4.1 Reconcile Evidence Claims with Trigger Topology
+
+定义了验证层并不等于实际 GitHub Actions trigger 已与验证责任对齐。对当前受影响的 Evidence Claims，应建立最小、可审计映射：
+
+```text
+Change / Authority Impact
+→ Evidence Claim / Risk
+→ Required Verification Layer
+→ Actual Workflow Trigger / Gate
+→ Current Evidence
+```
+
+按以下规则检查：
+
+1. 对每个当前受影响 Claim，确认至少存在一个 Repository Policy 允许、实际能够触发或显式调用的验证路径；不得因为 `paths`、label、manual gate、reusable workflow 或其他 adapter 的过滤而漏掉必要 Completion Evidence；
+2. 对高成本专项 Workflow，确认它承担的 Claim 是否确实受当前 change 影响。与其 Evidence Claim 无关的变更不应仅因为“所有 PR 都这样跑”而机械支付最高成本验证；
+3. `docs-only`、Authority-only、代码文件或其他扩展名分类本身既不能证明“无需 Runtime / Review”，也不能证明“必须 full integration”。Requirement、Specification、Architecture、Acceptance、Project State 或 Review Baseline 等文档变化仍可能改变 Claim；反之，纯状态记录也可能不影响某些 Runtime Claim；
+4. 如果 Consumer 选择按风险层级组织验证，应让 risk tier 与实际 Claim / layer / trigger 对应，而不是只维护一个脱离 Workflow 的分级表；
+5. `paths` / `paths-ignore`、label、branch protection、`workflow_dispatch`、reusable workflow、required check 等只是 GitHub adapter。选择哪一种由 Consumer Repository Policy、可观察性、成本和风险决定，本 Skill 不固定实现；
+6. 优化 trigger topology 后，重新检查“受影响 Claim 不漏验”与“无关 Claim 不机械重验”两个方向，不能只追求减少 Run 数量。
+
+如果当前 Repository Policy 明确要求某类 Authority change 执行完整 CI / Review Environment，应保留该要求；本 Skill 只要求该成本能够追溯到真实 Claim / risk，而不是由文件扩展名或惯例隐式决定。
 
 ### 5. Layer Fast Feedback and Completion Verification
 
@@ -328,6 +353,7 @@ Evidence reuse 是**按声明**的，不是给整个提交一次性盖章：
 
 - Selected Verification Path；
 - Workflow / Runtime adjustments（如有）；
+- Evidence Claim ↔ Verification Layer ↔ Trigger Topology mapping（当 trigger scope / cost 相关时）；
 - Current Evidence references；
 - Completion Evidence status；
 - Diagnostic / Runtime observations；
@@ -342,6 +368,7 @@ Evidence reuse 是**按声明**的，不是给整个提交一次性盖章：
 - Observable GitHub Actions Verification Path；
 - Workflow / Runtime Optimization；
 - Evidence Retrieval Plan；
+- Evidence Claim / risk ↔ actual trigger topology audit（如适用）；
 - Artifact role / retention / promotion decision（如适用）；
 - Shared environment owner / lease / stale-run decision（如适用）；
 - Current Completion Evidence；
@@ -353,6 +380,7 @@ Evidence reuse 是**按声明**的，不是给整个提交一次性盖章：
 当以下条件满足时，本 Skill 可以结束：
 
 - 当前验证路径符合 Consumer Repository Policy；
+- 已受当前 change 影响的 Evidence Claims 均有可触发、可观察且与所需验证层匹配的路径；已知高成本专项 Workflow 不因与其 Claim 无关的普通变化被机械触发，除非 Consumer Repository Policy 明确要求并能追溯到真实风险；
 - 如果调用只要求设计验证路径，Agent 已明确如何取得完成声明需要的当前证据，并保持实际验证为未执行状态；
 - 如果调用要求实际完成验证，必要的 Current Evidence 已经取得并核对，或者已经准确记录真实阻塞 / 有界观察上限；仍可观察的 `queued`、`pending` 或 `in_progress` Run 本身不满足退出条件；
 - Workflow 成本与当前验证风险基本相称，不存在已知的无界长运行路径；
@@ -383,7 +411,7 @@ Run 仍在正常异步执行、且 Runtime 仍可观察，不单独构成 Human 
 - Progressive Disclosure；
 - 只读取当前验证路径需要的 Workflow / Run / Runtime 信息；
 - GitHub 当前状态优先于旧聊天和缓存印象；
-- PR、GHCR、MCR、Docker、多容器均是条件性实现手段，不是 Method 强制语义；
+- PR、GHCR、MCR、Docker、多容器、path filter、label gate、manual trigger、reusable workflow 均是条件性实现手段，不是 Method 强制语义；
 - 不把 Consumer-specific 镜像版本、目录或 Workflow 结构写成跨项目事实；
 - 修改外部状态时遵循 `docs/guides/external-operation-guidelines.md`。
 
