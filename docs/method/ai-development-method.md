@@ -1,86 +1,86 @@
 # AI Agent 驱动软件开发方法
 
-**状态：** Baseline v0.1  
+**状态：** 基线 v0.1  
 **性质：** 规范性文档
 
 ## 1. 目标
 
-本文定义一套不依赖编程语言、框架、Issue Tracker、Agent 产品和业务领域的通用 AI Agent 驱动软件开发方法。
+本文定义一套不依赖编程语言、框架、Issue 跟踪工具、Agent 产品和业务领域的通用 AI Agent 驱动软件开发方法。
 
 方法重点解决：
 
-- 如何从 Intent 进入可执行工作；
-- 如何管理 Specification 与 Technical Design；
-- 如何按 AI Context Capacity 拆分工作；
-- 如何使用 Fresh Context；
+- 如何从意图进入可执行工作；
+- 如何管理规格说明与技术设计；
+- 如何按 AI 上下文容量拆分工作；
+- 如何使用新上下文；
 - 如何验证完成状态；
 - 何时由 AI 自主处理，何时必须人工介入。
 
-## 2. Feature 主流程
+## 2. 功能主流程
 
 ```text
-Governance / Domain Context
-            │
-            ▼
-      1. Clarify Intent
-            │
-            ▼
-      2. Specification
-            │
-       Spec Ready Gate
-            │
-            ▼
-  3. Technical Planning?
-       │             │
-      no            yes
-       │             ▼
-       │       Technical Plan
-       └──────┬──────┘
-              ▼
-      4. Slice & Ready
-              │
-       Execution Units
-              │
-       Readiness Gate
-              │
-              ▼
-        5. Execute
-              │
-      Fresh Execution Context
-      JIT Execution Planning
-      Implementation / TDD
-      Verification / Review
-              │
-              ▼
-       6. Converge
-              │
-       Feature-wide Review
-       Full Verification
-              │
-              ▼
-      Ready to Integrate
-              │
-        Human / Policy
+治理 / 领域上下文
+        │
+        ▼
+  1. 澄清意图
+        │
+        ▼
+  2. 规格说明
+        │
+   规格就绪门禁
+        │
+        ▼
+  3. 技术规划？
+    │       │
+   否       是
+    │       ▼
+    │    技术计划
+    └───┬───┘
+        ▼
+  4. 工作切分与就绪
+        │
+      执行单元
+        │
+      就绪门禁
+        │
+        ▼
+     5. 执行
+        │
+     新执行上下文
+     即时执行规划
+     实现 / TDD
+     验证 / 复核
+        │
+        ▼
+    6. 整体收敛
+        │
+     功能整体复核
+     完整验证
+        │
+        ▼
+  已具备进入集成决策的条件
+        │
+    人工 / 仓库策略
 ```
 
 正式方法阶段只有六个：
 
-1. Clarify Intent
-2. Specification
-3. Technical Planning（Optional）
-4. Slice & Ready
-5. Execute
-6. Converge
+1. 澄清意图（`Clarify Intent`）；
+2. 规格说明（`Specification`）；
+3. 技术规划（`Technical Planning`，条件阶段）；
+4. 工作切分与就绪（`Slice & Ready`）；
+5. 执行（`Execute`）；
+6. 整体收敛（`Converge`）。
 
-Integration 不属于通用开发生命周期，因为它依赖具体仓库和运行环境的授权策略。
+集成不属于通用开发生命周期，因为它依赖具体仓库和运行环境的授权策略。
 
-进入 **Ready to Integrate** 前，工作必须满足与自身规模相称的收敛语义：当前权威 Intent、当前实现状态与当前 Verification Evidence 必须彼此一致，并且不存在已知的 Blocking Gap。
+进入**已具备进入集成决策的条件（`Ready to Integrate`）**前，工作必须满足与自身规模相称的收敛语义：当前权威意图、当前实现状态与当前验证证据必须彼此一致，并且不存在已知阻塞缺口。
 
-普通与复杂 Feature 通过 Stage 6 `Converge` 显式完成这一判断。小型安全修改可以轻量执行相同收敛语义，不要求为了流程完整性制造重型 Feature-wide 报告或独立持久 Artifact，但 **Execution Unit Completion 本身不能直接等同于 Ready to Integrate**。
+普通与复杂功能通过第 6 阶段“整体收敛”显式完成这一判断。小型安全修改可以轻量执行相同收敛语义，不要求为了流程完整性制造重型功能整体报告或独立长期产物，但**执行单元完成本身不能直接等同于已具备进入集成决策的条件**。
 
-Standalone Defect 不要求机械进入完整 Feature Workflow；它在满足既有 Expected Behavior、完成 Root-cause Fix 与 Regression Verification 后，还必须完成与缺陷范围相称的最终 Closure Check，确认当前证据充分、没有已知阻塞回归或未经授权行为，才能进入 Ready to Integrate。
+独立缺陷不要求机械进入完整功能工作流；它在满足既有预期行为、完成根因修复与回归验证后，还必须完成与缺陷范围相称的最终收尾检查，确认当前证据充分、没有已知阻塞回归或未经授权行为，才能进入已具备进入集成决策的条件。
 
-## 3. Stage 1 — Clarify Intent
+## 3. 阶段 1 — 澄清意图
 
 ### 核心问题
 
@@ -88,41 +88,41 @@ Standalone Defect 不要求机械进入完整 Feature Workflow；它在满足既
 
 ### 输入
 
-- User / Stakeholder Intent；
-- 当前 System / Domain Context；
-- 已存在的 Authority Constraints；
-- 已知 Scope。
+- 用户 / 利益相关方意图；
+- 当前系统 / 领域上下文；
+- 已存在的权威约束；
+- 已知范围。
 
 ### 工作原则
 
 只澄清可能显著改变以下内容的问题：
 
-- Product Goal；
-- User-visible Behavior；
-- Business Boundary；
-- Acceptance Result；
-- Significant Non-functional Obligation。
+- 产品目标；
+- 用户可见行为；
+- 业务边界；
+- 验收结果；
+- 重大非功能义务。
 
 不要求消除所有实现层不确定性。
 
 ### 最小输出
 
-- Goal
-- In Scope
-- Out of Scope
-- Key Observable Behaviors
-- Confirmed Decisions
-- Remaining Blocking Questions（如仍存在）
+- 目标；
+- 范围内；
+- 范围外；
+- 关键可观察行为；
+- 已确认决定；
+- 剩余阻塞问题（如仍存在）。
 
-不强制创建单独 Clarification 文档，可以直接作为 Specification 的输入。
+不强制创建单独澄清文档，可以直接作为规格说明的输入。
 
-### Exit Condition
+### 退出条件
 
-不存在会显著改变 Goal、Scope、Product Behavior 或 Acceptance Result 的关键未决问题。
+不存在会显著改变目标、范围、产品行为或验收结果的关键未决问题。
 
-如果澄清过程识别了会约束后续多个功能的长期领域事实（Durable Domain Fact），应把它作为领域权威（Domain Authority）候选交给 Specification 阶段验证，并按 Consumer Repository Authority 交给有权维护领域事实的职责确认和持久化；不得因为事实首先出现在会话、Feature 输入或临时 Plan 中，就自动把它提升为长期权威。
+如果澄清过程识别了会约束后续多个功能的长期领域事实，应把它作为领域权威（`Domain Authority`）候选交给规格说明阶段验证，并按使用方仓库权威交给有权维护领域事实的职责确认和持久化；不得因为事实首先出现在会话、功能输入或临时计划中，就自动把它提升为长期权威。
 
-## 4. Stage 2 — Specification
+## 4. 阶段 2 — 规格说明
 
 ### 核心问题
 
@@ -130,36 +130,36 @@ Standalone Defect 不要求机械进入完整 Feature Workflow；它在满足既
 
 ### 输入
 
-- Clarified Intent；
-- Governance Context；
-- Domain Context；
-- Existing Authoritative Behavior。
+- 已澄清意图；
+- 治理上下文；
+- 领域上下文；
+- 已有权威行为。
 
 ### 最小语义内容
 
-Specification 至少应让 Fresh Agent 独立理解：
+规格说明至少应让新的 Agent 上下文独立理解：
 
-- Goal
-- Scope
-- Observable Behaviors
-- Business Rules
-- Boundary / Failure Behavior
-- Acceptance Criteria
-- Relevant Non-functional Constraints
+- 目标；
+- 范围；
+- 可观察行为；
+- 业务规则；
+- 边界 / 失败行为；
+- 验收标准；
+- 相关非功能约束。
 
 ### 默认禁止写入
 
-除非属于外部强制要求，否则 Specification 不应默认包含：
+除非属于外部强制要求，否则规格说明不应默认包含：
 
-- Source File Paths；
-- Class / Function Names；
-- Framework-specific Construction Details；
-- Database Implementation Choices；
-- Step-by-step Edit Instructions。
+- 源文件路径；
+- 类 / 函数名称；
+- 框架专项构造细节；
+- 数据库实现选择；
+- 逐步编辑指令。
 
-### Spec Ready Gate
+### 规格就绪门禁
 
-Fresh Agent 只读取 Specification 和最小必要 Repository Context，应能判断：
+新的 Agent 上下文只读取规格说明和最小必要仓库上下文，应能判断：
 
 1. 要做什么；
 2. 不做什么；
@@ -170,74 +170,74 @@ Fresh Agent 只读取 Specification 和最小必要 Repository Context，应能�
 
 ### 领域权威候选与更新
 
-Specification 主要形成当前功能的 WHAT / WHY 权威，同时必须判断其中确认的业务术语、业务不变量、跨功能规则或其他领域事实是否需要进入长期领域上下文（Domain Context）。
+规格说明主要形成当前功能的“做什么 / 为什么”权威，同时必须判断其中确认的业务术语、业务不变量、跨功能规则或其他领域事实是否需要进入长期领域上下文。
 
-满足以下条件时，应显式评估创建或更新领域权威产物（Domain Authority Artifact）：
+满足以下条件时，应显式评估创建或更新领域权威产物：
 
 - 该事实预计会被多个功能、缺陷处理或独立工作流持续消费；
-- 后续 Agent 若只读取单个 Feature Specification，容易遗漏该事实或产生冲突解释；
+- 后续 Agent 若只读取单个功能规格说明，容易遗漏该事实或产生冲突解释；
 - 该事实需要独立于当前功能生命周期持续维护；
 - 当前工作修正了已有长期领域事实，且旧事实继续作为有效权威会误导后续工作。
 
-Feature Specification 可以引用长期领域权威，但不得静默覆盖它。是否接受候选并更新 Domain Context，由 Consumer Repository Authority 指定的产品 / 领域责任方决定；Agent 只有在获得相应授权时才能执行该更新。Execute、Systematic Debugging 或 Converge 如果发现长期领域事实缺失、冲突或已失效，应返回 Clarify Intent / Specification 完成候选验证，再交由上述责任方确认；不得只在代码、测试、聊天或局部计划中完成事实提升。
+功能规格说明可以引用长期领域权威，但不得静默覆盖它。是否接受候选并更新领域上下文，由使用方仓库权威指定的产品 / 领域责任方决定；Agent 只有在获得相应授权时才能执行该更新。执行、系统化调试或整体收敛如果发现长期领域事实缺失、冲突或已失效，应返回澄清意图 / 规格说明完成候选验证，再交由上述责任方确认；不得只在代码、测试、聊天或局部计划中完成事实提升。
 
-## 5. Stage 3 — Technical Planning（Optional）
+## 5. 阶段 3 — 技术规划（条件阶段）
 
 ### 核心问题
 
-> Specification 应如何映射到当前技术系统？
+> 规格说明应如何映射到当前技术系统？
 
 ### 触发条件
 
-当 Specification 无法直接、安全地映射到实现时才进入。
+当规格说明无法直接、安全地映射到实现时才进入。
 
 典型情况：
 
-- Cross-module Behavior；
-- New Data / Persistence Model；
-- New External Integration；
-- Migration；
-- Shared / Public Contract Change；
-- Deployment Topology Change；
-- Significant Architecture Trade-off。
+- 跨模块行为；
+- 新数据 / 持久化模型；
+- 新外部集成；
+- 迁移；
+- 共享 / 公共契约变更；
+- 部署拓扑变化；
+- 重大架构权衡。
 
 ### 输入
 
-- Specification；
-- Current Architecture；
-- Relevant ADRs；
-- Current Codebase State；
-- Technical Constraints。
+- 规格说明；
+- 当前架构；
+- 相关 ADR；
+- 当前代码库状态；
+- 技术约束。
 
 ### 输出
 
-只记录跨 Execution Unit 有持续协调价值的技术决策：
+只记录跨执行单元有持续协调价值的技术决策：
 
-- Technical Approach
-- Component Boundaries
-- Data / Contract Design
-- Important Seams
-- Migration Strategy
-- Testing Strategy
-- Risks / Constraints
+- 技术方案；
+- 组件边界；
+- 数据 / 契约设计；
+- 重要接缝；
+- 迁移策略；
+- 测试策略；
+- 风险 / 约束。
 
 ### ADR 产生规则
 
-技术规划不仅消费已有 ADR，也必须判断新形成的长期技术决策（Durable Technical Decision）是否需要提升为架构决策记录（Architecture Decision Record，ADR）。
+技术规划不仅消费已有 ADR，也必须判断新形成的长期技术决策是否需要提升为架构决策记录（`Architecture Decision Record`，ADR）。
 
-Technical Plan 与 ADR 的职责不同：
+技术计划与 ADR 的职责不同：
 
-- **Technical Plan** 记录当前功能（Feature）或一组执行单元（Execution Units）为安全实施而需要持续协调的 HOW；
-- **ADR** 记录会跨越当前功能、对后续工作形成长期架构约束，且需要保留决策背景、权衡（Trade-off）或替代关系的重要架构决定。
+- **技术计划（`Technical Plan`）**记录当前功能或一组执行单元为安全实施而需要持续协调的“如何实现”；
+- **ADR** 记录会跨越当前功能、对后续工作形成长期架构约束，且需要保留决策背景、权衡或替代关系的重要架构决定。
 
-架构上下文（Architecture Context）描述当前有效的系统结构、组件与契约边界、技术约束以及实现必须遵守的架构状态。它可以由当前代码、架构说明、公共契约和有效 ADR 共同构成。ADR 只记录满足条件的重要架构决定及其理由，不等同于全部 Architecture Context，也不应被用来复制所有当前架构状态。
+架构上下文（`Architecture Context`）描述当前有效的系统结构、组件与契约边界、技术约束以及实现必须遵守的架构状态。它可以由当前代码、架构说明、公共契约和有效 ADR 共同构成。ADR 只记录满足条件的重要架构决定及其理由，不等同于全部架构上下文，也不应被用来复制所有当前架构状态。
 
-Technical Planning 如果改变了需要跨当前功能持续消费的架构状态，应更新适当的架构权威产物（Architecture Authority Artifact）；其中只有需要长期保留决定背景、主要权衡或替代关系的决定才形成或更新 ADR。局部、可逆且只服务当前功能的技术协调仍留在 Technical Plan 中。
+技术规划如果改变了需要跨当前功能持续消费的架构状态，应更新适当的架构权威产物；其中只有需要长期保留决定背景、主要权衡或替代关系的决定才形成或更新 ADR。局部、可逆且只服务当前功能的技术协调仍留在技术计划中。
 
 当技术决定具有以下一项或多项特征时，应显式评估是否形成或更新 ADR：
 
 - 预计约束未来多个功能、模块或独立工作流；
-- 改变系统级组件、数据、集成、部署或共享 / 公共契约边界（Shared / Public Contract Boundary）；
+- 改变系统级组件、数据、集成、部署或共享 / 公共契约边界；
 - 替换成本较高、难以安全回滚，或会形成长期兼容 / 迁移义务；
 - 存在多个具有实质不同长期后果的合理方案，需要保留选择理由与主要权衡；
 - 后续 Agent 若不知道该决定及其理由，容易重新打开已关闭的架构选择或产生相互冲突的实现。
@@ -246,208 +246,208 @@ Technical Planning 如果改变了需要跨当前功能持续消费的架构状�
 
 - 只服务当前功能的技术协调决定；
 - 单个执行单元内的局部、低影响、可逆实现选择；
-- 精确文件、命令、编辑顺序等即时执行细节（JIT Execution Detail）；
+- 精确文件、命令、编辑顺序等即时执行细节；
 - 尚未形成稳定决定的探索记录。
 
-ADR 是**条件性长期权威产物**，不是新的方法阶段，也不要求每次 Technical Planning 都创建。方法不规定固定 `adr/` 目录、文件名或模板；Consumer Repository 应根据自身仓库权威（Repository Authority）选择合适载体。
+ADR 是**条件性长期权威产物**，不是新的方法阶段，也不要求每次技术规划都创建。方法不规定固定 `adr/` 目录、文件名或模板；使用方仓库应根据自身仓库权威选择合适载体。
 
-形成 ADR 不自动意味着必须由人工批准。是否升级仍按权限（Authority）、影响（Impact）、可逆性（Reversibility）判断；重大架构方向（Major Architecture Direction）、难以逆转的高影响权衡或超出 Agent 授权边界的决定必须升级。
+形成 ADR 不自动意味着必须由人工批准。是否升级仍按权限、影响、可逆性判断；重大架构方向、难以逆转的高影响权衡或超出 Agent 授权边界的决定必须升级。
 
-如果 Execute、Systematic Debugging 或 Converge 才暴露新的长期架构决定，不应在代码或局部计划中静默固化；应回退到 Technical Planning，完成相应架构决策判断后再继续实施。
+如果执行、系统化调试或整体收敛才暴露新的长期架构决定，不应在代码或局部计划中静默固化；应回退到技术规划，完成相应架构决策判断后再继续实施。
 
-已有 ADR 被新决定取代时，应保留可追溯的被取代 / 替换（Superseded / Replaced）关系，而不是静默覆盖历史决策背景。
+已有 ADR 被新决定取代时，应保留可追溯的被取代 / 替换关系，而不是静默覆盖历史决策背景。
 
-### Exit Condition
+### 退出条件
 
-实施前必须解决的技术不确定性已经解决；需要形成或更新的长期架构决定已经进入适当的仓库权威，且不存在尚未处理的 ADR / 架构权威缺口（Architecture Authority Gap）。
+实施前必须解决的技术不确定性已经解决；需要形成或更新的长期架构决定已经进入适当的仓库权威，且不存在尚未处理的 ADR / 架构权威缺口。
 
-## 6. Stage 4 — Slice & Ready
+## 6. 阶段 4 — 工作切分与就绪
 
 ### 核心问题
 
-> 如何把工作拆成 Fresh Agent 可以独立实现和验证的单元？
+> 如何把工作拆成新的 Agent 上下文可以独立实现和验证的单元？
 
-### Execution Unit
+### 执行单元
 
-Execution Unit 是本方法的逻辑工作单位，与 Jira、GitHub Issue、Markdown Task 等具体工具无关。
+执行单元（`Execution Unit`）是本方法的逻辑工作单位，与 Jira、GitHub Issue、Markdown Task 等具体工具无关。
 
 最小字段：
 
-- Identifier
-- Goal
-- Specification Trace / Reference
-- Observable Completion Condition
-- Dependencies
-- Relevant Constraints
+- 标识；
+- 目标；
+- 规格追踪 / 引用；
+- 可观察完成条件；
+- 依赖；
+- 相关约束。
 
 上述内容不要求采用固定字段名或固定模板，但整个执行单元集合必须能够显式回答：每项必需行为 / 验收义务由哪个执行单元承担实现与验证责任，或者为什么必须由功能整体验证承担。
 
 ### 质量属性
 
-每个 Execution Unit 应尽量满足：
+每个执行单元应尽量满足：
 
-- Vertical
-- Independently Verifiable
-- Bounded
-- Traceable
-- Context-fit
-- Low Hidden Dependency
+- 纵向；
+- 可独立验证；
+- 边界明确；
+- 可追溯；
+- 上下文适配（`context-fit`）；
+- 低隐藏依赖。
 
 ### 验收义务与验证责任闭环
 
 切分与就绪阶段不只检查实现范围是否被执行单元覆盖，还必须建立验收义务到验证证据的可执行闭环：
 
 ```text
-规格验收义务（Specification Acceptance Obligation）
-→ 实现责任 / 验证责任（Implementation / Verification Responsibility）
-→ 计划验证证据（Planned Verification Evidence）
-→ 已执行的当前证据（Executed Current Evidence）
+规格验收义务
+→ 实现责任 / 验证责任
+→ 计划验证证据
+→ 已执行的当前证据
 ```
 
 规则：
 
-- 每项必需行为 / 验收义务必须明确归属某个执行单元，或在行为只有跨执行单元组合后才能被有效证明时，明确归属功能整体验证责任（Feature-wide Verification Responsibility）；
+- 每项必需行为 / 验收义务必须明确归属某个执行单元，或在行为只有跨执行单元组合后才能被有效证明时，明确归属功能整体验证责任；
 - 实现责任与验证责任可以由同一执行单元承担，也可以在有真实跨执行单元原因时分开，但不能让验证责任处于未归属状态；
 - 计划验证证据必须足以区分义务是否真实满足，不能只写“代码完成”“测试通过”或其他无法对应具体行为的宽泛条件；
 - 分页、排序、边界 / 失败、多状态、跨入口等容易被主路径遗漏的行为，应按规格说明风险设计足以证明其关键差异的验证场景；
 - 不要求一条验收义务对应一个测试，也不规定必须使用自动化测试、E2E、CI 或特定证据格式；证据类型与强度应和行为、风险及仓库规则相称；
 - 功能整体验证责任只用于确实需要组合状态才能证明的行为，不能作为推迟普通执行单元级验证的兜底标签；
-- 实现存在、代码检查通过或某条邻近路径已经验证，不自动等同于该验收义务已获得验证覆盖（Verification Coverage）。
+- 实现存在、代码检查通过或某条邻近路径已经验证，不自动等同于该验收义务已获得验证覆盖。
 
-该闭环可以通过执行单元字段、覆盖视图或 Consumer 仓库选择的等价载体表达，不要求新增固定长期产物。
+该闭环可以通过执行单元字段、覆盖视图或使用方仓库选择的等价载体表达，不要求新增固定长期产物。
 
-### Readiness Gate
+### 就绪门禁
 
 正式执行前统一检查四个维度。
 
-#### Specification Readiness
+#### 规格就绪
 
 - 无阻塞性歧义；
-- Acceptance 可观察、可验证；
-- Scope 足够明确。
+- 验收可观察、可验证；
+- 范围足够明确。
 
-#### Design Readiness
+#### 设计就绪
 
-存在 Technical Plan 时：
+存在技术计划时：
 
-- 覆盖相关 Specification；
+- 覆盖相关规格说明；
 - 没有擅自改变需求；
 - 必要技术决定已确认。
 
-如果当前 Technical Planning 产生或更新了 ADR / 架构决策（Architecture Decision）：
+如果当前技术规划产生或更新了 ADR / 架构决策：
 
 - 相关执行单元必须引用并遵守当前有效的架构约束；
-- 不得让 Technical Plan 或执行单元静默覆盖已确认 ADR；
-- 若存在未解决的 ADR / 架构权威缺口，不得进入 Execute。
+- 不得让技术计划或执行单元静默覆盖已确认 ADR；
+- 若存在未解决的 ADR / 架构权威缺口，不得进入执行。
 
-#### Execution Readiness
+#### 执行就绪
 
-- 需求同时具有实现覆盖（Implementation Coverage）与验证覆盖；
+- 需求同时具有实现覆盖与验证覆盖；
 - 每项必需行为 / 验收义务都有明确的实现与验证责任，或有合法且显式的功能整体验证责任；
 - 计划验证证据足以证明所承接的义务，而不是只覆盖主路径；
 - 不存在重要孤立工作项或未归属的验证义务；
-- Dependencies 真实且顺序合理；
-- Unit 满足 Context-fit；
-- Unit 有明确 Completion Condition。
+- 依赖真实且顺序合理；
+- 执行单元满足上下文适配；
+- 执行单元有明确完成条件。
 
-#### Governance Readiness
+#### 治理就绪
 
-- 不违反 Repository Instructions、Engineering Rules 和已确认 Architecture Decisions。
+- 不违反仓库规则、工程规则和已确认架构决定。
 
 ### 默认升级规则
 
-Readiness Check 尽量由 AI 自动完成。
+就绪检查尽量由 AI 自动完成。
 
-只有 Agent 无权自主解决的问题才升级给 Human。
+只有 Agent 无权自主解决的问题才升级给人工。
 
-## 7. Stage 5 — Execute
+## 7. 阶段 5 — 执行
 
 ### 核心问题
 
-> 能否使用最小权威上下文，在一个 Fresh Context 中实现并证明当前 Execution Unit？
+> 能否使用最小权威上下文，在一个新上下文中实现并证明当前执行单元？
 
-### Execution Context
+### 执行上下文
 
 默认加载：
 
-- Repository Rules
-- Current Execution Unit
-- Relevant Specification Sections
-- 当前执行单元承接的验收义务与计划验证证据
-- Relevant Technical Plan Decisions
-- Relevant Architecture / ADR / Domain Context
-- Relevant Current Code / Tests
+- 仓库规则；
+- 当前执行单元；
+- 相关规格说明片段；
+- 当前执行单元承接的验收义务与计划验证证据；
+- 相关技术计划决定；
+- 相关架构 / ADR / 领域上下文；
+- 相关当前代码 / 测试。
 
-不依赖完整 Conversation History。
+不依赖完整会话历史。
 
 ### 内部执行循环
 
 ```text
-Load Minimum Authoritative Context
+加载最小权威上下文
         ↓
-Inspect Actual Repository State
+检查真实仓库状态
         ↓
-Create JIT Execution Plan if useful
+按需创建即时执行计划
         ↓
-Establish Expected / Failing Evidence
+建立预期 / 失败证据
         ↓
-Implement
+实现
         ↓
-Run Targeted Verification
+执行定向验证
         ↓
-Debug if necessary
+必要时调试
         ↓
-Review when risk warrants
+按风险复核
         ↓
-Record Verified Result
+记录已验证结果
 ```
 
-### JIT Execution Plan
+### 即时执行计划
 
 临时执行计划可以包含：
 
 - 当前实际相关文件；
-- Concrete Edit Sequence；
-- Exact Test Commands；
-- Local Implementation Details。
+- 具体编辑顺序；
+- 精确测试命令；
+- 局部实现细节。
 
-默认随当前执行 Context 结束，不进入长期知识库。
+默认随当前执行上下文结束，不进入长期知识库。
 
-### Exit Condition
+### 退出条件
 
 当前执行单元的完成条件，以及由当前执行单元承担验证责任的必需行为 / 验收义务，已经有**当前证据**支持。
 
-声明执行单元 `Completed` 前必须回到其规格追踪检查义务闭环；实现存在、代码检查或未覆盖关键差异的主路径证据不能替代必要的已执行的当前证据。
+声明执行单元 `Completed` 前必须回到其规格追踪检查义务闭环；实现存在、代码检查或未覆盖关键差异的主路径证据不能替代必要的已执行当前证据。
 
-如果某项义务已基于真实跨执行单元原因显式归属功能整体验证责任，执行单元结果必须保留该 `Pending` 责任，不能把执行单元完成陈述为该义务已经获得证据。执行单元成功退出执行只证明当前执行单元自身的实现与验证责任已完成，不自动证明整个功能 / 变更已满足进入 `Ready to Integrate` 所需的最终收敛语义。
+如果某项义务已基于真实跨执行单元原因显式归属功能整体验证责任，执行单元结果必须保留该 `Pending` 责任，不能把执行单元完成陈述为该义务已经获得证据。执行单元成功退出执行只证明当前执行单元自身的实现与验证责任已完成，不自动证明整个功能 / 变更已满足进入已具备进入集成决策的条件所需的最终收敛语义。
 
-## 8. Stage 6 — Converge
+## 8. 阶段 6 — 整体收敛
 
 ### 核心问题
 
-> 当前系统整体状态是否真正符合权威 Feature Intent？
+> 当前系统整体状态是否真正符合权威功能意图？
 
 ### 输入
 
-- Specification；
-- Technical Plan（如存在）；
-- Execution Units；
-- Current System / Code State；
-- Current Verification Evidence。
+- 规格说明；
+- 技术计划（如存在）；
+- 执行单元；
+- 当前系统 / 代码状态；
+- 当前验证证据。
 
 ### 检查内容
 
-`converge` 必须重新从规格说明建立功能整体覆盖，不把切分 / 就绪检查阶段形成的责任归属或计划证据视为完成证据。此前显式归属功能整体验证责任的义务在本阶段到期，仍缺少已执行的当前证据时必须阻止 `READY`。
+`converge` 必须重新从规格说明建立功能整体覆盖，不把切分 / 就绪检查阶段形成的责任归属或计划证据视为完成证据。此前显式归属功能整体验证责任的义务在本阶段到期，仍缺少已执行当前证据时必须阻止 `READY`。
 
-- Missing Behavior
-- Partial Implementation
-- Contradiction with Specification
-- Unintended / Unrequested Behavior
-- Obsolete Technical Plan
-- Unverified Critical Behavior
-- Cross-unit Integration Gap
-- 架构 / ADR 缺口（Architecture / ADR Gap）
-- 长期权威产物的生命周期缺口（Artifact Lifecycle Gap）
+- 缺失行为；
+- 部分实现；
+- 与规格说明冲突；
+- 未请求行为；
+- 过时技术计划；
+- 未验证关键行为；
+- 跨执行单元集成缺口；
+- 架构 / ADR 缺口；
+- 长期权威产物的生命周期缺口。
 
 ### 输出
 
@@ -461,124 +461,126 @@ READY
 
 ```text
 GAPS
-→ New / Corrected Execution Units
+→ 新建 / 修正执行单元
 ```
+
+这里的 `READY` / `GAPS` 是当前方法和 Skill 契约中的固定结果值，保持原样。
 
 ### 比例化执行
 
-Converge 的语义要求不因工作规模较小而消失，但执行强度应与工作复杂度成比例。
+整体收敛的语义要求不因工作规模较小而消失，但执行强度应与工作复杂度成比例。
 
-对于只有一个 Execution Unit 的小型安全修改，可以轻量执行同一收敛检查：确认该 Change 的权威 Scope 已完整实现、当前证据支持 Completion、没有已知 Blocking Gap，也没有未经授权的 Product / External Behavior。此时不要求重型报告、独立长期 Artifact 或人为制造额外流程层级。
+对于只有一个执行单元的小型安全修改，可以轻量执行同一收敛检查：确认该变更的权威范围已完整实现、当前证据支持完成、没有已知阻塞缺口，也没有未经授权的产品 / 外部行为。此时不要求重型报告、独立长期产物或人为制造额外流程层级。
 
-轻量 Convergence 仍然是与 Unit Verification 逻辑上不同的最终完成判断；不得因为 Unit 已 Completed 就自动推出 `READY`。
+轻量收敛仍然是与执行单元验证逻辑上不同的最终完成判断；不得因为执行单元已 `Completed` 就自动推出 `READY`。
 
-### Exit Condition
+### 退出条件
 
-Feature Behavior、Implementation State 和 Verification Evidence 已与 Specification 收敛一致，实现未违反当前有效的领域、架构 / ADR 权威，且本次工作产生或改变的长期权威事实已经完成适当的生命周期闭环。
+功能行为、实现状态和验证证据已与规格说明收敛一致，实现未违反当前有效的领域、架构 / ADR 权威，且本次工作产生或改变的长期权威事实已经完成适当的生命周期闭环。
 
 随后工作进入：
 
-> **Ready to Integrate**
+> **已具备进入集成决策的条件**
 
-## 9. Defect Workflow
+## 9. 缺陷工作流
 
-缺陷默认不走完整 Feature Workflow。
+缺陷默认不走完整功能工作流。
 
 ```text
-Observed Symptom
-      ↓
-Reproduce
-      ↓
-Determine Expected Behavior
-      ↓
-Root Cause Investigation
-      ↓
-Hypothesis
-      ↓
-Failing / Reproduction Evidence
-      ↓
-Minimal Fix
-      ↓
-Regression Verification
-      ↓
-Review if warranted
-      ↓
-Defect Closure Check
-      ↓
-Ready to Integrate
+观察症状
+    ↓
+复现
+    ↓
+确定预期行为
+    ↓
+根因调查
+    ↓
+形成假设
+    ↓
+失败 / 复现证据
+    ↓
+最小修复
+    ↓
+回归验证
+    ↓
+按风险复核
+    ↓
+缺陷收尾检查
+    ↓
+已具备进入集成决策的条件
 ```
 
-如果 Debug 过程中发现 Expected Behavior 本身未定义或错误，则回退到 Clarify Intent / Specification。
+如果调试过程中发现预期行为本身未定义或错误，则回退到澄清意图 / 规格说明。
 
-如果 Fix 涉及重大架构变化，则按需进入 Technical Planning。
+如果修复涉及重大架构变化，则按需进入技术规划。
 
-### Standalone Defect Closure
+### 独立缺陷收尾
 
-Standalone Defect 在进入 Ready to Integrate 前，应至少确认：
+独立缺陷在进入已具备进入集成决策的条件前，应至少确认：
 
-- Expected Behavior 仍有当前权威支持；
-- Root Cause 已处理，而不是只让症状暂时消失；
-- Regression Evidence 来自修复后的当前状态；
-- Repository Rules 要求的相关验证已经完成；
-- 没有已知会阻塞该缺陷修复交付的回归、未经授权 Product Behavior 或 External Side Effect；
-- 调查过程没有暴露尚未处理的 Requirement / Major Design / Authority Gap。
+- 预期行为仍有当前权威支持；
+- 根因已处理，而不是只让症状暂时消失；
+- 回归证据来自修复后的当前状态；
+- 仓库规则要求的相关验证已经完成；
+- 没有已知会阻塞该缺陷修复交付的回归、未经授权产品行为或外部副作用；
+- 调查过程没有暴露尚未处理的需求 / 重大设计 / 权威缺口。
 
-该 Closure Check 是与缺陷规模相称的最终收敛检查，不要求为了形式完整性创建 Feature Specification、Execution Unit Set 或调用完整 Feature `converge` 流程。
+该收尾检查是与缺陷规模相称的最终收敛检查，不要求为了形式完整性创建功能规格说明、执行单元集合或调用完整功能 `converge` 流程。
 
-`systematic-debug` 负责证明 Root Cause Fix 与 Regression Evidence；它本身不自动执行 Integration，也不因为 Regression Test 通过就拥有 Merge / Push / Release / Deploy 权限。
+`systematic-debug` 负责证明根因修复与回归证据；它本身不自动执行集成，也不因为回归测试通过就拥有 Merge / Push / Release / Deploy 权限。
 
 ## 10. 阶段回退
 
 本方法不是单向瀑布。
 
 ```text
-Execute
-  ├─发现 Requirement Ambiguity → Specification / Clarify
-  ├─发现长期领域事实缺失或冲突 → Specification / Domain Authority Update
-  ├─发现 Technical Design Invalid → Technical Planning
-  ├─发现新的长期架构状态或决策 → Technical Planning / Architecture Authority / ADR 评估
-  ├─发现 Unit Too Large → Slice Again
-  ├─出现 Unexpected Failure → Systematic Debugging
-  └─发现 Feature Gap → Converge → New Execution Units
+执行
+  ├─发现需求歧义 → 规格说明 / 澄清意图
+  ├─发现长期领域事实缺失或冲突 → 规格说明 / 领域权威更新
+  ├─发现技术设计失效 → 技术规划
+  ├─发现新的长期架构状态或决策 → 技术规划 / 架构权威 / ADR 评估
+  ├─发现执行单元过大 → 重新切分
+  ├─出现非预期失败 → 系统化调试
+  └─发现功能缺口 → 整体收敛 → 新执行单元
 ```
 
-Systematic Debugging 或 Converge 发现长期领域事实缺口时，应回退到 Clarify Intent / Specification；发现新的长期架构状态或决策时，应回退到 Technical Planning，而不是在当前阶段静默建立长期权威。
+系统化调试或整体收敛发现长期领域事实缺口时，应回退到澄清意图 / 规格说明；发现新的长期架构状态或决策时，应回退到技术规划，而不是在当前阶段静默建立长期权威。
 
-一旦回退改变了项目事实，必须更新对应权威 Artifact，不能只在当前聊天中临时修补。
+一旦回退改变了项目事实，必须更新对应权威产物，不能只在当前聊天中临时修补。
 
-## 11. Context Model
+## 11. 上下文模型
 
 ### 11.1 长期权威产物的生命周期闭环
 
-长期权威产物（Durable Authoritative Artifact）只有在以下生命周期责任明确时，才形成闭环：
+长期权威产物只有在以下生命周期责任明确时，才形成闭环：
 
 | 责任 | 必须回答的问题 |
 |---|---|
-| Producer | 哪个方法职责或已授权角色负责确认并形成该产物？ |
-| Trigger | 什么事实或变化使创建、提升或重大更新成为必要？ |
-| Consumer | 哪些后续阶段、Skill、人员或系统依赖它？ |
-| Persistence | 它以什么受仓库权威管理的载体长期保存和被发现？ |
-| Update | 新证据、需求变化或系统变化出现时，谁在什么条件下维护它？ |
-| Supersede | 旧内容失效时，如何标明取代、保留必要历史并避免新旧同时生效？ |
-| Escalation | 哪些权限冲突、高影响变化或难逆决定必须交给人工或更高权威？ |
+| 产生者 | 哪个方法职责或已授权角色负责确认并形成该产物？ |
+| 触发条件 | 什么事实或变化使创建、提升或重大更新成为必要？ |
+| 消费者 | 哪些后续阶段、技能、人员或系统依赖它？ |
+| 持久化 | 它以什么受仓库权威管理的载体长期保存和被发现？ |
+| 更新 | 新证据、需求变化或系统变化出现时，谁在什么条件下维护它？ |
+| 取代 | 旧内容失效时，如何标明取代、保留必要历史并避免新旧同时生效？ |
+| 升级 | 哪些权限冲突、高影响变化或难逆决定必须交给人工或更高权威？ |
 
-Producer 是逻辑责任，不要求对应独立 Skill、固定人员或固定文件。Trigger 也不意味着每次进入某个阶段都必须创建产物；只有信息具备跨当前工作持续存在的权威、协调或追溯价值时才持久化。
+产生者是逻辑责任，不要求对应独立技能、固定人员或固定文件。触发条件也不意味着每次进入某个阶段都必须创建产物；只有信息具备跨当前工作持续存在的权威、协调或追溯价值时才持久化。
 
-如果当前工作新增或重大修改长期权威产物，却无法回答上述责任，应视为产物生命周期缺口（Artifact Lifecycle Gap），返回拥有相应事实或决策的职责层处理。不得用临时 Plan、会话历史、代码注释或下游 Skill 的推测代替缺失的生命周期责任。
+如果当前工作新增或重大修改长期权威产物，却无法回答上述责任，应视为产物生命周期缺口，返回拥有相应事实或决策的职责层处理。不得用临时计划、会话历史、代码注释或下游技能的推测代替缺失的生命周期责任。
 
-### 11.2 Governance Context
+### 11.2 治理上下文
 
 长期存在：
 
-- Repository Rules
-- Engineering Principles
-- Authority Rules
+- 仓库规则；
+- 工程原则；
+- 权威规则。
 
-### 11.3 项目路线图（Project Roadmap）上下文
+### 11.3 项目路线图上下文
 
-项目路线图（Project Roadmap）是一种**条件性长期项目级产物**。当项目预计或已经跨越多个里程碑、方法阶段或 Fresh Context，且仅凭 Feature / Execution / Coordination 产物无法可靠恢复整体演进路线、当前阶段和下一步工作时，才建立或继续维护 Project Roadmap。
+项目路线图（`Project Roadmap`）是一种**条件性长期项目级产物**。当项目预计或已经跨越多个里程碑、方法阶段或新上下文，且仅凭功能 / 执行 / 协调产物无法可靠恢复整体演进路线、当前阶段和下一步工作时，才建立或继续维护项目路线图。
 
-它至少应让 Fresh Agent 区分：
+它至少应让新的 Agent 上下文区分：
 
 - 已完成的项目里程碑及其可追溯证据；
 - 当前阶段与当前核心目标；
@@ -587,212 +589,212 @@ Producer 是逻辑责任，不要求对应独立 Skill、固定人员或固定�
 - 触发更新的项目级变化；
 - 从哪里恢复当前工作的权威入口。
 
-初始路线不要求预知项目的完整未来。未知内容应明确标为 Unknown / Conditional，并随着真实证据和已授权决定逐步完善，不得用推测制造虚假的确定性。
+初始路线不要求预知项目的完整未来。未知内容应明确标为未知 / 条件性，并随着真实证据和已授权决定逐步完善，不得用推测制造虚假的确定性。
 
-Project Roadmap 不替代 Specification、Technical Plan、Execution Unit、临时 Coordination Plan 或项目管理排期。它说明项目整体“已经走到哪里、当前以什么为核心、接下来沿什么已确认方向演进”，不重新定义 Feature WHAT / WHY，也不拥有覆盖 Domain / Architecture / ADR Authority 的权限。
+项目路线图不替代规格说明、技术计划、执行单元、临时协调计划或项目管理排期。它说明项目整体“已经走到哪里、当前以什么为核心、接下来沿什么已确认方向演进”，不重新定义功能的“做什么 / 为什么”，也不拥有覆盖领域 / 架构 / ADR 权威的权限。
 
 其生命周期规则是：
 
-- **Producer：** Project Initialization / Bootstrap Capability，或 Consumer Repository Authority 授权的项目治理 / 维护职责；
-- **Trigger：** 初始化时已能合理判断项目会跨多个里程碑、阶段或 Fresh Context，且缺少该产物会使整体状态难以恢复；也可以在后续演进中首次出现这种长期协调需要时再创建；
-- **Consumer：** Fresh Agent、项目治理、后续项目级规划以及进入新 Feature / Change 的工作；
-- **Persistence：** 使用 Consumer Repository 选择的、可发现且受仓库权威管理的载体；可以采用 `docs/project/project-roadmap.md` 等清晰名称，但 Method 不强制固定路径或模板；
-- **Update：** 项目级里程碑完成、取消或被取代，当前阶段 / 核心目标改变，已决定的下一步顺序改变，或条件性方向正式进入当前路线时，由有权维护项目路线的职责同步更新；
-- **Supersede：** 文档只表达当前有效路线和必要历史关系；旧状态由版本历史保留，README、任务清单或状态摘要不得并行维护另一份相互竞争的当前路线；
-- **Escalation：** 路线变化会改变产品范围、重大方向或现有 Authority，或涉及未经授权的高影响决定时，升级到相应 Human / Repository Authority。
+- **产生者：** 项目初始化 / 启动能力，或使用方仓库权威授权的项目治理 / 维护职责；
+- **触发条件：** 初始化时已能合理判断项目会跨多个里程碑、阶段或新上下文，且缺少该产物会使整体状态难以恢复；也可以在后续演进中首次出现这种长期协调需要时再创建；
+- **消费者：** 新的 Agent 上下文、项目治理、后续项目级规划以及进入新功能 / 变更的工作；
+- **持久化：** 使用使用方仓库选择的、可发现且受仓库权威管理的载体；可以采用 `docs/project/project-roadmap.md` 等清晰名称，但方法不强制固定路径或模板；
+- **更新：** 项目级里程碑完成、取消或被取代，当前阶段 / 核心目标改变，已决定的下一步顺序改变，或条件性方向正式进入当前路线时，由有权维护项目路线的职责同步更新；
+- **取代：** 文档只表达当前有效路线和必要历史关系；旧状态由版本历史保留，README、任务清单或状态摘要不得并行维护另一份相互竞争的当前路线；
+- **升级：** 路线变化会改变产品范围、重大方向或现有权威，或涉及未经授权的高影响决定时，升级到相应人工 / 仓库权威。
 
-普通小型、一次性或仅含单一局部工作的项目不要求 Project Roadmap。是否创建取决于能否提供真实、持续的项目级协调与恢复价值，而不是为了满足模板。
+普通小型、一次性或仅含单一局部工作的项目不要求项目路线图。是否创建取决于能否提供真实、持续的项目级协调与恢复价值，而不是为了满足模板。
 
-### 11.4 Domain Context
+### 11.4 领域上下文
 
 领域上下文保存跨功能持续有效的业务语言与领域事实，例如：
 
-- Glossary
-- Durable Domain Facts
+- 术语表；
+- 长期领域事实。
 
 其生命周期规则是：
 
-- **Producer：** Consumer Repository Authority 指定的产品 / 领域责任方，或被明确授权承担该职责的 Agent；Clarify Intent 与 Specification 负责识别和验证候选，但阶段转换本身不授予长期领域权威写入权限；
-- **Trigger：** 当候选事实会被多个后续工作消费，或现有领域权威已不再准确时，评估创建或更新；
-- **Consumer：** Specification、Technical Planning、Slice & Ready、Execute、Systematic Debugging 与 Converge 按当前工作需要消费相关部分；
-- **Persistence：** 使用 Consumer Repository 选择的领域文档、术语表、规则集或其他可发现的权威载体，不规定固定目录或模板；
-- **Update / Supersede：** 由拥有相应产品或领域权限的职责更新；旧事实失效时应显式标明取代关系或同步修正引用，避免冲突事实同时被视为有效；
-- **Escalation：** 当权威来源冲突、改变产品意图或业务边界、存在多种 materially different 的解释，或 Agent 无权确认领域事实时，升级给相应 Human / Repository Authority。
+- **产生者：** 使用方仓库权威指定的产品 / 领域责任方，或被明确授权承担该职责的 Agent；澄清意图与规格说明负责识别和验证候选，但阶段转换本身不授予长期领域权威写入权限；
+- **触发条件：** 当候选事实会被多个后续工作消费，或现有领域权威已不再准确时，评估创建或更新；
+- **消费者：** 规格说明、技术规划、工作切分与就绪、执行、系统化调试与整体收敛按当前工作需要消费相关部分；
+- **持久化：** 使用使用方仓库选择的领域文档、术语表、规则集或其他可发现的权威载体，不规定固定目录或模板；
+- **更新 / 取代：** 由拥有相应产品或领域权限的职责更新；旧事实失效时应显式标明取代关系或同步修正引用，避免冲突事实同时被视为有效；
+- **升级：** 当权威来源冲突、改变产品意图或业务边界、存在多种会产生实质不同结果的解释，或 Agent 无权确认领域事实时，升级给相应人工 / 仓库权威。
 
-Feature Context 中出现的业务信息不会仅因被实现或验证就自动成为 Domain Context。代码和测试可以提供当前系统行为证据，但不能单独授予业务事实长期权威。
+功能上下文中出现的业务信息不会仅因被实现或验证就自动成为领域上下文。代码和测试可以提供当前系统行为证据，但不能单独授予业务事实长期权威。
 
-### 11.5 Architecture Context
+### 11.5 架构上下文
 
-架构上下文保存跨功能持续有效的系统结构、组件与数据边界、共享 / 公共契约、集成与部署约束以及其他当前架构状态。它与 Domain Context 的边界是：Domain Context 说明业务世界中必须成立的事实，Architecture Context 说明技术系统为满足权威意图而采用并持续受约束的结构与状态。
+架构上下文保存跨功能持续有效的系统结构、组件与数据边界、共享 / 公共契约、集成与部署约束以及其他当前架构状态。它与领域上下文的边界是：领域上下文说明业务世界中必须成立的事实，架构上下文说明技术系统为满足权威意图而采用并持续受约束的结构与状态。
 
 其生命周期规则是：
 
-- **Producer / Trigger：** Technical Planning 在当前系统证据与有效架构权威基础上确认；当技术工作改变了需要跨当前功能持续消费的架构状态，或现有架构说明已与有效系统状态不一致时，创建或更新；
-- **Consumer：** Technical Planning、Slice & Ready、Readiness、Execute、Systematic Debugging 与 Converge 按需消费；
-- **Persistence：** 使用 Consumer Repository 选择的架构说明、契约、模型、代码或其他可发现的权威载体；不同载体的权威关系由该仓库定义；
-- **Update / Supersede：** 架构变化被确认并实施时同步维护；旧约束失效时显式更新状态、引用或取代关系，不能让过期说明继续与当前有效架构并列；
-- **Escalation：** 重大架构方向、高影响或难逆权衡、权威冲突以及超出 Agent 授权的共享 / 外部影响，按 Authority、Impact、Reversibility 升级。
+- **产生者 / 触发条件：** 技术规划在当前系统证据与有效架构权威基础上确认；当技术工作改变了需要跨当前功能持续消费的架构状态，或现有架构说明已与有效系统状态不一致时，创建或更新；
+- **消费者：** 技术规划、工作切分与就绪、就绪检查、执行、系统化调试与整体收敛按需消费；
+- **持久化：** 使用使用方仓库选择的架构说明、契约、模型、代码或其他可发现的权威载体；不同载体的权威关系由该仓库定义；
+- **更新 / 取代：** 架构变化被确认并实施时同步维护；旧约束失效时显式更新状态、引用或取代关系，不能让过期说明继续与当前有效架构并列；
+- **升级：** 重大架构方向、高影响或难逆权衡、权威冲突以及超出 Agent 授权的共享 / 外部影响，按权限、影响、可逆性升级。
 
-ADR 是 Architecture Context 中按条件产生的决策记录：它解释重要架构决定的背景、选择、权衡、后果与替代关系，但不是全部当前架构状态。架构事实变化不必机械创建 ADR；只有满足第 5 节条件的长期决定才创建或更新 ADR。
+ADR 是架构上下文中按条件产生的决策记录：它解释重要架构决定的背景、选择、权衡、后果与替代关系，但不是全部当前架构状态。架构事实变化不必机械创建 ADR；只有满足第 5 节条件的长期决定才创建或更新 ADR。
 
-### 11.6 Feature Context
+### 11.6 功能上下文
 
-Feature 生命周期：
+功能生命周期：
 
-- Specification
-- Optional Technical Plan
+- 规格说明；
+- 可选技术计划。
 
-### 11.7 Execution Context
+### 11.7 执行上下文
 
-单 Execution Unit 生命周期：
+单执行单元生命周期：
 
-- Current Unit
-- 负责的验收义务
-- 计划验证证据
-- Relevant Code / Tests
-- JIT Execution Plan
-- 已执行的当前证据
+- 当前执行单元；
+- 负责的验收义务；
+- 计划验证证据；
+- 相关代码 / 测试；
+- 即时执行计划；
+- 已执行的当前证据。
 
-### 11.8 Coordination Context
+### 11.8 协调上下文
 
-当前 Workflow / Session 生命周期：
+当前工作流 / 会话生命周期：
 
-- Queue / Progress
-- Temporary Rulings
-- Blockers
-- Verification Status
-- Remaining Work
+- 队列 / 进度；
+- 临时裁决；
+- 阻塞项；
+- 验证状态；
+- 剩余工作。
 
-Conversation History 不属于权威 Context Layer。
+会话历史不属于权威上下文层。
 
-## 12. Controller / Worker Model
+## 12. 控制者 / 执行者模型
 
-运行环境支持时，推荐采用 Controller / Worker。
+运行环境支持时，推荐采用控制者 / 执行者模型（`Controller / Worker`）。
 
-Controller 维护 Coordination Context。
+控制者维护协调上下文。
 
-Worker 每次只获得一个 Execution Unit 所需的 Fresh Execution Context。
+执行者每次只获得一个执行单元所需的新执行上下文。
 
 这是推荐实现，不是方法硬性要求。
 
 方法真正要求的是：
 
-> Coordination Context 与 Execution Context 逻辑分离。
+> 协调上下文与执行上下文逻辑分离。
 
-## 13. Human Escalation
+## 13. 人工升级
 
 统一判断三个维度：
 
-1. **Authority** — Agent 是否被授权作出这个决定或执行这个动作？
-2. **Impact** — 是否显著改变 Product Behavior 或 External State？
-3. **Reversibility** — 是否可以安全、低成本回滚？
+1. **权限** — Agent 是否被授权作出这个决定或执行这个动作？
+2. **影响** — 是否显著改变产品行为或外部状态？
+3. **可逆性** — 是否可以安全、低成本回滚？
 
 ### Agent 默认自主处理
 
-- 普通 Code Structure；
-- 低影响 Local Implementation Choice；
-- 可逆 Technical Detail；
-- Test / Build / Lint Investigation；
-- 可以由 Code / Evidence 判断的事实。
+- 普通代码结构；
+- 低影响局部实现选择；
+- 可逆技术细节；
+- 测试 / 构建 / Lint 调查；
+- 可以由代码 / 证据判断的事实。
 
-### Human / Explicit Policy 必须介入
+### 人工 / 显式策略必须介入
 
-- Product Behavior 存在多种 materially different 的合理解释；
-- Scope / Intent 改变；
-- Destructive / Hard-to-reverse Data Operation；
-- Security / Privacy Sensitive Decision；
-- Major Architecture Direction；
-- Authoritative Sources Conflict；
-- 未授权的 Shared / Production / External Side Effect。
+- 产品行为存在多种会产生实质不同结果的合理解释；
+- 范围 / 意图改变；
+- 破坏性 / 难恢复的数据操作；
+- 安全 / 隐私敏感决定；
+- 重大架构方向；
+- 权威来源冲突；
+- 未授权的共享 / 生产 / 外部副作用。
 
 ## 14. 工作产物策略
 
-| Artifact | 生命周期 |
+| 产物 | 生命周期 |
 |---|---|
-| Repository Rules | 长期 |
-| Governance / Engineering Principles | 长期 |
-| Project Roadmap | 条件长期；仅在项目跨里程碑、阶段或 Fresh Context 且需要可恢复的整体路线时建立，由授权的项目治理 / 维护职责持续更新 |
-| Domain Context | 按需长期；Clarify / Specification 识别和验证候选，由 Repository Authority 授权的领域责任方确认并维护更新与取代关系 |
-| Architecture Context | 按需长期；由 Technical Planning 维护跨功能持续有效的架构状态 |
-| ADR | 条件长期；属于 Architecture Context 中的决策记录，只在需要跨功能保留架构约束与决策理由时产生 |
-| Specification | Feature 权威产物 |
-| Technical Plan | 条件长期；服务当前功能与执行单元的 HOW 协调 |
-| Execution Unit | 工作生命周期 |
-| JIT Execution Plan | 临时 |
-| Code / Tests | 长期系统事实 |
-| Verification Evidence | 当前状态证据 |
-| Handoff | 临时 Transition State |
+| 仓库规则 | 长期 |
+| 治理 / 工程原则 | 长期 |
+| 项目路线图 | 条件长期；仅在项目跨里程碑、阶段或新上下文且需要可恢复的整体路线时建立，由授权的项目治理 / 维护职责持续更新 |
+| 领域上下文 | 按需长期；澄清 / 规格说明识别和验证候选，由仓库权威授权的领域责任方确认并维护更新与取代关系 |
+| 架构上下文 | 按需长期；由技术规划维护跨功能持续有效的架构状态 |
+| ADR | 条件长期；属于架构上下文中的决策记录，只在需要跨功能保留架构约束与决策理由时产生 |
+| 规格说明 | 功能权威产物 |
+| 技术计划 | 条件长期；服务当前功能与执行单元的“如何实现”协调 |
+| 执行单元 | 工作生命周期 |
+| 即时执行计划 | 临时 |
+| 代码 / 测试 | 长期系统事实 |
+| 验证证据 | 当前状态证据 |
+| 交接 | 临时转换状态 |
 
-不存在“一个阶段必须对应一个文件”的要求，也不存在“进入 Technical Planning 就必须创建 ADR”的要求。
+不存在“一个阶段必须对应一个文件”的要求，也不存在“进入技术规划就必须创建 ADR”的要求。
 
 ## 15. 按复杂度选择流程
 
 ### 小型安全修改
 
 ```text
-Intent
+意图
  ↓
-Lightweight Specification / Execution Unit
+轻量规格说明 / 执行单元
  ↓
-Execute
+执行
  ↓
-Targeted Verification
+定向验证
  ↓
-Lightweight Convergence
+轻量收敛
  ↓
-Ready to Integrate
+已具备进入集成决策的条件
 ```
 
-`Lightweight Convergence` 只表示以与工作规模相称的方式应用 Stage 6 完成语义；它不要求重型报告，也不能由 Unit Completed 状态自动替代。
+轻量收敛只表示以与工作规模相称的方式应用第 6 阶段完成语义；它不要求重型报告，也不能由执行单元完成状态自动替代。
 
-### 普通 Feature
+### 普通功能
 
 ```text
-Clarify
+澄清意图
  ↓
-Specification
+规格说明
  ↓
-Slice & Ready
+工作切分与就绪
  ↓
-Execute
+执行
  ↓
-Converge
+整体收敛
  ↓
-Ready to Integrate
+已具备进入集成决策的条件
 ```
 
-### 复杂 Feature
+### 复杂功能
 
 ```text
-Clarify
+澄清意图
  ↓
-Specification
+规格说明
  ↓
-Technical Plan
+技术计划
  ↓
-Slice & Ready
+工作切分与就绪
  ↓
-Execute
+执行
  ↓
-Converge / Full Verification
+整体收敛 / 完整验证
  ↓
-Ready to Integrate
+已具备进入集成决策的条件
 ```
 
-Technical Planning 中如果形成跨功能的长期架构决定，应在进入 Slice & Ready 前完成相应 ADR / 架构权威（Architecture Authority）的持久化；如果没有这类决定，则不创建 ADR。
+技术规划中如果形成跨功能的长期架构决定，应在进入工作切分与就绪前完成相应 ADR / 架构权威的持久化；如果没有这类决定，则不创建 ADR。
 
-### Standalone Defect
+### 独立缺陷
 
 ```text
-Observed Defect
+观察到的缺陷
  ↓
-Systematic Debugging
+系统化调试
  ↓
-Regression Verification
+回归验证
  ↓
-Defect Closure Check
+缺陷收尾检查
  ↓
-Ready to Integrate
+已具备进入集成决策的条件
 ```
 
 方法必须与工作复杂度成比例，避免流程主义；比例化不能被解释为跳过最终的权威、实现与当前证据一致性判断。
