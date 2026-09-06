@@ -191,6 +191,44 @@ Fresh Runtime Targeted Eval 经两轮修复与一次最终最小重跑完成：
 
 该维护仍属于当前 **Post-Milestone Decision / Stable Maintenance**，不自动启动新的能力里程碑；Issue #58 继续保持长期 Consumer Feedback 渠道开放。
 
+### 4.6 Issue #58 Verification Trigger / Readiness Re-entry / Adoption Convention 维护
+
+Issue #58 的 EU-31～EU-36 Consumer Evidence 触发第三次 **Stable Maintenance** 定向修订，处理三个可复用缺口：
+
+- GitHub Actions 高成本验证必须把 `Change / Authority Impact → Evidence Claim / Risk → Required Verification Layer → Actual Workflow Trigger / Gate` 对成真实执行路径；受影响 Claim 不能因 filter / label / manual gate 漏验，与高成本 Claim 无关的变化也不应机械重验；
+- Readiness 如果因 Current Evidence 返回上游，并导致 Specification、Technical Plan 或 Architecture basis 实质修订，则旧 Candidate Unit Set 与历史 Readiness Evidence 只对应旧基础；继续 Execute 前必须重新进入 `slice-work → readiness-check`；
+- Existing Consumer baseline upgrade 除 Method / Skill / Artifact 规则外，还应审计长期影响 Fresh Context 的 repository-facing conventions，并由 Consumer 明确 Adopt、Retain / Override 或 Reject / Not Applicable；`agentic-dev` 自身 Project Rule 不自动成为 Consumer Rule。
+
+证据分类边界：
+
+- Finding A、B、F 进入本次有限维护；
+- Finding C（Stale Verification Contract）与 E（Temporary mechanism vs Final Delivery Scope）只作为既有规则的 Positive Validation；
+- Finding D（Executable Architecture Boundary 三层证据）保留为 Deferred Pattern Candidate，当前证据不足以提升为 Method、Engineering Discipline 或强制 Verification Profile Rule。
+
+本次没有修改 Core Method、Principles、Skill Contract 或 Verification Profile Contract，没有新增 Skill / Engineering Discipline，也没有规定固定 GitHub Workflow adapter。
+
+Fresh Runtime Targeted Eval：
+
+```text
+新场景：   2 / 2 PASS，14 / 14 assertions PASS
+直接回归： 4 / 4 PASS，23 / 23 assertions PASS
+合计：     6 / 6 PASS，37 / 37 assertions PASS
+```
+
+场景：`B-GA-08`、`B-RC-07`、`B-GA-04`、`B-GA-01`、`B-RC-06`、`B-RC-01`。
+
+评估对应行为 Head：
+
+`ade7a59c5bf3e0819e336beec1d223e174ec8bc2`
+
+评估附件 SHA-256：
+
+`f40a91054bc03ce3be92002f2c9623d0b25ea1dbad367c5ed76a7c388aa55cab`
+
+6 个场景均从独立 `/tmp/agentic-dev-behavior-*` workspace 启动；stderr 全部为空，JSONL 均包含完整最终回答与 `turn.completed`。命令轨迹只读取隔离注入的 Skill / Reference 与当前 workspace，没有发现 Eval 定义、assertions、历史结果、Consumer Repository 或工作区外上下文污染。所有进程退出码为 `0`，但退出码未作为语义 PASS 依据；最终结果来自逐项人工语义评分。
+
+该维护继续保持当前 **Post-Milestone Decision / Stable Maintenance** 状态，不自动启动新的能力里程碑。Issue #58 继续作为长期 Consumer Feedback 渠道保持开放；PR #61 的瞬时 open / draft / merged 状态继续以 GitHub 为准，不在 Roadmap 复制。
+
 ## 5. 当前 Engineering Discipline Inventory
 
 当前正式 Engineering Disciplines：
