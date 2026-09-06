@@ -22,11 +22,12 @@
 
 当前语料：
 
-`formal-concept-semantic-safety.json`
+- `formal-concept-semantic-safety.json`
+- `method-object-semantic-safety.json`
 
-目标是验证：Agent 在同时读取当前最高语言规则、正式概念身份映射，以及仍可能包含旧中文迁移别名的高优先级架构 / 契约文档时，能够稳定恢复正式工程概念身份，不因为中文化把能力层、方法对象或职责边界错误合并。
+目标是验证：Agent 在同时读取当前最高语言规则、正式概念身份映射，以及仍可能包含旧中文迁移别名的高优先级方法 / 架构 / 契约文档时，能够稳定恢复正式工程概念身份，不因为中文化把能力层、方法阶段、产物、门禁或 Skill 调用名错误合并。
 
-当前专项场景 `G-TERM-01` 直接覆盖：
+`G-TERM-01` 直接覆盖：
 
 - 技术画像 (`Technology Profile`)；
 - 验证画像 (`Verification Profile`)；
@@ -34,6 +35,15 @@
 - 运行时适配器 (`Runtime Adapter`)。
 
 它必须读取真实的 `engineering-capability-architecture.md` 与 `technology-profile-contract.md`，而不是只依赖题面描述旧别名。
+
+`G-TERM-02` 直接覆盖：
+
+- 技术规划阶段 (`Technical Planning`) 与技术计划产物 (`Technical Plan`)；
+- 整体收敛阶段 / 职责 (`Converge`) 与 `converge` Skill 调用名；
+- 就绪门禁 (`Readiness Gate`) 与 `readiness-check` Skill 调用名；
+- 执行阶段 (`Execute`) 与 `execute-unit` Skill 调用名。
+
+它必须读取真实的核心方法、Skill 架构与 Skill 契约，验证中文化不会抹平对象类型和职责边界。
 
 ## 运行边界
 
@@ -58,6 +68,7 @@ python3 evals/run_governance_evals.py
 ```bash
 python3 evals/run_governance_evals.py --scenario G-LANG-01
 python3 evals/run_governance_evals.py --scenario G-TERM-01
+python3 evals/run_governance_evals.py --scenario G-TERM-02
 ```
 
 结果写入：
@@ -75,6 +86,7 @@ python3 evals/run_governance_evals.py --scenario G-TERM-01
 5. 是否为了追求纯中文而错误翻译机器字段、代码或外部正式名称；
 6. 正式概念是否保持正确对象类型、架构层级和职责边界；
 7. 旧中文迁移别名是否被错误解释为新的正式能力层或新的概念；
-8. 是否仍保持原任务要求的语义正确性，而不是只追求语言形式。
+8. 方法阶段、产物、门禁和 Skill 调用名是否被错误合并；
+9. 是否仍保持原任务要求的语义正确性，而不是只追求语言形式。
 
 只有语言规则、正式概念身份和任务语义同时满足，场景才能判为通过。
