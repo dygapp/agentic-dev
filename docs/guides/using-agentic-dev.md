@@ -1,27 +1,25 @@
 # 使用 agentic-dev
 
-本文说明 AI Agent 或开发者如何把 `agentic-dev` 作为方法与 Skills 知识源，用于启动并持续推进真实软件项目。
+本文说明 AI Agent 或开发者如何把 `agentic-dev` 作为方法与 Skill 知识源，用于启动并持续推进真实软件项目。
 
-本文是使用指南（Operating Guide），不重新定义方法（Method）、架构（Architecture）或 Skill 契约（Skill Contract）。发生冲突时，以目标项目自己的仓库权威（Repository Authority）与 `agentic-dev` 的权威层级为准。
+本文是使用指南，不重新定义方法、架构或 Skill 契约。发生冲突时，以目标项目自己的仓库权威与 `agentic-dev` 的权威层级为准。
 
 ## 1. 使用模型
 
 `agentic-dev` 提供三类可复用资产：
 
-- **方法（Method）**：软件开发过程中的阶段、边界、证据和上下文原则；
-- **Skills**：执行特定职责的可组合能力；
-- **使用指南（Operating Guide）**：说明如何在真实项目中使用 Method 与 Skills。
+- **方法**：软件开发过程中的阶段、边界、证据和上下文原则；
+- **Skill**：执行特定职责的可组合能力；
+- **使用指南**：说明如何在真实项目中使用方法与 Skill。
 
-目标项目仍然拥有自己的项目规则（Project Rules）、需求（Requirements）、架构（Architecture）、代码（Code）、测试（Tests）与集成策略（Integration Policy）。
+目标项目仍然拥有自己的项目规则、需求、架构、代码、测试与集成策略。
 
 ```text
 agentic-dev
-Method + Skills + Operating Guide
-        │
-        │ reusable guidance
-        ▼
-Consumer Repository
-Project Rules + Project Knowledge + Code
+方法 + Skill + 使用指南
+        ↓
+使用方项目
+项目规则 + 项目知识 + 代码
 ```
 
 `agentic-dev` 不替目标项目预定义完整目录、技术栈、文档体系或治理结构。
@@ -32,107 +30,111 @@ Project Rules + Project Knowledge + Code
 
 至少区分：
 
-1. `agentic-dev` 仓库：提供可复用 Method、Skills 与 Operating Guide；
-2. Consumer Repository：提供并逐步形成当前项目自己的 Authority；
+1. `agentic-dev` 仓库：提供可复用方法、Skill 与使用指南；
+2. 使用方仓库：提供并逐步形成当前项目自己的权威；
 3. 当前明确提供的业务 / 产品需求来源；
-4. 当前运行环境（Runtime）可直接观察到的能力和状态。
+4. 当前运行环境可直接观察到的能力和状态。
 
 不得把以下内容直接当作目标项目事实：
 
 - 其他聊天中的未固化结论；
 - 其他项目的规则；
 - 个人记忆或隐含经验；
-- `agentic-dev` 中只属于该仓库自己的 Project Rule。
+- `agentic-dev` 中只属于该仓库自己的项目规则。
 
-`agentic-dev` 可以指导“如何工作”，但不能替 Consumer Repository 决定“这个项目的事实是什么”。
+同样，不得从历史聊天、个人记忆或上游示例继承目标项目的表达风格。目标项目已经明确主导语言时，以目标项目仓库权威为准。
 
-### 2.1 需求来源与 Consumer 权威
+`agentic-dev` 可以指导“如何工作”，但不能替使用方仓库决定“这个项目的事实是什么”。
 
-外部提供的需求来源（Requirement Source / Input Material）不会因为被读取、复制到仓库，或自身标记为 `confirmed`、`approved` 等状态，就自动成为 Consumer Repository 的项目权威。
+### 2.1 需求来源与使用方权威
+
+外部提供的需求来源不会因为被读取、复制到仓库，或自身标记为 `confirmed`、`approved` 等状态，就自动成为使用方仓库的项目权威。
 
 启动或接收需求资料时，Agent 应区分：
 
 ```text
-Requirement Source / Input Material
-        │
-        │ explicit adoption into Consumer Authority
-        ▼
-Consumer Authoritative Requirement
-        │
-        │ clarified intent + authority
-        ▼
-Specification
+需求来源或输入资料
+→ 当前项目显式采纳
+→ 使用方权威需求
+→ 澄清后的意图与权威
+→ 规格说明
 ```
 
 其中：
 
-- **需求来源（Requirement Source / Input Material）** 是当前允许用于理解项目的来源资料，可以来自外部文件、其他 Repository、URL、已有系统说明或人工提供的输入；
-- **Consumer 权威需求（Consumer Authoritative Requirement）** 是已经被当前 Consumer Repository 明确采纳，并在当前范围内作为项目事实和后续验收依据使用的需求；
-- **规格说明（Specification）** 继续由已澄清意图（Intent）与当前 Consumer Authority 收敛形成 WHAT / WHY 权威，不等同于原始来源资料的简单复制。
+- **需求来源**是当前允许用于理解项目的来源资料，可以来自外部文件、其他仓库、URL、已有系统说明或人工提供的输入；
+- **使用方权威需求**是已经被当前使用方仓库明确采纳，并在当前范围内作为项目事实和后续验收依据使用的需求；
+- **规格说明**由已澄清意图与当前使用方权威收敛形成 WHAT / WHY 权威，不等同于原始来源资料的简单复制。
 
-Greenfield bootstrap 不要求为了表示上述区分而创建固定目录或额外文档，但在把来源资料纳入 Consumer Authority 前，应至少判断：
+在把来源资料纳入使用方权威前，应至少判断：
 
-- **来源关系（Provenance）**：来源是什么，是否需要保留来源关系；
-- **当前有效范围（Active Scope）**：来源整体范围与当前 Consumer iteration 的有效范围是否一致；
-- **权威优先级（Authority Precedence）**：采纳后它在当前 Repository Authority 中处于什么位置；
-- **上游引用（Upstream References）**：来源文件引用的上游规则、需求、架构或项目文档在 Consumer Repository 中是否真实可用。
+- 来源关系是否需要保留；
+- 来源整体范围与当前迭代的有效范围是否一致；
+- 采纳后在当前仓库权威中的优先级；
+- 来源文件引用的上游规则、需求、架构或项目文档在使用方仓库中是否真实可用。
 
-如果来源文件包含 Consumer Repository 中不存在或未被采纳的 upstream references：
+如果来源文件包含使用方仓库中不存在或未被采纳的上游引用：
 
-- 不得把这些引用自动视为当前 Consumer Authority；
-- 可以保留其 provenance，但应在当前 Repository Authority 中明确其有效边界；
-- 只有当前项目确实需要相应长期事实时，才建立或采纳 Consumer-local Authority；
+- 不得把这些引用自动视为当前使用方权威；
+- 可以保留来源关系，但应明确其当前有效边界；
+- 只有当前项目确实需要相应长期事实时，才建立或采纳使用方本地权威；
 - 不为了让引用“看起来完整”而机械复制整个上游项目的文档体系。
 
-如果某份来源资料已经被人工明确指定为当前 Consumer 的权威需求，可以直接采纳，不要求重复进行形式化审批；但仍应处理当前 Scope、Authority Precedence 与不可解析 upstream references，避免 Fresh Agent 混淆“来源整体语义”和“当前 Consumer 中实际有效的权威”。
+如果某份来源资料已经被人工明确指定为当前项目的权威需求，可以直接采纳，不要求重复形式化审批；但仍应处理当前范围、权威优先级和不可解析的上游引用。
 
-## 3. Greenfield Project：建立最小启动骨架
+## 3. 新项目：建立最小启动骨架
 
 新项目不应从大而全的模板开始。
 
-目标是先建立**足以让 Fresh Agent 正确继续工作的最小仓库权威（Repository Authority）**，然后随真实需求逐步演进。
+目标是先建立**足以让新上下文正确继续工作的最小仓库权威**，然后随真实需求逐步演进。
 
 通常需要先明确：
 
 - 项目目标与当前范围；
-- Repository Authority / Knowledge Boundary；
-- 当前允许 Agent 自主处理与必须升级给人工的边界；
-- 项目是否需要可跨里程碑、阶段或 Fresh Context 恢复的项目路线图（Project Roadmap）；
-- 基本验证与集成策略（Verification / Integration Policy）；
-- 当前 Requirement / Specification 应保存在哪里；
-- 当前项目文档需要遵循的主导语言规则（如已有）；
-- 当前实际需要使用的 Skills。
+- 仓库权威与知识边界；
+- Agent 可以自主处理和必须升级人工的边界；
+- 是否需要可跨里程碑、阶段或新上下文恢复的项目路线图；
+- 基本验证与集成策略；
+- 当前需求与规格说明保存在哪里；
+- 当前项目的主导语言规则；
+- 当前实际需要使用的 Skill。
 
-一个小型 Greenfield 项目的初始骨架可以很轻，例如：
+一个小型项目的初始骨架可以很轻，例如：
 
 ```text
 <consumer>/
 ├── AGENTS.md
 ├── README.md
-└── <当前真正需要的项目 Artifact>
+└── <当前真正需要的项目产物>
 ```
 
 这只是最小示例，不是固定模板。
 
-如果项目预计会跨越多个里程碑、方法阶段或 Fresh Context，且仅凭当前 Feature / Task Artifact 无法可靠恢复整体路线，应在初始化时建立一个薄的项目路线图。初始内容只需明确：
+如果项目预计会跨越多个里程碑、方法阶段或新上下文，且仅凭当前功能 / 任务产物无法可靠恢复整体路线，应在初始化时建立一个薄的项目路线图。初始内容只需明确：
 
 - 已知项目目标与初步路线；
 - 已完成、当前、下一步、条件性和未知部分；
 - 当前阶段与当前核心目标；
 - 触发路线更新的项目级变化；
-- Fresh Agent 应继续读取的权威入口。
+- 新上下文应继续读取的权威入口。
 
-可以使用 `docs/project/project-roadmap.md` 等一眼可识别的名称，但 Consumer Repository 可以选择其他可发现载体。README 只链接到当前路线，不并行复制易变化的详细状态。对于小型、一次性或仅含单一局部工作的项目，不要为了套用模板创建项目路线图。
+可以使用 `docs/project/project-roadmap.md` 等一眼可识别的名称，但使用方仓库可以选择其他可发现载体。README 只链接到当前路线，不并行复制易变化的详细状态。
 
-Project Roadmap、Backlog 或 Issue 可以保存 Future Work / Planning / Requirement Candidates，但这些候选在进入 `slice-work` 前不具有 Execution Unit 身份。不要通过 `EU-xx`、Execution Unit ID、顺序编号或“下一单元”等名称，让尚未完成 Intent / Specification 与必要 Technical Planning 的候选看起来已经切分或可执行。Consumer 可以继续使用独立的 Backlog / Issue ID，只需让其类型与状态不会被 Fresh Agent 误读为 Execution Readiness。
+项目路线图、候选库或 Issue 可以保存未来工作、规划候选和需求候选，但这些候选在进入 `slice-work` 前不具有执行单元身份。不要通过 `EU-xx`、顺序编号或“下一单元”等名称，让尚未完成意图、规格说明与必要技术规划的候选看起来已经切分或可执行。
 
-如果 Consumer Repository 尚未明确自然语言规则，人类可读的项目文档默认应沿用当前权威需求与主要项目协作输入的主导语言，避免把 `agentic-dev` 自身或某个 Runtime 的语言习惯无意复制到目标项目。
+### 3.1 主导语言
 
-语言选择是 Consumer Project Rule，而不是 `agentic-dev` Method 约束：
+语言选择是使用方项目规则，不是 `agentic-dev` 通用方法约束。
 
-- 不强制翻译 Method 专有术语、代码标识、文件路径、命令、协议名和专有名词；
-- 如果语言选择对后续 Fresh Agent、人工复核（Human Review）或长期协作具有持续价值，应在最小 Repository Authority（例如 `AGENTS.md`）中显式固化；
-- 如果 Consumer 已经存在明确语言规则，始终以 Consumer Authority 为准。
+如果使用方仓库已经存在明确语言规则，始终以使用方权威为准。
+
+如果尚未明确，自然语言默认沿用当前权威需求和主要项目协作输入的主导语言，避免把 `agentic-dev` 自身、运行环境或历史聊天的语风无意复制到目标项目。
+
+当项目选择中文作为主导语言时，应优先使用自然中文；代码标识、文件路径、命令、协议名、外部正式名称等确需原样匹配的内容保持原样。不要把中英文并列当作默认表达模板。
+
+如果语言选择对后续新上下文、人工复核或长期协作具有持续价值，应在最小仓库权威中显式固化，例如写入 `AGENTS.md` 或等价项目规则。
+
+### 3.2 不预建没有真实需要的结构
 
 不要为了“看起来完整”预先创建空的：
 
@@ -140,26 +142,23 @@ Project Roadmap、Backlog 或 Issue 可以保存 Future Work / Planning / Requir
 - decisions 体系；
 - tasks / plans 体系；
 - 大量阶段目录；
-- 未被当前工作需要的配置或 Skills。
+- 未被当前工作需要的配置或 Skill。
 
-当真实工作产生长期价值时再新增相应产物（Artifact）。
+当真实工作产生长期价值时再新增相应产物。例如：
 
-例如：
-
-- Specification 确认的业务术语、不变量或跨功能规则需要被后续多个工作持续消费时，再按 Consumer Repository Authority 形成或更新 Domain / Requirement Authority；
-- 出现需要跨执行单元（Execution Units）长期协调的 HOW，再持久化技术计划（Technical Plan）；
-- Technical Planning 改变跨功能持续有效的系统结构、组件 / 数据 / 契约边界或集成 / 部署约束时，更新适当的 Architecture Authority；
-- Architecture Context 中的重要决定只有在保留选择理由、主要权衡或替代关系具有持续价值时，才形成或更新 ADR / Architecture Decision Artifact；
-- 不为了“项目应该有 ADR”预建固定 `adr/` 目录、空 ADR 或统一模板；
-- 当项目演进首次满足跨里程碑 / 阶段 / Fresh Context 的长期恢复条件时，再建立或补齐 Project Roadmap；
-- 工作复杂到需要跨 Fresh Context 协调时，再建立临时 Plan / Coordination Artifact；
+- 规格说明确认的业务术语、不变量或跨功能规则会被多个独立工作持续消费时，再按使用方仓库权威形成或更新领域 / 需求权威；
+- 出现需要跨执行单元长期协调的 HOW 时，再持久化技术计划；
+- 技术规划改变跨功能持续有效的系统结构、组件、数据、契约、集成或部署边界时，更新适当的架构权威；
+- 架构上下文中的重要决定只有在长期保留选择理由、主要权衡或替代关系确有价值时，才形成或更新 ADR；
+- 当项目演进首次满足跨里程碑、阶段或新上下文的长期恢复条件时，再建立或补齐项目路线图；
+- 工作复杂到需要跨新上下文协调时，再建立临时 Plan；
 - 进入实现阶段后，再按实际技术栈创建源码、测试与构建结构。
 
-原则是：**Project Structure follows durable need.**
+原则是：**项目结构跟随真实的长期需要。**
 
-## 4. 使用 Skills
+## 4. 使用 Skill
 
-第一批核心 Skills 位于：
+第一批核心 Skill 位于：
 
 ```text
 skills/
@@ -173,28 +172,28 @@ skills/
 └── converge/
 ```
 
-除第一批核心 Skills 外，仓库还可以基于真实 Consumer Evidence 提供**平台专项非核心 Skill**。这类 Skill 只在当前 Repository / Runtime 实际满足触发条件时加载，不成为所有项目的默认依赖，也不得覆盖 Consumer Repository Authority。
+除第一批核心 Skill 外，仓库还可以基于真实证据提供平台专项非核心 Skill。它们只在当前仓库 / 运行环境实际满足触发条件时加载，不成为所有项目的默认依赖，也不得覆盖使用方仓库权威。
 
-当前已经形成的代表性能力：
+当前代表性平台专项能力：
 
-- `github-actions-verification`：当 Consumer 使用 GitHub Actions 取得验证证据，且 Branch / PR trigger、CI 可观察性、验证分层、容器化 Runtime、Artifact 复用、timeout / cancellation 或 diagnostics 会实质影响验证可靠性时按需使用。
+- `github-actions-verification`：当使用方项目依赖 GitHub Actions 取得验证证据，且触发条件、CI 可观察性、验证分层、容器化运行环境、Artifact 复用、timeout / cancellation 或诊断会实质影响验证可靠性时按需使用。
 
-Agent 应根据当前 Runtime 支持的方式读取、安装或暴露所需 Skills。
+Agent 应根据当前运行环境支持的方式读取、安装或暴露所需 Skill。
 
-本文不规定固定的分发 / 安装机制（Distribution / Installation）。只要求：
+本文不规定固定的分发 / 安装机制，只要求：
 
 - 使用来自已确认 `agentic-dev` baseline 的 Skill；
 - 不依赖历史测试残留或陈旧复制；
-- 不因为 Runtime 安装方式不同而改变 Skill Contract；
-- Consumer Repository 的 Authority 始终高于可复用 Skill 对项目事实的推测。
+- 不因为运行环境安装方式不同而改变 Skill 契约；
+- 使用方仓库权威始终高于可复用 Skill 对项目事实的推测。
 
-不要求所有 Skills 在每个工作中都出现。
+不要求所有 Skill 在每个工作中都出现。
 
-## 5. 常规 Feature 工作流
+## 5. 常规功能工作流
 
-### 5.1 先判断意图（Intent）是否需要澄清
+### 5.1 先判断意图是否需要澄清
 
-如果 Goal、Scope、User-visible Behavior、Business Boundary 或 Acceptance 存在会实质改变产品结果的歧义，使用：
+如果目标、范围、用户可见行为、业务边界或验收存在会实质改变产品结果的歧义，使用：
 
 ```text
 clarify-intent
@@ -202,9 +201,9 @@ clarify-intent
 
 如果现有权威已经足够明确，不为了流程完整性制造额外澄清。
 
-如果澄清过程中识别出可能跨多个功能持续有效的业务术语、不变量或规则，将其作为 Domain Authority Candidate 交给 `specify` 验证；不要因为它已经在聊天或 Clarification 中确认，就直接把它提升为长期领域权威。
+如果澄清过程中识别出可能跨多个功能持续有效的业务术语、不变量或规则，将其作为领域权威候选交给 `specify` 验证；不要因为它已经在聊天或澄清中确认，就直接把它提升为长期领域权威。
 
-### 5.2 形成最小充分规格说明（Specification）
+### 5.2 形成最小充分规格说明
 
 使用：
 
@@ -212,59 +211,48 @@ clarify-intent
 specify
 ```
 
-Specification 负责 WHAT / WHY，应让 Fresh Agent 能判断：
+规格说明负责 WHAT / WHY，应让新上下文能判断：
 
 - 要做什么；
 - 不做什么；
 - 什么结果表示完成；
-- 是否仍存在关键产品歧义（Product Ambiguity）。
+- 是否仍存在关键产品歧义。
 
-Specification 不要求固定文件名、目录、Markdown 模板或 YAML Front Matter。
+规格说明不要求固定文件名、目录、Markdown 模板或 YAML Front Matter。
 
-`specify` 还应判断已确认的领域事实是否需要独立于当前 Feature 长期维护：
+`specify` 还应判断已确认的领域事实是否需要独立于当前功能长期维护：
 
-- 只服务当前 Feature 的行为继续留在 Specification；
-- 会被多个功能、缺陷处理或独立工作流持续消费的事实，按 Consumer Repository Authority 形成或更新 Domain Authority；
-- Agent 已获授权时可以执行相应更新；无权确认时输出 Required Domain Authority Action；
+- 只服务当前功能的行为继续留在规格说明；
+- 会被多个功能、缺陷处理或独立工作流持续消费的事实，按使用方仓库权威形成或更新领域权威；
+- Agent 已获授权时可以执行相应更新；无权确认时输出需要的领域权威动作；
 - 旧事实失效时显式更新、取代或同步修正引用，避免新旧事实同时被视为有效。
 
-### 5.3 只在需要时创建技术计划（Technical Plan）并评估 ADR
+### 5.3 只在需要时创建技术计划并评估 ADR
 
-如果存在需要跨 Execution Units 长期协调的 HOW 决策，使用：
+如果存在需要跨执行单元长期协调的 HOW 决策，使用：
 
 ```text
 technical-plan
 ```
 
-如果 HOW 可以安全地在单个 Execution Unit 中通过即时计划（JIT Plan）解决，且不存在需要维护的 Architecture Context 或需要评估的 ADR，则不要为了阶段完整性创建永久 Technical Plan。无需单独持久化 Technical Plan Artifact，不会豁免已经触发的 Architecture Authority 更新。
+如果 HOW 可以安全地在单个执行单元中通过即时计划解决，且不存在需要维护的架构上下文或需要评估的 ADR，则不要为了阶段完整性创建永久技术计划。
 
-`technical-plan` 形成长期技术决策后，应依次判断 Architecture Context 更新与 ADR 条件产生：
+形成长期技术决策后，应依次判断架构权威更新与 ADR 条件：
 
-- 只服务当前功能及其执行单元协调的决定，继续留在 Technical Plan；
-- 改变未来多个功能持续依赖的系统结构、组件 / 数据 / 集成 / 部署 / 共享契约边界时，形成或更新适当的 Architecture Authority；
-- Architecture Context 中需要长期保留背景、重要选择理由、权衡或替代关系的决定，再显式评估形成或更新 ADR；
+- 只服务当前功能及其执行单元协调的决定，继续留在技术计划；
+- 改变未来多个功能持续依赖的系统结构、组件、数据、集成、部署或共享契约边界时，形成或更新适当的架构权威；
+- 架构上下文中需要长期保留背景、重要选择理由、权衡或替代关系的决定，再显式评估形成或更新 ADR；
 - 普通局部、低影响、可逆实现选择、即时文件 / 命令 / 编辑细节以及尚未收敛的探索过程，不形成 ADR。
 
-需要更新 Architecture Context 时：
+需要 ADR 时，可以创建新的 ADR、更新现有 ADR，或以新决定取代旧 ADR。重大架构方向或高影响难逆决定不得由 Agent 静默确认为长期权威。
 
-- 使用 Consumer Repository 已有的架构说明、契约、模型、代码或其他可发现载体；
-- 同步维护当前有效状态、引用与取代关系；
-- 不满足 ADR 条件不代表架构状态可以只留在 Technical Plan。
+如果执行、系统诊断或整体收敛阶段才发现长期领域事实缺失、冲突或失效，应回到 `clarify-intent` / `specify`；发现新的长期架构状态、决定或现有架构权威失效时，应回到 `technical-plan`。
 
-需要 ADR 时：
+### 5.4 切分并检查执行单元
 
-- 可以创建新的 ADR、更新现有 ADR，或以新决定取代旧 ADR；
-- 新决定取代旧决定时，保留被取代 / 替换（Superseded / Replaced）关系；
-- 使用 Consumer Repository 已有的 Architecture / Decision 载体；如果此前没有相应目录，只在真实 ADR 首次产生时再建立，不要求固定目录名或模板；
-- 是否需要人工介入仍依据权限（Authority）、影响（Impact）、可逆性（Reversibility）；重大架构方向（Major Architecture Direction）或高影响难逆决定不得由 Agent 静默确认为长期权威。
+进入本阶段前，未来工作继续保持规划 / 需求候选身份。只有当上游规格说明已经就绪，且必要技术规划已完成或确认不需要时，才由 `slice-work` 形成候选执行单元。
 
-如果 Execute、`systematic-debug` 或 `converge` 才发现长期领域事实缺失、冲突或失效，应回到 `clarify-intent` / `specify`；发现新的长期架构状态、决定或现有 Architecture Context 失效时，应回到 `technical-plan` 完成 Architecture Authority 更新与必要 ADR 评估。不要把长期权威只留在代码、测试、当前聊天或局部 JIT Plan 中。
-
-### 5.4 切分并检查执行单元（Execution Units）
-
-进入本阶段前，Future Work 继续保持 Planning / Requirement Candidate 身份。只有当上游 Specification 已经 Ready，且必要 Technical Planning 已完成或确认不需要时，才由 `slice-work` 形成 Candidate Execution Units。
-
-`slice-work` 可以为候选 Execution Unit 分配稳定 Identifier，以支持追踪、依赖和后续检查；该 Identifier 只表明“候选执行单元已经形成”，不等于 Readiness Gate 已通过，也不授予 Execute 权限。只有 `readiness-check` 返回 PASS 后，相关 Unit 才是可进入执行的 Ready Execution Unit。Roadmap 顺序、预编号、Issue 标签或名称中的 `EU-xx` 均不能替代这两个职责边界。
+`slice-work` 可以为候选执行单元分配稳定标识，以支持追踪和依赖；该标识只表明候选执行单元已经形成，不等于就绪检查通过，也不授予执行权限。只有 `readiness-check` 通过后，相关执行单元才可以进入执行。
 
 使用：
 
@@ -273,13 +261,13 @@ slice-work
 → readiness-check
 ```
 
-Execution Unit 应：
+执行单元应：
 
 - 范围明确；
 - 可独立验证；
 - 尽量纵向完成一个有意义的行为结果；
-- 适合在 Fresh Execution Context 中执行；
-- 不依赖前一个 Worker 未持久化的会话推理（Conversation Reasoning）。
+- 适合在新的执行上下文中工作；
+- 不依赖前一个执行者未持久化的会话推理。
 
 切分结果还应显式建立：
 
@@ -289,21 +277,13 @@ Execution Unit 应：
 → 计划验证证据
 ```
 
-具体要求：
-
-- 每项必需行为 / 验收义务都由某个执行单元承担实现与验证责任；
-- 只有确实必须在多个执行单元组合后才能证明的行为，才显式归属功能整体验证责任；
-- 计划验证证据应能证明具体行为及其关键差异，不能只写“代码完成”“测试通过”或主路径；
-- 分页、排序、边界 / 失败、多状态、跨入口等行为应按实际规格说明与风险设计足够的验证场景；
-- 不要求一条验收义务对应一个测试，也不限定自动化、E2E、CI 或其他固定证据格式。
-
 就绪检查不只检查执行单元能否实施，还应检查验收责任归属和计划验证覆盖是否足以进入执行。需要补充责任或验证覆盖时返回 `slice-work`，检查者不自行改写执行单元。
 
-Readiness 还应确认相关执行单元遵守当前有效的 Domain / Architecture / ADR Authority。如果已经暴露 Domain / Architecture Authority Gap，或当前工作要求创建 / 重大更新长期权威产物却无法确定其生命周期责任，不应进入 Execute；Checker 只返回拥有相应事实或决定的职责层，不自行修复权威。
+就绪检查还应确认相关执行单元遵守当前有效的领域、架构和 ADR 权威。如果已经暴露长期权威缺口，或当前工作要求创建 / 重大更新长期权威产物却无法确定其生命周期责任，不应进入执行。
 
-如果 Readiness 的 Current Evidence 证明此前认为 Ready 的 Product / Specification / Technical Plan / Architecture basis 存在实质错误，先按 Finding 的真实职责返回 `clarify-intent` / `specify` / `technical-plan`，不要为了保留既有 Candidate、Identifier 或进度状态给设计增加未经权威支持的兼容例外。上游 WHAT / HOW 或 Architecture basis 实质修订后，旧 Candidate Unit Set 与旧 Readiness Evidence 都只对应旧基础；修订完成后应重新进入 `slice-work` 核对并在必要时重塑 Candidate Units，再执行新的 `readiness-check`。Identifier 可以在 Unit identity 仍真实成立时稳定保留，但历史 `PASS`、Work Artifact 或 Roadmap 状态不会跨语义修订继续授予 Execute 权限。
+如果当前证据证明此前认为就绪的产品意图、规格说明、技术计划或架构基础存在实质错误，应按问题真实职责返回上游。上游 WHAT、HOW 或架构基础实质修订后，旧候选执行单元集合与旧就绪证据只对应旧基础；必须重新进入 `slice-work` 核对并在必要时重塑候选执行单元，再执行新的 `readiness-check`。
 
-### 5.5 每个 Unit 使用 Fresh Execution Context
+### 5.5 每个执行单元使用新的执行上下文
 
 使用：
 
@@ -311,18 +291,18 @@ Readiness 还应确认相关执行单元遵守当前有效的 Domain / Architect
 execute-unit
 ```
 
-每个 Fresh Execution Context 只执行一个唯一 Current Unit。
+每个新的执行上下文只执行一个唯一当前执行单元。
 
-Worker 只加载：
+执行者只加载：
 
-- 当前 Unit；
-- 必要的 Consumer Repository Authority；
-- 必要的 Specification / Technical Plan；
+- 当前执行单元；
+- 必要的使用方仓库权威；
+- 必要的规格说明 / 技术计划；
 - 当前执行单元承担验证责任的验收义务与计划验证证据；
-- 相关 Domain / Architecture / ADR Context（如存在）；
-- 当前验证（Verification）所需上下文。
+- 相关领域 / 架构 / ADR 上下文；
+- 当前验证所需上下文。
 
-不要把前一个 Worker 的完整聊天历史当作下一个 Worker 的依赖。
+不要把前一个执行者的完整聊天历史当作下一个执行者的依赖。
 
 遇到非预期失败并需要系统诊断时，可使用：
 
@@ -332,118 +312,122 @@ systematic-debug
 
 ### 5.6 区分配置责任并复用已有能力
 
-实施中的“硬编码”与“自行实现”都不是脱离上下文即可判定的缺陷。Agent 应先读取 Consumer Repository Authority、当前代码、依赖和运行边界，再判断值应由谁维护、变化来自哪里，以及已有能力是否满足当前契约。
+实施中的“硬编码”与“自行实现”都不是脱离上下文即可判定的缺陷。Agent 应先读取使用方仓库权威、当前代码、依赖和运行边界，再判断值应由谁维护、变化来自哪里，以及已有能力是否满足当前契约。
 
-审计字面量或固定值时，至少区分：
+审计固定值时，至少区分：
 
 | 变化责任或来源 | 默认归属方向 |
 |---|---|
 | 稳定的领域不变量、安全参数、协议、模板结构或算法常量 | 保留在受版本控制的代码或相应权威载体中 |
-| 需要由产品或管理员日常维护的运营数据 | 进入 Consumer 已有的产品数据、CMS 或管理配置能力 |
-| 低频变化、用于定义产品结构的元数据 | 进入 Consumer 选择的结构化元数据或配置权威 |
+| 需要由产品或管理员日常维护的运营数据 | 进入已有产品数据、CMS 或管理配置能力 |
+| 低频变化、用于定义产品结构的元数据 | 进入结构化元数据或配置权威 |
 | 随部署实例或环境变化的值 | 进入部署外部配置 |
-| CI、评审环境、代理或发布过程参数 | 进入 Repository、Environment 或 Deployment Variables |
+| CI、评审环境、代理或发布过程参数 | 进入仓库、环境或部署变量 |
 
-分类应依据真实变化来源、维护者、稳定性、安全 / 协议约束和生命周期，而不是变量名、字面量形式或“可配置越多越好”。没有已证明的变化来源或维护责任时，普通稳定常量默认留在代码中；不得只为消除字面量而新增数据库字段、设置页面、环境变量或配置框架。某类责任在 Consumer 中反复出现并具有长期约束价值时，再按其 Repository Authority 固化本地配置治理规则。
+分类应依据真实变化来源、维护者、稳定性、安全 / 协议约束和生命周期，而不是变量名、字面量形式或“可配置越多越好”。没有已证明的变化来源或维护责任时，普通稳定常量默认留在代码中。
 
 实现通用技术能力前，还应检查当前代码库、框架、标准库与已引入依赖是否已经提供满足需求的基线能力：
 
 - 已有能力满足功能契约及安全、可观察性、性能和生命周期约束时，优先复用；
-- 项目只存在局部差异时，用最薄的适配层封装该差异，不重复实现通用机制；
-- 已有能力与真实需求或约束不匹配时，可以采用自有实现，但应基于当前证据说明差异，不以“框架优先”替代工程判断；
-- 不为了复用而扩大依赖面、改变产品行为或静默覆盖 Consumer Architecture Authority。
+- 项目只存在局部差异时，用最薄的适配层封装该差异；
+- 已有能力与真实需求或约束不匹配时，可以采用自有实现，但应基于当前证据说明差异；
+- 不为了复用而扩大依赖面、改变产品行为或静默覆盖使用方架构权威。
 
-### 5.7 验证 Runtime 与当前证据
+### 5.7 验证运行环境与当前证据
 
-选择验证路径时，不仅要确认验证机制存在，还应确认当前运行环境（Runtime）能够重新取得与目标状态对应的当前证据（Current Evidence）。
+选择验证路径时，不仅要确认验证机制存在，还应确认当前运行环境能够重新取得与目标状态对应的当前证据。
 
 遵循以下原则：
 
-- 执行单元完成前回到规格追踪，确认当前证据逐项支持当前执行单元承担验证责任的验收义务；
+- 执行单元完成前回到规格追踪，确认当前证据逐项支持当前执行单元承担的验收义务；
 - 实现存在、代码检查、历史证据或未覆盖关键差异的主路径证据不能代替必要的完成证据；
-- 验证失败出现时，先重新对照当前 Repository Authority / Specification，区分实现缺陷（Implementation Defect）、陈旧验证契约（Stale Verification Contract）、Runtime / Environment Problem 与 External Dependency Problem；测试、Workflow assertion 和其他验证 Artifact 只有与当前权威一致时才定义有效 Expected Behavior；
-- 验证证据类型必须与完成声明匹配；功能浏览器验证（Functional Browser Verification）可以证明路由、交互、资源和可机器判定行为，但不能单独证明视觉一致性（Visual Fidelity）。当需求是现网站点复刻、设计稿还原或品牌视觉一致性时，应按风险使用原始运行证据、参考截图、真实资源、AI 视觉对照和 Human Visual Review；除非 Requirement 已提供可机器判定的完整视觉容差契约，不得把功能 PASS 扩大成视觉 PASS；
-- Automated Verification State 与 Human Review Baseline 应按用途隔离。自动测试会写入数据库、文件、导航、缓存或其他共享状态时，在暴露人工评审环境前应先保留自动验证证据，再从来源明确、可重复构建的基线恢复环境，并只准备明确用于人工评审的示例数据；
-- Human Review Finding 不受评审名称限制。视觉评审也可能暴露实现缺陷、Product / Requirement Ambiguity、Domain / Architecture Authority Gap 或 Runtime Problem；Agent 应保留人工观察的原始范围，重新读取当前 Authority 与 Product Intent 后分类并路由。人工观察是重要 Evidence，但不会仅因来自 Human Review 就自动成为新 Requirement，也不能被静默压缩成纯视觉调整；
-- 变更数据库 Migration 时，如果 Runtime / CI 条件允许，最终验证应至少覆盖一次 `Fresh Database → Full Migration Chain → Application Startup`；SQL 文件检查、编译、单元测试或只在已有数据库上执行增量 migration，不能单独证明新环境可初始化；
-- 显式归属功能整体验证责任的义务保持 `Pending`，必须由后续 `converge` 独立重新检查；
-- 验证路径应具有足够的证据可观察性（Evidence Observability）；Agent 不应选择自己无法重新取得必要完成证据（Completion Evidence）的执行路径；
-- 如果当前 Runtime 对某类 CI trigger 或验证结果不可观察，应在仓库策略（Repository Policy）允许范围内切换到可观察路径，而不是把未知状态当作通过；
-- 快速反馈（Fast Feedback）与完成验证（Completion Verification）可以分层；中间修复优先取得低成本、针对性的反馈，最终完成声明仍必须满足必要的完整验证；
-- 中间修复迭代不要求每次重复支付最高成本的环境准备，但不能因此降低最终 Completion Evidence 的覆盖；
-- 使用 GitHub Actions 或其他自动化验证平台时，还应把 `Change / Authority Impact → Evidence Claim / Risk → Required Verification Layer → actual trigger / gate` 对成真实执行路径。专项高成本 Workflow 可以围绕其真实 Claim 收窄自动触发范围，但不能让受影响 Claim 因 filter / label / manual gate 等 adapter 漏验；反过来，与某项高成本 Claim 无关的变化也不应仅因“所有 PR 都这样跑”而机械重验。`docs-only`、Authority-only 或代码扩展名本身既不能证明应跳过 Runtime / Review，也不能证明必须执行 full integration；最终由 Consumer Repository 的 claim/risk policy 决定。`paths`、label、`workflow_dispatch`、reusable workflow 等只属于平台 adapter，不提升为 Method 强制规则；
-- 已验证提交之后出现新提交时，不按“文件扩展名”或“docs-only”机械决定旧证据是否仍有效。只有能够取得祖先证据提交到当前目标提交的精确差异、逐项证明差异不会影响该 Evidence Claim、与该声明相关的 Authority / Requirement / Specification / Architecture / Acceptance 语义未改变，并且 Repository Policy 允许时，才可以按声明复用未受影响的证据；必须记录祖先 SHA、当前 SHA、差异范围和声明映射。受影响或无法证明不受影响的声明必须重新取得定向验证或相应 Review；祖先 Run 不得被描述为当前 Head 的 Run；
-- 高成本且稳定的环境依赖可以通过预构建 Runtime、Artifact 复用、缓存或其他当前平台支持的方式降低重复准备成本；
-- 临时执行证据（Ephemeral Execution Evidence）默认只承担单次运行的证明、传输或审查职责。如果其中的数据、资源或配置被适当的 Human / Product Authority 接受，并成为后续稳定重放、迁移、评审或运行输入，应按 Consumer Repository Authority 晋升为已接受持久输入（Accepted Durable Input），保留来源 Run、Head、Artifact、digest 等必要 provenance 和完整性关系；长期消费者不得继续以会过期的临时 Artifact 作为唯一输入。Promotion 改变目标 Head、输入内容或 Evidence Claim 时，必须对最终状态重新取得匹配的 Current Evidence；
-- 长运行环境准备和验证应具有与正常基线相称的 timeout / cancellation 策略，避免把异常等待当作正常执行；
-- Diagnostic / Runtime Observation 可以支持 diagnose、abort、reroute 或调整验证路径，但不能因为同样属于 Current Evidence 就自动替代 Completion Evidence；
-- 平台专项实现细节按需下沉到相应 Skill；例如 GitHub Actions 场景可使用 `github-actions-verification`，而不是把 PR、容器或特定 registry 提升为所有 Consumer 的通用规则。
+- 验证失败时，先重新对照当前仓库权威和规格说明，区分实现缺陷、陈旧验证契约、运行环境问题与外部依赖问题；测试、Workflow assertion 和其他验证产物只有与当前权威一致时才定义有效预期行为；
+- 功能浏览器验证可以证明路由、交互、资源和可机器判定行为，但不能单独证明视觉一致性；需要视觉复刻、设计稿还原或品牌一致性时，应按风险使用原始运行证据、参考截图、真实资源、AI 视觉对照和人工视觉复核；
+- 自动验证状态与人工复核基线应按用途隔离。自动测试会修改共享状态时，应先保留自动验证证据，再从来源明确、可重复构建的基线恢复人工评审环境；
+- 人工复核发现不受评审名称限制。视觉评审也可能暴露实现缺陷、产品 / 需求歧义、领域 / 架构权威缺口或运行环境问题；人工观察是重要证据，但不会自动成为新需求；
+- 变更数据库 Migration 时，如果运行环境 / CI 条件允许，最终验证至少覆盖一次 `Fresh Database → Full Migration Chain → Application Startup`；
+- 显式归属功能整体验证责任的义务保持待验证状态，必须由后续 `converge` 独立重新检查；
+- 验证路径应具有足够的证据可观察性；Agent 不应选择自己无法重新取得必要完成证据的执行路径；
+- 快速反馈与完成验证可以分层，中间修复优先取得低成本定向反馈，最终完成声明仍必须满足必要完整验证；
+- 使用 GitHub Actions 或其他自动化平台时，应把“变化 / 权威影响 → 证据声明 / 风险 → 所需验证层 → 实际触发 / 门禁”对成真实执行路径。受影响的证据声明不能因 `paths`、label、手工门禁等平台机制漏验；与高成本声明无关的变化也不应机械重验；
+- 已验证提交之后出现新提交时，不按文件扩展名机械决定旧证据是否仍有效。只有能取得精确差异、逐项证明差异不会影响对应证据声明、相关权威语义未改变，并且仓库策略允许时，才可以复用未受影响证据；
+- 高成本且稳定的环境依赖可以通过预构建运行环境、Artifact 复用、缓存或当前平台支持的其他方式降低重复准备成本；
+- 临时执行证据默认只承担单次运行的证明、传输或审查职责。其数据、资源或配置被适当人工 / 产品权威接受并成为后续稳定输入时，应晋升为可长期维护的持久输入，保留来源 Run、Head、Artifact、digest 等必要来源关系，并对受影响的最终状态重新取得当前证据；
+- 长运行环境准备和验证应具有与正常基线相称的 timeout / cancellation 策略；
+- 诊断或运行观察可以支持诊断、终止、改道或调整验证路径，但不能自动替代完成证据；
+- 平台专项实现细节按需下沉到相应 Skill，例如 GitHub Actions 场景使用 `github-actions-verification`。
 
 ### 5.8 整体收敛
 
-所有当前范围内的 Units 完成后使用：
-
-即使前置的切分、就绪检查与执行已建立义务闭环，`converge` 仍必须独立从规格说明重建功能整体覆盖，不把执行单元状态、计划验证或实现存在当作功能完成证据。
+所有当前范围内的执行单元完成后使用：
 
 ```text
 converge
 ```
 
-只有当前 Intent、Specification、Implementation 与验证证据（Verification Evidence）一致，不违反当前有效的 Domain / Architecture / ADR Authority，本次工作产生或改变的长期权威事实已完成适当生命周期闭环，且不存在阻塞缺口（Blocking Gap），才能达到：
+`converge` 必须独立从规格说明重建功能整体覆盖，不把执行单元状态、计划验证或实现存在当作功能完成证据。
 
-```text
-Ready to Integrate
-```
+只有当前意图、规格说明、实现与验证证据一致，不违反当前有效的领域、架构和 ADR 权威，本次工作产生或改变的长期权威事实已完成适当生命周期闭环，且不存在阻塞缺口，才能达到“已具备进入集成决策的条件”。
 
-如果收敛阶段发现 Domain Authority Gap，应返回 `clarify-intent` / `specify`；发现 Architecture Authority / ADR Gap，应返回 `technical-plan`；发现 Artifact Lifecycle Gap，应返回拥有相应事实或决定的职责层。已有且适用的 Project Roadmap 因本次工作跨越项目级更新触发条件而陈旧时，也属于阻塞性 Artifact Lifecycle Gap；`converge` 只识别并路由到 Consumer 授权的项目治理 / Bootstrap 维护职责，不自行规划路线。不能用 `READY` 绕过。
+如果收敛阶段发现领域权威缺口，应返回 `clarify-intent` / `specify`；发现架构权威或 ADR 缺口，应返回 `technical-plan`；发现长期产物生命周期缺口，应返回拥有相应事实或决定的职责层。
 
-Merge / Push / Release / Deploy 仍由 Consumer Repository 的人工权威（Human Authority）或仓库策略（Repository Policy）决定。
+merge、push、release、deploy 仍由使用方仓库的人工权威或仓库策略决定。
 
 ## 6. 项目如何持续演进
 
-Consumer Repository 应随着真实工作逐步丰富，而不是在初始化时一次设计完成。
+使用方仓库应随着真实工作逐步丰富，而不是在初始化时一次设计完成。
 
-### 6.1 已有 Consumer 的采用与基线升级
+### 6.1 已有使用方项目的采用与基线升级
 
-`agentic-dev` 是可复用 Method、Skills 与 Operating Guide 的上游知识源，不是已有 Consumer 日常开发必须持续读取的运行依赖。
+`agentic-dev` 是可复用方法、Skill 与使用指南的上游知识源，不是已有使用方项目日常开发必须持续读取的运行依赖。
 
-已有 Consumer 在以下情况按需重新读取 `agentic-dev`：
+已有项目在以下情况按需重新读取 `agentic-dev`：
 
 - 明确执行 `agentic-dev` baseline 升级；
-- Consumer-local Authority 无法回答当前真正需要的方法或 Skill 问题；
-- 当前工作被明确标记为 `agentic-dev` Experiment / Validation；
-- Consumer Repository Authority 另有明确要求。
+- 使用方本地权威无法回答当前真正需要的方法或 Skill 问题；
+- 当前工作被明确标记为 `agentic-dev` 实验 / 验证；
+- 使用方仓库权威另有明确要求。
 
 采用或升级时应完成以下最小闭环：
 
 1. 读取并记录当前实际使用的精确 `agentic-dev` baseline；
-2. 区分可跨项目复用的 Method、Skills、Operating Guide，与只属于 `agentic-dev` 仓库自身的 Project Rules；
-3. 根据 Consumer 的真实需要与现有 Authority 选择性采纳，不机械复制完整文档体系；
-4. 将需要长期约束后续工作的已采纳规则固化到 Consumer 自己可发现的 Repository Authority 中，并按需保留来源与 baseline 关系；
-5. 由 Consumer Authority 明确本地规则的优先级、更新触发条件与适用范围；
-6. 完成升级后，普通开发恢复以 Consumer-local Authority 为主要工作入口。
+2. 区分可跨项目复用的方法、Skill、使用指南，与只属于 `agentic-dev` 自身的项目规则；
+3. 根据使用方真实需要与现有权威选择性采纳，不机械复制完整文档体系；
+4. 将需要长期约束后续工作的已采纳规则固化到使用方自己可发现的仓库权威中，并按需保留来源与 baseline 关系；
+5. 由使用方权威明确本地规则的优先级、更新触发条件与适用范围；
+6. 完成升级后，普通开发恢复以使用方本地权威为主要工作入口。
 
-除了 Method / Skill / Artifact 规则本身，升级时还应显式审计会持续影响 Fresh Context 协作的 **repository-facing conventions**，例如 Git Commit 语义或语言、文档主导语言、Branch / PR 工作方式、Verification / Integration Policy、长期 Artifact 的可发现入口等。对每项候选约定至少区分：
+除了方法、Skill 和长期产物规则，升级时还应显式审计会持续影响新上下文协作的**仓库协作约定**，例如：
 
-- **Adopt**：Consumer 确实需要并将其固化为本地 Authority；
-- **Retain / Override**：Consumer 已有更具体规则，继续保留或明确覆盖；
-- **Reject / Not Applicable**：该规则只属于 `agentic-dev` 自身 Project Rule、当前技术 / Runtime 不适用，或没有持续协调价值，不进入 Consumer Authority。
+- Git Commit 的语义和语言；
+- 文档与人工协作的主导语言；
+- Branch / PR 工作方式；
+- 验证与集成策略；
+- 长期产物的可发现入口。
 
-不得因为 `agentic-dev` 自身存在某个 Git Commit、中文摘要、目录或分支规则就默认要求 Consumer 继承。反过来，如果 Consumer 已选择某项长期协作约定，却只存在于升级聊天或上游仓库而没有进入 Consumer-local Authority，Fresh Agent 无法可靠发现它；此时应补齐本地可发现载体，而不是依赖历史上下文。
+对每项候选约定至少区分：
 
-Consumer 可以使用 `AGENTS.md`、项目开发方法文档、配置或其他合适载体完成本地固化；本指南不要求固定文件名或目录。只服务一次升级判断、没有持续约束价值的分析过程不需要进入长期项目知识。
+- **采纳**：使用方确实需要，并固化为本地权威；
+- **保留或覆盖**：使用方已有更具体规则，继续保留或明确覆盖；
+- **拒绝或不适用**：该规则只属于 `agentic-dev` 自身，当前技术 / 运行环境不适用，或没有持续协调价值。
 
-Consumer-local 规则不能静默改写 `agentic-dev` 的通用 Method 或 Skill Contract；反过来，新的 `agentic-dev` 提交也不会仅因存在就自动覆盖 Consumer 已采纳的项目规则。再次升级必须重新比较当前 Consumer Authority 与新的精确 baseline，并显式处理需要更新、保留或取代的内容。
+不得因为 `agentic-dev` 自身存在某个 Git Commit、中文摘要、目录或分支规则就默认要求使用方继承。反过来，如果使用方已经选择某项长期协作约定，却只存在于升级聊天或上游仓库而没有进入使用方本地权威，新上下文无法可靠发现它；此时应补齐本地可发现载体，而不是依赖历史上下文。
 
-可以新增：
+使用方可以使用 `AGENTS.md`、项目开发方法文档、配置或其他合适载体完成本地固化；本指南不要求固定文件名或目录。
 
-- 新的项目规则（Project Rules）；
-- Project Roadmap（满足项目级长期协调与恢复条件时）；
-- Domain / Requirement Artifacts；
-- Architecture / Decision Artifacts，包括按条件产生的 ADR；
-- Coordination Artifacts；
-- 当前项目真正需要的其他 Skills；
-- Verification / Integration 规则。
+使用方本地规则不能静默改写 `agentic-dev` 的通用方法或 Skill 契约；新的 `agentic-dev` 提交也不会仅因存在就自动覆盖使用方已经采纳的项目规则。再次升级必须重新比较当前使用方权威与新的精确 baseline，并显式处理需要更新、保留或取代的内容。
+
+### 6.2 新增长期产物时保持最小充分
+
+项目可以按真实需要新增：
+
+- 项目规则；
+- 项目路线图；
+- 领域 / 需求产物；
+- 架构 / 决策产物；
+- 协调产物；
+- 当前项目真正需要的其他 Skill；
+- 验证 / 集成规则。
 
 每次新增前都应问：
 
@@ -451,182 +435,152 @@ Consumer-local 规则不能静默改写 `agentic-dev` 的通用 Method 或 Skill
 
 如果没有，就不要仅为了形式完整性持久化。
 
-新增或重大修改长期权威产物时，还应能从当前 Method 与 Consumer Repository Authority 中确定：谁负责确认和形成、什么变化触发、谁会消费、保存在哪里、何时更新、如何取代旧内容，以及哪些情况必须升级。具体载体和写入权限由 Consumer 决定，不要求为此创建统一目录、模板或 Artifact Management Skill。
+新增或重大修改长期权威产物时，还应能从当前方法与使用方仓库权威中确定：谁负责确认和形成、什么变化触发、谁会消费、保存在哪里、何时更新、如何取代旧内容，以及哪些情况必须升级。
 
-Project Roadmap 一旦存在并仍然适用，就应在以下项目级变化发生时同步维护：里程碑完成、取消或被取代，当前阶段 / 核心目标改变，已决定的下一步顺序改变，或条件性方向正式进入当前路线。路线尚不确定时记录 Unknown / Conditional，不用猜测填满未来；README、任务清单和状态摘要不应并行维护另一份竞争性的当前路线。
+项目路线图一旦存在并仍然适用，就应在里程碑完成、取消或被取代，当前阶段 / 核心目标改变，已决定的下一步顺序改变，或条件性方向正式进入当前路线时同步维护。路线尚不确定时记录未知或条件性状态，不用猜测填满未来。
 
-#### Project Roadmap 与集成状态
+项目路线图维护持久路线和可恢复状态，不逐项复制 PR 的 open / merged 状态、精确合并提交、临时分支删除等 GitHub 原生事实。相关事实优先由 PR、Issue、提交历史或其他事实来源保存。
 
-Project Roadmap 维护项目的持久路线和可恢复状态，不逐项复制 Pull Request 的 open / merged 状态、精确 Merge Commit、临时分支删除等 GitHub 原生事实。相关事实优先由 Pull Request、Issue、Commit History 或其他 Repository Source of Truth 保存。
+合并结果如果没有改变项目阶段、核心目标、里程碑状态或已决定的下一步，不应仅为了补记合并提交、分支删除或“已合并”状态创建仓库变更。
 
-进入 Ready to Integrate 前，应在当前拟集成变更中同步收敛本次工作已经确定的长期路线，使该版本合并后不会立即因“等待当前 PR 合并”“由人工决定是否集成”等短期描述而陈旧。可以引用承载集成状态的 Pull Request，但不要让 Roadmap 依赖复制其瞬时状态才能正确表达当前阶段、核心目标和已决定的下一步。
+## 7. 中断、恢复与新上下文
 
-合并后按以下边界处理：
+会话历史不是长期项目状态。
 
-- 如果集成结果没有改变 Roadmap 中的项目阶段、核心目标、里程碑状态或已决定的下一步，不应仅为了补记 Merge Commit、分支删除或“已合并”状态创建 Repository Change；
-- 如果需要保留精确集成证据，优先记录在对应 Pull Request、Tracking Issue 或 Git History；只有它同时是后续路线恢复所需的长期证据锚点时，才在 Roadmap 后续正常更新中补充；
-- 如果合并确实使 Roadmap 的长期路线发生变化，优先并入紧随其后的实质工作；只有陈旧状态会立即阻塞或误导 Fresh Context 时，才创建独立修复；
-- 状态修复本身不得继续触发另一个仅用于记录该修复已经合并的状态修复，避免形成递归的尾部 Pull Request。
+工作中断或切换上下文时，应依赖使用方仓库中已经持久化的：
 
-这些约束不允许在合并前虚构尚未发生的集成事实，也不改变 Human Authority 或 Repository Policy 对 Merge 的控制。
-
-对 ADR 还应额外确认：它记录的是跨功能长期架构约束，而不是当前 Feature 的普通 Technical Plan Decision。已有 ADR 被新决定替代时，应显式维护其状态或替代关系，避免后续 Fresh Agent 同时把新旧决定都当作有效权威。
-
-Project Rule 可以选择、要求或限制 Skills，但 Skill 不得覆盖 Project Authority。
-
-## 7. 中断、恢复与 Fresh Context
-
-会话历史（Conversation History）不是长期项目状态。
-
-工作中断或切换 Context 时，应依赖 Consumer Repository 中已经持久化的：
-
-- Project Rules；
-- Project Roadmap（如存在且适用）；
-- 当前 Specification / Technical Plan（如存在）；
-- 相关 Domain / Architecture / ADR Authority（如存在）；
-- Current Unit / Coordination State；
-- Verification Evidence；
+- 项目规则；
+- 项目路线图；
+- 当前规格说明 / 技术计划；
+- 相关领域 / 架构 / ADR 权威；
+- 当前执行单元 / 协调状态；
+- 验证证据；
 - 必要的代码与配置。
 
-新的 Agent Context 应从这些 Artifact 恢复工作，而不是要求提供完整旧聊天。存在 Project Roadmap 时，应先用它定位当前阶段、核心目标、下一步和权威入口，再按 Progressive Disclosure 读取当前工作所需的 Specification、Plan、Unit、Evidence 与代码；Roadmap 不替代这些事实来源。
+新的 Agent 上下文应从这些产物恢复工作，而不是要求提供完整旧聊天。存在项目路线图时，应先用它定位当前阶段、核心目标、下一步和权威入口，再按渐进式披露读取当前工作真正需要的内容。
 
-Fresh Context 是逻辑隔离，不要求某一种特定 Runtime 形式。可以是新 Chat、新 Codex session、isolated worker 或其他能够避免依赖未持久化历史 reasoning 的执行环境。
+新上下文是一种逻辑隔离，不要求某一种特定运行环境形式。可以是新 Chat、新 Codex session、isolated worker 或其他能够避免依赖未持久化历史推理的执行环境。
 
-## 8. 实验使用（Experimental Use）：向 agentic-dev 回传实践证据
+**项目事实和项目表达风格都不能从历史会话或个人记忆恢复。** 如果当前仓库已经定义主导语言，新的上下文必须按当前仓库规则重新建立表达方式。
 
-普通 Consumer Project **不要求**向 `agentic-dev` 提交反馈。
+## 8. 实验使用：向 agentic-dev 回传实践证据
 
-只有当当前工作被明确标记为 `agentic-dev` Experiment / Validation 时，才启用本节规则。
+普通使用方项目不要求向 `agentic-dev` 提交反馈。
+
+只有当前工作被明确标记为 `agentic-dev` 实验 / 验证时，才启用本节规则。
 
 ### 8.1 实验隔离
 
-实验应尽量使用独立 Fresh Context，并只把以下内容作为 Consumer Authority / Execution Input：
+实验应尽量使用独立新上下文，并只把以下内容作为使用方权威 / 执行输入：
 
-- 指定的 `agentic-dev` Repository baseline；
-- 明确的 Consumer 需求来源；
-- Consumer Repository；
-- 当前 Runtime 可直接观察到的能力和状态。
+- 指定的 `agentic-dev` 仓库基线；
+- 明确的使用方需求来源；
+- 使用方仓库；
+- 当前运行环境可直接观察到的能力和状态。
 
-即使 Runtime 可能暴露其他会话、个人记忆或历史上下文，也不得把这些内容作为 Consumer 项目事实、规则或需求依据。需要使用的事实必须能回溯到当前 Consumer Authority。
+即使运行环境可能暴露其他会话、个人记忆或历史上下文，也不得把这些内容作为使用方项目事实、规则、需求依据或默认表达风格。需要使用的事实必须能回溯到当前使用方权威。
 
 ### 8.2 GitHub Issue 作为首选反馈通道
 
-实验期间，使用 `agentic-dev` Repository 的 GitHub Issue 作为首选实验反馈通道（Experiment Feedback Channel）。
+实验期间，使用 `agentic-dev` 仓库的 GitHub Issue 作为首选反馈通道。
 
-Issue 是：
+Issue 可以承担：
 
-- Evidence 传输通道；
-- 跨 Repository / Context 的跟踪入口；
-- 后续 `agentic-dev` 分析的输入。
+- 证据传输；
+- 跨仓库 / 上下文跟踪；
+- 后续 `agentic-dev` 分析输入。
 
-Issue **不是**：
+Issue 不是：
 
-- Consumer Repository 的项目知识库；
-- `agentic-dev` Method / Contract Authority；
+- 使用方仓库的项目知识库；
+- `agentic-dev` 方法 / 契约权威；
 - 自动成立的方法结论。
 
-如果当前 Runtime 具有 GitHub Issue 写权限，应直接通过 GitHub API / Connector 提交或追加反馈。
+如果当前运行环境具有 GitHub Issue 写权限，应直接通过可用 GitHub 能力提交或追加反馈。没有写权限时，不得阻塞使用方开发；可以形成待提交的 Issue 正文 / 评论。
 
-如果没有写权限，不得阻塞 Consumer 开发；生成符合以下格式的 Issue Body / Comment，待具备权限后提交即可。
+### 8.3 一个实验使用一个跟踪 Issue
 
-### 8.3 一个实验使用一个跟踪 Issue（Tracking Issue）
+默认一个使用方实验对应一个跟踪 Issue，不为每个小问题创建独立 Issue。
 
-默认一个 Consumer Experiment 对应一个 Tracking Issue，不为每个小问题创建独立 Issue。
-
-为了在不依赖 GitHub Issue Template 的情况下保持首轮反馈可检索、可比较，Tracking Issue 使用以下标题约定：
+标题约定保持：
 
 ```text
 [experiment] <consumer> - <experiment goal>
 ```
 
-Issue Body 至少包含：
+Issue 正文至少记录：
 
 ```text
-Experiment:
-Consumer Repository:
-Consumer Baseline / Branch:
-agentic-dev Baseline:
-Runtime / Model:
-Goal:
-Scope:
+实验：
+使用方仓库：
+使用方基线 / Branch：
+agentic-dev baseline：
+运行环境 / Model：
+目标：
+范围：
 ```
 
-其中无法获得的字段应明确写 `Unknown / Not available`，不要静默省略。
+无法获得的字段应明确写明未知或当前不可取得，不要静默省略。
 
-开发过程中只在出现有意义的新证据时追加 Comment：
+开发过程中只在出现有意义的新证据时追加评论，至少说明：
 
-```text
-Observed Friction / Finding:
-Context / Stage / Skill:
-Evidence Reference:
-Human Intervention:
-Classification Candidate:
-- Usage Guide
-- Skill Implementation
-- Contract
-- Method
-- Project Rule
-- Runtime
-- Unknown
-```
+- 观察到的摩擦或问题；
+- 所处阶段 / Skill；
+- 证据引用；
+- 是否需要人工介入；
+- 初步分类候选。
 
-如果某条 Finding 没有可引用的代码、Commit、PR、命令结果或其他当前证据（Current Evidence），应明确说明证据限制，不把推测写成已确认缺口。
+没有可引用代码、Commit、PR、命令结果或其他当前证据时，应明确说明证据限制，不把推测写成已确认缺口。
 
 不要提交：
 
-- 完整 Conversation；
-- 完整 private reasoning；
+- 完整会话；
+- 完整私有推理；
 - 每次 Skill 调用流水；
-- Consumer Repository 已经存在的整份项目文档副本；
+- 使用方仓库已经存在的整份项目文档副本；
 - 没有实际影响的普通实现噪音。
 
 ### 8.4 实验结束
 
-在同一 Tracking Issue 中追加 Final Summary：
+在同一跟踪 Issue 中追加最终摘要，至少记录：
 
-```text
-Final State:
-Skills Actually Used:
-Key Findings:
-Human Interventions:
-Consumer Evidence References:
-Recommended Follow-up:
-```
+- 最终状态；
+- 实际使用的 Skill；
+- 关键发现；
+- 人工介入；
+- 使用方证据引用；
+- 建议后续动作。
 
-Consumer Agent 可以提出 Classification Candidate，但不能自行把实验观察提升为 `agentic-dev` 的 Method / Contract 结论。
+使用方 Agent 可以提出分类候选，但不能自行把实验观察提升为 `agentic-dev` 的方法 / 契约结论。
 
-最终是否修改 `agentic-dev`，应回到新的 `agentic-dev` Context，重新读取：
-
-- 当前 `agentic-dev` Authority；
-- Experiment Issue；
-- Issue 引用的 Consumer Evidence。
-
-再按证据分类处理。
+最终是否修改 `agentic-dev`，应回到新的 `agentic-dev` 上下文，重新读取当前权威、实验 Issue 和其引用的使用方证据，再按证据分类处理。
 
 ## 9. 推荐启动方式
 
-一个 Greenfield Consumer Experiment 的启动指令应保持很薄。
+一个新项目或使用方实验的启动指令应保持很薄。
 
 只需要明确：
 
 - 要创建什么真实项目；
-- `agentic-dev` Repository 在哪里；
-- 已建立的 Consumer Authority（如有）；
-- Requirement Source / 初始业务输入在哪里（如有）；
-- Consumer Repository 在哪里；
-- 当前工作是否属于 Experiment。
+- `agentic-dev` 仓库在哪里；
+- 已建立的使用方权威；
+- 初始需求来源；
+- 使用方仓库在哪里；
+- 当前工作是否属于实验；
+- 使用方仓库已有的主导语言规则。
 
-然后让 Agent 自行读取本文和相关 Skills 开始工作，并按第 2 节判断 Requirement Source 是否、以及如何被采纳为 Consumer Authority。
+然后让 Agent 自行读取本文和相关 Skill 开始工作。
 
-如果仍必须依赖大量未写入 `agentic-dev` 的口头步骤才能启动项目，应把这种情况记录为 Operating Guide / Method 使用证据，而不是用额外聊天指令悄悄补齐。
+如果仍必须依赖大量未写入 `agentic-dev` 的口头步骤才能启动项目，应把这种情况记录为使用指南 / 方法证据，而不是用额外聊天指令悄悄补齐。
 
 ## 10. 使用目标
 
 `agentic-dev` 的目标不是提前规定项目最终长什么样，而是让 AI 能够：
 
-1. 从最小、明确的 Repository Authority 开始；
+1. 从最小、明确的仓库权威开始；
 2. 根据真实需求逐步建立项目知识与结构；
-3. 在需要时选择合适的 Skills；
-4. 用 Fresh Context 和 Current Evidence 推进实现；
+3. 在需要时选择合适的 Skill；
+4. 用新上下文和当前证据推进实现；
 5. 在项目演进过程中只持久化真正有长期价值的知识；
-6. 最终基于整体证据达到 `Ready to Integrate`。
+6. 在面向人的协作中遵守当前项目的主导语言与表达规则；
+7. 最终基于整体证据达到“已具备进入集成决策的条件”。
