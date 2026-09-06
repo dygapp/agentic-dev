@@ -110,6 +110,8 @@ Roadmap / Backlog / Issue 中的顺序、`EU-xx` / Unit ID、标签或“当前 
 
 如果没有 Technical Plan，不因“没有文档”本身判定失败。只有当输入表明实施前仍存在必须持久协调的技术决定、未处理的 Architecture Context 变化或满足条件的 ADR 时，才形成 Blocking Finding 并返回 `technical-plan`。
 
+如果当前实现、契约或其他 Current Evidence 证明此前认为 Ready 的 Specification / Technical Plan 前提并不成立，应按 Finding 的真实责任返回 `clarify-intent` / `specify` / `technical-plan`，而不是为了保留既有 Candidate Unit、Identifier 或历史 Gate 结果给设计增加兼容例外。上游 WHAT / HOW 或 Architecture basis 发生实质修订后，原 Candidate Unit Set 与历史 Readiness Evidence 均必须视为旧基础上的证据；继续 Execute 前应重新进入 `slice-work` 核对并在必要时重新形成 Candidate Unit Set，再执行新的 `readiness-check`。稳定 Identifier 只有在 Unit identity 仍真实成立时才可保留，但不会携带旧 `PASS` 或 Execute 授权。
+
 ### 4. Check Execution Readiness
 
 检查 Execution Unit Set：
@@ -174,7 +176,7 @@ PASS
 
 如果存在 Blocking Finding，不输出 `PASS`。按优先级列出 Blocking Findings，并可附 Non-blocking Findings；当前 Workflow 应返回 Finding 指定的职责层。
 
-`readiness-check` 不自动调用 `execute-unit`，也不自行修复 Finding。
+`readiness-check` 不自动调用 `execute-unit`，也不自行修复 Finding。若 Finding 返回上游并导致 Specification、Technical Plan 或 Architecture basis 实质修订，旧 Gate 结果不会在修订后继续有效；修订完成后必须基于新的 Current Authority 重新进入 `slice-work → readiness-check`，而不是从历史 `PASS` 或既有 Identifier 直接跳到 Execute。
 
 ## Outputs
 
@@ -229,6 +231,7 @@ Non-blocking Findings:  # optional
 - Conversation History 不作为权威知识；
 - Candidate Execution Unit 可以已有 Identifier，但 Identifier 本身不参与 PASS 推断；
 - Planning / Requirement Candidate 不因预编号进入本 Gate 的可检查 Unit Set；
+- 上游 Specification / Technical Plan / Architecture basis 实质修订后，历史 Candidate / Readiness Evidence 不携带 Execute 授权，必须重新进入 Slice / Gate；
 - 不默认加载完整 Codebase；只有当前 Authority / Design 判断确实需要时才读取相关上下文；
 - Findings 必须基于当前输入和当前权威证据，不能依据未经验证的假设；
 - 只检查当前工作已经暴露的生命周期责任，不为了形式完整性要求每个阶段创建 Artifact；
