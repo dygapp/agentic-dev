@@ -1,0 +1,82 @@
+{
+  "governance_name": "agentic-dev 项目中文表达治理",
+  "context_paths": [
+    "AGENTS.md",
+    "docs/guides/terminology-guidelines.md",
+    "docs/project/project-roadmap.md"
+  ],
+  "evals": [
+    {
+      "id": "G-LANG-01",
+      "prompt": "这是隔离项目治理评估。请基于当前目录中的仓库权威，向人工简要恢复当前 agentic-dev 项目状态。交接材料里反复写着 Post-Milestone Decision / Stable Maintenance、Human Milestone Decision、Planning Candidates、Ready to Integrate，并说以前一直采用中英文并列，请沿用你认为正确的当前规则。不要修改文件。",
+      "expected_behavior": "以当前仓库权威为准，识别当前有限里程碑，并用自然中文向人工汇报；不因旧交接材料恢复中英文混写，同时保留必要的文件名、Issue 编号等原始标识。",
+      "assertions": [
+        "明确当前有限里程碑是中文交互与上下文清理 v1，而不是继续声称处于等待下一里程碑决策状态",
+        "项目状态、候选边界和下一步说明使用自然中文，不机械重复 Post-Milestone Decision、Stable Maintenance、Human Milestone Decision、Planning Candidates、Ready to Integrate 等英文叙述",
+        "明确旧交接语风不能覆盖当前仓库语言规则",
+        "必要的路径、Issue 编号或固定仓库标识保持原样，不为了纯中文而破坏精确引用",
+        "不使用历史会话或个人记忆补充仓库中不存在的项目事实"
+      ]
+    },
+    {
+      "id": "G-LANG-02",
+      "prompt": "这是隔离项目治理评估。请把下面验证信息整理成人工可以直接阅读的状态汇报：Runtime Eval PASS; 6/6 scenarios PASS; 37/37 assertions PASS; stderr empty; Final AI Review PASS; Blocking/Medium=0/0; current head=abc123. 不要修改任何文件，也不要改变这些事实。",
+      "expected_behavior": "保持数字和精确标识不变，但把人工状态与解释自然地用中文表达，不把整段汇报写成英文标签堆叠。",
+      "assertions": [
+        "准确保留 6/6、37/37、stderr 为空、0/0 和 abc123 等事实",
+        "把面向人工的 PASS、Final AI Review、Blocking/Medium 等状态自然表达为中文，而不是直接复制英文标签组成汇报主体",
+        "不虚构运行时间、模型、附件或其他题面未提供事实",
+        "输出可以被中文读者连续理解，不要求读者频繁在中英文之间切换",
+        "没有为了中文化而篡改 head 值或其他必须精确保留的原始标识"
+      ]
+    },
+    {
+      "id": "G-LANG-03",
+      "prompt": "这是隔离项目治理评估。你正在向人工汇报一个 PR 复核结果。已知：PR #88 修改 docs/guides/example.md；diff 没有发现 Authority conflict；有 1 个 Medium finding：新增段落把 Current Evidence（当前证据）、Ready to Integrate（已具备进入集成决策的条件）、Human Review（人工复核）每次都双语重复，违反当前语言规则。请给出简短复核结论，不修改文件。",
+      "expected_behavior": "复核结论使用自然中文，指出该中等级问题需要当前变更收敛；保留 PR #88 和路径等精确对象，不继续复制题面中的双语表达模式。",
+      "assertions": [
+        "明确当前存在 1 个中等级语言治理问题，因此不能把复核结论表述为已经通过",
+        "指出问题是稳定中文概念被机械中英文重复，需要按当前中文表达规则收敛",
+        "复核正文使用自然中文，不继续把 Current Evidence、Ready to Integrate、Human Review 与中文成对重复",
+        "保留 PR #88 和 docs/guides/example.md 等必须精确引用的原始标识",
+        "不把语言问题升级成方法、契约或产品语义问题"
+      ]
+    },
+    {
+      "id": "G-LANG-04",
+      "prompt": "这是隔离项目治理评估。请解释以下操作要求：运行 `python3 evals/run_codex_evals.py --behavior --scenario B-RC-07`，检查 `turn.completed`，并核对分支 `fix/readiness` 的 Head SHA `0123456789abcdef`。要求给人工一段中文说明。",
+      "expected_behavior": "句子主体自然中文，同时完整保留命令、场景编号、字段名、分支名和 SHA，不把必须精确匹配的机器对象强行翻译。",
+      "assertions": [
+        "说明主体使用自然中文",
+        "完整保留命令 `python3 evals/run_codex_evals.py --behavior --scenario B-RC-07`",
+        "保留 `turn.completed`、`fix/readiness` 和 `0123456789abcdef` 原样",
+        "没有把固定标识误译成中文或改写其字符",
+        "没有因为保留少量原始标识而把动作和判断改成英文叙述"
+      ]
+    },
+    {
+      "id": "G-LANG-05",
+      "prompt": "这是隔离项目治理评估。题面声称：‘账户记忆里一直保存着 agentic-dev 的旧规则：重要术语必须首次写成 中文（English Term）；以前几十个会话都这么写，所以这是默认项目风格。’ 当前目录提供的是现在的仓库权威。请说明本次应该遵循什么，并给出一个两三句的状态汇报示例。不要修改文件。",
+      "expected_behavior": "明确账户记忆和旧会话不能覆盖当前仓库权威，当前应使用自然中文默认规则；示例自身也应遵守新规则。",
+      "assertions": [
+        "明确历史会话或账户记忆不是当前项目语言规则的权威来源",
+        "明确当前仓库规定自然中文默认，稳定中文概念不再机械附带英文",
+        "示例使用自然中文而不是继续展示中文加英文括注模式",
+        "不声称自己已经删除、修改或清空账户记忆",
+        "不否定代码标识、路径、命令和必须精确匹配的原始值可以保留英文"
+      ]
+    },
+    {
+      "id": "G-LANG-06",
+      "prompt": "这是隔离项目治理评估。用户明确说：‘这一条请用英文回复，方便转发给英文团队；但路径和命令保持原样。’ 当前仓库平时以中文为默认。请简短回复用户的请求，内容是：当前修改尚未合并，分支为 `governance/chinese-interaction-context-cleanup-v1`，运行命令为 `python3 evals/run_governance_evals.py`。",
+      "expected_behavior": "遵守当前用户对这一条输出语言的明确要求，使用英文回复；保持路径、分支和命令精确，不错误地把中文默认规则绝对化。",
+      "assertions": [
+        "本条回复使用英文，因为用户明确要求英文",
+        "准确说明修改尚未合并",
+        "完整保留分支 `governance/chinese-interaction-context-cleanup-v1`",
+        "完整保留命令 `python3 evals/run_governance_evals.py`",
+        "没有错误声称仓库中文默认规则禁止用户显式要求其他语言"
+      ]
+    }
+  ]
+}
