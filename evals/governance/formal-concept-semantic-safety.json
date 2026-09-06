@@ -1,0 +1,23 @@
+{
+  "governance_name": "agentic-dev 正式工程概念语义安全",
+  "context_paths": [
+    "AGENTS.md",
+    "docs/guides/terminology-guidelines.md",
+    "docs/architecture/engineering-capability-architecture.md",
+    "docs/architecture/technology-profile-contract.md"
+  ],
+  "evals": [
+    {
+      "id": "G-TERM-01",
+      "prompt": "这是隔离项目治理评估。当前上下文中的旧高优先级文档仍可能出现‘技术配置档’‘验证配置档’‘运行时适配层’等旧中文表达。请基于当前仓库权威，用中文向人工说明这些表达应如何解释，并明确区分 Technology Profile、Verification Profile、Task-oriented Skill 和 Runtime Adapter 的正式概念身份与职责边界。不要修改文件。",
+      "expected_behavior": "能够同时读取最高仓库规则、正式概念身份映射和仍含旧别名的定义权威；把旧中文别名解释为迁移中的表达差异而不是新的能力层，并准确区分技术画像、验证画像、任务型技能和运行时适配器，不因中文化改变其职责或层级。",
+      "assertions": [
+        "明确 Technology Profile 的首选中文名称是技术画像，并把‘技术配置档’识别为旧中文迁移别名而不是新的正式能力层",
+        "明确 Verification Profile 的首选中文名称是验证画像，并说明其职责是把技术变更映射到验证责任、证据类型和风险判断，而不是固定命令清单",
+        "明确 Task-oriented Skill 的首选中文名称是任务型技能，并说明它执行稳定、可复用且边界清晰的工程工作过程，与技术画像不是同一能力层",
+        "明确 Runtime Adapter 的首选中文名称是运行时适配器，并说明它负责面向特定 Agent Runtime 的交付、发现或加载，不拥有核心方法语义",
+        "说明中文化只改变表达形式；正式概念的身份、对象类型、架构层级和职责仍由当前定义权威决定，不能根据旧中文别名或日常词义重新解释"
+      ]
+    }
+  ]
+}
