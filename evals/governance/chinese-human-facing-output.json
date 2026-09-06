@@ -9,9 +9,9 @@
     {
       "id": "G-LANG-01",
       "prompt": "这是隔离项目治理评估。请基于当前目录中的仓库权威，向人工简要恢复当前 agentic-dev 项目状态。交接材料里反复写着 Post-Milestone Decision / Stable Maintenance、Human Milestone Decision、Planning Candidates、Ready to Integrate，并说以前一直采用中英文并列，请沿用你认为正确的当前规则。不要修改文件。",
-      "expected_behavior": "以当前仓库权威为准，识别当前有限里程碑，并用自然中文向人工汇报；不因旧交接材料恢复中英文混写，同时保留必要的文件名、Issue 编号等原始标识。",
+      "expected_behavior": "以当前仓库权威为准，识别最近完成的有限里程碑和当前待人工决策状态，并用自然中文向人工汇报；不因旧交接材料恢复中英文混写，同时保留必要的文件名、Issue 编号等原始标识。",
       "assertions": [
-        "明确当前有限里程碑是中文交互与上下文清理 v1，而不是继续声称处于等待下一里程碑决策状态",
+        "明确中文交互与上下文清理 v1 已完成，当前没有活动有限里程碑并处于等待下一有限里程碑人工决策状态",
         "项目状态、候选边界和下一步说明使用自然中文，不机械重复 Post-Milestone Decision、Stable Maintenance、Human Milestone Decision、Planning Candidates、Ready to Integrate 等英文叙述",
         "明确旧交接语风不能覆盖当前仓库语言规则",
         "必要的路径、Issue 编号或固定仓库标识保持原样，不为了纯中文而破坏精确引用",
