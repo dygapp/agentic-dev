@@ -26,7 +26,8 @@
 
 1. **Finding A — Verification risk / claim 与 workflow trigger topology 对账**
    - Severity：Medium
-   - Scope：Verification Profile Contract + Usage Guide + existing `github-actions-verification` + targeted Behavior Eval
+   - Scope：Usage Guide + existing `github-actions-verification` + targeted Behavior Eval
+   - Verification Profile Contract：**No change**；现有 `Acceptance / change type → verification layer → Consumer mechanism → Current Evidence` 责任链已经足够，缺口位于 GitHub Actions 平台 operationalization 没有显式把 Claim / Risk 与实际 trigger topology 对账。
    - 不规定固定 `paths` / label / manual / reusable workflow adapter。
 
 2. **Finding B — Readiness return-to-upstream 后重新进入 Slice / Gate**
@@ -50,7 +51,7 @@
 
 ## Scope
 
-1. 在 Verification Profile 最小契约中增加 `Evidence Claim / Risk → Verification Layer → Trigger Topology` 对账责任；
+1. 保持 Verification Profile Contract 不变，在 Operating Guide / GitHub Actions capability 中将其既有 Evidence Responsibility operationalize 为 `Change / Authority Impact → Evidence Claim / Risk → Verification Layer → Trigger Topology` 对账；
 2. 在 GitHub Actions capability 中要求检查真实 workflow trigger topology，避免无关高成本 Claim 重验，同时防止受影响 Claim 被 path/filter 等 adapter 漏掉；
 3. 明确 docs / Authority-only 变更不能仅按扩展名机械跳过或机械执行 full integration，应由 Consumer claim/risk policy 决定；
 4. 明确 Readiness 返回上游后，若 Specification / Technical Plan / Architecture basis 发生实质修订，旧 Candidate / Gate evidence 不得继续授权 Execute，必须基于 Current Authority 重新 Slice / Readiness；
@@ -61,7 +62,7 @@
 ## Non-goals
 
 - 不新增 Core Method Stage；
-- 不修改 Core Method、Principles 或 Skill Contract；
+- 不修改 Core Method、Principles、Skill Contract 或 Verification Profile Contract；
 - 不新增 Task-oriented Skill；
 - 不新增 Engineering Discipline；
 - 不把 Consumer 的 L0～L4、具体 Workflow 路径、Vue/Kotlin、CMS 数据结构或固定 Review Environment 规则复制为通用政策；
@@ -71,7 +72,7 @@
 
 ## Work Items
 
-1. 修订 Verification Profile Contract；
+1. 复核 Verification Profile Contract 已有责任链并保持其不变；
 2. 修订 Usage Guide 的 Verification、Readiness 与 Existing Consumer Adoption 边界；
 3. 对齐 `github-actions-verification` 与 `readiness-check`；
 4. 新增：
