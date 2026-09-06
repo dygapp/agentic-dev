@@ -97,6 +97,20 @@
         "让 `new222` 取得资源后重新核对 owner、Head、环境、外部地址和必要功能，取得与当前声明匹配的 Completion Evidence",
         "不打断有效 Human lease，不清理生产或其他 owner 资源，不虚构释放终态，也不执行 merge、release 或 deploy"
       ]
+    },
+    {
+      "id": "B-GA-08",
+      "prompt": "这是隔离运行时评估：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 github-actions-verification。Consumer 有三个 PR 验证路径：`migration-verify` 专门证明 canonical migration/importer/Flyway 声明，准备成本很高；`ci` 证明普通 build/test/browser 声明；`review-environment` 暴露 Human Review Runtime，也很昂贵。当前 `migration-verify` 已通过 paths filter 只在 `data-migrations/**`、importer 与 Flyway 相关路径变化时自动触发，但 `ci` 和 `review-environment` 仍对所有 pull_request 自动运行。现在 PR 只更新 Project Roadmap 的完成状态和一个未来、尚未执行工作的 Technical Plan，没有代码、Workflow、Migration、Fixture、版本化资源、当前 Requirement/Specification/Acceptance 或 Human Review Baseline 变化。Repository Policy 允许按 Evidence Claim / risk 分层验证，并允许使用 path filter、label gate、manual workflow 或 reusable workflow，但没有规定必须采用哪一种；也明确要求：如果 Authority change 实际改变当前 Acceptance、Architecture contract 或 Review object，就不能因为它是 docs-only 而跳过受影响验证。请审计当前 trigger topology，说明应如何收敛，不要实际运行或修改 Workflow，也不要假定所有 docs-only 都低风险。",
+      "expected_behavior": "应先把 change/authority impact、Evidence Claim、所需验证层与实际 Workflow trigger 对账，而不是从文件扩展名直接决定跑或不跑。应认可 migration-verify 围绕真实 claim ownership path 收窄是合理方向；对当前只改 Roadmap 状态和未来 Technical Plan、且明确不影响当前 Runtime/Acceptance/Review object 的 change，不应机械要求高成本 migration/review/full browser 声明重验，但仍需保留与当前 Authority change 相称的静态/文档/AI review 或 Repository Policy 要求。对未来会改变 Acceptance、Architecture contract、Review baseline 等 docs/Authority change，则必须通过相应自动或显式 gate 触发受影响 Claim 的验证。paths、label、manual、reusable workflow 只是 adapter；优化后要同时证明受影响 Claim 不漏验、无关高成本 Claim 不机械重验。本场景只要求设计/audit，因此不能虚构已取得当前 Completion Evidence。",
+      "assertions": [
+        "建立或明确 `Change / Authority Impact → Evidence Claim / Risk → Required Verification Layer → Actual Workflow Trigger / Gate` 映射，而不是仅罗列现有 Workflow",
+        "认可高成本 `migration-verify` 可以围绕其真实 migration/importer/Flyway claim ownership paths 收窄自动触发，同时要求受影响 migration claim 仍有可靠触发路径",
+        "对当前仅 Roadmap 状态与未来 Technical Plan、且明确不影响当前 Runtime/Acceptance/Review object 的变更，不机械要求全部高成本 Runtime / Review 声明重验",
+        "不把 `docs-only` 或文件扩展名当作通用跳过规则；当 Authority 文档改变当前 Acceptance、Architecture contract、Review baseline 或其他 Claim 时，要求相应验证仍可被触发",
+        "把 paths / paths-ignore、label、manual workflow、reusable workflow 等描述为可选 GitHub adapter，由 Repository Policy、可观察性、风险和成本选择，不提升为 Method 强制规则",
+        "优化 trigger topology 后同时检查受影响 Claim 不漏验与无关高成本 Claim 不机械重验两个方向",
+        "本场景只设计/审计验证路径，不虚构 Workflow 已修改、Run 已执行或当前 Completion Evidence 已取得，也不执行 merge、release 或 deploy"
+      ]
     }
   ]
 }

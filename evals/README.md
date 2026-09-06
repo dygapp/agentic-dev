@@ -399,6 +399,52 @@ Identifier 只承担候选 Unit 的追踪与依赖身份，不构成 Readiness P
 
 评估完成后只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不再改变 Guide、Skill 或场景语义，因此上述行为证据继续对应当前评估内容。
 
+## Verification Trigger / Readiness Re-entry / Adoption Convention 针对性扩展
+
+Issue #58 的 EU-31～EU-36 Consumer Evidence 表明：
+
+- GitHub Actions 的验证层级即使已经定义，如果实际 trigger topology 没有与 Evidence Claim / risk 对账，仍可能让无关变化机械触发高成本验证，或让受影响 Claim 被 filter / label / manual gate 漏掉；
+- Readiness 在 Current Evidence 推翻旧 Specification / Technical Plan / Architecture basis 后，若上游发生实质修订，旧 Candidate Unit Set 与历史 PASS 不能继续作为 Execute 授权；
+- Existing Consumer baseline upgrade 若只同步 Method / Skill，却没有显式处理长期 repository-facing conventions，Fresh Agent 可能无法发现 Consumer 实际采用的协作规则。
+
+本次不修改 Core Method、Principles、Skill Contract 或 Verification Profile Contract，不新增 Skill / Engineering Discipline，也不固定 `paths`、label、manual workflow 或 reusable workflow 为通用实现。
+
+新增 2 个 Behavior 场景：
+
+- `B-GA-08`：按 `Change / Authority Impact → Evidence Claim / Risk → Required Verification Layer → Actual Workflow Trigger / Gate` 审计高成本 Workflow，不以 `docs-only` 机械决定运行或跳过；
+- `B-RC-07`：Current Evidence 推翻旧 HOW / boundary premise 后拒绝沿用旧 Candidate / PASS；上游实质修订后重新 `slice-work → readiness-check`。
+
+直接回归：
+
+- `B-GA-04`：祖先 Runtime / Human Review Evidence 继续按 Claim 影响范围复用，不按 `docs-only` 整体继承；
+- `B-GA-01`：异步 GitHub Actions 继续保持有界观察、诊断、重跑与复验闭环；
+- `B-RC-06`：Roadmap / Identifier 继续不能替代 Specification、Candidate Unit Set 与 Readiness；
+- `B-RC-01`：输入完整且无 Blocking Finding 时仍可输出只读 `PASS`。
+
+### 针对性扩展结果
+
+最终状态：**PASS**。
+
+| 场景 | 结果 |
+|---|---:|
+| `B-GA-08` | 7 / 7 assertions PASS |
+| `B-RC-07` | 7 / 7 assertions PASS |
+| `B-GA-04` | 7 / 7 assertions PASS |
+| `B-GA-01` | 6 / 6 assertions PASS |
+| `B-RC-06` | 6 / 6 assertions PASS |
+| `B-RC-01` | 4 / 4 assertions PASS |
+| **合计** | **6 / 6 scenarios，37 / 37 assertions PASS** |
+
+评估对应行为 Head：`ade7a59c5bf3e0819e336beec1d223e174ec8bc2`。
+
+6 个场景分别从独立 `/tmp/agentic-dev-behavior-*` workspace 启动；18 个结果文件完整对应 6 个场景的 JSONL、stderr 与 run metadata。所有 stderr 为空，JSONL 均包含完整最终回答与 `turn.completed`；命令轨迹只读取隔离注入的 Skill / Reference 与当前 workspace，没有读取 Eval 定义、评分断言、历史结果、Consumer Repository 或工作区外上下文。所有进程退出码为 `0`，但退出码未被当作 PASS；最终结论来自逐项人工语义评分、隔离 / 污染检查与运行完整性检查。
+
+评估附件：`pr61-verification-readiness-adoption-eval-results.zip`
+
+附件 SHA-256：`f40a91054bc03ce3be92002f2c9623d0b25ea1dbad367c5ed76a7c388aa55cab`
+
+评估完成后只回写本节、Project Roadmap、协调 Plan 与 PR / Issue 状态，不再改变 Guide、Skill 或 Behavior 场景语义，因此上述 Runtime Evidence 继续对应当前行为变更。
+
 ## 文件结构
 
 ```text

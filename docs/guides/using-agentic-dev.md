@@ -301,6 +301,8 @@ Execution Unit 应：
 
 Readiness 还应确认相关执行单元遵守当前有效的 Domain / Architecture / ADR Authority。如果已经暴露 Domain / Architecture Authority Gap，或当前工作要求创建 / 重大更新长期权威产物却无法确定其生命周期责任，不应进入 Execute；Checker 只返回拥有相应事实或决定的职责层，不自行修复权威。
 
+如果 Readiness 的 Current Evidence 证明此前认为 Ready 的 Product / Specification / Technical Plan / Architecture basis 存在实质错误，先按 Finding 的真实职责返回 `clarify-intent` / `specify` / `technical-plan`，不要为了保留既有 Candidate、Identifier 或进度状态给设计增加未经权威支持的兼容例外。上游 WHAT / HOW 或 Architecture basis 实质修订后，旧 Candidate Unit Set 与旧 Readiness Evidence 都只对应旧基础；修订完成后应重新进入 `slice-work` 核对并在必要时重塑 Candidate Units，再执行新的 `readiness-check`。Identifier 可以在 Unit identity 仍真实成立时稳定保留，但历史 `PASS`、Work Artifact 或 Roadmap 状态不会跨语义修订继续授予 Execute 权限。
+
 ### 5.5 每个 Unit 使用 Fresh Execution Context
 
 使用：
@@ -369,6 +371,7 @@ systematic-debug
 - 如果当前 Runtime 对某类 CI trigger 或验证结果不可观察，应在仓库策略（Repository Policy）允许范围内切换到可观察路径，而不是把未知状态当作通过；
 - 快速反馈（Fast Feedback）与完成验证（Completion Verification）可以分层；中间修复优先取得低成本、针对性的反馈，最终完成声明仍必须满足必要的完整验证；
 - 中间修复迭代不要求每次重复支付最高成本的环境准备，但不能因此降低最终 Completion Evidence 的覆盖；
+- 使用 GitHub Actions 或其他自动化验证平台时，还应把 `Change / Authority Impact → Evidence Claim / Risk → Required Verification Layer → actual trigger / gate` 对成真实执行路径。专项高成本 Workflow 可以围绕其真实 Claim 收窄自动触发范围，但不能让受影响 Claim 因 filter / label / manual gate 等 adapter 漏验；反过来，与某项高成本 Claim 无关的变化也不应仅因“所有 PR 都这样跑”而机械重验。`docs-only`、Authority-only 或代码扩展名本身既不能证明应跳过 Runtime / Review，也不能证明必须执行 full integration；最终由 Consumer Repository 的 claim/risk policy 决定。`paths`、label、`workflow_dispatch`、reusable workflow 等只属于平台 adapter，不提升为 Method 强制规则；
 - 已验证提交之后出现新提交时，不按“文件扩展名”或“docs-only”机械决定旧证据是否仍有效。只有能够取得祖先证据提交到当前目标提交的精确差异、逐项证明差异不会影响该 Evidence Claim、与该声明相关的 Authority / Requirement / Specification / Architecture / Acceptance 语义未改变，并且 Repository Policy 允许时，才可以按声明复用未受影响的证据；必须记录祖先 SHA、当前 SHA、差异范围和声明映射。受影响或无法证明不受影响的声明必须重新取得定向验证或相应 Review；祖先 Run 不得被描述为当前 Head 的 Run；
 - 高成本且稳定的环境依赖可以通过预构建 Runtime、Artifact 复用、缓存或其他当前平台支持的方式降低重复准备成本；
 - 临时执行证据（Ephemeral Execution Evidence）默认只承担单次运行的证明、传输或审查职责。如果其中的数据、资源或配置被适当的 Human / Product Authority 接受，并成为后续稳定重放、迁移、评审或运行输入，应按 Consumer Repository Authority 晋升为已接受持久输入（Accepted Durable Input），保留来源 Run、Head、Artifact、digest 等必要 provenance 和完整性关系；长期消费者不得继续以会过期的临时 Artifact 作为唯一输入。Promotion 改变目标 Head、输入内容或 Evidence Claim 时，必须对最终状态重新取得匹配的 Current Evidence；
@@ -419,6 +422,14 @@ Consumer Repository 应随着真实工作逐步丰富，而不是在初始化时
 4. 将需要长期约束后续工作的已采纳规则固化到 Consumer 自己可发现的 Repository Authority 中，并按需保留来源与 baseline 关系；
 5. 由 Consumer Authority 明确本地规则的优先级、更新触发条件与适用范围；
 6. 完成升级后，普通开发恢复以 Consumer-local Authority 为主要工作入口。
+
+除了 Method / Skill / Artifact 规则本身，升级时还应显式审计会持续影响 Fresh Context 协作的 **repository-facing conventions**，例如 Git Commit 语义或语言、文档主导语言、Branch / PR 工作方式、Verification / Integration Policy、长期 Artifact 的可发现入口等。对每项候选约定至少区分：
+
+- **Adopt**：Consumer 确实需要并将其固化为本地 Authority；
+- **Retain / Override**：Consumer 已有更具体规则，继续保留或明确覆盖；
+- **Reject / Not Applicable**：该规则只属于 `agentic-dev` 自身 Project Rule、当前技术 / Runtime 不适用，或没有持续协调价值，不进入 Consumer Authority。
+
+不得因为 `agentic-dev` 自身存在某个 Git Commit、中文摘要、目录或分支规则就默认要求 Consumer 继承。反过来，如果 Consumer 已选择某项长期协作约定，却只存在于升级聊天或上游仓库而没有进入 Consumer-local Authority，Fresh Agent 无法可靠发现它；此时应补齐本地可发现载体，而不是依赖历史上下文。
 
 Consumer 可以使用 `AGENTS.md`、项目开发方法文档、配置或其他合适载体完成本地固化；本指南不要求固定文件名或目录。只服务一次升级判断、没有持续约束价值的分析过程不需要进入长期项目知识。
 
