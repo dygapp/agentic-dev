@@ -1,17 +1,17 @@
 # Git Commit 规范
 
-**状态：** Baseline v0.1  
+**状态：** 基线 v0.1  
 **性质：** 规范性文档
 
 ## 1. 目标
 
-本规范用于统一 `agentic-dev` 仓库的 Git Commit Message，确保提交历史能够：
+本规范用于统一 `agentic-dev` 的 Git Commit Message，使提交历史能够：
 
 - 清晰表达每次变更的主要目的；
-- 支持人工（Human）与 Agent 在 Fresh Context 中快速理解仓库演进；
-- 区分方法（Method）、Skill 契约（Skill Contract）与 Skill 实现（Skill Implementation）的变化；
+- 支持人工与 Agent 在新上下文中快速理解仓库演进；
+- 区分方法、Skill 契约与 Skill 实现的变化；
 - 避免一个提交混合多个不同层级的目的；
-- 为后续 Release、Review 和问题追溯提供稳定语义。
+- 为后续发布、复核和问题追溯提供稳定语义。
 
 ## 2. 基本格式
 
@@ -23,10 +23,9 @@
 
 其中：
 
-- `type` 使用小写英文；
-- `scope` 使用小写英文；
-- 摘要使用中文；
-- 摘要应直接说明本次提交的主要动作和对象；
+- `type` 和 `scope` 是提交协议中的固定标识，保持小写英文；
+- 摘要使用自然中文；
+- 摘要直接说明本次提交的主要动作和对象；
 - 默认不在摘要末尾添加句号。
 
 示例：
@@ -40,55 +39,43 @@ test(skills): 增加 specify Skill 契约验证
 chore(repo): 调整仓库基础配置
 ```
 
-## 3. Type
+这里保留的英文属于固定提交标识或 Skill 调用名，不代表提交说明可以整体切换成英文。
 
-第一版统一使用以下类型。
+## 3. `type`
 
-| Type | 用途 |
+当前使用以下固定类型：
+
+| `type` | 用途 |
 |---|---|
 | `docs` | 方法、规范、架构、契约、研究记录等文档变更 |
-| `feat` | 新增可实际使用的 Skill、Capability 或运行能力 |
+| `feat` | 新增可实际使用的 Skill、能力或运行能力 |
 | `fix` | 修复 Skill、脚本、配置或方法实现中的错误 |
 | `refactor` | 重构实现或结构，但不改变既定外部语义 |
 | `test` | 新增或调整验证用例、Skill 测试、契约测试 |
 | `chore` | 仓库维护、配置、目录整理等非功能性变更 |
 
-只有出现明确需要时，再增加新的 Type。
+只有出现明确需要时，再增加新的类型。不要为了形式完整预先引入大量暂时用不到的提交类型。
 
-不要为了“看起来更完整”预先引入大量暂时用不到的 Conventional Commit 类型。
+## 4. `scope`
 
-## 4. Scope
+`scope` 表示稳定责任域，不表示具体文件名、路径、目录或单个产物类型。
 
-Scope 表示稳定的责任域，不表示具体文件名、文件路径、目录名称或单个产物（Artifact）类型。
-
-同一次逻辑变更即使同时修改 README、Guide 或其他不同位置的文件，也应根据**变更目的所属的稳定责任域**选择 Scope，而不是跟随被修改文件的位置命名 Scope。
+同一次逻辑变更即使同时修改 README、Guide 或其他不同位置的文件，也应根据变更目的所属的稳定责任域选择 `scope`，而不是跟随文件位置命名。
 
 当前推荐：
 
-| Scope | 用途 |
+| `scope` | 用途 |
 |---|---|
 | `method` | AI 开发方法、顶层原则、阶段定义 |
-| `contracts` | Skill Contract 与职责边界 |
+| `contracts` | Skill 契约与职责边界 |
 | `skills` | Skill 实现及其直接相关内容 |
-| `usage` | `agentic-dev` 使用方式、Operating Guide、Consumer 启动与协作指导 |
+| `usage` | `agentic-dev` 使用方式、使用指南与使用方协作指导 |
 | `research` | 外部项目研究、对照分析 |
-| `governance` | Repository Rules、Authority、治理规则 |
+| `governance` | 仓库规则、权威和治理规则 |
 | `tasks` | Task 管理与工作协调规则 |
 | `repo` | 仓库结构、配置、基础维护 |
 
-示例：
-
-```text
-docs(method): 明确 Technical Planning 按需触发规则
-docs(contracts): 完善 readiness-check 输入输出契约
-docs(usage): 明确 Consumer 需求权威采纳边界
-docs(research): 补充 Superpowers 执行模型分析
-docs(governance): 增加 Git Commit 提交规范
-feat(skills): 实现 specify Skill
-chore(repo): 调整目录结构
-```
-
-如果现有 Scope 已能准确表达责任域，不要为单个文件、目录或一次性概念新增 Scope。
+如果现有 `scope` 已能准确表达责任域，不要为单个文件、目录或一次性概念新增 `scope`。
 
 ## 5. 摘要规则
 
@@ -100,27 +87,12 @@ chore(repo): 调整目录结构
 - 避免泛化描述；
 - 保持简短但具有独立可读性。
 
-推荐动词：
-
-```text
-建立
-新增
-补充
-明确
-调整
-更新
-修正
-统一
-重构
-移除
-简化
-完善
-```
+推荐动词包括：建立、新增、补充、明确、调整、更新、修正、统一、重构、移除、简化、完善。
 
 推荐：
 
 ```text
-docs(method): 明确 Fresh Context 的逻辑定义
+docs(method): 明确新上下文的逻辑定义
 docs(contracts): 调整 execute-unit 的验证退出条件
 feat(skills): 实现 systematic-debug Skill
 ```
@@ -136,71 +108,35 @@ chore: 一些调整
 
 ## 6. 单一变更目的
 
-一次 Commit 应只表达一个主要目的。
+一次提交应只表达一个主要目的。
 
-可以包含为完成该目的所必需的多个文件修改，但这些修改必须属于同一个逻辑变更。
+可以包含完成该目的所必需的多个文件修改，但这些修改必须属于同一个逻辑变更。例如，建立或调整一项治理规则时，可以同时修改规则正文、`AGENTS.md` 和 README，只要它们共同服务同一目的。
 
-例如，以下内容可以放在一个 Commit 中：
+如果同时发生方法 / 契约调整和 Skill 实现调整，应按照权威关系拆分提交。
 
-```text
-docs(governance): 建立 Git Commit 提交规范
-```
-
-同时修改：
-
-- `docs/guides/git-commit-guidelines.md`
-- `AGENTS.md`
-- `README.md`
-
-因为它们共同完成“建立提交规范”这一单一目的。
-
-以下内容原则上应拆分：
-
-```text
-docs(contracts): 调整 execute-unit 契约
-feat(skills): 实现 execute-unit Skill
-```
-
-原因是前者改变权威契约，后者实现该契约。
-
-## 7. Method / Contract / Implementation 分层提交
+## 7. 方法、契约与实现分层提交
 
 仓库采用以下权威关系：
 
 ```text
-Method
-  ↓
-Skill Architecture
-  ↓
-Skill Contract
-  ↓
-Skill Implementation
+方法
+→ Skill 架构
+→ Skill 契约
+→ Skill 实现
 ```
 
 Git Commit 应尽量保持同样的演进顺序。
 
-如果 Skill 实现暴露出方法或契约问题，应：
+如果 Skill 实现暴露方法或契约问题，应：
 
-1. 先修改对应 Method / Architecture / Contract；
+1. 先修改对应方法、架构或契约；
 2. 单独提交权威层变更；
-3. 再修改 Skill Implementation；
+3. 再修改 Skill 实现；
 4. 再单独提交实现变更。
 
-示例：
+禁止只修改 `SKILL.md`，使 Skill 实现在事实上改变方法或契约语义。
 
-```text
-docs(contracts): 调整 execute-unit 的验证退出条件
-```
-
-随后：
-
-```text
-refactor(skills): 对齐 execute-unit 新验证契约
-```
-
-禁止只修改 `SKILL.md`，使 Skill Implementation 在事实上改变方法或契约语义。
-
-## 8. Commit 前检查
+## 8. 提交前检查
 
 提交前至少检查：
 
@@ -208,73 +144,55 @@ refactor(skills): 对齐 execute-unit 新验证契约
 - `type` 是否准确；
 - `scope` 是否属于稳定责任域；
 - 中文摘要是否能独立说明变更；
-- 是否把 Method / Contract Change 与 Skill Implementation Change 混在一起；
+- 是否把方法 / 契约变更与 Skill 实现变更混在一起；
 - 是否包含无关临时文件、生成物或调试内容；
-- 当前工作是否已达到适合提交的稳定状态。
+- 当前工作是否已达到适合提交的稳定状态；
+- 提交说明是否遵守当前中文表达规则。
 
-如果仓库存在对应 Build / Test / Validation Command，应在提交前按当前变更风险执行必要验证。
+如果仓库存在对应构建、测试或验证命令，应在提交前按当前变更风险执行必要验证。
 
-“准备提交”本身不构成完成证据；验证仍应遵守仓库的“证据先于结论（Evidence Before Claims）”原则。
+“准备提交”本身不构成完成证据；验证仍应遵守证据先于结论的原则。
 
-## 9. Commit Body（提交正文）
+## 9. 提交正文
 
-普通提交默认不要求 Body。
+普通提交默认不要求正文。
 
-只有在摘要无法清楚表达以下信息时才增加 Body：
+只有在摘要无法清楚表达以下信息时才增加正文：
 
 - 为什么必须这样修改；
-- 重要 Trade-off；
+- 重要权衡；
 - 非显而易见的兼容性影响；
 - 后续必须注意的迁移事项。
 
-Body 应解释 **why** 和重要约束，不要简单重复 diff。
+正文使用中文解释原因和重要约束，不简单重复差异内容。代码标识、路径、命令和固定协议值按中文表达规范保持原样。
 
-示例：
+## 10. 不兼容变更
 
-```text
-docs(contracts): 调整 readiness-check 的职责边界
-
-将 Artifact 修正从 readiness-check 中移除，使其保持只读检查职责。
-实际修正由对应 Workflow Skill 或 Human 决定，避免 Checker 静默改写权威产物。
-```
-
-## 10. 不兼容变更（Breaking Change）
-
-当前仓库主要处于方法与 Skill 建设阶段。
-
-如果未来对已经公开稳定的 Skill Contract、CLI Interface 或其他对外能力产生 Breaking Change，应采用 Conventional Commits 的显式 Breaking Change 表达方式，例如：
+如果未来对已经公开稳定的 Skill 契约、CLI 接口或其他对外能力产生不兼容变更，应采用 Conventional Commits 的显式标记，例如：
 
 ```text
 feat(skills)!: 调整 execute-unit 输入契约
 ```
 
-必要时在 Body 中增加：
+必要时在正文中保留协议要求的固定字段：
 
 ```text
-BREAKING CHANGE: ...
+BREAKING CHANGE: <中文说明>
 ```
 
-在第一版 Skill 稳定发布之前，不应滥用 Breaking Change 标记来描述普通设计迭代。
+在第一版 Skill 稳定发布之前，不应滥用该标记描述普通设计迭代。
 
-## 11. Merge / Release
+## 11. 合并与发布边界
 
-本规范只定义 Commit Message。
+本规范只定义提交信息。
 
-以下事项由独立 Repository Policy 或 Human Authority 决定：
-
-- Merge Strategy；
-- Pull Request Title；
-- Squash Policy；
-- Tag；
-- Release Version；
-- Push；
-- Deploy。
+合并策略、PR 标题、Squash Policy、Tag、发布版本、Push 和 Deploy 等事项，由独立仓库策略或人工权威决定。
 
 通用 Skill 不得仅依据本规范自行执行这些共享状态变更。
 
 ## 12. 当前基线的推荐初始提交
 
-如果使用当前 Baseline 初始化新仓库，推荐：
+如果使用当前基线初始化新仓库，推荐：
 
 ```text
 docs(method): 建立 AI 开发方法基线
@@ -286,4 +204,4 @@ docs(method): 建立 AI 开发方法基线
 chore(repo): 初始化 agentic-dev 仓库
 ```
 
-方法文档本身仍建议作为独立的 `docs(method)` 提交语义。
+方法文档本身仍建议使用独立的 `docs(method)` 提交语义。
