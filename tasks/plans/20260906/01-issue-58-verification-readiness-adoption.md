@@ -1,6 +1,6 @@
 # Issue #58 EU-31～EU-36 Verification / Readiness / Adoption 维护计划
 
-**状态：** In Progress
+**状态：** Final AI Review Pending
 
 ## Goal
 
@@ -86,12 +86,45 @@
 6. 静态验证、Fresh Runtime、人工语义评分、最终 AI Review；
 7. 回写 Eval、Project Roadmap、Plan 与 Issue #58。
 
+## Runtime Evidence
+
+Fresh Runtime 已完成：
+
+```text
+新场景：   2 / 2 PASS，14 / 14 assertions PASS
+直接回归： 4 / 4 PASS，23 / 23 assertions PASS
+合计：     6 / 6 PASS，37 / 37 assertions PASS
+```
+
+场景：
+
+- `B-GA-08`：7 / 7 PASS；
+- `B-RC-07`：7 / 7 PASS；
+- `B-GA-04`：7 / 7 PASS；
+- `B-GA-01`：6 / 6 PASS；
+- `B-RC-06`：6 / 6 PASS；
+- `B-RC-01`：4 / 4 PASS。
+
+行为验证 Head：
+
+`ade7a59c5bf3e0819e336beec1d223e174ec8bc2`
+
+评估附件：`pr61-verification-readiness-adoption-eval-results.zip`
+
+SHA-256：
+
+`f40a91054bc03ce3be92002f2c9623d0b25ea1dbad367c5ed76a7c388aa55cab`
+
+6 个场景均来自独立仓库外 `/tmp/agentic-dev-behavior-*` workspace；stderr 全部为空，JSONL 均有完整最终回答与 `turn.completed`。命令轨迹未读取 Eval 定义、assertions、历史结果、Consumer Repository 或工作区外上下文。进程退出码均为 `0`，但没有被当作语义 PASS 依据。
+
+Runtime 后只修改 Eval 结果、Project Roadmap 与本协调 Plan，不再修改 Guide、Skill 或 Behavior 场景，因此该 Runtime Evidence 继续对应行为语义。
+
 ## Completion Criteria
 
-- A / B / F 的通用缺口进入正确 Authority 层且无过度泛化；
-- C / E 只作为正向证据记录，不重复造规则；
-- D 明确保留为 Deferred Pattern Candidate；
-- 新场景与必要回归全部通过 Fresh Runtime 和人工语义评分；
-- Final AI Review Blocking / Medium Finding = `0 / 0`；
-- PR 只推进到 Ready to Integrate；Merge 仍由 Human Authority 决定；
-- Issue #58 保持 OPEN。
+- A / B / F 的通用缺口进入正确 Authority 层且无过度泛化；✅
+- C / E 只作为正向证据记录，不重复造规则；✅
+- D 明确保留为 Deferred Pattern Candidate；✅
+- 新场景与必要回归全部通过 Fresh Runtime 和人工语义评分；✅
+- Final AI Review Blocking / Medium Finding = `0 / 0`；**PENDING**
+- PR 只推进到 Ready to Integrate；Merge 仍由 Human Authority 决定；**PENDING Final AI Review**
+- Issue #58 保持 OPEN。✅
