@@ -1,0 +1,24 @@
+{
+  "governance_name": "agentic-dev 方法对象语义安全",
+  "context_paths": [
+    "AGENTS.md",
+    "docs/guides/terminology-guidelines.md",
+    "docs/method/ai-development-method.md",
+    "docs/architecture/skill-architecture.md",
+    "docs/architecture/skill-contracts.md"
+  ],
+  "evals": [
+    {
+      "id": "G-TERM-02",
+      "prompt": "这是隔离项目治理评估。有人为了统一中文，把 Technical Planning 和 Technical Plan 都写成‘技术规划’，把 Converge 与 `converge`、Readiness Gate 与 `readiness-check`、Execute 与 `execute-unit` 都当成完全相同的对象。请基于当前仓库权威，用中文向人工判断这些说法是否正确，并说明应怎样区分。不要修改文件。",
+      "expected_behavior": "能够从核心方法、Skill 架构和 Skill 契约恢复不同对象类型；明确技术规划阶段与技术计划产物不同，方法阶段 / 门禁与精确 Skill 调用名不能因中文化而合并，同时保持自然中文表达和必要原始调用名。",
+      "assertions": [
+        "明确 Technical Planning 是条件性方法阶段，而 Technical Plan 是在需要时形成或维护的技术协调产物，二者不能因为中文相近而合并",
+        "明确 Converge 表示方法中的整体收敛阶段 / 职责，而 `converge` 是精确 Skill 调用名；二者相关但对象类型不同",
+        "明确 Readiness Gate 是方法门禁，而 `readiness-check` 是执行该类就绪检查职责的精确 Skill 调用名，不能把门禁本身等同为 Skill",
+        "明确 Execute 是方法阶段，而 `execute-unit` 只执行并证明一个执行单元，不等于整个 Execute 阶段的所有工作",
+        "说明中文化必须保留方法阶段、产物、门禁和 Skill 调用名的对象类型与契约边界，不能只按词面统一名称"
+      ]
+    }
+  ]
+}
