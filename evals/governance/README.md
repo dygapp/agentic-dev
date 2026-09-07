@@ -47,6 +47,22 @@
 
 它必须读取真实的核心方法、Skill 架构与 Skill 契约，验证中文化不会抹平对象类型和职责边界。
 
+## 依赖 PR 集成拓扑评估
+
+当前语料：
+
+`stacked-pr-integration-topology.json`
+
+目标是验证：Agent 在 GitHub + squash merge 的依赖式 PR 场景中，能够先判断当前依赖链是否由平台原生 stack 生命周期管理，再建立与实际平台状态一致的集成拓扑和当前证据，而不会把历史审查 ancestry、旧 Head 或工具动作成功直接当成“已具备进入集成决策的条件”。
+
+三个场景分别覆盖：
+
+- `G-PR-TOPO-01`：普通手工依赖 PR 链在父层 squash merge 后的 child normalization 与当前证据；
+- `G-PR-TOPO-02`：GitHub 原生 stack 在平台级联 rebase / retarget 后的状态核验与证据边界；
+- `G-PR-TOPO-03`：依赖模式、PR 快照或 Head 身份不明确时的安全退出与恢复路径。
+
+该评估不得导出“禁止 stacked PR”“强制 GitHub 原生 stack”“强制某种分支策略 / 合并策略”或修改核心方法 / 技能契约的结论。
+
 ## 运行边界
 
 每个场景必须：
@@ -71,6 +87,9 @@ python3 evals/run_governance_evals.py
 python3 evals/run_governance_evals.py --scenario G-LANG-01
 python3 evals/run_governance_evals.py --scenario G-TERM-01
 python3 evals/run_governance_evals.py --scenario G-TERM-02
+python3 evals/run_governance_evals.py --scenario G-PR-TOPO-01
+python3 evals/run_governance_evals.py --scenario G-PR-TOPO-02
+python3 evals/run_governance_evals.py --scenario G-PR-TOPO-03
 ```
 
 结果写入：
@@ -89,6 +108,9 @@ python3 evals/run_governance_evals.py --scenario G-TERM-02
 6. 正式概念是否保持正确对象类型、架构层级和职责边界；
 7. 旧中文迁移别名是否被错误解释为当前正式名称或新的能力层；
 8. 方法阶段、产物、门禁和 Skill 调用名是否被错误合并；
-9. 是否仍保持原任务要求的语义正确性，而不是只追求语言形式。
+9. 是否仍保持原任务要求的语义正确性，而不是只追求语言形式；
+10. 依赖 PR 场景是否先确认实际平台管理模式，而不是根据 `stacked` 名称或历史 base 猜测；
+11. PR Head、base、diff、checks 或集成基线改变后，是否重新判断当前证据适用范围；
+12. 是否避免把平台预览期细节错误提升为永久方法契约或统一仓库策略。
 
-只有语言规则、正式概念身份和任务语义同时满足，场景才能判为通过。
+只有对应治理规则、正式概念身份和任务语义同时满足，场景才能判为通过。
