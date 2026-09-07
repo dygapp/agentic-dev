@@ -79,9 +79,9 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 > **Squash Merge 下 Stacked PR 集成拓扑安全 v1**
 
-人工权威已显式选择该候选并通过 Issue #69 启动，启动基线为 `master@d1119e77a6fd83caa9e65334636d7aab6abdb06e`。当前目标是在 GitHub + squash merge + 依赖式 PR 场景中建立薄的外部操作 / 集成拓扑安全指导，区分 GitHub 原生 stacked pull requests 与普通手工依赖 PR 链，并把实际 PR Head / diff / Current Evidence 绑定到真实可集成状态。
+人工权威已显式选择该候选并通过 Issue #69 启动，启动基线为 `master@d1119e77a6fd83caa9e65334636d7aab6abdb06e`。当前目标是在 GitHub + squash merge + 依赖式 PR 场景中建立薄的外部操作 / 集成拓扑安全指导，区分 GitHub 原生 stacked pull requests 与普通手工依赖 PR 链，并把实际 PR Head / diff / 当前证据绑定到真实可集成状态。
 
-本里程碑不修改 Core Method、Skill Contract，也不新增 Skill；WI-06、WI-07、WI-09、第四工程纪律或其他工程能力候选均未自动启动。
+本里程碑不修改核心方法、技能契约，也不新增 Skill；WI-06、WI-07、WI-09、第四工程纪律或其他工程能力候选均未自动启动。
 
 当前状态、里程碑范围和实施证据统一记录在：
 
