@@ -2,7 +2,7 @@
 
 ## 状态
 
-**隔离运行时评估 / 人工语义评分待执行**
+**最终 AI 复核待执行**
 
 启动基线：
 
@@ -56,19 +56,27 @@
 
 ## 当前进展
 
-已完成步骤 1～5、静态 JSON 解析、差异范围检查和运行时前 AI 复核。PR #70 Review `5128856306` 未解决阻塞 / 中等级问题为 `0 / 0`。
+步骤 1～6 已完成：
 
-当前运行环境没有 `codex` 可执行文件，仓库也没有可直接承载本评估的 GitHub Actions 工作流，因此步骤 6 的隔离运行时评估仍待执行。不得以本会话推演或空 CI 状态替代该证据。
+- 完成历史证据、当前平台语义和架构适配核验；
+- 完成薄指导、治理定向评估和静态检查；
+- 运行时前 AI 复核 PR #70 Review `5128856306` 未解决阻塞 / 中等级问题为 `0 / 0`；
+- 首轮三个隔离场景均 `returncode=0`、stderr 为空、未发现污染，人工语义评分为 `14 / 15`；
+- `G-PR-TOPO-01` 与 `G-PR-TOPO-03` 均为 `5 / 5`；
+- `G-PR-TOPO-02` 唯一缺口经长期规则激活修订后，第二次重跑仍为 `4 / 5`，随后仅调整场景提问覆盖，未降低 `expected_behavior` 或断言；
+- 当前 Head `267b0928b745eac990594b43986048a25b8470a9` 上第三次 `G-PR-TOPO-02` 重跑为 `5 / 5`；
+- 最终有效治理语义评分为：
 
-下一步只执行：
-
-```bash
-python3 evals/run_governance_evals.py --scenario G-PR-TOPO-01
-python3 evals/run_governance_evals.py --scenario G-PR-TOPO-02
-python3 evals/run_governance_evals.py --scenario G-PR-TOPO-03
+```text
+G-PR-TOPO-01: 5 / 5
+G-PR-TOPO-02: 5 / 5
+G-PR-TOPO-03: 5 / 5
+合计:          15 / 15
 ```
 
-运行后必须读取 `evals/results/governance/` 中三个场景的最终输出，并按 `evals/governance/stacked-pr-integration-topology.json` 的 15 条断言逐项完成人工语义评分。进程退出码 `0` 不能单独判为通过。
+有效运行均使用隔离 `codex exec --ephemeral --json`，进程退出码为 `0`、stderr 为空；运行轨迹仅读取场景声明的仓库内相对路径，没有读取评分语料、历史 `evals/results/*` 或隔离工作目录外上下文。
+
+当前只剩步骤 7～8：完成最终项目状态回写、最终 AI 复核；若未解决阻塞 / 中等级问题为 `0 / 0`，则进入“已具备进入集成决策的条件”并将 PR 转为正式复核状态。
 
 ## 完成条件
 
