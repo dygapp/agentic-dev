@@ -71,25 +71,18 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 最近完成并已集成的有限里程碑是：
 
-> **工程术语语义安全与现行文档全量收敛 v1**
-
-该里程碑的正式概念语义安全、现行人类可读材料全量扫描与必要修订、最终治理回归和最终 AI 复核均已完成。最终回归中 `G-LANG-01`、`G-TERM-01`、`G-TERM-02` 合计 `15 / 15` 断言通过，最终 AI 复核未解决阻塞 / 中等级问题为 `0 / 0`。实施载体 PR #67 已合并，合并提交为 `74f0306731e12c1757df1fadd5f8b269834c48e7`；Issue #64 已按完成关闭。随后状态维护 PR #68 已通过 squash merge 集成，合并提交为 `d1119e77a6fd83caa9e65334636d7aab6abdb06e`。
-
-当前活动有限里程碑是：
-
 > **Squash Merge 下 Stacked PR 集成拓扑安全 v1**
 
-人工权威已显式选择该候选并通过 Issue #69 启动，启动基线为 `master@d1119e77a6fd83caa9e65334636d7aab6abdb06e`。当前目标是在 GitHub + squash merge + 依赖式 PR 场景中建立薄的外部操作 / 集成拓扑安全指导，区分 GitHub 原生 stacked pull requests 与普通手工依赖 PR 链，并把实际 PR Head / diff / 当前证据绑定到真实可集成状态。
+该里程碑已完成平台语义核验、长期外部操作指导、三项治理定向评估、人工语义评分与最终 AI 复核。`G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 最终合计 `15 / 15` 断言通过，最终 AI 复核 Review `5129305394` 未解决阻塞 / 中等级问题为 `0 / 0`。实施载体 PR #70 已通过 squash merge 集成，合并提交为 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已按完成关闭。
 
-本里程碑不修改核心方法、技能契约，也不新增 Skill；WI-06、WI-07、WI-09、第四工程纪律或其他工程能力候选均未自动启动。
+当前没有活动有限里程碑。项目处于**等待下一有限里程碑人工路线决策**状态；WI-06、WI-07、WI-09、第四工程纪律、Issue #71 或其他工程能力候选均未自动启动。
 
-当前状态、里程碑范围和实施证据统一记录在：
+当前状态、候选库和下一步边界统一记录在：
 
 - `docs/project/project-roadmap.md`
 - `docs/project/stacked-pr-squash-topology-v1.md`
-- `docs/research/github-stacked-pr-squash-topology.md`
-- `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`
-- Issue #69
+- Issue #71
+- Issue #58
 
 工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。
 
