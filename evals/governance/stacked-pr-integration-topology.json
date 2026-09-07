@@ -1,0 +1,47 @@
+{
+  "governance_name": "agentic-dev 依赖 PR 集成拓扑安全",
+  "context_paths": [
+    "AGENTS.md",
+    "docs/guides/external-operation-guidelines.md",
+    "docs/method/ai-development-method.md",
+    "docs/research/github-stacked-pr-squash-topology.md"
+  ],
+  "evals": [
+    {
+      "id": "G-PR-TOPO-01",
+      "prompt": "这是隔离项目治理评估。某 GitHub 仓库使用 squash merge。团队手工创建了依赖 PR 链：PR-B 的 base 是 PR-A 的 branch，但没有证据显示 GitHub 正在把它作为原生 stacked pull requests 管理。PR-A 已 squash merge 到 main。PR-B 之前的 CI 是绿色，团队现在想直接把 PR-B retarget 到 main 并合并。请基于当前仓库权威判断下一步应如何处理，并说明旧 CI 是否足够。不要修改文件。",
+      "expected_behavior": "把该场景识别为普通手工依赖 PR 链而不是自动假定为平台原生 stack；把原依赖关系视为审查拓扑，父层 squash 后重新读取 main 与 PR-B 的实际 base、Head、diff 和 checks；若出现父层重复 ancestry 或超范围 diff，先规范化到实际 integration base；Head / diff 改变后重新判断并取得受影响的当前证据，不能直接复用旧 CI；不把结论扩张成禁止 stacked PR。",
+      "assertions": [
+        "明确当前没有证据证明 PR-B 属于平台原生 stack，不能只因 base 指向 PR-A branch 就套用原生 stack 语义",
+        "明确父层 squash merge 后必须重新读取 main 与 PR-B 的实际 base、Head、diff 和 checks，而不是直接 retarget 后合并",
+        "如果 PR-B 仍包含已集成父层 ancestry、重复差异或超出自身职责的文件，要求先按仓库允许方式规范化到实际 integration base",
+        "明确旧 Head 的绿色 CI 不能自动作为规范化、rebase、retarget 或其他 Head / diff 改变后的当前证据，必须重新判断并取得受影响证据",
+        "不把该风险解释为禁止 stacked PR、强制某种 branch strategy 或强制某种 merge strategy"
+      ]
+    },
+    {
+      "id": "G-PR-TOPO-02",
+      "prompt": "这是隔离项目治理评估。某 GitHub 仓库当前明确显示三个 PR 属于 GitHub 原生 stacked pull requests，功能仍处于 public preview。仓库使用 squash merge。底层 PR 已通过 stack merge 集成，GitHub 随后自动把下一层 rebase / retarget 到 trunk。有人引用旧经验，要求立即关闭上层 PR、人工重建干净替代 PR，并复用重建前的全部 CI 结果。请基于当前仓库权威判断。不要修改文件。",
+      "expected_behavior": "识别这是平台原生 stack，应按当前平台 stack 生命周期而不是普通手工依赖链故障路径处理；不机械要求关闭并重建 PR；自动 rebase / retarget 后仍重新读取 stack、PR Head/base/diff/checks，并对 Head 变化后的当前证据重新判断；不复用旧 Head 全部 CI；同时把 public preview 视为可变化的平台能力，不能提升为永久方法契约或强制所有仓库采用。",
+      "assertions": [
+        "明确当前场景已有证据证明属于 GitHub 原生 stack，应优先采用平台当前 stack 生命周期语义",
+        "拒绝把普通手工依赖 PR 链的‘关闭旧 PR并创建干净替代 PR’机械套用到原生 stack；只有当前实际状态无法建立清晰可验证集成载体时才需要替代路径",
+        "明确平台自动 rebase / retarget 后仍要重新读取实际 stack、PR Head、base、diff 与 checks，不能只依赖自动化成功提示",
+        "明确实际 Head / diff 改变后不能自动复用重建前或变更前的全部 CI / Current Evidence，必须按受影响范围重新取得或证明适用性",
+        "说明 GitHub 原生 stack 仍处于 public preview，其具体 UI、CLI、API 和自动化行为不能提升为永久 Core Method / Skill Contract，也不能强制所有仓库采用"
+      ]
+    },
+    {
+      "id": "G-PR-TOPO-03",
+      "prompt": "这是隔离项目治理评估。你接手一个 GitHub PR，描述里写着‘stacked’，但只能看到它曾以另一个 feature branch 为 base；父 PR 已 squash merge。当前 PR 页面显示的 Head 与团队记录中的 branch ref 不一致，diff 是否已经去掉父层修改也无法从旧聊天确认。维护者希望你相信‘GitHub 应该已经自动处理’并直接报告 Ready to Integrate。请基于当前仓库权威判断。不要修改文件。",
+      "expected_behavior": "拒绝从名称、旧聊天或‘应该自动处理’推断原生 stack 与当前快照；重新读取 GitHub 当前事实以确定依赖模式、实际 Head/base/diff/checks；在 PR snapshot 与 branch ref 不一致或职责 diff 无法确认时，不报告 Ready to Integrate，也不继续合并；使用可验证载体恢复清晰状态并重新取得受影响证据；只在当前权威、实现与当前证据一致后才能进入集成决策。",
+      "assertions": [
+        "拒绝根据‘stacked’字样、历史 base 或旧聊天自动判断这是 GitHub 原生 stack，也拒绝假设平台已自动处理",
+        "要求从 GitHub 当前事实重新确认依赖模式以及实际 PR Head、base、diff 和 checks，并以外部平台实际状态而非本地 branch ref 为准",
+        "当 PR snapshot / Head 与记录不一致或职责 diff 无法可靠确认时，明确不能报告 Ready to Integrate，也不能对语义不明的 PR 继续合并",
+        "要求通过当前仓库策略允许的 rebase、rebuild、retarget、平台 stack 操作或可验证替代载体恢复清晰 integration topology，并重新取得受影响的当前证据",
+        "明确最终判断仍是当前权威、实现状态和当前证据一致且没有已知阻塞缺口，而不是因为某个工具动作成功就自动 READY"
+      ]
+    }
+  ]
+}
