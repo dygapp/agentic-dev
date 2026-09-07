@@ -2,7 +2,7 @@
 
 ## 状态
 
-**运行时前 AI 复核 / 隔离运行时评估待执行**
+**隔离运行时评估 / 人工语义评分待执行**
 
 启动基线：
 
@@ -56,9 +56,19 @@
 
 ## 当前进展
 
-已完成步骤 1～5，并完成静态 JSON 解析与差异范围检查。Draft PR #70 已建立。
+已完成步骤 1～5、静态 JSON 解析、差异范围检查和运行时前 AI 复核。PR #70 Review `5128856306` 未解决阻塞 / 中等级问题为 `0 / 0`。
 
-当前运行环境没有 `codex` 可执行文件，因此步骤 6 中仓库规定的隔离运行时评估仍待执行。不得以本会话推演替代该证据。
+当前运行环境没有 `codex` 可执行文件，仓库也没有可直接承载本评估的 GitHub Actions 工作流，因此步骤 6 的隔离运行时评估仍待执行。不得以本会话推演或空 CI 状态替代该证据。
+
+下一步只执行：
+
+```bash
+python3 evals/run_governance_evals.py --scenario G-PR-TOPO-01
+python3 evals/run_governance_evals.py --scenario G-PR-TOPO-02
+python3 evals/run_governance_evals.py --scenario G-PR-TOPO-03
+```
+
+运行后必须读取 `evals/results/governance/` 中三个场景的最终输出，并按 `evals/governance/stacked-pr-integration-topology.json` 的 15 条断言逐项完成人工语义评分。进程退出码 `0` 不能单独判为通过。
 
 ## 完成条件
 
