@@ -94,7 +94,8 @@ GitHub 对普通 PR 的 squash merge 会把 PR 中的提交合并成 base branch
 - 优先遵循 GitHub 当前 stack merge / rebase 语义；
 - 不需要把 Issue #33 的人工 branch normalization 路径机械复制到原生 stack；
 - 进入集成决策前仍必须读取实际 stack / PR 状态、Head、diff、checks 与当前证据；
-- 因功能仍处于 public preview，不能把具体 UI、CLI 子命令或自动重写行为提升为长期不变的方法契约。
+- 因功能仍处于 public preview，不能把具体 UI、CLI 子命令或自动重写行为提升为长期不变的方法契约；
+- 在面向集成判断的最终结论中，应显式保留这一边界：public preview 的具体 UI、CLI、API 与自动化行为只是当前平台能力，不能提升为永久核心方法或技能契约，也不能据此要求所有使用方仓库采用 GitHub 原生 stack。
 
 ### 模式 B — 普通手工依赖 PR 链
 
