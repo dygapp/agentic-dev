@@ -276,13 +276,13 @@ Agent 不应把所有中间判断都升级给人工。人工介入应集中在�
 
 - 把依赖关系视为审查拓扑，不自动视为最终集成拓扑；
 - 父层完成集成后，尤其采用 squash merge 时，重新读取目标分支以及 child PR 的实际 base、Head 与 diff；
-- 如果 child 仍携带已经集成的父层 ancestry、重复差异或超出自身职责的文件，先在当前仓库策略允许的方式下 rebase、rebuild、retarget 或等价规范化到实际 integration base，再重新核验 PR；
-- 不能因为本地 branch ref 已更新、force-update 已成功或 PR base 已修改，就假定 GitHub 等外部平台的 PR snapshot 已可靠刷新；
-- 如果当前 PR 的实际 Head / diff 无法可靠证明其只承载当前职责，停止该 PR 的集成路径，并使用能够建立清晰当前状态的载体；不对语义不明的旧 snapshot 继续合并。
+- 如果 child 仍携带已经集成的父层 ancestry、重复差异或超出自身职责的文件，先在当前仓库策略允许的方式下 rebase、rebuild、retarget 或等价规范化到实际集成基线，再重新核验 PR；
+- 不能因为本地 branch ref 已更新、force-update 已成功或 PR base 已修改，就假定 GitHub 等外部平台的 PR 快照已可靠刷新；
+- 如果当前 PR 的实际 Head / diff 无法可靠证明其只承载当前职责，停止该 PR 的集成路径，并使用能够建立清晰当前状态的载体；不对语义不明的旧快照继续合并。
 
-无论哪种模式，只要 rebase、rebuild、force-update、retarget、平台级联更新或 PR 替换改变了实际 Head / diff / integration base，就必须重新判断此前证据的适用范围。旧 Head 的检查、工作流、评审或其他当前证据不得自动声明为新 Head 的证据；只有确实与变更无关且能够由当前规则独立证明仍适用的声明，才可以按其真实范围保留。
+无论哪种模式，只要 rebase、rebuild、force-update、retarget、平台级联更新或 PR 替换改变了实际 Head / diff / 集成基线，就必须重新判断此前证据的适用范围。旧 Head 的检查、工作流、评审或其他当前证据不得自动声明为新 Head 的证据；只有确实与变更无关且能够由当前规则独立证明仍适用的声明，才可以按其真实范围保留。
 
-本节不禁止 stacked PR，不要求所有仓库使用平台原生 stack，也不规定统一 branch strategy 或 merge strategy。具体平台行为由当前外部事实和使用方仓库策略决定。
+本节不禁止 stacked PR，不要求所有仓库使用平台原生 stack，也不规定统一分支策略或合并策略。具体平台行为由当前外部事实和使用方仓库策略决定。
 
 ## 6. 汇报：只汇报已验证状态
 
