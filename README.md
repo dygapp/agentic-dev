@@ -47,7 +47,7 @@ agentic-dev：
 
 **当前有限里程碑：** Squash Merge 下 Stacked PR 集成拓扑安全 v1
 
-**当前门禁：** Pre-Runtime AI Review / 隔离运行时评估待执行
+**当前门禁：** 运行时前 AI 复核 / 隔离运行时评估待执行
 
 当前路线、候选库、完成状态与新上下文恢复顺序统一维护在：
 
