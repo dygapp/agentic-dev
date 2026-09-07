@@ -42,7 +42,7 @@
 
 当前门禁：
 
-**Pre-Runtime AI Review / 隔离运行时评估待执行**
+**运行时前 AI 复核 / 隔离运行时评估待执行**
 
 目标是在 GitHub + squash merge + 依赖式 PR 场景中，以最小外部操作 / GitHub Integration 指导明确审查拓扑与最终集成拓扑的边界，并区分 GitHub 原生 stacked pull requests 与普通手工依赖 PR 链。该里程碑不修改核心方法、技能契约，也不新增 Skill。
 
