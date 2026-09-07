@@ -45,18 +45,21 @@ agentic-dev：
 
 **最近完成并已集成的有限里程碑：** 工程术语语义安全与现行文档全量收敛 v1
 
-**当前有限里程碑状态：** 无活动有限里程碑，等待下一有限里程碑人工路线决策
+**当前有限里程碑：** Squash Merge 下 Stacked PR 集成拓扑安全 v1
+
+**当前 Gate：** Targeted Guidance / Eval Preparation
 
 当前路线、候选库、完成状态与新上下文恢复顺序统一维护在：
 
 `docs/project/project-roadmap.md`
 
-最近完成里程碑跟踪入口：
+当前有限里程碑跟踪入口：
 
-- Issue #64
-- PR #67
+- Issue #69
+- `docs/project/stacked-pr-squash-topology-v1.md`
+- `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`
 
-“中文交互与上下文清理 v1”已经通过 PR #63 集成。“工程术语语义安全与现行文档全量收敛 v1”也已通过 PR #67 集成，合并提交为 `74f0306731e12c1757df1fadd5f8b269834c48e7`，Issue #64 已按完成关闭。当前没有活动有限里程碑；WI-06、WI-07、WI-09、第四工程纪律及其他候选不会自动启动。
+最近一次状态维护 PR #68 已通过 squash merge 集成，合并提交为 `d1119e77a6fd83caa9e65334636d7aab6abdb06e`。人工权威随后显式选择“Squash Merge 下 Stacked PR 集成拓扑安全 v1”为新的有限里程碑。WI-06、WI-07、WI-09、第四工程纪律及其他候选继续保持候选状态，不自动启动。
 
 ## 仓库事实来源
 
