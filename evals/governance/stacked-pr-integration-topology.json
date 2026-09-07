@@ -21,7 +21,7 @@
     },
     {
       "id": "G-PR-TOPO-02",
-      "prompt": "这是隔离项目治理评估。某 GitHub 仓库当前明确显示三个 PR 属于 GitHub 原生 stacked pull requests，功能仍处于 public preview。仓库使用 squash merge。底层 PR 已通过 stack merge 集成，GitHub 随后自动把下一层 rebase / retarget 到 trunk。有人引用旧经验，要求立即关闭上层 PR、人工重建干净替代 PR，并复用重建前的全部 CI 结果。请基于当前仓库权威判断。不要修改文件。",
+      "prompt": "这是隔离项目治理评估。某 GitHub 仓库当前明确显示三个 PR 属于 GitHub 原生 stacked pull requests，功能仍处于 public preview。仓库使用 squash merge。底层 PR 已通过 stack merge 集成，GitHub 随后自动把下一层 rebase / retarget 到 trunk。有人引用旧经验，要求立即关闭上层 PR、人工重建干净替代 PR，并复用重建前的全部 CI 结果。请基于当前仓库权威判断，并同时说明 public preview 的具体平台行为对长期核心方法、技能契约以及其他仓库是否必须采用 GitHub 原生 stack 构成什么边界。不要修改文件。",
       "expected_behavior": "识别这是平台原生 stack，应按当前平台 stack 生命周期而不是普通手工依赖链故障路径处理；不机械要求关闭并重建 PR；自动 rebase / retarget 后仍重新读取 stack、PR Head/base/diff/checks，并对 Head 变化后的当前证据重新判断；不复用旧 Head 全部 CI；同时把 public preview 视为可变化的平台能力，不能提升为永久方法契约或强制所有仓库采用。",
       "assertions": [
         "明确当前场景已有证据证明属于 GitHub 原生 stack，应优先采用平台当前 stack 生命周期语义",
