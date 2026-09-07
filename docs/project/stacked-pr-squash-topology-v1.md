@@ -4,9 +4,9 @@
 
 **当前：实施中**
 
-当前 Gate：
+当前门禁：
 
-`Targeted Guidance / Eval Preparation`
+**Pre-Runtime AI Review / 隔离运行时评估待执行**
 
 跟踪入口：Issue #69。
 
@@ -18,9 +18,9 @@
 
 `docs/stacked-pr-squash-topology-v1`
 
-## Milestone Decision
+## 里程碑决策
 
-2026-09-07，人工权威显式选择 Issue #33 中已独立核验的 “stacked PR + squash merge 的 review / integration topology” 候选作为下一有限里程碑。
+2026-09-07，人工权威显式选择 Issue #33 中已独立核验的“stacked PR + squash merge 的审查拓扑 / 集成拓扑”候选作为下一有限里程碑。
 
 长期阶段保持“工程能力扩展与方法演进”。本里程碑不自动启动 WI-06、WI-07、WI-09、第四工程纪律或其他候选。
 
@@ -30,9 +30,9 @@
 
 1. 不把临时审查拓扑自动等同于最终集成拓扑；
 2. 能先识别当前依赖链是否由 GitHub 原生 stacked pull requests 生命周期管理；
-3. 对普通手工依赖 PR 链，在父层集成、Head / base / diff 改变后重新建立可验证的 integration topology；
+3. 对普通手工依赖 PR 链，在父层集成、Head / base / diff 改变后重新建立可验证的集成拓扑；
 4. 对平台原生 stack，按当前平台 stack 生命周期工作，同时重新读取真实 stack / PR 状态而不只相信自动化提示；
-5. 把检查、工作流、评审和其他 Current Evidence 绑定到真实 Head / diff / integration base。
+5. 把检查、工作流、评审和其他当前证据绑定到真实 Head / diff / 集成基线。
 
 ## 证据重新核验
 
@@ -41,9 +41,9 @@ Issue #33 的历史 Consumer 证据已经重新读取，原独立分类仍成立
 - 风险真实存在于当时的普通手工依赖 PR 链；
 - 原 PR #38 显示 48 个 changed files，干净替代 PR #39 只保留 2 个职责文件；
 - 原 PR #37 显示 58 个 changed files且未集成，干净替代 PR #40 只保留 13 个职责文件；
-- child normalization 后重新取得 Current Evidence；
+- child normalization 后重新取得当前证据；
 - 最终分类为 `Low / Future Improvement Candidate`；
-- 该证据不支持禁止 stacked PR、不支持修改 Core Method / Skill Contract，也不支持新增 Skill。
+- 该证据不支持禁止 stacked PR、不支持修改核心方法 / 技能契约，也不支持新增 Skill。
 
 ## 当前平台研究结果
 
@@ -71,9 +71,9 @@ Issue #33 的历史 Consumer 证据已经重新读取，原独立分类仍成立
 
 原因：
 
-- 问题核心是外部 GitHub 状态、PR snapshot、Head / diff 和证据身份的验证；
-- 核心方法已经要求当前权威、实现和 Current Evidence 对齐，无需修改方法阶段或生命周期；
-- Skill Contract 没有缺口；
+- 问题核心是外部 GitHub 状态、PR 快照、Head / diff 和证据身份的验证；
+- 核心方法已经要求当前权威、实现和当前证据对齐，无需修改方法阶段或生命周期；
+- 技能契约没有缺口；
 - 不需要新的 Skill；
 - 具体 stack 能力属于平台行为，不能提升为跨平台永久契约。
 
@@ -86,16 +86,17 @@ Issue #33 的历史 Consumer 证据已经重新读取，原独立分类仍成立
 - 完成 GitHub 当前 stack / squash merge 平台研究；
 - 在外部操作指南中增加“依赖 PR 的审查拓扑与集成拓扑”薄规则；
 - 新增 `G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 三个治理定向评估场景，共 15 条语义断言；
-- 治理评估运行入口已加载新语料。
+- 治理评估运行入口已加载新语料；
+- 完成定向语料静态 JSON 解析与分支差异范围检查；
+- 建立 Draft PR #70 作为后续运行时证据与最终复核载体。
 
 待完成：
 
-- 静态完整性检查；
 - 隔离运行时评估；
 - 人工逐项语义评分；
 - 最终项目状态回写；
 - 最终 AI 复核；
-- 形成 Ready to Integrate PR。
+- 达到“已具备进入集成决策的条件”并将 PR 转为正式复核状态。
 
 ## 定向评估门禁
 
@@ -107,7 +108,7 @@ Issue #33 的历史 Consumer 证据已经重新读取，原独立分类仍成立
 
 - `G-PR-TOPO-01`：普通手工依赖 PR 链 + 父层 squash merge；
 - `G-PR-TOPO-02`：GitHub 原生 stack + 平台级联 rebase / retarget；
-- `G-PR-TOPO-03`：stack 身份、PR snapshot 或 Head 不明确。
+- `G-PR-TOPO-03`：stack 身份、PR 快照或 Head 不明确。
 
 运行时必须使用仓库现有隔离治理评估运行器取得真实输出，再由人工逐条评分。进程退出码 `0` 不能单独视为通过。
 
@@ -115,13 +116,13 @@ Issue #33 的历史 Consumer 证据已经重新读取，原独立分类仍成立
 
 - 不禁止 stacked PR；
 - 不强制 GitHub 原生 stack；
-- 不规定统一 branch strategy 或 merge strategy；
-- 不修改 Core Method；
-- 不修改 Skill Contract；
+- 不规定统一分支策略或合并策略；
+- 不修改核心方法；
+- 不修改技能契约；
 - 不新增 Skill；
 - 不把 GitHub public preview 细节提升为永久契约；
 - 不启动其他候选里程碑。
 
 ## 完成定义
 
-以 Issue #69 冻结的完成定义为准。只有在定向运行时评估和人工评分完成、最终 AI 复核未解决 Blocking / Medium 为 `0 / 0`、Roadmap / Issue / PR 状态一致后，才可以报告本里程碑“已具备进入集成决策的条件”。
+以 Issue #69 冻结的完成定义为准。只有在定向运行时评估和人工评分完成、最终 AI 复核未解决阻塞 / 中等级问题为 `0 / 0`、路线图 / Issue / PR 状态一致后，才可以报告本里程碑“已具备进入集成决策的条件”。
