@@ -38,13 +38,13 @@
 
 `master@d1119e77a6fd83caa9e65334636d7aab6abdb06e`
 
-跟踪入口：Issue #69。
+跟踪入口：Issue #69、Draft PR #70。
 
-当前 Gate：
+当前门禁：
 
-`Targeted Guidance / Eval Preparation`
+**Pre-Runtime AI Review / 隔离运行时评估待执行**
 
-目标是在 GitHub + squash merge + 依赖式 PR 场景中，以最小外部操作 / GitHub Integration 指导明确审查拓扑与最终集成拓扑的边界，并区分 GitHub 原生 stacked pull requests 与普通手工依赖 PR 链。该里程碑不修改 Core Method、Skill Contract，也不新增 Skill。
+目标是在 GitHub + squash merge + 依赖式 PR 场景中，以最小外部操作 / GitHub Integration 指导明确审查拓扑与最终集成拓扑的边界，并区分 GitHub 原生 stacked pull requests 与普通手工依赖 PR 链。该里程碑不修改核心方法、技能契约，也不新增 Skill。
 
 “工程术语语义安全与现行文档全量收敛 v1”已经完成正式概念语义安全、现行人类可读材料全量扫描与必要修订、最终治理回归和最终 AI 复核。最终 `G-LANG-01`、`G-TERM-01`、`G-TERM-02` 合计 `15 / 15` 断言通过；最终 AI 复核 Review `5125945453` 未解决阻塞 / 中等级问题为 `0 / 0`。
 
@@ -63,7 +63,7 @@ WI-06、WI-07、WI-09、第四工程纪律以及其他工程能力候选继续�
 | 任务型技能 | v1 后候选库 | WI-07 未启动 |
 | 运行时与分发 | v1 后候选库 | WI-09 未启动 |
 | 项目语言治理 | 已完成并集成 | 工程术语语义安全与现行文档全量收敛 v1 已通过 PR #67 集成 |
-| GitHub 集成拓扑安全 | 当前 | Issue #69；仅收敛依赖 PR 的审查 / 集成拓扑与 Current Evidence 边界 |
+| GitHub 集成拓扑安全 | 当前 | Issue #69 / Draft PR #70；仅收敛依赖 PR 的审查 / 集成拓扑与当前证据边界 |
 
 ## 4. 已完成能力基线与维护里程碑
 
@@ -234,23 +234,24 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 `master@d1119e77a6fd83caa9e65334636d7aab6abdb06e`
 
-跟踪入口：Issue #69。
+跟踪入口：Issue #69、Draft PR #70。
 
 当前已经完成：
 
 - 重新读取并确认 Issue #33 的历史 Consumer 证据与 `Low / Future Improvement Candidate` 分类；
 - 核验 GitHub 当前原生 stacked pull requests public preview 行为；
 - 明确原生 stack 与普通手工依赖 PR 链不能使用同一故障模型；
-- 确定长期规则最小落点为 `docs/guides/external-operation-guidelines.md`，不修改 Core Method、Skill Contract 或 Skill；
+- 确定长期规则最小落点为 `docs/guides/external-operation-guidelines.md`，不修改核心方法、技能契约或 Skill；
 - 增加依赖 PR 审查拓扑 / 集成拓扑薄指导；
-- 设计 `G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 三个治理定向评估场景，共 15 条断言。
+- 设计 `G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 三个治理定向评估场景，共 15 条断言；
+- 完成定向语料静态 JSON 解析与分支差异范围检查；
+- 建立 Draft PR #70。
 
 当前仍需：
 
-- 完成静态完整性检查；
 - 取得隔离运行时评估证据并完成人工语义评分；
 - 完成最终状态收敛与 AI 复核；
-- 形成 Ready to Integrate PR，等待人工集成决策。
+- 将 PR 转为正式复核状态并等待人工集成决策。
 
 里程碑记录：
 
@@ -329,7 +330,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 ## 8. 当前边界
 
-当前唯一活动有限里程碑是“Squash Merge 下 Stacked PR 集成拓扑安全 v1”。其范围只覆盖依赖 PR 的平台模式识别、审查 / 集成拓扑、PR Head / diff 与 Current Evidence 安全边界。
+当前唯一活动有限里程碑是“Squash Merge 下 Stacked PR 集成拓扑安全 v1”。其范围只覆盖依赖 PR 的平台模式识别、审查 / 集成拓扑、PR Head / diff 与当前证据安全边界。
 
 以下方向全部保持候选，不自动启动或并入当前里程碑：
 
@@ -362,7 +363,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 1. 读取根目录 `AGENTS.md`；
 2. 读取本文，确认当前长期阶段、最近完成的有限里程碑与当前活动有限里程碑；
 3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；
-4. 当前里程碑工作读取 Issue #69、`docs/project/stacked-pr-squash-topology-v1.md`、`docs/research/github-stacked-pr-squash-topology.md` 与 `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`；
+4. 当前里程碑工作读取 Issue #69、PR #70、`docs/project/stacked-pr-squash-topology-v1.md`、`docs/research/github-stacked-pr-squash-topology.md` 与 `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`；
 5. 需要核验历史证据时读取 Issue #33，但不把 Issue #33 恢复为活动实验；
 6. 按当前任务需要读取方法、外部操作指南、评估语料或其他最小必要权威；
 7. 不把 WI-06、WI-07、WI-09 或其他候选库项目当作已启动工作；
