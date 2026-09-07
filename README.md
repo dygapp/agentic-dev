@@ -47,7 +47,7 @@ agentic-dev：
 
 **当前有限里程碑：** Squash Merge 下 Stacked PR 集成拓扑安全 v1
 
-**当前门禁：** 隔离运行时评估 / 人工语义评分待执行
+**当前门禁：** 最终 AI 复核待执行
 
 当前路线、候选库、完成状态与新上下文恢复顺序统一维护在：
 
@@ -60,7 +60,7 @@ agentic-dev：
 - `docs/project/stacked-pr-squash-topology-v1.md`
 - `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`
 
-最近一次状态维护 PR #68 已通过 squash merge 集成，合并提交为 `d1119e77a6fd83caa9e65334636d7aab6abdb06e`。人工权威随后显式选择“Squash Merge 下 Stacked PR 集成拓扑安全 v1”为新的有限里程碑；运行时前 AI 复核已通过 PR #70 Review `5128856306`，未解决阻塞 / 中等级问题为 `0 / 0`。WI-06、WI-07、WI-09、第四工程纪律及其他候选继续保持候选状态，不自动启动。
+最近一次状态维护 PR #68 已通过 squash merge 集成，合并提交为 `d1119e77a6fd83caa9e65334636d7aab6abdb06e`。人工权威随后显式选择“Squash Merge 下 Stacked PR 集成拓扑安全 v1”为新的有限里程碑；运行时前 AI 复核已通过 PR #70 Review `5128856306`，未解决阻塞 / 中等级问题为 `0 / 0`。当前治理定向运行时评估已经完成，`G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 最终合计 `15 / 15` 断言通过；当前仅剩最终 AI 复核与完成状态收敛。WI-06、WI-07、WI-09、第四工程纪律及其他候选继续保持候选状态，不自动启动。
 
 ## 仓库事实来源
 
