@@ -55,7 +55,7 @@ WI-06、WI-07、WI-09、第四工程纪律、Issue #71 以及其他工程能力�
 | 运行时与分发 | v1 后候选库 | WI-09 未启动 |
 | 项目语言治理 | 已完成并集成 | 工程术语语义安全与现行文档全量收敛 v1 已通过 PR #67 集成 |
 | GitHub 集成拓扑安全 | 已完成并集成 | PR #70 已合并，提交 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已关闭 |
-| 模型路由 / 盲测对照证据 | 候选输入 | Issue #71 仅作为 Planning / Research Candidate；尚未形成 `agentic-dev` 方法、Skill、Gate 或默认模型策略结论 |
+| 模型路由 / 盲测对照证据 | 候选输入 | Issue #71 仅作为规划 / 研究候选；尚未形成 `agentic-dev` 方法、技能、门禁或默认模型策略结论 |
 
 ## 4. 已完成能力基线与维护里程碑
 
@@ -317,11 +317,11 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 Issue #71 收录 Consumer 在关键架构评审中形成的 paired blind eval、hidden assertions、lower-cost-first 与 evidence-based escalation 相关证据。
 
-当前只把它作为 Planning / Research Candidate：
+当前只把它作为规划 / 研究候选：
 
 - 尚未由 `agentic-dev` 完成证据复核与架构适配判断；
 - 不构成新的常规方法门禁；
-- 不构成新的 Skill、模型路由框架或默认模型策略；
+- 不构成新的技能、模型路由框架或默认模型策略；
 - requested model / actual runtime model 的证据声明边界仍需在后续规划时单独评估。
 
 ### 其他候选
@@ -368,7 +368,7 @@ Issue #71 收录 Consumer 在关键架构评审中形成的 paired blind eval、
 1. 读取根目录 `AGENTS.md`；
 2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑，以及当前是否存在活动有限里程碑；
 3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；
-4. 如果当前仍无活动有限里程碑，只恢复候选库与开放证据入口，不自行启动 Planning 或实施；
+4. 如果当前仍无活动有限里程碑，只恢复候选库与开放证据入口，不自行启动规划或实施；
 5. 需要恢复最近完成里程碑时读取 Issue #69、PR #70、`docs/project/stacked-pr-squash-topology-v1.md`、`docs/research/github-stacked-pr-squash-topology.md` 与对应计划，但不得把它恢复为活动工作；
 6. 需要评估新候选时按人工指令读取 Issue #71、Issue #58 或对应候选证据；
 7. 按当前任务需要读取方法、外部操作指南、评估语料或其他最小必要权威；
