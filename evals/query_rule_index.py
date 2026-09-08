@@ -3,7 +3,7 @@
 
 退出码：
 - 0：查询或验证完成，且不需要回退
-- 2：索引来源陈旧 / 缺失，或查询包含未知 / 未提供的必要维度，需要回退
+- 2：索引来源陈旧 / 缺失，查询包含未知 / 未提供的必要维度，或索引没有可靠命中，需要回退
 - 64：索引或查询输入无效
 """
 
@@ -364,6 +364,22 @@ def query_index(index: dict[str, Any], query: dict[str, Any]) -> tuple[dict[str,
             continue
 
         results.append(build_result(entry, matched_by))
+
+    # B1 明确禁止把“没有检索结果”解释成“没有规则”。如果查询词本身
+    # 都属于已建模词表，但首轮索引没有任何可靠命中，说明当前组合可能
+    # 超出原型覆盖面；此时必须回退当前仓库权威，而不是安全返回空集。
+    if not results and not unresolved:
+        return (
+            {
+                "fallback_required": True,
+                "fallback_reason": "no_indexed_rule_match",
+                "unresolved_candidates": [],
+                "query": query,
+                "results": [],
+                "metrics": {"indexed_entries": len(index["entries"]), "result_count": 0},
+            },
+            2,
+        )
 
     fallback_required = bool(unresolved)
     payload = {
