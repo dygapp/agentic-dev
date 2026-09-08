@@ -15,10 +15,11 @@
 5. `docs/research/knowledge-activation-and-code-intelligence-analysis.md`；
 6. `docs/research/knowledge-activation-evidence-appendix.md`；
 7. `docs/research/rule-activation-audit-baseline.md`；
-8. `docs/guides/using-agentic-dev.md`；
-9. `docs/guides/external-operation-guidelines.md`；
-10. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-11. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+8. `docs/research/using-agentic-dev-activation-map.md`；
+9. `docs/guides/using-agentic-dev.md`；
+10. `docs/guides/external-operation-guidelines.md`；
+11. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+12. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -82,12 +83,14 @@
 
 ### A2 — `using-agentic-dev.md` 激活映射
 
-- [ ] 按语义而不是标题机械切分规则激活单元；
-- [ ] 对每个单元记录触发条件 / 消费者 / 强度 / 权威指针；
-- [ ] 标记常驻核心规则候选；
-- [ ] 标记只在新项目 / 既有使用方 / 新上下文 / 项目路线图 / 集成 / 验证等条件下需要的单元；
-- [ ] 标记重复 / 重叠 / 陈旧 / 已取代候选；
-- [ ] 关联已知使用方 / PR / 评估证据。
+- [x] 按语义而不是标题机械切分规则激活单元；
+- [x] 对每个单元记录触发条件 / 消费者 / 强度 / 权威指针；
+- [x] 标记常驻核心规则候选；
+- [x] 标记只在新项目 / 既有使用方 / 新上下文 / 项目路线图 / 集成 / 验证等条件下需要的单元；
+- [x] 标记重复 / 重叠 / 陈旧 / 已取代候选；
+- [x] 关联已知使用方 / PR / 评估证据。
+
+输出：`docs/research/using-agentic-dev-activation-map.md`。
 
 ### A3 — `external-operation-guidelines.md` 激活映射
 
@@ -295,8 +298,8 @@ B：薄常驻核心规则 + 任务 / 风险按需检索
 
 ## 当前下一步
 
-A1 已完成，当前进入：
+A1、A2 已完成，当前进入：
 
-> **A2 — `using-agentic-dev.md` 激活映射**
+> **A3 — `external-operation-guidelines.md` 激活映射**
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。
