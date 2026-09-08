@@ -47,7 +47,7 @@ agentic-dev：
 
 **当前活动有限里程碑：** 规则治理与知识激活 v1
 
-**当前下一实际门禁：** Phase A — Activation Audit
+**当前下一实际门禁：** 阶段 A — 激活审计
 
 当前路线、候选库、完成状态与新上下文恢复顺序统一维护在：
 
@@ -58,11 +58,12 @@ agentic-dev：
 - Issue #73
 - `docs/project/rule-governance-knowledge-activation-v1.md`
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `docs/research/knowledge-activation-evidence-appendix.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
-2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。该里程碑优先解决巨型 Guide、规则重复、粗粒度加载和“规则存在但未在正确任务中可靠激活”的问题；不预设必须拆 Guide、建立 Rule Graph、采用 Obsidian / CodeGraph 或增加新 Runtime Layer，而是先完成 Activation Audit、最小 Retrieval Model、历史 Retrieval / Activation Eval 与 Consumer Fresh Context 验证。
+2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。该里程碑优先解决巨型指南、规则重复、粗粒度加载和“规则存在但未在正确任务中可靠激活”的问题；不预设必须拆分指南、建立规则图、采用 Obsidian / CodeGraph 或增加新运行时层，而是先完成激活审计、最小检索模型、历史检索 / 激活评估与使用方新上下文验证。
 
-WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。WI-07 — Code Review Capability v1 已登记为当前里程碑完成后的优先后继候选；必须在当前里程碑完成并集成后重新经过人工路线决策。WI-06 暂缓，后续由 Code Review / Consumer Eval 暴露的真实技术知识缺口决定是否重新启动。Issue #58 继续作为长期使用方经验反馈入口。
+WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。WI-07 — **代码复核能力 v1** 已登记为当前里程碑完成后的优先后继候选；必须在当前里程碑完成并集成后重新经过人工路线决策。WI-06 暂缓，后续由代码复核 / 使用方评估暴露的真实技术知识缺口决定是否重新启动。Issue #58 继续作为长期使用方经验反馈入口。
 
 最近完成里程碑的历史入口仍为：Issue #69、PR #70、`docs/project/stacked-pr-squash-topology-v1.md` 和 `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`。
 
