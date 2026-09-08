@@ -210,14 +210,6 @@ def run_b_query(
     return payload, exit_code, source_root
 
 
-def runtime_case(case: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "scenario_id": case["id"],
-        "prompt": case["prompt"],
-        "metric_focus": case.get("metric_focus", []),
-    }
-
-
 def prepare_workspace(
     design: dict[str, Any],
     index: dict[str, Any],
@@ -253,9 +245,9 @@ def prepare_workspace(
     else:
         raise ValueError(f"未知变体：{variant}")
 
-    visible = runtime_case(case)
-    visible["variant"] = variant
-    visible["context_paths"] = contexts
+    # Agent 不应知道自己属于 A 还是 B，也不暴露 metric_focus。运行时文件
+    # 只保存场景身份与允许读取的上下文列表，分组信息留在外部结果记录。
+    visible = {"scenario_id": case["id"], "context_paths": contexts}
     (workspace / "runtime-input.json").write_text(
         json.dumps(visible, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
@@ -326,6 +318,7 @@ def validate_design(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
 def validate_static(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     hidden = set(design["runtime_answer_fields_hidden"])
+    forbidden_runtime_names = hidden | {"variant", "metric_focus", "expected_behavior"}
     for case in design["scenarios"]:
         with tempfile.TemporaryDirectory(prefix=f"agentic-dev-c2-{case['id']}-") as temp:
             temp_root = Path(temp)
@@ -348,7 +341,7 @@ def validate_static(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
                 workspace.mkdir(parents=True, exist_ok=True)
                 contexts, _ = prepare_workspace(design, index, case, variant, workspace, temp_root)
                 runtime_text = (workspace / "runtime-input.json").read_text(encoding="utf-8")
-                for field in hidden:
+                for field in forbidden_runtime_names:
                     if f'"{field}"' in runtime_text:
                         errors.append(f"{case['id']}/{variant}: runtime-input 泄漏 {field}")
                 for relative in contexts:
@@ -357,11 +350,10 @@ def validate_static(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
     return errors
 
 
-def build_prompt(case: dict[str, Any], variant: str, contexts: list[str]) -> str:
+def build_prompt(case: dict[str, Any], contexts: list[str]) -> str:
     listing = "\n".join(f"- {path}" for path in contexts)
     return (
-        "这是规则检索与激活隔离 A/B 评估。\n"
-        f"当前变体：{variant}。\n"
+        "这是规则检索与激活隔离评估。\n"
         "先读取以下当前工作区上下文；这些文件与本提示构成本场景全部可用上下文，"
         "不要读取当前工作目录之外的路径：\n"
         f"{listing}\n\n{case['prompt']}"
@@ -403,8 +395,10 @@ def write_result_stub(
         "file_read_count": None,
         "rule_bytes_or_lines_read": None,
         "query_invocations": 1 if query_payload is not None else 0,
-        "model": os.environ.get("CODEX_MODEL"),
-        "reasoning_effort": os.environ.get("CODEX_REASONING_EFFORT"),
+        # 实际模型 / 推理强度必须由 C3 运行证据填写；不能把环境变量
+        # 或请求配置冒充成实际执行事实。
+        "model": None,
+        "reasoning_effort": None,
         "grading_status": "pending",
     }
     path = result_dir / f"{case['id']}-{variant}.result.json"
@@ -443,7 +437,7 @@ def main() -> int:
         return 1
 
     print(f"C2 静态校验通过：{len(design['scenarios'])} 个场景的 A/B 工作区均可装配。")
-    print("隐藏答案未进入 runtime-input；B 查询与 C1 冻结命中 / 回退一致。")
+    print("隐藏答案和 A/B 分组未进入 runtime-input；B 查询与 C1 冻结命中 / 回退一致。")
     if not args.run:
         print("未执行 Agent A/B；真正的新上下文运行与人工语义评分属于 C3。")
         return 0
@@ -473,7 +467,7 @@ def main() -> int:
                 returncode = run_codex(
                     codex_bin=args.codex_bin,
                     scenario_id=f"{case['id']}-{variant}",
-                    prompt=build_prompt(case, variant, contexts),
+                    prompt=build_prompt(case, contexts),
                     result_group=RESULT_GROUP,
                     cwd=workspace,
                     skip_git_repo_check=True,
