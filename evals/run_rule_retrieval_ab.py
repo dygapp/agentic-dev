@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """规则检索与激活 A/B 评估基线运行器。
 
-C2 只要求实现并静态校验 A/B 基线；真正的 Codex 新上下文运行属于 C3。
-默认不调用 Agent，只有显式传入 --run 才执行 Codex。
+默认只做 C2 静态校验；只有显式 --run 才执行 C3 Codex 新上下文。
 """
 
 from __future__ import annotations
@@ -17,23 +16,17 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from query_rule_index import (
-    check_sources,
-    load_json,
-    query_index,
-    unique_sources,
-    validate_index,
-)
-from run_codex_evals import check_codex, run_codex
-
+from query_rule_index import check_sources, load_json, query_index, unique_sources, validate_index
+from run_codex_evals import RESULTS, check_codex, run_codex
 
 ROOT = Path(__file__).resolve().parents[1]
 EVALS = ROOT / "evals"
 DESIGN = EVALS / "rule-retrieval" / "targeted-evaluation-design.json"
 INDEX = EVALS / "rule-retrieval" / "rule-index.json"
 FIXTURES = EVALS / "rule-retrieval" / "fixtures"
+RESULT_SCHEMA = EVALS / "rule-retrieval" / "result-schema.json"
 RESULT_GROUP = "rule-retrieval"
-VARIANTS = {"A", "B"}
+VARIANTS = ("A", "B")
 REQUIRED_SCENARIO_FIELDS = {
     "id",
     "prompt",
@@ -44,168 +37,161 @@ REQUIRED_SCENARIO_FIELDS = {
     "expected_behavior",
     "assertions",
 }
+REQUIRED_SHARED_FLAGS = {
+    "fresh_context",
+    "isolated_workdir",
+    "same_model",
+    "same_reasoning_effort",
+    "same_task_prompt",
+    "process_exit_is_not_semantic_pass",
+    "human_assertion_scoring_required",
+}
 
 
-def ensure_safe_relative(path: str) -> Path:
-    candidate = Path(path)
-    if candidate.is_absolute() or ".." in candidate.parts:
-        raise ValueError(f"不安全的相对路径：{path}")
-    return candidate
+def safe_relative(value: str) -> Path:
+    path = Path(value)
+    if path.is_absolute() or ".." in path.parts:
+        raise ValueError(f"不安全的相对路径：{value}")
+    return path
 
 
-def fixture_root(case: dict[str, Any]) -> Path | None:
-    fixture = case.get("fixture")
-    if not fixture:
+def case_fixture_root(case: dict[str, Any]) -> Path | None:
+    name = case.get("fixture")
+    if not name or name == "semantic-noop-source-drift":
         return None
-    if not isinstance(fixture, str) or not fixture:
-        raise ValueError(f"{case.get('id', '<unknown>')}: fixture 必须是非空字符串")
-    root = FIXTURES / fixture
+    if not isinstance(name, str):
+        raise ValueError(f"{case.get('id', '<unknown>')}: fixture 必须是字符串")
+    root = FIXTURES / name
     if not root.is_dir():
-        raise ValueError(f"{case['id']}: fixture 不存在：{fixture}")
+        raise ValueError(f"{case['id']}: fixture 不存在：{name}")
     return root
 
 
-def resolve_declared_path(case: dict[str, Any], relative: str, source_root: Path = ROOT) -> Path:
-    rel = ensure_safe_relative(relative)
+def resolve_context_source(
+    case: dict[str, Any], relative: str, preferred_root: Path = ROOT
+) -> Path:
+    rel = safe_relative(relative)
     if rel.parts and rel.parts[0] == "fixture":
-        root = fixture_root(case)
-        if root is None:
-            raise ValueError(f"{case['id']}: 声明了 fixture/ 路径但没有 fixture")
-        source = root.joinpath(*rel.parts[1:])
+        fixture = case_fixture_root(case)
+        if fixture is None:
+            raise ValueError(f"{case['id']}: fixture/ 路径没有对应 fixture")
+        source = fixture.joinpath(*rel.parts[1:])
     else:
-        source = source_root / rel
+        # stale 控制只复制索引源。回退 Authority 若不属于索引源，必须
+        # 从当前仓库取得，而不是因为临时 source-root 不含该文件就失败。
+        preferred = preferred_root / rel
+        source = preferred if preferred.is_file() else ROOT / rel
     source = source.resolve()
     if not source.is_file():
         raise ValueError(f"{case['id']}: 上下文文件不存在：{relative}")
     return source
 
 
-def copy_declared_path(
-    case: dict[str, Any],
-    relative: str,
-    workspace: Path,
-    source_root: Path = ROOT,
+def copy_context(
+    case: dict[str, Any], relative: str, workspace: Path, preferred_root: Path = ROOT
 ) -> str:
-    source = resolve_declared_path(case, relative, source_root)
-    rel = ensure_safe_relative(relative)
-    target = workspace / rel
+    source = resolve_context_source(case, relative, preferred_root)
+    target = workspace / safe_relative(relative)
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, target)
     return relative
 
 
-def heading_section(text: str, section_number: str) -> str:
-    """按 Markdown 数字标题提取一个规范性源章节。"""
+def section_numbers(spec: str) -> list[str]:
+    numbers: list[str] = []
+    spans: list[tuple[int, int]] = []
+    range_pattern = re.compile(r"§(\d+)\.(\d+)\s*[～~-]\s*§?(\d+)\.(\d+)")
+    for match in range_pattern.finditer(spec):
+        major_a, minor_a, major_b, minor_b = match.groups()
+        if major_a != major_b or int(minor_b) < int(minor_a):
+            raise ValueError(f"不支持的章节范围：{match.group(0)}")
+        for minor in range(int(minor_a), int(minor_b) + 1):
+            value = f"{major_a}.{minor}"
+            if value not in numbers:
+                numbers.append(value)
+        spans.append((match.start(), match.end()))
+    for match in re.finditer(r"§(\d+(?:\.\d+)?)", spec):
+        if any(start <= match.start() < end for start, end in spans):
+            continue
+        value = match.group(1)
+        if value not in numbers:
+            numbers.append(value)
+    return numbers
+
+
+def extract_numbered_section(text: str, number: str) -> str:
     lines = text.splitlines(keepends=True)
-    pattern = re.compile(
-        rf"^(#{{1,6}})\s+{re.escape(section_number)}(?:\.|\s|$)"
-    )
-    start = None
-    level = None
+    pattern = re.compile(rf"^(#{{1,6}})\s+{re.escape(number)}(?:\.|\s|$)")
+    start = level = None
     for index, line in enumerate(lines):
         match = pattern.match(line)
         if match:
-            start = index
-            level = len(match.group(1))
+            start, level = index, len(match.group(1))
             break
     if start is None or level is None:
-        raise ValueError(f"无法解析源章节 §{section_number}")
-
+        raise ValueError(f"无法解析源章节 §{number}")
     end = len(lines)
-    next_heading = re.compile(r"^(#{1,6})\s+")
+    heading = re.compile(r"^(#{1,6})\s+")
     for index in range(start + 1, len(lines)):
-        match = next_heading.match(lines[index])
+        match = heading.match(lines[index])
         if match and len(match.group(1)) <= level:
             end = index
             break
     return "".join(lines[start:end]).rstrip() + "\n"
 
 
-def section_numbers(section_spec: str) -> list[str]:
-    numbers: list[str] = []
-
-    range_pattern = re.compile(r"§(\d+)\.(\d+)\s*[～~-]\s*§?(\d+)\.(\d+)")
-    ranges: list[tuple[str, str]] = []
-    for match in range_pattern.finditer(section_spec):
-        major_a, minor_a, major_b, minor_b = match.groups()
-        if major_a != major_b:
-            raise ValueError(f"不支持跨主章节范围：{match.group(0)}")
-        start = int(minor_a)
-        end = int(minor_b)
-        if end < start:
-            raise ValueError(f"反向章节范围：{match.group(0)}")
-        for minor in range(start, end + 1):
-            number = f"{major_a}.{minor}"
-            if number not in numbers:
-                numbers.append(number)
-        ranges.append((match.start(), match.end()))
-
-    for match in re.finditer(r"§(\d+(?:\.\d+)?)", section_spec):
-        if any(start <= match.start() < end for start, end in ranges):
-            continue
-        number = match.group(1)
-        if number not in numbers:
-            numbers.append(number)
-    return numbers
-
-
-def materialize_result_excerpt(
-    result: dict[str, Any], workspace: Path, source_root: Path = ROOT
-) -> str:
+def materialize_result(result: dict[str, Any], workspace: Path, source_root: Path) -> str:
     pointer = result["source_pointer"]
-    source_path = ensure_safe_relative(pointer["path"])
-    source = (source_root / source_path).resolve()
+    source = (source_root / safe_relative(pointer["path"])).resolve()
+    if not source.is_file():
+        source = (ROOT / safe_relative(pointer["path"])).resolve()
     if not source.is_file():
         raise ValueError(f"规范性源不存在：{pointer['path']}")
     text = source.read_text(encoding="utf-8")
     numbers = section_numbers(pointer["section"])
-
-    if numbers:
-        body = "\n\n".join(heading_section(text, number).rstrip() for number in numbers) + "\n"
-    else:
-        # Skill 职责契约、AGENTS 薄指针等无法由数字章节进一步缩小；
-        # 它们本身就是已命中的独立职责载体，允许复制当前完整文件。
-        body = text
-
+    body = (
+        "\n\n".join(extract_numbered_section(text, number).rstrip() for number in numbers)
+        + "\n"
+        if numbers
+        else text
+    )
     relative = Path("retrieved") / f"{result['entry_key']}.md"
     target = workspace / relative
     target.parent.mkdir(parents=True, exist_ok=True)
-    provenance = (
-        f"<!-- 派生评估上下文；规范性源：{pointer['path']}；"
-        f"section={pointer['section']}；identity={pointer['identity']} -->\n"
+    target.write_text(
+        "<!-- 派生评估上下文；"
+        f"source={pointer['path']}；section={pointer['section']}；identity={pointer['identity']} -->\n"
+        + body,
+        encoding="utf-8",
     )
-    target.write_text(provenance + body, encoding="utf-8")
     return relative.as_posix()
 
 
-def copy_all_index_sources(index: dict[str, Any], target_root: Path) -> None:
+def copy_index_sources(index: dict[str, Any], root: Path) -> None:
     for source in unique_sources(index):
-        rel = ensure_safe_relative(source["path"])
-        source_path = ROOT / rel
-        target = target_root / rel
+        rel = safe_relative(source["path"])
+        target = root / rel
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source_path, target)
+        shutil.copy2(ROOT / rel, target)
 
 
-def stale_fixture_root(index: dict[str, Any], case: dict[str, Any], temp_root: Path) -> Path:
+def build_stale_root(index: dict[str, Any], temp_root: Path) -> Path:
     root = temp_root / "stale-source-root"
-    copy_all_index_sources(index, root)
-    # 只制造内容身份变化，不改变规则语义。选择当前评估会使用的使用指南。
+    copy_index_sources(index, root)
     target = root / "docs" / "guides" / "using-agentic-dev.md"
-    if not target.is_file():
-        raise ValueError(f"{case['id']}: stale fixture 缺少目标规范性源")
     with target.open("a", encoding="utf-8") as handle:
         handle.write("\n")
     return root
 
 
-def b_query_result(
+def run_b_query(
     index: dict[str, Any], case: dict[str, Any], temp_root: Path
 ) -> tuple[dict[str, Any], int, Path]:
-    source_root = ROOT
-    if case.get("fixture") == "semantic-noop-source-drift":
-        source_root = stale_fixture_root(index, case, temp_root)
-
+    source_root = (
+        build_stale_root(index, temp_root)
+        if case.get("fixture") == "semantic-noop-source-drift"
+        else ROOT
+    )
     stale = check_sources(index, source_root)
     if stale:
         return (
@@ -220,21 +206,16 @@ def b_query_result(
             2,
             source_root,
         )
-
     payload, exit_code = query_index(index, case["b_query"])
     return payload, exit_code, source_root
 
 
-def visible_runtime_case(case: dict[str, Any], hidden_fields: set[str]) -> dict[str, Any]:
-    visible = {
+def runtime_case(case: dict[str, Any]) -> dict[str, Any]:
+    return {
         "scenario_id": case["id"],
         "prompt": case["prompt"],
         "metric_focus": case.get("metric_focus", []),
     }
-    leaked = hidden_fields & set(visible)
-    if leaked:
-        raise ValueError(f"{case['id']}: 运行时字段泄漏：{', '.join(sorted(leaked))}")
-    return visible
 
 
 def prepare_workspace(
@@ -245,60 +226,46 @@ def prepare_workspace(
     workspace: Path,
     temp_root: Path,
 ) -> tuple[list[str], dict[str, Any] | None]:
-    if variant not in VARIANTS:
-        raise ValueError(f"未知变体：{variant}")
-
-    hidden_fields = set(design["runtime_answer_fields_hidden"])
-    runtime_case = visible_runtime_case(case, hidden_fields)
-    context_paths: list[str] = []
+    contexts: list[str] = []
     query_payload: dict[str, Any] | None = None
-
     if variant == "A":
         for relative in case["a_context_paths"]:
-            context_paths.append(copy_declared_path(case, relative, workspace))
-    else:
-        query_payload, _, source_root = b_query_result(index, case, temp_root)
-        query_file = workspace / "retrieval-result.json"
-        query_file.write_text(
-            json.dumps(query_payload, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
+            contexts.append(copy_context(case, relative, workspace))
+    elif variant == "B":
+        query_payload, _, source_root = run_b_query(index, case, temp_root)
+        (workspace / "retrieval-result.json").write_text(
+            json.dumps(query_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
-        context_paths.append("retrieval-result.json")
+        contexts.append("retrieval-result.json")
 
-        # Consumer-local 项目事实始终由使用方本地 Authority 提供；它不是
-        # agentic-dev 派生索引的一部分，也不能被上游检索结果替代。
+        # Consumer-local 项目事实不属于上游规则索引，B 组也必须保留。
         for relative in case["a_context_paths"]:
-            if Path(relative).parts and Path(relative).parts[0] == "fixture":
-                context_paths.append(copy_declared_path(case, relative, workspace, source_root))
+            if safe_relative(relative).parts[:1] == ("fixture",):
+                contexts.append(copy_context(case, relative, workspace, source_root))
 
         if query_payload["fallback_required"]:
-            # 回退意味着直接读取当前仓库权威。为保持 A/B 题面公平，使用
-            # C1 已声明的强 A 组文件集，而不是临时猜测新的回退文件。
             for relative in case["a_context_paths"]:
-                if relative in context_paths:
-                    continue
-                context_paths.append(copy_declared_path(case, relative, workspace, source_root))
+                if relative not in contexts:
+                    contexts.append(copy_context(case, relative, workspace, source_root))
         else:
             for result in query_payload["results"]:
-                context_paths.append(materialize_result_excerpt(result, workspace, source_root))
+                contexts.append(materialize_result(result, workspace, source_root))
+    else:
+        raise ValueError(f"未知变体：{variant}")
 
-    runtime_case["variant"] = variant
-    runtime_case["context_paths"] = context_paths
-    runtime_file = workspace / "runtime-input.json"
-    runtime_file.write_text(
-        json.dumps(runtime_case, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
+    visible = runtime_case(case)
+    visible["variant"] = variant
+    visible["context_paths"] = contexts
+    (workspace / "runtime-input.json").write_text(
+        json.dumps(visible, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    context_paths.append("runtime-input.json")
-    return context_paths, query_payload
+    contexts.append("runtime-input.json")
+    return contexts, query_payload
 
 
 def validate_design(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
     errors: list[str] = []
-    hidden = design.get("runtime_answer_fields_hidden")
-    if not isinstance(hidden, list) or not all(isinstance(item, str) for item in hidden):
-        return ["runtime_answer_fields_hidden 必须是字符串列表"]
-    hidden_fields = set(hidden)
+    hidden = set(design.get("runtime_answer_fields_hidden", []))
     required_hidden = {
         "expected_behavior",
         "assertions",
@@ -306,13 +273,29 @@ def validate_design(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
         "b_expected_fallback",
         "b_expected_fallback_reason",
     }
-    if not required_hidden.issubset(hidden_fields):
+    if not required_hidden.issubset(hidden):
         errors.append("隐藏答案字段集合不完整")
+
+    shared = design.get("shared_run_contract", {})
+    for flag in REQUIRED_SHARED_FLAGS:
+        if shared.get(flag) is not True:
+            errors.append(f"shared_run_contract.{flag} 必须为 true")
+
+    if not RESULT_SCHEMA.is_file():
+        errors.append("缺少 result-schema.json")
+    else:
+        try:
+            schema = load_json(RESULT_SCHEMA)
+            required = set(schema.get("required", []))
+            expected_required = set(design.get("required_result_fields", []))
+            if not expected_required.issubset(required):
+                errors.append("result-schema 未覆盖 C1 required_result_fields")
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"result-schema 无效：{exc}")
 
     cases = design.get("scenarios")
     if not isinstance(cases, list) or not cases:
         return errors + ["scenarios 必须是非空列表"]
-
     seen: set[str] = set()
     for case in cases:
         if not isinstance(case, dict):
@@ -323,108 +306,117 @@ def validate_design(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
             errors.append(f"scenario 缺少字段：{', '.join(sorted(missing))}")
             continue
         scenario_id = case["id"]
-        if not isinstance(scenario_id, str) or not scenario_id:
-            errors.append("scenario.id 必须是非空字符串")
-            continue
         if scenario_id in seen:
             errors.append(f"重复 scenario id：{scenario_id}")
         seen.add(scenario_id)
-        if not isinstance(case["a_context_paths"], list) or not case["a_context_paths"]:
-            errors.append(f"{scenario_id}: a_context_paths 必须非空")
         for relative in case["a_context_paths"]:
             try:
-                resolve_declared_path(case, relative)
+                resolve_context_source(case, relative)
             except ValueError as exc:
                 errors.append(str(exc))
 
     index_errors = validate_index(index)
     errors.extend(f"rule-index: {error}" for error in index_errors)
     if not index_errors:
-        stale = check_sources(index, ROOT)
-        errors.extend(
-            f"rule-index 当前来源陈旧：{item['path']} ({item['reason']})" for item in stale
-        )
+        for stale in check_sources(index, ROOT):
+            errors.append(f"rule-index 当前来源陈旧：{stale['path']} ({stale['reason']})")
     return errors
 
 
-def validate_static_behavior(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
+def validate_static(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
     errors: list[str] = []
-    hidden_fields = set(design["runtime_answer_fields_hidden"])
-
+    hidden = set(design["runtime_answer_fields_hidden"])
     for case in design["scenarios"]:
-        scenario_id = case["id"]
-        with tempfile.TemporaryDirectory(prefix=f"agentic-dev-c2-{scenario_id}-") as temp_dir:
-            temp_root = Path(temp_dir)
-            payload, exit_code, _ = b_query_result(index, case, temp_root)
+        with tempfile.TemporaryDirectory(prefix=f"agentic-dev-c2-{case['id']}-") as temp:
+            temp_root = Path(temp)
+            payload, exit_code, _ = run_b_query(index, case, temp_root)
             actual_keys = [item["entry_key"] for item in payload.get("results", [])]
-            expected_keys = case["b_expected_rule_keys"]
-            if actual_keys != expected_keys:
+            if actual_keys != case["b_expected_rule_keys"]:
                 errors.append(
-                    f"{scenario_id}: B 命中键不一致：actual={actual_keys}, expected={expected_keys}"
+                    f"{case['id']}: B keys actual={actual_keys}, expected={case['b_expected_rule_keys']}"
                 )
-            expected_fallback = case["b_expected_fallback"]
-            if payload.get("fallback_required") is not expected_fallback:
-                errors.append(
-                    f"{scenario_id}: fallback 不一致：actual={payload.get('fallback_required')}, "
-                    f"expected={expected_fallback}"
-                )
+            if payload.get("fallback_required") is not case["b_expected_fallback"]:
+                errors.append(f"{case['id']}: fallback 与 C1 冻结预期不一致")
             expected_reason = case.get("b_expected_fallback_reason")
             if expected_reason is not None and payload.get("fallback_reason") != expected_reason:
-                errors.append(
-                    f"{scenario_id}: fallback_reason 不一致：actual={payload.get('fallback_reason')}, "
-                    f"expected={expected_reason}"
-                )
-            if expected_fallback and exit_code != 2:
-                errors.append(f"{scenario_id}: 预期回退时查询退出码必须为 2")
-            if not expected_fallback and exit_code != 0:
-                errors.append(f"{scenario_id}: 不回退场景查询退出码必须为 0")
+                errors.append(f"{case['id']}: fallback_reason 与 C1 冻结预期不一致")
+            if exit_code != (2 if case["b_expected_fallback"] else 0):
+                errors.append(f"{case['id']}: 查询退出码与回退语义不一致")
 
-            for variant in sorted(VARIANTS):
+            for variant in VARIANTS:
                 workspace = temp_root / f"workspace-{variant}"
                 workspace.mkdir(parents=True, exist_ok=True)
-                context_paths, _ = prepare_workspace(
-                    design, index, case, variant, workspace, temp_root
-                )
+                contexts, _ = prepare_workspace(design, index, case, variant, workspace, temp_root)
                 runtime_text = (workspace / "runtime-input.json").read_text(encoding="utf-8")
-                for field in hidden_fields:
+                for field in hidden:
                     if f'"{field}"' in runtime_text:
-                        errors.append(f"{scenario_id}/{variant}: runtime-input 泄漏隐藏字段 {field}")
-                for relative in context_paths:
+                        errors.append(f"{case['id']}/{variant}: runtime-input 泄漏 {field}")
+                for relative in contexts:
                     if not (workspace / relative).is_file():
-                        errors.append(f"{scenario_id}/{variant}: 缺少运行时上下文 {relative}")
-
+                        errors.append(f"{case['id']}/{variant}: 缺少上下文 {relative}")
     return errors
 
 
-def build_prompt(case: dict[str, Any], variant: str, context_paths: list[str]) -> str:
-    context_list = "\n".join(f"- {path}" for path in context_paths)
+def build_prompt(case: dict[str, Any], variant: str, contexts: list[str]) -> str:
+    listing = "\n".join(f"- {path}" for path in contexts)
     return (
         "这是规则检索与激活隔离 A/B 评估。\n"
         f"当前变体：{variant}。\n"
         "先读取以下当前工作区上下文；这些文件与本提示构成本场景全部可用上下文，"
         "不要读取当前工作目录之外的路径：\n"
-        f"{context_list}\n\n"
-        f"{case['prompt']}"
+        f"{listing}\n\n{case['prompt']}"
     )
 
 
-def selected_cases(design: dict[str, Any], selected: set[str] | None) -> list[dict[str, Any]]:
-    cases = design["scenarios"]
-    known = {case["id"] for case in cases}
-    if selected:
-        unknown = selected - known
-        if unknown:
-            raise ValueError(f"未知场景：{', '.join(sorted(unknown))}")
-        return [case for case in cases if case["id"] in selected]
-    return cases
+def write_result_stub(
+    case: dict[str, Any], variant: str, returncode: int, query_payload: dict[str, Any] | None
+) -> None:
+    result_dir = RESULTS / RESULT_GROUP
+    result_dir.mkdir(parents=True, exist_ok=True)
+    result = {
+        "scenario_id": case["id"],
+        "variant": variant,
+        "process_exit_code": returncode,
+        "semantic_assertions_passed": None,
+        "semantic_assertions_total": len(case["assertions"]),
+        "semantic_pass": None,
+        "authority_confusion": None,
+        "wrong_stop_or_escalation": None,
+        "wrong_execution": None,
+        "files_read": None,
+        "tool_calls": None,
+        "retrieved_rule_keys": (
+            [item["entry_key"] for item in query_payload.get("results", [])]
+            if query_payload is not None
+            else None
+        ),
+        "fallback_required": (
+            query_payload.get("fallback_required") if query_payload is not None else None
+        ),
+        "fallback_reason": (
+            query_payload.get("fallback_reason") if query_payload is not None else None
+        ),
+        "failure_classification": None,
+        "input_tokens": None,
+        "output_tokens": None,
+        "wall_clock_ms": None,
+        "file_read_count": None,
+        "rule_bytes_or_lines_read": None,
+        "query_invocations": 1 if query_payload is not None else 0,
+        "model": os.environ.get("CODEX_MODEL"),
+        "reasoning_effort": os.environ.get("CODEX_REASONING_EFFORT"),
+        "grading_status": "pending",
+    }
+    path = result_dir / f"{case['id']}-{variant}.result.json"
+    path.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="规则检索与激活 A/B 评估基线运行器")
-    parser.add_argument("--validate-only", action="store_true", help="只执行 C2 静态校验，不运行 Agent")
-    parser.add_argument("--run", action="store_true", help="显式执行 C3 Codex A/B；C2 不使用")
-    parser.add_argument("--scenario", action="append", default=[], help="只处理指定场景，可重复")
-    parser.add_argument("--variant", choices=["A", "B"], action="append", default=[], help="只处理指定变体")
+    parser = argparse.ArgumentParser(description="规则检索与激活 A/B 基线运行器")
+    parser.add_argument("--validate-only", action="store_true", help="只做 C2 静态校验")
+    parser.add_argument("--run", action="store_true", help="显式执行 C3 Codex A/B")
+    parser.add_argument("--scenario", action="append", default=[])
+    parser.add_argument("--variant", choices=VARIANTS, action="append", default=[])
     parser.add_argument("--codex-bin", default=os.environ.get("CODEX_BIN", "codex"))
     return parser.parse_args()
 
@@ -434,37 +426,36 @@ def main() -> int:
     if args.validate_only and args.run:
         print("--validate-only 与 --run 不能同时使用", file=sys.stderr)
         return 64
-
     try:
         design = load_json(DESIGN)
         index = load_json(INDEX)
     except (OSError, json.JSONDecodeError) as exc:
-        print(f"无法读取评估设计或索引：{exc}", file=sys.stderr)
+        print(f"无法读取设计或索引：{exc}", file=sys.stderr)
         return 64
 
     errors = validate_design(design, index)
     if not errors:
-        errors.extend(validate_static_behavior(design, index))
+        errors.extend(validate_static(design, index))
     if errors:
         print("C2 静态校验失败：", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print(f"C2 静态校验通过：{len(design['scenarios'])} 个场景，A/B 工作区均可装配。")
-    print("隐藏断言未进入 runtime-input；B 查询结果与 C1 冻结预期一致。")
-
+    print(f"C2 静态校验通过：{len(design['scenarios'])} 个场景的 A/B 工作区均可装配。")
+    print("隐藏答案未进入 runtime-input；B 查询与 C1 冻结命中 / 回退一致。")
     if not args.run:
-        print("未执行 Agent A/B。真正的新上下文运行与人工语义评分属于 C3。")
+        print("未执行 Agent A/B；真正的新上下文运行与人工语义评分属于 C3。")
         return 0
 
-    selected = set(args.scenario) or None
-    try:
-        cases = selected_cases(design, selected)
-    except ValueError as exc:
-        print(str(exc), file=sys.stderr)
+    selected = set(args.scenario)
+    known = {case["id"] for case in design["scenarios"]}
+    unknown = selected - known
+    if unknown:
+        print(f"未知场景：{', '.join(sorted(unknown))}", file=sys.stderr)
         return 64
-    variants = args.variant or ["A", "B"]
+    cases = [case for case in design["scenarios"] if not selected or case["id"] in selected]
+    variants = args.variant or list(VARIANTS)
     check_codex(args.codex_bin)
 
     failures = 0
@@ -472,29 +463,28 @@ def main() -> int:
         for variant in variants:
             with tempfile.TemporaryDirectory(
                 prefix=f"agentic-dev-rule-retrieval-{case['id']}-{variant}-"
-            ) as temp_dir:
-                temp_root = Path(temp_dir)
+            ) as temp:
+                temp_root = Path(temp)
                 workspace = temp_root / "workspace"
                 workspace.mkdir(parents=True, exist_ok=True)
-                context_paths, _ = prepare_workspace(
+                contexts, query_payload = prepare_workspace(
                     design, index, case, variant, workspace, temp_root
                 )
-                prompt = build_prompt(case, variant, context_paths)
-                run_id = f"{case['id']}-{variant}"
-                failures += run_codex(
+                returncode = run_codex(
                     codex_bin=args.codex_bin,
-                    scenario_id=run_id,
-                    prompt=prompt,
+                    scenario_id=f"{case['id']}-{variant}",
+                    prompt=build_prompt(case, variant, contexts),
                     result_group=RESULT_GROUP,
                     cwd=workspace,
                     skip_git_repo_check=True,
-                ) != 0
+                )
+                write_result_stub(case, variant, returncode, query_payload)
+                failures += returncode != 0
 
     if failures:
         print(f"Codex 进程失败数：{failures}", file=sys.stderr)
         return 1
-    print("所有选中 A/B Codex 进程均正常结束。")
-    print("仍需人工逐项按隐藏断言评分；进程退出码 0 不等于语义通过。")
+    print("所有选中 A/B Codex 进程均正常结束；仍需人工按隐藏断言评分。")
     return 0
 
 
