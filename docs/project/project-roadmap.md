@@ -49,13 +49,11 @@
 
 阶段 A“激活审计”已形成 A1～A5 可复核结果，确认当前历史场景既包含纯激活失败，也包含已经由当前仓库权威关闭的历史规则缺口；当前不应继续为相同场景机械新增同义规则。
 
-B1 已冻结最小、工具无关的稀疏检索契约：作用域与当前职责为必需输入，阶段、目标对象和风险 / 状态条件按辨识需要补充；检索结果必须回指当前规范性源并支持来源陈旧检测，索引缺失或不可信时回退当前仓库直接读取。当前没有证据要求全库统一增加文件头。
-
-B2 已选择 **JSON 派生规则索引 + Python 标准库薄查询器** 作为 B3 最小评估原型。该选择复用仓库既有 `evals/` 的 JSON + Python 标准库模式，不引入第三方包、数据库、MCP、服务或统一文件头；首轮只覆盖阶段 A 已审计的高影响规则面。
+阶段 B“最小检索模型”已形成拟集成完成状态：B1 冻结稀疏检索契约，B2 选择 JSON 派生规则索引 + Python 标准库薄查询器，B3 建立 61 项 / 8 个规范性来源的首轮派生索引并验证来源追溯、条件筛选、未知维度与来源陈旧回退、可删除 / 可重建边界。原型仍属于 `evals/` 评估资产，不是新的规则权威，也没有证据要求全库统一增加文件头。
 
 当前下一实际门禁：
 
-> **阶段 B — 最小检索模型 / B3 — 原型验证**
+> **阶段 C — 检索 / 激活评估 / C1 — 定向评估设计**
 
 本里程碑优先解决巨型指南、规则重复、粗粒度加载和“规则存在但未在正确任务中激活”的问题。完整研究和实施边界分别位于：
 
@@ -63,6 +61,7 @@ B2 已选择 **JSON 派生规则索引 + Python 标准库薄查询器** 作为 B
 - `docs/research/knowledge-activation-evidence-appendix.md`
 - `docs/research/minimal-rule-retrieval-contract.md`
 - `docs/research/rule-retrieval-prototype-selection.md`
+- `docs/research/rule-retrieval-prototype-validation.md`
 - `docs/project/rule-governance-knowledge-activation-v1.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
@@ -75,7 +74,7 @@ Issue #58 继续作为长期使用方经验反馈入口。
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
-| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A 已完成，B1 契约已冻结，B2 原型选择已完成，当前进入阶段 B / B3 原型验证；不预设全库文件头、图数据库或新运行时层 |
+| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A 已完成，阶段 B 已形成拟集成完成状态，当前进入阶段 C / C1 定向评估设计；不预设全库文件头、图数据库或新运行时层 |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
 | 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待代码复核 / 使用方评估暴露真实增量缺口 |
 | 使用方采用 | 基础建设已完成，当前里程碑要求一次使用方验证 | 使用方仓库权威始终优先；CodeGraph 只作为可选代码智能实验输入 |
@@ -309,28 +308,21 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - A5 区分纯激活失败、选择 / 冲突、误导 / 陈旧上下文和历史真实规则缺口，确认这些历史规则缺口已经进入当前仓库权威；
 - 当前没有证据支持继续为相同场景机械新增同义规则；“指令密度导致失败”保留为阶段 C 待验证假设。
 
-B1“冻结最小检索契约”已经完成：
+阶段 B“最小检索模型”已形成拟集成完成状态：
 
-- 必需输入为 `scope + responsibility`；
-- `stage / subject / conditions` 只在规则适用性依赖它们时补充；
-- 输出只包含可追溯源权威的短激活摘要、适用信息、必需检查与匹配解释；
-- 条目角色只区分 authority / pointer / consumer / evidence；
-- 最小关系只冻结 equivalent / scope-variant / superseded-by；
-- 索引缺失、来源陈旧、范围冲突或高影响授权不确定时，直接回退当前仓库权威；
-- 当前没有证据要求全库统一增加文件头或采用特定索引技术。
-
-B2“原型选择”已经完成：
-
-- 选择 **JSON 派生规则索引 + Python 标准库薄查询器**；
-- 复用仓库现有 JSON 语料与 Python 标准库评估方式，不新增第三方包；
-- JSON 保存短派生激活信息、当前源指针与来源身份，不复制完整规则正文；
-- 查询器只执行确定性过滤、来源陈旧检测、等价分组和回退信号，不解释新规则或缓存授权；
-- 首轮只覆盖阶段 A 已审计的高影响规则面，不建立全仓库规则数据库；
-- 当前仍不要求 Guide 或其他文档统一增加 Front Matter。
+- B1 冻结 `scope + responsibility + [stage] + [subject] + [conditions]` 的稀疏检索契约；
+- B2 选择 **JSON 派生规则索引 + Python 标准库薄查询器**；
+- B3 建立 61 个条目、8 个唯一规范性来源的首轮派生索引；
+- 27 个使用指南激活单元与 28 个外部操作激活单元均已纳入首轮索引；
+- 只增加 1 个 AGENTS 薄指针与 5 个 Skill 职责消费项用于跨层关系验证；
+- 查询器支持来源身份检查、稀疏条件过滤、未知维度显式回退和取代关系算法边界；
+- 任一活动来源陈旧或缺失时在筛选前显式回退，不使用旧索引继续声称完整召回；
+- 原型删除后不损失任何规范性事实，也没有把 Research / JSON 变成新的规则权威；
+- B3 只证明原型可进入阶段 C，不证明新激活模式已经优于当前粗粒度加载。
 
 当前下一实际步骤：
 
-> **阶段 B — 最小检索模型 / B3 — 原型验证**
+> **阶段 C — 检索 / 激活评估 / C1 — 定向评估设计**
 
 主要边界：
 
@@ -340,7 +332,7 @@ B2“原型选择”已经完成：
 - Skill 不复制全部长期知识；
 - 仓库权威与派生索引分离；
 - 检索必须有真实任务评估；
-- B3 只实现和验证 B2 选定的 JSON + Python 标准库最小原型，不扩展为全仓库规则库、数据库或运行时服务；
+- 阶段 C 必须用新上下文 / 隔离运行与人工语义评分判断 A/B 效果，不把 B3 工具可用性等同于行为收益；
 - Obsidian 只作为可选人类治理工作台；
 - CodeGraph 只作为外部研究和使用方可选代码智能，不成为本里程碑强依赖；
 - 不在本里程碑实现代码复核。
@@ -360,6 +352,7 @@ B2“原型选择”已经完成：
 - `docs/research/activation-failure-classification.md`
 - `docs/research/minimal-rule-retrieval-contract.md`
 - `docs/research/rule-retrieval-prototype-selection.md`
+- `docs/research/rule-retrieval-prototype-validation.md`
 
 协调计划：
 
@@ -555,8 +548,8 @@ Issue #71 收录使用方在关键架构评审中形成的配对盲测、隐藏�
 1. 读取根目录 `AGENTS.md`；
 2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑和当前活动有限里程碑；
 3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；
-4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md`、`docs/research/knowledge-activation-evidence-appendix.md`、`docs/research/minimal-rule-retrieval-contract.md`、`docs/research/rule-retrieval-prototype-selection.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；
-5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前下一门禁为阶段 B — 最小检索模型 / B3 — 原型验证；
+4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md`、`docs/research/knowledge-activation-evidence-appendix.md`、`docs/research/minimal-rule-retrieval-contract.md`、`docs/research/rule-retrieval-prototype-selection.md`、`docs/research/rule-retrieval-prototype-validation.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；
+5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前下一门禁为阶段 C — 检索 / 激活评估 / C1 — 定向评估设计；
 6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、工程纪律、Issue #58 / #71 或历史评估；不得因为研究对象很多而默认全量加载；
 7. 不把 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 当作当前实施工作；
 8. 代码复核能力 v1 只是优先后继候选，只有当前里程碑完成并由人工重新选择后才能启动；
