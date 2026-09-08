@@ -16,10 +16,11 @@
 6. `docs/research/knowledge-activation-evidence-appendix.md`；
 7. `docs/research/rule-activation-audit-baseline.md`；
 8. `docs/research/using-agentic-dev-activation-map.md`；
-9. `docs/guides/using-agentic-dev.md`；
-10. `docs/guides/external-operation-guidelines.md`；
-11. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-12. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+9. `docs/research/external-operation-guidelines-activation-map.md`；
+10. `docs/guides/using-agentic-dev.md`；
+11. `docs/guides/external-operation-guidelines.md`；
+12. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+13. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -94,9 +95,11 @@
 
 ### A3 — `external-operation-guidelines.md` 激活映射
 
-- [ ] 同 A2；
-- [ ] 特别区分普通写操作、跨仓库、人工介入、异步闭环、媒体资源、共享资源 / 租约、证据晋升、PR 拓扑等独立条件；
-- [ ] 检查是否存在“任何外部操作都要加载整份指南”的隐式入口。
+- [x] 同 A2；
+- [x] 特别区分普通写操作、跨仓库、人工介入、异步闭环、媒体资源、共享资源 / 租约、证据晋升、PR 拓扑等独立条件；
+- [x] 检查是否存在“任何外部操作都要加载整份指南”的隐式入口。
+
+输出：`docs/research/external-operation-guidelines-activation-map.md`。
 
 ### A4 — 跨权威重复审计
 
@@ -298,8 +301,8 @@ B：薄常驻核心规则 + 任务 / 风险按需检索
 
 ## 当前下一步
 
-A1、A2 已完成，当前进入：
+A1、A2、A3 已完成，当前进入：
 
-> **A3 — `external-operation-guidelines.md` 激活映射**
+> **A4 — 跨权威重复审计**
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。
