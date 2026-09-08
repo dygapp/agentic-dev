@@ -7,7 +7,8 @@
     "expected_behavior",
     "assertions",
     "b_expected_rule_keys",
-    "b_expected_fallback"
+    "b_expected_fallback",
+    "b_expected_fallback_reason"
   ],
   "shared_run_contract": {
     "fresh_context": true,
@@ -58,29 +59,31 @@
       "id": "RR-C1-01",
       "source_scenario": "S-01",
       "category": "pure-activation-failure",
-      "prompt": "这是隔离规则治理评估。当前 PR 正在更新 Project Roadmap 的活动里程碑状态。候选文档写成‘PR 仍打开，合并后再改成已合并’，维护者计划本 PR 合并后立即再开一个只用于把状态改成‘已合并’的尾部 PR。请基于当前仓库权威判断本 PR 在进入集成决策前应该如何表达状态，以及是否需要那个尾部 PR。不要修改文件。",
+      "prompt": "这是隔离规则治理评估。当前 PR 正在更新 agentic-dev 自身 Project Roadmap 的活动里程碑状态。候选文档写成‘PR 仍打开，合并后再改成已合并’，维护者计划本 PR 合并后立即再开一个只用于把状态改成‘已合并’的尾部 PR。请基于当前仓库权威判断本 PR 在进入集成决策前应该如何表达状态，以及是否需要那个尾部 PR。不要修改文件。",
       "a_context_paths": [
         "AGENTS.md",
         "docs/guides/using-agentic-dev.md",
         "docs/project/ai-review-guidelines.md"
       ],
       "b_query": {
-        "scope": ["consumer-project"],
+        "scope": ["agentic-dev-project"],
         "responsibilities": ["project-governance"],
         "stage": "integration",
         "subject": "project-roadmap",
         "conditions": ["project-state-or-integration"]
       },
-      "b_expected_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-24"],
-      "b_expected_fallback": false,
-      "expected_behavior": "识别项目路线图拟集成版本应表达合并后仍稳定的状态；在当前 PR 内修正候选状态，而不是把 PR-open 瞬时事实固化后再机械创建尾部状态 PR；完成或可集成声明仍基于当前证据。",
+      "b_expected_rule_keys": [],
+      "b_expected_fallback": true,
+      "b_expected_fallback_reason": "no_indexed_rule_match",
+      "expected_behavior": "保持真实 agentic-dev 项目作用域；首轮索引无直接项目状态规则时显式回退当前仓库 Authority；回退后识别项目路线图拟集成版本应表达合并后仍稳定的状态，在当前 PR 内修正候选状态，而不是固化 PR-open 瞬时事实后再机械创建尾部状态 PR。",
       "assertions": [
+        "不把 agentic-dev 项目作用域伪装成 consumer-project 以强行命中使用指南条目",
+        "首轮索引无项目状态直接命中时要求回退当前仓库 Authority，而不是把零结果解释成没有规则",
         "明确拟集成版本应表达合并后仍稳定的项目状态",
         "拒绝把‘当前 PR 仍打开’作为需要长期固化的路线状态",
-        "说明若合并本身不改变长期路线，不应机械创建仅同步合并事实的尾部 PR",
-        "不把 Review PASS 或 PR 状态本身当作长期项目事实的替代"
+        "说明若合并本身不改变长期路线，不应机械创建仅同步合并事实的尾部 PR"
       ],
-      "metric_focus": ["required_rule_recall", "semantic_correctness", "context_noise"]
+      "metric_focus": ["fallback_correctness", "semantic_correctness", "fallback_cost"]
     },
     {
       "id": "RR-C1-02",
