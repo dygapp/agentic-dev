@@ -51,11 +51,11 @@
 
 阶段 B“最小检索模型”已完成：B1 冻结稀疏检索契约，B2 选择 JSON 派生规则索引 + Python 标准库薄查询器，B3 建立 61 项 / 8 个规范性来源的首轮派生索引并验证来源追溯、条件筛选、未知维度与来源陈旧回退、可删除 / 可重建边界。原型仍属于 `evals/` 评估资产，不是新的规则权威，也没有证据要求全库统一增加文件头。
 
-阶段 C 的 C1“定向评估设计”已完成：冻结 9 个场景，其中 6 个来自真实历史失效证据，3 个用于负向条件、来源陈旧和真实规则缺口控制；明确 A 组采用当前职责相关整份规范性文档，B 组采用薄入口 + 条件检索 + 保守回退，并隔离隐藏断言、预期规则键和历史结果。C1 静态设计还发现并关闭了“已建模词表内零命中被误解释为无规则”的原型缺口，当前零命中会显式 `no_indexed_rule_match` 回退仓库权威。
+阶段 C 的 C1“定向评估设计”和 C2“A/B 基线实现与静态校验”已完成：C1 冻结 9 个场景，其中 6 个来自真实历史失效证据，3 个用于负向条件、来源陈旧和真实规则缺口控制，并关闭“已建模词表内零命中被误解释为无规则”的原型缺口；C2 建立可重复 A/B runner、Consumer-local fixture、无语义来源漂移控制与分层结果结构，并通过真实 GitHub Actions 静态执行确认 9 个场景的 A/B 工作区可装配。当前尚未执行真正的 Agent A/B，也没有证据宣称按需检索优于当前粗粒度加载。
 
 当前下一实际门禁：
 
-> **阶段 C — 检索 / 激活评估 / C2 — A/B 基线实现与静态校验**
+> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**
 
 本里程碑优先解决巨型指南、规则重复、粗粒度加载和“规则存在但未在正确任务中激活”的问题。完整研究和实施边界分别位于：
 
@@ -65,6 +65,7 @@
 - `docs/research/rule-retrieval-prototype-selection.md`
 - `docs/research/rule-retrieval-prototype-validation.md`
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`
+- `docs/research/rule-retrieval-ab-baseline-validation.md`
 - `docs/project/rule-governance-knowledge-activation-v1.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
@@ -77,7 +78,7 @@ Issue #58 继续作为长期使用方经验反馈入口。
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
-| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A、B 已完成，C1 已完成，当前进入阶段 C / C2 A/B 基线实现与静态校验；不预设全库文件头、图数据库或新运行时层 |
+| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A、B 已完成，C1、C2 已完成，当前进入阶段 C / C3 隔离运行时与人工评分；不预设全库文件头、图数据库或新运行时层 |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
 | 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待代码复核 / 使用方评估暴露真实增量缺口 |
 | 使用方采用 | 基础建设已完成，当前里程碑要求一次使用方验证 | 使用方仓库权威始终优先；CodeGraph 只作为可选代码智能实验输入 |
@@ -334,9 +335,20 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - C1 静态设计暴露“已建模词表内零命中”漏检路径，查询器已补充 `no_indexed_rule_match` 显式回退，不通过扩索引或伪造作用域让场景通过；
 - C1 只冻结设计和修正保守回退，不执行 Agent A/B，也不证明 B 优于 A。
 
+阶段 C 的 C2“A/B 基线实现与静态校验”已完成：
+
+- 建立可重复 A/B 隔离 runner，默认 `--validate-only`，只有显式 `--run` 才进入 C3；
+- 建立 Consumer-local Authority 最小 fixture；
+- 在临时副本动态制造无语义来源 blob 漂移，不持久化第二份规范性源；
+- B 直接命中时从当前规范性源按 `source_pointer` 物化章节 / 独立职责载体，回退时读取 C1 已声明的完整 Authority 基线；
+- Agent 可见输入不包含 A/B 分组、`metric_focus`、隐藏断言、预期规则键或预期回退；
+- 固定结果结构，区分进程退出、查询回退、人工语义评分和失败分类；
+- 当前仓库没有能由 runner 自动证明的统一 Codex 实际模型 / 推理强度锁定契约；C3 必须以运行证据证明配对一致，无法证明一致的配对不得进入效果比较；
+- PR #84 临时只读 GitHub Actions Run `34291536760` 已实际执行 Python 编译与 `python3 evals/run_rule_retrieval_ab.py --validate-only`，确认 9 个场景的 A/B 工作区可装配且没有执行 Agent A/B；临时 workflow 取证后已删除。
+
 当前下一实际步骤：
 
-> **阶段 C — 检索 / 激活评估 / C2 — A/B 基线实现与静态校验**
+> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**
 
 主要边界：
 
@@ -346,7 +358,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - Skill 不复制全部长期知识；
 - 仓库权威与派生索引分离；
 - 检索必须有真实任务评估；
-- 阶段 C 必须用新上下文 / 隔离运行与人工语义评分判断 A/B 效果，不把 B3 工具可用性等同于行为收益；
+- 阶段 C 必须用新上下文 / 隔离运行与人工语义评分判断 A/B 效果，不能把 C2 runner 可执行或静态校验通过等同于行为收益；
 - Obsidian 只作为可选人类治理工作台；
 - CodeGraph 只作为外部研究和使用方可选代码智能，不成为本里程碑强依赖；
 - 不在本里程碑实现代码复核。
@@ -368,6 +380,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - `docs/research/rule-retrieval-prototype-selection.md`
 - `docs/research/rule-retrieval-prototype-validation.md`
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`
+- `docs/research/rule-retrieval-ab-baseline-validation.md`
 
 协调计划：
 
@@ -563,8 +576,8 @@ Issue #71 收录使用方在关键架构评审中形成的配对盲测、隐藏�
 1. 读取根目录 `AGENTS.md`；
 2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑和当前活动有限里程碑；
 3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；
-4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md`、`docs/research/knowledge-activation-evidence-appendix.md`、`docs/research/minimal-rule-retrieval-contract.md`、`docs/research/rule-retrieval-prototype-selection.md`、`docs/research/rule-retrieval-prototype-validation.md`、`docs/research/rule-retrieval-targeted-evaluation-design.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；
-5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前下一门禁为阶段 C — 检索 / 激活评估 / C2 — A/B 基线实现与静态校验；
+4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md`、`docs/research/knowledge-activation-evidence-appendix.md`、`docs/research/minimal-rule-retrieval-contract.md`、`docs/research/rule-retrieval-prototype-selection.md`、`docs/research/rule-retrieval-prototype-validation.md`、`docs/research/rule-retrieval-targeted-evaluation-design.md`、`docs/research/rule-retrieval-ab-baseline-validation.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；
+5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前下一门禁为阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分；
 6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、工程纪律、Issue #58 / #71 或历史评估；不得因为研究对象很多而默认全量加载；
 7. 不把 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 当作当前实施工作；
 8. 代码复核能力 v1 只是优先后继候选，只有当前里程碑完成并由人工重新选择后才能启动；
