@@ -75,14 +75,33 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 该里程碑已完成平台语义核验、长期外部操作指导、三项治理定向评估、人工语义评分与最终 AI 复核。`G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 最终合计 `15 / 15` 断言通过，最终 AI 复核 Review `5129305394` 未解决阻塞 / 中等级问题为 `0 / 0`。实施载体 PR #70 已通过 squash merge 集成，合并提交为 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已按完成关闭。
 
-当前没有活动有限里程碑。项目处于**等待下一有限里程碑人工路线决策**状态；WI-06、WI-07、WI-09、第四工程纪律、Issue #71 或其他工程能力候选均未自动启动。
+2026-09-08，人工权威已显式选择新的活动有限里程碑：
 
-当前状态、候选库和下一步边界统一记录在：
+> **规则治理与知识激活 v1**
+
+跟踪入口：Issue #73。
+
+启动基线：
+
+`master@0895ca30f76c666f3a0d4d9c2f9af6f14cded5d6`
+
+当前下一实际门禁：
+
+> **Phase A — Activation Audit**
+
+本里程碑解决巨型 Guide、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆 Guide、建立 Rule Graph、采用 Obsidian、采用 CodeGraph 或新增 Runtime Layer；先通过 Activation Audit、最小 Retrieval Model、历史 Retrieval / Activation Eval 和 Consumer Fresh Context 验证取得证据。
+
+当前状态、研究依据、实施边界和协调计划统一记录在：
 
 - `docs/project/project-roadmap.md`
-- `docs/project/stacked-pr-squash-topology-v1.md`
-- Issue #71
-- Issue #58
+- `docs/project/rule-governance-knowledge-activation-v1.md`
+- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
+- Issue #73
+
+WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因当前里程碑启动而自动进入实现。WI-07 — Code Review Capability v1 已登记为当前里程碑完成后的优先后继候选，但必须在当前里程碑完成并集成后重新经过人工里程碑决策。
+
+Issue #58 继续作为长期使用方经验反馈入口；Issue #71 继续作为独立高风险 Planning Review / 模型路由相关研究输入，不与未来 Code Review 自动合并。
 
 工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。
 
