@@ -89,13 +89,13 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 阶段 B“最小检索模型”已经完成：B1 冻结 `scope + responsibility + [stage] + [subject] + [conditions]` 的稀疏检索契约；B2 选择 **JSON 派生规则索引 + Python 标准库薄查询器**；B3 已建立 61 项 / 8 个规范性来源的首轮派生索引，验证来源可追溯、条件筛选、未知维度与来源陈旧回退，以及原型可删除 / 可重建边界。该原型仍是 `evals/` 下的评估资产，不是新的 Repository Authority，也没有证据要求全库统一增加文件头。
 
-阶段 C 已完成 C1“定向评估设计”：冻结 6 个真实历史场景与 3 个控制场景，明确强 A 组文件级粗粒度基线、B 组条件检索 / 安全回退、隐藏断言隔离和人工语义评分字段；C1 静态设计同时发现并关闭“已建模词表内零命中却不回退”的查询器缺口，没有新增规则或扩张索引。
+阶段 C 已完成 C1“定向评估设计”和 C2“A/B 基线实现与静态校验”：C1 冻结 6 个真实历史场景与 3 个控制场景，并关闭“已建模词表内零命中却不回退”的查询器缺口；C2 建立可重复 A/B 隔离 runner、Consumer-local fixture、无语义来源漂移控制和分层结果结构，并以真实 GitHub Actions 静态执行验证 9 个场景的 A/B 工作区均可装配。当前仍没有执行真正的 Agent A/B，也没有证据宣称按需检索优于粗粒度加载。
 
 当前下一实际门禁：
 
-> **阶段 C — 检索 / 激活评估 / C2 — A/B 基线实现与静态校验**
+> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**
 
-本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆分指南、建立规则图、采用 Obsidian、采用 CodeGraph 或新增运行时层；阶段 C 才负责比较当前粗粒度加载与按需检索在真实 Agent 行为上的差异，C1 只冻结评估设计，不构成效果优越性证据。
+本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆分指南、建立规则图、采用 Obsidian、采用 CodeGraph 或新增运行时层；阶段 C 只有在 C3 完成实际新上下文 A/B 和人工语义评分后，才有证据判断新的激活模式是否优于当前粗粒度加载。
 
 当前状态、研究依据、实施边界和协调计划统一记录在：
 
@@ -107,6 +107,7 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 - `docs/research/rule-retrieval-prototype-selection.md`
 - `docs/research/rule-retrieval-prototype-validation.md`
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`
+- `docs/research/rule-retrieval-ab-baseline-validation.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 - Issue #73
 
