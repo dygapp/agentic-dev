@@ -17,10 +17,11 @@
 7. `docs/research/rule-activation-audit-baseline.md`；
 8. `docs/research/using-agentic-dev-activation-map.md`；
 9. `docs/research/external-operation-guidelines-activation-map.md`；
-10. `docs/guides/using-agentic-dev.md`；
-11. `docs/guides/external-operation-guidelines.md`；
-12. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-13. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+10. `docs/research/cross-authority-duplication-audit.md`；
+11. `docs/guides/using-agentic-dev.md`；
+12. `docs/guides/external-operation-guidelines.md`；
+13. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+14. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -103,11 +104,13 @@
 
 ### A4 — 跨权威重复审计
 
-- [ ] 比较 AGENTS / README / 指南 / 技能 / 项目规则；
-- [ ] 区分合理摘要 / 指针与实质重复权威；
-- [ ] 标记同义但不同强度的规则；
-- [ ] 标记可能导致冲突选择的规则；
-- [ ] 不在本步骤立即删除规则。
+- [x] 比较 AGENTS / README / 指南 / 技能 / 项目规则；
+- [x] 区分合理摘要 / 指针与实质重复权威；
+- [x] 标记同义但不同强度的规则；
+- [x] 标记可能导致冲突选择的规则；
+- [x] 不在本步骤立即删除规则。
+
+输出：`docs/research/cross-authority-duplication-audit.md`。
 
 ### A5 — 激活失效分类证据
 
@@ -301,8 +304,8 @@ B：薄常驻核心规则 + 任务 / 风险按需检索
 
 ## 当前下一步
 
-A1、A2、A3 已完成，当前进入：
+A1、A2、A3、A4 已完成，当前进入：
 
-> **A4 — 跨权威重复审计**
+> **A5 — 激活失效分类证据**
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。
