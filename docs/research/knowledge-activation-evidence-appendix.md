@@ -163,7 +163,7 @@ CodeGraph 的 `.codegraph/`：
 
 ## 8. CodeGraph 对普通使用方的交付边界
 
-CodeGraph 仓库中确实存在 `.claude/skills/add-lang`、`.claude/skills/agent-eval` 等 Skill，但它们主要服务 CodeGraph 自身的语言支持开发与评估。
+CodeGraph 仓库中确实存在 `.claude/skills/add-lang`、`.claude/skills/agent-eval` 等内部技能，但它们主要服务 CodeGraph 自身的语言支持开发与评估。
 
 普通使用方的主要使用方式是：
 
@@ -175,8 +175,8 @@ CodeGraph 仓库中确实存在 `.claude/skills/add-lang`、`.claude/skills/agen
 
 因此当前研究不建议：
 
-- 把 CodeGraph 内部 Skill 复制进使用方；
-- 在 `agentic-dev` 再包装一个 `codegraph` Skill 只是重复其现有能力；
+- 把 CodeGraph 内部技能复制进使用方；
+- 在 `agentic-dev` 再包装一个 `codegraph` 技能只是重复其现有能力；
 - 让 CodeGraph 成为 `execute-unit`、`systematic-debug` 或未来 `code-review` 的强依赖。
 
 更合理的是“能力存在时优先消费，能力不存在时可靠回退”。
@@ -191,27 +191,27 @@ CodeGraph 当前 `src/installer/targets/codex.ts` 明确支持 Codex CLI：
 - `AGENTS.md` 写入短 marker-fenced CodeGraph 块；
 - 项目级 Codex config 在未信任项目中可能被加载但不启用，因此安装器会显式提醒 trust requirement。
 
-这说明使用方无需由 `agentic-dev` 发明额外代码导航 Skill，即可在本地 Codex 环境接入成熟代码智能工具。
+这说明使用方无需由 `agentic-dev` 发明额外代码导航技能，即可在本地 Codex 环境接入成熟代码智能工具。
 
 ## 10. `code-review` 的当前正式架构身份
 
 当前 `docs/architecture/skill-architecture.md` 已明确：
 
-- 仓库当前实际维护 9 个 Skill：8 个核心 Skill + 1 个平台专项 Skill `github-actions-verification`；
-- “第一批 8 个核心 Skill”是已经关闭的核心基线；
-- `github-actions-verification` 是第 9 个已实现 Skill，但不是“第 9 个核心 Skill”；
-- 第一批明确选择**不独立 Skill 化** `code-review`，让它继续作为内嵌纪律；
+- 仓库当前实际维护 9 个技能：8 个核心技能 + 1 个平台专项技能 `github-actions-verification`；
+- “第一批 8 个核心技能”是已经关闭的核心基线；
+- `github-actions-verification` 是第 9 个已实现技能，但不是“第 9 个核心技能”；
+- 第一批明确选择**不独立技能化** `code-review`，让它继续作为内嵌纪律；
 - 未来只有在出现稳定独立职责与足够证据时才重新评估。
 
-因此，如果后续 WI-07 通过证据把 `code-review` 提升为独立任务型 Skill，正确身份应是：
+因此，如果后续 WI-07 通过证据把 `code-review` 提升为独立任务型技能，正确身份应是：
 
-> **第一批核心基线之后新增的任务型 Skill。**
+> **第一批核心基线之后新增的任务型技能。**
 
 不应描述为：
 
-> “第 10 个核心 Skill”。
+> “第 10 个核心技能”。
 
-当前第一批 8 个核心 Skill 的闭合身份不需要因为代码复核候选重新打开。
+当前第一批 8 个核心技能的闭合身份不需要因为代码复核候选重新打开。
 
 ## 11. 不新增“复核画像”架构层
 
@@ -234,7 +234,7 @@ CodeGraph 当前 `src/installer/targets/codex.ts` 明确支持 Codex CLI：
 因此当前不建议：
 
 - 新增复核画像；
-- 为 Vue / Spring / Gradle 分别建立复核 Skill；
+- 为 Vue / Spring / Gradle 分别建立复核技能；
 - 让技术画像复制一套专门复核版本。
 
 只有后续评估证明现有层次无法表达稳定职责时，才重新评估架构层。
@@ -291,9 +291,9 @@ Issue #71 中 AR-04 使用缺陷发现前的 frozen candidate，隐藏后续答�
 4. CodeGraph 默认一个强 MCP 入口，并严格控制常驻指令长度；
 5. CodeGraph 第一方基准测试只能作为外部参考，不能套用收益比例；
 6. `.codegraph/` 是派生索引，不是权威；
-7. 使用方应直接消费 CodeGraph 的 MCP / CLI / 索引，而不是复制其内部 Skill；
-8. `code-review` 早已存在于 Skill Architecture 的“第一批暂不独立 Skill 化”清单，不是本轮突然新增的想法；
-9. 未来 `code-review` 即使成立，也不是“第 10 个核心 Skill”；
+7. 使用方应直接消费 CodeGraph 的 MCP / CLI / 索引，而不是复制其内部技能；
+8. `code-review` 早已存在于技能架构的“第一批暂不独立技能化”清单，不是本轮突然新增的想法；
+9. 未来 `code-review` 即使成立，也不是“第 10 个核心技能”；
 10. 当前没有证据新增复核画像架构层；
 11. Issue #71 的独立规划复核价值与未来代码复核必须保持职责分离；
 12. 当前路线依旧是：先规则治理与知识激活，再重新决策 WI-07 代码复核能力，再由真实评估决定 WI-06。
