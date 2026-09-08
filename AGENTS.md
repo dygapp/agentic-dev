@@ -87,21 +87,22 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 当前下一实际门禁：
 
-> **Phase A — Activation Audit**
+> **阶段 A — 激活审计**
 
-本里程碑解决巨型 Guide、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆 Guide、建立 Rule Graph、采用 Obsidian、采用 CodeGraph 或新增 Runtime Layer；先通过 Activation Audit、最小 Retrieval Model、历史 Retrieval / Activation Eval 和 Consumer Fresh Context 验证取得证据。
+本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆分指南、建立规则图、采用 Obsidian、采用 CodeGraph 或新增运行时层；先通过激活审计、最小检索模型、历史检索 / 激活评估和使用方新上下文验证取得证据。
 
 当前状态、研究依据、实施边界和协调计划统一记录在：
 
 - `docs/project/project-roadmap.md`
 - `docs/project/rule-governance-knowledge-activation-v1.md`
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `docs/research/knowledge-activation-evidence-appendix.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 - Issue #73
 
-WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因当前里程碑启动而自动进入实现。WI-07 — Code Review Capability v1 已登记为当前里程碑完成后的优先后继候选，但必须在当前里程碑完成并集成后重新经过人工里程碑决策。
+WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因当前里程碑启动而自动进入实现。WI-07 — **代码复核能力 v1** 已登记为当前里程碑完成后的优先后继候选，但必须在当前里程碑完成并集成后重新经过人工里程碑决策。
 
-Issue #58 继续作为长期使用方经验反馈入口；Issue #71 继续作为独立高风险 Planning Review / 模型路由相关研究输入，不与未来 Code Review 自动合并。
+Issue #58 继续作为长期使用方经验反馈入口；Issue #71 继续作为独立高风险规划复核 / 模型路由相关研究输入，不与未来代码复核自动合并。
 
 工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。
 
