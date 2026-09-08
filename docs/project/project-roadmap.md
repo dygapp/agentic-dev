@@ -47,9 +47,11 @@
 
 `master@0895ca30f76c666f3a0d4d9c2f9af6f14cded5d6`
 
+阶段 A“激活审计”已形成 A1～A5 可复核结果，确认当前历史场景既包含纯激活失败，也包含已经由当前仓库权威关闭的历史规则缺口；当前不应继续为相同场景机械新增同义规则。
+
 当前下一实际门禁：
 
-> **阶段 A — 激活审计**
+> **阶段 B — 最小检索模型 / B1 — 冻结最小检索契约**
 
 本里程碑优先解决巨型指南、规则重复、粗粒度加载和“规则存在但未在正确任务中激活”的问题。完整研究和实施边界分别位于：
 
@@ -67,7 +69,7 @@ Issue #58 继续作为长期使用方经验反馈入口。
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
-| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；当前进入阶段 A 激活审计；先验证激活问题，不预设拆分指南、图数据库或新运行时层 |
+| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A 已完成，当前进入阶段 B / B1 冻结最小检索契约；不预设全库文件头、图数据库或新运行时层 |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
 | 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待代码复核 / 使用方评估暴露真实增量缺口 |
 | 使用方采用 | 基础建设已完成，当前里程碑要求一次使用方验证 | 使用方仓库权威始终优先；CodeGraph 只作为可选代码智能实验输入 |
@@ -292,9 +294,18 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 核心目标：从“保存更多规则”转向“当前任务可靠取得最小正确规则集”，并用历史真实失效场景与使用方新上下文证明新的激活模式有效。
 
+阶段 A“激活审计”已经完成：
+
+- A1 冻结审计基线、13 个高影响交叉主题和 6 个真实历史场景；
+- A2 将 `using-agentic-dev.md` 映射为 27 个语义激活单元候选，并只提名 3 个常驻核心候选；
+- A3 将 `external-operation-guidelines.md` 映射为 28 个条件激活单元候选，不新增全局常驻核心；
+- A4 登记 14 组跨权威关系并识别 5 组后续高价值减法候选；
+- A5 区分纯激活失败、选择 / 冲突、误导 / 陈旧上下文和历史真实规则缺口，确认这些历史规则缺口已经进入当前仓库权威；
+- 当前没有证据支持继续为相同场景机械新增同义规则；“指令密度导致失败”保留为阶段 C 待验证假设。
+
 当前下一实际步骤：
 
-> **阶段 A — 激活审计**
+> **阶段 B — 最小检索模型 / B1 — 冻结最小检索契约**
 
 主要边界：
 
@@ -304,6 +315,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - Skill 不复制全部长期知识；
 - 仓库权威与派生索引分离；
 - 检索必须有真实任务评估；
+- B1 先冻结最小输入 / 输出 / 回退 / 重复与取代语义，不预设全库文件头、YAML / JSON、图数据库或 MCP；
 - Obsidian 只作为可选人类治理工作台；
 - CodeGraph 只作为外部研究和使用方可选代码智能，不成为本里程碑强依赖；
 - 不在本里程碑实现代码复核。
@@ -316,6 +328,11 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
+- `docs/research/rule-activation-audit-baseline.md`
+- `docs/research/using-agentic-dev-activation-map.md`
+- `docs/research/external-operation-guidelines-activation-map.md`
+- `docs/research/cross-authority-duplication-audit.md`
+- `docs/research/activation-failure-classification.md`
 
 协调计划：
 
@@ -512,7 +529,7 @@ Issue #71 收录使用方在关键架构评审中形成的配对盲测、隐藏�
 2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑和当前活动有限里程碑；
 3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；
 4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md`、`docs/research/knowledge-activation-evidence-appendix.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；
-5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前初始门禁为阶段 A — 激活审计；
+5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前下一门禁为阶段 B — 最小检索模型 / B1 — 冻结最小检索契约；
 6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、工程纪律、Issue #58 / #71 或历史评估；不得因为研究对象很多而默认全量加载；
 7. 不把 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 当作当前实施工作；
 8. 代码复核能力 v1 只是优先后继候选，只有当前里程碑完成并由人工重新选择后才能启动；
