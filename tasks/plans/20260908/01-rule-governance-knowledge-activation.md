@@ -21,10 +21,11 @@
 11. `docs/research/activation-failure-classification.md`；
 12. `docs/research/minimal-rule-retrieval-contract.md`；
 13. `docs/research/rule-retrieval-prototype-selection.md`；
-14. `docs/guides/using-agentic-dev.md`；
-15. `docs/guides/external-operation-guidelines.md`；
-16. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-17. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+14. `docs/research/rule-retrieval-prototype-validation.md`；
+15. `docs/guides/using-agentic-dev.md`；
+16. `docs/guides/external-operation-guidelines.md`；
+17. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+18. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -46,7 +47,7 @@
 
 当前门禁：
 
-> **阶段 B — 最小检索模型 / B3 — 原型验证**
+> **阶段 C — 检索 / 激活评估 / C1 — 定向评估设计**
 
 ## 范围
 
@@ -165,10 +166,14 @@ B2 结论：选择 **JSON 派生规则索引 + Python 标准库薄查询器**。
 
 ### B3 — 原型验证
 
-- [ ] 对阶段 A 的规则单元建立最小索引；
-- [ ] 手工检查查询结果；
-- [ ] 确认删除索引不损失任何长期事实；
-- [ ] 确认同一规则没有复制成第二权威。
+- [x] 对阶段 A 的规则单元建立最小索引；
+- [x] 手工检查查询结果；
+- [x] 确认删除索引不损失任何长期事实；
+- [x] 确认同一规则没有复制成第二权威。
+
+输出：`docs/research/rule-retrieval-prototype-validation.md`、`evals/rule-retrieval/rule-index.json`、`evals/query_rule_index.py`。
+
+B3 结论：首轮派生索引包含 61 个条目 / 8 个唯一规范性来源；查询器支持 B1 稀疏维度、来源身份校验、未知维度显式回退和 `superseded-by` 算法边界，不使用固定 Top-K，也不把索引或 Research 提升为规则权威。当前只证明原型具备进入阶段 C 评估设计的基础能力，不证明按需检索已经优于粗粒度加载。
 
 ---
 
@@ -308,10 +313,10 @@ B：薄常驻核心规则 + 任务 / 风险按需检索
 
 ## 当前下一步
 
-阶段 A 已完成，B1 最小检索契约已冻结，B2 原型选择已完成；当前进入：
+阶段 A 与阶段 B 已形成拟集成完成状态；当前进入：
 
-> **阶段 B — 最小检索模型 / B3 — 原型验证**
+> **阶段 C — 检索 / 激活评估 / C1 — 定向评估设计**
 
-B3 只实现并验证 B2 选择的最小评估原型：JSON 派生规则索引 + Python 标准库薄查询器。首轮不扩展为全仓库规则库，也不把原型提升为长期运行时或规范性权威。
+C1 只设计有辨识力的历史场景、隐藏断言、A/B 输入边界与可取得指标，不提前修改 Guide / Skill，不把 B3 原型验证误报为 A/B 效果证据。
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。
