@@ -39,6 +39,7 @@ Research 文档可以保留“研究形成时”的 Candidate / Pending 状态�
 - `knowledge-activation-evidence-appendix.md`：上述研究的关键证据附录，保存当前指南体量、PR #72“已有规则但未可靠激活”的具体反例、CodeGraph 子代理约 `1 / 9` 主动发现能力与短激活提示后的对照、单一强入口和常驻指令控制、第一方基准测试边界、Codex 集成方式、`code-review` 当前正式架构身份、Issue #71 / AR-04 的独立复核证据等容易在新上下文中遗漏的事实。后续恢复本轮研究时应与主研究文档一起读取。
 - `rule-activation-audit-baseline.md`：规则治理与知识激活 v1 阶段 A / A1 审计基线。冻结当前 `master`、两份高影响指南及直接交叉入口的精确身份，登记后续 A2～A4 必须覆盖的高影响交叉主题，并把 PR #59 / #60 / #61 / #72、Issue #33 / #52 的真实历史摩擦固化为 A5 与后续检索 / 激活评估的场景候选。该文档只保存审计证据，不把交叉主题提前定义为最终规则单元，也不修改现行指南或技能行为。
 - `using-agentic-dev-activation-map.md`：规则治理与知识激活 v1 阶段 A / A2 的使用指南激活映射。基于当前 `using-agentic-dev.md` 按语义识别 27 个规则激活单元候选，记录触发条件、消费者、强度、上下文层级、交叉关系与历史证据，并只提名 3 个常驻核心候选。该文档不改变源指南，也不提前完成 A4 的重复 / 冲突判断或 A5 的失效分类。
+- `external-operation-guidelines-activation-map.md`：规则治理与知识激活 v1 阶段 A / A3 的外部操作指南激活映射。基于当前 `external-operation-guidelines.md` 按外部状态与风险条件识别 28 个规则激活单元候选，不新增全局常驻核心候选，并重点区分普通写后验证、跨仓库授权、异步闭环、媒体输入、共享资源 / 租约、临时证据晋升、依赖 PR 拓扑与 GitHub 执行路径。该文档不改变源指南，也不提前完成 A4 / A5。
 
 后续 Research 可以包括：
 
