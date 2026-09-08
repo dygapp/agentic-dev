@@ -87,15 +87,13 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 阶段 A“激活审计”已经形成 A1～A5 可复核结果：完成两份高影响指南的语义激活映射、跨权威重复审计和六个真实历史场景的失效分类，并确认历史规则缺口已经进入当前仓库权威；当前不应继续为相同场景机械增加同义规则。
 
-B1 已冻结最小、工具无关的稀疏检索契约：作用域与当前职责是必需输入，阶段、目标对象和风险 / 状态条件只在确有辨识力时补充；派生结果必须回指当前源权威并支持来源陈旧检测，索引不可用或不可信时直接回退仓库读取。当前没有证据要求给全库统一增加文件头。
-
-B2 已选择 **JSON 派生规则索引 + Python 标准库薄查询器** 作为最小评估原型。该选择复用仓库现有 `evals/` 的 JSON + Python 标准库模式，不引入第三方包、数据库、MCP、服务或统一文件头；首轮原型只覆盖阶段 A 已审计的高影响规则面，不建立全仓库规则数据库。
+阶段 B“最小检索模型”已经完成拟集成候选：B1 冻结 `scope + responsibility + [stage] + [subject] + [conditions]` 的稀疏检索契约；B2 选择 **JSON 派生规则索引 + Python 标准库薄查询器**；B3 已建立 61 项 / 8 个规范性来源的首轮派生索引，验证来源可追溯、条件筛选、未知维度与来源陈旧回退，以及原型可删除 / 可重建边界。该原型仍是 `evals/` 下的评估资产，不是新的 Repository Authority，也没有证据要求全库统一增加文件头。
 
 当前下一实际门禁：
 
-> **阶段 B — 最小检索模型 / B3 — 原型验证**
+> **阶段 C — 检索 / 激活评估 / C1 — 定向评估设计**
 
-本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆分指南、建立规则图、采用 Obsidian、采用 CodeGraph 或新增运行时层；B3 只实现并验证 B2 选择的最小评估原型，再由阶段 C 判断该激活模式是否真实优于当前粗粒度加载。
+本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆分指南、建立规则图、采用 Obsidian、采用 CodeGraph 或新增运行时层；阶段 C 才负责比较当前粗粒度加载与按需检索在真实 Agent 行为上的差异，B3 原型验证本身不构成效果优越性证据。
 
 当前状态、研究依据、实施边界和协调计划统一记录在：
 
@@ -105,6 +103,7 @@ B2 已选择 **JSON 派生规则索引 + Python 标准库薄查询器** 作为�
 - `docs/research/knowledge-activation-evidence-appendix.md`
 - `docs/research/minimal-rule-retrieval-contract.md`
 - `docs/research/rule-retrieval-prototype-selection.md`
+- `docs/research/rule-retrieval-prototype-validation.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 - Issue #73
 
