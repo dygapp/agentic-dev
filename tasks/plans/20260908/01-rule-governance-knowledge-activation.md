@@ -18,10 +18,11 @@
 8. `docs/research/using-agentic-dev-activation-map.md`；
 9. `docs/research/external-operation-guidelines-activation-map.md`；
 10. `docs/research/cross-authority-duplication-audit.md`；
-11. `docs/guides/using-agentic-dev.md`；
-12. `docs/guides/external-operation-guidelines.md`；
-13. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-14. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+11. `docs/research/activation-failure-classification.md`；
+12. `docs/guides/using-agentic-dev.md`；
+13. `docs/guides/external-operation-guidelines.md`；
+14. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+15. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -39,11 +40,11 @@
 
 跟踪入口：Issue #73
 
-阶段 A 的实际执行分支 / PR 不作为长期恢复事实写死在本计划中；恢复时以 GitHub 当前开放 PR、分支和 `master` 为准。
+阶段执行分支 / PR 不作为长期恢复事实写死在本计划中；恢复时以 GitHub 当前开放 PR、分支和 `master` 为准。
 
 当前门禁：
 
-> **阶段 A — 激活审计**
+> **阶段 B — 最小检索模型 / B1 — 冻结最小检索契约**
 
 ## 范围
 
@@ -116,21 +117,23 @@
 
 对历史场景逐项分类：
 
-- [ ] 发现 / 激活失败；
-- [ ] 选择 / 冲突失败；
-- [ ] 指令密度问题；
-- [ ] 误导 / 陈旧上下文；
-- [ ] 真实规则缺口。
+- [x] 发现 / 激活失败；
+- [x] 选择 / 冲突失败；
+- [x] 指令密度问题；
+- [x] 误导 / 陈旧上下文；
+- [x] 真实规则缺口。
 
 至少覆盖：
 
-- [ ] 项目路线图 / 里程碑集成后状态闭环；
-- [ ] 规划候选 / 执行单元身份边界；
-- [ ] 验证触发 / 就绪重新进入；
-- [ ] 外部异步操作闭环；
-- [ ] 使用方新上下文权威发现。
+- [x] 项目路线图 / 里程碑集成后状态闭环；
+- [x] 规划候选 / 执行单元身份边界；
+- [x] 验证触发 / 就绪重新进入；
+- [x] 外部异步操作闭环；
+- [x] 使用方新上下文权威发现。
 
-阶段 A 完成条件：A1～A5 有可复核结果，并且能够说明下一步需要解决的是检索 / 激活，而不是直接新增规则。
+输出：`docs/research/activation-failure-classification.md`。
+
+阶段 A 完成结论：六个历史场景中既存在纯激活失败，也存在当时真实的使用层 / 平台专项规则缺口；这些历史缺口已经由当前仓库权威关闭。当前下一问题应优先验证检索、激活、范围选择、陈旧上下文和重复噪声，而不是继续新增同义规则。
 
 ---
 
@@ -304,8 +307,10 @@ B：薄常驻核心规则 + 任务 / 风险按需检索
 
 ## 当前下一步
 
-A1、A2、A3、A4 已完成，当前进入：
+A1～A5 已完成，阶段 A 已收敛；当前进入：
 
-> **A5 — 激活失效分类证据**
+> **阶段 B — 最小检索模型 / B1 — 冻结最小检索契约**
+
+B1 先决定真正具有辨识力的最小输入 / 输出 / 回退 / 重复与取代语义；在 B1 完成前，不预设必须给全库文档增加文件头，也不预设 YAML / JSON、图数据库、MCP 或其他特定实现。
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。
