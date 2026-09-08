@@ -23,10 +23,11 @@
 13. `docs/research/rule-retrieval-prototype-selection.md`；
 14. `docs/research/rule-retrieval-prototype-validation.md`；
 15. `docs/research/rule-retrieval-targeted-evaluation-design.md`；
-16. `docs/guides/using-agentic-dev.md`；
-17. `docs/guides/external-operation-guidelines.md`；
-18. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-19. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+16. `docs/research/rule-retrieval-ab-baseline-validation.md`；
+17. `docs/guides/using-agentic-dev.md`；
+18. `docs/guides/external-operation-guidelines.md`；
+19. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+20. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -48,7 +49,7 @@
 
 当前门禁：
 
-> **阶段 C — 检索 / 激活评估 / C2 — A/B 基线实现与静态校验**
+> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**
 
 ## 范围
 
@@ -198,14 +199,24 @@ C1 结论：冻结 6 个真实历史场景 + 3 个控制场景。A 组只加载�
 
 ### C2 — A/B 基线实现与静态校验
 
-- [ ] 实现可重复的 A / B 隔离 runner；
-- [ ] 实现 Consumer-local Authority 最小 fixture；
-- [ ] 实现无语义来源漂移 fixture；
-- [ ] 确保运行时不复制 `expected_behavior` / assertions / expected keys；
-- [ ] 固定结果 schema，区分进程退出、查询回退与人工语义评分；
-- [ ] 静态验证 A / B 使用同一任务、模型、reasoning effort 与外部权限边界；
-- [ ] 验证 9 个场景的 A 载荷和 B query 可以生成；
-- [ ] 验证 runner 命令可执行，但不在本步骤提前形成 C3 的运行时效果结论。
+- [x] 实现可重复的 A / B 隔离 runner；
+- [x] 实现 Consumer-local Authority 最小 fixture；
+- [x] 实现无语义来源漂移 fixture；
+- [x] 确保运行时不复制 `expected_behavior` / assertions / expected keys，也不暴露 A/B 分组或 `metric_focus`；
+- [x] 固定结果 schema，区分进程退出、查询回退与人工语义评分；
+- [x] 静态固定同一任务正文、runner、进程环境与外部权限边界，并明确实际模型 / reasoning effort 必须由 C3 运行证据证明一致；
+- [x] 验证 9 个场景的 A 载荷和 B query 可以生成；
+- [x] 真实执行 runner 静态验证命令，且未在本步骤提前形成 C3 的运行时效果结论。
+
+输出：
+
+- `docs/research/rule-retrieval-ab-baseline-validation.md`
+- `evals/rule-retrieval/README.md`
+- `evals/rule-retrieval/result-schema.json`
+- `evals/run_rule_retrieval_ab.py`
+- `evals/rule-retrieval/fixtures/consumer-local-authority/`
+
+C2 结论：A/B 基线已经可重复装配。PR #84 的只读临时 GitHub Actions Run `34291536760` 实际执行 Python 编译检查和 `python3 evals/run_rule_retrieval_ab.py --validate-only`，9 个场景均通过静态装配校验，隐藏答案与 A/B 分组没有进入运行时输入，且明确未执行 Agent A/B。临时 workflow 在取证后删除。当前仓库没有足以由 runner 自动证明实际模型 / 推理强度的统一配置契约，因此 C3 只有在两侧真实运行证据能证明模型与推理强度一致时，才允许把该配对纳入效果比较。
 
 比较基线：
 
@@ -229,6 +240,7 @@ B：薄入口 + 任务 / 风险条件检索 + 安全回退
 - [ ] 使用新上下文 / 隔离环境；
 - [ ] 隐藏预期行为 / 断言；
 - [ ] 进程退出码与语义通过分离；
+- [ ] 证明参与比较的 A/B 配对实际模型与推理强度一致；
 - [ ] 人工按断言评分；
 - [ ] 对失败场景先判断激活 / 检索 / 规则缺口类型再修订。
 
@@ -330,10 +342,10 @@ B：薄入口 + 任务 / 风险条件检索 + 安全回退
 
 ## 当前下一步
 
-阶段 A 与阶段 B 已完成；阶段 C 的 C1 已完成，当前进入：
+阶段 A 与阶段 B 已完成；阶段 C 的 C1、C2 已完成，当前进入：
 
-> **阶段 C — 检索 / 激活评估 / C2 — A/B 基线实现与静态校验**
+> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**
 
-C2 只把 C1 设计固化成可重复 runner / fixture / 结果 schema 并做静态校验，不提前修改 Guide / Skill，也不把命令可执行误报为 A/B 效果证据。
+C3 执行 C1 冻结的真实新上下文 A/B，必须保持隐藏断言、记录实际模型 / 推理强度证据并由人工逐项评分；在 C3 证据形成前，不修改 Guide / Skill，不宣称 B 优于 A，也不进入阶段 D。
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。
