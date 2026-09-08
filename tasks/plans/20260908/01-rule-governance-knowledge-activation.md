@@ -14,10 +14,11 @@
 4. `docs/project/rule-governance-knowledge-activation-v1.md`；
 5. `docs/research/knowledge-activation-and-code-intelligence-analysis.md`；
 6. `docs/research/knowledge-activation-evidence-appendix.md`；
-7. `docs/guides/using-agentic-dev.md`；
-8. `docs/guides/external-operation-guidelines.md`；
-9. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-10. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+7. `docs/research/rule-activation-audit-baseline.md`；
+8. `docs/guides/using-agentic-dev.md`；
+9. `docs/guides/external-operation-guidelines.md`；
+10. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+11. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -35,9 +36,7 @@
 
 跟踪入口：Issue #73
 
-当前分支：
-
-`docs/rule-governance-knowledge-activation-v1`
+阶段 A 的实际执行分支 / PR 不作为长期恢复事实写死在本计划中；恢复时以 GitHub 当前开放 PR、分支和 `master` 为准。
 
 当前门禁：
 
@@ -74,12 +73,12 @@
 
 ### A1 — 建立审计基线
 
-- [ ] 重新确认 `master`、开放 PR / Issue 与当前活动里程碑；
-- [ ] 确认 `using-agentic-dev.md`、`external-operation-guidelines.md` 当前精确 blob / commit 身份；
-- [ ] 枚举当前 AGENTS / README / 技能 / 指南 / 项目入口中与两份指南重复或交叉的高影响规则；
-- [ ] 冻结历史失效场景候选清单。
+- [x] 重新确认 `master`、开放 PR / Issue 与当前活动里程碑；
+- [x] 确认 `using-agentic-dev.md`、`external-operation-guidelines.md` 当前精确 blob / commit 身份；
+- [x] 枚举当前 AGENTS / README / 技能 / 指南 / 项目入口中与两份指南重复或交叉的高影响规则；
+- [x] 冻结历史失效场景候选清单。
 
-输出：激活审计基线与场景清单。
+输出：`docs/research/rule-activation-audit-baseline.md`。
 
 ### A2 — `using-agentic-dev.md` 激活映射
 
@@ -296,8 +295,8 @@ B：薄常驻核心规则 + 任务 / 风险按需检索
 
 ## 当前下一步
 
-本计划当前只进入：
+A1 已完成，当前进入：
 
-> **A1 — 建立审计基线**
+> **A2 — `using-agentic-dev.md` 激活映射**
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。

@@ -37,6 +37,7 @@ Research 文档可以保留“研究形成时”的 Candidate / Pending 状态�
 - `data-access-scope-boundedness-analysis.md`：Engineering Discipline Expansion v1 的单一候选研究。结合 Issue #33 已核验的多个 Consumer 数据访问实例，以及 Google AIP、Relay Connections、PostgreSQL 和 Kubernetes API 的当前外部证据，研究 Consumer Scope、集合 Boundedness / Growth、Lifecycle / Freshness、Filtering / Ordering、Window / Pagination、Representation 与 Verification 的组合判断。Architecture Fit 当前结论为 **Engineering Discipline + thin `execute-unit` consumption**；Draft 与 Targeted Eval 仍需完成验证后才能进入现行 Repository Authority。
 - `knowledge-activation-and-code-intelligence-analysis.md`：规则治理与知识激活 v1 的主要研究输入。系统整理大型指南 / 文档型超级能力、激活单元、常驻核心规则、任务 / 风险 → 规则检索、Obsidian 人类知识治理边界、`colbymchenry/codegraph` 的精确上下文、有类型关系、单一强入口、陈旧处理和检索评估经验，以及使用方直接采用代码智能的职责边界；同时固化代码复核、技术画像与 AI 友好代码的后续规划判断。该文档只保存研究依据，活动里程碑、后继 WI-07 边界和当前下一步以项目路线图、Issue #73 与项目计划为准。
 - `knowledge-activation-evidence-appendix.md`：上述研究的关键证据附录，保存当前指南体量、PR #72“已有规则但未可靠激活”的具体反例、CodeGraph 子代理约 `1 / 9` 主动发现能力与短激活提示后的对照、单一强入口和常驻指令控制、第一方基准测试边界、Codex 集成方式、`code-review` 当前正式架构身份、Issue #71 / AR-04 的独立复核证据等容易在新上下文中遗漏的事实。后续恢复本轮研究时应与主研究文档一起读取。
+- `rule-activation-audit-baseline.md`：规则治理与知识激活 v1 阶段 A / A1 审计基线。冻结当前 `master`、两份高影响指南及直接交叉入口的精确身份，登记后续 A2～A4 必须覆盖的高影响交叉主题，并把 PR #59 / #60 / #61 / #72、Issue #33 / #52 的真实历史摩擦固化为 A5 与后续检索 / 激活评估的场景候选。该文档只保存审计证据，不把交叉主题提前定义为最终规则单元，也不修改现行指南或技能行为。
 
 后续 Research 可以包括：
 
