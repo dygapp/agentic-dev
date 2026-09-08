@@ -17,7 +17,7 @@
 - **知识存储**：长期知识进入 Git 仓库；
 - **知识组织**：方法、架构、工程纪律、技术画像、指南、技能、项目权威等分层；
 - **知识权威**：存在明确权威顺序；
-- **知识生命周期**：研究、候选、已验证、已集成等状态和 Roadmap / Issue / PR 证据已经形成。
+- **知识生命周期**：研究、候选、已验证、已集成等状态和项目路线图 / Issue / PR 证据已经形成。
 
 相对薄弱的是：
 
@@ -38,7 +38,7 @@
 
 典型情况：
 
-- `using-agentic-dev.md` 同时涉及知识边界、需求来源采纳、使用方权威、项目初始化、Roadmap、语言选择、项目结构、技能使用、新上下文、功能工作流、验证与集成等；
+- `using-agentic-dev.md` 同时涉及知识边界、需求来源采纳、使用方权威、项目初始化、项目路线图、语言选择、项目结构、技能使用、新上下文、功能工作流、验证与集成等；
 - `external-operation-guidelines.md` 同时涉及外部写操作、权限、多仓库边界、人工介入、异步任务、媒体输入、共享资源、租约、临时证据晋升、PR / GitHub 操作等。
 
 单个文件较大本身不是错误。真正的问题是：
@@ -71,7 +71,7 @@
 
 > 一个可以由明确任务、风险、产物或状态独立触发，并且可以在不加载整个知识容器的情况下被当前工作消费的最小规则语义单元。
 
-例如，当前任务是 Roadmap / Milestone 状态更新时，可能真正需要的是：
+例如，当前任务是项目路线图 / 里程碑状态更新时，可能真正需要的是：
 
 ```text
 仓库权威
@@ -114,7 +114,7 @@
 根据任务中实际出现的风险、技术或产物条件加载，例如：
 
 ```text
-Roadmap 变化
+项目路线图变化
 → 集成状态闭环
 
 共享评审环境
@@ -239,7 +239,7 @@ verifies
 - `src/installer/instructions-template.ts`；
 - `src/installer/targets/codex.ts`；
 - `.claude/skills/agent-eval/SKILL.md`；
-- CodeGraph language verification / retrieval eval 相关材料。
+- CodeGraph 语言验证 / 检索评估相关材料。
 
 CodeGraph 是本地优先的代码智能工具：使用 AST / tree-sitter 提取代码符号、关系和文件信息，保存到本地 SQLite 知识图谱，并通过 MCP、CLI 和库接口提供给 Agent。
 
@@ -346,7 +346,7 @@ CodeGraph 的多数代码关系可以从 AST 确定性推导；规则关系通�
 例如：
 
 ```text
-Roadmap 变化
+项目路线图变化
 → 触发
 集成状态闭环
 ```
@@ -408,9 +408,9 @@ Roadmap 变化
 
 需要特别纠正一个容易产生的误解：
 
-> 普通使用方不应该复制 CodeGraph 仓库中的 `.claude/skills/add-lang`、`agent-eval` 等内部 Skill 作为自身代码管理 Skill。
+> 普通使用方不应该复制 CodeGraph 仓库中的 `.claude/skills/add-lang`、`agent-eval` 等内部技能作为自身代码管理技能。
 
-这些 Skill 主要服务于 CodeGraph 项目自身的语言支持建设和 Agent A/B 评估。
+这些技能主要服务于 CodeGraph 项目自身的语言支持建设和 Agent A/B 评估。
 
 CodeGraph 真正面向普通使用方的主要交付是：
 
@@ -543,7 +543,7 @@ WI-06 应继续等待代码复核 / 使用方评估证明哪些技术知识确�
 
 ## 16. 代码复核能力重新评估
 
-代码复核并不是新出现的想法。当前 Skill Architecture 历史上已经把代码复核保留为工程纪律 / 内嵌职责候选，第一批 8 个核心 Skill 没有将 `code-review` 独立 Skill 化；逻辑上仍保留“规格符合性”和“工程质量”两个审查维度。
+代码复核并不是新出现的想法。当前技能架构历史上已经把代码复核保留为工程纪律 / 内嵌职责候选，第一批 8 个核心技能没有将 `code-review` 独立技能化；逻辑上仍保留“规格符合性”和“工程质量”两个审查维度。
 
 当前证据已经明显增强了 WI-07 重新评估 `code-review` 的理由：
 
@@ -787,7 +787,7 @@ WI-07 — 代码复核能力 v1
 5. CodeGraph 最值得借鉴的是有类型关系、精确上下文、单一强入口、紧凑常驻指令、陈旧处理和检索评估；
 6. `agentic-dev` 不应现在照搬 CodeGraph 架构或建立新图 / MCP 层；
 7. 使用方源码发现可以直接实验采用 CodeGraph，本地索引只是派生上下文，不是项目事实；
-8. 使用方不应复制 CodeGraph 内部开发 Skills，主要消费其 MCP / CLI / 本地索引；
+8. 使用方不应复制 CodeGraph 内部开发技能，主要消费其 MCP / CLI / 本地索引；
 9. CodeGraph 对 `execute-unit`、`systematic-debug`、未来 `code-review` 最有潜在价值；
 10. 技术画像应从“教模型生成”转向“缺陷检测 / 必须验证的增量知识”，WI-06 暂缓；
 11. 代码复核已具备 WI-07 重新评估条件，但必须与规划复核分离，并避免成为超级技能；
