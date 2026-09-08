@@ -37,27 +37,46 @@
 
 该里程碑已完成平台语义核验、长期外部操作指导、三项治理定向评估、人工语义评分与最终 AI 复核。`G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 最终均为 `5 / 5`，合计 `15 / 15` 断言通过；最终 AI 复核 Review `5129305394` 未解决阻塞 / 中等级问题为 `0 / 0`。PR #70 已于 2026-09-07 通过 squash merge 集成，合并提交为 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已按完成关闭。
 
-当前没有活动有限里程碑，项目重新进入：
+2026-09-08，人工权威已显式选择下一有限里程碑：
 
-> **待人工决策**
+> **规则治理与知识激活 v1**
 
-WI-06、WI-07、WI-09、第四工程纪律、Issue #71 以及其他工程能力候选均未自动启动。Issue #58 继续作为长期使用方经验反馈入口。
+当前活动跟踪入口：Issue #73。
+
+启动基线：
+
+`master@0895ca30f76c666f3a0d4d9c2f9af6f14cded5d6`
+
+当前下一实际门禁：
+
+> **Phase A — Activation Audit**
+
+本里程碑优先解决巨型 Guide、规则重复、粗粒度加载和“规则存在但未在正确任务中激活”的问题。完整研究和实施边界分别位于：
+
+- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `docs/project/rule-governance-knowledge-activation-v1.md`
+- `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
+
+WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因本里程碑启动而自动进入实现。**WI-07 — Code Review Capability v1** 已登记为本里程碑完成后的优先后继方向，但必须在规则治理与知识激活 v1 完成并集成后重新进入人工里程碑决策。
+
+Issue #58 继续作为长期使用方经验反馈入口。
 
 ## 3. 当前路线状态
 
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
+| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；当前进入 Phase A Activation Audit；先验证激活问题，不预设拆 Guide、Graph DB 或新 Runtime Layer |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
-| 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 未启动 |
-| 使用方采用 | 基础建设已完成 | 首次正式既有项目采用已完成；后续反馈继续作为候选输入 |
-| 任务型技能 | v1 后候选库 | WI-07 未启动 |
+| 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待 Review / Consumer Eval 暴露真实增量缺口 |
+| 使用方采用 | 基础建设已完成，当前里程碑要求一次 Consumer 验证 | Consumer-local Authority 始终优先；CodeGraph 只作为可选 Code Intelligence 实验输入 |
+| 任务型技能 | v1 后候选库 | WI-07 未启动；Code Review Capability v1 已成为当前优先后继候选 |
 | 运行时与分发 | v1 后候选库 | WI-09 未启动 |
 | 项目语言治理 | 已完成并集成 | 工程术语语义安全与现行文档全量收敛 v1 已通过 PR #67 集成 |
 | GitHub 集成拓扑安全 | 已完成并集成 | PR #70 已合并，提交 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已关闭 |
-| 模型路由 / 盲测对照证据 | 候选输入 | Issue #71 仅作为规划 / 研究候选；尚未形成 `agentic-dev` 方法、技能、门禁或默认模型策略结论 |
+| 模型路由 / 盲测对照证据 | 候选输入 | Issue #71 同时作为独立 Planning Review / 模型路由研究输入；不与 Code Review 合并为超级能力 |
 
-## 4. 已完成能力基线与维护里程碑
+## 4. 里程碑与维护记录
 
 ### 4.1 工程能力基础 v1
 
@@ -258,6 +277,48 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`
 
+### 4.8 规则治理与知识激活 v1
+
+**当前活动有限里程碑。**
+
+人工选择日期：2026-09-08。
+
+启动基线：
+
+`master@0895ca30f76c666f3a0d4d9c2f9af6f14cded5d6`
+
+跟踪入口：Issue #73。
+
+核心目标：从“保存更多规则”转向“当前任务可靠取得最小正确规则集”，并用历史真实失效场景与 Consumer Fresh Context 证明新的激活模式有效。
+
+当前下一实际步骤：
+
+> **Phase A — Activation Audit**
+
+主要边界：
+
+- 治理单位是 Activation Unit，不是文件大小；
+- 先判断 Rule Gap 还是 Activation Failure；
+- Always-on Kernel 必须保持薄；
+- Skill 不复制全部长期知识；
+- Authority 与 Derived Index 分离；
+- Retrieval 必须有真实任务 Eval；
+- Obsidian 只作为可选人类治理 Workbench；
+- CodeGraph 只作为外部研究和 Consumer 可选 Code Intelligence，不成为本里程碑强依赖；
+- 不在本里程碑实现 Code Review。
+
+项目记录：
+
+`docs/project/rule-governance-knowledge-activation-v1.md`
+
+研究记录：
+
+`docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+
+协调计划：
+
+`tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
+
 ## 5. 当前工程纪律清单
 
 当前正式工程纪律：
@@ -278,11 +339,12 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - 工程纪律扩展 v1 没有新增技能；
 - 技术画像契约已经集成；
 - 当前代表性技术画像为 Vue 3 + TypeScript；
-- Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 等仍是未来候选，不构成当前路线承诺。
+- Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 等仍是未来候选，不构成当前路线承诺；
+- 当前有限里程碑明确暂缓 WI-06，先由 Code Review / Consumer Eval 判断哪些技术知识确有持久化增量价值。
 
 ## 7. v1 后候选库
 
-以下候选继续保留，但都未启动，且不会自动成为新的有限里程碑。
+以下候选继续保留，但都未因当前里程碑而自动启动。
 
 ### WI-06 — 第二及后续技术画像
 
@@ -295,11 +357,50 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 已有技术画像完成不会自动触发 WI-06。
 
+当前优先边界进一步收紧为：
+
+> 先用 Code Review / Consumer Eval 判断“模型自身知识 + 当前 Repository + 必要时当前官方资料”是否仍存在稳定、跨项目、会实质影响工程决策的缺口，再决定是否持久化新的 Technology Profile。
+
+当前研究假设：Spring 与 Gradle 具有较高 Review Eval 价值；Element Plus 的通用长期 Profile 价值相对较低。该判断只是研究输入，不构成 WI-06 启动。
+
 ### WI-07 — 任务型技能提炼
 
 只有出现可证明的独立稳定任务职责，并具有明确输入、过程、输出、退出和升级边界时，才重新评估。
 
 不得机械创建按技术名称组织的百科式技能。
+
+#### 优先后继候选：Code Review Capability v1
+
+当前状态：**优先后继候选，未启动**。
+
+当前证据已经足以把 `code-review` 从抽象未来可能性提升为 WI-07 的明确优先候选，但不绕过当前规则治理与知识激活里程碑。
+
+候选职责：
+
+- 独立、Fresh Context / context-controlled 的高信噪比 Review；
+- 输入包括当前 Repository Authority、相关 Specification / Plan / Architecture、Diff / current source 与 verification evidence；
+- 输出为 actionable findings、无阻塞 / 中等级问题结论，或证据不足 / 升级说明；
+- 重点检查规格符合性、真实缺陷 / 回归、数据 / 状态 / 并发 / 生命周期、边界 / 依赖 / 副作用、推测性复杂度、Diff Scope、Verification Evidence 和按风险触发的技术误用；
+- 可以由 Consumer Code Intelligence（如 CodeGraph）辅助结构发现，但不能对其形成强依赖。
+
+候选边界：
+
+- 不成为新的通用 Method Stage；
+- 不要求所有微小工作机械进入独立 Review；
+- 不与独立高风险 Planning Review / Architecture Review 合并；
+- 不成为“Review Everything”超级 Skill；
+- 不创建 `vue-review-skill`、`spring-review-skill`、`gradle-review-skill` 等技术名 Review Skill；
+- 不预加载全部 Guide / Engineering Discipline / Technology Profile；
+- 不把命名、格式、个人风格或无证据未来扩展性作为主要 Finding。
+
+启动前置条件：
+
+1. 规则治理与知识激活 v1 已完成并集成；
+2. `Task / Risk → Rule Activation` 模式已经有可验证证据；
+3. 重新读取 Issue #71，区分 Code Review 与独立高风险 Planning Review；
+4. 冻结 Code Review 输入 / 输出 /退出 / 升级契约；
+5. 设计真实 Consumer Diff Targeted Eval；
+6. 明确无 CodeGraph / 无专项技术 Profile 时的可靠回退路径。
 
 ### WI-09 — 运行时适配与分发
 
@@ -357,7 +458,8 @@ Issue #71 收录 Consumer 在关键架构评审中形成的 paired blind eval、
 - 尚未由 `agentic-dev` 完成证据复核与架构适配判断；
 - 不构成新的常规方法门禁；
 - 不构成新的技能、模型路由框架或默认模型策略；
-- requested model / actual runtime model 的证据声明边界仍需在后续规划时单独评估。
+- requested model / actual runtime model 的证据声明边界仍需在后续规划时单独评估；
+- 其中 AR-04 同时支持“高返工 Technical Planning 的独立 Fresh Context Review”研究价值，但该职责必须与未来 Code Review 分开评估。
 
 ### 其他候选
 
@@ -369,17 +471,21 @@ Issue #71 收录 Consumer 在关键架构评审中形成的 paired blind eval、
 
 ## 8. 当前边界
 
-当前没有活动有限里程碑。项目处于“上一有限里程碑已完成并集成，等待下一有限里程碑人工路线决策”的状态。
+当前只有一个活动有限里程碑：
 
-以下方向全部保持候选，不自动启动：
+> **规则治理与知识激活 v1**
+
+当前只允许沿 Issue #73、项目记录与协调计划推进 Activation Audit → Minimal Retrieval Model → Retrieval / Activation Eval → 必要 Authority Convergence → Consumer Validation → Final Review / Integration。
+
+以下方向全部保持候选，不自动并入当前里程碑：
 
 - 第二及后续技术画像建设；
-- 新任务型技能建设；
+- WI-07 Code Review Capability v1 实现；
 - 运行时或分发实施；
 - 第四工程纪律建设；
 - 第二次基础型既有项目采用门禁；
 - 可执行架构边界证据模式的正式能力建设；
-- Issue #71 的模型路由 / 盲测对照证据候选。
+- Issue #71 的模型路由 / 多模型采用实施。
 
 如果这些方向产生新证据，只记录为后续候选，等待未来人工里程碑决策。
 
@@ -394,22 +500,23 @@ Issue #71 收录 Consumer 在关键架构评审中形成的 paired blind eval、
 5. 根据候选类型完成必要的研究、架构适配评估、草案、专项评估、AI 复核和集成；
 6. 不因为新候选出现而自动追加到同一里程碑。
 
-上一有限里程碑已经完成并集成，当前重新进入下一有限里程碑决策。候选库中的任何项目，包括 Issue #71，都不会自动续接为活动工作。
+当前规则治理与知识激活 v1 已由人工显式选择。其完成后，优先重新评估 WI-07 — Code Review Capability v1，但优先级不等于自动启动；仍需新的人工里程碑决策。
 
 ## 10. 新上下文恢复顺序
 
 新的 `agentic-dev` 工作上下文应：
 
 1. 读取根目录 `AGENTS.md`；
-2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑，以及当前是否存在活动有限里程碑；
+2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑和当前活动有限里程碑；
 3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；
-4. 如果当前仍无活动有限里程碑，只恢复候选库与开放证据入口，不自行启动规划或实施；
-5. 需要恢复最近完成里程碑时读取 Issue #69、PR #70、`docs/project/stacked-pr-squash-topology-v1.md`、`docs/research/github-stacked-pr-squash-topology.md` 与对应计划，但不得把它恢复为活动工作；
-6. 需要评估新候选时按人工指令读取 Issue #71、Issue #58 或对应候选证据；
-7. 按当前任务需要读取方法、外部操作指南、评估语料或其他最小必要权威；
-8. 不把 WI-06、WI-07、WI-09、Issue #71 或其他候选库项目当作已启动工作；
-9. 不依赖历史聊天、其他会话或个人记忆补充未固化的项目事实；
-10. 面向人的输出遵循当前仓库严格中文表达规则，并使用当前正式概念身份映射，不从历史会话或个人记忆恢复旧的中英文混写语风或冲突中文别名。
+4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；
+5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前初始门禁为 Phase A — Activation Audit；
+6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、Engineering Disciplines、Issue #58 / #71 或历史评估；不得因为研究对象很多而默认全量加载；
+7. 不把 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 当作当前实施工作；
+8. Code Review Capability v1 只是优先后继候选，只有当前里程碑完成并由人工重新选择后才能启动；
+9. CodeGraph / Obsidian 是 Research 中的外部输入，不是当前仓库 Authority 或强制工具；Consumer CodeGraph Adoption 只能按实际 Consumer 环境独立验证；
+10. 不依赖历史聊天、其他会话或个人记忆补充未固化的项目事实；
+11. 面向人的输出遵循当前仓库严格中文表达规则，并使用当前正式概念身份映射，不从历史会话或个人记忆恢复旧的中英文混写语风或冲突中文别名。
 
 ## 11. 更新触发条件
 
