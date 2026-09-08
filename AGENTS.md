@@ -87,11 +87,13 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 阶段 A“激活审计”已经形成 A1～A5 可复核结果：完成两份高影响指南的语义激活映射、跨权威重复审计和六个真实历史场景的失效分类，并确认历史规则缺口已经进入当前仓库权威；当前不应继续为相同场景机械增加同义规则。
 
+B1 已冻结最小、工具无关的稀疏检索契约：作用域与当前职责是必需输入，阶段、目标对象和风险 / 状态条件只在确有辨识力时补充；派生结果必须回指当前源权威并支持来源陈旧检测，索引不可用或不可信时直接回退仓库读取。当前没有证据要求给全库统一增加文件头。
+
 当前下一实际门禁：
 
-> **阶段 B — 最小检索模型 / B1 — 冻结最小检索契约**
+> **阶段 B — 最小检索模型 / B2 — 原型选择**
 
-本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆分指南、建立规则图、采用 Obsidian、采用 CodeGraph 或新增运行时层；阶段 B 先冻结最小、工具无关的检索契约，再基于后续原型与隔离评估决定长期结构收敛。
+本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆分指南、建立规则图、采用 Obsidian、采用 CodeGraph 或新增运行时层；B2 只选择能够完整满足 B1 契约的最小可重建原型，再由 B3 和阶段 C 验证其实际效果。
 
 当前状态、研究依据、实施边界和协调计划统一记录在：
 
@@ -99,6 +101,7 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 - `docs/project/rule-governance-knowledge-activation-v1.md`
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
+- `docs/research/minimal-rule-retrieval-contract.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 - Issue #73
 
