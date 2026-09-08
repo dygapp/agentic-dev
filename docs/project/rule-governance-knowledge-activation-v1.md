@@ -125,6 +125,7 @@
 - `docs/architecture/technology-profile-contract.md`；
 - `docs/technology-profiles/vue3-typescript.md`；
 - `docs/research/minimal-rule-retrieval-contract.md`；
+- `docs/research/rule-retrieval-prototype-selection.md`；
 - Issue #58；
 - Issue #71；
 - 最近与集成状态闭环、候选 / 执行单元身份、验证触发、新上下文恢复有关的历史评估和 PR 证据。
@@ -172,7 +173,7 @@
 
 状态：**当前**。
 
-目标：冻结最小、工具无关的检索语义。
+目标：冻结最小、工具无关的检索语义并验证最小原型。
 
 B1 已冻结：
 
@@ -188,14 +189,28 @@ B1 研究基线：
 
 `docs/research/minimal-rule-retrieval-contract.md`
 
-允许的最小原型：
+B2 已选择：
 
-- Markdown 段落索引；
-- YAML / JSON 规则索引；
-- 小型查询脚本；
-- 其他可重建派生结构。
+> **JSON 派生规则索引 + Python 标准库薄查询器**
 
-不要求：图数据库、MCP、Obsidian 插件、Marketplace、运行时适配器，也不预设必须给全库文档增加文件头。
+B2 选择依据：
+
+- 当前 `evals/` 已采用 JSON 语料和 Python 标准库薄执行器；
+- JSON 能稳定表达 B1 的稀疏条件、来源身份和最小关系；
+- Python 标准库足以执行确定性过滤、陈旧检测和机器可读输出；
+- 不需要新增第三方包、数据库、MCP、服务或统一文件头；
+- 首轮只覆盖阶段 A 已审计的高影响规则面，不建立全仓库规则数据库。
+
+B2 研究决策：
+
+`docs/research/rule-retrieval-prototype-selection.md`
+
+B3 拟实现原型：
+
+```text
+evals/rule-retrieval/rule-index.json
+evals/query_rule_index.py
+```
 
 阶段 B 完成门禁：
 
@@ -205,7 +220,7 @@ B1 研究基线：
 
 当前下一工作项：
 
-> **B2 — 原型选择**
+> **B3 — 原型验证**
 
 ### 阶段 C — 检索 / 激活评估
 
@@ -446,10 +461,10 @@ WI-06 暂不启动。
 
 ## 12. 当前下一步
 
-阶段 A 已完成，B1 最小检索契约已冻结。下一实际步骤不是拆分指南、全库增加文件头，也不是实现代码复核，而是：
+阶段 A 已完成，B1 最小检索契约已冻结，B2 原型选择已完成。下一实际步骤不是拆分指南、全库增加文件头，也不是实现代码复核，而是：
 
-> **阶段 B — 最小检索模型 / B2 — 原型选择。**
+> **阶段 B — 最小检索模型 / B3 — 原型验证。**
 
-新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、研究文档和协调计划，然后从 B2 继续。
+新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、研究文档和协调计划，然后从 B3 继续。
 
 为避免将会话历史重新变成事实来源，上句中的正式恢复入口应按以下语义理解：新上下文从 GitHub 当前状态、`AGENTS.md`、项目路线图、Issue #73、本文件、研究文档和协调计划恢复；只有当前任务确实需要时，再按渐进式披露读取其他指南、架构、历史评估或使用方证据。
