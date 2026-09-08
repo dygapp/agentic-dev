@@ -2,7 +2,7 @@
 
 ## 状态
 
-**当前活动有限里程碑 / Planning 已启动**
+**当前活动有限里程碑 / 规划已启动**
 
 人工决策日期：2026-09-08
 
@@ -20,7 +20,7 @@
 
 > **工程能力扩展与方法演进**
 
-本里程碑不启动 WI-06、WI-07、WI-09、第四工程纪律或其他候选能力的实现。WI-07 — Code Review Capability v1 被明确登记为本里程碑完成后的优先后继方向，但不会因为本里程碑启动而自动进入 Execute。
+本里程碑不启动 WI-06、WI-07、WI-09、第四工程纪律或其他候选能力的实现。WI-07 — 代码复核能力 v1 被明确登记为本里程碑完成后的优先后继方向，但不会因为本里程碑启动而自动进入执行。
 
 ## 1. 决策背景
 
@@ -28,48 +28,49 @@
 
 当前仓库已经具有较成熟的：
 
-- Repository Authority；
-- Method / Architecture / Engineering Discipline / Technology Profile / Guide / Skill 分层；
-- Fresh Context 与 Progressive Disclosure 原则；
-- Current Evidence 与集成状态闭环；
-- 多轮 Consumer Evidence；
+- 仓库权威；
+- 方法 / 架构 / 工程纪律 / 技术画像 / 指南 / 技能分层；
+- 新上下文与渐进式披露原则；
+- 当前证据与集成状态闭环；
+- 多轮使用方证据；
 - 运行时评估与人工语义评分机制。
 
 但真实演进中出现了新的结构性风险：
 
-1. `using-agentic-dev.md`、`external-operation-guidelines.md` 等较大 Guide 已包含多个可以独立触发的长期职责；
-2. 为避免超级 Skill 而保留在 Guide 中的规则，如果仍以整份 Guide 为激活单位，会形成“文档型超级能力”；
-3. 新问题出现后继续默认“补一条规则 / 补一个 Guide 段落”，会扩大活动指令面和重复规则；
+1. `using-agentic-dev.md`、`external-operation-guidelines.md` 等较大指南已包含多个可以独立触发的长期职责；
+2. 为避免超级技能而保留在指南中的规则，如果仍以整份指南为激活单位，会形成“文档型超级能力”；
+3. 新问题出现后继续默认“补一条规则 / 补一个指南段落”，会扩大活动指令面和重复规则；
 4. 已经出现“规则存在，但没有在正确任务路径中可靠激活”的现实信号；
 5. 高能力模型本身已经具备大量通用技术知识，继续扩大百科式技术指导的边际价值下降；
-6. Consumer 真实开发还存在源码发现成本，应该区分“规则激活”和“代码结构发现”，后者可以优先使用成熟 Code Intelligence 工具而不是由 `agentic-dev` 自己再造。
+6. 使用方真实开发还存在源码发现成本，应该区分“规则激活”和“代码结构发现”，后者可以优先使用成熟代码智能工具，而不是由 `agentic-dev` 自己再造。
 
 因此人工权威选择“规则治理与知识激活 v1”作为下一有限里程碑。
 
 完整研究依据：
 
-`docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `docs/research/knowledge-activation-evidence-appendix.md`
 
 ## 2. 核心目标
 
 本里程碑只解决一个有限问题：
 
-> **让当前任务能够以更小、更准确、可验证的活动上下文发现并激活正确规则，同时抑制 Guide、重复规则和长期 Context Surface 的继续膨胀。**
+> **让当前任务能够以更小、更准确、可验证的活动上下文发现并激活正确规则，同时抑制指南、重复规则和长期上下文面的继续膨胀。**
 
 具体目标：
 
-1. 对当前高影响 Guide 和跨层规则执行 Activation Audit；
+1. 对当前高影响指南和跨层规则执行激活审计；
 2. 识别真实的规则激活单元，而不是以文件大小或目录结构作为治理单位；
-3. 区分 Always-on Kernel、Task Capability Context、Conditional Rule Context；
-4. 冻结一个最小 `Task / Risk → Rule Set` 检索模型；
-5. 使用真实历史失效场景验证 Retrieval / Activation，而不是只检查文档结构；
-6. 基于 Eval 证据决定哪些 Guide 应拆分、哪些只需要 section-level pointer、哪些规则应删除 / 合并 / supersede、哪些必须留在 Always-on；
-7. 至少在一个 Consumer Fresh Context 中验证新的激活方式；
-8. 建立“先判断 Activation Failure，再决定是否新增 Rule”的长期治理路径。
+3. 区分常驻核心规则、任务能力上下文、条件规则上下文；
+4. 冻结一个最小“任务 / 风险 → 规则集”检索模型；
+5. 使用真实历史失效场景验证检索 / 激活，而不是只检查文档结构；
+6. 基于评估证据决定哪些指南应拆分、哪些只需要段落级指针、哪些规则应删除 / 合并 / 取代、哪些必须留在常驻核心规则中；
+7. 至少在一个使用方新上下文中验证新的激活方式；
+8. 建立“先判断激活失败，再决定是否新增规则”的长期治理路径。
 
 ## 3. 关键设计原则
 
-### 3.1 治理对象是 Activation Unit，不是文件大小
+### 3.1 治理对象是激活单元，不是文件大小
 
 大文件不自动等于错误，小文件也不自动等于可发现。
 
@@ -79,31 +80,31 @@
 - 谁消费；
 - 是否需要独立加载；
 - 是否与其他规则重复 / 冲突；
-- 是否能通过 Retrieval Eval 观察到改善。
+- 是否能通过检索评估观察到改善。
 
-### 3.2 Always-on 必须保持薄
+### 3.2 常驻核心规则必须保持薄
 
-只有真正跨任务成立的不变量才可以进入 Always-on Kernel。
+只有真正跨任务成立的不变量才可以进入常驻核心规则。
 
 “重要”不等于“每次都加载”。
 
-### 3.3 Skill 不拥有全部知识
+### 3.3 技能不拥有全部知识
 
-Skill 负责稳定任务职责与流程边界；条件性知识继续存在于合适的长期 Authority 中，通过指针或检索按需进入当前 Context。
+技能负责稳定任务职责与流程边界；条件性知识继续存在于合适的长期权威中，通过指针或检索按需进入当前上下文。
 
-不得为了修 Guide 激活问题，把所有 Guide 内容重新复制到 Skill。
+不得为了修复指南激活问题，把所有指南内容重新复制到技能。
 
-### 3.4 Authority 与 Index 分离
+### 3.4 权威与索引分离
 
-如果后续出现 Rule Metadata / Index / Query Prototype：
+如果后续出现规则元数据 / 索引 / 查询原型：
 
-- Git Repository 中的规范性文档继续是 Authority；
-- Index 必须可重建；
-- Index 必须可检测 stale；
-- Index 不得成为第二事实来源；
-- 同一规则不得因为方便检索而在多个 Authority 中复制全文。
+- Git 仓库中的规范性文档继续是权威；
+- 索引必须可重建；
+- 索引必须可检测陈旧；
+- 索引不得成为第二事实来源；
+- 同一规则不得因为方便检索而在多个权威中复制全文。
 
-### 3.5 Retrieval 必须可评估
+### 3.5 检索必须可评估
 
 评估对象不是“索引能运行”，而是：
 
@@ -125,20 +126,20 @@ Skill 负责稳定任务职责与流程边界；条件性知识继续存在于�
 - `docs/technology-profiles/vue3-typescript.md`；
 - Issue #58；
 - Issue #71；
-- 最近与集成状态闭环、候选 / Execution Unit 身份、验证触发、Fresh Context 恢复有关的历史评估和 PR 证据。
+- 最近与集成状态闭环、候选 / 执行单元身份、验证触发、新上下文恢复有关的历史评估和 PR 证据。
 
 ### 4.2 外部研究
 
-- OpenAI 当前模型 Prompt / Tool guidance；
+- OpenAI 当前模型提示与工具指导；
 - Obsidian Graph / Backlinks / Properties / Bases；
 - `colbymchenry/codegraph` 当前实现与 Agent 集成；
-- CodeGraph Retrieval / Agent A/B Eval 设计。
+- CodeGraph 检索 / Agent A/B 评估设计。
 
-外部研究不能自动覆盖本仓库 Authority。
+外部研究不能自动覆盖本仓库权威。
 
 ## 5. 分阶段实施路线
 
-### Phase A — Activation Audit
+### 阶段 A — 激活审计
 
 目标：把当前“文档很多”问题转换为可观察的激活单元问题。
 
@@ -147,113 +148,113 @@ Skill 负责稳定任务职责与流程边界；条件性知识继续存在于�
 1. 枚举 `using-agentic-dev.md` 的可独立触发规则单元；
 2. 枚举 `external-operation-guidelines.md` 的可独立触发规则单元；
 3. 对每个单元记录：
-   - Authority source / section；
-   - Trigger；
-   - Consumer；
-   - Strength；
-   - Related Skill / Stage；
-   - Duplicate / overlap / conflict / supersession；
-   - Historical failure or positive evidence；
+   - 权威来源 / 段落；
+   - 触发条件；
+   - 消费者；
+   - 强度；
+   - 相关技能 / 阶段；
+   - 重复 / 重叠 / 冲突 / 取代关系；
+   - 历史失效或正向证据；
 4. 检查 AGENTS / README / Skill / Guide / Project docs 是否重复表达同一长期行为；
-5. 形成 Always-on Kernel 候选，但不在 Audit 阶段立即修改全部入口。
+5. 形成常驻核心规则候选，但不在审计阶段立即修改全部入口。
 
-Phase A 完成门禁：
+阶段 A 完成门禁：
 
-- 至少两个巨型 Guide 已完成可审查的 Activation Map；
+- 至少两个大型指南已完成可审查的激活映射；
 - 能明确区分“规则缺失”和“规则已存在但未激活”的历史场景；
-- 不以“把 Guide 拆小”作为默认结论。
+- 不以“把指南拆小”作为默认结论。
 
-### Phase B — Minimal Retrieval Model
+### 阶段 B — 最小检索模型
 
 目标：冻结最小、工具无关的检索语义。
 
 至少回答：
 
-- Task / Risk / Artifact / Stage 中哪些字段真正有辨识力；
-- Rule 如何声明 Trigger / Consumer / Authority Pointer；
-- 是否需要显式 Priority / Strength / Supersession；
-- 如何防止 Index 漂移；
-- 如何在无 Index 时可靠回退到 Repository 直接读取。
+- 任务 / 风险 / 产物 / 阶段中哪些字段真正有辨识力；
+- 规则如何声明触发条件 / 消费者 / 权威指针；
+- 是否需要显式优先级 / 强度 / 取代关系；
+- 如何防止索引漂移；
+- 如何在无索引时可靠回退到仓库直接读取。
 
 允许的最小原型：
 
-- Markdown section index；
-- YAML / JSON rule index；
+- Markdown 段落索引；
+- YAML / JSON 规则索引；
 - 小型查询脚本；
 - 其他可重建派生结构。
 
-不要求：Graph DB、MCP、Obsidian Plugin、Marketplace、Runtime Adapter。
+不要求：图数据库、MCP、Obsidian 插件、Marketplace、运行时适配器。
 
-Phase B 完成门禁：
+阶段 B 完成门禁：
 
-- 能从有限 Task Context 返回可解释的最小 Rule Set；
-- 每条结果可追溯到唯一 Authority source；
-- Index 删除后可以从 Repository 恢复，不损失 Authority。
+- 能从有限任务上下文返回可解释的最小规则集；
+- 每条结果可追溯到唯一权威来源；
+- 索引删除后可以从仓库恢复，不损失权威。
 
-### Phase C — Retrieval / Activation Eval
+### 阶段 C — 检索 / 激活评估
 
 目标：证明检索模式能改善 Agent 行为，而不是只改善文档观感。
 
 必须包含真实历史场景，优先覆盖：
 
 - Roadmap / Milestone 集成后状态闭环；
-- Planning Candidate 与 Execution Unit 身份边界；
-- Verification trigger / readiness fallback / re-entry；
-- External operation asynchronous closure；
-- Consumer Fresh Context authority discovery；
+- 规划候选与执行单元身份边界；
+- 验证触发 / 就绪回退 / 重新进入；
+- 外部异步操作闭环；
+- 使用方新上下文权威发现；
 - 其他能证明“规则存在但激活失败”的已知实例。
 
 至少比较：
 
 ```text
 A：现有完整 / 粗粒度规则加载
-B：缩减 Kernel + Task / Risk 条件检索
+B：缩减常驻核心规则 + 任务 / 风险条件检索
 ```
 
 观察：
 
-- 必须规则 Recall；
-- 无关规则数量 / Precision；
-- Context Token；
-- Tool / File Reads；
+- 必须规则召回；
+- 无关规则数量 / 精确度；
+- 上下文令牌；
+- 工具 / 文件读取；
 - 行为语义正确性；
 - 是否出现误停 / 误升级 / 误执行；
 - 是否产生双重权威或陈旧状态。
 
-Process exit 0 不等于 Semantic PASS。必须人工语义评分。
+进程退出码为 0 不等于语义通过。必须人工语义评分。
 
-### Phase D — Authority / Guide Convergence
+### 阶段 D — 权威 / 指南收敛
 
-只有 Phase C 证明收益后，才实施长期结构收敛。
+只有阶段 C 证明收益后，才实施长期结构收敛。
 
 可能动作包括：
 
-- 缩减 Always-on AGENTS 内容；
-- 为 Guide 建立稳定 section pointer；
-- 拆分真正独立的 Activation Unit；
+- 缩减常驻 AGENTS 内容；
+- 为指南建立稳定段落指针；
+- 拆分真正独立的激活单元；
 - 合并重复规则；
-- 删除陈旧 / 被 supersede 的规则；
-- 修正 Skill activation pointer；
-- 建立最小 Rule Metadata / Index；
-- 明确 Rule Deletion / Supersession lifecycle。
+- 删除陈旧 / 已被取代的规则；
+- 修正技能激活指针；
+- 建立最小规则元数据 / 索引；
+- 明确规则删除 / 取代生命周期。
 
 不能预先承诺必须执行所有动作。
 
-### Phase E — Consumer Validation
+### 阶段 E — 使用方验证
 
-至少选择一个真实 Consumer 做 Fresh Context 验证。
+至少选择一个真实使用方做新上下文验证。
 
 验证重点：
 
-- 新上下文能否从 Consumer Repository Authority + `agentic-dev` 需要的最小基线恢复当前规则；
-- 是否减少机械全量读取 Guide；
+- 新上下文能否从使用方仓库权威 + `agentic-dev` 需要的最小基线恢复当前规则；
+- 是否减少机械全量读取指南；
 - 是否仍能命中关键规则；
-- Consumer-local Authority 是否继续高于 `agentic-dev` 可复用规则；
-- 是否避免把 `agentic-dev` 项目级规则误带入 Consumer。
+- 使用方仓库权威是否继续高于 `agentic-dev` 可复用规则；
+- 是否避免把 `agentic-dev` 项目级规则误带入使用方。
 
 CodeGraph 可以作为源码发现的独立 A/B 输入，但不是本阶段必须依赖。
 
-### Phase F — Final Review & Integration
+### 阶段 F — 最终复核与集成
 
 完成：
 
@@ -261,67 +262,67 @@ CodeGraph 可以作为源码发现的独立 A/B 输入，但不是本阶段必�
 - 必要的隔离运行时回归；
 - 人工语义评分；
 - 最终 AI 复核；
-- Roadmap / AGENTS / README / project record 状态闭环；
+- Roadmap / AGENTS / README / 项目记录状态闭环；
 - 人工集成决策。
 
 ## 6. 非目标
 
 本里程碑不做：
 
-- Code Review Skill 实现；
-- Spring / Gradle / Element Plus Technology Profile 建设；
+- `code-review` 技能实现；
+- Spring / Gradle / Element Plus 技术画像建设；
 - 第四工程纪律建设；
 - Obsidian 强制采用；
 - CodeGraph 强制采用；
-- Rule Graph / MCP 平台化；
-- 所有 Guide 机械拆文件；
+- 规则图 / MCP 平台化；
+- 所有指南机械拆文件；
 - 把所有长期规则改成 YAML；
-- 把所有规则复制进 Skill；
-- Runtime / Distribution / Marketplace 建设；
+- 把所有规则复制进技能；
+- 运行时 / 分发 / Marketplace 建设；
 - 多模型协同候选实施。
 
-## 7. CodeGraph / Consumer Code Intelligence 边界
+## 7. CodeGraph / 使用方代码智能边界
 
-CodeGraph 研究被保留为本里程碑的重要外部参考，但它同时解决一个不同的 Consumer 问题：源码结构发现。
+CodeGraph 研究被保留为本里程碑的重要外部参考，但它同时解决一个不同的使用方问题：源码结构发现。
 
 当前边界：
 
-- `agentic-dev` 研究 Rule / Authority Activation；
-- Consumer 可以独立实验 CodeGraph 作为可选 Code Intelligence；
-- Consumer 主要使用 CodeGraph 的 local index + MCP / CLI + thin activation instructions，不复制其内部开发 Skills；
-- `.codegraph/` 只是派生索引，不构成 Consumer Authority；
-- CodeGraph 不替代 compiler、tests、runtime verification、specification 或 code review；
-- ChatGPT + GitHub Connector 当前不能直接消费 Consumer 本地 `.codegraph/`，Local Codex 等本地 Agent 才是直接受益环境。
+- `agentic-dev` 研究规则 / 权威激活；
+- 使用方可以独立实验 CodeGraph 作为可选代码智能；
+- 使用方主要使用 CodeGraph 的本地索引 + MCP / CLI + 极薄激活指令，不复制其内部开发 Skills；
+- `.codegraph/` 只是派生索引，不构成使用方权威；
+- CodeGraph 不替代编译器、测试、运行时验证、规格说明或代码复核；
+- ChatGPT + GitHub Connector 当前不能直接消费使用方本地 `.codegraph/`，Local Codex 等本地 Agent 才是直接受益环境。
 
-本里程碑可以保留 Consumer CodeGraph A/B 设计，但不要求把 CodeGraph 纳入 `agentic-dev` 核心依赖。
+本里程碑可以保留使用方 CodeGraph A/B 设计，但不要求把 CodeGraph 纳入 `agentic-dev` 核心依赖。
 
-## 8. 后继方向：WI-07 — Code Review Capability v1
+## 8. 后继方向：WI-07 — 代码复核能力 v1
 
-Code Review 是本里程碑完成后的优先后继候选。
+代码复核是本里程碑完成后的优先后继候选。
 
-当前规划边界已经冻结到以下程度，以确保未来 Fresh Context 不需要恢复本次聊天：
+当前规划边界已经冻结到以下程度，以确保未来新上下文不需要恢复本次聊天：
 
 ### 8.1 为什么值得重新评估
 
-- Code Review 在早期 Skill Architecture 中已经存在，但第一批 8 个核心 Skill 阶段选择保持为内嵌纪律；
-- 当前已有更多 Consumer / Independent Review Evidence；
-- Issue #71 的 Fresh Context 架构盲测证明独立 Reviewer 可以在高返工问题实施前发现真实结构缺陷；
-- Code Review 现在具备独立输入、稳定过程、独立输出、退出 / 升级边界和专项 Eval 条件，符合 WI-07 的重新评估门槛。
+- 代码复核在早期 Skill Architecture 中已经存在，但第一批 8 个核心 Skill 阶段选择保持为内嵌纪律；
+- 当前已有更多使用方 / 独立复核证据；
+- Issue #71 的新上下文架构盲测证明独立复核者可以在高返工问题实施前发现真实结构缺陷；
+- 代码复核现在具备独立输入、稳定过程、独立输出、退出 / 升级边界和专项评估条件，符合 WI-07 的重新评估门槛。
 
 ### 8.2 预期职责
 
 输入：
 
-- 当前 Repository Authority；
-- relevant Specification / Plan / Architecture；
-- Diff / changed files / current source；
-- available verification evidence；
-- 按风险激活的 Engineering Discipline / Technology checks。
+- 当前仓库权威；
+- 相关规格说明 / 技术计划 / 架构；
+- 差异 / 变更文件 / 当前源码；
+- 可用验证证据；
+- 按风险激活的工程纪律 / 技术检查。
 
 输出：
 
-- 高信噪比 actionable findings；或
-- 明确的 no blocking / medium finding 结论；或
+- 高信噪比、可执行的问题发现；或
+- 明确的无阻塞 / 中等级问题结论；或
 - 证据不足 / 需升级说明。
 
 ### 8.3 预期检查重点
@@ -329,65 +330,65 @@ Code Review 是本里程碑完成后的优先后继候选。
 - 规格符合性；
 - 明确缺陷 / 回归；
 - 数据、状态、并发、生命周期；
-- Boundary / Dependency / Side-effect；
+- 边界 / 依赖 / 副作用；
 - 推测性复杂度 / 不必要抽象；
-- Diff Scope；
-- Verification Evidence；
+- 差异范围；
+- 验证证据；
 - 当前上下文触发的高风险技术误用。
 
 ### 8.4 明确非目标
 
-- 不成为新的通用 Method Stage；
-- 不强制所有微小变更都执行独立 Review；
-- 不与 Planning Review 合并；
-- 不与 Security Review 等其他专项 Review 合并为超级 Skill；
+- 不成为新的通用方法阶段；
+- 不强制所有微小变更都执行独立复核；
+- 不与规划复核合并；
+- 不与安全复核等其他专项复核合并为超级技能；
 - 不创建 `vue-review-skill`、`spring-review-skill`、`gradle-review-skill`；
-- 不预加载所有 Technology Profile；
-- 不把命名、格式、个人风格或无证据未来扩展性作为主要 Finding。
+- 不预加载所有技术画像；
+- 不把命名、格式、个人风格或无证据未来扩展性作为主要问题发现。
 
 ### 8.5 与规则治理的依赖关系
 
-Code Review v1 不应在当前规则激活问题尚未收敛时直接实现，否则很容易形成新的超级 Skill：
+代码复核 v1 不应在当前规则激活问题尚未收敛时直接实现，否则很容易形成新的超级技能：
 
 ```text
 code-review
-→ 全量 Method + Guide + Discipline + Profile
-→ Context 爆炸
+→ 全量方法 + 指南 + 工程纪律 + 技术画像
+→ 上下文爆炸
 ```
 
 因此推荐：
 
 ```text
 规则治理与知识激活 v1
-→ Task / Risk → Rule Activation 可验证
-→ 再启动 WI-07 Code Review Capability v1
+→ 任务 / 风险 → 规则激活可验证
+→ 再启动 WI-07 代码复核能力 v1
 ```
 
 ### 8.6 与 CodeGraph 的关系
 
-CodeGraph 可以作为 Consumer Code Review 的可选结构发现能力：
+CodeGraph 可以作为使用方代码复核的可选结构发现能力：
 
 ```text
-Diff
-→ CodeGraph related source / callers / impact
-→ Rule Activation
-→ Reviewer
+差异
+→ CodeGraph 相关源码 / 调用者 / 影响范围
+→ 规则激活
+→ 复核者
 ```
 
-但 Code Review 契约不能依赖 CodeGraph 才能成立；没有 CodeGraph 时必须可以回退到 Repository 原生搜索和读取。
+但代码复核契约不能依赖 CodeGraph 才能成立；没有 CodeGraph 时必须可以回退到仓库原生搜索和读取。
 
-## 9. Technology Profile 决策边界
+## 9. 技术画像决策边界
 
 WI-06 暂不启动。
 
-后续只有 Code Review / Consumer Eval 证明存在稳定、跨项目、模型自身知识 + 当前 Repository + 当前官方资料仍无法可靠补足的增量技术检查知识时，才重新评估持久化 Profile。
+后续只有代码复核 / 使用方评估证明存在稳定、跨项目、模型自身知识 + 当前仓库 + 当前官方资料仍无法可靠补足的增量技术检查知识时，才重新评估持久化技术画像。
 
 当前优先级仅作为研究假设：
 
-- Vue 3 + TypeScript：保留现有 Profile，不机械扩张；
-- Spring：高 Review Eval 价值；
-- Gradle：高 Review Eval 价值，已有真实应用边界证据；
-- Element Plus：通用长期 Profile 价值较低。
+- Vue 3 + TypeScript：保留现有技术画像，不机械扩张；
+- Spring：较高代码复核评估价值；
+- Gradle：较高代码复核评估价值，已有真实应用边界证据；
+- Element Plus：通用长期技术画像价值较低。
 
 不把该优先级当作 WI-06 已启动事实。
 
@@ -395,40 +396,44 @@ WI-06 暂不启动。
 
 本轮认可的方向不是“所有代码都要更短”，而是：
 
-> **尽量缩小 Safe Change Reasoning Surface。**
+> **尽量缩小安全变更推理面。**
 
-未来 Code Review 可以评估：
+未来代码复核可以评估：
 
-- change locality；
-- dependency direction；
-- state ownership；
-- explicit side effects；
-- abstraction justification；
-- indirection cost；
-- contract clarity；
-- test seam。
+- 变更局部性；
+- 依赖方向；
+- 状态所有权；
+- 显式副作用；
+- 抽象必要性；
+- 间接层成本；
+- 契约清晰度；
+- 测试接缝。
 
-但现有 Engineering Disciplines 已经覆盖实现最小化与精准修改，因此本里程碑不新增第四 Discipline。是否需要“结构可推理性 / Context Radius”类纪律，必须等后续 Review Eval 形成稳定证据。
+但现有工程纪律已经覆盖实现最小化与精准修改，因此本里程碑不新增第四工程纪律。是否需要“结构可推理性 / 上下文半径”类纪律，必须等后续复核评估形成稳定证据。
 
 ## 11. 完成定义
 
 本里程碑只有以下条件全部满足才可进入集成决策：
 
-1. 完整 Research 已进入 `docs/research/`；
-2. `using-agentic-dev.md` 和 `external-operation-guidelines.md` 至少完成 Activation Audit；
-3. 最小 Retrieval Model 已冻结；
-4. 历史 Retrieval / Activation Eval 已建立并具有辨识力；
-5. 完整 / 粗粒度 Context 与缩减 / 按需 Context 已完成隔离运行时对照和人工语义评分；
-6. 必要 Guide / Authority / Skill activation pointer 已按证据收敛；
-7. 没有通过复制规则制造新的双重 Authority；
-8. 至少完成一次 Consumer Fresh Context 验证；
+1. 完整研究已进入 `docs/research/`；
+2. `using-agentic-dev.md` 和 `external-operation-guidelines.md` 至少完成激活审计；
+3. 最小检索模型已冻结；
+4. 历史检索 / 激活评估已建立并具有辨识力；
+5. 完整 / 粗粒度上下文与缩减 / 按需上下文已完成隔离运行时对照和人工语义评分；
+6. 必要指南 / 权威 / 技能激活指针已按证据收敛；
+7. 没有通过复制规则制造新的双重权威；
+8. 至少完成一次使用方新上下文验证；
 9. 最终 AI 复核未解决阻塞 / 中等级问题为 `0 / 0`；
 10. 集成前项目状态入口完成闭环。
 
+这里的“进入集成决策”指整个“规则治理与知识激活 v1”里程碑在阶段 F 的完成状态，不等同于本启动 PR #74 的集成门禁。PR #74 只负责固化里程碑研究、路线、恢复入口和协调计划；其自身在最终 AI 复核与集成后状态闭环满足仓库规则后，可单独达到“已具备进入集成决策的条件”，随后里程碑才从阶段 A 开始实际实施。
+
 ## 12. 当前下一步
 
-下一实际步骤不是拆 Guide，也不是实现 Code Review，而是：
+下一实际步骤不是拆分指南，也不是实现代码复核，而是：
 
-> **Phase A — Activation Audit。**
+> **阶段 A — 激活审计。**
 
-Fresh Context 开始时应重新读取当前 GitHub 状态、`AGENTS.md`、Project Roadmap、Issue #73、本文件、完整研究文档和协调计划，然后从 Activation Audit 的下一实际工作项继续。
+Fresh Context 开始时应重新读取当前 GitHub 状态、`AGENTS.md`、Project Roadmap、Issue #73、本文件、两份完整研究文档和协调计划，然后从激活审计的下一实际工作项继续。
+
+为避免将会话历史重新变成事实来源，上句中的正式恢复入口应按以下中文语义理解：新上下文从 GitHub 当前状态、`AGENTS.md`、项目路线图、Issue #73、本文件、两份研究文档和协调计划恢复；只有当前任务确实需要时，再按渐进式披露读取其他指南、架构、历史评估或使用方证据。
