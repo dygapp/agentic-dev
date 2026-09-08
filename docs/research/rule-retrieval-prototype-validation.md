@@ -37,7 +37,7 @@ B3 实现分支：
 
 | 文件 | GitHub blob |
 |---|---|
-| `evals/rule-retrieval/rule-index.json` | `e2ed5605d0a6496fc7f37b77ef5bbf9cc65e94dd` |
+| `evals/rule-retrieval/rule-index.json` | `5d95b4f830f0897d9f726d797828367e029ac851` |
 | `evals/query_rule_index.py` | `361285de931b9341d73f645d0b3cd170eaf7b785` |
 
 最终查询器包含两个集成前修正：
@@ -73,14 +73,14 @@ B3 实现分支：
 |---|---|---|
 | `docs/guides/using-agentic-dev.md` | `b8ccf80a5e8c14560a7bfd77450045e55ccbfaf1` | 匹配 |
 | `docs/guides/external-operation-guidelines.md` | `f22de650351b89563a70653d4fdb96d4f24e6be3` | 匹配 |
-| `AGENTS.md` | `3e34d542922d7b22768d108d1d6a70416427a2c5` | 匹配 |
+| `AGENTS.md` | `c9fee782f1d7e779259f08f31100c57f2fac3530` | 匹配 |
 | `skills/slice-work/SKILL.md` | `ffebf73f0b1f9213fe1334b94d2a360b10678d63` | 匹配 |
 | `skills/readiness-check/SKILL.md` | `6745eb0af71f6cf920479ecc5fe47db7bbd59e80` | 匹配 |
 | `skills/execute-unit/SKILL.md` | `c71ddd23d20b3a14c9cb19a38f6e8d6cbedcf46e` | 匹配 |
 | `skills/converge/SKILL.md` | `363d9b21744cb5a04d16102dd7243446d2d19b83` | 匹配 |
 | `skills/github-actions-verification/SKILL.md` | `5040e60a8a2274d8fead8375aaf66311392769ce` | 匹配 |
 
-在项目状态入口推进到阶段 C 后，`AGENTS.md` 的文件 blob 发生变化；索引中的 `PTR-AGENTS-EXT` 已同步刷新到新 blob。最终候选因此不会因为自身状态回写而在查询开始时立即判定为陈旧。
+项目状态入口推进到阶段 C 后，`AGENTS.md` 的文件 blob 发生变化；索引中的 `PTR-AGENTS-EXT` 已同步刷新到当前 blob。当前原型因此不会因为自身状态回写而在查询开始时立即判定为陈旧。
 
 ## 4. 查询器最终静态能力检查
 
@@ -268,7 +268,7 @@ B3 的四项协调门禁已经具备证据：
 - **确认删除索引不损失长期事实**：完成，规范性事实仍全部位于当前 Repository Authority；
 - **确认没有复制成第二权威**：完成，索引只保存短派生摘要、检查与源指针，不复制完整规则正文。
 
-因此阶段 B 可以在本候选集成后结束，下一实际工作进入：
+因此 B3 门禁已经满足，项目级状态入口可以稳定表达阶段 B 已完成；下一实际工作进入：
 
 > **阶段 C — 检索 / 激活评估 / C1 — 定向评估设计**
 
