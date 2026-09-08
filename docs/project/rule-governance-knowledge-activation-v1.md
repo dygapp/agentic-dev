@@ -128,6 +128,7 @@
 - `docs/research/rule-retrieval-prototype-selection.md`；
 - `docs/research/rule-retrieval-prototype-validation.md`；
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`；
+- `docs/research/rule-retrieval-ab-baseline-validation.md`；
 - Issue #58；
 - Issue #71；
 - 最近与集成状态闭环、候选 / 执行单元身份、验证触发、新上下文恢复有关的历史评估和 PR 证据。
@@ -254,13 +255,28 @@ C1 研究 / 机器可读设计：
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`
 - `evals/rule-retrieval/targeted-evaluation-design.json`
 
+C2“A/B 基线实现与静态校验”已经完成：
+
+- 建立 `evals/run_rule_retrieval_ab.py`，默认只静态校验，只有显式 `--run` 才进入 C3；
+- 建立 Consumer-local Authority 最小 fixture，并在临时目录动态生成无语义来源 identity 漂移控制；
+- B 无回退时从当前规范性源按 `source_pointer` 物化章节 / 独立职责载体，回退时读取 C1 已声明的完整 Authority 基线；
+- Agent 可见上下文不包含 A/B 分组、`metric_focus`、隐藏断言、预期规则键或预期回退；
+- `result-schema.json` 区分进程退出、查询回退、人工语义评分和失败分类；
+- 当前仓库没有可由 runner 自动证明的统一 Codex 模型锁定契约，因此 C3 必须用实际运行证据证明 A/B 模型与推理强度一致；无法证明一致的配对不能进入效果比较；
+- PR #84 临时只读 GitHub Actions Run `34291536760` 已实际执行 `py_compile` 与 `python3 evals/run_rule_retrieval_ab.py --validate-only`，确认 9 个场景的 A/B 工作区可装配，且未执行 Agent A/B；临时 workflow 取得证据后已删除。
+
+C2 研究 / 评估入口：
+
+- `docs/research/rule-retrieval-ab-baseline-validation.md`
+- `evals/rule-retrieval/README.md`
+- `evals/rule-retrieval/result-schema.json`
+- `evals/run_rule_retrieval_ab.py`
+
 当前下一工作项：
 
-> **C2 — A/B 基线实现与静态校验**
+> **C3 — 隔离运行时与人工评分**
 
-C2 只负责把 C1 设计变成可重复的隔离 runner / fixture / 结果 schema，并在真正运行前确认 A/B 载荷、隐藏答案隔离和命令可执行；不在 C2 提前给出 A/B 效果结论。
-
-C3 才执行冻结场景的真实新上下文 / 隔离 A/B，并由人工逐项评分。
+C3 才执行冻结场景的真实新上下文 / 隔离 A/B，并由人工逐项评分。只有实际模型 / 推理强度、公平输入边界和隐藏断言隔离都能由证据支持的 A/B 配对，才可以进入效果比较。
 
 阶段 C 至少观察：
 
@@ -482,10 +498,10 @@ WI-06 暂不启动。
 
 ## 12. 当前下一步
 
-阶段 A 与阶段 B 已完成，阶段 C 的 C1 已完成。下一实际步骤不是拆分指南、全库增加文件头，也不是实现代码复核，而是：
+阶段 A 与阶段 B 已完成，阶段 C 的 C1、C2 已完成。下一实际步骤不是拆分指南、全库增加文件头，也不是实现代码复核，而是：
 
-> **阶段 C — 检索 / 激活评估 / C2 — A/B 基线实现与静态校验。**
+> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分。**
 
-新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、`docs/research/rule-retrieval-targeted-evaluation-design.md` 和协调计划，然后从 C2 继续。
+新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、`docs/research/rule-retrieval-targeted-evaluation-design.md`、`docs/research/rule-retrieval-ab-baseline-validation.md` 和协调计划，然后从 C3 继续。
 
 为避免将会话历史重新变成事实来源，上句中的正式恢复入口应按以下语义理解：新上下文从 GitHub 当前状态、`AGENTS.md`、项目路线图、Issue #73、本文件、研究文档和协调计划恢复；只有当前任务确实需要时，再按渐进式披露读取其他指南、架构、历史评估或使用方证据。
