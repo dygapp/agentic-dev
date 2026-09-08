@@ -49,15 +49,16 @@
 
 当前下一实际门禁：
 
-> **Phase A — Activation Audit**
+> **阶段 A — 激活审计**
 
-本里程碑优先解决巨型 Guide、规则重复、粗粒度加载和“规则存在但未在正确任务中激活”的问题。完整研究和实施边界分别位于：
+本里程碑优先解决巨型指南、规则重复、粗粒度加载和“规则存在但未在正确任务中激活”的问题。完整研究和实施边界分别位于：
 
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `docs/research/knowledge-activation-evidence-appendix.md`
 - `docs/project/rule-governance-knowledge-activation-v1.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
-WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因本里程碑启动而自动进入实现。**WI-07 — Code Review Capability v1** 已登记为本里程碑完成后的优先后继方向，但必须在规则治理与知识激活 v1 完成并集成后重新进入人工里程碑决策。
+WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因本里程碑启动而自动进入实现。**WI-07 — 代码复核能力 v1** 已登记为本里程碑完成后的优先后继方向，但必须在规则治理与知识激活 v1 完成并集成后重新进入人工里程碑决策。
 
 Issue #58 继续作为长期使用方经验反馈入口。
 
@@ -66,15 +67,15 @@ Issue #58 继续作为长期使用方经验反馈入口。
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
-| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；当前进入 Phase A Activation Audit；先验证激活问题，不预设拆 Guide、Graph DB 或新 Runtime Layer |
+| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；当前进入阶段 A 激活审计；先验证激活问题，不预设拆分指南、图数据库或新运行时层 |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
-| 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待 Review / Consumer Eval 暴露真实增量缺口 |
-| 使用方采用 | 基础建设已完成，当前里程碑要求一次 Consumer 验证 | Consumer-local Authority 始终优先；CodeGraph 只作为可选 Code Intelligence 实验输入 |
-| 任务型技能 | v1 后候选库 | WI-07 未启动；Code Review Capability v1 已成为当前优先后继候选 |
+| 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待代码复核 / 使用方评估暴露真实增量缺口 |
+| 使用方采用 | 基础建设已完成，当前里程碑要求一次使用方验证 | 使用方仓库权威始终优先；CodeGraph 只作为可选代码智能实验输入 |
+| 任务型技能 | v1 后候选库 | WI-07 未启动；代码复核能力 v1 已成为当前优先后继候选 |
 | 运行时与分发 | v1 后候选库 | WI-09 未启动 |
 | 项目语言治理 | 已完成并集成 | 工程术语语义安全与现行文档全量收敛 v1 已通过 PR #67 集成 |
 | GitHub 集成拓扑安全 | 已完成并集成 | PR #70 已合并，提交 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已关闭 |
-| 模型路由 / 盲测对照证据 | 候选输入 | Issue #71 同时作为独立 Planning Review / 模型路由研究输入；不与 Code Review 合并为超级能力 |
+| 模型路由 / 盲测对照证据 | 候选输入 | Issue #71 同时作为独立规划复核 / 模型路由研究输入；不与代码复核合并为超级能力 |
 
 ## 4. 里程碑与维护记录
 
@@ -256,7 +257,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - 增加依赖 PR 审查拓扑 / 集成拓扑薄指导；
 - 设计 `G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 三个治理定向评估场景，共 15 条断言；
 - 运行时前 AI 复核 Review `5128856306` 未解决阻塞 / 中等级问题为 `0 / 0`；
-- 首轮人工语义评分为 `14 / 15`，随后针对 `G-PR-TOPO-02` 唯一缺口完成长期规则激活修订与评估提问覆盖修订，期望行为和断言均未降低；
+- 首轮人工语义评分为 `14 / 15`，随后针对 `G-PR-TOPO-02` 唯一缺口完成长期边界激活修订，并在第二次定向重跑仍为 `4 / 5` 后进一步修正评估提问覆盖，未降低期望行为或断言；
 - 最终有效结果为 `G-PR-TOPO-01 = 5 / 5`、`G-PR-TOPO-02 = 5 / 5`、`G-PR-TOPO-03 = 5 / 5`，合计 **`15 / 15`**；
 - 最终 AI 复核 Review `5129305394` 未解决阻塞 / 中等级问题为 `0 / 0`；
 - 最终状态性复核 Review `5129344257` 确认最终复核后的变化仅为状态回写；
@@ -289,23 +290,23 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 跟踪入口：Issue #73。
 
-核心目标：从“保存更多规则”转向“当前任务可靠取得最小正确规则集”，并用历史真实失效场景与 Consumer Fresh Context 证明新的激活模式有效。
+核心目标：从“保存更多规则”转向“当前任务可靠取得最小正确规则集”，并用历史真实失效场景与使用方新上下文证明新的激活模式有效。
 
 当前下一实际步骤：
 
-> **Phase A — Activation Audit**
+> **阶段 A — 激活审计**
 
 主要边界：
 
-- 治理单位是 Activation Unit，不是文件大小；
-- 先判断 Rule Gap 还是 Activation Failure；
-- Always-on Kernel 必须保持薄；
+- 治理单位是激活单元，不是文件大小；
+- 先判断规则缺口还是激活失败；
+- 常驻核心规则必须保持薄；
 - Skill 不复制全部长期知识；
-- Authority 与 Derived Index 分离；
-- Retrieval 必须有真实任务 Eval；
-- Obsidian 只作为可选人类治理 Workbench；
-- CodeGraph 只作为外部研究和 Consumer 可选 Code Intelligence，不成为本里程碑强依赖；
-- 不在本里程碑实现 Code Review。
+- 仓库权威与派生索引分离；
+- 检索必须有真实任务评估；
+- Obsidian 只作为可选人类治理工作台；
+- CodeGraph 只作为外部研究和使用方可选代码智能，不成为本里程碑强依赖；
+- 不在本里程碑实现代码复核。
 
 项目记录：
 
@@ -313,7 +314,8 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 研究记录：
 
-`docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `docs/research/knowledge-activation-evidence-appendix.md`
 
 协调计划：
 
@@ -340,7 +342,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - 技术画像契约已经集成；
 - 当前代表性技术画像为 Vue 3 + TypeScript；
 - Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 等仍是未来候选，不构成当前路线承诺；
-- 当前有限里程碑明确暂缓 WI-06，先由 Code Review / Consumer Eval 判断哪些技术知识确有持久化增量价值。
+- 当前有限里程碑明确暂缓 WI-06，先由代码复核 / 使用方评估判断哪些技术知识确有持久化增量价值。
 
 ## 7. v1 后候选库
 
@@ -359,9 +361,9 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 当前优先边界进一步收紧为：
 
-> 先用 Code Review / Consumer Eval 判断“模型自身知识 + 当前 Repository + 必要时当前官方资料”是否仍存在稳定、跨项目、会实质影响工程决策的缺口，再决定是否持久化新的 Technology Profile。
+> 先用代码复核 / 使用方评估判断“模型自身知识 + 当前仓库 + 必要时当前官方资料”是否仍存在稳定、跨项目、会实质影响工程决策的缺口，再决定是否持久化新的技术画像。
 
-当前研究假设：Spring 与 Gradle 具有较高 Review Eval 价值；Element Plus 的通用长期 Profile 价值相对较低。该判断只是研究输入，不构成 WI-06 启动。
+当前研究假设：Spring 与 Gradle 具有较高代码复核评估价值；Element Plus 的通用长期技术画像价值相对较低。该判断只是研究输入，不构成 WI-06 启动。
 
 ### WI-07 — 任务型技能提炼
 
@@ -369,7 +371,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 不得机械创建按技术名称组织的百科式技能。
 
-#### 优先后继候选：Code Review Capability v1
+#### 优先后继候选：代码复核能力 v1
 
 当前状态：**优先后继候选，未启动**。
 
@@ -377,30 +379,30 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 候选职责：
 
-- 独立、Fresh Context / context-controlled 的高信噪比 Review；
-- 输入包括当前 Repository Authority、相关 Specification / Plan / Architecture、Diff / current source 与 verification evidence；
-- 输出为 actionable findings、无阻塞 / 中等级问题结论，或证据不足 / 升级说明；
-- 重点检查规格符合性、真实缺陷 / 回归、数据 / 状态 / 并发 / 生命周期、边界 / 依赖 / 副作用、推测性复杂度、Diff Scope、Verification Evidence 和按风险触发的技术误用；
-- 可以由 Consumer Code Intelligence（如 CodeGraph）辅助结构发现，但不能对其形成强依赖。
+- 独立、使用新上下文或严格控制上下文的高信噪比代码复核；
+- 输入包括当前仓库权威、相关规格说明 / 技术计划 / 架构、差异 / 当前源码与验证证据；
+- 输出为可执行的问题发现、无阻塞 / 中等级问题结论，或证据不足 / 升级说明；
+- 重点检查规格符合性、真实缺陷 / 回归、数据 / 状态 / 并发 / 生命周期、边界 / 依赖 / 副作用、推测性复杂度、差异范围、验证证据和按风险触发的技术误用；
+- 可以由使用方代码智能（如 CodeGraph）辅助结构发现，但不能对其形成强依赖。
 
 候选边界：
 
-- 不成为新的通用 Method Stage；
-- 不要求所有微小工作机械进入独立 Review；
-- 不与独立高风险 Planning Review / Architecture Review 合并；
-- 不成为“Review Everything”超级 Skill；
-- 不创建 `vue-review-skill`、`spring-review-skill`、`gradle-review-skill` 等技术名 Review Skill；
-- 不预加载全部 Guide / Engineering Discipline / Technology Profile；
-- 不把命名、格式、个人风格或无证据未来扩展性作为主要 Finding。
+- 不成为新的通用方法阶段；
+- 不要求所有微小工作机械进入独立复核；
+- 不与独立高风险规划复核 / 架构复核合并；
+- 不成为“复核一切”的超级 Skill；
+- 不创建 `vue-review-skill`、`spring-review-skill`、`gradle-review-skill` 等按技术名称组织的复核 Skill；
+- 不预加载全部指南 / 工程纪律 / 技术画像；
+- 不把命名、格式、个人风格或无证据未来扩展性作为主要问题发现。
 
 启动前置条件：
 
 1. 规则治理与知识激活 v1 已完成并集成；
-2. `Task / Risk → Rule Activation` 模式已经有可验证证据；
-3. 重新读取 Issue #71，区分 Code Review 与独立高风险 Planning Review；
-4. 冻结 Code Review 输入 / 输出 /退出 / 升级契约；
-5. 设计真实 Consumer Diff Targeted Eval；
-6. 明确无 CodeGraph / 无专项技术 Profile 时的可靠回退路径。
+2. “任务 / 风险 → 规则激活”模式已经有可验证证据；
+3. 重新读取 Issue #71，区分代码复核与独立高风险规划复核；
+4. 冻结代码复核输入 / 输出 / 退出 / 升级契约；
+5. 设计真实使用方差异专项评估；
+6. 明确无 CodeGraph / 无专项技术画像时的可靠回退路径。
 
 ### WI-09 — 运行时适配与分发
 
@@ -420,7 +422,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 该候选只面向 Codex 平台，拟以平台专项非核心 Skill 为主要载体，帮助使用方读取自身仓库权威、项目风险、验证能力与当前 Codex 运行时事实，推演多代理角色、模型与推理强度的候选映射，并形成待确认的项目规则、`.codex` 配置差异、专项评估与回退方案。它与 `github-actions-verification` 同属按实际平台条件触发的专项能力，不构成所有使用方项目的默认依赖。
 
-当前可行性依据仅包括：Codex 官方文档已经公开支持为本地自定义代理配置不同模型与推理强度，并明确子代理工作通常比可比的单代理运行消耗更多令牌；当前仓库架构也已经允许按实际平台条件建立专项非核心 Skill 与运行时适配；Issue #71 已收录一组尚待本仓库复核的 Consumer 模型路由与盲测对照证据。官方能力依据见 [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents)。这些依据只支持继续研究候选，不证明任何具体模型映射已经正确，也不证明工程质量或 Plus 限额利用率已经改善。
+当前可行性依据仅包括：Codex 官方文档已经公开支持为本地自定义代理配置不同模型与推理强度，并明确子代理工作通常比可比的单代理运行消耗更多令牌；当前仓库架构也已经允许按实际平台条件建立专项非核心 Skill 与运行时适配；Issue #71 已收录一组尚待本仓库复核的使用方模型路由与盲测对照证据。官方能力依据见 [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents)。这些依据只支持继续研究候选，不证明任何具体模型映射已经正确，也不证明工程质量或 Plus 限额利用率已经改善。
 
 候选采用混合边界：
 
@@ -451,15 +453,15 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 ### Issue #71 — 模型路由与盲测对照证据
 
-Issue #71 收录 Consumer 在关键架构评审中形成的 paired blind eval、hidden assertions、lower-cost-first 与 evidence-based escalation 相关证据。
+Issue #71 收录使用方在关键架构评审中形成的配对盲测、隐藏断言、低成本优先与基于证据升级相关证据。
 
 当前只把它作为规划 / 研究候选：
 
 - 尚未由 `agentic-dev` 完成证据复核与架构适配判断；
 - 不构成新的常规方法门禁；
 - 不构成新的技能、模型路由框架或默认模型策略；
-- requested model / actual runtime model 的证据声明边界仍需在后续规划时单独评估；
-- 其中 AR-04 同时支持“高返工 Technical Planning 的独立 Fresh Context Review”研究价值，但该职责必须与未来 Code Review 分开评估。
+- 请求模型 / 实际运行模型的证据声明边界仍需在后续规划时单独评估；
+- 其中 AR-04 同时支持“高返工技术规划的独立新上下文复核”研究价值，但该职责必须与未来代码复核分开评估。
 
 ### 其他候选
 
@@ -475,12 +477,12 @@ Issue #71 收录 Consumer 在关键架构评审中形成的 paired blind eval、
 
 > **规则治理与知识激活 v1**
 
-当前只允许沿 Issue #73、项目记录与协调计划推进 Activation Audit → Minimal Retrieval Model → Retrieval / Activation Eval → 必要 Authority Convergence → Consumer Validation → Final Review / Integration。
+当前只允许沿 Issue #73、项目记录与协调计划推进：激活审计 → 最小检索模型 → 检索 / 激活评估 → 必要权威收敛 → 使用方验证 → 最终复核 / 集成。
 
 以下方向全部保持候选，不自动并入当前里程碑：
 
 - 第二及后续技术画像建设；
-- WI-07 Code Review Capability v1 实现；
+- WI-07 代码复核能力 v1 实现；
 - 运行时或分发实施；
 - 第四工程纪律建设；
 - 第二次基础型既有项目采用门禁；
@@ -500,7 +502,7 @@ Issue #71 收录 Consumer 在关键架构评审中形成的 paired blind eval、
 5. 根据候选类型完成必要的研究、架构适配评估、草案、专项评估、AI 复核和集成；
 6. 不因为新候选出现而自动追加到同一里程碑。
 
-当前规则治理与知识激活 v1 已由人工显式选择。其完成后，优先重新评估 WI-07 — Code Review Capability v1，但优先级不等于自动启动；仍需新的人工里程碑决策。
+当前规则治理与知识激活 v1 已由人工显式选择。其完成后，优先重新评估 WI-07 — 代码复核能力 v1，但优先级不等于自动启动；仍需新的人工里程碑决策。
 
 ## 10. 新上下文恢复顺序
 
@@ -509,12 +511,12 @@ Issue #71 收录 Consumer 在关键架构评审中形成的 paired blind eval、
 1. 读取根目录 `AGENTS.md`；
 2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑和当前活动有限里程碑；
 3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；
-4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；
-5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前初始门禁为 Phase A — Activation Audit；
-6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、Engineering Disciplines、Issue #58 / #71 或历史评估；不得因为研究对象很多而默认全量加载；
+4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md`、`docs/research/knowledge-activation-evidence-appendix.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；
+5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前初始门禁为阶段 A — 激活审计；
+6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、工程纪律、Issue #58 / #71 或历史评估；不得因为研究对象很多而默认全量加载；
 7. 不把 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 当作当前实施工作；
-8. Code Review Capability v1 只是优先后继候选，只有当前里程碑完成并由人工重新选择后才能启动；
-9. CodeGraph / Obsidian 是 Research 中的外部输入，不是当前仓库 Authority 或强制工具；Consumer CodeGraph Adoption 只能按实际 Consumer 环境独立验证；
+8. 代码复核能力 v1 只是优先后继候选，只有当前里程碑完成并由人工重新选择后才能启动；
+9. CodeGraph / Obsidian 是 Research 中的外部输入，不是当前仓库权威或强制工具；使用方 CodeGraph 采用只能按实际使用方环境独立验证；
 10. 不依赖历史聊天、其他会话或个人记忆补充未固化的项目事实；
 11. 面向人的输出遵循当前仓库严格中文表达规则，并使用当前正式概念身份映射，不从历史会话或个人记忆恢复旧的中英文混写语风或冲突中文别名。
 
