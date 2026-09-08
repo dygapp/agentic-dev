@@ -36,9 +36,7 @@
 
 跟踪入口：Issue #73
 
-当前工作分支：
-
-`docs/rule-activation-audit-baseline`
+阶段 A 的实际执行分支 / PR 不作为长期恢复事实写死在本计划中；恢复时以 GitHub 当前开放 PR、分支和 `master` 为准。
 
 当前门禁：
 
