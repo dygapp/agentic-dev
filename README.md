@@ -47,7 +47,7 @@ agentic-dev：
 
 **当前活动有限里程碑：** 规则治理与知识激活 v1
 
-**当前下一实际门禁：** 阶段 B — 最小检索模型 / B3 — 原型验证
+**当前下一实际门禁：** 阶段 C — 检索 / 激活评估 / C1 — 定向评估设计
 
 当前路线、候选库、完成状态与新上下文恢复顺序统一维护在：
 
@@ -61,9 +61,10 @@ agentic-dev：
 - `docs/research/knowledge-activation-evidence-appendix.md`
 - `docs/research/minimal-rule-retrieval-contract.md`
 - `docs/research/rule-retrieval-prototype-selection.md`
+- `docs/research/rule-retrieval-prototype-validation.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
-2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。阶段 A 已完成激活审计；B1 已冻结工具无关的稀疏检索契约；B2 已选择 **JSON 派生规则索引 + Python 标准库薄查询器** 作为 B3 最小评估原型。该选择复用仓库既有 JSON + Python 标准库评估模式，不引入第三方包、全库文件头、图数据库、MCP 或新服务；B3 只验证阶段 A 已审计的高影响规则面。
+2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。阶段 A 已完成激活审计；阶段 B 已完成：B1 冻结工具无关的稀疏检索契约，B2 选择 **JSON 派生规则索引 + Python 标准库薄查询器**，B3 建立 61 项 / 8 个规范性来源的首轮派生索引并验证来源追溯、条件筛选、回退和可删除 / 可重建边界。该原型仍是 `evals/` 下的评估资产，不是新的规则权威；是否优于当前粗粒度加载必须由阶段 C 的隔离 A/B 与人工语义评分回答。
 
 WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。WI-07 — **代码复核能力 v1** 已登记为当前里程碑完成后的优先后继候选；必须在当前里程碑完成并集成后重新经过人工路线决策。WI-06 暂缓，后续由代码复核 / 使用方评估暴露的真实技术知识缺口决定是否重新启动。Issue #58 继续作为长期使用方经验反馈入口。
 
