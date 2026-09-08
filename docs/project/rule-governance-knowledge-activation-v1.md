@@ -124,6 +124,7 @@
 - `docs/architecture/engineering-disciplines.md`；
 - `docs/architecture/technology-profile-contract.md`；
 - `docs/technology-profiles/vue3-typescript.md`；
+- `docs/research/minimal-rule-retrieval-contract.md`；
 - Issue #58；
 - Issue #71；
 - 最近与集成状态闭环、候选 / 执行单元身份、验证触发、新上下文恢复有关的历史评估和 PR 证据。
@@ -173,13 +174,19 @@
 
 目标：冻结最小、工具无关的检索语义。
 
-至少回答：
+B1 已冻结：
 
-- 任务 / 风险 / 产物 / 阶段中哪些字段真正有辨识力；
-- 规则如何声明触发条件 / 消费者 / 权威指针；
-- 是否需要显式优先级 / 强度 / 取代关系；
-- 如何防止索引漂移；
-- 如何在无索引时可靠回退到仓库直接读取。
+- 必需输入：`scope + responsibility`；
+- 条件输入：`stage / subject / conditions`；
+- 最小结果：源权威指针、短激活摘要、适用信息、必需检查和匹配解释；
+- 条目角色：authority / pointer / consumer / evidence；
+- 最小关系：equivalent / scope-variant / superseded-by；
+- 来源身份变化、范围冲突、高影响授权不确定或索引不可用时，直接回退当前仓库权威；
+- 当前不要求全库统一增加文件头，也不要求特定索引技术。
+
+B1 研究基线：
+
+`docs/research/minimal-rule-retrieval-contract.md`
 
 允许的最小原型：
 
@@ -198,7 +205,7 @@
 
 当前下一工作项：
 
-> **B1 — 冻结最小检索契约**
+> **B2 — 原型选择**
 
 ### 阶段 C — 检索 / 激活评估
 
@@ -439,10 +446,10 @@ WI-06 暂不启动。
 
 ## 12. 当前下一步
 
-阶段 A 已完成。下一实际步骤不是拆分指南、全库增加文件头，也不是实现代码复核，而是：
+阶段 A 已完成，B1 最小检索契约已冻结。下一实际步骤不是拆分指南、全库增加文件头，也不是实现代码复核，而是：
 
-> **阶段 B — 最小检索模型 / B1 — 冻结最小检索契约。**
+> **阶段 B — 最小检索模型 / B2 — 原型选择。**
 
-新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、两份完整研究文档和协调计划，然后从 B1 继续。
+新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、研究文档和协调计划，然后从 B2 继续。
 
 为避免将会话历史重新变成事实来源，上句中的正式恢复入口应按以下语义理解：新上下文从 GitHub 当前状态、`AGENTS.md`、项目路线图、Issue #73、本文件、研究文档和协调计划恢复；只有当前任务确实需要时，再按渐进式披露读取其他指南、架构、历史评估或使用方证据。

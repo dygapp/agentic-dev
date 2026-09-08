@@ -19,10 +19,11 @@
 9. `docs/research/external-operation-guidelines-activation-map.md`；
 10. `docs/research/cross-authority-duplication-audit.md`；
 11. `docs/research/activation-failure-classification.md`；
-12. `docs/guides/using-agentic-dev.md`；
-13. `docs/guides/external-operation-guidelines.md`；
-14. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-15. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+12. `docs/research/minimal-rule-retrieval-contract.md`；
+13. `docs/guides/using-agentic-dev.md`；
+14. `docs/guides/external-operation-guidelines.md`；
+15. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+16. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -44,7 +45,7 @@
 
 当前门禁：
 
-> **阶段 B — 最小检索模型 / B1 — 冻结最小检索契约**
+> **阶段 B — 最小检索模型 / B2 — 原型选择**
 
 ## 范围
 
@@ -139,11 +140,15 @@
 
 ### B1 — 冻结最小检索契约
 
-- [ ] 定义最小输入：任务 / 风险 / 产物 / 阶段中哪些字段确有辨识力；
-- [ ] 定义最小输出：权威指针 + 激活规则 + 必需检查；
-- [ ] 定义回退：无索引 / 索引陈旧时回退仓库直接读取；
-- [ ] 定义重复 / 取代最小语义；
-- [ ] 避免建立无法由当前证据证明必要的复杂结构。
+- [x] 定义最小输入：任务 / 风险 / 产物 / 阶段中哪些字段确有辨识力；
+- [x] 定义最小输出：权威指针 + 激活规则 + 必需检查；
+- [x] 定义回退：无索引 / 索引陈旧时回退仓库直接读取；
+- [x] 定义重复 / 取代最小语义；
+- [x] 避免建立无法由当前证据证明必要的复杂结构。
+
+输出：`docs/research/minimal-rule-retrieval-contract.md`。
+
+B1 结论：采用稀疏查询契约——`scope + responsibility` 为必需输入，`stage / subject / conditions` 按适用性补充；结果只返回可追溯源权威的短激活摘要、适用信息、必需检查和匹配解释。条目角色只区分 authority / pointer / consumer / evidence，跨条目关系只冻结 equivalent / scope-variant / superseded-by。索引缺失、来源陈旧、范围冲突或高影响授权不确定时直接回退当前仓库权威。当前没有证据要求全库统一增加文件头或采用特定索引技术。
 
 ### B2 — 原型选择
 
@@ -307,10 +312,10 @@ B：薄常驻核心规则 + 任务 / 风险按需检索
 
 ## 当前下一步
 
-A1～A5 已完成，阶段 A 已收敛；当前进入：
+阶段 A 已完成，B1 最小检索契约已冻结；当前进入：
 
-> **阶段 B — 最小检索模型 / B1 — 冻结最小检索契约**
+> **阶段 B — 最小检索模型 / B2 — 原型选择**
 
-B1 先决定真正具有辨识力的最小输入 / 输出 / 回退 / 重复与取代语义；在 B1 完成前，不预设必须给全库文档增加文件头，也不预设 YAML / JSON、图数据库、MCP 或其他特定实现。
+B2 只选择能够完整满足 B1 契约的最小可重建实现，不因为结构化程度、技术新颖性或未来扩展性引入额外复杂度。
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。

@@ -47,7 +47,7 @@ agentic-dev：
 
 **当前活动有限里程碑：** 规则治理与知识激活 v1
 
-**当前下一实际门禁：** 阶段 B — 最小检索模型 / B1 — 冻结最小检索契约
+**当前下一实际门禁：** 阶段 B — 最小检索模型 / B2 — 原型选择
 
 当前路线、候选库、完成状态与新上下文恢复顺序统一维护在：
 
@@ -59,9 +59,10 @@ agentic-dev：
 - `docs/project/rule-governance-knowledge-activation-v1.md`
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
+- `docs/research/minimal-rule-retrieval-contract.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
-2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。阶段 A 已完成两份高影响指南激活映射、跨权威重复审计与历史失效分类，确认当前基线的主要下一问题是检索 / 激活而不是继续新增同义规则；阶段 B 先冻结最小、工具无关的检索契约，再决定是否需要段落索引、YAML / JSON 派生索引或其他可重建实现。
+2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。阶段 A 已完成激活审计；B1 已冻结工具无关的稀疏检索契约，使用 `scope + responsibility` 作为必需输入，并按需补充阶段、目标对象和风险 / 状态条件。当前没有证据要求全库增加文件头或采用特定索引技术；B2 只选择能够完整满足该契约的最小可重建原型。
 
 WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。WI-07 — **代码复核能力 v1** 已登记为当前里程碑完成后的优先后继候选；必须在当前里程碑完成并集成后重新经过人工路线决策。WI-06 暂缓，后续由代码复核 / 使用方评估暴露的真实技术知识缺口决定是否重新启动。Issue #58 继续作为长期使用方经验反馈入口。
 
