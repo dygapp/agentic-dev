@@ -42,6 +42,7 @@ Research 文档可以保留“研究形成时”的 Candidate / Pending 状态�
 - `external-operation-guidelines-activation-map.md`：规则治理与知识激活 v1 阶段 A / A3 的外部操作指南激活映射。基于当前 `external-operation-guidelines.md` 按外部状态与风险条件识别 28 个规则激活单元候选，不新增全局常驻核心候选，并重点区分普通写后验证、跨仓库授权、异步闭环、媒体输入、共享资源 / 租约、临时证据晋升、依赖 PR 拓扑与 GitHub 执行路径。该文档不改变源指南，也不提前完成 A4 / A5。
 - `cross-authority-duplication-audit.md`：规则治理与知识激活 v1 阶段 A / A4 的跨权威重复审计。比较 AGENTS、README、两份高影响指南、相关 Skill 与项目规则，区分薄摘要 / 激活指针、职责消费、范围敏感关系、历史证据和实质重复候选，并识别证据晋升、验证触发拓扑、执行单元身份 / 就绪重入、异步共享资源和项目状态摘要等后续减法候选。该文档不直接删除规则，实际收敛仍需后续检索 / 激活评估支持。
 - `activation-failure-classification.md`：规则治理与知识激活 v1 阶段 A / A5 的历史失效分类。对 A1 冻结的六个真实场景区分发现 / 激活失败、选择 / 冲突失败、指令密度、误导 / 陈旧上下文和真实规则缺口，并明确历史上确实存在过使用层 / 平台专项规则缺口，但这些缺口已经进入当前仓库权威。当前阶段下一重点因此转向最小检索契约和后续 A/B 激活评估，而不是继续增加同义规则。
+- `minimal-rule-retrieval-contract.md`：规则治理与知识激活 v1 阶段 B / B1 的最小规则检索契约。冻结 `scope + responsibility + [stage] + [subject] + [conditions]` 的稀疏输入、可回指源权威的最小输出、局部陈旧检测、直接仓库读取回退，以及 authority / pointer / consumer / evidence 条目角色和 equivalent / scope-variant / superseded-by 最小关系。该文档是 B2～C 阶段的研究验证基线，不是新的规则权威，也不要求全库统一增加 Front Matter。
 
 后续 Research 可以包括：
 
