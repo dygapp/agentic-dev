@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Query the B3 derived rule index without creating a second rule authority.
+"""查询 B3 派生规则索引，不创建第二规则权威。
 
-Exit codes:
-- 0: query or validation completed without fallback
-- 2: fallback_required because an indexed source is stale/missing or query dimensions are unknown
-- 64: invalid query/index/input
+退出码：
+- 0：查询或验证完成，且不需要回退
+- 2：索引来源陈旧 / 缺失，或查询包含未知 / 未提供的必要维度，需要回退
+- 64：索引或查询输入无效
 """
 
 from __future__ import annotations
@@ -19,6 +19,20 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INDEX = ROOT / "evals" / "rule-retrieval" / "rule-index.json"
+REQUIRED_ENTRY_FIELDS = {
+    "entry_key",
+    "role",
+    "source",
+    "scope",
+    "responsibilities",
+    "stages",
+    "subjects",
+    "conditions",
+    "strength",
+    "activation_summary",
+    "required_checks",
+    "relations",
+}
 
 
 def load_json(path: Path) -> Any:
@@ -32,8 +46,18 @@ def git_blob_sha1(path: Path) -> str:
     return hashlib.sha1(header + data).hexdigest()
 
 
-def validate_index(index: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
+def is_string_list(value: Any, *, allow_empty: bool = True) -> bool:
+    return (
+        isinstance(value, list)
+        and (allow_empty or bool(value))
+        and all(isinstance(item, str) and item for item in value)
+    )
+
+
+def validate_index(index: Any) -> list[str]:
+    if not isinstance(index, dict):
+        return ["index root must be an object"]
+
     entries = index.get("entries")
     if not isinstance(entries, list):
         return ["index.entries must be a list"]
@@ -41,31 +65,29 @@ def validate_index(index: dict[str, Any]) -> list[str]:
     allowed_roles = set(index.get("allowed_roles", []))
     allowed_strengths = set(index.get("allowed_strengths", []))
     allowed_relations = set(index.get("allowed_relations", []))
+    errors: list[str] = []
     keys: set[str] = set()
-
-    required_fields = {
-        "entry_key", "role", "source", "scope", "responsibilities",
-        "stages", "subjects", "conditions", "strength",
-        "activation_summary", "required_checks", "relations",
-    }
 
     for number, entry in enumerate(entries, start=1):
         if not isinstance(entry, dict):
             errors.append(f"entry {number} must be an object")
             continue
 
-        missing = sorted(required_fields - set(entry))
+        missing = sorted(REQUIRED_ENTRY_FIELDS - set(entry))
         if missing:
             errors.append(f"entry {number} missing fields: {', '.join(missing)}")
             continue
 
-        key = entry["entry_key"]
-        if not isinstance(key, str) or not key:
+        raw_key = entry["entry_key"]
+        if not isinstance(raw_key, str) or not raw_key:
             errors.append(f"entry {number} has invalid entry_key")
-        elif key in keys:
-            errors.append(f"duplicate entry_key: {key}")
+            key = f"<entry-{number}>"
         else:
-            keys.add(key)
+            key = raw_key
+            if key in keys:
+                errors.append(f"duplicate entry_key: {key}")
+            else:
+                keys.add(key)
 
         if entry["role"] not in allowed_roles:
             errors.append(f"{key}: invalid role {entry['role']!r}")
@@ -80,19 +102,26 @@ def validate_index(index: dict[str, Any]) -> list[str]:
                 if not isinstance(source.get(field), str) or not source[field]:
                     errors.append(f"{key}: source.{field} must be a non-empty string")
 
-        for field in (
-            "scope", "responsibilities", "stages", "subjects",
-            "conditions", "required_checks", "relations",
-        ):
-            if not isinstance(entry[field], list):
-                errors.append(f"{key}: {field} must be a list")
+        for field in ("scope", "responsibilities"):
+            if not is_string_list(entry[field], allow_empty=False):
+                errors.append(f"{key}: {field} must be a non-empty string list")
+        for field in ("stages", "subjects", "conditions", "required_checks"):
+            if not is_string_list(entry[field]):
+                errors.append(f"{key}: {field} must be a string list")
 
+        if not isinstance(entry["relations"], list):
+            errors.append(f"{key}: relations must be a list")
         if not isinstance(entry["activation_summary"], str) or not entry["activation_summary"].strip():
             errors.append(f"{key}: activation_summary must be non-empty")
 
     for entry in entries:
+        if not isinstance(entry, dict):
+            continue
         key = entry.get("entry_key", "<unknown>")
-        for relation in entry.get("relations", []):
+        relations = entry.get("relations", [])
+        if not isinstance(relations, list):
+            continue
+        for relation in relations:
             if not isinstance(relation, dict):
                 errors.append(f"{key}: relation must be an object")
                 continue
@@ -100,7 +129,7 @@ def validate_index(index: dict[str, Any]) -> list[str]:
             target = relation.get("target")
             if rel_type not in allowed_relations:
                 errors.append(f"{key}: invalid relation type {rel_type!r}")
-            if target not in keys:
+            if not isinstance(target, str) or target not in keys:
                 errors.append(f"{key}: relation target does not exist: {target!r}")
 
     return errors
@@ -120,28 +149,32 @@ def check_sources(index: dict[str, Any], root: Path) -> list[dict[str, str]]:
     for source in unique_sources(index):
         path = root / source["path"]
         if not path.is_file():
-            stale.append({
-                "path": source["path"],
-                "expected_identity": source["identity"],
-                "actual_identity": "",
-                "reason": "missing_source",
-            })
+            stale.append(
+                {
+                    "path": source["path"],
+                    "expected_identity": source["identity"],
+                    "actual_identity": "",
+                    "reason": "missing_source",
+                }
+            )
             continue
 
         actual = git_blob_sha1(path)
         if actual != source["identity"]:
-            stale.append({
-                "path": source["path"],
-                "expected_identity": source["identity"],
-                "actual_identity": actual,
-                "reason": "source_identity_changed",
-            })
+            stale.append(
+                {
+                    "path": source["path"],
+                    "expected_identity": source["identity"],
+                    "actual_identity": actual,
+                    "reason": "source_identity_changed",
+                }
+            )
     return stale
 
 
 def require_string_list(query: dict[str, Any], field: str) -> list[str]:
     value = query.get(field)
-    if not isinstance(value, list) or not value or not all(isinstance(item, str) and item for item in value):
+    if not is_string_list(value, allow_empty=False):
         raise ValueError(f"query.{field} must be a non-empty list of strings")
     return value
 
@@ -159,19 +192,66 @@ def optional_string_list(query: dict[str, Any], field: str) -> tuple[bool, list[
     if field not in query:
         return False, []
     value = query[field]
-    if not isinstance(value, list) or not all(isinstance(item, str) and item for item in value):
+    if not is_string_list(value):
         raise ValueError(f"query.{field} must be a list of strings")
     return True, value
 
 
-def prefilter(entry: dict[str, Any], scopes: set[str], responsibilities: set[str]) -> bool:
-    required_scopes = set(entry["scope"])
-    if not required_scopes.issubset(scopes):
-        return False
+def vocabulary(index: dict[str, Any]) -> dict[str, set[str]]:
+    values = {
+        "scope": set(),
+        "responsibilities": set(),
+        "stage": set(),
+        "subject": set(),
+        "conditions": set(),
+    }
+    for entry in index["entries"]:
+        values["scope"].update(entry["scope"])
+        values["responsibilities"].update(
+            item for item in entry["responsibilities"] if item != "*"
+        )
+        values["stage"].update(entry["stages"])
+        values["subject"].update(entry["subjects"])
+        values["conditions"].update(entry["conditions"])
+    return values
 
+
+def unknown_query_values(
+    index: dict[str, Any],
+    scopes: set[str],
+    responsibilities: set[str],
+    stage_known: bool,
+    stage: str | None,
+    subject_known: bool,
+    subject: str | None,
+    conditions_known: bool,
+    conditions: set[str],
+) -> dict[str, list[str]]:
+    known = vocabulary(index)
+    unknown: dict[str, list[str]] = {}
+
+    checks: list[tuple[str, set[str]]] = [
+        ("scope", scopes - known["scope"]),
+        ("responsibilities", responsibilities - known["responsibilities"]),
+    ]
+    if stage_known and stage is not None:
+        checks.append(("stage", {stage} - known["stage"]))
+    if subject_known and subject is not None:
+        checks.append(("subject", {subject} - known["subject"]))
+    if conditions_known:
+        checks.append(("conditions", conditions - known["conditions"]))
+
+    for field, values in checks:
+        if values:
+            unknown[field] = sorted(values)
+    return unknown
+
+
+def prefilter(entry: dict[str, Any], scopes: set[str], responsibilities: set[str]) -> bool:
+    if not set(entry["scope"]).issubset(scopes):
+        return False
     if entry["strength"] == "core-invariant":
         return True
-
     entry_resp = set(entry["responsibilities"])
     return "*" in entry_resp or bool(entry_resp & responsibilities)
 
@@ -213,13 +293,35 @@ def query_index(index: dict[str, Any], query: dict[str, Any]) -> tuple[dict[str,
     conditions_known, conditions_list = optional_string_list(query, "conditions")
     conditions = set(conditions_list)
 
+    unknown = unknown_query_values(
+        index,
+        scopes,
+        responsibilities,
+        stage_known,
+        stage,
+        subject_known,
+        subject,
+        conditions_known,
+        conditions,
+    )
+    if unknown:
+        return (
+            {
+                "fallback_required": True,
+                "fallback_reason": "query_values_not_modeled",
+                "unknown_query_values": unknown,
+                "query": query,
+                "results": [],
+                "metrics": {"indexed_entries": len(index["entries"]), "result_count": 0},
+            },
+            2,
+        )
+
     results: list[dict[str, Any]] = []
     unresolved: list[dict[str, str]] = []
 
     for entry in index["entries"]:
-        if not prefilter(entry, scopes, responsibilities):
-            continue
-        if is_superseded(entry):
+        if not prefilter(entry, scopes, responsibilities) or is_superseded(entry):
             continue
 
         matched_by = ["scope"]
@@ -228,18 +330,16 @@ def query_index(index: dict[str, Any], query: dict[str, Any]) -> tuple[dict[str,
         else:
             matched_by.append("responsibility")
 
-        # Apply every explicitly resolved dimension first. A known mismatch
-        # excludes the entry before any unknown dimension can force fallback.
+        # 先使用已经明确提供的维度排除不适用条目；只有仍可能适用的
+        # 条目缺少必要维度时才要求回退，避免已知不匹配项制造假回退。
         if entry["stages"] and stage_known:
             if stage is None or stage not in entry["stages"]:
                 continue
             matched_by.append("stage")
-
         if entry["subjects"] and subject_known:
             if subject is None or subject not in entry["subjects"]:
                 continue
             matched_by.append("subject")
-
         if entry["conditions"] and conditions_known:
             if not (set(entry["conditions"]) & conditions):
                 continue
@@ -254,11 +354,13 @@ def query_index(index: dict[str, Any], query: dict[str, Any]) -> tuple[dict[str,
             unknown_dimensions.append("conditions")
 
         if unknown_dimensions:
-            unresolved.append({
-                "entry_key": entry["entry_key"],
-                "reason": "unknown_query_dimensions",
-                "dimensions": ",".join(unknown_dimensions),
-            })
+            unresolved.append(
+                {
+                    "entry_key": entry["entry_key"],
+                    "reason": "unknown_query_dimensions",
+                    "dimensions": ",".join(unknown_dimensions),
+                }
+            )
             continue
 
         results.append(build_result(entry, matched_by))
@@ -273,9 +375,15 @@ def query_index(index: dict[str, Any], query: dict[str, Any]) -> tuple[dict[str,
         "metrics": {
             "indexed_entries": len(index["entries"]),
             "result_count": len(results),
-            "authority_results": sum(item["applicability"]["role"] == "authority" for item in results),
-            "pointer_results": sum(item["applicability"]["role"] == "pointer" for item in results),
-            "consumer_results": sum(item["applicability"]["role"] == "consumer" for item in results),
+            "authority_results": sum(
+                item["applicability"]["role"] == "authority" for item in results
+            ),
+            "pointer_results": sum(
+                item["applicability"]["role"] == "pointer" for item in results
+            ),
+            "consumer_results": sum(
+                item["applicability"]["role"] == "consumer" for item in results
+            ),
         },
     }
     return payload, 2 if fallback_required else 0
@@ -289,7 +397,7 @@ def emit(payload: dict[str, Any]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--index", type=Path, default=DEFAULT_INDEX)
-    parser.add_argument("--query", type=Path, help="query JSON path; use '-' for stdin")
+    parser.add_argument("--query", type=Path, help="查询 JSON 路径；使用 '-' 从 stdin 读取")
     parser.add_argument("--validate-index", action="store_true")
     parser.add_argument("--check-sources", action="store_true")
     args = parser.parse_args()
@@ -306,25 +414,46 @@ def main() -> int:
         return 64
 
     if args.validate_index and not args.query and not args.check_sources:
-        emit({"valid": True, "entries": len(index["entries"]), "sources": len(unique_sources(index))})
+        emit(
+            {
+                "valid": True,
+                "entries": len(index["entries"]),
+                "sources": len(unique_sources(index)),
+            }
+        )
         return 0
 
+    # 在筛选前校验首轮原型覆盖的所有活动规范性来源，防止旧索引
+    # 因为没有先命中新规则而静默漏召回。
     stale = check_sources(index, ROOT)
     if stale:
-        emit({
-            "fallback_required": True,
-            "fallback_reason": "indexed_source_stale_or_missing",
-            "stale_sources": stale,
-            "results": [],
-        })
+        emit(
+            {
+                "fallback_required": True,
+                "fallback_reason": "indexed_source_stale_or_missing",
+                "stale_sources": stale,
+                "results": [],
+            }
+        )
         return 2
 
     if args.check_sources and not args.query:
-        emit({"valid": True, "sources_current": True, "sources": len(unique_sources(index))})
+        emit(
+            {
+                "valid": True,
+                "sources_current": True,
+                "sources": len(unique_sources(index)),
+            }
+        )
         return 0
 
     if args.query is None:
-        emit({"error": "missing_query", "detail": "provide --query, --validate-index, or --check-sources"})
+        emit(
+            {
+                "error": "missing_query",
+                "detail": "provide --query, --validate-index, or --check-sources",
+            }
+        )
         return 64
 
     try:
