@@ -22,10 +22,11 @@
 12. `docs/research/minimal-rule-retrieval-contract.md`；
 13. `docs/research/rule-retrieval-prototype-selection.md`；
 14. `docs/research/rule-retrieval-prototype-validation.md`；
-15. `docs/guides/using-agentic-dev.md`；
-16. `docs/guides/external-operation-guidelines.md`；
-17. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-18. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+15. `docs/research/rule-retrieval-targeted-evaluation-design.md`；
+16. `docs/guides/using-agentic-dev.md`；
+17. `docs/guides/external-operation-guidelines.md`；
+18. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+19. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -47,7 +48,7 @@
 
 当前门禁：
 
-> **阶段 C — 检索 / 激活评估 / C1 — 定向评估设计**
+> **阶段 C — 检索 / 激活评估 / C2 — A/B 基线实现与静态校验**
 
 ## 范围
 
@@ -179,27 +180,43 @@ B3 结论：首轮派生索引包含 61 个条目 / 8 个唯一规范性来源�
 
 ### C1 — 定向评估设计
 
-至少设计能区分以下行为的场景：
+- [x] 设计能验证正确召回必要规则的真实历史场景；
+- [x] 设计能观察整份指南噪声与条件化激活差异的场景；
+- [x] 设计条件未触发时不误激活的负向控制；
+- [x] 设计来源陈旧时安全回退的控制；
+- [x] 设计真实规则缺口不能被近似规则伪装的控制；
+- [x] 冻结强 A 组文件级粗粒度基线与 B 组查询 / 回退边界；
+- [x] 冻结隐藏断言、预期键 / 回退与 Agent 可见输入隔离；
+- [x] 冻结人工语义评分与可取得成本指标。
 
-- 正确召回必要规则；
-- 避免装入大量不相关指南内容；
-- 处理冲突 / 已取代规则；
-- 当前上下文不满足触发条件时不激活规则；
-- 来源陈旧时回退；
-- 真实规则缺口时不能靠错误检索伪装成已有规则。
+输出：
 
-### C2 — A/B 基线
+- `docs/research/rule-retrieval-targeted-evaluation-design.md`
+- `evals/rule-retrieval/targeted-evaluation-design.json`
 
-比较：
+C1 结论：冻结 6 个真实历史场景 + 3 个控制场景。A 组只加载当前职责真正相关的整份规范性文档，不人为弱化；B 组使用首轮派生索引，只有直接命中时才按源指针读取，stale / unknown / no-match 均安全回退当前仓库权威。C1 静态设计还发现“查询词均已建模但零命中时静默返回空集”的原型缺口，已通过 `no_indexed_rule_match` 最小修正关闭；没有新增规则、没有扩索引、没有修改 Guide / Skill，也没有执行真实 A/B。
+
+### C2 — A/B 基线实现与静态校验
+
+- [ ] 实现可重复的 A / B 隔离 runner；
+- [ ] 实现 Consumer-local Authority 最小 fixture；
+- [ ] 实现无语义来源漂移 fixture；
+- [ ] 确保运行时不复制 `expected_behavior` / assertions / expected keys；
+- [ ] 固定结果 schema，区分进程退出、查询回退与人工语义评分；
+- [ ] 静态验证 A / B 使用同一任务、模型、reasoning effort 与外部权限边界；
+- [ ] 验证 9 个场景的 A 载荷和 B query 可以生成；
+- [ ] 验证 runner 命令可执行，但不在本步骤提前形成 C3 的运行时效果结论。
+
+比较基线：
 
 ```text
-A：现有完整 / 粗粒度上下文
-B：薄常驻核心规则 + 任务 / 风险按需检索
+A：当前职责相关整份规范性文档的文件级粗粒度加载
+B：薄入口 + 任务 / 风险条件检索 + 安全回退
 ```
 
 记录可取得指标：
 
-- 规则召回；
+- 规则召回或回退正确性；
 - 上下文噪声 / 精确度；
 - 输入上下文；
 - 文件 / 工具读取；
@@ -313,10 +330,10 @@ B：薄常驻核心规则 + 任务 / 风险按需检索
 
 ## 当前下一步
 
-阶段 A 与阶段 B 已完成；当前进入：
+阶段 A 与阶段 B 已完成；阶段 C 的 C1 已完成，当前进入：
 
-> **阶段 C — 检索 / 激活评估 / C1 — 定向评估设计**
+> **阶段 C — 检索 / 激活评估 / C2 — A/B 基线实现与静态校验**
 
-C1 只设计有辨识力的历史场景、隐藏断言、A/B 输入边界与可取得指标，不提前修改 Guide / Skill，不把 B3 原型验证误报为 A/B 效果证据。
+C2 只把 C1 设计固化成可重复 runner / fixture / 结果 schema 并做静态校验，不提前修改 Guide / Skill，也不把命令可执行误报为 A/B 效果证据。
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。

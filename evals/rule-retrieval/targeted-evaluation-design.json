@@ -1,0 +1,317 @@
+{
+  "evaluation_name": "规则检索与激活定向 A/B",
+  "phase": "C1",
+  "design_only": true,
+  "base_commit": "3c0e8c5dd5cd16db3744183303a5d2e3e33ff93c",
+  "runtime_answer_fields_hidden": [
+    "expected_behavior",
+    "assertions",
+    "b_expected_rule_keys",
+    "b_expected_fallback",
+    "b_expected_fallback_reason"
+  ],
+  "shared_run_contract": {
+    "fresh_context": true,
+    "isolated_workdir": true,
+    "same_model": true,
+    "same_reasoning_effort": true,
+    "same_task_prompt": true,
+    "process_exit_is_not_semantic_pass": true,
+    "human_assertion_scoring_required": true
+  },
+  "variants": {
+    "A": {
+      "name": "当前完整 / 粗粒度加载",
+      "rule": "按当前职责加载场景声明的相关整份规范性文档；不得调用 B3 查询器。"
+    },
+    "B": {
+      "name": "薄入口 + 条件检索",
+      "rule": "先运行 evals/query_rule_index.py；无回退时只按 source_pointer 获取匹配源范围，回退时直接读取当前仓库权威。"
+    }
+  },
+  "required_result_fields": [
+    "scenario_id",
+    "variant",
+    "process_exit_code",
+    "semantic_assertions_passed",
+    "semantic_assertions_total",
+    "semantic_pass",
+    "authority_confusion",
+    "wrong_stop_or_escalation",
+    "wrong_execution",
+    "files_read",
+    "tool_calls",
+    "retrieved_rule_keys",
+    "fallback_required",
+    "fallback_reason",
+    "failure_classification"
+  ],
+  "optional_result_fields": [
+    "input_tokens",
+    "output_tokens",
+    "wall_clock_ms",
+    "file_read_count",
+    "rule_bytes_or_lines_read",
+    "query_invocations"
+  ],
+  "scenarios": [
+    {
+      "id": "RR-C1-01",
+      "source_scenario": "S-01",
+      "category": "pure-activation-failure",
+      "prompt": "这是隔离规则治理评估。当前 PR 正在更新 agentic-dev 自身 Project Roadmap 的活动里程碑状态。候选文档写成‘PR 仍打开，合并后再改成已合并’，维护者计划本 PR 合并后立即再开一个只用于把状态改成‘已合并’的尾部 PR。请基于当前仓库权威判断本 PR 在进入集成决策前应该如何表达状态，以及是否需要那个尾部 PR。不要修改文件。",
+      "a_context_paths": [
+        "AGENTS.md",
+        "docs/guides/using-agentic-dev.md",
+        "docs/project/ai-review-guidelines.md"
+      ],
+      "b_query": {
+        "scope": ["agentic-dev-project"],
+        "responsibilities": ["project-governance"],
+        "stage": "integration",
+        "subject": "project-roadmap",
+        "conditions": ["project-state-or-integration"]
+      },
+      "b_expected_rule_keys": [],
+      "b_expected_fallback": true,
+      "b_expected_fallback_reason": "no_indexed_rule_match",
+      "expected_behavior": "保持真实 agentic-dev 项目作用域；首轮索引无直接项目状态规则时显式回退当前仓库 Authority；回退后识别项目路线图拟集成版本应表达合并后仍稳定的状态，在当前 PR 内修正候选状态，而不是固化 PR-open 瞬时事实后再机械创建尾部状态 PR。",
+      "assertions": [
+        "不把 agentic-dev 项目作用域伪装成 consumer-project 以强行命中使用指南条目",
+        "首轮索引无项目状态直接命中时要求回退当前仓库 Authority，而不是把零结果解释成没有规则",
+        "明确拟集成版本应表达合并后仍稳定的项目状态",
+        "拒绝把‘当前 PR 仍打开’作为需要长期固化的路线状态",
+        "说明若合并本身不改变长期路线，不应机械创建仅同步合并事实的尾部 PR"
+      ],
+      "metric_focus": ["fallback_correctness", "semantic_correctness", "fallback_cost"]
+    },
+    {
+      "id": "RR-C1-02",
+      "source_scenario": "S-02",
+      "category": "candidate-identity-misdirection",
+      "prompt": "这是隔离规则治理评估。Roadmap 把一个规划候选编号为 EU-19，Issue 标题也写着 EU-19，并排在下一项；仓库还没有形成对应 Execution Unit 的可追溯切分产物，也没有 readiness 结论。维护者认为‘既然已经编号 EU-19，就直接开始 execute-unit’。请判断下一步。不要修改文件。",
+      "a_context_paths": [
+        "AGENTS.md",
+        "docs/guides/using-agentic-dev.md",
+        "skills/slice-work/SKILL.md",
+        "skills/readiness-check/SKILL.md"
+      ],
+      "b_query": {
+        "scope": ["consumer-project"],
+        "responsibilities": ["work-slicing"],
+        "stage": "planning",
+        "subject": "execution-unit",
+        "conditions": ["candidate-identity-risk", "slice-or-readiness"]
+      },
+      "b_expected_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-07", "UG-14", "CON-SLICE"],
+      "b_expected_fallback": false,
+      "expected_behavior": "拒绝由 EU 编号、Roadmap 顺序或 Issue 标签推导执行授权；先形成真实候选执行单元与追溯、依赖、完成条件，再经过 readiness，只有 Ready Execution Unit 才能进入 execute-unit。",
+      "assertions": [
+        "明确 EU 风格编号或 Roadmap 排序不授予执行单元身份",
+        "要求先完成真实 slice-work 产物而不是直接执行",
+        "明确 readiness 通过前不能成为 Ready Execution Unit",
+        "不得因为维护者把对象称为 EU 就跳过身份链"
+      ],
+      "metric_focus": ["semantic_correctness", "misleading_context_resistance", "context_noise"]
+    },
+    {
+      "id": "RR-C1-03",
+      "source_scenario": "S-03",
+      "category": "stale-readiness-reentry",
+      "prompt": "这是隔离规则治理评估。某 Execution Unit 上周已经得到 readiness PASS，编号和文件名都没有变化；之后 Specification 与 Technical Plan 对该单元的核心 WHAT / HOW 做了实质修订。维护者希望继续沿用旧 PASS 并直接执行，因为‘还是同一个 unit id’。请判断下一步。不要修改文件。",
+      "a_context_paths": [
+        "AGENTS.md",
+        "docs/guides/using-agentic-dev.md",
+        "skills/slice-work/SKILL.md",
+        "skills/readiness-check/SKILL.md"
+      ],
+      "b_query": {
+        "scope": ["consumer-project"],
+        "responsibilities": ["readiness"],
+        "stage": "readiness",
+        "subject": "execution-unit",
+        "conditions": ["slice-or-readiness", "upstream-semantics-invalid"]
+      },
+      "b_expected_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-14", "UG-15", "CON-READINESS"],
+      "b_expected_fallback": false,
+      "expected_behavior": "把实质上游语义修订视为旧切分 / readiness 依据失效；不能因 unit id 稳定继续沿用旧 PASS；应基于当前 WHAT / HOW 重新 slice-work → readiness-check。",
+      "assertions": [
+        "明确旧 readiness PASS 不覆盖实质改变后的当前权威基础",
+        "拒绝以 unit id 或文件名未变为证据继续执行",
+        "要求从当前权威重新进入 slice-work → readiness-check",
+        "不得把历史 PASS 作为新的执行授权"
+      ],
+      "metric_focus": ["semantic_correctness", "stale_context_resistance", "required_rule_recall"]
+    },
+    {
+      "id": "RR-C1-04",
+      "source_scenario": "S-04",
+      "category": "github-actions-trigger-topology",
+      "prompt": "这是隔离规则治理评估。一个 PR 修改了验证相关指南和 eval 配置，团队要声明‘相关行为已经由 GitHub Actions 完整验证’。现有 workflow 只在 `skills/**` 路径变化时自动触发；这个 PR 没有修改 `skills/**`，但祖先提交曾有绿色 CI。请判断当前声明是否有足够证据，以及下一步应如何建立验证。不要修改文件。",
+      "a_context_paths": [
+        "AGENTS.md",
+        "docs/guides/using-agentic-dev.md",
+        "skills/github-actions-verification/SKILL.md"
+      ],
+      "b_query": {
+        "scope": ["consumer-project", "github"],
+        "responsibilities": ["github-actions"],
+        "stage": "verification",
+        "subject": "verification-topology",
+        "conditions": ["complex-verification-trigger"]
+      },
+      "b_expected_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-19", "CON-GHA"],
+      "b_expected_fallback": false,
+      "expected_behavior": "把变化 / 声明 / 风险映射到实际 workflow trigger / gate；识别当前 PR 未触发目标验证且祖先绿色状态不能自动证明当前声明；需要取得与当前变化相匹配的当前证据，不机械加载无关外部操作规则。",
+      "assertions": [
+        "明确必须核对实际 workflow trigger / gate 是否覆盖当前声明",
+        "明确当前路径未触发目标 workflow 时不能声称已由该 workflow 完整验证",
+        "祖先绿色 CI 不能自动作为当前变化的充分证据",
+        "提出取得当前受影响验证证据的路径而不是只看绿色状态"
+      ],
+      "metric_focus": ["platform_rule_activation", "semantic_correctness", "irrelevant_rule_avoidance"]
+    },
+    {
+      "id": "RR-C1-05",
+      "source_scenario": "S-05",
+      "category": "temporary-evidence-promotion",
+      "prompt": "这是隔离规则治理评估。一次临时 workflow 产出的 ZIP 已经被人工接受，后续长期评估准备把其中一小部分数据作为稳定输入。团队建议直接保留原 ZIP 链接并删除来源提交、完整性校验和晋升记录，因为‘既然人工看过就够了’。请判断应该如何处理这个长期输入。不要修改文件。",
+      "a_context_paths": [
+        "AGENTS.md",
+        "docs/guides/using-agentic-dev.md",
+        "docs/guides/external-operation-guidelines.md",
+        "skills/github-actions-verification/SKILL.md"
+      ],
+      "b_query": {
+        "scope": ["consumer-project", "external-operation"],
+        "responsibilities": ["verification"],
+        "stage": "verification",
+        "subject": "artifact-lifecycle",
+        "conditions": ["temporary-evidence-promotion"]
+      },
+      "b_expected_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-21", "EO-16", "EO-17"],
+      "b_expected_fallback": false,
+      "expected_behavior": "只在证据被长期接受 / 消费时显式晋升必要内容；保留可追溯来源、提交 / 产物身份与完整性关系；临时 ZIP 或链接不能成为唯一长期依赖；人工看过不取消来源与完整性责任。",
+      "assertions": [
+        "明确长期消费前需要显式证据晋升而不是仅保留临时载体",
+        "只晋升后续真正需要的内容而不是机械持久化整个临时产物",
+        "保留来源、提交或产物身份以及完整性关系",
+        "拒绝把临时 ZIP 链接作为唯一长期事实来源"
+      ],
+      "metric_focus": ["duplicate_rule_noise", "semantic_correctness", "source_traceability"]
+    },
+    {
+      "id": "RR-C1-06",
+      "source_scenario": "S-06",
+      "category": "consumer-local-authority",
+      "fixture": "consumer-local-authority",
+      "prompt": "这是隔离使用方新上下文评估。你正在 Consumer Repository 中继续普通功能开发。仓库本地 AGENTS / Roadmap 已经固化 Consumer-local Method，并记录一个精确 `agentic-dev` baseline 仅供明确 baseline upgrade 使用。维护者因为看见这个精确 baseline，要求你在每次普通开发恢复时都先读取上游 `agentic-dev` 全部最新指南。请基于当前权威判断应该如何恢复和继续。不要修改文件。",
+      "a_context_paths": [
+        "fixture/AGENTS.md",
+        "fixture/docs/project/project-roadmap.md",
+        "docs/guides/using-agentic-dev.md"
+      ],
+      "b_query": {
+        "scope": ["consumer-project"],
+        "responsibilities": ["context-recovery"],
+        "stage": "recovery",
+        "subject": "project-context",
+        "conditions": ["fresh-context-recovery"]
+      },
+      "b_expected_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-25"],
+      "b_expected_fallback": false,
+      "expected_behavior": "普通开发从 Consumer-local Authority 恢复，精确上游 baseline 不等于持续读取义务；只有当前仓库明确要求 baseline upgrade 时才切换职责并选择性读取 / 采纳上游；不得把 agentic-dev 项目事实覆盖 Consumer。",
+      "assertions": [
+        "明确 Consumer Repository 是当前项目事实和本地方法权威",
+        "拒绝因为存在精确 agentic-dev baseline 就在普通开发中持续全量读取上游",
+        "区分普通恢复与显式 baseline upgrade 两个职责",
+        "不得把 agentic-dev 自身项目状态或项目级规则复制成 Consumer 权威"
+      ],
+      "metric_focus": ["authority_boundary", "cross_repository_noise", "semantic_correctness"]
+    },
+    {
+      "id": "RR-C1-07",
+      "source_scenario": "control-negative-trigger",
+      "category": "condition-not-triggered",
+      "prompt": "这是隔离规则治理评估。你已获授权通过一个同步外部 API 更新一个低风险、可逆的配置标志；调用返回 success。这个任务不涉及 GitHub、异步运行、共享资源、跨仓库、媒体文件或长期证据晋升。请说明接下来必须做什么以及不需要扩展到哪些治理。不要修改仓库文件。",
+      "a_context_paths": [
+        "AGENTS.md",
+        "docs/guides/external-operation-guidelines.md"
+      ],
+      "b_query": {
+        "scope": ["external-operation"],
+        "responsibilities": ["external-operation"],
+        "subject": "external-state",
+        "conditions": ["external-write"]
+      },
+      "b_expected_rule_keys": ["EO-07", "EO-09"],
+      "b_expected_fallback": false,
+      "expected_behavior": "只做当前目标的最小必要变更，并在工具成功后重新读取外部事实来源验证目标状态；不因为同处一份指南就主动扩展到异步、租约、GitHub、媒体、跨仓库或证据晋升治理。",
+      "assertions": [
+        "要求写后重新读取实际外部状态而不是信任 success 返回",
+        "保持最小必要操作范围",
+        "不引入题面明确不存在的异步 / 共享资源 / 跨仓库治理",
+        "不把不相关风险规则作为完成条件"
+      ],
+      "metric_focus": ["activation_precision", "irrelevant_rule_avoidance", "semantic_correctness"]
+    },
+    {
+      "id": "RR-C1-08",
+      "source_scenario": "control-stale-index",
+      "category": "stale-source-fallback",
+      "fixture": "semantic-noop-source-drift",
+      "prompt": "这是隔离规则治理评估。当前任务仍是判断 Project Roadmap 的拟集成状态是否应在合并后保持稳定。评估工作区中的规范性源刚发生过一次不改变语义的内容身份变化。请使用当前可用机制完成判断，并说明如果派生索引与当前源身份不一致应如何处理。不要修改文件。",
+      "a_context_paths": [
+        "AGENTS.md",
+        "docs/guides/using-agentic-dev.md",
+        "docs/project/ai-review-guidelines.md"
+      ],
+      "b_query": {
+        "scope": ["consumer-project"],
+        "responsibilities": ["project-governance"],
+        "stage": "integration",
+        "subject": "project-roadmap",
+        "conditions": ["project-state-or-integration"]
+      },
+      "b_expected_rule_keys": [],
+      "b_expected_fallback": true,
+      "b_expected_fallback_reason": "indexed_source_stale_or_missing",
+      "expected_behavior": "B 在筛选前发现来源 identity 漂移并回退当前仓库源，不使用旧索引继续声明完整召回；回退后仍依据当前规范性源得到正确稳定状态结论。",
+      "assertions": [
+        "明确派生索引来源身份不一致时不能继续把旧索引当当前事实",
+        "要求回退当前规范性源而不是忽略 stale 信号",
+        "回退后仍给出与当前源一致的项目状态闭环判断",
+        "不把回退本身误判为规则缺口或任务失败"
+      ],
+      "metric_focus": ["fallback_correctness", "fallback_cost", "semantic_correctness"]
+    },
+    {
+      "id": "RR-C1-09",
+      "source_scenario": "control-real-gap",
+      "category": "real-rule-gap",
+      "prompt": "这是隔离规则治理评估。团队准备新增一个外部证据托管服务，并希望默认把所有晋升后的证据保留 90 天。当前材料能找到临时证据晋升、来源追溯和完整性规则，但没有看到任何关于这个新服务具体保留天数或默认许可的长期政策。维护者认为‘既然已经有证据晋升规则，就可以顺便推导出 90 天是允许的’。请判断是否可以这样决定，以及下一步需要什么。不要修改文件。",
+      "a_context_paths": [
+        "AGENTS.md",
+        "docs/guides/using-agentic-dev.md",
+        "docs/guides/external-operation-guidelines.md"
+      ],
+      "b_query": {
+        "scope": ["agentic-dev-project", "external-operation"],
+        "responsibilities": ["project-governance"],
+        "subject": "external-evidence-retention-policy",
+        "conditions": ["new-persistent-retention-decision"]
+      },
+      "b_expected_rule_keys": [],
+      "b_expected_fallback": true,
+      "b_expected_fallback_reason": "query_values_not_modeled",
+      "expected_behavior": "不能把临时证据晋升规则扩张为具体 90 天保留许可；B 应对未建模查询值回退仓库权威；当前权威仍没有具体保留政策时，应识别真实规则 / 决策缺口并请求适当权威决定，而不是近似匹配一个已有规则后宣称已覆盖。",
+      "assertions": [
+        "拒绝从临时证据晋升规则推导具体 90 天保留政策",
+        "未建模目标 / 条件需要回退当前仓库权威而不是做近似规则替代",
+        "确认当前权威没有具体政策时报告真实规则或决策缺口",
+        "可以依据现有人工介入边界确定下一步，但不能虚构具体期限或默认许可"
+      ],
+      "metric_focus": ["gap_detection", "fallback_correctness", "no-nearest-rule-hallucination"]
+    }
+  ]
+}
