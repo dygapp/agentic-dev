@@ -45,20 +45,26 @@ agentic-dev：
 
 **最近完成并已集成的有限里程碑：** Squash Merge 下 Stacked PR 集成拓扑安全 v1
 
-**当前有限里程碑状态：** 无活动有限里程碑，等待下一有限里程碑人工路线决策
+**当前活动有限里程碑：** 规则治理与知识激活 v1
+
+**当前下一实际门禁：** Phase A — Activation Audit
 
 当前路线、候选库、完成状态与新上下文恢复顺序统一维护在：
 
 `docs/project/project-roadmap.md`
 
-最近完成里程碑跟踪入口：
+当前活动里程碑入口：
 
-- Issue #69（已关闭）
-- PR #70（已合并）
-- `docs/project/stacked-pr-squash-topology-v1.md`
-- `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`
+- Issue #73
+- `docs/project/rule-governance-knowledge-activation-v1.md`
+- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
+- `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
-PR #70 已于 2026-09-07 通过 squash merge 集成，合并提交为 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已按完成关闭。治理定向运行时评估最终为 `15 / 15`，最终 AI 复核 Review `5129305394` 未解决阻塞 / 中等级问题为 `0 / 0`。当前没有活动有限里程碑；WI-06、WI-07、WI-09、第四工程纪律、Issue #71 及其他候选继续保持候选状态，不自动启动。Issue #58 继续作为长期使用方经验反馈入口。
+2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。该里程碑优先解决巨型 Guide、规则重复、粗粒度加载和“规则存在但未在正确任务中可靠激活”的问题；不预设必须拆 Guide、建立 Rule Graph、采用 Obsidian / CodeGraph 或增加新 Runtime Layer，而是先完成 Activation Audit、最小 Retrieval Model、历史 Retrieval / Activation Eval 与 Consumer Fresh Context 验证。
+
+WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。WI-07 — Code Review Capability v1 已登记为当前里程碑完成后的优先后继候选；必须在当前里程碑完成并集成后重新经过人工路线决策。WI-06 暂缓，后续由 Code Review / Consumer Eval 暴露的真实技术知识缺口决定是否重新启动。Issue #58 继续作为长期使用方经验反馈入口。
+
+最近完成里程碑的历史入口仍为：Issue #69、PR #70、`docs/project/stacked-pr-squash-topology-v1.md` 和 `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`。
 
 ## 仓库事实来源
 
