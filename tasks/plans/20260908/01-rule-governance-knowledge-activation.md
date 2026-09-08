@@ -20,10 +20,11 @@
 10. `docs/research/cross-authority-duplication-audit.md`；
 11. `docs/research/activation-failure-classification.md`；
 12. `docs/research/minimal-rule-retrieval-contract.md`；
-13. `docs/guides/using-agentic-dev.md`；
-14. `docs/guides/external-operation-guidelines.md`；
-15. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-16. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+13. `docs/research/rule-retrieval-prototype-selection.md`；
+14. `docs/guides/using-agentic-dev.md`；
+15. `docs/guides/external-operation-guidelines.md`；
+16. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+17. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
@@ -45,7 +46,7 @@
 
 当前门禁：
 
-> **阶段 B — 最小检索模型 / B2 — 原型选择**
+> **阶段 B — 最小检索模型 / B3 — 原型验证**
 
 ## 范围
 
@@ -152,20 +153,15 @@ B1 结论：采用稀疏查询契约——`scope + responsibility` 为必需输�
 
 ### B2 — 原型选择
 
-按最小实现原则在以下方案中选择足够的一种：
+- [x] 选择可从仓库权威重建的最小实现；
+- [x] 确认能精确回指来源 / 段落；
+- [x] 确认能检测来源漂移；
+- [x] 确认能支持 B3 与阶段 C 评估；
+- [x] 确认不需要先引入新运行时层或第三方依赖。
 
-- Markdown 段落索引；
-- YAML / JSON 派生索引；
-- 小型查询脚本；
-- 其他等价可重建方案。
+输出：`docs/research/rule-retrieval-prototype-selection.md`。
 
-选择标准：
-
-- 可从仓库权威重建；
-- 能精确回指来源 / 段落；
-- 能检测来源漂移；
-- 能支持评估；
-- 不需要先引入新运行时层。
+B2 结论：选择 **JSON 派生规则索引 + Python 标准库薄查询器**。原型拟位于 `evals/rule-retrieval/rule-index.json` 与 `evals/query_rule_index.py`，首轮只覆盖阶段 A 已审计的高影响规则面。该选择复用仓库既有 JSON + Python 标准库评估模式，不建立全仓库规则数据库，不引入 YAML 解析依赖、图数据库、MCP、服务或统一文件头；真正长期实现仍由 B3 / C / D 证据决定。
 
 ### B3 — 原型验证
 
@@ -312,10 +308,10 @@ B：薄常驻核心规则 + 任务 / 风险按需检索
 
 ## 当前下一步
 
-阶段 A 已完成，B1 最小检索契约已冻结；当前进入：
+阶段 A 已完成，B1 最小检索契约已冻结，B2 原型选择已完成；当前进入：
 
-> **阶段 B — 最小检索模型 / B2 — 原型选择**
+> **阶段 B — 最小检索模型 / B3 — 原型验证**
 
-B2 只选择能够完整满足 B1 契约的最小可重建实现，不因为结构化程度、技术新颖性或未来扩展性引入额外复杂度。
+B3 只实现并验证 B2 选择的最小评估原型：JSON 派生规则索引 + Python 标准库薄查询器。首轮不扩展为全仓库规则库，也不把原型提升为长期运行时或规范性权威。
 
 后续新上下文不得从聊天记忆恢复本轮讨论，应从 GitHub 当前状态和本计划列出的权威 / 研究入口重新开始。
