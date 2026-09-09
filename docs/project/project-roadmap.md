@@ -56,9 +56,9 @@
 
 阶段 E“使用方验证”已完成 E1：以 `dygapp/jilinjobs-cms` 当前 `main@982a214d65f8ebfa461a6488b89709c2be1a3863` 与 PR #117 Head `547ac9453fd4ca6b85949810f3991d02f172e02f` 做逻辑 Fresh Context 验证，Consumer Authority / Consumer-local Method / 精确 baseline 始终优先；薄导航只激活当前执行、异步外部操作、GitHub Actions 证据与临时证据晋升所需规则，全部 E1 检查 PASS。E2 CodeGraph A/B 为可选项，本轮未执行且不阻塞。
 
-阶段 F 的 F1 最终静态验证已完成：首次运行正确发现 `AGENTS.md` source identity 陈旧并 fail-closed；最终 Run `34325868257` 在完成证据措辞修正、最终源 identity 重建后，9 场景静态检索回归与 E1 证据边界检查全部通过。F3 稳定状态由当前候选同步收敛；F2 最终 AI 复核与人工集成决策属于最终 PR 原生证据，不在 Roadmap 预写结果。
+阶段 F 已完成：F1 最终 Run `34325868257` 在重建最终源 identity 后通过 9 场景静态检索回归与 E1 证据边界检查；F2 Final AI Review `5151401609` 未解决 Blocking / Medium = `0 / 0`；F3 稳定状态收敛完成；PR #89 已按复核 Head 集成。
 
-当前没有新的里程碑实施门禁。下一有限里程碑尚未选择；只有规则治理与知识激活 v1 完成集成后才重新进入人工路线决策，WI-07 仍只是优先候选，不自动启动。完整研究和实施边界分别位于：
+当前没有新的里程碑实施门禁。规则治理与知识激活 v1 已完成并集成，路线已经进入下一有限里程碑人工决策；WI-07 仍只是优先候选，不自动启动。完整研究和实施边界分别位于：
 
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
@@ -73,7 +73,7 @@
 - `docs/guides/rule-activation-guide.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
-WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因本里程碑启动而自动进入实现。**WI-07 — 代码复核能力 v1** 已登记为本里程碑完成后的优先后继方向，但必须在规则治理与知识激活 v1 完成并集成后重新进入人工里程碑决策。
+WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。**WI-07 — 代码复核能力 v1** 已登记为优先后继方向；规则治理与知识激活 v1 的完成与集成前置条件现已满足，但启动仍必须经过新的人工里程碑决策。
 
 Issue #58 继续作为长期使用方经验反馈入口。
 
