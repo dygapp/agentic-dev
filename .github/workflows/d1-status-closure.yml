@@ -1,0 +1,42 @@
+name: D1 D2 Proposed Integration State Closure
+
+on:
+  push:
+    branches:
+      - docs/d1-rule-authority-convergence
+
+permissions:
+  contents: write
+
+jobs:
+  close-state:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: docs/d1-rule-authority-convergence
+          fetch-depth: 0
+
+      - name: Apply exact state closure
+        run: python3 .github/d1-status-closure.py
+
+      - name: Verify stable proposed state
+        run: |
+          grep -F "阶段 E — 使用方验证 / E1 — 使用方新上下文验证" AGENTS.md
+          grep -F "阶段 E — 使用方验证 / E1 — 使用方新上下文验证" README.md
+          grep -F "阶段 E — 使用方验证 / E1 — 使用方新上下文验证" docs/project/project-roadmap.md
+          grep -F "E1 — 使用方新上下文验证" docs/project/rule-governance-knowledge-activation-v1.md
+          grep -F "E1 — 使用方新上下文验证" tasks/plans/20260908/01-rule-governance-knowledge-activation.md
+          grep -F "docs/guides/rule-activation-guide.md" AGENTS.md
+          grep -F "docs/guides/rule-activation-guide.md" docs/project/project-roadmap.md
+
+      - name: Commit and self-clean
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/d1-status-closure.py .github/workflows/d1-status-closure.yml
+          git add AGENTS.md README.md docs/project/project-roadmap.md docs/project/rule-governance-knowledge-activation-v1.md tasks/plans/20260908/01-rule-governance-knowledge-activation.md
+          git commit -m "docs(project): 收口 D1/D2 并进入 E1"
+          git push origin HEAD:docs/d1-rule-authority-convergence
