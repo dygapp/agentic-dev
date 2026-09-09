@@ -47,7 +47,7 @@ agentic-dev：
 
 **当前活动有限里程碑：** 规则治理与知识激活 v1
 
-**当前下一实际门禁：** 阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分
+**当前下一实际门禁：** 阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛
 
 当前路线、候选库、完成状态与新上下文恢复顺序统一维护在：
 
@@ -64,9 +64,10 @@ agentic-dev：
 - `docs/research/rule-retrieval-prototype-validation.md`
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`
 - `docs/research/rule-retrieval-ab-baseline-validation.md`
+- `docs/research/rule-retrieval-c3-evaluation-results.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
-2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。阶段 A 与阶段 B 已完成。阶段 C 的 C1 已冻结 6 个真实历史场景 + 3 个控制场景；C2 已建立可重复 A/B runner、Consumer-local / stale-source 控制、隐藏答案隔离与分层结果结构，并通过真实静态命令验证 9 个场景 A/B 工作区可装配。当前尚未执行真正的 Agent A/B，因此没有证据宣称按需检索优于当前粗粒度加载；下一门禁是 C3 隔离运行与人工语义评分。
+2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。阶段 A、B、C 已完成。C3 的 9 个 A/B pair 全部取得 `gpt-5.6-sol / high` 的可比较运行事实；B 直接命中 29 / 29 必需规则、3 个回退 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，并在 RR-C1-02 出现一次误停。当前进入 D1，只实施阶段 C 证据直接支持的收敛并保留安全回退。
 
 WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。WI-07 — **代码复核能力 v1** 已登记为当前里程碑完成后的优先后继候选；必须在当前里程碑完成并集成后重新经过人工路线决策。WI-06 暂缓，后续由代码复核 / 使用方评估暴露的真实技术知识缺口决定是否重新启动。Issue #58 继续作为长期使用方经验反馈入口。
 

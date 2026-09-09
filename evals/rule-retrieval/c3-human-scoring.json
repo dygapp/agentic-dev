@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "evaluation": "规则检索与激活定向 A/B / C3 人工评分",
+  "artifact": {
+    "name": "c3-rule-retrieval-eval-results.tar.gz",
+    "size_bytes": 510410,
+    "sha256": "593192db13a07604c136895a77076833b3166c19b232f43a76ba81a6ea05b6e4",
+    "git_head_in_archive": false
+  },
+  "fairness": {
+    "pairs_total": 9,
+    "pairs_comparable": 9,
+    "observed_model": "gpt-5.6-sol",
+    "observed_reasoning_effort": "high",
+    "process_exit_zero_runs": 18,
+    "runs_total": 18
+  },
+  "rule_layer_B": {
+    "direct_hit_scenarios": 6,
+    "direct_exact_expected_sets": 6,
+    "required_rule_hits": 29,
+    "required_rule_expected": 29,
+    "required_rule_recall": 1.0,
+    "activation_precision_on_frozen_expected_sets": 1.0,
+    "fallback_scenarios": 3,
+    "fallback_reason_correct": 3
+  },
+  "behavior_layer": {
+    "A_semantic_pass_scenarios": 8,
+    "B_semantic_pass_scenarios": 9,
+    "A_wrong_stop_or_escalation": 1,
+    "B_wrong_stop_or_escalation": 0,
+    "authority_confusion_total": 0,
+    "wrong_execution_total": 0
+  },
+  "observed_cost": {
+    "direct_hit": {
+      "A_command_output_bytes": 625617,
+      "B_command_output_bytes": 321879,
+      "B_vs_A_command_output_bytes_pct": -48.55015129064587,
+      "A_wall_clock_ms": 1011585,
+      "B_wall_clock_ms": 507753,
+      "B_vs_A_wall_clock_pct": -49.80619522828037
+    },
+    "fallback": {
+      "A_command_output_bytes": 197115,
+      "B_command_output_bytes": 312720,
+      "B_vs_A_command_output_bytes_pct": 58.648504680009125,
+      "A_wall_clock_ms": 295391,
+      "B_wall_clock_ms": 681017,
+      "B_vs_A_wall_clock_pct": 130.54764701700458
+    },
+    "all": {
+      "A_command_output_bytes": 822732,
+      "B_command_output_bytes": 634599,
+      "B_vs_A_command_output_bytes_pct": -22.866863085427582,
+      "A_wall_clock_ms": 1306976,
+      "B_wall_clock_ms": 1188770,
+      "B_vs_A_wall_clock_pct": -9.044236466469158
+    }
+  },
+  "scenarios": [
+    {
+      "scenario_id": "RR-C1-01",
+      "A": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 92828, "command_executions_observed": 2, "command_output_bytes_observed": 48735},
+      "B": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 168635, "command_executions_observed": 4, "command_output_bytes_observed": 97914, "retrieved_rule_keys": [], "fallback_required": true, "fallback_reason": "no_indexed_rule_match"}
+    },
+    {
+      "scenario_id": "RR-C1-02",
+      "A": {"semantic_pass": false, "wrong_stop_or_escalation": true, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 393230, "command_executions_observed": 8, "command_output_bytes_observed": 150561},
+      "B": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 106712, "command_executions_observed": 6, "command_output_bytes_observed": 65400, "retrieved_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-07", "UG-14", "CON-SLICE"], "fallback_required": false, "fallback_reason": null},
+      "grading_note": "A 正确拒绝直接 execute，并覆盖核心行为断言；但在题面未证明 Specification 未 Ready 的情况下，把 Return To 固定为 specify，构成额外误停/误返回。B 仅在上游未 Ready 时条件化返回 clarify/specify/technical-plan，否则进入 slice-work。"
+    },
+    {
+      "scenario_id": "RR-C1-03",
+      "A": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 122659, "command_executions_observed": 7, "command_output_bytes_observed": 109671},
+      "B": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 143422, "command_executions_observed": 10, "command_output_bytes_observed": 87555, "retrieved_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-14", "UG-15", "CON-READINESS"], "fallback_required": false, "fallback_reason": null}
+    },
+    {
+      "scenario_id": "RR-C1-04",
+      "A": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 182078, "command_executions_observed": 8, "command_output_bytes_observed": 110108},
+      "B": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 131827, "command_executions_observed": 12, "command_output_bytes_observed": 97563, "retrieved_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-19", "CON-GHA"], "fallback_required": false, "fallback_reason": null}
+    },
+    {
+      "scenario_id": "RR-C1-05",
+      "A": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 139760, "command_executions_observed": 8, "command_output_bytes_observed": 183416},
+      "B": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 46149, "command_executions_observed": 1, "command_output_bytes_observed": 33319, "retrieved_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-21", "EO-16", "EO-17"], "fallback_required": false, "fallback_reason": null}
+    },
+    {
+      "scenario_id": "RR-C1-06",
+      "A": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 65716, "command_executions_observed": 3, "command_output_bytes_observed": 39298},
+      "B": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 48094, "command_executions_observed": 1, "command_output_bytes_observed": 23856, "retrieved_rule_keys": ["UG-01", "UG-02", "UG-03", "UG-25"], "fallback_required": false, "fallback_reason": null}
+    },
+    {
+      "scenario_id": "RR-C1-07",
+      "A": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 108142, "command_executions_observed": 2, "command_output_bytes_observed": 32563},
+      "B": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 31549, "command_executions_observed": 1, "command_output_bytes_observed": 14186, "retrieved_rule_keys": ["EO-07", "EO-09"], "fallback_required": false, "fallback_reason": null}
+    },
+    {
+      "scenario_id": "RR-C1-08",
+      "A": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 110352, "command_executions_observed": 8, "command_output_bytes_observed": 46071},
+      "B": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 415929, "command_executions_observed": 6, "command_output_bytes_observed": 96318, "retrieved_rule_keys": [], "fallback_required": true, "fallback_reason": "indexed_source_stale_or_missing"}
+    },
+    {
+      "scenario_id": "RR-C1-09",
+      "A": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 92211, "command_executions_observed": 4, "command_output_bytes_observed": 102309},
+      "B": {"semantic_pass": true, "wrong_stop_or_escalation": false, "authority_confusion": false, "wrong_execution": false, "wall_clock_ms": 96453, "command_executions_observed": 4, "command_output_bytes_observed": 118488, "retrieved_rule_keys": [], "fallback_required": true, "fallback_reason": "query_values_not_modeled"}
+    }
+  ],
+  "limitations": [
+    "archive 未包含 git-head.txt，无法仅由归档包直接证明本地精确 Git HEAD；本次 runner 为同一批次顺序执行 A/B，且 B 直接命中要求活动索引来源 identity 校验通过。",
+    "runner 未稳定提供 input_tokens/output_tokens/file_read_count/rule_bytes_or_lines_read；这些字段保持不估算。command_output_bytes_observed 是从 JSONL 已记录 command_execution aggregated_output 直接计数，不等同于 input token。",
+    "wall-clock 受服务端负载等外部因素影响，仅作辅助成本观察，不作为单独优劣判据。"
+  ],
+  "phase_C_conclusion": {
+    "benefit_demonstrated": true,
+    "decision": "进入 D1；只实施阶段 C 已证明有价值的激活/权威收敛，不进行无证据全量重构。",
+    "guardrail": "保留 stale / unknown / no-match 的保守回退；fallback 成本高不能作为删除安全回退的理由。"
+  }
+}
