@@ -91,16 +91,19 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 阶段 C“检索 / 激活评估”已经完成：C1 冻结 6 个真实历史场景与 3 个控制场景；C2 建立可重复 A/B 隔离 runner、Consumer-local fixture、无语义来源漂移控制和分层结果结构；C3 在 9 个可比较 A/B pair 上完成真实隔离运行与人工评分。B 的 6 个直接命中场景精确召回冻结的 29 / 29 必需规则，3 个安全回退场景 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，RR-C1-02 出现一次无证据固定返回 `specify` 的误停。阶段 C 已形成进入阶段 D 的收益证据。
 
+阶段 D“权威 / 指南收敛”已经完成 D1 / D2：README 已收敛为薄启动入口，新增长期 `docs/guides/rule-activation-guide.md` 只保留三条跨任务不变量、按职责 / 风险指向当前 Guide / Skill 的稳定段落指针和保守安全回退；没有复制详细规则正文、没有把评估索引提升为权威，也没有引入新的 Wiki / 数据库 / MCP / 统一元数据层。D2 重新验证 9 个既有 A/B 场景仍可静态装配，且本轮没有修改既有治理评估的输入权威。
+
 当前下一实际门禁：
 
-> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**
+> **阶段 E — 使用方验证 / E1 — 使用方新上下文验证**
 
-本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。阶段 C 已证明“薄入口 + 条件检索 + 当前源指针 + 保守安全回退”在本轮冻结高影响规则面上优于文件级粗粒度加载；当前进入 D1，只实施证据直接支持的收敛。fallback 成本较高不能作为删除 stale / unknown / no-match 安全回退的理由。
+E1 必须在真实使用方的新上下文中验证薄入口能否取得当前任务所需最小规则集，同时保持使用方仓库权威优先、关键规则不漏失和安全回退；在 E1 取得证据前，不继续删除源规则正文或扩张检索基础设施。
 
 当前状态、研究依据、实施边界和协调计划统一记录在：
 
 - `docs/project/project-roadmap.md`
 - `docs/project/rule-governance-knowledge-activation-v1.md`
+- `docs/guides/rule-activation-guide.md`
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
 - `docs/research/minimal-rule-retrieval-contract.md`
