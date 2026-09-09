@@ -1,5 +1,8 @@
 # 规则治理与知识激活 v1 — 协调计划
 
+> **2026-09-09 Research 信息架构治理说明**：本计划是已完成里程碑的过程协调记录。下文引用的阶段审计、激活映射、原型验证、A/B 运行和 E1 Consumer 验证等 `docs/research/*` 过程文件，已从当前 Research 树移除；如需历史复核，请通过 Git 历史、PR #74～#89、Issue #73 恢复原文件。当前长期技术入口为 `knowledge-activation-and-code-intelligence-analysis.md`、`knowledge-activation-evidence-appendix.md`、`llm-wiki-rule-governance-fit-analysis.md` 与 `rule-retrieval-design-reference.md`。本说明不重新激活该计划，也不启动 WI-07。
+
+
 ## 目标
 
 在不继续机械增加指南、技能、技术画像或运行时层的前提下，完成当前规则体系的激活审计、最小检索模型、历史场景专项评估、必要权威收敛和使用方新上下文验证，使 Agent 能在具体任务中以更小活动上下文可靠取得正确规则。
