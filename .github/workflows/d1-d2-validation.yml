@@ -1,0 +1,81 @@
+name: D1 D2 Rule Activation Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile evaluation runners
+        run: |
+          python3 -m py_compile \
+            evals/query_rule_index.py \
+            evals/run_rule_retrieval_ab.py \
+            evals/run_governance_evals.py
+
+      - name: Validate existing rule retrieval assembly
+        run: python3 evals/run_rule_retrieval_ab.py --validate-only
+
+      - name: Validate D1 bootstrap and governance inputs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+
+          required_paths = [
+              "docs/guides/rule-activation-guide.md",
+              "docs/guides/using-agentic-dev.md",
+              "docs/guides/external-operation-guidelines.md",
+              "skills/slice-work/SKILL.md",
+              "skills/readiness-check/SKILL.md",
+              "skills/execute-unit/SKILL.md",
+              "skills/github-actions-verification/SKILL.md",
+              "docs/project/project-roadmap.md",
+          ]
+          for item in required_paths:
+              assert Path(item).is_file(), f"missing pointer target: {item}"
+
+          guide = Path("docs/guides/rule-activation-guide.md").read_text(encoding="utf-8")
+          required_fragments = [
+              "使用方仓库权威优先",
+              "渐进式披露",
+              "证据先于完成声明",
+              "skills/slice-work/SKILL.md",
+              "skills/readiness-check/SKILL.md",
+              "§4.1",
+              "external-operation-guidelines.md` §5.3",
+              "§10.1",
+              "external-operation-guidelines.md` §5.1",
+              "external-operation-guidelines.md` §5.2",
+              "using-agentic-dev.md` §7",
+              "停止依赖派生导航",
+              "no-match",
+          ]
+          for fragment in required_fragments:
+              assert fragment in guide, f"missing activation/fallback fragment: {fragment}"
+
+          readme = Path("README.md").read_text(encoding="utf-8")
+          assert "docs/guides/rule-activation-guide.md" in readme
+          assert "29 / 29" not in readme
+          assert "rule-retrieval-c3-evaluation-results.md" not in readme
+          assert "不要为了“完整”复制 Repository Authority" in readme
+
+          governance_dir = Path("evals/governance")
+          governance_files = sorted(governance_dir.glob("*.json"))
+          assert governance_files, "no governance eval definitions found"
+          for path in governance_files:
+              data = json.loads(path.read_text(encoding="utf-8"))
+              for context_path in data.get("context_paths", []):
+                  assert Path(context_path).exists(), f"missing governance context: {context_path}"
+
+          print(f"validated governance definitions: {len(governance_files)}")
+          print("D1 bootstrap/static D2 checks passed")
+          PY
