@@ -471,8 +471,10 @@ def main() -> int:
     failures = 0
     for case in cases:
         for variant in variants:
+            # 临时目录可能被 Agent 作为当前工作目录观察到，因此路径中不能
+            # 暴露 A/B 分组。变体身份只保留在运行器外部控制与结果记录中。
             with tempfile.TemporaryDirectory(
-                prefix=f"agentic-dev-rule-retrieval-{case['id']}-{variant}-"
+                prefix=f"agentic-dev-rule-retrieval-{case['id']}-"
             ) as temp:
                 temp_root = Path(temp)
                 workspace = temp_root / "workspace"
