@@ -17,7 +17,9 @@ jobs:
           fetch-depth: 0
 
       - name: Apply Research governance
-        run: python3 .github/scripts/research_governance.py
+        run: |
+          python3 .github/scripts/research_governance.py
+          python3 .github/scripts/research_governance_patch.py
 
       - name: Validate final Research boundary
         run: |
@@ -110,6 +112,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git rm .github/workflows/research-information-architecture-governance.yml
           git rm .github/scripts/research_governance.py
+          git rm .github/scripts/research_governance_patch.py
           git add -A
           git commit -m 'docs(research): 收敛长期技术资料与过程证据边界'
           git push
