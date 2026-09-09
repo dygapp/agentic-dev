@@ -6,6 +6,7 @@ C2 runner 负责静态装配；本文件只服务 C3 真正 A/B：
 - A/B 任务正文相同，Agent 可见路径不包含变体身份；
 - 同一次真实 turn 中，provider model 从 Responses SSE trace 读取，reasoning effort 从 turn span 读取；
 - 请求值、客户端 turn model 与 provider model 分开记录，不互相冒充；
+- 原始 SSE / turn trace 只在内存和临时 log_dir 中用于解析，不持久化到结果目录；
 - 只有 A/B 两侧 provider model / reasoning effort 均可观察且完全一致，才标记为可比较；
 - 进程退出与公平性证据都不自动等于语义 PASS，人工隐藏断言评分仍是必需步骤。
 
@@ -131,6 +132,22 @@ def runtime_log_path(log_dir: Path) -> Path:
     return log_dir / "codex-tui.log"
 
 
+def sanitize_persisted_stderr(stderr: str) -> str:
+    """移除为运行时事实取证而开启的原始 SSE / turn trace。
+
+    原始 stderr 仍在当前函数调用内参与事实解析；结果目录只保留与取证 trace
+    无关的诊断行，避免把完整 response event 或 turn span 长期落盘。
+    """
+    kept: list[str] = []
+    for line in stderr.splitlines(keepends=True):
+        if "codex_api::sse::responses" in line and SSE_MARKER in line:
+            continue
+        if "codex.turn.reasoning_effort=" in line and "model=" in line:
+            continue
+        kept.append(line)
+    return "".join(kept)
+
+
 def run_codex_c3(
     *,
     codex_bin: str,
@@ -212,9 +229,9 @@ def write_run_artifacts(
     stderr_path = result_dir / f"{stem}.stderr.txt"
     facts_path = result_dir / f"{stem}.runtime-facts.json"
     jsonl_path.write_text(stdout, encoding="utf-8")
-    stderr_path.write_text(stderr, encoding="utf-8")
 
     # Codex exec 的 tracing 可能出现在 stderr，也可能写入显式 log_dir；两者均属于同一次隔离进程。
+    # 先在内存中完成事实解析，再只保存去除原始 trace 的 stderr。
     trace_parts = [stderr]
     trace_sources = ["stderr"]
     if runtime_log.is_file():
@@ -224,6 +241,8 @@ def write_run_artifacts(
 
     thread_id = extract_thread_id(stdout)
     facts = parse_runtime_facts(trace_text, thread_id)
+    stderr_path.write_text(sanitize_persisted_stderr(stderr), encoding="utf-8")
+
     facts_record = {
         "thread_id": thread_id,
         "sources": trace_sources,
@@ -311,7 +330,8 @@ def validate_runtime_parser() -> list[str]:
         f'thread.id={thread_id} model=gpt-5.6-sol '
         'codex.turn.reasoning_effort=high}: ok\n'
         '2026-09-09T00:00:01Z TRACE codex_api::sse::responses: SSE event: '
-        '{"type":"response.completed","response":{"model":"gpt-5.6-sol"}}\n'
+        '{"type":"response.completed","response":{"model":"gpt-5.6-sol","output":[{"type":"message","content":"secret-trace"}]}}\n'
+        'ordinary diagnostic line\n'
     )
     observed = parse_runtime_facts(observed_trace, thread_id)
     if (
@@ -321,6 +341,12 @@ def validate_runtime_parser() -> list[str]:
         or observed["client_turn_model"] != "gpt-5.6-sol"
     ):
         errors.append(f"runtime facts observed 解析失败：{observed}")
+
+    sanitized = sanitize_persisted_stderr(observed_trace)
+    if "SSE event:" in sanitized or "secret-trace" in sanitized or "codex.turn.reasoning_effort=" in sanitized:
+        errors.append("persisted stderr 未移除原始运行时事实 trace")
+    if "ordinary diagnostic line" not in sanitized:
+        errors.append("persisted stderr 误删普通诊断信息")
 
     routed_trace = (
         f'turn{{thread.id={thread_id} model=requested-alias codex.turn.reasoning_effort=high}}\n'
@@ -395,7 +421,7 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print("C3 Readiness 静态校验通过：C2 装配、provider model / effort 解析与结果契约一致。")
+    print("C3 Readiness 静态校验通过：C2 装配、provider model / effort 解析、trace 最小化与结果契约一致。")
     if not args.run:
         print("未执行真实 Agent A/B。")
         return 0
