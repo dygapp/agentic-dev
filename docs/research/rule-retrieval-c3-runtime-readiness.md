@@ -155,6 +155,8 @@ provider `response.model` 仍只是服务端返回的标识，不是密码学权
 
 不把完整 trace 作为长期仓库输入，也不把当前 Codex 日志格式提升为 Method / Guide / Skill 契约。
 
+`evals/results/` 已由仓库 `.gitignore` 排除，因此真实运行结果不会因为执行 runner 自动成为 Git 权威。
+
 ## 5. Readiness 与后续门禁
 
 本步骤完成的条件：
@@ -172,3 +174,39 @@ provider `response.model` 仍只是服务端返回的标识，不是密码学权
 若当前 Codex 版本 / 认证环境无法取得 provider model 或 reasoning effort，应记录 `insufficient` 并停止效果比较，而不是降低 C1 公平性要求。
 
 若未来 Codex 正式在 `exec --json` 或 session API 暴露 provider model / reasoning effort，应优先迁移到正式接口，删除当前 trace 适配层，而不是让 workaround 长期固化。
+
+## 6. 真实静态执行证据
+
+PR #85 临时加入一次性、只读 GitHub Actions workflow，只执行：
+
+```bash
+python3 -m py_compile \
+  evals/query_rule_index.py \
+  evals/run_rule_retrieval_ab.py \
+  evals/run_rule_retrieval_c3.py \
+  evals/run_codex_evals.py
+python3 evals/run_rule_retrieval_c3.py --validate-only
+```
+
+验证输入 Head：
+
+`da667c761160d019c284f6b21220a755d33a957b`
+
+Run：`34300364344`
+
+Job：`102305778566` (`validate`)
+
+结果：**success**。
+
+日志明确记录：
+
+```text
+C3 Readiness 静态校验通过：C2 装配、provider model / effort 解析与结果契约一致。
+未执行真实 Agent A/B。
+```
+
+该 workflow 权限只有 `contents: read` / metadata read，不使用 secrets，也不执行 `--run`。取得证据后已从候选分支删除，不进入长期仓库结构。
+
+该验证证明的是：C3 runner 语法可执行、C2 装配回归仍通过、provider / client model 解析测试与结果 schema 一致。它**不证明**真实认证环境一定能够取得 provider model / reasoning effort，更不证明任何 A/B 行为效果；这些仍必须由后续真实 C3 运行取得。
+
+验证输入之后如果只发生一次性 workflow 删除、Research / PR 元数据更新，且 runner、schema、C1/C2 输入不再变化，则该祖先静态证据继续适用于最终 Readiness 候选；若 runner、schema、解析逻辑或 C1/C2 运行输入发生实质变化，必须重新取得静态证据。
