@@ -77,8 +77,8 @@ def resolve_context_source(
             raise ValueError(f"{case['id']}: fixture/ 路径没有对应 fixture")
         source = fixture.joinpath(*rel.parts[1:])
     else:
-        # stale 控制只复制索引源。回退 Authority 若不属于索引源，必须
-        # 从当前仓库取得，而不是因为临时 source-root 不含该文件就失败。
+        # 该参数只服务制造 / 读取临时来源视图；真正 fallback 装配会显式
+        # 传 ROOT，确保陈旧索引源不会继续作为 Agent 的规则上下文。
         preferred = preferred_root / rel
         source = preferred if preferred.is_file() else ROOT / rel
     source = source.resolve()
@@ -236,9 +236,12 @@ def prepare_workspace(
                 contexts.append(copy_context(case, relative, workspace, source_root))
 
         if query_payload["fallback_required"]:
+            # fallback 的意义是停止信任派生索引及其临时来源视图，重新从
+            # 当前仓库 Authority 装配规则上下文。即使 stale-root 中存在同名
+            # 文件，也不得继续把该陈旧副本交给 Agent。
             for relative in case["a_context_paths"]:
                 if relative not in contexts:
-                    contexts.append(copy_context(case, relative, workspace, source_root))
+                    contexts.append(copy_context(case, relative, workspace, ROOT))
         else:
             for result in query_payload["results"]:
                 contexts.append(materialize_result(result, workspace, source_root))
@@ -339,7 +342,9 @@ def validate_static(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
             for variant in VARIANTS:
                 workspace = temp_root / f"workspace-{variant}"
                 workspace.mkdir(parents=True, exist_ok=True)
-                contexts, _ = prepare_workspace(design, index, case, variant, workspace, temp_root)
+                contexts, query_payload = prepare_workspace(
+                    design, index, case, variant, workspace, temp_root
+                )
                 runtime_text = (workspace / "runtime-input.json").read_text(encoding="utf-8")
                 for field in forbidden_runtime_names:
                     if f'"{field}"' in runtime_text:
@@ -347,6 +352,17 @@ def validate_static(design: dict[str, Any], index: dict[str, Any]) -> list[str]:
                 for relative in contexts:
                     if not (workspace / relative).is_file():
                         errors.append(f"{case['id']}/{variant}: 缺少上下文 {relative}")
+
+                # B 发生 fallback 时，所有声明上下文必须与当前仓库 / 当前
+                # fixture 一致；这直接防止 stale-root 中的同名陈旧规则被继续消费。
+                if variant == "B" and query_payload and query_payload["fallback_required"]:
+                    for relative in case["a_context_paths"]:
+                        target = workspace / safe_relative(relative)
+                        current = resolve_context_source(case, relative, ROOT)
+                        if not target.is_file() or target.read_bytes() != current.read_bytes():
+                            errors.append(
+                                f"{case['id']}/B: fallback 未从当前 Authority 装配 {relative}"
+                            )
     return errors
 
 
