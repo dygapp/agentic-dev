@@ -19,6 +19,27 @@ jobs:
           ref: docs/d1-rule-authority-convergence
           fetch-depth: 0
 
+      - name: Normalize duplicated plan gate
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          plan_path = Path("tasks/plans/20260908/01-rule-governance-knowledge-activation.md")
+          old_gate = "> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**"
+          new_gate = "> **阶段 E — 使用方验证 / E1 — 使用方新上下文验证**"
+          plan = plan_path.read_text(encoding="utf-8")
+          if plan.count(old_gate) != 2:
+              raise SystemExit(f"expected 2 plan gate occurrences, got {plan.count(old_gate)}")
+          plan_path.write_text(plan.replace(old_gate, new_gate), encoding="utf-8")
+
+          script_path = Path(".github/d1-status-closure.py")
+          script = script_path.read_text(encoding="utf-8")
+          block = '''replace_once(\n    "tasks/plans/20260908/01-rule-governance-knowledge-activation.md",\n    "> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**",\n    "> **阶段 E — 使用方验证 / E1 — 使用方新上下文验证**",\n)\n'''
+          if script.count(block) != 1:
+              raise SystemExit(f"expected one guarded plan gate block, got {script.count(block)}")
+          script_path.write_text(script.replace(block, "# Plan gate occurrences were normalized by the workflow before exact closure.\n"), encoding="utf-8")
+          PY
+
       - name: Apply exact state closure
         run: python3 .github/d1-status-closure.py
 
