@@ -144,7 +144,7 @@ provider `response.model` 仍只是服务端返回的标识，不是密码学权
 
 完整 SSE / turn trace 只存在于当前临时子进程的 stderr / isolated `log_dir`。
 
-持久化到本地评估结果中的运行事实文件只保存：
+runner 在解析完成后，只将**过滤掉 SSE payload 与 turn-fact trace 行**的普通 stderr 诊断写入结果目录；持久化的运行事实文件只保存：
 
 - thread ID；
 - trace 来源类别；
@@ -152,6 +152,8 @@ provider `response.model` 仍只是服务端返回的标识，不是密码学权
 - client turn model 值集合；
 - reasoning effort 值集合；
 - 解析状态。
+
+机器级回归会模拟 SSE payload 中包含响应正文的情况，确认持久化 stderr 不保留 SSE / turn-fact trace，同时保留普通错误或诊断信息。
 
 不把完整 trace 作为长期仓库输入，也不把当前 Codex 日志格式提升为 Method / Guide / Skill 契约。
 
@@ -162,7 +164,7 @@ provider `response.model` 仍只是服务端返回的标识，不是密码学权
 本步骤完成的条件：
 
 1. C3 runner 与结果 schema 可以静态校验；
-2. provider / client model 区分、缺失、多值和路由不一致场景具有机器级 parser 回归；
+2. provider / client model 区分、缺失、多值、路由不一致和 trace 去持久化场景具有机器级 parser / sanitizer 回归；
 3. 一次只读 GitHub Actions 静态验证实际执行 `py_compile` 与 `--validate-only`；
 4. 最终 AI Review 未解决 Blocking / Medium 为 `0 / 0`；
 5. 集成后仍停在 C3，不把 Readiness 等同于真实 A/B 完成。
@@ -188,15 +190,33 @@ python3 -m py_compile \
 python3 evals/run_rule_retrieval_c3.py --validate-only
 ```
 
-验证输入 Head：
+### 6.1 祖先验证
 
-`da667c761160d019c284f6b21220a755d33a957b`
+初次静态验证：
 
-Run：`34300364344`
+- Head：`da667c761160d019c284f6b21220a755d33a957b`
+- Run：`34300364344`
+- Job：`102305778566`
+- 结果：**success**
 
-Job：`102305778566` (`validate`)
+之后差异级复核发现完整 SSE trace 会随 stderr 被持久化到本地评估结果，违反本步骤的证据最小化边界，因此 runner 增加 trace 去持久化与对应回归。由于 runner 发生实质变化，上述 Run 只保留为祖先证据，不再作为最终 Readiness PASS。
+
+### 6.2 最终 runner 静态验证
+
+最终有效静态验证输入 Head：
+
+`a9d0ddf4d0f10d3197801921d192d4a81a4faca2`
+
+Run：`34300755851`
+
+Job：`102306952255` (`validate`)
 
 结果：**success**。
+
+实际执行步骤：
+
+- `Compile evaluation runners`：success；
+- `Validate C3 readiness`：success。
 
 日志明确记录：
 
@@ -205,8 +225,8 @@ C3 Readiness 静态校验通过：C2 装配、provider model / effort 解析与�
 未执行真实 Agent A/B。
 ```
 
-该 workflow 权限只有 `contents: read` / metadata read，不使用 secrets，也不执行 `--run`。取得证据后已从候选分支删除，不进入长期仓库结构。
+该 workflow 权限只有 `contents: read` / metadata read，不使用 secrets，也不执行 `--run`。取得最终证据后，一次性 workflow 已从候选分支删除，不进入长期仓库结构。
 
-该验证证明的是：C3 runner 语法可执行、C2 装配回归仍通过、provider / client model 解析测试与结果 schema 一致。它**不证明**真实认证环境一定能够取得 provider model / reasoning effort，更不证明任何 A/B 行为效果；这些仍必须由后续真实 C3 运行取得。
+最终 Run 证明的是：当前 C3 runner 语法可执行、C2 装配回归仍通过、provider / client model 解析、fail-closed、公平性结果结构与 trace 去持久化回归在实际 GitHub runner 上通过。它**不证明**真实认证环境一定能够取得 provider model / reasoning effort，更不证明任何 A/B 行为效果；这些仍必须由后续真实 C3 运行取得。
 
-验证输入之后如果只发生一次性 workflow 删除、Research / PR 元数据更新，且 runner、schema、C1/C2 输入不再变化，则该祖先静态证据继续适用于最终 Readiness 候选；若 runner、schema、解析逻辑或 C1/C2 运行输入发生实质变化，必须重新取得静态证据。
+最终验证之后只允许一次性 workflow 删除、Research / PR 元数据更新；若 runner、schema、解析 / sanitizer 逻辑或 C1/C2 运行输入再次发生实质变化，必须重新取得静态证据。
