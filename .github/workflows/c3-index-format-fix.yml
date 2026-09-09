@@ -1,0 +1,35 @@
+name: C3 Index Format Fix
+
+on:
+  push:
+    branches: [docs/rule-retrieval-c3-results]
+    paths:
+      - '.github/workflows/c3-index-format-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/rule-retrieval-c3-results
+          fetch-depth: 0
+      - name: Restore index formatting and refresh identity only
+        run: python3 evals/c3_index_format_fix_tmp.py
+      - name: Validate candidate
+        run: |
+          python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py evals/run_rule_retrieval_c3.py
+          python3 evals/run_rule_retrieval_c3.py --validate-only
+          git diff --check
+          test ! -e evals/c3_index_format_fix_tmp.py
+          test ! -e .github/workflows/c3-index-format-fix.yml
+      - name: Commit and push
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m 'fix(governance): 保持派生索引最小差异'
+          git push origin HEAD:docs/rule-retrieval-c3-results
