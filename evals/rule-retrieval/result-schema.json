@@ -64,6 +64,7 @@
     "query_invocations": {"type": ["integer", "null"], "minimum": 0},
     "model": {"type": ["string", "null"]},
     "reasoning_effort": {"type": ["string", "null"]},
+    "client_turn_model": {"type": ["string", "null"]},
     "requested_model": {"type": ["string", "null"]},
     "requested_reasoning_effort": {"type": ["string", "null"]},
     "runtime_facts_status": {
