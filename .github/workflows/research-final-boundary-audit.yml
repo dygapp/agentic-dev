@@ -82,6 +82,7 @@ jobs:
           allowed_history = {
               'tasks/plans/20260908/01-rule-governance-knowledge-activation.md',
               'tasks/plans/20260909/01-research-information-architecture-governance.md',
+              '.github/workflows/research-final-boundary-audit.yml',
           }
           tracked = subprocess.check_output(['git','ls-files'], text=True).splitlines()
           for filename in tracked:
