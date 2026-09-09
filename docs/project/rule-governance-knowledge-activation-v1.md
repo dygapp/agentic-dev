@@ -320,7 +320,7 @@ D2 回归结论：
 
 - GitHub Actions Run `34320938617` 在 Head `bfa76f95e2dcb8de39bd2a98ab1819f71e710abc` 上成功；Python 编译检查、`evals/run_rule_retrieval_ab.py --validate-only`、最终 Bootstrap / 指针 / 回退静态断言全部通过；
 - 9 个既有 A/B 场景仍可装配，B 查询与 C1 冻结命中 / 回退保持一致；
-- 现有四组治理评估均不读取 README 或新规则导航，本轮也未修改其 `context_paths` 指向的输入权威，因此历史治理语义证据可按精确影响分析继续复用；
+- 现有四组历史治理评估不读取 README 或新规则导航，但部分 `context_paths` 包含 `AGENTS.md` / Roadmap；PR #88 后续项目状态闭环改变了这些状态输入，因此不把绑定旧阶段事实的 expected behavior 机械作为当前状态回归。F1 发现并保留 `AGENTS.md` 的 `source_identity_changed` fail-closed 证据；核对已索引“外部操作治理”段落语义未变后，仅重建派生 rule-index 的当前源身份；
 - 新入口不要求读取完整历史，也没有改变正式工程概念身份或中文表达规则。
 
 阶段 D 没有证据要求机械执行原候选动作清单中的所有结构变化；源规则删除 / 合并、更多元数据或长期检索运行时继续等待真实使用方证据。

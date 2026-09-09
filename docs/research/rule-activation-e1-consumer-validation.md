@@ -267,3 +267,21 @@ Consumer Authority
 - 启动 WI-07。
 
 E1 完成后可以进入阶段 F 最终验证 / AI Review / 状态闭环。
+
+## 11. F1 派生索引陈旧发现与修复
+
+E1 后进入 F1 时，首次 `evals/run_rule_retrieval_ab.py --validate-only` 没有通过，而是按设计报告：
+
+`rule-index 当前来源陈旧：AGENTS.md (source_identity_changed)`
+
+该结果不是规则召回回归，而是 D1/D2 PR #88 后续项目状态闭环修改了 `AGENTS.md` 的整文件 blob identity，B3 派生索引仍保存旧 identity。进一步对比确认：索引唯一指向的 `AGENTS.md`“外部操作治理”段落在 PR #88 前后语义与正文均未改变。
+
+处理方式：
+
+- 保留 fail-closed 陈旧检测，不降级或绕过；
+- 先完成项目状态证据措辞修正，再按最终 `AGENTS.md` blob 重建派生 `rule-index.json` source identity；
+- 不修改 entry_key、scope、responsibility、condition、activation_summary 或 required_checks；
+- 修正阶段 D 记录中“治理评估输入完全未变化”的过度表述；
+- 重新执行 F1 静态检索回归。
+
+第二次临时修复运行曾因“先刷新 identity、后修改 `AGENTS.md`”的顺序错误再次触发同一 fail-closed；最终修复改为以所有长期文本修正后的最终 blob 重建 identity。该过程反向证明陈旧源保护能够持续阻止旧派生索引被静默继续使用。

@@ -53,7 +53,7 @@
 
 阶段 C“检索 / 激活评估”已完成：C1 冻结 9 个有辨识力场景；C2 建立可重复 A/B runner、Consumer-local / stale-source 控制与分层结果结构；C3 完成 9 个可比较 A/B pair 的真实隔离运行与人工评分。B 直接命中 29 / 29 必需规则，3 个安全回退 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，并在 RR-C1-02 出现一次误停。阶段 C 已形成进入阶段 D 的收益证据。
 
-阶段 D“权威 / 指南收敛”已完成 D1 / D2：README 已压薄为启动 / 路由入口；新增 `docs/guides/rule-activation-guide.md`，只维护三条跨任务不变量、按职责 / 风险的当前源段落指针和 fail-closed 回退；详细规则仍由现行 Guide / Skill / Repository Authority 单点维护。D2 重新验证 9 个既有 A/B 场景仍可静态装配；本轮未修改现有四组治理评估的输入权威，因此不重复执行没有输入变化的历史语义评估。
+阶段 D“权威 / 指南收敛”已完成 D1 / D2：README 已压薄为启动 / 路由入口；新增 `docs/guides/rule-activation-guide.md`，只维护三条跨任务不变量、按职责 / 风险的当前源段落指针和 fail-closed 回退；详细规则仍由现行 Guide / Skill / Repository Authority 单点维护。D2 重新验证 9 个既有 A/B 场景仍可静态装配。PR #88 后续状态闭环修改了 `AGENTS.md` / Roadmap 等项目状态输入；这些变化没有改变 C3 冻结的详细规则语义，但使派生 rule-index 的整文件源身份按设计陈旧。F1 已保留该 fail-closed 结果并重建当前源身份；绑定旧项目阶段 expected behavior 的历史治理评估不机械作为当前状态回归。
 
 当前下一实际门禁：
 
