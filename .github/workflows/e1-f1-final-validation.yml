@@ -1,0 +1,82 @@
+name: E1 F1 Final Validation
+
+on:
+  push:
+    branches:
+      - test/rule-activation-e1-consumer-validation
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: test/rule-activation-e1-consumer-validation
+          fetch-depth: 0
+
+      - name: Validate rule retrieval regression
+        run: |
+          python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py evals/run_rule_retrieval_c3.py
+          python3 evals/run_rule_retrieval_ab.py --validate-only
+
+      - name: Validate E1 evidence structure
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          evidence = Path('docs/research/rule-activation-e1-consumer-validation.md').read_text(encoding='utf-8')
+          required = [
+              'E1 结论：**PASS**',
+              'dygapp/jilinjobs-cms',
+              'main@982a214d65f8ebfa461a6488b89709c2be1a3863',
+              '547ac9453fd4ca6b85949810f3991d02f172e02f',
+              'master@7ba9f246380193733ede774634f40715a3f6bd97',
+              'master@d9fad0da83dbdb61cac5eb9778b0258c6861eef1',
+              '10092917399',
+              'sha256:fac36c148f54550f310b955cef73eacba7ed32de948fc819dda904263672fae5',
+              'NOT RUN / OPTIONAL / NOT BLOCKING',
+          ]
+          missing = [item for item in required if item not in evidence]
+          if missing:
+              raise SystemExit(f'missing E1 evidence markers: {missing}')
+
+          guide = Path('docs/guides/rule-activation-guide.md').read_text(encoding='utf-8')
+          for marker in [
+              'skills/execute-unit/SKILL.md',
+              'external-operation-guidelines.md` §5.3',
+              'github-actions-verification` §10.1',
+              'external-operation-guidelines.md` §5.1',
+              'github-actions-verification` §11',
+              '## 4. 安全回退',
+          ]:
+              if marker not in guide:
+                  raise SystemExit(f'missing rule activation marker: {marker}')
+
+          for path in [
+              'skills/execute-unit/SKILL.md',
+              'skills/github-actions-verification/SKILL.md',
+              'docs/guides/using-agentic-dev.md',
+              'docs/guides/external-operation-guidelines.md',
+          ]:
+              if not Path(path).is_file():
+                  raise SystemExit(f'missing routed source: {path}')
+          PY
+
+      - name: Verify E1 does not modify normative rule sources
+        run: |
+          git fetch origin master
+          changed="$(git diff --name-only origin/master...HEAD | grep -v '^.github/workflows/e1-f1-final-validation.yml$')"
+          test "$changed" = "docs/research/rule-activation-e1-consumer-validation.md"
+
+      - name: Self-clean validation workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/e1-f1-final-validation.yml
+          git commit -m "ci: 清理 E1/F1 最终静态验证工作流"
+          git push origin HEAD:test/rule-activation-e1-consumer-validation
