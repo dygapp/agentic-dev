@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "source": "docs/guides/using-agentic-dev.md",
+  "modules": [
+    {
+      "id": "knowledge-boundary",
+      "heading_prefix": "## 2.",
+      "scope": ["consumer"],
+      "responsibility": ["authority-recovery", "knowledge-boundary"],
+      "conditions": ["fresh-context", "external-input", "consumer-authority"],
+      "risk": ["authority-confusion"],
+      "consumers": ["all"]
+    },
+    {
+      "id": "consumer-bootstrap",
+      "heading_prefix": "## 3.",
+      "scope": ["consumer"],
+      "responsibility": ["project-bootstrap", "consumer-initialization"],
+      "conditions": ["new-project", "initial-authority"],
+      "risk": ["over-structuring"],
+      "consumers": ["bootstrap"]
+    },
+    {
+      "id": "skill-usage",
+      "heading_prefix": "## 4.",
+      "scope": ["consumer"],
+      "responsibility": ["skill-selection", "skill-runtime"],
+      "conditions": ["reusable-responsibility"],
+      "risk": ["wrong-skill", "stale-copy"],
+      "consumers": ["all-skills"]
+    },
+    {
+      "id": "clarify-intent",
+      "heading_prefix": "### 5.1",
+      "scope": ["feature"],
+      "responsibility": ["intent-clarification"],
+      "conditions": ["product-ambiguity", "scope-ambiguity", "acceptance-ambiguity"],
+      "risk": ["silent-product-decision"],
+      "consumers": ["clarify-intent"],
+      "recommended_sources": ["skills/clarify-intent/SKILL.md"]
+    },
+    {
+      "id": "specification",
+      "heading_prefix": "### 5.2",
+      "scope": ["feature"],
+      "responsibility": ["specification"],
+      "conditions": ["what-why", "acceptance", "domain-authority"],
+      "risk": ["how-leakage", "authority-gap"],
+      "consumers": ["specify"],
+      "recommended_sources": ["skills/specify/SKILL.md"]
+    },
+    {
+      "id": "technical-planning",
+      "heading_prefix": "### 5.3",
+      "scope": ["feature", "architecture"],
+      "responsibility": ["technical-planning", "architecture-context", "adr-evaluation"],
+      "conditions": ["specification-ready", "cross-unit-how", "migration", "shared-contract", "architecture-change"],
+      "risk": ["major-architecture", "irreversible", "security-privacy"],
+      "consumers": ["technical-plan"],
+      "recommended_sources": ["skills/technical-plan/SKILL.md"]
+    },
+    {
+      "id": "slice-readiness",
+      "heading_prefix": "### 5.4",
+      "scope": ["execution-planning"],
+      "responsibility": ["work-slicing", "readiness"],
+      "conditions": ["specification-ready", "technical-plan-ready"],
+      "risk": ["premature-execution", "stale-readiness"],
+      "consumers": ["slice-work", "readiness-check"],
+      "recommended_sources": ["skills/slice-work/SKILL.md", "skills/readiness-check/SKILL.md"]
+    },
+    {
+      "id": "execution-context",
+      "heading_prefix": "### 5.5",
+      "scope": ["execution"],
+      "responsibility": ["execute-unit", "fresh-execution-context"],
+      "conditions": ["ready-execution-unit"],
+      "risk": ["context-leakage", "multi-unit-execution"],
+      "consumers": ["execute-unit", "systematic-debug"],
+      "recommended_sources": ["skills/execute-unit/SKILL.md", "skills/systematic-debug/SKILL.md"]
+    },
+    {
+      "id": "verification-evidence",
+      "heading_prefix": "### 5.7",
+      "scope": ["verification"],
+      "responsibility": ["verification", "evidence"],
+      "conditions": ["completion-claim", "runtime-evidence", "ci"],
+      "risk": ["stale-evidence", "wrong-evidence-type"],
+      "consumers": ["execute-unit", "converge", "github-actions-verification"]
+    },
+    {
+      "id": "consumer-adoption",
+      "heading_prefix": "### 6.1",
+      "scope": ["consumer"],
+      "responsibility": ["baseline-upgrade", "consumer-adoption"],
+      "conditions": ["agentic-dev-upgrade", "existing-consumer"],
+      "risk": ["upstream-coupling", "authority-duplication"],
+      "consumers": ["consumer-maintenance"]
+    },
+    {
+      "id": "project-roadmap-lifecycle",
+      "heading_prefix": "### 6.2",
+      "scope": ["project-governance"],
+      "responsibility": ["roadmap", "integration-state"],
+      "conditions": ["multi-milestone", "integration-closure"],
+      "risk": ["stale-recovery-state"],
+      "consumers": ["project-governance"]
+    },
+    {
+      "id": "fresh-context-recovery",
+      "heading_prefix": "## 7.",
+      "scope": ["consumer", "project-governance"],
+      "responsibility": ["fresh-context", "handoff-recovery"],
+      "conditions": ["new-chat", "new-executor", "interruption"],
+      "risk": ["history-dependence", "stale-state"],
+      "consumers": ["all"]
+    }
+  ]
+}
