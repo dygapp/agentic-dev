@@ -50,7 +50,7 @@ B 首先使用当前 `rule-index.json` 与 `query_rule_index.py`：
 1. 校验当前 8 个规范性来源 identity；
 2. 执行 C1 冻结的稀疏 query；
 3. 无回退时，根据返回 `source_pointer` 从**当前规范性源**实时物化匹配章节 / 独立职责载体；
-4. 来源陈旧、查询值未建模、必要维度未知或零可靠命中时，读取 C1 已声明的完整 Authority 基线；
+4. 来源陈旧、查询值未建模、必要维度未知或零可靠命中时，停止信任派生索引和临时来源视图，重新从**当前 Repository Authority**装配 C1 已声明的完整基线；
 5. Consumer-local fixture 始终作为 Consumer 项目事实保留，不由上游规则索引替代。
 
 物化文件只增加来源路径、章节和 blob identity provenance 注释；派生内容仍不是新的规则权威。
@@ -94,7 +94,7 @@ fallback_required = true
 fallback_reason = indexed_source_stale_or_missing
 ```
 
-回退后若需要读取不属于首轮索引的 Authority，例如 `docs/project/ai-review-guidelines.md`，运行器从当前仓库读取，而不是错误要求临时 stale-root 包含全部 Repository Authority。
+最终实现进一步保证：一旦发生 fallback，Agent 可见的所有声明规则上下文必须重新从当前 Repository Authority 装配。静态校验会把 fallback 后的工作区文件逐项与当前 Authority / 当前 fixture 做字节级比较，避免临时 stale-root 中的同名陈旧文件继续被消费。
 
 ## 5. 结果结构
 
@@ -134,9 +134,9 @@ python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py e
 python3 evals/run_rule_retrieval_ab.py --validate-only
 ```
 
-工作流权限只有 `contents: read`，未使用 secrets，也从未执行 `--run`。取得证据后均从候选分支删除，不进入长期仓库结构。
+工作流权限只有 `contents: read`，未使用 secrets，也从未执行 `--run`。每次取得证据后均从候选分支删除，不进入长期仓库结构。
 
-### 首轮实现验证
+### 7.1 首轮实现验证
 
 Run：`34291536760`
 
@@ -144,23 +144,37 @@ Job：`102278939797` (`validate`)
 
 结果：**success**。
 
-该轮验证了 runner、fixture、结果结构与最初 C2 输入能够执行。随后 C2 继续完成项目状态闭环并修正 AGENTS 派生来源 identity，因此该运行不再作为最终输入面的唯一验证依据。
+该轮验证了 runner、fixture、结果结构与最初 C2 输入能够执行。随后 C2 继续完成项目状态闭环并修正 AGENTS 派生来源 identity，因此该运行不作为最终输入面的验证依据。
 
-### 最终输入面复跑
+### 7.2 状态闭环后的复跑
 
-AGENTS 状态闭环完成后，其当前 blob identity 变为：
-
-`0bd04757c64e6eda6a7ba00e04eca40e92651c29`
-
-`rule-index.json` 的 `PTR-AGENTS-EXT` 已刷新到该 identity；61 项索引覆盖、关系与规则语义未改变。随后在 Head：
-
-`698e3a8567c9618247c70dfefdbde0be112aea14`
-
-重新执行相同静态验证。
+Head：`698e3a8567c9618247c70dfefdbde0be112aea14`
 
 Run：`34296037510`
 
 Job：`102292773126` (`validate`)
+
+结果：**success**。
+
+该轮已经覆盖更新后的 AGENTS identity 和当时的 C2 输入，但最终差异级 AI 复核发现一个中等级缺口：`RR-C1-08` 检测到来源陈旧后虽然正确返回 fallback，fallback 工作区对 stale-root 中已经存在的同名规范性源仍会优先复制陈旧副本。也就是说，旧静态校验验证了“需要回退”，却没有验证“回退后的 Agent 上下文确实来自当前 Authority”。
+
+因此该运行被后续修订**取代为祖先诊断证据，不再作为最终 C2 PASS**。
+
+### 7.3 修正后的最终静态复跑
+
+修订内容：
+
+- fallback 后所有规则上下文显式从 `ROOT` 当前 Repository Authority 装配；
+- 新增静态断言：B fallback 后每个声明上下文文件必须与当前 Authority / 当前 fixture 字节一致；
+- 不改变 C1 场景、61 项索引覆盖、规则关系或 Guide / Skill 语义。
+
+修正后的验证输入 Head：
+
+`96eb5f356383bfb54ec5bd99e76f48f74d7ec01c`
+
+Run：`34296395675`
+
+Job：`102293842203` (`validate`)
 
 结果：**success**。
 
@@ -172,7 +186,7 @@ C2 静态校验通过：9 个场景的 A/B 工作区均可装配。
 未执行 Agent A/B；真正的新上下文运行与人工语义评分属于 C3。
 ```
 
-该复跑覆盖最终 runner、query、索引、fixture、AGENTS identity 与 C1 设计输入。验证通过后只删除临时 workflow，并更新本研究证据 / PR 元数据；这些后继变化不被 `--validate-only` 消费，也不改变 runner、query、索引、fixture、AGENTS 或任何 A/B 场景输入，因此该祖先验证证据仍适用于最终 C2 集成候选。若这些被验证输入中的任一项再次变化，必须重新运行，不得机械复用当前 PASS。
+该运行实际执行了包含 fallback Authority 字节一致性检查的最终 runner。验证通过后只删除临时 workflow，并更新本研究证据 / PR 元数据；这些后继变化不被 `--validate-only` 消费，也不改变 runner、query、索引、fixture、AGENTS 或任何 A/B 场景输入。因此该祖先验证证据可以用于最终 C2 集成候选。若上述被验证输入中的任一项再次变化，必须重新运行，不得机械复用当前 PASS。
 
 ## 8. 当前结论
 
@@ -181,11 +195,13 @@ C2 已满足：
 - A / B 隔离装配可重复；
 - 9 个 B query 的命中 / 回退预期可机器校验；
 - Consumer-local 与 stale-source 控制可以生成；
+- stale / unknown / no-match fallback 后重新从当前 Repository Authority 装配规则上下文；
+- 静态校验直接验证 fallback 工作区内容与当前 Authority / fixture 一致；
 - 隐藏答案、评分关注点和 A/B 分组不进入 Agent 可见运行时文件；
 - A / B 使用相同任务正文，实验差异只来自允许读取的规则上下文；
 - 查询回退、进程退出与人工语义评分分层；
 - runner 默认不会执行 C3；
-- 最终输入面 `py_compile` 与 `--validate-only` 已在真实 GitHub Actions 中成功执行；
+- 修正后的最终输入面 `py_compile` 与 `--validate-only` 已在真实 GitHub Actions 中成功执行；
 - 临时静态验证 workflow 已删除，不建立新的长期自动化依赖。
 
 本证据仍**不证明 B 比 A 更可靠或成本更低**。真正的行为效果、实际模型 / 推理强度一致性和人工断言评分必须在 C3 完成。
