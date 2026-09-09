@@ -81,3 +81,24 @@
 - `AGENTS.md`、README、Roadmap 一致反映：规则治理 v1 已完成并集成，当前待人工决策，WI-07 未启动；
 - 最终差异不包含临时 workflow；
 - Final AI Review 未解决 Blocking / Medium = `0 / 0`。
+
+## 实施与验证结果
+
+当前候选已经完成内容治理和最终边界审计：
+
+- `docs/research/` 当前保留 15 个 Markdown 文件，其中 1 个目录治理索引、13 份长期技术研究、1 份新提炼的 `rule-retrieval-design-reference.md`；
+- 上述 13 份过程型 Research 已从当前树删除，不建立新的 Research archive；
+- `docs/research/README.md` 已逐项记录保留资料的长期价值与精确 Authority 路径；
+- `AGENTS.md`、根 README、Project Roadmap 与规则治理 v1 项目记录已停止把删除的过程 Research 当作当前恢复入口，并一致保持“待人工决策 / WI-07 未启动”；
+- `evals/rule-retrieval/rule-index.json` 只更新 `PTR-AGENTS-EXT` 的 `source.identity`，未改变规则条目的 scope、responsibility、conditions、activation summary 或 required checks；
+- Research 治理主验证 Run `34331330512`：success；
+- Research 最终边界审计 Run `34331854667`：success；
+- 最终边界审计确认所有保留 Research 均在目录索引中登记、对应 Authority 路径存在、当前非历史文件不存在删除 Research 的死链接；
+- `python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py`：PASS；
+- `python3 evals/run_rule_retrieval_ab.py --validate-only`：PASS，9 个既有 A/B 场景仍可静态装配；
+- `git diff --check`：PASS；
+- 所有临时治理 / 审计 workflow 与脚本均已自清理。
+
+## 当前 Gate
+
+内容治理与静态验证已经完成。当前只进入本次维护变更的 Final AI Review 与 PR 人工集成决策；不进入 WI-07 或其他候选里程碑。
