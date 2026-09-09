@@ -38,30 +38,30 @@
 
 ### 3.1 方法与 Skill 外部研究
 
-| 文档 | 长期价值 | 当前对应关系 |
+| 文档 | 长期价值 | 当前对应 Authority |
 |---|---|---|
-| `mattpocock-skills-analysis.md` | Small / Composable Skills、上下文控制、纵向切片等早期方法对照 | `docs/method/*`、`docs/architecture/skill-architecture.md` |
+| `mattpocock-skills-analysis.md` | Small / Composable Skills、上下文控制、纵向切片等早期方法对照 | `docs/method/ai-development-method.md`、`docs/architecture/skill-architecture.md` |
 | `spec-kit-analysis.md` | WHAT / WHY 与 HOW、规格 / 计划 / 任务边界、就绪思想 | `docs/method/ai-development-method.md` |
-| `superpowers-analysis.md` | 执行编排、证据先于完成、调试与隔离执行的外部对照 | Method 与现有核心 Skills |
-| `agent-skills-specification-analysis.md` | Agent Skills 规范、包装与互操作边界 | `docs/architecture/skill-architecture.md`、`skill-contracts.md` |
-| `andrej-karpathy-skills-analysis.md` | 最小实现、推测性复杂度、精准修改、包装实践 | `docs/architecture/engineering-disciplines.md` 与 Skill Packaging 边界 |
+| `superpowers-analysis.md` | 执行编排、证据先于完成、调试与隔离执行的外部对照 | `docs/method/ai-development-method.md`、`docs/architecture/skill-architecture.md` |
+| `agent-skills-specification-analysis.md` | Agent Skills 规范、包装与互操作边界 | `docs/architecture/skill-architecture.md`、`docs/architecture/skill-contracts.md` |
+| `andrej-karpathy-skills-analysis.md` | 最小实现、推测性复杂度、精准修改、包装实践 | `docs/architecture/engineering-disciplines.md`、`docs/architecture/skill-contracts.md` |
 
 ### 3.2 工程纪律、平台与技术画像研究
 
-| 文档 | 长期价值 | 当前对应关系 |
+| 文档 | 长期价值 | 当前对应 Authority |
 |---|---|---|
 | `implementation-minimality-and-speculative-complexity-analysis.md` | 实现最小化与推测性复杂度的外部 / 工程证据 | `docs/architecture/engineering-disciplines.md` |
 | `surgical-change-and-diff-scope-control-analysis.md` | 精准修改与差异范围控制 | `docs/architecture/engineering-disciplines.md` |
 | `data-access-scope-boundedness-analysis.md` | 数据访问作用域、有界性、生命周期与分页 / 窗口判断 | `docs/architecture/engineering-disciplines.md` |
-| `vue3-typescript-profile-analysis.md` | Vue 3 + TypeScript 官方资料、规则候选与专项验证依据 | `docs/technology-profiles/vue3-typescript.md`、Technology Profile Contract |
+| `vue3-typescript-profile-analysis.md` | Vue 3 + TypeScript 官方资料、规则候选与专项验证依据 | `docs/technology-profiles/vue3-typescript.md`、`docs/architecture/technology-profile-contract.md` |
 | `github-stacked-pr-squash-topology.md` | GitHub stacked PR / squash merge 的平台语义与拓扑风险 | `docs/guides/external-operation-guidelines.md` |
 
 ### 3.3 知识激活与检索研究
 
-| 文档 | 长期价值 | 当前对应关系 |
+| 文档 | 长期价值 | 当前对应 Authority |
 |---|---|---|
-| `knowledge-activation-and-code-intelligence-analysis.md` | 规则激活、知识发现、CodeGraph / Obsidian 边界、代码智能与后继能力分层 | `docs/guides/rule-activation-guide.md`、Engineering Capability / Skill Architecture |
-| `knowledge-activation-evidence-appendix.md` | 上述研究所依赖的外部实现证据、数值与仓库反例 | 同上；仅作为技术证据伴随文档 |
+| `knowledge-activation-and-code-intelligence-analysis.md` | 规则激活、知识发现、CodeGraph / Obsidian 边界、代码智能与后继能力分层 | `docs/guides/rule-activation-guide.md`、`docs/architecture/engineering-capability-architecture.md`、`docs/architecture/skill-architecture.md` |
+| `knowledge-activation-evidence-appendix.md` | 上述研究所依赖的外部实现证据、数值与仓库反例 | `docs/guides/rule-activation-guide.md`；仅作为技术证据伴随文档 |
 | `llm-wiki-rule-governance-fit-analysis.md` | LLM Wiki 思路与当前规则治理的适配 / 不适配边界 | `docs/guides/rule-activation-guide.md` |
 | `rule-retrieval-design-reference.md` | 稀疏规则查询、源指针、fail-closed、派生索引与最小正确规则集设计 | `docs/guides/rule-activation-guide.md`；实现映射到 `evals/rule-retrieval/*` |
 
