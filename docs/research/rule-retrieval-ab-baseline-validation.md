@@ -127,16 +127,40 @@ C3 必须从可取得的真实运行证据记录两侧实际模型与推理强�
 
 ## 7. 真实静态执行证据
 
-为满足 C2“验证 runner 命令可执行”门禁，PR #84 曾临时加入只读 GitHub Actions workflow，仅执行：
+为满足 C2“验证 runner 命令可执行”门禁，PR #84 使用一次性、只读 GitHub Actions workflow 执行：
 
 ```bash
 python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py evals/run_codex_evals.py
 python3 evals/run_rule_retrieval_ab.py --validate-only
 ```
 
+工作流权限只有 `contents: read`，未使用 secrets，也从未执行 `--run`。取得证据后均从候选分支删除，不进入长期仓库结构。
+
+### 首轮实现验证
+
 Run：`34291536760`
 
 Job：`102278939797` (`validate`)
+
+结果：**success**。
+
+该轮验证了 runner、fixture、结果结构与最初 C2 输入能够执行。随后 C2 继续完成项目状态闭环并修正 AGENTS 派生来源 identity，因此该运行不再作为最终输入面的唯一验证依据。
+
+### 最终输入面复跑
+
+AGENTS 状态闭环完成后，其当前 blob identity 变为：
+
+`0bd04757c64e6eda6a7ba00e04eca40e92651c29`
+
+`rule-index.json` 的 `PTR-AGENTS-EXT` 已刷新到该 identity；61 项索引覆盖、关系与规则语义未改变。随后在 Head：
+
+`698e3a8567c9618247c70dfefdbde0be112aea14`
+
+重新执行相同静态验证。
+
+Run：`34296037510`
+
+Job：`102292773126` (`validate`)
 
 结果：**success**。
 
@@ -148,22 +172,20 @@ C2 静态校验通过：9 个场景的 A/B 工作区均可装配。
 未执行 Agent A/B；真正的新上下文运行与人工语义评分属于 C3。
 ```
 
-工作流权限只有 `contents: read`，未使用 secrets，也未执行 `--run`。
-
-取得证据后，临时 workflow 已从候选分支删除，不进入长期仓库结构。
-
-该次运行锚定的 C2 实现 Head 为 `a56c0d76f99496cbbe340f73af420f36f4ec20b3` 对应 PR merge ref；后续如果修改 runner、query、索引、fixture 或任何会影响该命令结果的输入，必须重新运行。若后续差异只涉及研究记录或不被静态校验消费的项目状态说明，也必须先逐项判断证据声明是否受影响，而不能机械沿用祖先 PASS。
+该复跑覆盖最终 runner、query、索引、fixture、AGENTS identity 与 C1 设计输入。验证通过后只删除临时 workflow，并更新本研究证据 / PR 元数据；这些后继变化不被 `--validate-only` 消费，也不改变 runner、query、索引、fixture、AGENTS 或任何 A/B 场景输入，因此该祖先验证证据仍适用于最终 C2 集成候选。若这些被验证输入中的任一项再次变化，必须重新运行，不得机械复用当前 PASS。
 
 ## 8. 当前结论
 
-C2 已具备以下实质基础：
+C2 已满足：
 
 - A / B 隔离装配可重复；
 - 9 个 B query 的命中 / 回退预期可机器校验；
 - Consumer-local 与 stale-source 控制可以生成；
-- 隐藏答案和 A/B 分组不进入 Agent 可见运行时文件；
+- 隐藏答案、评分关注点和 A/B 分组不进入 Agent 可见运行时文件；
+- A / B 使用相同任务正文，实验差异只来自允许读取的规则上下文；
 - 查询回退、进程退出与人工语义评分分层；
 - runner 默认不会执行 C3；
-- 真实 `--validate-only` 命令已成功执行。
+- 最终输入面 `py_compile` 与 `--validate-only` 已在真实 GitHub Actions 中成功执行；
+- 临时静态验证 workflow 已删除，不建立新的长期自动化依赖。
 
-本证据仍**不证明 B 比 A 更可靠或成本更低**。真正的行为效果、模型一致性和人工断言评分必须在 C3 完成。
+本证据仍**不证明 B 比 A 更可靠或成本更低**。真正的行为效果、实际模型 / 推理强度一致性和人工断言评分必须在 C3 完成。
