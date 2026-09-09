@@ -51,7 +51,7 @@
 
 阶段 B“最小检索模型”已完成：B1 冻结稀疏检索契约，B2 选择 JSON 派生规则索引 + Python 标准库薄查询器，B3 建立 61 项 / 8 个规范性来源的首轮派生索引并验证来源追溯、条件筛选、未知维度与来源陈旧回退、可删除 / 可重建边界。原型仍属于 `evals/` 评估资产，不是新的规则权威，也没有证据要求全库统一增加文件头。
 
-阶段 C 的 C1“定向评估设计”和 C2“A/B 基线实现与静态校验”已完成：C1 冻结 9 个场景，其中 6 个来自真实历史失效证据，3 个用于负向条件、来源陈旧和真实规则缺口控制，并关闭“已建模词表内零命中被误解释为无规则”的原型缺口；C2 建立可重复 A/B runner、Consumer-local fixture、无语义来源漂移控制与分层结果结构，并通过真实 GitHub Actions 静态执行确认 9 个场景的 A/B 工作区可装配。当前尚未执行真正的 Agent A/B，也没有证据宣称按需检索优于当前粗粒度加载。
+阶段 C 的 C1“定向评估设计”和 C2“A/B 基线实现与静态校验”已完成：C1 冻结 9 个场景，其中 6 个来自真实历史失效证据，3 个用于负向条件、来源陈旧和真实规则缺口控制，并关闭“已建模词表内零命中被误解释为无规则”的原型缺口；C2 建立可重复 A/B runner、Consumer-local fixture、无语义来源漂移控制与分层结果结构，并通过真实 GitHub Actions 静态执行确认 9 个场景的 A/B 工作区可装配。最终差异复核还发现并修正 stale-source fallback 仍可能消费临时陈旧副本的缺口，当前静态校验会直接确认 fallback 工作区与当前 Repository Authority / fixture 一致。当前尚未执行真正的 Agent A/B，也没有证据宣称按需检索优于当前粗粒度加载。
 
 当前下一实际门禁：
 
@@ -340,11 +340,12 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - 建立可重复 A/B 隔离 runner，默认 `--validate-only`，只有显式 `--run` 才进入 C3；
 - 建立 Consumer-local Authority 最小 fixture；
 - 在临时副本动态制造无语义来源 blob 漂移，不持久化第二份规范性源；
-- B 直接命中时从当前规范性源按 `source_pointer` 物化章节 / 独立职责载体，回退时读取 C1 已声明的完整 Authority 基线；
+- B 直接命中时从当前规范性源按 `source_pointer` 物化章节 / 独立职责载体；发生 fallback 时停止信任临时来源视图并重新从当前 Repository Authority 装配完整基线；
 - Agent 可见输入不包含 A/B 分组、`metric_focus`、隐藏断言、预期规则键或预期回退；
 - 固定结果结构，区分进程退出、查询回退、人工语义评分和失败分类；
 - 当前仓库没有能由 runner 自动证明的统一 Codex 实际模型 / 推理强度锁定契约；C3 必须以运行证据证明配对一致，无法证明一致的配对不得进入效果比较；
-- PR #84 临时只读 GitHub Actions Run `34291536760` 已实际执行 Python 编译与 `python3 evals/run_rule_retrieval_ab.py --validate-only`，确认 9 个场景的 A/B 工作区可装配且没有执行 Agent A/B；临时 workflow 取证后已删除。
+- 最终差异复核发现并修正 stale-source fallback 仍消费临时陈旧副本的缺口，并增加 fallback 工作区与当前 Authority / fixture 的字节一致性断言；
+- 修正后的只读 GitHub Actions Run `34296395675` / Job `102293842203` 在 Head `96eb5f356383bfb54ec5bd99e76f48f74d7ec01c` 上成功执行 Python 编译与 `python3 evals/run_rule_retrieval_ab.py --validate-only`，确认 9 个场景的 A/B 工作区可装配且没有执行 Agent A/B；此前 Run `34291536760`、`34296037510` 仅保留为祖先验证 / 诊断证据，临时 workflow 取证后已删除。
 
 当前下一实际步骤：
 
