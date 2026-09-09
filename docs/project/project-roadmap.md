@@ -51,11 +51,11 @@
 
 阶段 B“最小检索模型”已完成：B1 冻结稀疏检索契约，B2 选择 JSON 派生规则索引 + Python 标准库薄查询器，B3 建立 61 项 / 8 个规范性来源的首轮派生索引并验证来源追溯、条件筛选、未知维度与来源陈旧回退、可删除 / 可重建边界。原型仍属于 `evals/` 评估资产，不是新的规则权威，也没有证据要求全库统一增加文件头。
 
-阶段 C 的 C1“定向评估设计”和 C2“A/B 基线实现与静态校验”已完成：C1 冻结 9 个场景，其中 6 个来自真实历史失效证据，3 个用于负向条件、来源陈旧和真实规则缺口控制，并关闭“已建模词表内零命中被误解释为无规则”的原型缺口；C2 建立可重复 A/B runner、Consumer-local fixture、无语义来源漂移控制与分层结果结构，并通过真实 GitHub Actions 静态执行确认 9 个场景的 A/B 工作区可装配。最终差异复核还发现并修正 stale-source fallback 仍可能消费临时陈旧副本的缺口，当前静态校验会直接确认 fallback 工作区与当前 Repository Authority / fixture 一致。当前尚未执行真正的 Agent A/B，也没有证据宣称按需检索优于当前粗粒度加载。
+阶段 C“检索 / 激活评估”已完成：C1 冻结 9 个有辨识力场景；C2 建立可重复 A/B runner、Consumer-local / stale-source 控制与分层结果结构；C3 完成 9 个可比较 A/B pair 的真实隔离运行与人工评分。B 直接命中 29 / 29 必需规则，3 个安全回退 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，并在 RR-C1-02 出现一次误停。阶段 C 已形成进入阶段 D 的收益证据。
 
 当前下一实际门禁：
 
-> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**
+> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**
 
 本里程碑优先解决巨型指南、规则重复、粗粒度加载和“规则存在但未在正确任务中激活”的问题。完整研究和实施边界分别位于：
 
@@ -66,6 +66,7 @@
 - `docs/research/rule-retrieval-prototype-validation.md`
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`
 - `docs/research/rule-retrieval-ab-baseline-validation.md`
+- `docs/research/rule-retrieval-c3-evaluation-results.md`
 - `docs/project/rule-governance-knowledge-activation-v1.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
@@ -78,7 +79,7 @@ Issue #58 继续作为长期使用方经验反馈入口。
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
-| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A、B 已完成，C1、C2 已完成，当前进入阶段 C / C3 隔离运行时与人工评分；不预设全库文件头、图数据库或新运行时层 |
+| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A、B、C 已完成，当前进入阶段 D / D1；只实施评估证明有价值的收敛并保留安全回退 |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
 | 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待代码复核 / 使用方评估暴露真实增量缺口 |
 | 使用方采用 | 基础建设已完成，当前里程碑要求一次使用方验证 | 使用方仓库权威始终优先；CodeGraph 只作为可选代码智能实验输入 |
@@ -347,9 +348,18 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - 最终差异复核发现并修正 stale-source fallback 仍消费临时陈旧副本的缺口，并增加 fallback 工作区与当前 Authority / fixture 的字节一致性断言；
 - 修正后的只读 GitHub Actions Run `34296395675` / Job `102293842203` 在 Head `96eb5f356383bfb54ec5bd99e76f48f74d7ec01c` 上成功执行 Python 编译与 `python3 evals/run_rule_retrieval_ab.py --validate-only`，确认 9 个场景的 A/B 工作区可装配且没有执行 Agent A/B；此前 Run `34291536760`、`34296037510` 仅保留为祖先验证 / 诊断证据，临时 workflow 取证后已删除。
 
+阶段 C 的 C3“隔离运行时与人工评分”已完成：
+
+- 9 / 9 A/B pair 均取得 `gpt-5.6-sol / high` 的可比较运行事实；
+- B 直接命中 29 / 29 必需规则，3 / 3 回退 reason 正确，行为语义 9 / 9 PASS；
+- A 为 8 / 9，RR-C1-02 A 出现一次 `wrong_stop_or_escalation / 选择 / 冲突`；
+- 直接命中场景 B 的观察到的命令输出字节约减少 `48.6%`，wall-clock 约减少 `49.8%`；
+- fallback 成本显著增加，但 stale / unknown / no-match 的安全回退全部正确，不能为了成本删除 fail-closed 回退；
+- 证据见 `docs/research/rule-retrieval-c3-evaluation-results.md` 与 `evals/rule-retrieval/c3-human-scoring.json`。
+
 当前下一实际步骤：
 
-> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**
+> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**
 
 主要边界：
 
@@ -382,6 +392,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - `docs/research/rule-retrieval-prototype-validation.md`
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`
 - `docs/research/rule-retrieval-ab-baseline-validation.md`
+- `docs/research/rule-retrieval-c3-evaluation-results.md`
 
 协调计划：
 

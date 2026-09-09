@@ -2,7 +2,7 @@
 
 ## 状态
 
-**当前活动有限里程碑 / 阶段 C — 检索 / 激活评估**
+**当前活动有限里程碑 / 阶段 D — 权威 / 指南收敛**
 
 人工决策日期：2026-09-08
 
@@ -129,6 +129,7 @@
 - `docs/research/rule-retrieval-prototype-validation.md`；
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`；
 - `docs/research/rule-retrieval-ab-baseline-validation.md`；
+- `docs/research/rule-retrieval-c3-evaluation-results.md`；
 - Issue #58；
 - Issue #71；
 - 最近与集成状态闭环、候选 / 执行单元身份、验证触发、新上下文恢复有关的历史评估和 PR 证据。
@@ -292,9 +293,21 @@ C3 才执行冻结场景的真实新上下文 / 隔离 A/B，并由人工逐项�
 
 进程退出码为 0 不等于语义通过。必须人工语义评分。
 
+C3“隔离运行时与人工评分”已经完成：
+
+- 18 / 18 Codex 进程退出 0，9 / 9 A/B pair 均为 `comparable`，实际 provider model / reasoning effort 均为 `gpt-5.6-sol / high`；
+- B 直接命中场景 6 / 6 精确得到冻结 expected set，必需规则 `29 / 29`；3 个控制回退 reason `3 / 3` 正确；
+- B 行为语义 `9 / 9` PASS；A 为 `8 / 9`，RR-C1-02 A 记为 `wrong_stop_or_escalation / 选择 / 冲突`；
+- 直接命中场景 B 的观察到的命令输出字节约减少 `48.6%`，wall-clock 约减少 `49.8%`；fallback 成本上升但安全性正确；
+- 证据入口：`docs/research/rule-retrieval-c3-evaluation-results.md` 与 `evals/rule-retrieval/c3-human-scoring.json`。
+
+阶段 C 已形成足够收益证据；不支持全仓库规则数据库、全量拆分指南、删除 fallback 或派生索引权威化。
+
 ### 阶段 D — 权威 / 指南收敛
 
-只有阶段 C 证明收益后，才实施长期结构收敛。
+状态：**当前**。
+
+阶段 C 已证明收益；当前从 D1 开始，只实施证据直接支持的长期结构收敛。
 
 可能动作包括：
 
@@ -501,8 +514,8 @@ WI-06 暂不启动。
 
 阶段 A 与阶段 B 已完成，阶段 C 的 C1、C2 已完成。下一实际步骤不是拆分指南、全库增加文件头，也不是实现代码复核，而是：
 
-> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分。**
+> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛。**
 
-新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、`docs/research/rule-retrieval-targeted-evaluation-design.md`、`docs/research/rule-retrieval-ab-baseline-validation.md` 和协调计划，然后从 C3 继续。
+新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、`docs/research/rule-retrieval-targeted-evaluation-design.md`、`docs/research/rule-retrieval-ab-baseline-validation.md`、`docs/research/rule-retrieval-c3-evaluation-results.md` 和协调计划，然后从 D1 继续。
 
 为避免将会话历史重新变成事实来源，上句中的正式恢复入口应按以下语义理解：新上下文从 GitHub 当前状态、`AGENTS.md`、项目路线图、Issue #73、本文件、研究文档和协调计划恢复；只有当前任务确实需要时，再按渐进式披露读取其他指南、架构、历史评估或使用方证据。
