@@ -48,6 +48,7 @@ python3 evals/run_rule_retrieval_c3.py --validate-only
 - C3 结果 schema 已包含请求值、provider / turn 运行时事实与 A/B 配对公平性字段；
 - runtime-facts 解析器能区分 `observed` / `ambiguous` / `unavailable`；
 - provider model 与客户端 turn model 不会被混为同一个事实；
+- 为事实取证开启的原始 SSE / turn trace 不会被写入持久结果 stderr；
 - 只有单一、可观察的 provider model 与主 turn reasoning effort 才允许进入比较。
 
 ## C3 真实运行入口
@@ -96,6 +97,7 @@ RUST_LOG=error,codex_core=info,codex_api::sse::responses=trace
 - SSE trace 提供 provider `response.model`；
 - turn span 提供客户端 turn model 与 reasoning effort；
 - trace 既可能出现在 stderr，也可能进入显式 `log_dir`，runner 会在同一次隔离进程的两处取并集；
+- 原始 trace 只在当前进程内存 / 临时 `log_dir` 中参与解析；持久化的 `stderr.txt` 会删除 SSE event 与 turn-fact 行；
 - 临时工作目录和 log 目录名称都不包含 A/B 分组；
 - 如果 provider model、reasoning effort 或客户端 turn 事实出现多值，标记 `ambiguous`；
 - 如果 provider model 或 reasoning effort 无法取得，标记 `unavailable`；
@@ -132,11 +134,11 @@ A/B 使用同一场景正文，差异只来自允许读取的规则上下文。C
 每侧保留：
 
 - `<scenario>-<variant>.jsonl`；
-- `<scenario>-<variant>.stderr.txt`；
+- `<scenario>-<variant>.stderr.txt`（已移除运行时事实 trace，仅保留其余诊断行）；
 - `<scenario>-<variant>.runtime-facts.json`；
 - `<scenario>-<variant>.result.json`。
 
-`runtime-facts.json` 只保存线程 ID、事实来源类别和观察到的模型 / effort 值集合，不复制完整 trace。完整临时 log_dir 随隔离工作区销毁；这些结果目录继续属于本地 / 临时评估证据，不进入长期 Git 权威。
+`runtime-facts.json` 只保存线程 ID、事实来源类别和观察到的模型 / effort 值集合，不复制完整 trace。完整临时 log_dir 随隔离工作区销毁；这些结果目录继续属于本地 / 临时评估证据，并已由 `.gitignore` 排除，不进入长期 Git 权威。
 
 进程退出码只说明 Codex 进程是否正常结束；A/B fairness `comparable` 也只说明比较条件成立。最终必须按 `result-schema.json` 和 C1 隐藏断言人工评分，进程成功与公平性成立都不等于 Eval PASS。
 
