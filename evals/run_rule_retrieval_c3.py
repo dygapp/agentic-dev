@@ -4,8 +4,9 @@
 C2 runner 负责静态装配；本文件只服务 C3 真正 A/B：
 - 每个场景 / 变体使用独立新 Codex exec；
 - A/B 任务正文相同，Agent 可见路径不包含变体身份；
-- 每个 run 设置独立 log_dir，从同一次真实 turn 的运行日志提取 model / reasoning effort；
-- 只有 A/B 两侧实际运行时事实均可观察且完全一致，才标记为可比较；
+- 同一次真实 turn 中，provider model 从 Responses SSE trace 读取，reasoning effort 从 turn span 读取；
+- 请求值、客户端 turn model 与 provider model 分开记录，不互相冒充；
+- 只有 A/B 两侧 provider model / reasoning effort 均可观察且完全一致，才标记为可比较；
 - 进程退出与公平性证据都不自动等于语义 PASS，人工隐藏断言评分仍是必需步骤。
 
 本执行器保持 eval 原型性质，不创建新的 Repository Authority。
@@ -17,7 +18,6 @@ import argparse
 import json
 import os
 import re
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -40,9 +40,10 @@ from run_rule_retrieval_ab import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME_FACTS_SOURCE = "isolated-codex-log-turn-span"
-MODEL_RE = re.compile(r'\bmodel=(?:"([^"]+)"|([^\s}:]+))')
+RUNTIME_FACTS_SOURCE = "codex-exec-sse-provider-model+turn-span-reasoning-effort"
+TURN_MODEL_RE = re.compile(r'\bmodel=(?:"([^"]+)"|([^\s}:]+))')
 EFFORT_RE = re.compile(r'\bcodex\.turn\.reasoning_effort=(?:"([^"]+)"|([^\s}:]+))')
+SSE_MARKER = "SSE event: "
 
 
 def first_group(match: re.Match[str] | None) -> str | None:
@@ -63,40 +64,66 @@ def extract_thread_id(jsonl_text: str) -> str | None:
     return None
 
 
-def parse_runtime_facts(log_text: str, thread_id: str | None) -> dict[str, Any]:
-    """从同一次隔离 Codex 日志中的 turn span 读取实际 model / effort。
+def extract_provider_models(trace_text: str) -> set[str]:
+    """从 Codex API SSE trace 中提取 provider 返回的 response.model。"""
+    models: set[str] = set()
+    for line in trace_text.splitlines():
+        if SSE_MARKER not in line:
+            continue
+        payload_text = line.split(SSE_MARKER, 1)[1].strip()
+        try:
+            event = json.loads(payload_text)
+        except json.JSONDecodeError:
+            continue
+        if event.get("type") not in {"response.created", "response.completed"}:
+            continue
+        response = event.get("response")
+        if not isinstance(response, dict):
+            continue
+        model = response.get("model")
+        if isinstance(model, str) and model:
+            models.add(model)
+    return models
 
-    若主线程 ID 可取得，只接受包含该 ID 的 turn 行；否则只在整份隔离日志恰好
-    出现一个唯一事实对时接受。任何多值都标记 ambiguous，禁止推断。
-    """
-    pairs: set[tuple[str, str]] = set()
-    for line in log_text.splitlines():
+
+def extract_turn_facts(trace_text: str, thread_id: str | None) -> tuple[set[str], set[str]]:
+    """提取主 turn 的客户端解析 model 与 reasoning effort，仅作为运行时诊断。"""
+    turn_models: set[str] = set()
+    efforts: set[str] = set()
+    for line in trace_text.splitlines():
         if "codex.turn.reasoning_effort=" not in line or "model=" not in line:
             continue
         if thread_id is not None and thread_id not in line:
             continue
-        model = first_group(MODEL_RE.search(line))
+        model = first_group(TURN_MODEL_RE.search(line))
         effort = first_group(EFFORT_RE.search(line))
-        if model and effort:
-            pairs.add((model, effort))
+        if model:
+            turn_models.add(model)
+        if effort:
+            efforts.add(effort)
+    return turn_models, efforts
 
-    if len(pairs) == 1:
-        model, effort = next(iter(pairs))
-        return {
-            "status": "observed",
-            "model": model,
-            "reasoning_effort": effort,
-        }
-    if len(pairs) > 1:
-        return {
-            "status": "ambiguous",
-            "model": None,
-            "reasoning_effort": None,
-        }
+
+def parse_runtime_facts(trace_text: str, thread_id: str | None) -> dict[str, Any]:
+    """组合 provider model 与主 turn reasoning effort，任何缺失 / 多值均 fail-closed。"""
+    provider_models = extract_provider_models(trace_text)
+    turn_models, efforts = extract_turn_facts(trace_text, thread_id)
+
+    if len(provider_models) > 1 or len(efforts) > 1 or len(turn_models) > 1:
+        status = "ambiguous"
+    elif len(provider_models) == 1 and len(efforts) == 1:
+        status = "observed"
+    else:
+        status = "unavailable"
+
     return {
-        "status": "unavailable",
-        "model": None,
-        "reasoning_effort": None,
+        "status": status,
+        "model": next(iter(provider_models)) if len(provider_models) == 1 else None,
+        "reasoning_effort": next(iter(efforts)) if len(efforts) == 1 else None,
+        "client_turn_model": next(iter(turn_models)) if len(turn_models) == 1 else None,
+        "provider_models": sorted(provider_models),
+        "turn_models": sorted(turn_models),
+        "turn_reasoning_efforts": sorted(efforts),
     }
 
 
@@ -121,12 +148,16 @@ def run_codex_c3(
         "--ephemeral",
         "--json",
         "--skip-git-repo-check",
+        "--sandbox",
+        "read-only",
         "--model",
         requested_model,
         "--config",
         f'model_reasoning_effort="{requested_reasoning_effort}"',
         "--config",
         f'log_dir="{log_dir}"',
+        "--config",
+        'approval_policy="never"',
         "--config",
         'web_search="disabled"',
         "-C",
@@ -136,6 +167,8 @@ def run_codex_c3(
 
     runtime_env = os.environ.copy()
     runtime_env["PWD"] = str(cwd)
+    # codex exec 默认 RUST_LOG=error；C3 仅对当前子进程开启最小必要 turn + SSE 事实日志。
+    runtime_env["RUST_LOG"] = "error,codex_core=info,codex_api::sse::responses=trace"
     runtime_env.pop("OLDPWD", None)
     for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE"):
         runtime_env.pop(key, None)
@@ -177,19 +210,32 @@ def write_run_artifacts(
 
     jsonl_path = result_dir / f"{stem}.jsonl"
     stderr_path = result_dir / f"{stem}.stderr.txt"
-    runtime_copy = result_dir / f"{stem}.runtime.log"
+    facts_path = result_dir / f"{stem}.runtime-facts.json"
     jsonl_path.write_text(stdout, encoding="utf-8")
     stderr_path.write_text(stderr, encoding="utf-8")
 
+    # Codex exec 的 tracing 可能出现在 stderr，也可能写入显式 log_dir；两者均属于同一次隔离进程。
+    trace_parts = [stderr]
+    trace_sources = ["stderr"]
     if runtime_log.is_file():
-        shutil.copy2(runtime_log, runtime_copy)
-        log_text = runtime_log.read_text(encoding="utf-8", errors="replace")
-    else:
-        runtime_copy.write_text("", encoding="utf-8")
-        log_text = ""
+        trace_parts.append(runtime_log.read_text(encoding="utf-8", errors="replace"))
+        trace_sources.append("isolated-log-dir")
+    trace_text = "\n".join(trace_parts)
 
     thread_id = extract_thread_id(stdout)
-    facts = parse_runtime_facts(log_text, thread_id)
+    facts = parse_runtime_facts(trace_text, thread_id)
+    facts_record = {
+        "thread_id": thread_id,
+        "sources": trace_sources,
+        "status": facts["status"],
+        "provider_models": facts["provider_models"],
+        "client_turn_models": facts["turn_models"],
+        "turn_reasoning_efforts": facts["turn_reasoning_efforts"],
+    }
+    facts_path.write_text(
+        json.dumps(facts_record, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
     result = {
         "scenario_id": case["id"],
@@ -221,8 +267,10 @@ def write_run_artifacts(
         "file_read_count": None,
         "rule_bytes_or_lines_read": None,
         "query_invocations": 1 if query_payload is not None else 0,
+        # model 是 provider response.model；client_turn_model 只作诊断，不能替代 provider 事实。
         "model": facts["model"],
         "reasoning_effort": facts["reasoning_effort"],
+        "client_turn_model": facts["client_turn_model"],
         "requested_model": requested_model,
         "requested_reasoning_effort": requested_reasoning_effort,
         "runtime_facts_status": facts["status"],
@@ -258,28 +306,43 @@ def update_pair_fairness(case_id: str, results: dict[str, dict[str, Any]]) -> st
 def validate_runtime_parser() -> list[str]:
     errors: list[str] = []
     thread_id = "019f0000-0000-7000-8000-000000000001"
-    observed = parse_runtime_facts(
-        (
-            '2026-09-09T00:00:00Z INFO turn{otel.name="session_task.turn" '
-            f'thread.id={thread_id} model=gpt-5.6-sol '
-            'codex.turn.reasoning_effort=high}: ok\n'
-        ),
-        thread_id,
+    observed_trace = (
+        '2026-09-09T00:00:00Z INFO turn{otel.name="session_task.turn" '
+        f'thread.id={thread_id} model=gpt-5.6-sol '
+        'codex.turn.reasoning_effort=high}: ok\n'
+        '2026-09-09T00:00:01Z TRACE codex_api::sse::responses: SSE event: '
+        '{"type":"response.completed","response":{"model":"gpt-5.6-sol"}}\n'
     )
-    if observed != {"status": "observed", "model": "gpt-5.6-sol", "reasoning_effort": "high"}:
+    observed = parse_runtime_facts(observed_trace, thread_id)
+    if (
+        observed["status"] != "observed"
+        or observed["model"] != "gpt-5.6-sol"
+        or observed["reasoning_effort"] != "high"
+        or observed["client_turn_model"] != "gpt-5.6-sol"
+    ):
         errors.append(f"runtime facts observed 解析失败：{observed}")
 
-    ambiguous = parse_runtime_facts(
-        (
-            f'turn{{thread.id={thread_id} model=gpt-5.6-sol codex.turn.reasoning_effort=high}}\n'
-            f'turn{{thread.id={thread_id} model=gpt-5.6-terra codex.turn.reasoning_effort=high}}\n'
-        ),
-        thread_id,
+    routed_trace = (
+        f'turn{{thread.id={thread_id} model=requested-alias codex.turn.reasoning_effort=high}}\n'
+        'TRACE codex_api::sse::responses: SSE event: '
+        '{"type":"response.created","response":{"model":"served-dated-model"}}\n'
     )
+    routed = parse_runtime_facts(routed_trace, thread_id)
+    if routed["model"] != "served-dated-model" or routed["client_turn_model"] != "requested-alias":
+        errors.append(f"provider / client model 区分失败：{routed}")
+
+    ambiguous_trace = (
+        f'turn{{thread.id={thread_id} model=gpt-5.6-sol codex.turn.reasoning_effort=high}}\n'
+        'TRACE codex_api::sse::responses: SSE event: '
+        '{"type":"response.created","response":{"model":"served-a"}}\n'
+        'TRACE codex_api::sse::responses: SSE event: '
+        '{"type":"response.completed","response":{"model":"served-b"}}\n'
+    )
+    ambiguous = parse_runtime_facts(ambiguous_trace, thread_id)
     if ambiguous["status"] != "ambiguous":
         errors.append(f"runtime facts ambiguous 解析失败：{ambiguous}")
 
-    unavailable = parse_runtime_facts("no turn facts\n", thread_id)
+    unavailable = parse_runtime_facts("no runtime facts\n", thread_id)
     if unavailable["status"] != "unavailable":
         errors.append(f"runtime facts unavailable 解析失败：{unavailable}")
 
@@ -289,6 +352,7 @@ def validate_runtime_parser() -> list[str]:
         return errors + [f"result schema 无法读取：{exc}"]
     properties = schema.get("properties", {})
     for field in (
+        "client_turn_model",
         "requested_model",
         "requested_reasoning_effort",
         "runtime_facts_status",
@@ -331,13 +395,13 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print("C3 Readiness 静态校验通过：C2 装配、runtime-facts 解析与结果契约一致。")
+    print("C3 Readiness 静态校验通过：C2 装配、provider model / effort 解析与结果契约一致。")
     if not args.run:
         print("未执行真实 Agent A/B。")
         return 0
 
     if not args.model or not args.reasoning_effort:
-        print("--run 必须同时提供 --model 与 --reasoning-effort；请求值不能替代实际运行证据。", file=sys.stderr)
+        print("--run 必须同时提供 --model 与 --reasoning-effort；请求值不能替代 provider / turn 事实。", file=sys.stderr)
         return 64
 
     selected = set(args.scenario)
@@ -391,7 +455,7 @@ def main() -> int:
                 pair_results[variant] = result
                 process_failures += returncode != 0
                 print(
-                    f"[{case['id']}] turn 完成；runtime facts="
+                    f"[{case['id']}] turn 完成；provider/runtime facts="
                     f"{result['runtime_facts_status']}"
                 )
 
@@ -409,7 +473,7 @@ def main() -> int:
         )
         return 2
 
-    print("全部选中 A/B 配对已取得一致的实际模型 / 推理强度证据。")
+    print("全部选中 A/B 配对已取得一致的 provider model / reasoning effort 证据。")
     print("语义评分仍为 pending；进程成功与公平性成立都不等于 Eval PASS。")
     return 0
 
