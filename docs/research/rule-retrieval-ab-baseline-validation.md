@@ -70,7 +70,7 @@ C2 最终实现不会向 Agent 暴露：
 
 `runtime-input.json` 只包含场景 ID 与允许读取的上下文列表。
 
-A / B prompt 使用同一场景正文；差异只来自该变体允许读取的上下文，不使用“你是 A 组 / B 组”等实验提示影响 Agent 行为。
+A / B prompt 使用同一场景正文；差异只来自该变体允许读取的上下文，不使用“你是 A 组 / B 组”等实验提示影响 Agent 行为。实际 `--run` 使用的临时目录前缀也不包含 A / B 标识，避免 Codex 从当前工作目录侧信道观察到分组身份；分组只保留在运行器外部控制和运行后的结果记录中。
 
 ## 4. 控制 fixture
 
@@ -158,9 +158,9 @@ Job：`102292773126` (`validate`)
 
 该轮已经覆盖更新后的 AGENTS identity 和当时的 C2 输入，但最终差异级 AI 复核发现一个中等级缺口：`RR-C1-08` 检测到来源陈旧后虽然正确返回 fallback，fallback 工作区对 stale-root 中已经存在的同名规范性源仍会优先复制陈旧副本。也就是说，旧静态校验验证了“需要回退”，却没有验证“回退后的 Agent 上下文确实来自当前 Authority”。
 
-因此该运行被后续修订**取代为祖先诊断证据，不再作为最终 C2 PASS**。
+因此该运行被后续修订取代为祖先诊断证据，不作为最终 C2 PASS。
 
-### 7.3 修正后的最终静态复跑
+### 7.3 fallback 来源修正复跑
 
 修订内容：
 
@@ -168,13 +168,29 @@ Job：`102292773126` (`validate`)
 - 新增静态断言：B fallback 后每个声明上下文文件必须与当前 Authority / 当前 fixture 字节一致；
 - 不改变 C1 场景、61 项索引覆盖、规则关系或 Guide / Skill 语义。
 
-修正后的验证输入 Head：
+验证输入 Head：
 
 `96eb5f356383bfb54ec5bd99e76f48f74d7ec01c`
 
 Run：`34296395675`
 
 Job：`102293842203` (`validate`)
+
+结果：**success**。
+
+该轮确认 fallback 来源修正和 9 场景静态装配有效。随后最终差异复核又识别到运行环境侧的实验身份泄漏风险：实际 `--run` 临时目录前缀仍包含 `-A-` / `-B-`，Codex 可能通过当前工作目录观察到分组。因此该 Head 继续作为 fallback 修正证据，但不作为最终 runner 的完整静态基线。
+
+### 7.4 最终 runner 静态复跑
+
+运行目录已改为中性前缀：只包含场景 ID，不包含 A / B 分组；分组仍保留在运行器外部结果标识中。
+
+最终验证输入 Head：
+
+`3adb250cdfb3fe904c6a601aedb9d14017f22ab8`
+
+Run：`34297156461`
+
+Job：`102296153284` (`validate`)
 
 结果：**success**。
 
@@ -186,7 +202,9 @@ C2 静态校验通过：9 个场景的 A/B 工作区均可装配。
 未执行 Agent A/B；真正的新上下文运行与人工语义评分属于 C3。
 ```
 
-该运行实际执行了包含 fallback Authority 字节一致性检查的最终 runner。验证通过后只删除临时 workflow，并更新本研究证据 / PR 元数据；这些后继变化不被 `--validate-only` 消费，也不改变 runner、query、索引、fixture、AGENTS 或任何 A/B 场景输入。因此该祖先验证证据可以用于最终 C2 集成候选。若上述被验证输入中的任一项再次变化，必须重新运行，不得机械复用当前 PASS。
+该运行覆盖当前最终 runner 的 Python 编译、C1 设计 / 索引校验、9 场景 A/B 工作区装配和 fallback Authority 字节一致性断言。A/B 运行目录中性由最终 runner 差异直接复核；C2 没有为了验证该路径而提前执行真实 Agent A/B。
+
+该运行之后只删除一次性 workflow，并更新本研究证据 / PR 元数据；如果 runner、query、索引、fixture、AGENTS 或 C1 A/B 场景输入中的任一项再次变化，必须重新验证，不得机械复用当前 PASS。
 
 ## 8. 当前结论
 
@@ -198,10 +216,11 @@ C2 已满足：
 - stale / unknown / no-match fallback 后重新从当前 Repository Authority 装配规则上下文；
 - 静态校验直接验证 fallback 工作区内容与当前 Authority / fixture 一致；
 - 隐藏答案、评分关注点和 A/B 分组不进入 Agent 可见运行时文件；
+- 实际 Codex 工作目录不包含 A / B 分组标识；
 - A / B 使用相同任务正文，实验差异只来自允许读取的规则上下文；
 - 查询回退、进程退出与人工语义评分分层；
 - runner 默认不会执行 C3；
-- 修正后的最终输入面 `py_compile` 与 `--validate-only` 已在真实 GitHub Actions 中成功执行；
+- 最终 runner 的 `py_compile` 与 `--validate-only` 已在真实 GitHub Actions 中成功执行；
 - 临时静态验证 workflow 已删除，不建立新的长期自动化依赖。
 
 本证据仍**不证明 B 比 A 更可靠或成本更低**。真正的行为效果、实际模型 / 推理强度一致性和人工断言评分必须在 C3 完成。
