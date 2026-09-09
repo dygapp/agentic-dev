@@ -24,11 +24,12 @@
 14. `docs/research/rule-retrieval-prototype-validation.md`；
 15. `docs/research/rule-retrieval-targeted-evaluation-design.md`；
 16. `docs/research/rule-retrieval-ab-baseline-validation.md`；
-17. `docs/guides/rule-activation-guide.md`；
-18. `docs/guides/using-agentic-dev.md`；
-19. `docs/guides/external-operation-guidelines.md`；
-20. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
-21. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
+17. `docs/research/rule-retrieval-c3-evaluation-results.md`；
+18. `docs/guides/rule-activation-guide.md`；
+19. `docs/guides/using-agentic-dev.md`；
+20. `docs/guides/external-operation-guidelines.md`；
+21. 按当前工作需要读取 `skill-architecture.md`、`skill-contracts.md`、工程纪律、历史治理评估与使用方证据；
+22. 开放 PR / Issue 和当前 `master`，确认没有晚于本计划的人工路线决定或集成事实。
 
 本计划只负责协调，不复制上述长期权威的完整规则。
 
