@@ -1,0 +1,125 @@
+name: Research Final Boundary Audit
+
+on:
+  push:
+    branches:
+      - docs/research-information-architecture-governance
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Audit Research boundary and references
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          import subprocess
+
+          expected = {
+              'README.md',
+              'agent-skills-specification-analysis.md',
+              'andrej-karpathy-skills-analysis.md',
+              'data-access-scope-boundedness-analysis.md',
+              'github-stacked-pr-squash-topology.md',
+              'implementation-minimality-and-speculative-complexity-analysis.md',
+              'knowledge-activation-and-code-intelligence-analysis.md',
+              'knowledge-activation-evidence-appendix.md',
+              'llm-wiki-rule-governance-fit-analysis.md',
+              'mattpocock-skills-analysis.md',
+              'rule-retrieval-design-reference.md',
+              'spec-kit-analysis.md',
+              'superpowers-analysis.md',
+              'surgical-change-and-diff-scope-control-analysis.md',
+              'vue3-typescript-profile-analysis.md',
+          }
+          actual = {p.name for p in Path('docs/research').glob('*.md')}
+          if actual != expected:
+              raise SystemExit(f'Research set mismatch: missing={sorted(expected-actual)} extra={sorted(actual-expected)}')
+
+          index = Path('docs/research/README.md').read_text(encoding='utf-8')
+          for name in sorted(expected - {'README.md'}):
+              if index.count(f'`{name}`') != 1:
+                  raise SystemExit(f'Research index must catalogue exactly once: {name}')
+
+          authority_paths = [
+              'docs/method/ai-development-method.md',
+              'docs/architecture/skill-architecture.md',
+              'docs/architecture/skill-contracts.md',
+              'docs/architecture/engineering-disciplines.md',
+              'docs/architecture/technology-profile-contract.md',
+              'docs/technology-profiles/vue3-typescript.md',
+              'docs/guides/external-operation-guidelines.md',
+              'docs/guides/rule-activation-guide.md',
+              'docs/architecture/engineering-capability-architecture.md',
+          ]
+          for path in authority_paths:
+              if not Path(path).is_file():
+                  raise SystemExit(f'catalogued Authority path missing: {path}')
+
+          removed = {
+              'activation-failure-classification.md',
+              'cross-authority-duplication-audit.md',
+              'external-operation-guidelines-activation-map.md',
+              'minimal-rule-retrieval-contract.md',
+              'rule-activation-audit-baseline.md',
+              'rule-activation-e1-consumer-validation.md',
+              'rule-retrieval-ab-baseline-validation.md',
+              'rule-retrieval-c3-evaluation-results.md',
+              'rule-retrieval-c3-runtime-readiness.md',
+              'rule-retrieval-prototype-selection.md',
+              'rule-retrieval-prototype-validation.md',
+              'rule-retrieval-targeted-evaluation-design.md',
+              'using-agentic-dev-activation-map.md',
+          }
+          allowed_history = {
+              'tasks/plans/20260908/01-rule-governance-knowledge-activation.md',
+              'tasks/plans/20260909/01-research-information-architecture-governance.md',
+          }
+          tracked = subprocess.check_output(['git','ls-files'], text=True).splitlines()
+          for filename in tracked:
+              path = Path(filename)
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except Exception:
+                  continue
+              hits = sorted(name for name in removed if name in text)
+              if hits and filename not in allowed_history:
+                  raise SystemExit(f'{filename} contains removed Research names: {hits}')
+              for match in re.findall(r'docs/research/([A-Za-z0-9._-]+\.md)', text):
+                  target = Path('docs/research') / match
+                  if not target.is_file() and filename not in allowed_history:
+                      raise SystemExit(f'{filename} has dead Research link: docs/research/{match}')
+
+          agents = Path('AGENTS.md').read_text(encoding='utf-8')
+          readme = Path('README.md').read_text(encoding='utf-8')
+          roadmap = Path('docs/project/project-roadmap.md').read_text(encoding='utf-8')
+          for text, name in [(agents,'AGENTS.md'), (readme,'README.md'), (roadmap,'Roadmap')]:
+              if '待人工决策' not in text:
+                  raise SystemExit(f'{name} missing pending-decision state')
+          if 'WI-07 — 代码复核能力 v1 是优先后继候选，但尚未启动' not in agents:
+              raise SystemExit('AGENTS must keep WI-07 unstarted')
+
+          design = Path('docs/research/rule-retrieval-design-reference.md').read_text(encoding='utf-8')
+          if '不是 Repository Authority' not in design or 'evals/rule-retrieval/c3-human-scoring.json' not in design:
+              raise SystemExit('durable retrieval reference boundary incomplete')
+          print('Research final boundary audit passed:', len(expected), 'markdown files retained')
+          PY
+          python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py
+          python3 evals/run_rule_retrieval_ab.py --validate-only
+          git diff --check origin/master...HEAD
+
+      - name: Self-clean audit workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/research-final-boundary-audit.yml
+          git commit -m 'ci: 清理 Research 最终边界审计工作流'
+          git push
