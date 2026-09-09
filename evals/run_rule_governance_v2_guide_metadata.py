@@ -6,15 +6,15 @@
 - 不直接调用 technical-plan；
 - 从当前 using-agentic-dev.md 按章节原文动态生成小模块；
 - 只给 Agent 一个不含规则正文的 metadata Catalog 作为初始发现入口；
-- 暴露全部当前 Skill，但不预激活任何 Skill；
-- 完整 Repository 仍可访问，允许必要时 fail-closed；
+- 不把任何 Skill 额外安装为运行时自动发现项，避免绕过 Catalog；
+- 完整 Repository 仍可访问，模块可按 pointer 指向现有 Skill / Authority；
+- 允许必要时 fail-closed；
 - 不修改正式 Method / Guide / Skill。
 """
 
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import re
@@ -105,14 +105,6 @@ def extract_markdown_section(text: str, heading_prefix: str) -> str:
             end = index
             break
     return "\n".join(lines[start:end]).rstrip() + "\n"
-
-
-def install_all_skills(workspace: Path) -> None:
-    target_root = workspace / ".agents" / "skills"
-    target_root.mkdir(parents=True, exist_ok=True)
-    for source in sorted((workspace / "skills").iterdir()):
-        if source.is_dir() and (source / "SKILL.md").is_file():
-            shutil.copytree(source, target_root / source.name)
 
 
 def yaml_list(values: list[str]) -> str:
@@ -260,7 +252,6 @@ def run_one(*, codex_bin: str, model: str, reasoning_effort: str, force: bool) -
     with tempfile.TemporaryDirectory(prefix="agentic-dev-rgv2-guide-metadata-") as temp_dir:
         temp = Path(temp_dir)
         workspace = prepare_isolated_repository(temp)
-        install_all_skills(workspace)
         projection = build_catalog_projection(workspace)
 
         log_dir = temp / "codex-log"
