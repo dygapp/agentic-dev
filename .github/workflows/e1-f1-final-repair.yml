@@ -1,0 +1,152 @@
+name: E1 F1 Final Repair
+
+on:
+  push:
+    branches:
+      - test/rule-activation-e1-consumer-validation
+
+permissions:
+  contents: write
+
+jobs:
+  repair-and-validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: test/rule-activation-e1-consumer-validation
+          fetch-depth: 0
+
+      - name: Audit stale source boundary
+        run: |
+          python3 - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          data = json.loads(Path('evals/rule-retrieval/rule-index.json').read_text(encoding='utf-8'))
+          identities = {}
+          for entry in data['entries']:
+              source = entry['source']
+              identities.setdefault(source['path'], set()).add(source['identity'])
+          stale = {}
+          for source_path, recorded in identities.items():
+              blob = subprocess.check_output(['git', 'hash-object', source_path], text=True).strip()
+              if recorded != {blob}:
+                  stale[source_path] = {'recorded': sorted(recorded), 'current': blob}
+          print('stale sources:', json.dumps(stale, ensure_ascii=False, indent=2))
+          if set(stale) != {'AGENTS.md'}:
+              raise SystemExit(f'unexpected stale source set: {sorted(stale)}')
+          PY
+
+      - name: Correct D2 evidence scope
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              'AGENTS.md': [(
+                  'D2 重新验证 9 个既有 A/B 场景仍可静态装配，且本轮没有修改既有治理评估的输入权威。',
+                  'D2 重新验证 9 个既有 A/B 场景仍可静态装配。PR #88 后续项目状态闭环修改了 `AGENTS.md` / Roadmap 等状态入口，但没有改变已索引的 `AGENTS.md`“外部操作治理”段落或 C3 冻结的详细规则语义；F1 因此按 fail-closed 规则识别并重建派生索引的源身份，而不放宽陈旧检测。'
+              )],
+              'docs/project/project-roadmap.md': [(
+                  'D2 重新验证 9 个既有 A/B 场景仍可静态装配；本轮未修改现有四组治理评估的输入权威，因此不重复执行没有输入变化的历史语义评估。',
+                  'D2 重新验证 9 个既有 A/B 场景仍可静态装配。PR #88 后续状态闭环修改了 `AGENTS.md` / Roadmap 等项目状态输入；这些变化没有改变 C3 冻结的详细规则语义，但使派生 rule-index 的整文件源身份按设计陈旧。F1 已保留该 fail-closed 结果并重建当前源身份；绑定旧项目阶段 expected behavior 的历史治理评估不机械作为当前状态回归。'
+              )],
+              'docs/project/rule-governance-knowledge-activation-v1.md': [(
+                  '- 现有四组治理评估均不读取 README 或新规则导航，本轮也未修改其 `context_paths` 指向的输入权威，因此历史治理语义证据可按精确影响分析继续复用；',
+                  '- 现有四组历史治理评估不读取 README 或新规则导航，但部分 `context_paths` 包含 `AGENTS.md` / Roadmap；PR #88 后续项目状态闭环改变了这些状态输入，因此不把绑定旧阶段事实的 expected behavior 机械作为当前状态回归。F1 发现并保留 `AGENTS.md` 的 `source_identity_changed` fail-closed 证据；核对已索引“外部操作治理”段落语义未变后，仅重建派生 rule-index 的当前源身份；'
+              )],
+              'tasks/plans/20260908/01-rule-governance-knowledge-activation.md': [(
+                  '- [x] 原有治理评估不回退：四组治理评估均不读取 README / 新导航，本轮未修改其输入权威，按精确影响分析复用已有语义证据；',
+                  '- [x] 历史治理评估适用范围已重新判定：四组评估不读取 README / 新导航，但部分输入包含 `AGENTS.md` / Roadmap；后续项目状态变化使其中绑定旧阶段事实的 expected behavior 不适合作为当前状态回归。F1 保留派生索引对 `AGENTS.md` 的陈旧阻断，并在确认被索引规则段落语义未变后重建 source identity；'
+              )],
+          }
+          for filename, reps in replacements.items():
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              for old, new in reps:
+                  if text.count(old) != 1:
+                      raise SystemExit(f'{filename}: expected one occurrence, got {text.count(old)} for {old!r}')
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+
+          evidence = Path('docs/research/rule-activation-e1-consumer-validation.md')
+          text = evidence.read_text(encoding='utf-8')
+          marker = '## 11. F1 派生索引陈旧发现与修复'
+          if marker not in text:
+              text = text.rstrip() + '''\n\n## 11. F1 派生索引陈旧发现与修复\n\nE1 后进入 F1 时，首次 `evals/run_rule_retrieval_ab.py --validate-only` 没有通过，而是按设计报告：\n\n`rule-index 当前来源陈旧：AGENTS.md (source_identity_changed)`\n\n该结果不是规则召回回归，而是 D1/D2 PR #88 后续项目状态闭环修改了 `AGENTS.md` 的整文件 blob identity，B3 派生索引仍保存旧 identity。进一步对比确认：索引唯一指向的 `AGENTS.md`“外部操作治理”段落在 PR #88 前后语义与正文均未改变。\n\n处理方式：\n\n- 保留 fail-closed 陈旧检测，不降级或绕过；\n- 先完成项目状态证据措辞修正，再按最终 `AGENTS.md` blob 重建派生 `rule-index.json` source identity；\n- 不修改 entry_key、scope、responsibility、condition、activation_summary 或 required_checks；\n- 修正阶段 D 记录中“治理评估输入完全未变化”的过度表述；\n- 重新执行 F1 静态检索回归。\n\n第二次临时修复运行曾因“先刷新 identity、后修改 `AGENTS.md`”的顺序错误再次触发同一 fail-closed；最终修复改为以所有长期文本修正后的最终 blob 重建 identity。该过程反向证明陈旧源保护能够持续阻止旧派生索引被静默继续使用。\n'''
+              evidence.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Rebuild identity from final source
+        run: |
+          python3 - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          path = Path('evals/rule-retrieval/rule-index.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          new = subprocess.check_output(['git', 'hash-object', 'AGENTS.md'], text=True).strip()
+          changed = 0
+          for entry in data['entries']:
+              source = entry['source']
+              if source['path'] == 'AGENTS.md':
+                  if entry['entry_key'] != 'PTR-AGENTS-EXT' or source['section'] != '§外部操作治理':
+                      raise SystemExit(f'unexpected AGENTS index entry: {entry}')
+                  source['identity'] = new
+                  changed += 1
+          if changed != 1:
+              raise SystemExit(f'expected one AGENTS index entry, got {changed}')
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('final AGENTS identity:', new)
+          PY
+
+      - name: Re-run F1 rule retrieval validation
+        run: |
+          python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py evals/run_rule_retrieval_c3.py
+          python3 evals/run_rule_retrieval_ab.py --validate-only
+
+      - name: Validate E1 evidence and repair boundary
+        run: |
+          python3 - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          evidence = Path('docs/research/rule-activation-e1-consumer-validation.md').read_text(encoding='utf-8')
+          for marker in [
+              'E1 结论：**PASS**',
+              'dygapp/jilinjobs-cms',
+              'main@982a214d65f8ebfa461a6488b89709c2be1a3863',
+              '547ac9453fd4ca6b85949810f3991d02f172e02f',
+              'master@7ba9f246380193733ede774634f40715a3f6bd97',
+              'master@d9fad0da83dbdb61cac5eb9778b0258c6861eef1',
+              '10092917399',
+              'sha256:fac36c148f54550f310b955cef73eacba7ed32de948fc819dda904263672fae5',
+              'NOT RUN / OPTIONAL / NOT BLOCKING',
+              'source_identity_changed',
+          ]:
+              if marker not in evidence:
+                  raise SystemExit(f'missing E1/F1 marker: {marker}')
+
+          data = json.loads(Path('evals/rule-retrieval/rule-index.json').read_text(encoding='utf-8'))
+          current_agents = subprocess.check_output(['git', 'hash-object', 'AGENTS.md'], text=True).strip()
+          agents = [e for e in data['entries'] if e['source']['path'] == 'AGENTS.md']
+          if len(agents) != 1 or agents[0]['source']['identity'] != current_agents:
+              raise SystemExit('AGENTS derived identity was not rebuilt to final source')
+          if agents[0]['entry_key'] != 'PTR-AGENTS-EXT' or agents[0]['source']['section'] != '§外部操作治理':
+              raise SystemExit('unexpected AGENTS indexed semantics changed')
+          PY
+
+      - name: Self-clean temporary validation workflows
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/e1-f1-final-validation.yml .github/workflows/e1-f1-stale-index-repair.yml .github/workflows/e1-f1-final-repair.yml
+          git add AGENTS.md docs/project/project-roadmap.md docs/project/rule-governance-knowledge-activation-v1.md tasks/plans/20260908/01-rule-governance-knowledge-activation.md docs/research/rule-activation-e1-consumer-validation.md evals/rule-retrieval/rule-index.json
+          git commit -m "test(governance): 修复 F1 派生索引陈旧并重验"
+          git push origin HEAD:test/rule-activation-e1-consumer-validation
