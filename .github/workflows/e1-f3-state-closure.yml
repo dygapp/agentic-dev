@@ -1,0 +1,201 @@
+name: E1 F3 State Closure
+
+on:
+  push:
+    branches:
+      - test/rule-activation-e1-consumer-validation
+
+permissions:
+  contents: write
+
+jobs:
+  close-state:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: test/rule-activation-e1-consumer-validation
+          fetch-depth: 0
+
+      - name: Apply stable milestone state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path_str, old, new):
+              path = Path(path_str)
+              text = path.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path_str}: expected one occurrence, got {count}: {old!r}')
+              path.write_text(text.replace(old, new), encoding='utf-8')
+
+          replace_once(
+              'AGENTS.md',
+              '''阶段 D“权威 / 指南收敛”已经完成 D1 / D2：README 已收敛为薄启动入口，新增长期 `docs/guides/rule-activation-guide.md` 只保留三条跨任务不变量、按职责 / 风险指向当前 Guide / Skill 的稳定段落指针和保守安全回退；没有复制详细规则正文、没有把评估索引提升为权威，也没有引入新的 Wiki / 数据库 / MCP / 统一元数据层。D2 重新验证 9 个既有 A/B 场景仍可静态装配。PR #88 后续项目状态闭环修改了 `AGENTS.md` / Roadmap 等状态入口，但没有改变已索引的 `AGENTS.md`“外部操作治理”段落或 C3 冻结的详细规则语义；F1 因此按 fail-closed 规则识别并重建派生索引的源身份，而不放宽陈旧检测。\n\n当前下一实际门禁：\n\n> **阶段 E — 使用方验证 / E1 — 使用方新上下文验证**\n\nE1 必须在真实使用方的新上下文中验证薄入口能否取得当前任务所需最小规则集，同时保持使用方仓库权威优先、关键规则不漏失和安全回退；在 E1 取得证据前，不继续删除源规则正文或扩张检索基础设施。''',
+              '''阶段 D“权威 / 指南收敛”已经完成 D1 / D2：README 已收敛为薄启动入口，新增长期 `docs/guides/rule-activation-guide.md` 只保留三条跨任务不变量、按职责 / 风险指向当前 Guide / Skill 的稳定段落指针和保守安全回退；没有复制详细规则正文、没有把评估索引提升为权威，也没有引入新的 Wiki / 数据库 / MCP / 统一元数据层。D2 重新验证 9 个既有 A/B 场景仍可静态装配。PR #88 后续项目状态闭环修改了 `AGENTS.md` / Roadmap 等状态入口，但没有改变已索引的 `AGENTS.md`“外部操作治理”段落或 C3 冻结的详细规则语义；F1 因此按 fail-closed 规则识别并重建派生索引的源身份，而不放宽陈旧检测。\n\n阶段 E“使用方验证”已经完成 E1：以 `dygapp/jilinjobs-cms` `main@982a214d65f8ebfa461a6488b89709c2be1a3863` 与 PR #117 Head `547ac9453fd4ca6b85949810f3991d02f172e02f` 为真实使用方状态完成逻辑 Fresh Context 验证。薄入口能够按当前职责激活执行单元、异步外部操作、GitHub Actions 证据和临时证据晋升规则，同时保持 Consumer-local Method 与其精确 `agentic-dev` baseline 优先；E1 全部检查 PASS。E2 CodeGraph A/B 未执行，属于可选且非阻塞输入。\n\n阶段 F 的最终静态验证已完成 F1：首次回归按设计发现 `AGENTS.md` 的 `source_identity_changed` 并阻止陈旧派生索引继续使用；确认被索引“外部操作治理”段落语义未变后，以最终源身份重建派生索引。最终 Run `34325868257` 的陈旧源审计、9 场景静态检索回归、E1 证据边界检查与临时工作流自清理全部成功。\n\n当前没有新的里程碑实施门禁。规则治理与知识激活 v1 的 A～E 与 F1 / F3 实施、验证和稳定状态收敛已经完成；最终 AI 复核、人工集成决策与精确集成结果由当前 PR / Issue / Git 历史原生记录，不在仓库权威中预写尚未发生的集成事实。下一有限里程碑尚未选择；只有本里程碑完成集成后才重新进入人工路线决策，WI-07 仍只是优先候选，不自动启动。'''
+          )
+
+          replace_once(
+              'AGENTS.md',
+              '- `docs/research/rule-retrieval-c3-evaluation-results.md`\n- `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`',
+              '- `docs/research/rule-retrieval-c3-evaluation-results.md`\n- `docs/research/rule-activation-e1-consumer-validation.md`\n- `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`'
+          )
+
+          replace_once(
+              'README.md',
+              '''- **基线版本：** v0.1\n- **长期阶段：** 工程能力扩展与方法演进\n- **当前活动有限里程碑：** 规则治理与知识激活 v1\n- **当前下一实际门禁：** 阶段 E — 使用方验证 / E1 — 使用方新上下文验证''',
+              '''- **基线版本：** v0.1\n- **长期阶段：** 工程能力扩展与方法演进\n- **最近完成实施与验证的有限里程碑：** 规则治理与知识激活 v1\n- **下一有限里程碑：** 尚未选择；本里程碑完成集成后重新进入人工路线决策'''
+          )
+
+          replace_once(
+              'README.md',
+              '当前活动里程碑跟踪入口：Issue #73。',
+              '最近完成实施与验证的里程碑跟踪入口：Issue #73。精确 PR / 集成状态以 GitHub 原生事实为准；WI-07 等后继候选不会因本里程碑收敛而自动启动。'
+          )
+
+          replace_once(
+              'docs/project/project-roadmap.md',
+              '''当前下一实际门禁：\n\n> **阶段 E — 使用方验证 / E1 — 使用方新上下文验证**\n\nE1 需要在真实使用方的新上下文中验证薄激活入口的实际采用效果。完整研究和实施边界分别位于：''',
+              '''阶段 E“使用方验证”已完成 E1：以 `dygapp/jilinjobs-cms` 当前 `main@982a214d65f8ebfa461a6488b89709c2be1a3863` 与 PR #117 Head `547ac9453fd4ca6b85949810f3991d02f172e02f` 做逻辑 Fresh Context 验证，Consumer Authority / Consumer-local Method / 精确 baseline 始终优先；薄导航只激活当前执行、异步外部操作、GitHub Actions 证据与临时证据晋升所需规则，全部 E1 检查 PASS。E2 CodeGraph A/B 为可选项，本轮未执行且不阻塞。\n\n阶段 F 的 F1 最终静态验证已完成：首次运行正确发现 `AGENTS.md` source identity 陈旧并 fail-closed；最终 Run `34325868257` 在完成证据措辞修正、最终源 identity 重建后，9 场景静态检索回归与 E1 证据边界检查全部通过。F3 稳定状态由当前候选同步收敛；F2 最终 AI 复核与人工集成决策属于最终 PR 原生证据，不在 Roadmap 预写结果。\n\n当前没有新的里程碑实施门禁。下一有限里程碑尚未选择；只有规则治理与知识激活 v1 完成集成后才重新进入人工路线决策，WI-07 仍只是优先候选，不自动启动。完整研究和实施边界分别位于：'''
+          )
+
+          replace_once(
+              'docs/project/project-roadmap.md',
+              '- `docs/research/rule-retrieval-c3-evaluation-results.md`\n- `docs/project/rule-governance-knowledge-activation-v1.md`',
+              '- `docs/research/rule-retrieval-c3-evaluation-results.md`\n- `docs/research/rule-activation-e1-consumer-validation.md`\n- `docs/project/rule-governance-knowledge-activation-v1.md`'
+          )
+
+          replace_once(
+              'docs/project/project-roadmap.md',
+              '| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A～D 已完成，当前进入阶段 E / E1 使用方新上下文验证；保持薄入口、当前源指针与安全回退，不提前扩张检索基础设施 |',
+              '| 规则治理与知识激活 | **实施与验证已收敛** | Issue #73；A～E 与 F1 / F3 已完成，F2 与人工集成结果由最终 PR / Issue 原生记录；当前无新实施门禁，完成集成后再进入下一有限里程碑人工路线决策 |'
+          )
+
+          replace_once(
+              'docs/project/project-roadmap.md',
+              '| 使用方采用 | 基础建设已完成，当前里程碑要求一次使用方验证 | 使用方仓库权威始终优先；CodeGraph 只作为可选代码智能实验输入 |',
+              '| 使用方采用 | E1 真实使用方验证已通过 | `jilinjobs-cms` 验证保持使用方仓库权威与 Consumer-local Method 优先；CodeGraph E2 本轮未执行，继续只是可选代码智能实验输入 |'
+          )
+
+          replace_once(
+              'docs/project/rule-governance-knowledge-activation-v1.md',
+              '**当前活动有限里程碑 / 阶段 E — 使用方验证**',
+              '**有限里程碑实施与验证已收敛；精确集成事实由 GitHub 原生状态记录**'
+          )
+
+          replace_once(
+              'docs/project/rule-governance-knowledge-activation-v1.md',
+              '''### 阶段 E — 使用方验证\n\n状态：**当前**。\n\n当前下一实际门禁：\n\n> **E1 — 使用方新上下文验证**\n\n至少选择一个真实使用方做新上下文验证。\n\n验证重点：\n\n- 新上下文能否从使用方仓库权威 + `agentic-dev` 需要的最小基线恢复当前规则；\n- 是否减少机械全量读取指南；\n- 是否仍能命中关键规则；\n- 使用方仓库权威是否继续高于 `agentic-dev` 可复用规则；\n- 是否避免把 `agentic-dev` 项目级规则误带入使用方。\n\nCodeGraph 可以作为源码发现的独立 A/B 输入，但不是本阶段必须依赖。\n\n### 阶段 F — 最终复核与集成\n\n完成：\n\n- 静态一致性检查；\n- 必要的隔离运行时回归；\n- 人工语义评分；\n- 最终 AI 复核；\n- Roadmap / AGENTS / README / 项目记录状态闭环；\n- 人工集成决策。''',
+              '''### 阶段 E — 使用方验证\n\n状态：**已完成**。\n\nE1 真实使用方验证：**PASS**。\n\n- Consumer：`dygapp/jilinjobs-cms`；\n- Consumer integrated baseline：`main@982a214d65f8ebfa461a6488b89709c2be1a3863`；\n- 实际执行对象：PR #117 / Head `547ac9453fd4ca6b85949810f3991d02f172e02f`；\n- Consumer 自身记录的 `agentic-dev` baseline 继续保持 `master@d9fad0da83dbdb61cac5eb9778b0258c6861eef1`，本次验证没有执行 baseline upgrade；\n- 薄入口只激活当前执行单元、异步外部操作、GitHub Actions 证据与临时证据晋升所需规则；Consumer-specific source error / migration ownership 全部回到 Consumer Authority；\n- E1 六项检查全部 PASS，详细证据见 `docs/research/rule-activation-e1-consumer-validation.md`。\n\nE2 Consumer CodeGraph A/B：**未执行 / 可选 / 不阻塞**。当前没有证据要求用源码发现实验替代或补充 E1 的 Repository Authority / Method Activation 验证，也不因此否定 CodeGraph 的后续可选价值。\n\n### 阶段 F — 最终复核与集成\n\nF1 最终验证已完成：首次 `--validate-only` 按设计报告 `AGENTS.md (source_identity_changed)`，证明陈旧派生索引没有被静默消费；确认被索引“外部操作治理”段落正文未变后，以最终源 blob 重建派生 identity。最终 Run `34325868257` 的陈旧源审计、9 场景静态检索回归、E1 证据边界检查与临时工作流自清理全部成功。\n\nF3 稳定项目状态在当前候选中完成收敛。F2 最终 AI 复核与人工集成决策必须针对最终 PR Head / diff 执行并记录在 PR / Issue；本文不预写尚未发生的复核或集成结果。\n\n当前没有新的里程碑实施门禁。A～E 与 F1 / F3 已完成；下一有限里程碑尚未选择，只有本里程碑完成集成后才重新进入人工路线决策。WI-07 仍只是优先候选，不自动启动。'''
+          )
+
+          plan = Path('tasks/plans/20260908/01-rule-governance-knowledge-activation.md')
+          text = plan.read_text(encoding='utf-8')
+          old = '''### E1 — 使用方新上下文验证\n\n选择真实使用方，重新读取其仓库权威，验证：\n\n- [ ] 使用方仓库权威始终优先；\n- [ ] 能取得当前任务最小 `agentic-dev` 规则集；\n- [ ] 不机械读取全部指南；\n- [ ] 不把 `agentic-dev` 项目级规则带入使用方；\n- [ ] 关键规则没有因缩减上下文丢失。\n\n### E2 — 使用方 CodeGraph 可选 A/B\n\n这不是本里程碑完成的强制依赖；如果当前使用方环境适合，可以并行收集：\n\n- [ ] 传统 `Read` / `Grep` / `Find`；\n- [ ] Local Codex + CodeGraph；\n\n在代码入口发现、调用路径、影响范围、调试 / 复核上比较效率和正确性。\n\n任何结果只作为使用方代码智能采用证据，不把 CodeGraph 直接固化为核心方法强依赖。\n\n---\n\n### F1 — 最终验证\n\n- [ ] 静态文件 / 结构 / 链接检查；\n- [ ] 必要定向评估；\n- [ ] 历史直接回归；\n- [ ] 使用方验证证据；\n- [ ] 人工语义评分完成。\n\n### F2 — 最终 AI 复核\n\n- [ ] 重新读取当前目标基线 / PR / 差异；\n- [ ] 检查权威一致性；\n- [ ] 检查是否制造新超级指南 / 技能 / 索引权威；\n- [ ] 检查是否发生未授权 WI-06 / WI-07 / WI-09 范围扩张；\n- [ ] 未解决阻塞 / 中等级问题必须为 `0 / 0`。\n\n### F3 — 集成状态闭环\n\n- [ ] 项目路线图；\n- [ ] AGENTS；\n- [ ] README；\n- [ ] 本里程碑项目记录；\n- [ ] Issue #73；\n- [ ] 本计划；\n\n全部形成拟集成后的自洽状态，再进入人工集成决策。'''
+          new = '''### E1 — 使用方新上下文验证\n\n状态：**已完成 / PASS**。\n\n- [x] 使用方仓库权威始终优先；\n- [x] 能取得当前任务最小 `agentic-dev` 规则集；\n- [x] 不机械读取全部指南；\n- [x] 不把 `agentic-dev` 项目级规则带入使用方；\n- [x] 关键规则没有因缩减上下文丢失；\n- [x] Consumer-specific 边界在不确定时 fail-closed 回到 Consumer Authority。\n\n验证对象为 `dygapp/jilinjobs-cms` `main@982a214d65f8ebfa461a6488b89709c2be1a3863` 与 PR #117 Head `547ac9453fd4ca6b85949810f3991d02f172e02f`；详细证据见 `docs/research/rule-activation-e1-consumer-validation.md`。\n\n### E2 — 使用方 CodeGraph 可选 A/B\n\n状态：**未执行 / 可选 / 不阻塞**。\n\n本次 E1 的辨识问题是 Repository Authority、规则激活、异步证据与临时证据晋升，不需要源码发现 A/B 才能完成判断。CodeGraph 继续保留为后续可选代码智能输入，不提升为核心方法依赖。\n\n---\n\n### F1 — 最终验证\n\n状态：**已完成**。\n\n- [x] 静态文件 / 结构 / 链接检查；\n- [x] 必要定向评估：最终 `run_rule_retrieval_ab.py --validate-only` 通过；\n- [x] 历史直接回归：9 个 C1/C2 场景继续可装配，陈旧源 fail-closed 正常工作；\n- [x] 使用方验证证据：E1 PASS；\n- [x] 人工语义证据：C3 既有 9 / 9 B 行为评分与本轮 E1 真实 Consumer 语义复核共同覆盖当前未变规则语义。\n\n最终 F1 Run：`34325868257`。首次陈旧索引失败与修复过程保留在 E1 Research，未通过放宽校验绕过。\n\n### F2 — 最终 AI 复核\n\nF2 属于最终 PR 原生集成证据：必须在所有仓库内容与 F3 稳定状态收敛后，针对最终 PR Head / diff 重新读取目标基线，检查权威一致性、范围控制、索引非权威边界、WI-06 / WI-07 / WI-09 未授权扩张与未解决阻塞 / 中等级问题。复核结果记录在 PR / Issue，不在仓库文件中预写 PASS。\n\n### F3 — 集成状态闭环\n\n仓库内稳定状态：**已完成**。\n\n- [x] 项目路线图；\n- [x] AGENTS；\n- [x] README；\n- [x] 本里程碑项目记录；\n- [x] 本计划；\n- [x] E1 Research / Research Index。\n\nIssue #73、最终 PR、Final AI Review 与精确合并结果属于 GitHub 原生集成事实，必须在进入人工集成决策前完成对应外部对象更新；不为记录这些瞬时状态再制造递归尾部状态 PR。'''
+          if text.count(old) != 1:
+              raise SystemExit(f'plan E/F block occurrence count = {text.count(old)}')
+          text = text.replace(old, new)
+          old_tail = '''阶段 A、阶段 B、阶段 C、阶段 D 已完成，当前进入：\n\n> **阶段 E — 使用方验证 / E1 — 使用方新上下文验证**\n\nE1 只验证已经形成的薄启动入口、稳定来源指针和安全回退在真实使用方新上下文中的采用效果；在取得使用方证据前，不继续删除源规则正文、扩张规则元数据 / 派生索引或引入新的检索基础设施。'''
+          new_tail = '''阶段 A～E 与 F1 / F3 已完成。当前没有新的里程碑实施门禁；F2 Final AI Review、人工集成决策与精确集成结果由最终 PR / Issue / Git 历史原生记录。\n\n下一有限里程碑尚未选择。只有规则治理与知识激活 v1 完成集成后，新的上下文才重新进入人工路线决策；WI-07、WI-06、WI-09 或其他候选均不会自动启动。'''
+          if text.count(old_tail) != 1:
+              raise SystemExit(f'plan tail occurrence count = {text.count(old_tail)}')
+          plan.write_text(text.replace(old_tail, new_tail), encoding='utf-8')
+
+          research = Path('docs/research/README.md')
+          text = research.read_text(encoding='utf-8')
+          anchor = '- `llm-wiki-rule-governance-fit-analysis.md`：阶段 D / D1 前置的受限对照研究。以 Karpathy 原始 LLM Wiki idea file 为主要思想来源，以 `jackwener/llm-wiki` 为当前实现样本，并把 `llmwikis.org` 仅作为补充生态参考；确认薄启动入口、索引优先、来源追溯与陈旧处理可作为阶段 C 结论的独立外部对照，同时明确不引入第二 Wiki 权威、Query 综合自动晋升、知识型新 Skill、全量 Front Matter、BM25 / vector / graph / MCP 等未经当前证据支持的机制。该文档不扩大 D1 范围，也不加入所有新上下文的常驻恢复清单。'
+          addition = anchor + '\n- `rule-activation-e1-consumer-validation.md`：规则治理与知识激活 v1 阶段 E / E1 的真实 Consumer 验证证据。以 `dygapp/jilinjobs-cms` 当前 main、PR #117 / Actions / Artifact 与 Consumer-local Authority 做逻辑 Fresh Context 验证，记录薄导航的实际最小激活集合、Consumer baseline 不被自动升级、临时证据晋升边界、E1 PASS、E2 可选未运行，以及 F1 对陈旧派生 index 的 fail-closed 发现与修复。该文档是 Research / Evaluation Evidence，不是新的规则权威，也不加入所有使用方的默认加载集合。'
+          if text.count(anchor) != 1:
+              raise SystemExit(f'research anchor occurrence count = {text.count(anchor)}')
+          research.write_text(text.replace(anchor, addition), encoding='utf-8')
+          PY
+
+      - name: Rebuild derived index from master formatting
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+
+          old_identity = 'f491590b916950490c82c368a6fcda23e054d120'
+          master_text = subprocess.check_output(
+              ['git', 'show', 'origin/master:evals/rule-retrieval/rule-index.json'],
+              text=True,
+          )
+          if master_text.count(old_identity) != 1:
+              raise SystemExit(f'expected one old AGENTS identity in master index, got {master_text.count(old_identity)}')
+          final_agents = subprocess.check_output(['git', 'hash-object', 'AGENTS.md'], text=True).strip()
+          final_text = master_text.replace(old_identity, final_agents)
+          Path('evals/rule-retrieval/rule-index.json').write_text(final_text, encoding='utf-8')
+          print('final AGENTS source identity:', final_agents)
+          PY
+
+      - name: Validate final stable candidate
+        run: |
+          python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py evals/run_rule_retrieval_c3.py
+          python3 evals/run_rule_retrieval_ab.py --validate-only
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+
+          required = {
+              'AGENTS.md': [
+                  '阶段 E“使用方验证”已经完成 E1',
+                  '当前没有新的里程碑实施门禁',
+                  'docs/research/rule-activation-e1-consumer-validation.md',
+                  '34325868257',
+              ],
+              'README.md': [
+                  '最近完成实施与验证的有限里程碑：** 规则治理与知识激活 v1',
+                  '下一有限里程碑：** 尚未选择',
+              ],
+              'docs/project/project-roadmap.md': [
+                  '阶段 E“使用方验证”已完成 E1',
+                  '实施与验证已收敛',
+                  '下一有限里程碑尚未选择',
+              ],
+              'docs/project/rule-governance-knowledge-activation-v1.md': [
+                  '状态：**已完成**',
+                  'E1 真实使用方验证：**PASS**',
+                  '未执行 / 可选 / 不阻塞',
+                  '34325868257',
+              ],
+              'tasks/plans/20260908/01-rule-governance-knowledge-activation.md': [
+                  '状态：**已完成 / PASS**',
+                  'F2 属于最终 PR 原生集成证据',
+                  '仓库内稳定状态：**已完成**',
+              ],
+              'docs/research/README.md': [
+                  'rule-activation-e1-consumer-validation.md',
+              ],
+              'docs/research/rule-activation-e1-consumer-validation.md': [
+                  'E1 结论：**PASS**',
+                  'source_identity_changed',
+                  'NOT RUN / OPTIONAL / NOT BLOCKING',
+              ],
+          }
+          for filename, markers in required.items():
+              text = Path(filename).read_text(encoding='utf-8')
+              for marker in markers:
+                  if marker not in text:
+                      raise SystemExit(f'{filename}: missing marker {marker!r}')
+
+          master_index = subprocess.check_output(['git', 'show', 'origin/master:evals/rule-retrieval/rule-index.json'], text=True)
+          current_index = Path('evals/rule-retrieval/rule-index.json').read_text(encoding='utf-8')
+          final_agents = subprocess.check_output(['git', 'hash-object', 'AGENTS.md'], text=True).strip()
+          expected = master_index.replace('f491590b916950490c82c368a6fcda23e054d120', final_agents)
+          if current_index != expected:
+              raise SystemExit('rule-index contains changes beyond the single AGENTS source identity refresh')
+          PY
+
+      - name: Commit and self-clean
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/e1-f3-state-closure.yml
+          git add AGENTS.md README.md docs/project/project-roadmap.md docs/project/rule-governance-knowledge-activation-v1.md tasks/plans/20260908/01-rule-governance-knowledge-activation.md docs/research/README.md docs/research/rule-activation-e1-consumer-validation.md evals/rule-retrieval/rule-index.json
+          git commit -m "docs(project): 收口规则治理 v1 实施与验证状态"
+          git push origin HEAD:test/rule-activation-e1-consumer-validation
