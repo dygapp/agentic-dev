@@ -53,11 +53,13 @@
 
 阶段 C“检索 / 激活评估”已完成：C1 冻结 9 个有辨识力场景；C2 建立可重复 A/B runner、Consumer-local / stale-source 控制与分层结果结构；C3 完成 9 个可比较 A/B pair 的真实隔离运行与人工评分。B 直接命中 29 / 29 必需规则，3 个安全回退 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，并在 RR-C1-02 出现一次误停。阶段 C 已形成进入阶段 D 的收益证据。
 
+阶段 D“权威 / 指南收敛”已完成 D1 / D2：README 已压薄为启动 / 路由入口；新增 `docs/guides/rule-activation-guide.md`，只维护三条跨任务不变量、按职责 / 风险的当前源段落指针和 fail-closed 回退；详细规则仍由现行 Guide / Skill / Repository Authority 单点维护。D2 重新验证 9 个既有 A/B 场景仍可静态装配；本轮未修改现有四组治理评估的输入权威，因此不重复执行没有输入变化的历史语义评估。
+
 当前下一实际门禁：
 
-> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**
+> **阶段 E — 使用方验证 / E1 — 使用方新上下文验证**
 
-本里程碑优先解决巨型指南、规则重复、粗粒度加载和“规则存在但未在正确任务中激活”的问题。完整研究和实施边界分别位于：
+E1 需要在真实使用方的新上下文中验证薄激活入口的实际采用效果。完整研究和实施边界分别位于：
 
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
@@ -68,6 +70,7 @@
 - `docs/research/rule-retrieval-ab-baseline-validation.md`
 - `docs/research/rule-retrieval-c3-evaluation-results.md`
 - `docs/project/rule-governance-knowledge-activation-v1.md`
+- `docs/guides/rule-activation-guide.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
 WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因本里程碑启动而自动进入实现。**WI-07 — 代码复核能力 v1** 已登记为本里程碑完成后的优先后继方向，但必须在规则治理与知识激活 v1 完成并集成后重新进入人工里程碑决策。
@@ -79,7 +82,7 @@ Issue #58 继续作为长期使用方经验反馈入口。
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
-| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A、B、C 已完成，当前进入阶段 D / D1；只实施评估证明有价值的收敛并保留安全回退 |
+| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A～D 已完成，当前进入阶段 E / E1 使用方新上下文验证；保持薄入口、当前源指针与安全回退，不提前扩张检索基础设施 |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
 | 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待代码复核 / 使用方评估暴露真实增量缺口 |
 | 使用方采用 | 基础建设已完成，当前里程碑要求一次使用方验证 | 使用方仓库权威始终优先；CodeGraph 只作为可选代码智能实验输入 |
