@@ -91,13 +91,13 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 阶段 C“检索 / 激活评估”已经完成：C1 冻结 6 个真实历史场景与 3 个控制场景；C2 建立可重复 A/B 隔离 runner、Consumer-local fixture、无语义来源漂移控制和分层结果结构；C3 在 9 个可比较 A/B pair 上完成真实隔离运行与人工评分。B 的 6 个直接命中场景精确召回冻结的 29 / 29 必需规则，3 个安全回退场景 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，RR-C1-02 出现一次无证据固定返回 `specify` 的误停。阶段 C 已形成进入阶段 D 的收益证据。
 
-阶段 D“权威 / 指南收敛”已经完成 D1 / D2：README 已收敛为薄启动入口，新增长期 `docs/guides/rule-activation-guide.md` 只保留三条跨任务不变量、按职责 / 风险指向当前 Guide / Skill 的稳定段落指针和保守安全回退；没有复制详细规则正文、没有把评估索引提升为权威，也没有引入新的 Wiki / 数据库 / MCP / 统一元数据层。D2 重新验证 9 个既有 A/B 场景仍可静态装配，且本轮没有修改既有治理评估的输入权威。
+阶段 D“权威 / 指南收敛”已经完成 D1 / D2：README 已收敛为薄启动入口，新增长期 `docs/guides/rule-activation-guide.md` 只保留三条跨任务不变量、按职责 / 风险指向当前 Guide / Skill 的稳定段落指针和保守安全回退；没有复制详细规则正文、没有把评估索引提升为权威，也没有引入新的 Wiki / 数据库 / MCP / 统一元数据层。D2 重新验证 9 个既有 A/B 场景仍可静态装配。PR #88 后续项目状态闭环修改了 `AGENTS.md` / Roadmap 等状态入口，但没有改变已索引的 `AGENTS.md`“外部操作治理”段落或 C3 冻结的详细规则语义；F1 因此按 fail-closed 规则识别并重建派生索引的源身份，而不放宽陈旧检测。
 
-当前下一实际门禁：
+阶段 E“使用方验证”已经完成 E1：以 `dygapp/jilinjobs-cms` `main@982a214d65f8ebfa461a6488b89709c2be1a3863` 与 PR #117 Head `547ac9453fd4ca6b85949810f3991d02f172e02f` 为真实使用方状态完成逻辑 Fresh Context 验证。薄入口能够按当前职责激活执行单元、异步外部操作、GitHub Actions 证据和临时证据晋升规则，同时保持 Consumer-local Method 与其精确 `agentic-dev` baseline 优先；E1 全部检查 PASS。E2 CodeGraph A/B 未执行，属于可选且非阻塞输入。
 
-> **阶段 E — 使用方验证 / E1 — 使用方新上下文验证**
+阶段 F 的最终静态验证已完成 F1：首次回归按设计发现 `AGENTS.md` 的 `source_identity_changed` 并阻止陈旧派生索引继续使用；确认被索引“外部操作治理”段落语义未变后，以最终源身份重建派生索引。最终 Run `34325868257` 的陈旧源审计、9 场景静态检索回归、E1 证据边界检查与临时工作流自清理全部成功。
 
-E1 必须在真实使用方的新上下文中验证薄入口能否取得当前任务所需最小规则集，同时保持使用方仓库权威优先、关键规则不漏失和安全回退；在 E1 取得证据前，不继续删除源规则正文或扩张检索基础设施。
+当前没有新的里程碑实施门禁。规则治理与知识激活 v1 的 A～E 与 F1 / F3 实施、验证和稳定状态收敛已经完成；最终 AI 复核、人工集成决策与精确集成结果由当前 PR / Issue / Git 历史原生记录，不在仓库权威中预写尚未发生的集成事实。下一有限里程碑尚未选择；只有本里程碑完成集成后才重新进入人工路线决策，WI-07 仍只是优先候选，不自动启动。
 
 当前状态、研究依据、实施边界和协调计划统一记录在：
 
@@ -112,6 +112,7 @@ E1 必须在真实使用方的新上下文中验证薄入口能否取得当前�
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`
 - `docs/research/rule-retrieval-ab-baseline-validation.md`
 - `docs/research/rule-retrieval-c3-evaluation-results.md`
+- `docs/research/rule-activation-e1-consumer-validation.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 - Issue #73
 

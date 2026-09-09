@@ -53,13 +53,13 @@
 
 阶段 C“检索 / 激活评估”已完成：C1 冻结 9 个有辨识力场景；C2 建立可重复 A/B runner、Consumer-local / stale-source 控制与分层结果结构；C3 完成 9 个可比较 A/B pair 的真实隔离运行与人工评分。B 直接命中 29 / 29 必需规则，3 个安全回退 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，并在 RR-C1-02 出现一次误停。阶段 C 已形成进入阶段 D 的收益证据。
 
-阶段 D“权威 / 指南收敛”已完成 D1 / D2：README 已压薄为启动 / 路由入口；新增 `docs/guides/rule-activation-guide.md`，只维护三条跨任务不变量、按职责 / 风险的当前源段落指针和 fail-closed 回退；详细规则仍由现行 Guide / Skill / Repository Authority 单点维护。D2 重新验证 9 个既有 A/B 场景仍可静态装配；本轮未修改现有四组治理评估的输入权威，因此不重复执行没有输入变化的历史语义评估。
+阶段 D“权威 / 指南收敛”已完成 D1 / D2：README 已压薄为启动 / 路由入口；新增 `docs/guides/rule-activation-guide.md`，只维护三条跨任务不变量、按职责 / 风险的当前源段落指针和 fail-closed 回退；详细规则仍由现行 Guide / Skill / Repository Authority 单点维护。D2 重新验证 9 个既有 A/B 场景仍可静态装配。PR #88 后续状态闭环修改了 `AGENTS.md` / Roadmap 等项目状态输入；这些变化没有改变 C3 冻结的详细规则语义，但使派生 rule-index 的整文件源身份按设计陈旧。F1 已保留该 fail-closed 结果并重建当前源身份；绑定旧项目阶段 expected behavior 的历史治理评估不机械作为当前状态回归。
 
-当前下一实际门禁：
+阶段 E“使用方验证”已完成 E1：以 `dygapp/jilinjobs-cms` 当前 `main@982a214d65f8ebfa461a6488b89709c2be1a3863` 与 PR #117 Head `547ac9453fd4ca6b85949810f3991d02f172e02f` 做逻辑 Fresh Context 验证，Consumer Authority / Consumer-local Method / 精确 baseline 始终优先；薄导航只激活当前执行、异步外部操作、GitHub Actions 证据与临时证据晋升所需规则，全部 E1 检查 PASS。E2 CodeGraph A/B 为可选项，本轮未执行且不阻塞。
 
-> **阶段 E — 使用方验证 / E1 — 使用方新上下文验证**
+阶段 F 的 F1 最终静态验证已完成：首次运行正确发现 `AGENTS.md` source identity 陈旧并 fail-closed；最终 Run `34325868257` 在完成证据措辞修正、最终源 identity 重建后，9 场景静态检索回归与 E1 证据边界检查全部通过。F3 稳定状态由当前候选同步收敛；F2 最终 AI 复核与人工集成决策属于最终 PR 原生证据，不在 Roadmap 预写结果。
 
-E1 需要在真实使用方的新上下文中验证薄激活入口的实际采用效果。完整研究和实施边界分别位于：
+当前没有新的里程碑实施门禁。下一有限里程碑尚未选择；只有规则治理与知识激活 v1 完成集成后才重新进入人工路线决策，WI-07 仍只是优先候选，不自动启动。完整研究和实施边界分别位于：
 
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
@@ -69,6 +69,7 @@ E1 需要在真实使用方的新上下文中验证薄激活入口的实际采�
 - `docs/research/rule-retrieval-targeted-evaluation-design.md`
 - `docs/research/rule-retrieval-ab-baseline-validation.md`
 - `docs/research/rule-retrieval-c3-evaluation-results.md`
+- `docs/research/rule-activation-e1-consumer-validation.md`
 - `docs/project/rule-governance-knowledge-activation-v1.md`
 - `docs/guides/rule-activation-guide.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
@@ -82,10 +83,10 @@ Issue #58 继续作为长期使用方经验反馈入口。
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
-| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A～D 已完成，当前进入阶段 E / E1 使用方新上下文验证；保持薄入口、当前源指针与安全回退，不提前扩张检索基础设施 |
+| 规则治理与知识激活 | **实施与验证已收敛** | Issue #73；A～E 与 F1 / F3 已完成，F2 与人工集成结果由最终 PR / Issue 原生记录；当前无新实施门禁，完成集成后再进入下一有限里程碑人工路线决策 |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
 | 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待代码复核 / 使用方评估暴露真实增量缺口 |
-| 使用方采用 | 基础建设已完成，当前里程碑要求一次使用方验证 | 使用方仓库权威始终优先；CodeGraph 只作为可选代码智能实验输入 |
+| 使用方采用 | E1 真实使用方验证已通过 | `jilinjobs-cms` 验证保持使用方仓库权威与 Consumer-local Method 优先；CodeGraph E2 本轮未执行，继续只是可选代码智能实验输入 |
 | 任务型技能 | v1 后候选库 | WI-07 未启动；代码复核能力 v1 已成为当前优先后继候选 |
 | 运行时与分发 | v1 后候选库 | WI-09 未启动 |
 | 项目语言治理 | 已完成并集成 | 工程术语语义安全与现行文档全量收敛 v1 已通过 PR #67 集成 |
