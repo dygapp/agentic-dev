@@ -2,7 +2,7 @@
 
 ## 状态
 
-**有限里程碑实施与验证已收敛；精确集成事实由 GitHub 原生状态记录**
+**已完成并集成**
 
 人工决策日期：2026-09-08
 
@@ -11,6 +11,8 @@
 启动基线：
 
 `master@0895ca30f76c666f3a0d4d9c2f9af6f14cded5d6`
+
+集成结果：PR #89 已通过 squash merge 集成；Issue #73 已按完成关闭。
 
 启动固化分支：
 
@@ -112,9 +114,9 @@
 
 ## 4. 当前研究输入
 
-### 4.1 仓库内证据
+### 4.1 仓库内与长期技术输入
 
-重点读取：
+当前树长期保留的主要技术输入：
 
 - `AGENTS.md`；
 - `docs/guides/rule-activation-guide.md`；
@@ -122,18 +124,13 @@
 - `docs/guides/external-operation-guidelines.md`；
 - `docs/architecture/skill-architecture.md`；
 - `docs/architecture/skill-contracts.md`；
-- `docs/architecture/engineering-disciplines.md`；
-- `docs/architecture/technology-profile-contract.md`；
-- `docs/technology-profiles/vue3-typescript.md`；
-- `docs/research/minimal-rule-retrieval-contract.md`；
-- `docs/research/rule-retrieval-prototype-selection.md`；
-- `docs/research/rule-retrieval-prototype-validation.md`；
-- `docs/research/rule-retrieval-targeted-evaluation-design.md`；
-- `docs/research/rule-retrieval-ab-baseline-validation.md`；
-- `docs/research/rule-retrieval-c3-evaluation-results.md`；
-- Issue #58；
-- Issue #71；
-- 最近与集成状态闭环、候选 / 执行单元身份、验证触发、新上下文恢复有关的历史评估和 PR 证据。
+- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`；
+- `docs/research/knowledge-activation-evidence-appendix.md`；
+- `docs/research/llm-wiki-rule-governance-fit-analysis.md`；
+- `docs/research/rule-retrieval-design-reference.md`；
+- `evals/rule-retrieval/*`。
+
+阶段 A～E 的审计、基线冻结、原型选择 / 验证和运行结果 Markdown 属于里程碑过程证据；2026-09-09 起不再作为当前 Research 文档。精确历史由 Git、PR #74～#89、Issue #73、本项目记录和 `evals/` 承接。
 
 ### 4.2 外部研究
 
@@ -159,13 +156,7 @@
 5. 区分合理薄摘要 / 职责消费与后续值得做减法的实质重复候选；
 6. 明确历史上存在过真实规则缺口，但 PR #59 / #60 / #61 / #72 等已经把相关长期语义补入当前仓库权威；当前不应继续为相同场景机械增加同义规则。
 
-阶段 A 研究入口：
-
-- `docs/research/rule-activation-audit-baseline.md`
-- `docs/research/using-agentic-dev-activation-map.md`
-- `docs/research/external-operation-guidelines-activation-map.md`
-- `docs/research/cross-authority-duplication-audit.md`
-- `docs/research/activation-failure-classification.md`
+阶段 A 的五份审计 / 激活映射过程文档已在 2026-09-09 Research 信息架构维护中从当前树移除。需要复核阶段 A 原始材料时，从 PR #75～#79、Issue #73 或 Git 历史恢复；长期技术结论已由当前 Guide、Project Record 与规则检索设计参考承接。
 
 阶段 A 完成门禁已经满足：
 
@@ -190,9 +181,9 @@ B1 已冻结：
 - 来源身份变化、范围冲突、高影响授权不确定或索引不可用时，直接回退当前仓库权威；
 - 当前不要求全库统一增加文件头，也不要求特定索引技术。
 
-B1 研究基线：
+B1 的长期技术设计已收敛到：
 
-`docs/research/minimal-rule-retrieval-contract.md`
+`docs/research/rule-retrieval-design-reference.md`
 
 B2 已选择：
 
@@ -206,9 +197,7 @@ B2 选择依据：
 - 不需要新增第三方包、数据库、MCP、服务或统一文件头；
 - 首轮只覆盖阶段 A 已审计的高影响规则面，不建立全仓库规则数据库。
 
-B2 研究决策：
-
-`docs/research/rule-retrieval-prototype-selection.md`
+B2 的实现选择依据已收敛到 `docs/research/rule-retrieval-design-reference.md`；精确历史由 PR #81 / Git 保存。
 
 B3 已实现并验证原型：
 
@@ -217,9 +206,7 @@ evals/rule-retrieval/rule-index.json
 evals/query_rule_index.py
 ```
 
-B3 验证证据：
-
-`docs/research/rule-retrieval-prototype-validation.md`
+B3 的当前可执行证据位于 `evals/rule-retrieval/` 与 `evals/query_rule_index.py`；精确实现 / 验证历史由 PR #82 / Git 保存。
 
 B3 当前结果：
 
@@ -254,7 +241,6 @@ C1“定向评估设计”已经完成：
 
 C1 研究 / 机器可读设计：
 
-- `docs/research/rule-retrieval-targeted-evaluation-design.md`
 - `evals/rule-retrieval/targeted-evaluation-design.json`
 
 C2“A/B 基线实现与静态校验”已经完成：
@@ -270,7 +256,6 @@ C2“A/B 基线实现与静态校验”已经完成：
 
 C2 研究 / 评估入口：
 
-- `docs/research/rule-retrieval-ab-baseline-validation.md`
 - `evals/rule-retrieval/README.md`
 - `evals/rule-retrieval/result-schema.json`
 - `evals/run_rule_retrieval_ab.py`
@@ -300,7 +285,7 @@ C3“隔离运行时与人工评分”已经完成：
 - B 直接命中场景 6 / 6 精确得到冻结 expected set，必需规则 `29 / 29`；3 个控制回退 reason `3 / 3` 正确；
 - B 行为语义 `9 / 9` PASS；A 为 `8 / 9`，RR-C1-02 A 记为 `wrong_stop_or_escalation / 选择 / 冲突`；
 - 直接命中场景 B 的观察到的命令输出字节约减少 `48.6%`，wall-clock 约减少 `49.8%`；fallback 成本上升但安全性正确；
-- 证据入口：`docs/research/rule-retrieval-c3-evaluation-results.md` 与 `evals/rule-retrieval/c3-human-scoring.json`。
+- 机器可读人工评分保存在 `evals/rule-retrieval/c3-human-scoring.json`；精确运行 / PR 历史由 GitHub 原生记录。
 
 阶段 C 已形成足够收益证据；不支持全仓库规则数据库、全量拆分指南、删除 fallback 或派生索引权威化。
 
@@ -336,7 +321,7 @@ E1 真实使用方验证：**PASS**。
 - 实际执行对象：PR #117 / Head `547ac9453fd4ca6b85949810f3991d02f172e02f`；
 - Consumer 自身记录的 `agentic-dev` baseline 继续保持 `master@d9fad0da83dbdb61cac5eb9778b0258c6861eef1`，本次验证没有执行 baseline upgrade；
 - 薄入口只激活当前执行单元、异步外部操作、GitHub Actions 证据与临时证据晋升所需规则；Consumer-specific source error / migration ownership 全部回到 Consumer Authority；
-- E1 六项检查全部 PASS，详细证据见 `docs/research/rule-activation-e1-consumer-validation.md`。
+- E1 六项检查全部 PASS；精确 Consumer 验证与 Actions / Artifact 证据由 PR #89、Issue #73 和 GitHub 原生历史保存。
 
 E2 Consumer CodeGraph A/B：**未执行 / 可选 / 不阻塞**。当前没有证据要求用源码发现实验替代或补充 E1 的 Repository Authority / Method Activation 验证，也不因此否定 CodeGraph 的后续可选价值。
 
@@ -344,9 +329,9 @@ E2 Consumer CodeGraph A/B：**未执行 / 可选 / 不阻塞**。当前没有证
 
 F1 最终验证已完成：首次 `--validate-only` 按设计报告 `AGENTS.md (source_identity_changed)`，证明陈旧派生索引没有被静默消费；确认被索引“外部操作治理”段落正文未变后，以最终源 blob 重建派生 identity。最终 Run `34325868257` 的陈旧源审计、9 场景静态检索回归、E1 证据边界检查与临时工作流自清理全部成功。
 
-F3 稳定项目状态在当前候选中完成收敛。F2 最终 AI 复核与人工集成决策必须针对最终 PR Head / diff 执行并记录在 PR / Issue；本文不预写尚未发生的复核或集成结果。
+F2 最终 AI 复核已完成，F3 稳定项目状态已收敛；最终集成通过 PR #89 完成，Issue #73 已关闭。
 
-当前没有新的里程碑实施门禁。A～E 与 F1 / F3 已完成；下一有限里程碑尚未选择，只有本里程碑完成集成后才重新进入人工路线决策。WI-07 仍只是优先候选，不自动启动。
+本里程碑已完成并集成，不再承担当前工作入口职责。当前路线为待人工决策；WI-07 仍只是优先候选，不自动启动。
 
 ## 6. 非目标
 
@@ -517,6 +502,6 @@ WI-06 暂不启动。
 
 > **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛。**
 
-新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、`docs/research/rule-retrieval-targeted-evaluation-design.md`、`docs/research/rule-retrieval-ab-baseline-validation.md`、`docs/research/rule-retrieval-c3-evaluation-results.md` 和协调计划，然后从 D1 继续。
+本文件现在是已完成里程碑的历史项目记录，不再承担 Fresh Context 当前工作入口。普通新上下文应读取 `AGENTS.md` 与 Project Roadmap；只有需要调查规则治理 v1 的历史设计或证据时，才按需读取本文件、长期 Research、`evals/rule-retrieval/*`，或通过 Git / PR #74～#89 / Issue #73 恢复已移除的过程材料。
 
-为避免将会话历史重新变成事实来源，上句中的正式恢复入口应按以下语义理解：新上下文从 GitHub 当前状态、`AGENTS.md`、项目路线图、Issue #73、本文件、研究文档和协调计划恢复；只有当前任务确实需要时，再按渐进式披露读取其他指南、架构、历史评估或使用方证据。
+不得因为历史文档曾记录 D1 / C3 / E1 等阶段，就把这些阶段重新解释为当前 Gate。

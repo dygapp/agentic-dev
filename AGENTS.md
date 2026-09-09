@@ -63,66 +63,33 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 > **工程能力扩展与方法演进**
 
-第一批 8 个核心技能的历史工程基线、首轮真实使用方实验，以及随后针对验收闭环、外部操作、验证证据、人工复核、共享资源和配置责任等问题的定向强化均已完成。核心开发方法已经经过真实使用方充分验证，进入相对稳定的持续维护阶段。
-
-当前项目不再把“等待使用方暴露新问题”作为主要演进模式。后续可以主动研究并吸收官方权威实践、成熟开源工程经验、专家方法和其他高质量外部证据；在通过能力分层、专项评估、AI 复核和当前仓库权威固化后，再推动使用方采用并以真实实践持续纠偏。
-
-使用方证据仍然是重要证据来源，但主要承担现实验证、纠偏、优先级调整和长期适用性确认，不再是新增工程能力、技术画像或候选技能的唯一前置条件。
-
 最近完成并已集成的有限里程碑是：
-
-> **Squash Merge 下 Stacked PR 集成拓扑安全 v1**
-
-该里程碑已完成平台语义核验、长期外部操作指导、三项治理定向评估、人工语义评分与最终 AI 复核。`G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 最终合计 `15 / 15` 断言通过，最终 AI 复核 Review `5129305394` 未解决阻塞 / 中等级问题为 `0 / 0`。实施载体 PR #70 已通过 squash merge 集成，合并提交为 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已按完成关闭。
-
-2026-09-08，人工权威已显式选择新的活动有限里程碑：
 
 > **规则治理与知识激活 v1**
 
-跟踪入口：Issue #73。
+该里程碑已通过 PR #89 集成；Issue #73 已按完成关闭。精确里程碑历史、验证结果与集成事实由 Project Roadmap、项目记录、Git / PR / Issue 和 `evals/` 保存。
 
-启动基线：
+当前路线状态是：
 
-`master@0895ca30f76c666f3a0d4d9c2f9af6f14cded5d6`
+> **待人工决策**
 
-阶段 A“激活审计”已经形成 A1～A5 可复核结果：完成两份高影响指南的语义激活映射、跨权威重复审计和六个真实历史场景的失效分类，并确认历史规则缺口已经进入当前仓库权威；当前不应继续为相同场景机械增加同义规则。
+当前没有活动有限里程碑。WI-07 — 代码复核能力 v1 是优先后继候选，但尚未启动；WI-06、WI-09、第四工程纪律和 Issue #71 候选实施同样未启动。候选优先级不能替代新的人工里程碑决策。
 
-阶段 B“最小检索模型”已经完成：B1 冻结 `scope + responsibility + [stage] + [subject] + [conditions]` 的稀疏检索契约；B2 选择 **JSON 派生规则索引 + Python 标准库薄查询器**；B3 已建立 61 项 / 8 个规范性来源的首轮派生索引，验证来源可追溯、条件筛选、未知维度与来源陈旧回退，以及原型可删除 / 可重建边界。该原型仍是 `evals/` 下的评估资产，不是新的 Repository Authority，也没有证据要求全库统一增加文件头。
+`docs/research/` 只保留离开原实施阶段后仍具有独立技术参考价值的资料，或能够明确解释 / 支撑当前 Repository Authority 的技术资料。阶段审计、冻结基线、readiness、原型验证、A/B 执行报告和使用方阶段验收等过程证据不作为常驻 Research；需要追溯时从 `docs/project/*`、`tasks/plans/*`、`evals/*`、Git、PR 或 Issue 取得。
 
-阶段 C“检索 / 激活评估”已经完成：C1 冻结 6 个真实历史场景与 3 个控制场景；C2 建立可重复 A/B 隔离 runner、Consumer-local fixture、无语义来源漂移控制和分层结果结构；C3 在 9 个可比较 A/B pair 上完成真实隔离运行与人工评分。B 的 6 个直接命中场景精确召回冻结的 29 / 29 必需规则，3 个安全回退场景 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，RR-C1-02 出现一次无证据固定返回 `specify` 的误停。阶段 C 已形成进入阶段 D 的收益证据。
+当前项目状态与恢复顺序以 `docs/project/project-roadmap.md` 为准。只有当前任务确实需要时，再按渐进式披露读取：
 
-阶段 D“权威 / 指南收敛”已经完成 D1 / D2：README 已收敛为薄启动入口，新增长期 `docs/guides/rule-activation-guide.md` 只保留三条跨任务不变量、按职责 / 风险指向当前 Guide / Skill 的稳定段落指针和保守安全回退；没有复制详细规则正文、没有把评估索引提升为权威，也没有引入新的 Wiki / 数据库 / MCP / 统一元数据层。D2 重新验证 9 个既有 A/B 场景仍可静态装配。PR #88 后续项目状态闭环修改了 `AGENTS.md` / Roadmap 等状态入口，但没有改变已索引的 `AGENTS.md`“外部操作治理”段落或 C3 冻结的详细规则语义；F1 因此按 fail-closed 规则识别并重建派生索引的源身份，而不放宽陈旧检测。
-
-阶段 E“使用方验证”已经完成 E1：以 `dygapp/jilinjobs-cms` `main@982a214d65f8ebfa461a6488b89709c2be1a3863` 与 PR #117 Head `547ac9453fd4ca6b85949810f3991d02f172e02f` 为真实使用方状态完成逻辑 Fresh Context 验证。薄入口能够按当前职责激活执行单元、异步外部操作、GitHub Actions 证据和临时证据晋升规则，同时保持 Consumer-local Method 与其精确 `agentic-dev` baseline 优先；E1 全部检查 PASS。E2 CodeGraph A/B 未执行，属于可选且非阻塞输入。
-
-阶段 F 的最终静态验证已完成 F1：首次回归按设计发现 `AGENTS.md` 的 `source_identity_changed` 并阻止陈旧派生索引继续使用；确认被索引“外部操作治理”段落语义未变后，以最终源身份重建派生索引。最终 Run `34325868257` 的陈旧源审计、9 场景静态检索回归、E1 证据边界检查与临时工作流自清理全部成功。
-
-当前没有新的里程碑实施门禁。规则治理与知识激活 v1 的 A～E 与 F1 / F3 实施、验证和稳定状态收敛已经完成；最终 AI 复核、人工集成决策与精确集成结果由当前 PR / Issue / Git 历史原生记录，不在仓库权威中预写尚未发生的集成事实。下一有限里程碑尚未选择；只有本里程碑完成集成后才重新进入人工路线决策，WI-07 仍只是优先候选，不自动启动。
-
-当前状态、研究依据、实施边界和协调计划统一记录在：
-
-- `docs/project/project-roadmap.md`
-- `docs/project/rule-governance-knowledge-activation-v1.md`
-- `docs/guides/rule-activation-guide.md`
-- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
-- `docs/research/knowledge-activation-evidence-appendix.md`
-- `docs/research/minimal-rule-retrieval-contract.md`
-- `docs/research/rule-retrieval-prototype-selection.md`
-- `docs/research/rule-retrieval-prototype-validation.md`
-- `docs/research/rule-retrieval-targeted-evaluation-design.md`
-- `docs/research/rule-retrieval-ab-baseline-validation.md`
-- `docs/research/rule-retrieval-c3-evaluation-results.md`
-- `docs/research/rule-activation-e1-consumer-validation.md`
-- `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
-- Issue #73
-
-WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因当前里程碑启动而自动进入实现。WI-07 — **代码复核能力 v1** 已登记为当前里程碑完成后的优先后继候选，但必须在当前里程碑完成并集成后重新经过人工里程碑决策。
+- `docs/guides/rule-activation-guide.md`；
+- `docs/project/rule-governance-knowledge-activation-v1.md`（已完成里程碑记录）；
+- `docs/research/README.md`；
+- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`；
+- `docs/research/knowledge-activation-evidence-appendix.md`；
+- `docs/research/llm-wiki-rule-governance-fit-analysis.md`；
+- `docs/research/rule-retrieval-design-reference.md`。
 
 Issue #58 继续作为长期使用方经验反馈入口；Issue #71 继续作为独立高风险规划复核 / 模型路由相关研究输入，不与未来代码复核自动合并。
 
-工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。
-
-不得因为进入工程能力扩展阶段就机械增加技能、超级技能、技术画像或流程层级。任何候选能力都必须先判断其应属于核心方法、工程纪律、技术画像、验证画像、任务型技能还是运行时适配器，并保持既有权威与集成边界。
+工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。不得因为当前处于待人工决策状态，就机械增加技能、超级技能、技术画像或流程层级。
 
 ## 核心规则
 

@@ -2,9 +2,11 @@
 
 研究日期：2026-09-08
 
-研究性质：**研究证据附录**
+研究性质：**长期技术证据伴随资料**
 
-本文是 `knowledge-activation-and-code-intelligence-analysis.md` 的证据附录，专门保存后续新上下文最容易遗漏的数值、具体反例、外部项目实测和当前架构身份。本文不是规范性权威，不单独改变方法、指南、技能、工程纪律或技术画像。
+本文是 `knowledge-activation-and-code-intelligence-analysis.md` 的技术证据附录，保存该研究所依赖的数值、具体仓库反例、外部项目实测和架构身份边界。它用于解释 `docs/guides/rule-activation-guide.md` 及相关工程能力设计为什么采用薄入口、按需激活、派生索引与 fail-closed 等边界。
+
+本文不是规范性权威，也不是项目状态 / Fresh Context 恢复入口；当前项目状态以 `AGENTS.md` 与 Project Roadmap 为准，当前规则以相应 Repository Authority 为准。
 
 ## 1. 当前指南体量基线
 

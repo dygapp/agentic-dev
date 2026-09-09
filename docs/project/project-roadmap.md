@@ -62,15 +62,10 @@
 
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
-- `docs/research/minimal-rule-retrieval-contract.md`
-- `docs/research/rule-retrieval-prototype-selection.md`
-- `docs/research/rule-retrieval-prototype-validation.md`
-- `docs/research/rule-retrieval-targeted-evaluation-design.md`
-- `docs/research/rule-retrieval-ab-baseline-validation.md`
-- `docs/research/rule-retrieval-c3-evaluation-results.md`
-- `docs/research/rule-activation-e1-consumer-validation.md`
+- `docs/research/llm-wiki-rule-governance-fit-analysis.md`
+- `docs/research/rule-retrieval-design-reference.md`
 - `docs/project/rule-governance-knowledge-activation-v1.md`
-- `docs/guides/rule-activation-guide.md`
+- `evals/rule-retrieval/README.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
 WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。**WI-07 — 代码复核能力 v1** 已登记为优先后继方向；规则治理与知识激活 v1 的完成与集成前置条件现已满足，但启动仍必须经过新的人工里程碑决策。
@@ -358,7 +353,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - A 为 8 / 9，RR-C1-02 A 出现一次 `wrong_stop_or_escalation / 选择 / 冲突`；
 - 直接命中场景 B 的观察到的命令输出字节约减少 `48.6%`，wall-clock 约减少 `49.8%`；
 - fallback 成本显著增加，但 stale / unknown / no-match 的安全回退全部正确，不能为了成本删除 fail-closed 回退；
-- 证据见 `docs/research/rule-retrieval-c3-evaluation-results.md` 与 `evals/rule-retrieval/c3-human-scoring.json`。
+- 机器可读人工评分保存在 `evals/rule-retrieval/c3-human-scoring.json`；精确运行与文档演进历史由 Git / PR #83～#86 保存。
 
 最终集成结果：
 
@@ -376,21 +371,15 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 `docs/project/rule-governance-knowledge-activation-v1.md`
 
-研究记录：
+研究 / 技术依据：
 
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
-- `docs/research/rule-activation-audit-baseline.md`
-- `docs/research/using-agentic-dev-activation-map.md`
-- `docs/research/external-operation-guidelines-activation-map.md`
-- `docs/research/cross-authority-duplication-audit.md`
-- `docs/research/activation-failure-classification.md`
-- `docs/research/minimal-rule-retrieval-contract.md`
-- `docs/research/rule-retrieval-prototype-selection.md`
-- `docs/research/rule-retrieval-prototype-validation.md`
-- `docs/research/rule-retrieval-targeted-evaluation-design.md`
-- `docs/research/rule-retrieval-ab-baseline-validation.md`
-- `docs/research/rule-retrieval-c3-evaluation-results.md`
+- `docs/research/llm-wiki-rule-governance-fit-analysis.md`
+- `docs/research/rule-retrieval-design-reference.md`
+- `evals/rule-retrieval/README.md`
+
+阶段审计、激活映射、原型验证、A/B 运行结果与 E1 Consumer 验证等过程 Research 已在 2026-09-09 的 Research 信息架构维护中从当前树移除；历史仍由 Git、PR #74～#89、Issue #73、本节项目记录与 `evals/` 保存。该维护不构成新的有限里程碑，也不启动 WI-07。
 
 协调计划：
 
