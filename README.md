@@ -4,106 +4,62 @@
 
 ## 快速开始
 
-如果要使用 `agentic-dev` 启动或继续一个软件项目，先阅读：
+使用 `agentic-dev` 启动或继续真实项目时，先读取：
 
-`docs/guides/using-agentic-dev.md`
+`docs/guides/rule-activation-guide.md`
 
-推荐在新的上下文中开始，并把 `agentic-dev` 作为方法与可复用能力来源。目标项目仍然拥有自己的仓库权威、需求、架构、代码、测试和集成策略；不要把 `agentic-dev` 的项目级规则机械复制到使用方项目。
+它只负责把当前任务路由到最小必要的 Guide / Skill / Repository Authority；不要默认把完整 `agentic-dev` 规则栈或完整历史加载进上下文。
 
-一个足够薄的启动提示可以是：
+目标项目始终拥有自己的仓库权威、需求、架构、代码、测试和集成策略。`agentic-dev` 提供“如何工作”的可复用方法与能力，不替使用方仓库决定项目事实。
+
+一个足够薄的 Fresh Context 可以是：
 
 ```text
-我要创建并持续开发一个新的软件项目。
+这是一个 Fresh Context。
 
-项目目标：
-<简要描述真实项目或当前建设目标>
+继续：<目标仓库>
 
-agentic-dev：
-<仓库路径或 URL>
+GitHub Repository 是唯一项目事实来源。
 
-当前项目已建立的权威内容（如有）：
-<项目规则、权威需求、仓库路径，或无>
+开始后先读取当前仓库 AGENTS.md / README.md，并读取 agentic-dev 的规则激活导航；随后按当前 Repository Authority 恢复当前阶段和直接相关 Authority，从下一实际步骤继续。
 
-初始需求来源（如有）：
-<外部需求文件、仓库路径、URL 或简要输入>
-
-目标项目目录或仓库：
-<使用方仓库路径或目标位置>
-
-请先读取 agentic-dev 的使用指南，再根据当前项目事实建立最小必要的仓库权威和工作结构。
-
-不要把其他会话、其他项目或个人记忆中的内容作为本项目事实。若当前项目已经规定主导语言和表达方式，必须以当前项目仓库权威为准，不要从历史聊天或上游示例继承旧语风。
+<必要的本轮特殊约束，如有>
 ```
 
-如果当前工作被明确作为 `agentic-dev` 的实验或验证，再补充实验范围和反馈要求即可。不要为了“完整”把完整方法规则复制进启动提示。
+项目目标、当前工作入口或必要特殊约束可以按实际任务补充；不要为了“完整”复制 Repository Authority、Development Method 或详细规则正文，它们应从仓库中的当前权威来源读取。
 
 ## 当前状态
 
-**基线版本：** v0.1
+- **基线版本：** v0.1
+- **长期阶段：** 工程能力扩展与方法演进
+- **当前活动有限里程碑：** 规则治理与知识激活 v1
+- **当前下一实际门禁：** 阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛
 
-**长期阶段：** 工程能力扩展与方法演进
-
-**最近完成并已集成的有限里程碑：** Squash Merge 下 Stacked PR 集成拓扑安全 v1
-
-**当前活动有限里程碑：** 规则治理与知识激活 v1
-
-**当前下一实际门禁：** 阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛
-
-当前路线、候选库、完成状态与新上下文恢复顺序统一维护在：
+当前路线、已完成里程碑、候选库、恢复顺序和下一实际步骤只在以下入口维护详细状态：
 
 `docs/project/project-roadmap.md`
 
-当前活动里程碑入口：
+当前活动里程碑跟踪入口：Issue #73。
 
-- Issue #73
-- `docs/project/rule-governance-knowledge-activation-v1.md`
-- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
-- `docs/research/knowledge-activation-evidence-appendix.md`
-- `docs/research/minimal-rule-retrieval-contract.md`
-- `docs/research/rule-retrieval-prototype-selection.md`
-- `docs/research/rule-retrieval-prototype-validation.md`
-- `docs/research/rule-retrieval-targeted-evaluation-design.md`
-- `docs/research/rule-retrieval-ab-baseline-validation.md`
-- `docs/research/rule-retrieval-c3-evaluation-results.md`
-- `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
+本 README 不并行复制阶段 A～C 的实验流水、PR / merge commit、后继候选详情或完整研究清单；需要恢复当前里程碑时，由 Roadmap、Issue #73 和项目记录继续指向直接相关 Authority / Research / Plan。
 
-2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。阶段 A、B、C 已完成。C3 的 9 个 A/B pair 全部取得 `gpt-5.6-sol / high` 的可比较运行事实；B 直接命中 29 / 29 必需规则、3 个回退 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，并在 RR-C1-02 出现一次误停。当前进入 D1，只实施阶段 C 证据直接支持的收敛并保留安全回退。
+## 仓库事实与权威
 
-WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。WI-07 — **代码复核能力 v1** 已登记为当前里程碑完成后的优先后继候选；必须在当前里程碑完成并集成后重新经过人工路线决策。WI-06 暂缓，后续由代码复核 / 使用方评估暴露的真实技术知识缺口决定是否重新启动。Issue #58 继续作为长期使用方经验反馈入口。
+GitHub Repository 是本项目长期事实来源。完整 Repository Authority、知识边界、当前项目阶段和 `agentic-dev` 自身治理规则见：
 
-最近完成里程碑的历史入口仍为：Issue #69、PR #70、`docs/project/stacked-pr-squash-topology-v1.md` 和 `tasks/plans/20260907/01-stacked-pr-squash-topology-safety.md`。
+`AGENTS.md`
 
-## 仓库事实来源
+使用方项目的规则激活入口见：
 
-GitHub 仓库是本项目长期演进的唯一基线来源。
+`docs/guides/rule-activation-guide.md`
 
-- Git 提交记录演进历史；
-- 分支隔离设计与实现过程；
-- ZIP 只用于初始化、离线交换或临时备份；
-- 会话历史、其他项目和个人记忆不构成本仓库权威。
+完整使用说明仍保存在：
 
-详细规则见：
+`docs/guides/using-agentic-dev.md`
 
-- `AGENTS.md`
-- `docs/project/repository-baseline.md`
+只有当前任务实际触发对应主题时，才按导航读取相关章节或 Skill。
 
-## 中文表达
-
-当前仓库面向人的内容默认使用自然中文。
-
-- 已有稳定中文表达的概念直接使用中文；
-- 不把“中文（英文）”或“英文（中文解释）”作为默认写法；
-- 代码标识符、路径、命令、API / CLI 参数、Git 引用、技能调用名、外部正式产品 / 协议名称和必须精确匹配的固定值保持原样；
-- 会话汇报、计划、Issue / PR、复核结论和项目文档遵循同一规则；
-- 中文化只改变表达形式，不改变正式工程概念的身份、对象类型、架构层级、方法职责或契约；
-- 正式概念使用唯一首选中文名称，名称与正式英文身份的映射统一记录在术语规范中；
-- 不从历史聊天、旧 PR、个人记忆或旧示例恢复被当前规则取代的混写语风或冲突中文别名。
-
-完整规则与正式概念身份映射见：
-
-`docs/guides/terminology-guidelines.md`
-
-## 核心开发流程
+## 核心开发路径
 
 常规功能工作通常沿以下职责推进：
 
@@ -120,70 +76,31 @@ GitHub 仓库是本项目长期演进的唯一基线来源。
 → 人工权威或仓库策略
 ```
 
-独立缺陷使用更轻的路径：
+独立缺陷使用更轻的复现、根因、最小修复与回归路径。
 
-```text
-观察症状
-→ 复现
-→ 明确预期行为
-→ 根因调查
-→ 失败或复现证据
-→ 最小修复
-→ 回归验证
-→ 缺陷收尾检查
-→ 已具备进入集成决策的条件
-```
+完整方法以 `docs/method/ai-development-method.md` 和当前架构 / 契约权威为准；README 不维护第二份方法定义。
 
-方法细节以 `docs/method/ai-development-method.md` 和相关架构 / 契约权威为准，README 不并行维护完整定义。
+## 工程能力
 
-## 核心原则
-
-- 阶段是工作状态，不等于必须创建文档。
-- 规格说明负责“做什么”和“为什么”。
-- 技术规划负责需要长期协调的“如何实现”，并且只在必要时产生。
-- 实施工作切分为纵向、可验证、适合新上下文的执行单元。
-- 没有当前证据，不得声明完成、通过或修复成功。
-- 会话历史不是权威知识库。
-- 普通、低影响、可逆的局部实现选择由 Agent 自主处理。
-- 重大产品意图、架构方向、高影响难逆操作或超出授权的事项必须升级人工。
-- 通用开发方法只推进到“已具备进入集成决策的条件”。
-- 合并、推送、发布和部署等集成或发布操作由人工权威或仓库策略控制。
-- 技能保持小型、可组合，不允许一个超级技能接管完整生命周期。
-
-## 技能清单
-
-当前仓库共有 9 个技能：8 个核心技能和 1 个平台专项技能。
-
-核心技能：
-
-- `clarify-intent`
-- `specify`
-- `technical-plan`
-- `slice-work`
-- `readiness-check`
-- `execute-unit`
-- `systematic-debug`
-- `converge`
-
-平台专项技能：
-
-- `github-actions-verification`
-
-详见：
+Skill 清单、身份和职责边界统一维护在：
 
 `skills/README.md`
 
-## 工程能力与研究
-
-工程能力的分层、证据进入方式和长期生命周期统一维护在：
+工程能力分层、证据进入方式和长期生命周期统一维护在：
 
 `docs/architecture/engineering-capability-architecture.md`
 
-外部官方资料、成熟开源工程实践、专家方法、专项评估和真实使用方证据都可以成为研究输入，但不能自动覆盖当前仓库权威。
-
-研究材料位于：
+外部官方资料、成熟开源实践、专项评估和使用方证据可以成为研究输入，但不能自动覆盖 Repository Authority。研究材料位于：
 
 `docs/research/`
+
+## 中文表达
+
+`agentic-dev` 自身面向人的内容默认使用自然中文；正式概念身份、例外和精确表达规则见：
+
+`docs/guides/terminology-guidelines.md`
+
+使用方项目的主导语言由使用方自己的仓库权威决定，不从 `agentic-dev`、旧聊天或其他项目机械继承。
 
 ## 仓库结构
 
@@ -209,5 +126,3 @@ GitHub 仓库是本项目长期演进的唯一基线来源。
 提交信息遵循：
 
 `docs/guides/git-commit-guidelines.md`
-
-固定的 `type(scope)` 保持原样，摘要使用中文。
