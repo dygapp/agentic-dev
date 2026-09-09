@@ -1,0 +1,106 @@
+name: Post Rule Governance Roadmap Closure
+
+on:
+  push:
+    branches:
+      - docs/post-rule-governance-roadmap-closure
+
+permissions:
+  contents: write
+
+jobs:
+  close-roadmap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/post-rule-governance-roadmap-closure
+          fetch-depth: 0
+
+      - name: Apply post-integration roadmap closure
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('docs/project/project-roadmap.md')
+          text = path.read_text()
+
+          def replace_once(old: str, new: str):
+              global text
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'expected exactly one match, got {count}: {old[:80]!r}')
+              text = text.replace(old, new, 1)
+
+          replace_once(
+              '5. Squash Merge 下 Stacked PR 集成拓扑安全 v1。',
+              '5. Squash Merge 下 Stacked PR 集成拓扑安全 v1；\n6. 规则治理与知识激活 v1。'
+          )
+
+          replace_once(
+              '''最近完成并已集成的有限里程碑是：\n\n> **Squash Merge 下 Stacked PR 集成拓扑安全 v1**\n\n该里程碑已完成平台语义核验、长期外部操作指导、三项治理定向评估、人工语义评分与最终 AI 复核。`G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 最终均为 `5 / 5`，合计 `15 / 15` 断言通过；最终 AI 复核 Review `5129305394` 未解决阻塞 / 中等级问题为 `0 / 0`。PR #70 已于 2026-09-07 通过 squash merge 集成，合并提交为 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已按完成关闭。\n\n2026-09-08，人工权威已显式选择下一有限里程碑：\n\n> **规则治理与知识激活 v1**\n\n当前活动跟踪入口：Issue #73。''',
+              '''最近完成并已集成的有限里程碑是：\n\n> **规则治理与知识激活 v1**\n\n该里程碑已完成激活审计、最小检索模型、真实隔离 A/B 与人工评分、薄启动 / 规则导航收敛、真实 Consumer 新上下文验证、陈旧派生索引 fail-closed 验证与最终 AI 复核。PR #89 已于 2026-09-09 按最终复核 Head `6a97bdc6d31e4997b89415a8ab4a75f97e6a6022` 通过 squash merge 集成，合并提交为 `4a42d7a23a40e4dbae84c2817b6d30acc1b6aa14`；Issue #73 已按完成关闭。\n\n当前路线状态：**待人工决策**。下一有限里程碑尚未由人工权威选择；WI-07 — 代码复核能力 v1 仍只是优先候选，不自动启动。\n\n2026-09-08，人工权威曾显式选择该有限里程碑；历史跟踪入口：Issue #73。'''
+          )
+
+          replace_once(
+              '| 规则治理与知识激活 | **实施与验证已收敛** | Issue #73；A～E 与 F1 / F3 已完成，F2 与人工集成结果由最终 PR / Issue 原生记录；当前无新实施门禁，完成集成后再进入下一有限里程碑人工路线决策 |',
+              '| 规则治理与知识激活 | **已完成并集成** | PR #89 已合并为 `4a42d7a23a40e4dbae84c2817b6d30acc1b6aa14`，Issue #73 已关闭；当前进入下一有限里程碑人工决策 |'
+          )
+
+          replace_once('**当前活动有限里程碑。**', '**已完成并集成。**')
+
+          replace_once(
+              '''当前下一实际步骤：\n\n> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**\n\n主要边界：\n\n- 治理单位是激活单元，不是文件大小；\n- 先判断规则缺口还是激活失败；\n- 常驻核心规则必须保持薄；\n- Skill 不复制全部长期知识；\n- 仓库权威与派生索引分离；\n- 检索必须有真实任务评估；\n- 阶段 C 必须用新上下文 / 隔离运行与人工语义评分判断 A/B 效果，不能把 C2 runner 可执行或静态校验通过等同于行为收益；\n- Obsidian 只作为可选人类治理工作台；\n- CodeGraph 只作为外部研究和使用方可选代码智能，不成为本里程碑强依赖；\n- 不在本里程碑实现代码复核。''',
+              '''最终集成结果：\n\n- D1 / D2 已将 README 收敛为薄 Bootstrap，并以 `docs/guides/rule-activation-guide.md` 提供最小长期规则导航；\n- E1 在真实 Consumer `dygapp/jilinjobs-cms` 上完成逻辑 Fresh Context 验证，保持 Consumer Authority / Consumer-local Method / 精确 baseline 优先；\n- E2 CodeGraph A/B 未执行，属于可选且非阻塞输入；\n- F1 首次回归正确发现 `AGENTS.md` source identity 陈旧并 fail-closed，最终 Run `34325868257` 在重建最终源身份后通过；\n- F2 Final AI Review `5151401609` 未解决 Blocking / Medium = `0 / 0`；\n- F3 稳定状态收敛完成；\n- PR #89 已按最终复核 Head 集成，合并提交为 `4a42d7a23a40e4dbae84c2817b6d30acc1b6aa14`；Issue #73 已关闭。\n\n该里程碑不再承担当前工作入口职责。当前回到下一有限里程碑的人工决策，不自动启动代码复核、技术画像、运行时适配或其他候选。'''
+          )
+
+          replace_once(
+              '- 当前有限里程碑明确暂缓 WI-06，先由代码复核 / 使用方评估判断哪些技术知识确有持久化增量价值。',
+              '- WI-06 继续暂缓，先由代码复核 / 使用方评估判断哪些技术知识确有持久化增量价值。'
+          )
+
+          replace_once(
+              '以下候选继续保留，但都未因当前里程碑而自动启动。',
+              '以下候选继续保留，当前均未启动。'
+          )
+
+          replace_once(
+              '当前证据已经足以把 `code-review` 从抽象未来可能性提升为 WI-07 的明确优先候选，但不绕过当前规则治理与知识激活里程碑。',
+              '当前证据已经足以把 `code-review` 从抽象未来可能性提升为 WI-07 的明确优先候选；其启动仍受新的有限里程碑人工决策约束。'
+          )
+
+          replace_once(
+              '''## 8. 当前边界\n\n当前只有一个活动有限里程碑：\n\n> **规则治理与知识激活 v1**\n\n当前只允许沿 Issue #73、项目记录与协调计划推进：激活审计 → 最小检索模型 → 检索 / 激活评估 → 必要权威收敛 → 使用方验证 → 最终复核 / 集成。\n\n以下方向全部保持候选，不自动并入当前里程碑：\n\n- 第二及后续技术画像建设；\n- WI-07 代码复核能力 v1 实现；\n- 运行时或分发实施；\n- 第四工程纪律建设；\n- 第二次基础型既有项目采用门禁；\n- 可执行架构边界证据模式的正式能力建设；\n- Issue #71 的模型路由 / 多模型采用实施。\n\n如果这些方向产生新证据，只记录为后续候选，等待未来人工里程碑决策。''',
+              '''## 8. 当前边界\n\n当前没有活动有限里程碑，路线状态为：\n\n> **待人工决策**\n\n规则治理与知识激活 v1 已完成并集成；在人工权威选择新的有限里程碑前，不进入任何候选的实施阶段。\n\n当前候选继续包括：\n\n- WI-07 — 代码复核能力 v1（优先后继候选）；\n- WI-06 — 第二及后续技术画像；\n- WI-09 — 运行时适配与分发；\n- 第四工程纪律建设；\n- 第二次基础型既有项目采用门禁；\n- 可执行架构边界证据模式；\n- Issue #71 的模型路由 / 多模型采用研究与候选实施。\n\n优先级不等于启动授权；新的证据也只更新候选判断，不自动创建活动里程碑。'''
+          )
+
+          replace_once(
+              '当前规则治理与知识激活 v1 已由人工显式选择。其完成后，优先重新评估 WI-07 — 代码复核能力 v1，但优先级不等于自动启动；仍需新的人工里程碑决策。',
+              '规则治理与知识激活 v1 已完成并集成。当前优先重新评估 WI-07 — 代码复核能力 v1，但优先级不等于自动启动；下一正式有限里程碑仍需新的人工权威显式选择。'
+          )
+
+          replace_once(
+              '''2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑和当前活动有限里程碑；\n3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；\n4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md`、`docs/research/knowledge-activation-evidence-appendix.md`、`docs/research/minimal-rule-retrieval-contract.md`、`docs/research/rule-retrieval-prototype-selection.md`、`docs/research/rule-retrieval-prototype-validation.md`、`docs/research/rule-retrieval-targeted-evaluation-design.md`、`docs/research/rule-retrieval-ab-baseline-validation.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；\n5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前下一门禁为阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分；\n6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、工程纪律、Issue #58 / #71 或历史评估；不得因为研究对象很多而默认全量加载；\n7. 不把 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 当作当前实施工作；\n8. 代码复核能力 v1 只是优先后继候选，只有当前里程碑完成并由人工重新选择后才能启动；''',
+              '''2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑，以及当前是活动里程碑还是待人工决策；\n3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；\n4. 若当前为待人工决策，只按候选评估需要读取 Issue #58 / #71、历史里程碑记录或相关 Research，不机械恢复已关闭里程碑的完整协调计划；\n5. 若人工权威已经选择新的有限里程碑，再读取该里程碑的 Issue、项目记录、Research / Plan 和当前下一实际门禁；\n6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、工程纪律或历史评估；不得因为研究对象很多而默认全量加载；\n7. 不把 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 当作当前实施工作，除非存在晚于本文的明确人工里程碑决定；\n8. 代码复核能力 v1 当前只是优先后继候选，必须由新的人工里程碑决策显式选择后才能启动；'''
+          )
+
+          if '当前只有一个活动有限里程碑' in text:
+              raise SystemExit('stale active milestone phrase remains')
+          if '当前下一门禁为阶段 C' in text:
+              raise SystemExit('stale C3 recovery gate remains')
+          if '> **待人工决策**' not in text:
+              raise SystemExit('pending human decision state missing')
+          if '4a42d7a23a40e4dbae84c2817b6d30acc1b6aa14' not in text:
+              raise SystemExit('PR89 integration commit missing')
+
+          path.write_text(text)
+          PY
+
+      - name: Self-clean workflow and commit
+        run: |
+          git rm -f .github/workflows/post-rule-governance-roadmap-closure.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add docs/project/project-roadmap.md
+          git commit -m "docs(project): 收口规则治理集成后路线状态"
+          git push origin HEAD:docs/post-rule-governance-roadmap-closure
