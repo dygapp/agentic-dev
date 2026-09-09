@@ -1,0 +1,90 @@
+name: C3 Status Closure Final2
+
+on:
+  push:
+    branches: [docs/rule-retrieval-c3-results]
+    paths:
+      - '.github/workflows/c3-status-closure-final2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/rule-retrieval-c3-results
+          fetch-depth: 0
+
+      - name: Execute closure
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          source = Path('.github/workflows/c3-status-closure-trigger.yml')
+          text = source.read_text(encoding='utf-8')
+
+          old_count = "replace('docs/project/project-roadmap.md', '- `docs/research/rule-retrieval-ab-baseline-validation.md`\\n', '- `docs/research/rule-retrieval-ab-baseline-validation.md`\\n- `docs/research/rule-retrieval-c3-evaluation-results.md`\\n', 1)"
+          if text.count(old_count) != 1:
+              raise SystemExit(f'roadmap patch count={text.count(old_count)}')
+          text = text.replace(old_count, old_count[:-2] + '2)', 1)
+
+          old_line = "          e[0]['source_pointer']['identity'] = identity\n"
+          new_lines = """          old_agents_identity = '0bd04757c64e6eda6a7ba00e04eca40e92651c29'
+          def swap(value):
+              if isinstance(value, dict):
+                  changed = 0
+                  for key, item in list(value.items()):
+                      if item == old_agents_identity:
+                          value[key] = identity
+                          changed += 1
+                      else:
+                          changed += swap(item)
+                  return changed
+              if isinstance(value, list):
+                  return sum(swap(item) for item in value)
+              return 0
+          changed = swap(e[0])
+          if changed != 1:
+              raise SystemExit(f'PTR-AGENTS-EXT old identity replacement count={changed}')
+"""
+          if text.count(old_line) != 1:
+              raise SystemExit(f'source_pointer line count={text.count(old_line)}')
+          text = text.replace(old_line, new_lines, 1)
+
+          start = "      - name: Close C3 and enter D1\n        shell: bash\n        run: |\n"
+          end = "\n      - name: Validate candidate\n"
+          if text.count(start) != 1 or text.count(end) != 1:
+              raise SystemExit('cannot isolate closure block')
+          block = text.split(start, 1)[1].split(end, 1)[0]
+          lines = []
+          for line in block.splitlines():
+              if line.startswith('          '):
+                  lines.append(line[10:])
+              elif line.strip():
+                  raise SystemExit(f'unexpected indentation: {line!r}')
+              else:
+                  lines.append('')
+          Path('/tmp/c3-close.sh').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+          bash /tmp/c3-close.sh
+          rm -f .github/workflows/c3-status-closure-fixer.yml
+          rm -f .github/workflows/c3-status-closure-final.yml
+          rm -f .github/workflows/c3-status-closure-final2.yml
+
+      - name: Validate final candidate
+        run: |
+          python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py evals/run_rule_retrieval_c3.py
+          python3 evals/run_rule_retrieval_c3.py --validate-only
+          git diff --check
+          test -z "$(find .github/workflows -type f -print 2>/dev/null)"
+
+      - name: Commit and push
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m 'docs(project): 收口 C3 并进入 D1'
+          git push origin HEAD:docs/rule-retrieval-c3-results
