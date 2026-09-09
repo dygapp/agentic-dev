@@ -57,7 +57,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm .github/d1-status-closure.py .github/workflows/d1-status-closure.yml
+          git rm -f .github/d1-status-closure.py .github/workflows/d1-status-closure.yml
           git add AGENTS.md README.md docs/project/project-roadmap.md docs/project/rule-governance-knowledge-activation-v1.md tasks/plans/20260908/01-rule-governance-knowledge-activation.md
           git commit -m "docs(project): 收口 D1/D2 并进入 E1"
           git push origin HEAD:docs/d1-rule-authority-convergence
