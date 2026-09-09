@@ -216,7 +216,7 @@ C1 结论：冻结 6 个真实历史场景 + 3 个控制场景。A 组只加载�
 - `evals/run_rule_retrieval_ab.py`
 - `evals/rule-retrieval/fixtures/consumer-local-authority/`
 
-C2 结论：A/B 基线已经可重复装配。PR #84 的只读临时 GitHub Actions Run `34291536760` 实际执行 Python 编译检查和 `python3 evals/run_rule_retrieval_ab.py --validate-only`，9 个场景均通过静态装配校验，隐藏答案与 A/B 分组没有进入运行时输入，且明确未执行 Agent A/B。临时 workflow 在取证后删除。当前仓库没有足以由 runner 自动证明实际模型 / 推理强度的统一配置契约，因此 C3 只有在两侧真实运行证据能证明模型与推理强度一致时，才允许把该配对纳入效果比较。
+C2 结论：A/B 基线已经可重复装配。最终差异复核曾发现 stale-source 场景虽然触发 fallback，却仍可能把临时陈旧副本作为 fallback 上下文消费；该缺口已修正为 fallback 后重新从当前 Repository Authority 装配，并增加工作区与当前 Authority / fixture 的字节一致性静态断言。修正后的只读 GitHub Actions Run `34296395675` / Job `102293842203` 在 Head `96eb5f356383bfb54ec5bd99e76f48f74d7ec01c` 上实际执行 Python 编译检查和 `python3 evals/run_rule_retrieval_ab.py --validate-only` 并成功，9 个场景均通过静态装配校验，隐藏答案与 A/B 分组没有进入运行时输入，且明确未执行 Agent A/B。此前 Run `34291536760` 与 `34296037510` 仅保留为祖先验证 / 诊断证据，不作为最终 C2 PASS。临时 workflow 在取证后删除。当前仓库没有足以由 runner 自动证明实际模型 / 推理强度的统一配置契约，因此 C3 只有在两侧真实运行证据能证明模型与推理强度一致时，才允许把该配对纳入效果比较。
 
 比较基线：
 
