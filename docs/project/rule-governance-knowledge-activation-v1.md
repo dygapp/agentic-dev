@@ -259,11 +259,12 @@ C2“A/B 基线实现与静态校验”已经完成：
 
 - 建立 `evals/run_rule_retrieval_ab.py`，默认只静态校验，只有显式 `--run` 才进入 C3；
 - 建立 Consumer-local Authority 最小 fixture，并在临时目录动态生成无语义来源 identity 漂移控制；
-- B 无回退时从当前规范性源按 `source_pointer` 物化章节 / 独立职责载体，回退时读取 C1 已声明的完整 Authority 基线；
+- B 无回退时从当前规范性源按 `source_pointer` 物化章节 / 独立职责载体；发生 fallback 时停止信任临时来源视图，重新从当前 Repository Authority 装配 C1 已声明的完整基线；
 - Agent 可见上下文不包含 A/B 分组、`metric_focus`、隐藏断言、预期规则键或预期回退；
 - `result-schema.json` 区分进程退出、查询回退、人工语义评分和失败分类；
 - 当前仓库没有可由 runner 自动证明的统一 Codex 模型锁定契约，因此 C3 必须用实际运行证据证明 A/B 模型与推理强度一致；无法证明一致的配对不能进入效果比较；
-- PR #84 临时只读 GitHub Actions Run `34291536760` 已实际执行 `py_compile` 与 `python3 evals/run_rule_retrieval_ab.py --validate-only`，确认 9 个场景的 A/B 工作区可装配，且未执行 Agent A/B；临时 workflow 取得证据后已删除。
+- 最终差异复核发现并修正 stale-source fallback 仍消费临时陈旧副本的缺口；静态校验现在逐文件确认 fallback 工作区与当前 Authority / fixture 一致；
+- 修正后的只读 GitHub Actions Run `34296395675` / Job `102293842203` 在 Head `96eb5f356383bfb54ec5bd99e76f48f74d7ec01c` 上实际执行 `py_compile` 与 `python3 evals/run_rule_retrieval_ab.py --validate-only` 并成功，确认 9 个场景的 A/B 工作区可装配，且未执行 Agent A/B；此前运行只保留为祖先验证 / 诊断证据；临时 workflow 取得证据后已删除。
 
 C2 研究 / 评估入口：
 
