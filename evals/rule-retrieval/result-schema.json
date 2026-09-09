@@ -64,6 +64,15 @@
     "query_invocations": {"type": ["integer", "null"], "minimum": 0},
     "model": {"type": ["string", "null"]},
     "reasoning_effort": {"type": ["string", "null"]},
+    "requested_model": {"type": ["string", "null"]},
+    "requested_reasoning_effort": {"type": ["string", "null"]},
+    "runtime_facts_status": {
+      "enum": ["observed", "unavailable", "ambiguous"]
+    },
+    "runtime_facts_source": {"type": ["string", "null"]},
+    "pair_fairness_status": {
+      "enum": ["pending", "comparable", "insufficient", "mismatch"]
+    },
     "grading_status": {"enum": ["pending", "scored"]}
   }
 }
