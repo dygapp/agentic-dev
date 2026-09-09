@@ -29,19 +29,18 @@
 2. 工程纪律扩展 v1；
 3. 中文交互与上下文清理 v1；
 4. 工程术语语义安全与现行文档全量收敛 v1；
-5. Squash Merge 下 Stacked PR 集成拓扑安全 v1。
+5. Squash Merge 下 Stacked PR 集成拓扑安全 v1；
+6. 规则治理与知识激活 v1。
 
 最近完成并已集成的有限里程碑是：
 
-> **Squash Merge 下 Stacked PR 集成拓扑安全 v1**
-
-该里程碑已完成平台语义核验、长期外部操作指导、三项治理定向评估、人工语义评分与最终 AI 复核。`G-PR-TOPO-01`、`G-PR-TOPO-02`、`G-PR-TOPO-03` 最终均为 `5 / 5`，合计 `15 / 15` 断言通过；最终 AI 复核 Review `5129305394` 未解决阻塞 / 中等级问题为 `0 / 0`。PR #70 已于 2026-09-07 通过 squash merge 集成，合并提交为 `96197d8664ec72aa4cdc8f5498993a228dd59357`；Issue #69 已按完成关闭。
-
-2026-09-08，人工权威已显式选择下一有限里程碑：
-
 > **规则治理与知识激活 v1**
 
-当前活动跟踪入口：Issue #73。
+该里程碑已完成激活审计、最小检索模型、真实隔离 A/B 与人工评分、薄启动 / 规则导航收敛、真实 Consumer 新上下文验证、陈旧派生索引 fail-closed 验证与最终 AI 复核。PR #89 已于 2026-09-09 按最终复核 Head `6a97bdc6d31e4997b89415a8ab4a75f97e6a6022` 通过 squash merge 集成，合并提交为 `4a42d7a23a40e4dbae84c2817b6d30acc1b6aa14`；Issue #73 已按完成关闭。
+
+当前路线状态：**待人工决策**。下一有限里程碑尚未由人工权威选择；WI-07 — 代码复核能力 v1 仍只是优先候选，不自动启动。
+
+2026-09-08，人工权威曾显式选择该有限里程碑；历史跟踪入口：Issue #73。
 
 启动基线：
 
@@ -57,9 +56,9 @@
 
 阶段 E“使用方验证”已完成 E1：以 `dygapp/jilinjobs-cms` 当前 `main@982a214d65f8ebfa461a6488b89709c2be1a3863` 与 PR #117 Head `547ac9453fd4ca6b85949810f3991d02f172e02f` 做逻辑 Fresh Context 验证，Consumer Authority / Consumer-local Method / 精确 baseline 始终优先；薄导航只激活当前执行、异步外部操作、GitHub Actions 证据与临时证据晋升所需规则，全部 E1 检查 PASS。E2 CodeGraph A/B 为可选项，本轮未执行且不阻塞。
 
-阶段 F 的 F1 最终静态验证已完成：首次运行正确发现 `AGENTS.md` source identity 陈旧并 fail-closed；最终 Run `34325868257` 在完成证据措辞修正、最终源 identity 重建后，9 场景静态检索回归与 E1 证据边界检查全部通过。F3 稳定状态由当前候选同步收敛；F2 最终 AI 复核与人工集成决策属于最终 PR 原生证据，不在 Roadmap 预写结果。
+阶段 F 已完成：F1 最终 Run `34325868257` 在重建最终源 identity 后通过 9 场景静态检索回归与 E1 证据边界检查；F2 Final AI Review `5151401609` 未解决 Blocking / Medium = `0 / 0`；F3 稳定状态收敛完成；PR #89 已按复核 Head 集成。
 
-当前没有新的里程碑实施门禁。下一有限里程碑尚未选择；只有规则治理与知识激活 v1 完成集成后才重新进入人工路线决策，WI-07 仍只是优先候选，不自动启动。完整研究和实施边界分别位于：
+当前没有新的里程碑实施门禁。规则治理与知识激活 v1 已完成并集成，路线已经进入下一有限里程碑人工决策；WI-07 仍只是优先候选，不自动启动。完整研究和实施边界分别位于：
 
 - `docs/research/knowledge-activation-and-code-intelligence-analysis.md`
 - `docs/research/knowledge-activation-evidence-appendix.md`
@@ -74,7 +73,7 @@
 - `docs/guides/rule-activation-guide.md`
 - `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`
 
-WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未因本里程碑启动而自动进入实现。**WI-07 — 代码复核能力 v1** 已登记为本里程碑完成后的优先后继方向，但必须在规则治理与知识激活 v1 完成并集成后重新进入人工里程碑决策。
+WI-06、WI-07、WI-09、第四工程纪律和 Issue #71 均未自动进入实现。**WI-07 — 代码复核能力 v1** 已登记为优先后继方向；规则治理与知识激活 v1 的完成与集成前置条件现已满足，但启动仍必须经过新的人工里程碑决策。
 
 Issue #58 继续作为长期使用方经验反馈入口。
 
@@ -83,7 +82,7 @@ Issue #58 继续作为长期使用方经验反馈入口。
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或权威缺口时才定向修改 |
-| 规则治理与知识激活 | **实施与验证已收敛** | Issue #73；A～E 与 F1 / F3 已完成，F2 与人工集成结果由最终 PR / Issue 原生记录；当前无新实施门禁，完成集成后再进入下一有限里程碑人工路线决策 |
+| 规则治理与知识激活 | **已完成并集成** | PR #89 已合并为 `4a42d7a23a40e4dbae84c2817b6d30acc1b6aa14`，Issue #73 已关闭；当前进入下一有限里程碑人工决策 |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前已有三项正式工程纪律；第四项未启动 |
 | 技术画像 | 基础建设已完成，进入候选库 | 技术画像契约与 Vue 3 + TypeScript 画像已完成；WI-06 暂缓，等待代码复核 / 使用方评估暴露真实增量缺口 |
 | 使用方采用 | E1 真实使用方验证已通过 | `jilinjobs-cms` 验证保持使用方仓库权威与 Consumer-local Method 优先；CodeGraph E2 本轮未执行，继续只是可选代码智能实验输入 |
@@ -296,7 +295,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 ### 4.8 规则治理与知识激活 v1
 
-**当前活动有限里程碑。**
+**已完成并集成。**
 
 人工选择日期：2026-09-08。
 
@@ -361,22 +360,17 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - fallback 成本显著增加，但 stale / unknown / no-match 的安全回退全部正确，不能为了成本删除 fail-closed 回退；
 - 证据见 `docs/research/rule-retrieval-c3-evaluation-results.md` 与 `evals/rule-retrieval/c3-human-scoring.json`。
 
-当前下一实际步骤：
+最终集成结果：
 
-> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**
+- D1 / D2 已将 README 收敛为薄 Bootstrap，并以 `docs/guides/rule-activation-guide.md` 提供最小长期规则导航；
+- E1 在真实 Consumer `dygapp/jilinjobs-cms` 上完成逻辑 Fresh Context 验证，保持 Consumer Authority / Consumer-local Method / 精确 baseline 优先；
+- E2 CodeGraph A/B 未执行，属于可选且非阻塞输入；
+- F1 首次回归正确发现 `AGENTS.md` source identity 陈旧并 fail-closed，最终 Run `34325868257` 在重建最终源身份后通过；
+- F2 Final AI Review `5151401609` 未解决 Blocking / Medium = `0 / 0`；
+- F3 稳定状态收敛完成；
+- PR #89 已按最终复核 Head 集成，合并提交为 `4a42d7a23a40e4dbae84c2817b6d30acc1b6aa14`；Issue #73 已关闭。
 
-主要边界：
-
-- 治理单位是激活单元，不是文件大小；
-- 先判断规则缺口还是激活失败；
-- 常驻核心规则必须保持薄；
-- Skill 不复制全部长期知识；
-- 仓库权威与派生索引分离；
-- 检索必须有真实任务评估；
-- 阶段 C 必须用新上下文 / 隔离运行与人工语义评分判断 A/B 效果，不能把 C2 runner 可执行或静态校验通过等同于行为收益；
-- Obsidian 只作为可选人类治理工作台；
-- CodeGraph 只作为外部研究和使用方可选代码智能，不成为本里程碑强依赖；
-- 不在本里程碑实现代码复核。
+该里程碑不再承担当前工作入口职责。当前回到下一有限里程碑的人工决策，不自动启动代码复核、技术画像、运行时适配或其他候选。
 
 项目记录：
 
@@ -423,11 +417,11 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 - 技术画像契约已经集成；
 - 当前代表性技术画像为 Vue 3 + TypeScript；
 - Element Plus、Spring Framework / Spring Boot / Spring MVC、Gradle 等仍是未来候选，不构成当前路线承诺；
-- 当前有限里程碑明确暂缓 WI-06，先由代码复核 / 使用方评估判断哪些技术知识确有持久化增量价值。
+- WI-06 继续暂缓，先由代码复核 / 使用方评估判断哪些技术知识确有持久化增量价值。
 
 ## 7. v1 后候选库
 
-以下候选继续保留，但都未因当前里程碑而自动启动。
+以下候选继续保留，当前均未启动。
 
 ### WI-06 — 第二及后续技术画像
 
@@ -456,7 +450,7 @@ Issue #58 继续作为长期使用方经验反馈入口。已经完成的三轮�
 
 当前状态：**优先后继候选，未启动**。
 
-当前证据已经足以把 `code-review` 从抽象未来可能性提升为 WI-07 的明确优先候选，但不绕过当前规则治理与知识激活里程碑。
+当前证据已经足以把 `code-review` 从抽象未来可能性提升为 WI-07 的明确优先候选；其启动仍受新的有限里程碑人工决策约束。
 
 候选职责：
 
@@ -554,23 +548,23 @@ Issue #71 收录使用方在关键架构评审中形成的配对盲测、隐藏�
 
 ## 8. 当前边界
 
-当前只有一个活动有限里程碑：
+当前没有活动有限里程碑，路线状态为：
 
-> **规则治理与知识激活 v1**
+> **待人工决策**
 
-当前只允许沿 Issue #73、项目记录与协调计划推进：激活审计 → 最小检索模型 → 检索 / 激活评估 → 必要权威收敛 → 使用方验证 → 最终复核 / 集成。
+规则治理与知识激活 v1 已完成并集成；在人工权威选择新的有限里程碑前，不进入任何候选的实施阶段。
 
-以下方向全部保持候选，不自动并入当前里程碑：
+当前候选继续包括：
 
-- 第二及后续技术画像建设；
-- WI-07 代码复核能力 v1 实现；
-- 运行时或分发实施；
+- WI-07 — 代码复核能力 v1（优先后继候选）；
+- WI-06 — 第二及后续技术画像；
+- WI-09 — 运行时适配与分发；
 - 第四工程纪律建设；
 - 第二次基础型既有项目采用门禁；
-- 可执行架构边界证据模式的正式能力建设；
-- Issue #71 的模型路由 / 多模型采用实施。
+- 可执行架构边界证据模式；
+- Issue #71 的模型路由 / 多模型采用研究与候选实施。
 
-如果这些方向产生新证据，只记录为后续候选，等待未来人工里程碑决策。
+优先级不等于启动授权；新的证据也只更新候选判断，不自动创建活动里程碑。
 
 ## 9. 后续有限里程碑决策规则
 
@@ -583,20 +577,20 @@ Issue #71 收录使用方在关键架构评审中形成的配对盲测、隐藏�
 5. 根据候选类型完成必要的研究、架构适配评估、草案、专项评估、AI 复核和集成；
 6. 不因为新候选出现而自动追加到同一里程碑。
 
-当前规则治理与知识激活 v1 已由人工显式选择。其完成后，优先重新评估 WI-07 — 代码复核能力 v1，但优先级不等于自动启动；仍需新的人工里程碑决策。
+规则治理与知识激活 v1 已完成并集成。当前优先重新评估 WI-07 — 代码复核能力 v1，但优先级不等于自动启动；下一正式有限里程碑仍需新的人工权威显式选择。
 
 ## 10. 新上下文恢复顺序
 
 新的 `agentic-dev` 工作上下文应：
 
 1. 读取根目录 `AGENTS.md`；
-2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑和当前活动有限里程碑；
+2. 读取本文，确认当前长期阶段、最近完成并已集成的有限里程碑，以及当前是活动里程碑还是待人工决策；
 3. 读取当前 GitHub `master`、开放 PR 和开放 Issue，确认是否存在晚于本文的新人工决定或集成事实；
-4. 当前规则治理与知识激活 v1 仍活动时，读取 Issue #73、`docs/project/rule-governance-knowledge-activation-v1.md`、`docs/research/knowledge-activation-and-code-intelligence-analysis.md`、`docs/research/knowledge-activation-evidence-appendix.md`、`docs/research/minimal-rule-retrieval-contract.md`、`docs/research/rule-retrieval-prototype-selection.md`、`docs/research/rule-retrieval-prototype-validation.md`、`docs/research/rule-retrieval-targeted-evaluation-design.md`、`docs/research/rule-retrieval-ab-baseline-validation.md` 和 `tasks/plans/20260908/01-rule-governance-knowledge-activation.md`；
-5. 从协调计划记录的下一实际门禁继续，不从历史聊天恢复遗漏内容；当前下一门禁为阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分；
-6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、工程纪律、Issue #58 / #71 或历史评估；不得因为研究对象很多而默认全量加载；
-7. 不把 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 当作当前实施工作；
-8. 代码复核能力 v1 只是优先后继候选，只有当前里程碑完成并由人工重新选择后才能启动；
+4. 若当前为待人工决策，只按候选评估需要读取 Issue #58 / #71、历史里程碑记录或相关 Research，不机械恢复已关闭里程碑的完整协调计划；
+5. 若人工权威已经选择新的有限里程碑，再读取该里程碑的 Issue、项目记录、Research / Plan 和当前下一实际门禁；
+6. 只有当前任务确实需要时，继续读取 `using-agentic-dev.md`、`external-operation-guidelines.md`、Skill Architecture、Skill Contracts、工程纪律或历史评估；不得因为研究对象很多而默认全量加载；
+7. 不把 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 当作当前实施工作，除非存在晚于本文的明确人工里程碑决定；
+8. 代码复核能力 v1 当前只是优先后继候选，必须由新的人工里程碑决策显式选择后才能启动；
 9. CodeGraph / Obsidian 是 Research 中的外部输入，不是当前仓库权威或强制工具；使用方 CodeGraph 采用只能按实际使用方环境独立验证；
 10. 不依赖历史聊天、其他会话或个人记忆补充未固化的项目事实；
 11. 面向人的输出遵循当前仓库严格中文表达规则，并使用当前正式概念身份映射，不从历史会话或个人记忆恢复旧的中英文混写语风或冲突中文别名。
