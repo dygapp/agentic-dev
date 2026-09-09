@@ -1,0 +1,263 @@
+name: C3 Status Closure
+
+on:
+  pull_request:
+    types: [synchronize]
+    paths:
+      - '.github/workflows/c3-status-closure.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  close-state:
+    if: github.event.pull_request.head.ref == 'docs/rule-retrieval-c3-results'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout head branch
+        uses: actions/checkout@v4
+        with:
+          ref: docs/rule-retrieval-c3-results
+          fetch-depth: 0
+
+      - name: Close C3 state and refresh derived identity
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+          import re
+
+          def read(path):
+              return Path(path).read_text(encoding='utf-8')
+
+          def write(path, text):
+              Path(path).write_text(text, encoding='utf-8')
+
+          def replace_once(path, old, new):
+              text = read(path)
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected exactly one replacement target, got {count}: {old[:80]!r}')
+              write(path, text.replace(old, new, 1))
+
+          def sub_once(path, pattern, replacement, flags=0):
+              text = read(path)
+              updated, count = re.subn(pattern, replacement, text, count=1, flags=flags)
+              if count != 1:
+                  raise SystemExit(f'{path}: regex replacement count={count}: {pattern[:100]!r}')
+              write(path, updated)
+
+          # AGENTS.md
+          replace_once(
+              'AGENTS.md',
+              '阶段 C 已完成 C1“定向评估设计”和 C2“A/B 基线实现与静态校验”：C1 冻结 6 个真实历史场景与 3 个控制场景，并关闭“已建模词表内零命中却不回退”的查询器缺口；C2 建立可重复 A/B 隔离 runner、Consumer-local fixture、无语义来源漂移控制和分层结果结构，并以真实 GitHub Actions 静态执行验证 9 个场景的 A/B 工作区均可装配。当前仍没有执行真正的 Agent A/B，也没有证据宣称按需检索优于粗粒度加载。',
+              '阶段 C“检索 / 激活评估”已经完成：C1 冻结 6 个真实历史场景与 3 个控制场景；C2 建立可重复 A/B 隔离 runner、Consumer-local fixture、无语义来源漂移控制和分层结果结构；C3 在 9 个可比较 A/B pair 上完成真实隔离运行与人工评分。B 的 6 个直接命中场景精确召回冻结的 29 / 29 必需规则，3 个安全回退场景 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，RR-C1-02 出现一次无证据固定返回 `specify` 的误停。直接命中场景中 B 的实际命令输出上下文与 wall-clock 均约减半，阶段 C 已形成进入阶段 D 的收益证据。'
+          )
+          replace_once(
+              'AGENTS.md',
+              '> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**',
+              '> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**'
+          )
+          replace_once(
+              'AGENTS.md',
+              '本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。当前不预设必须拆分指南、建立规则图、采用 Obsidian、采用 CodeGraph 或新增运行时层；阶段 C 只有在 C3 完成实际新上下文 A/B 和人工语义评分后，才有证据判断新的激活模式是否优于当前粗粒度加载。',
+              '本里程碑解决巨型指南、规则重复、粗粒度加载和“规则存在但没有在恰当任务中可靠激活”的问题。阶段 C 已证明“薄入口 + 条件检索 + 当前源指针 + 保守安全回退”在本轮冻结高影响规则面上优于文件级粗粒度加载；当前进入 D1，只实施证据直接支持的指南 / 权威 / 激活指针收敛，不预设全库拆分、规则图、Obsidian、CodeGraph 或新运行时层。fallback 成本较高不能作为删除 stale / unknown / no-match 安全回退的理由。'
+          )
+          replace_once(
+              'AGENTS.md',
+              '- `docs/research/rule-retrieval-ab-baseline-validation.md`\n',
+              '- `docs/research/rule-retrieval-ab-baseline-validation.md`\n- `docs/research/rule-retrieval-c3-evaluation-results.md`\n'
+          )
+
+          # README.md
+          replace_once(
+              'README.md',
+              '**当前下一实际门禁：** 阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分',
+              '**当前下一实际门禁：** 阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛'
+          )
+          replace_once(
+              'README.md',
+              '- `docs/research/rule-retrieval-ab-baseline-validation.md`\n',
+              '- `docs/research/rule-retrieval-ab-baseline-validation.md`\n- `docs/research/rule-retrieval-c3-evaluation-results.md`\n'
+          )
+          replace_once(
+              'README.md',
+              '2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。阶段 A 与阶段 B 已完成。阶段 C 的 C1 已冻结 6 个真实历史场景 + 3 个控制场景；C2 已建立可重复 A/B runner、Consumer-local / stale-source 控制、隐藏答案隔离与分层结果结构，并通过真实静态命令验证 9 个场景 A/B 工作区可装配。当前尚未执行真正的 Agent A/B，因此没有证据宣称按需检索优于当前粗粒度加载；下一门禁是 C3 隔离运行与人工语义评分。',
+              '2026-09-08，人工权威显式选择“规则治理与知识激活 v1”作为下一有限里程碑。阶段 A、B、C 已完成。C3 的 9 个 A/B pair 全部取得 `gpt-5.6-sol / high` 的可比较运行事实；B 在 6 个直接命中场景完整召回 29 / 29 必需规则、3 个回退场景 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，并在 RR-C1-02 出现一次误停。直接命中场景 B 的实际命令输出字节与 wall-clock 均约减半。当前进入 D1，只实施阶段 C 证据直接支持的指南 / 权威 / 激活指针收敛，并保留 stale / unknown / no-match 的保守安全回退。'
+          )
+
+          # Milestone project record
+          replace_once(
+              'docs/project/rule-governance-knowledge-activation-v1.md',
+              '**当前活动有限里程碑 / 阶段 C — 检索 / 激活评估**',
+              '**当前活动有限里程碑 / 阶段 D — 权威 / 指南收敛**'
+          )
+          replace_once(
+              'docs/project/rule-governance-knowledge-activation-v1.md',
+              '- `docs/research/rule-retrieval-ab-baseline-validation.md`；\n',
+              '- `docs/research/rule-retrieval-ab-baseline-validation.md`；\n- `docs/research/rule-retrieval-c3-evaluation-results.md`；\n'
+          )
+          sub_once(
+              'docs/project/rule-governance-knowledge-activation-v1.md',
+              r'当前下一工作项：\n\n> \*\*C3 — 隔离运行时与人工评分\*\*\n\nC3 才执行冻结场景的真实新上下文 / 隔离 A/B，并由人工逐项评分。只有实际模型 / 推理强度、公平输入边界和隐藏断言隔离都能由证据支持的 A/B 配对，才可以进入效果比较。\n\n阶段 C 至少观察：.*?\n\n进程退出码为 0 不等于语义通过。必须人工语义评分。',
+              '''C3“隔离运行时与人工评分”已经完成：
+
+- 18 / 18 Codex 进程退出 0，9 / 9 A/B pair 均为 `comparable`；
+- 实际 provider model / reasoning effort 均为 `gpt-5.6-sol / high`；
+- B 的 6 个直接命中场景精确得到 C1 冻结 expected set，必需规则 `29 / 29`；
+- B 的 3 个控制回退场景 reason `3 / 3` 正确，回退后语义仍正确；
+- B 行为语义 `9 / 9` PASS；A 为 `8 / 9`，RR-C1-02 A 无证据把 `Return To` 固定为 `specify`，记为 `wrong_stop_or_escalation / 选择 / 冲突`；
+- 直接命中场景 B 的观察到的命令输出字节约减少 `48.6%`，wall-clock 约减少 `49.8%`；全部场景合计约减少 `22.9%` / `9.0%`；
+- fallback 场景成本显著增加，因此阶段 D 必须保留 stale / unknown / no-match 的 fail-closed 回退，不得为了成本把安全回退改成静默零结果或近似规则替代。
+
+C3 研究 / 评分入口：
+
+- `docs/research/rule-retrieval-c3-evaluation-results.md`
+- `evals/rule-retrieval/c3-human-scoring.json`
+
+阶段 C 完成结论：当前证据足以证明“薄入口 + 条件检索 + 当前源指针 + 保守安全回退”在本轮冻结高影响规则面上优于文件级粗粒度加载，可以进入阶段 D。该结论不支持全仓库规则数据库、全量拆分指南、删除 fallback 或把派生索引提升为权威。''',
+              flags=re.S
+          )
+          replace_once(
+              'docs/project/rule-governance-knowledge-activation-v1.md',
+              '### 阶段 D — 权威 / 指南收敛\n\n只有阶段 C 证明收益后，才实施长期结构收敛。',
+              '### 阶段 D — 权威 / 指南收敛\n\n状态：**当前**。\n\n阶段 C 已证明收益；当前从 D1 开始，只实施证据直接支持的长期结构收敛。'
+          )
+          sub_once(
+              'docs/project/rule-governance-knowledge-activation-v1.md',
+              r'## 12\. 当前下一步\n\n阶段 A 与阶段 B 已完成，阶段 C 的 C1、C2 已完成。下一实际步骤不是拆分指南、全库增加文件头，也不是实现代码复核，而是：\n\n> \*\*阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分。\*\*\n\n新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、`docs/research/rule-retrieval-targeted-evaluation-design.md`、`docs/research/rule-retrieval-ab-baseline-validation.md` 和协调计划，然后从 C3 继续。',
+              '''## 12. 当前下一步
+
+阶段 A、阶段 B、阶段 C 已完成。下一实际步骤不是全量拆分指南、全库增加文件头，也不是实现代码复核，而是：
+
+> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛。**
+
+新上下文开始时应重新读取当前 GitHub 状态、`AGENTS.md`、项目路线图、Issue #73、本文件、`docs/research/rule-retrieval-targeted-evaluation-design.md`、`docs/research/rule-retrieval-ab-baseline-validation.md`、`docs/research/rule-retrieval-c3-evaluation-results.md` 和协调计划，然后从 D1 继续。'''
+          )
+
+          # Coordinator plan
+          replace_once(
+              'tasks/plans/20260908/01-rule-governance-knowledge-activation.md',
+              '16. `docs/research/rule-retrieval-ab-baseline-validation.md`；\n17. `docs/guides/using-agentic-dev.md`；',
+              '16. `docs/research/rule-retrieval-ab-baseline-validation.md`；\n17. `docs/research/rule-retrieval-c3-evaluation-results.md`；\n18. `docs/guides/using-agentic-dev.md`；'
+          )
+          replace_once(
+              'tasks/plans/20260908/01-rule-governance-knowledge-activation.md',
+              '> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**',
+              '> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**'
+          )
+          sub_once(
+              'tasks/plans/20260908/01-rule-governance-knowledge-activation.md',
+              r'### C3 — 隔离运行时与人工评分\n\n- \[ \] 使用新上下文 / 隔离环境；\n- \[ \] 隐藏预期行为 / 断言；\n- \[ \] 进程退出码与语义通过分离；\n- \[ \] 证明参与比较的 A/B 配对实际模型与推理强度一致；\n- \[ \] 人工按断言评分；\n- \[ \] 对失败场景先判断激活 / 检索 / 规则缺口类型再修订。\n\n阶段 C 完成条件：存在足够证据判断新激活模式是否优于当前粗粒度加载。',
+              '''### C3 — 隔离运行时与人工评分
+
+- [x] 使用新上下文 / 隔离环境；
+- [x] 隐藏预期行为 / 断言；
+- [x] 进程退出码与语义通过分离；
+- [x] 证明参与比较的 A/B 配对实际模型与推理强度一致；
+- [x] 人工按断言评分；
+- [x] 对失败场景先判断激活 / 检索 / 规则缺口类型再修订。
+
+C3 结果：9 / 9 A/B pair 均可比较；B 直接命中 29 / 29 必需规则，3 / 3 回退 reason 正确，行为语义 9 / 9 PASS；A 为 8 / 9，RR-C1-02 存在一次 `wrong_stop_or_escalation / 选择 / 冲突`。直接命中场景 B 的命令输出字节与 wall-clock 均约减半；fallback 成本上升但安全性正确。
+
+输出：
+
+- `docs/research/rule-retrieval-c3-evaluation-results.md`
+- `evals/rule-retrieval/c3-human-scoring.json`
+
+阶段 C 完成条件已经满足：存在足够证据判断“薄入口 + 条件检索 + 当前源指针 + 保守安全回退”在当前冻结高影响规则面上优于粗粒度加载。'''
+          )
+          sub_once(
+              'tasks/plans/20260908/01-rule-governance-knowledge-activation.md',
+              r'## 当前下一步\n\n阶段 A 与阶段 B 已完成；阶段 C 的 C1、C2 已完成，当前进入：\n\n> \*\*阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分\*\*\n\nC3 执行 C1 冻结的真实新上下文 A/B，必须保持隐藏断言、记录实际模型 / 推理强度证据并由人工逐项评分；在 C3 证据形成前，不修改 Guide / Skill，不宣称 B 优于 A，也不进入阶段 D。',
+              '''## 当前下一步
+
+阶段 A、阶段 B、阶段 C 已完成，当前进入：
+
+> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**
+
+D1 只实施阶段 C 已证明有价值的动作：优先稳定高价值直接命中的激活指针与最小派生索引，检查 RR-C1-02 暴露的粗粒度选择噪声，对已审计实质重复做减法，并保留 stale / unknown / no-match 的 fail-closed 回退。禁止无证据全量重构。'''
+          )
+
+          # Project Roadmap
+          sub_once(
+              'docs/project/project-roadmap.md',
+              r'阶段 C 的 C1“定向评估设计”和 C2“A/B 基线实现与静态校验”已完成：.*?当前尚未执行真正的 Agent A/B，也没有证据宣称按需检索优于当前粗粒度加载。',
+              '阶段 C“检索 / 激活评估”已完成：C1 冻结 9 个有辨识力场景；C2 建立可重复 A/B runner、Consumer-local / stale-source 控制与分层结果结构；C3 完成 9 个可比较 A/B pair 的真实隔离运行与人工评分。B 在 6 个直接命中场景精确召回 29 / 29 必需规则，3 个安全回退场景 reason 全部正确，行为语义 9 / 9 PASS；A 为 8 / 9，并在 RR-C1-02 出现一次无证据固定返回 `specify` 的误停。直接命中场景 B 的实际命令输出字节与 wall-clock 均约减半，阶段 C 已形成进入阶段 D 的收益证据。',
+              flags=re.S
+          )
+          replace_once(
+              'docs/project/project-roadmap.md',
+              '> **阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分**',
+              '> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**'
+          )
+          replace_once(
+              'docs/project/project-roadmap.md',
+              '- `docs/research/rule-retrieval-ab-baseline-validation.md`\n',
+              '- `docs/research/rule-retrieval-ab-baseline-validation.md`\n- `docs/research/rule-retrieval-c3-evaluation-results.md`\n'
+          )
+          replace_once(
+              'docs/project/project-roadmap.md',
+              '| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A、B 已完成，C1、C2 已完成，当前进入阶段 C / C3 隔离运行时与人工评分；不预设全库文件头、图数据库或新运行时层 |',
+              '| 规则治理与知识激活 | **当前有限里程碑** | Issue #73；阶段 A、B、C 已完成，当前进入阶段 D / D1 基于证据实施指南 / 权威收敛；只实施评估证明有价值的动作并保留安全回退 |'
+          )
+          sub_once(
+              'docs/project/project-roadmap.md',
+              r'阶段 C 的 C2“A/B 基线实现与静态校验”已完成：\n\n(?:- .*\n)+\n当前下一实际步骤：\n\n> \*\*阶段 C — 检索 / 激活评估 / C3 — 隔离运行时与人工评分\*\*',
+              '''阶段 C 的 C2“A/B 基线实现与静态校验”已完成：
+
+- 建立可重复 A/B 隔离 runner，默认 `--validate-only`，只有显式 `--run` 才进入 C3；
+- 建立 Consumer-local Authority 最小 fixture；
+- 在临时副本动态制造无语义来源 blob 漂移，不持久化第二份规范性源；
+- B 直接命中时从当前规范性源按 `source_pointer` 物化章节 / 独立职责载体；发生 fallback 时停止信任临时来源视图并重新从当前 Repository Authority 装配完整基线；
+- Agent 可见输入不包含 A/B 分组、`metric_focus`、隐藏断言、预期规则键或预期回退；
+- 固定结果结构，区分进程退出、查询回退、人工语义评分和失败分类；
+- 当前仓库没有能由 runner 自动证明的统一 Codex 实际模型 / 推理强度锁定契约；C3 必须以运行证据证明配对一致，无法证明一致的配对不得进入效果比较；
+- 最终差异复核发现并修正 stale-source fallback 仍消费临时陈旧副本的缺口，并增加 fallback 工作区与当前 Authority / fixture 的字节一致性断言；
+- 修正后的只读 GitHub Actions Run `34296395675` / Job `102293842203` 在 Head `96eb5f356383bfb54ec5bd99e76f48f74d7ec01c` 上成功执行 Python 编译与 `python3 evals/run_rule_retrieval_ab.py --validate-only`，确认 9 个场景的 A/B 工作区可装配且没有执行 Agent A/B；此前 Run `34291536760`、`34296037510` 仅保留为祖先验证 / 诊断证据，临时 workflow 取证后已删除。
+
+阶段 C 的 C3“隔离运行时与人工评分”已完成：
+
+- 9 / 9 A/B pair 均取得 `gpt-5.6-sol / high` 的可比较运行事实；
+- B 直接命中场景 6 / 6 精确命中冻结 expected set，必需规则 `29 / 29`；
+- B fallback 3 / 3 reason 正确；
+- B 行为语义 `9 / 9` PASS；A 为 `8 / 9`，RR-C1-02 A 出现一次 `wrong_stop_or_escalation / 选择 / 冲突`；
+- 直接命中场景 B 的观察到的命令输出字节约减少 `48.6%`，wall-clock 约减少 `49.8%`；全部场景合计约减少 `22.9%` / `9.0%`；
+- fallback 场景成本显著增加，但 stale / unknown / no-match 的安全回退全部正确，不能为了成本删除 fail-closed 回退；
+- 评分证据见 `docs/research/rule-retrieval-c3-evaluation-results.md` 与 `evals/rule-retrieval/c3-human-scoring.json`。
+
+当前下一实际步骤：
+
+> **阶段 D — 权威 / 指南收敛 / D1 — 基于证据实施指南 / 权威收敛**'''
+          )
+
+          # Refresh AGENTS identity in derived index after all status edits.
+          agents = Path('AGENTS.md').read_bytes()
+          identity = hashlib.sha1(b'blob ' + str(len(agents)).encode() + b'\0' + agents).hexdigest()
+          index_path = Path('evals/rule-retrieval/rule-index.json')
+          index = json.loads(index_path.read_text(encoding='utf-8'))
+          matches = [e for e in index['entries'] if e.get('entry_key') == 'PTR-AGENTS-EXT']
+          if len(matches) != 1:
+              raise SystemExit(f'expected one PTR-AGENTS-EXT, got {len(matches)}')
+          matches[0]['source_pointer']['identity'] = identity
+          index_path.write_text(json.dumps(index, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # Workflow must not survive in final candidate.
+          Path('.github/workflows/c3-status-closure.yml').unlink()
+          PY
+
+      - name: Validate final candidate inputs
+        run: |
+          python3 -m py_compile evals/query_rule_index.py evals/run_rule_retrieval_ab.py evals/run_rule_retrieval_c3.py
+          python3 evals/run_rule_retrieval_c3.py --validate-only
+          git diff --check
+
+      - name: Commit state closure
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m 'docs(project): 收口 C3 并进入 D1'
+          git push origin HEAD:docs/rule-retrieval-c3-results
