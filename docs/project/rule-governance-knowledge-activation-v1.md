@@ -2,7 +2,7 @@
 
 ## 状态
 
-**当前活动有限里程碑 / 阶段 E — 使用方验证**
+**有限里程碑实施与验证已收敛；精确集成事实由 GitHub 原生状态记录**
 
 人工决策日期：2026-09-08
 
@@ -327,34 +327,26 @@ D2 回归结论：
 
 ### 阶段 E — 使用方验证
 
-状态：**当前**。
+状态：**已完成**。
 
-当前下一实际门禁：
+E1 真实使用方验证：**PASS**。
 
-> **E1 — 使用方新上下文验证**
+- Consumer：`dygapp/jilinjobs-cms`；
+- Consumer integrated baseline：`main@982a214d65f8ebfa461a6488b89709c2be1a3863`；
+- 实际执行对象：PR #117 / Head `547ac9453fd4ca6b85949810f3991d02f172e02f`；
+- Consumer 自身记录的 `agentic-dev` baseline 继续保持 `master@d9fad0da83dbdb61cac5eb9778b0258c6861eef1`，本次验证没有执行 baseline upgrade；
+- 薄入口只激活当前执行单元、异步外部操作、GitHub Actions 证据与临时证据晋升所需规则；Consumer-specific source error / migration ownership 全部回到 Consumer Authority；
+- E1 六项检查全部 PASS，详细证据见 `docs/research/rule-activation-e1-consumer-validation.md`。
 
-至少选择一个真实使用方做新上下文验证。
-
-验证重点：
-
-- 新上下文能否从使用方仓库权威 + `agentic-dev` 需要的最小基线恢复当前规则；
-- 是否减少机械全量读取指南；
-- 是否仍能命中关键规则；
-- 使用方仓库权威是否继续高于 `agentic-dev` 可复用规则；
-- 是否避免把 `agentic-dev` 项目级规则误带入使用方。
-
-CodeGraph 可以作为源码发现的独立 A/B 输入，但不是本阶段必须依赖。
+E2 Consumer CodeGraph A/B：**未执行 / 可选 / 不阻塞**。当前没有证据要求用源码发现实验替代或补充 E1 的 Repository Authority / Method Activation 验证，也不因此否定 CodeGraph 的后续可选价值。
 
 ### 阶段 F — 最终复核与集成
 
-完成：
+F1 最终验证已完成：首次 `--validate-only` 按设计报告 `AGENTS.md (source_identity_changed)`，证明陈旧派生索引没有被静默消费；确认被索引“外部操作治理”段落正文未变后，以最终源 blob 重建派生 identity。最终 Run `34325868257` 的陈旧源审计、9 场景静态检索回归、E1 证据边界检查与临时工作流自清理全部成功。
 
-- 静态一致性检查；
-- 必要的隔离运行时回归；
-- 人工语义评分；
-- 最终 AI 复核；
-- Roadmap / AGENTS / README / 项目记录状态闭环；
-- 人工集成决策。
+F3 稳定项目状态在当前候选中完成收敛。F2 最终 AI 复核与人工集成决策必须针对最终 PR Head / diff 执行并记录在 PR / Issue；本文不预写尚未发生的复核或集成结果。
+
+当前没有新的里程碑实施门禁。A～E 与 F1 / F3 已完成；下一有限里程碑尚未选择，只有本里程碑完成集成后才重新进入人工路线决策。WI-07 仍只是优先候选，不自动启动。
 
 ## 6. 非目标
 
