@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Rule Governance v3 GPT-6 Review Result",
+  "title": "Rule Governance v3 GPT-6 Governance Review Result",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -8,6 +8,7 @@
     "verdict",
     "dimension_verdicts",
     "findings",
+    "ownership_assessment",
     "preservation_assessment",
     "complexity_assessment",
     "recommended_next_action"
@@ -31,36 +32,66 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "front_matter_authoring_model",
-        "generated_index_model",
-        "guide_decomposition",
+        "root_cause_reframing",
+        "ownership_model",
+        "guide_skill_boundary",
+        "repository_standard_boundary",
+        "consumer_lifecycle",
+        "analysis_sequence",
+        "adr_gate",
         "agentic_dev_self_adoption",
-        "consumer_projection",
-        "v1_v2_preservation",
-        "complexity_control"
+        "metadata_discovery_deferral",
+        "v1_v2_preservation"
       ],
       "properties": {
-        "front_matter_authoring_model": {"$ref": "#/$defs/dimension"},
-        "generated_index_model": {"$ref": "#/$defs/dimension"},
-        "guide_decomposition": {"$ref": "#/$defs/dimension"},
+        "root_cause_reframing": {"$ref": "#/$defs/dimension"},
+        "ownership_model": {"$ref": "#/$defs/dimension"},
+        "guide_skill_boundary": {"$ref": "#/$defs/dimension"},
+        "repository_standard_boundary": {"$ref": "#/$defs/dimension"},
+        "consumer_lifecycle": {"$ref": "#/$defs/dimension"},
+        "analysis_sequence": {"$ref": "#/$defs/dimension"},
+        "adr_gate": {"$ref": "#/$defs/dimension"},
         "agentic_dev_self_adoption": {"$ref": "#/$defs/dimension"},
-        "consumer_projection": {"$ref": "#/$defs/dimension"},
-        "v1_v2_preservation": {"$ref": "#/$defs/dimension"},
-        "complexity_control": {"$ref": "#/$defs/dimension"}
+        "metadata_discovery_deferral": {"$ref": "#/$defs/dimension"},
+        "v1_v2_preservation": {"$ref": "#/$defs/dimension"}
       }
     },
     "findings": {
       "type": "array",
       "items": {"$ref": "#/$defs/finding"}
     },
+    "ownership_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "categories_sufficient",
+        "missing_or_overlapping_categories",
+        "likely_misclassified_current_resources",
+        "guide_catch_all_risk",
+        "skill_explosion_risk"
+      ],
+      "properties": {
+        "categories_sufficient": {"type": "boolean"},
+        "missing_or_overlapping_categories": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "likely_misclassified_current_resources": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "guide_catch_all_risk": {"type": "string", "minLength": 1},
+        "skill_explosion_risk": {"type": "string", "minLength": 1}
+      }
+    },
     "preservation_assessment": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["v1_preserved", "v2_preserved", "regression_risks"],
+      "required": ["v1_preserved", "v2_preserved", "highest_risk_regressions"],
       "properties": {
         "v1_preserved": {"type": "boolean"},
         "v2_preserved": {"type": "boolean"},
-        "regression_risks": {
+        "highest_risk_regressions": {
           "type": "array",
           "items": {"type": "string"}
         }
@@ -69,17 +100,26 @@
     "complexity_assessment": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["overdesigned_elements", "defer_candidates", "simpler_alternative"],
+      "required": [
+        "prematurely_frozen_elements",
+        "correctly_deferred_elements",
+        "plan_merge_or_split_suggestions",
+        "simpler_direction"
+      ],
       "properties": {
-        "overdesigned_elements": {
+        "prematurely_frozen_elements": {
           "type": "array",
           "items": {"type": "string"}
         },
-        "defer_candidates": {
+        "correctly_deferred_elements": {
           "type": "array",
           "items": {"type": "string"}
         },
-        "simpler_alternative": {
+        "plan_merge_or_split_suggestions": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "simpler_direction": {
           "type": ["string", "null"]
         }
       }
@@ -122,18 +162,9 @@
           "type": "string",
           "enum": ["Blocking", "Medium", "Low"]
         },
-        "title": {
-          "type": "string",
-          "minLength": 1
-        },
-        "design_goal_violated": {
-          "type": "string",
-          "minLength": 1
-        },
-        "failure_scenario": {
-          "type": "string",
-          "minLength": 1
-        },
+        "title": {"type": "string", "minLength": 1},
+        "design_goal_violated": {"type": "string", "minLength": 1},
+        "failure_scenario": {"type": "string", "minLength": 1},
         "affected_components": {
           "type": "array",
           "minItems": 1,
@@ -144,10 +175,7 @@
           "minItems": 1,
           "items": {"type": "string"}
         },
-        "minimal_fix": {
-          "type": "string",
-          "minLength": 1
-        }
+        "minimal_fix": {"type": "string", "minLength": 1}
       }
     }
   }
