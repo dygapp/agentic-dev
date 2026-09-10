@@ -32,26 +32,25 @@ GitHub Repository 是唯一项目事实来源。
 
 - **基线版本：** v0.1
 - **长期阶段：** 工程能力扩展与方法演进
-- **规则治理与知识激活 v2：** 内部完成定义已满足，已具备进入人工集成决策的条件
-- **跟踪入口：** Issue #92 / PR #93
+- **最近已集成里程碑：** 规则治理与知识激活 v2
+- **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
+- **总体跟踪：** Issue #94
+- **当前工作入口：** Issue #95 — V3-01 知识与能力所有权模型
 
-v2 已完成 Consumer-local Runtime Target、Rule Ownership / Guide Decomposition、Activation Manifest / Runtime Catalog 契约、Discovery / Routing / Skill Interface、Baseline Adoption / Projection、真实 Consumer Phase F R1～R5 以及 Phase G Candidate Drift 定向重验。
+v3 当前先解决长期知识、规则和 Agent 能力的语义所有权，不先实现新的 Rule Index、Manifest、Catalog、Front Matter Generator 或批量新技能。
 
-真实 Consumer `dygapp/jilinjobs-cms` 的 ordinary runtime upstream access 保持为 0；最终定向重验 T1～T4 全部 PASS，Blocking / Medium reusable findings 为 `0 / 0`。冻结 reusable candidate：
-
-`29f88efd25232e57ccb4a82ffff039be047e4d1e`
-
-详细证据：
-
-- `docs/project/consumer-local-runtime-validation-result-v2.md`
-- `docs/project/consumer-local-runtime-candidate-drift-review-v2.md`
-- `docs/project/rule-governance-knowledge-activation-v2.md`
-
-是否已经实际集成 v2，不由 README 复制瞬时 PR 状态；以 Git / PR #93 的当前事实为准。无论 PR 是否已经集成，v2 都不会自动启动 WI-06、WI-07、WI-09、Issue #71 或其他候选，后续仍需要新的人工路线决策。
+V3-01 使用四维判断：语义所有者、适用范围与来源状态、运行与生命周期角色、载体与权威形式。只有其所有权判断矩阵通过独立复核、没有未解决的阻塞或中等级歧义后，才判断是否进入 V3-02。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
 `docs/project/project-roadmap.md`
+
+v3 规划入口：
+
+- `docs/project/rule-governance-knowledge-activation-v3.md`
+- `docs/project/knowledge-capability-ownership-model-v3.md`
+
+v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在分析就提前替换现行运行行为。
 
 ## 入口职责
 
