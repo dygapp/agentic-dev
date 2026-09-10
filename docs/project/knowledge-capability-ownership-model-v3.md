@@ -10,18 +10,20 @@
 
 核心原则：
 
-> **先判断 semantic owner，再判断 scope、lifecycle 和 representation。**
+> **先判断 semantic owner，再判断适用范围 / 来源、生命周期和 representation。**
 
 以下四个维度必须分开：
 
 ```text
 semantic owner role
-+ applicability / provenance scope
++ applicability / provenance
 + runtime / lifecycle role
 + representation / authority form
 ```
 
-任何单一 `type`、目录名、Front Matter 字段或文件扩展名都不能替代这四个判断。
+其中第二维内部继续区分 **applicability scope** 与 **provenance state**；两者可以同时成立，不能把“只在当前仓库生效”和“来源于 upstream adoption”误当成互斥身份。
+
+任何单一 `type`、目录名、Front Matter 字段或文件扩展名都不能替代这些判断。
 
 ## 2. 第一维：Semantic Owner Role
 
@@ -40,7 +42,7 @@ semantic owner role
 不进入：
 
 - 单一技术栈规则；
-- 单一 Repository 的 Git / 语言 /集成政策；
+- 单一 Repository 的 Git / 语言 / 集成政策；
 - 某个稳定 Agent procedure 的具体步骤；
 - 项目业务事实。
 
@@ -92,6 +94,8 @@ semantic owner role
 - 没有必要为了被 Agent 激活而 Skill 化；
 - Consumer 可以选择性采用、覆盖或拒绝其默认值，但不能用本地偏好改写客观技术事实。
 
+Architecture / Contract 文档可以定义这类能力的身份、职责、准入和生命周期；这种 representation 不要求再新增一个平行 semantic owner 类别。
+
 如果一项 Engineering Discipline 后续形成稳定独立流程、明确输入输出和独立调度价值，再按 Skill admission 重新评估；不能提前升级。
 
 ### 2.4 Repository-local Policy / Standard / Rule
@@ -106,7 +110,7 @@ semantic owner role
 - 主导语言和术语规则；
 - 仓库授权边界；
 - 本地验证与 Review policy；
-- 当前 Repository 的目录 / 协作 /运行约束。
+- 当前 Repository 的目录 / 协作 / 运行约束。
 
 典型特征：
 
@@ -115,7 +119,7 @@ semantic owner role
 - 通常没有独立可调用 procedure；
 - 可以从 upstream 模板 / Guide 初始化，但 adoption 后 current authority 属于本地。
 
-Repository-local Rule 不因为可以被多个项目参考就自动成为 reusable upstream capability；关键是其语义是否允许 / 预期由各 Repository 自行决定。
+Repository-local Rule 不因为可以被多个项目参考就自动成为 reusable upstream capability；关键是其正确值是否由各 Repository 自己决定并允许独立演进。
 
 ### 2.5 Project / Product Authority Resource
 
@@ -189,18 +193,43 @@ Guide
 
 这些资源只有经过明确 adoption / promotion 后，才可能形成前六类 Current Resource。
 
-## 3. 第二维：Applicability / Provenance Scope
+## 3. 第二维：Applicability / Provenance
 
-semantic owner 与来源 / 适用范围分开。至少使用以下 scope：
+这一维内部使用两个正交字段，不要求二选一。
 
-| Scope | 含义 |
+### 3.1 Applicability Scope
+
+回答：
+
+> 当前语义对多大范围直接有效？
+
+至少区分：
+
+| Applicability scope | 含义 |
 |---|---|
-| `reusable-upstream` | 由 `agentic-dev` 维护，供多个 Consumer 选择性采用 |
-| `repository-local` | 只对当前 Repository 持续生效 |
-| `consumer-native` | Consumer 自己形成并自行演进 |
-| `adopted-local` | 起源于 upstream，采用后成为 Consumer-local 当前资产 |
-| `external-input` | 外部原始输入，尚未成为当前 Authority |
-| `historical-evidence` | 只承担历史 / Evidence 职责 |
+| `cross-repository-reusable` | 语义设计为跨多个 Repository / Consumer 复用 |
+| `repository-local` | 语义只在当前 Repository Authority 下直接生效 |
+| `external-input` | 外部材料的原始适用范围，尚未被当前 Repository 采用 |
+| `historical-only` | 只用于历史追溯 / Evidence，不参与 Current Runtime |
+
+这里的“跨仓库可复用”只描述适用范围，不等于 Skill；Engineering Discipline / Profile 也可以是 `cross-repository-reusable`。
+
+### 3.2 Provenance State
+
+回答：
+
+> 当前资源是怎样进入当前 Repository 的？
+
+至少区分：
+
+| Provenance state | 含义 |
+|---|---|
+| `native` | 由当前 owner / Repository 自己形成 |
+| `adopted-from-upstream` | 来源于 reusable upstream，采用后由本地 Authority 管理 |
+| `promoted-from-external-input` | 来源于原始外部材料，经当前 Authority 确认后提升 |
+| `derived-projection` | 从 Current semantic owner 生成 / 投射，不拥有正文语义 |
+| `external-unadopted` | 外部输入，尚未成为 Current Authority |
+| `historical` | 只保留历史 / Evidence 来源关系 |
 
 规则：
 
@@ -212,12 +241,12 @@ current authority
 
 例如：
 
-- `agentic-dev` Technology Profile = Reusable Engineering Capability + `reusable-upstream`；
-- Consumer 自己的 Git 规范 = Repository-local Policy + `consumer-native`；
-- Consumer 采用并调整的验证画像 = Reusable Engineering Capability 的 `adopted-local` projection；
-- Consumer Requirement = Project Authority + `consumer-native`。
+- `agentic-dev` Technology Profile = Reusable Engineering Capability + `cross-repository-reusable` + `native`；
+- Consumer 自己的 Git 规范 = Repository-local Policy + `repository-local` + `native`；
+- Consumer 采用并局部调整的验证画像 = Reusable Engineering Capability 的 local projection + `repository-local` + `adopted-from-upstream`；
+- Consumer Requirement = Project Authority + `repository-local` + `native` 或 `promoted-from-external-input`。
 
-adopted-local 资产进入普通运行后，不要求继续访问 upstream 才能成立。
+`repository-local` 与 `adopted-from-upstream` 可以同时成立。采用完成后的本地资产进入普通运行时，不要求继续访问 upstream 才能成立。
 
 ## 4. 第三维：Runtime / Lifecycle Role
 
@@ -261,7 +290,7 @@ adopted-local 资产进入普通运行后，不要求继续访问 upstream 才�
 
 特别规则：
 
-- `engineering-capability-architecture.md` / `skill-contracts.md` 等 Architecture / Contract 可以定义 capability 的身份、边界和准入，但“Architecture / Contract”本身不是一个必须新增的 semantic owner 分类；
+- `engineering-capability-architecture.md` / `skill-contracts.md` 等 Architecture / Contract 可以定义对应 semantic owner family 的身份、边界和准入，但“Architecture / Contract”本身不因为是文件类型就自动形成新的 semantic owner role；
 - `SKILL.md` 是 Skill 的平台兼容执行载体，不代表普通 Markdown 应强制使用相同 schema；
 - generated index / catalog 只能投射 metadata，不取得 semantic body ownership；
 - 文件位于 `docs/guides/` 不足以证明它语义上是 Guide。
@@ -288,13 +317,13 @@ adopted-local 资产进入普通运行后，不要求继续访问 upstream 才�
 
 ### Step 5 — 它是否是跨项目 reusable engineering constraint / default / profile？
 
-如果跨项目成立、可被多个 Skill 消费，但缺少独立 task entry / output /调度价值，进入 Reusable Engineering Capability / Discipline / Profile。
+如果跨项目成立、可被多个 Skill 消费，但缺少独立 task entry / output / 调度价值，进入 Reusable Engineering Capability / Discipline / Profile。
 
 ### Step 6 — 它是否由当前 Repository 自己决定并预期本地演进？
 
 如果是 Git、语言、术语、授权、集成、本地验证等仓库约束，进入 Repository-local Policy / Standard / Rule。
 
-### Step 7 — 它是否只是解释如何理解 /采用？
+### Step 7 — 它是否只是解释如何理解 / 采用？
 
 如果主要服务人类或 setup / adoption / upgrade explanation，进入 Guide。
 
@@ -373,7 +402,7 @@ Guide 可以引用这些 owner，但不得复制第二份完整规则正文。
 初始化 Consumer 时可以完整读取 adoption Guide，并基于当前输入：
 
 - 选择性采用 Method / Skill / Reusable Engineering Capability；
-- 生成 Consumer-local Repository Rules，例如 Git、术语 /语言、验证、集成政策；
+- 生成 Consumer-local Repository Rules，例如 Git、术语 / 语言、验证、集成政策；
 - 如果存在 raw requirement，分析并形成 Consumer Project Authority；
 - 如果没有需求，不制造空权威产物。
 
@@ -426,21 +455,21 @@ keep one owner
 
 ## 12. 代表资源判例
 
-| 当前资源 | Semantic owner 判断 | Scope / Lifecycle | V3-02 候选动作 |
+| 当前资源 | Semantic owner 判断 | Scope / Provenance / Lifecycle | V3-02 候选动作 |
 |---|---|---|---|
-| `docs/method/ai-development-method.md` | Method / Principle | reusable-upstream；方法权威 | 保留 |
-| `skills/technical-plan/SKILL.md` | Skill / Procedural Capability | reusable-upstream；JIT | 保留；不把 ADR / architecture procedure复制到 Guide |
-| `skills/execute-unit/SKILL.md` | Skill / Procedural Capability | reusable-upstream；JIT | 保留；工程纪律只保留薄消费边界 |
-| `docs/architecture/engineering-disciplines.md` | Reusable Engineering Capability / Discipline / Profile | reusable-upstream；按条件 ordinary runtime | 保留为 reusable capability owner |
-| `docs/technology-profiles/vue3-typescript.md` | Reusable Engineering Capability / Discipline / Profile | reusable-upstream；选择性 adoption | 保留为 Technology Profile |
-| `docs/architecture/technology-profile-contract.md` | 定义 reusable capability 的 Architecture / Contract form | reusable-upstream；能力治理 | 保留为 Profile contract；不误判为 Consumer Project Authority |
-| `docs/guides/git-commit-guidelines.md` | Repository-local Policy / Standard / Rule | 当前主要约束 `agentic-dev`；Consumer 应本地化 | 从 Guide 身份迁出候选；Consumer 初始化后形成 local rule |
-| `docs/guides/terminology-guidelines.md` | Repository-local Policy / Standard / Rule | `agentic-dev` 本地表达治理；Consumer 可选择采用 | 从 Guide 身份迁出候选；概念职责仍由 Method / Architecture / Contract 定义 |
-| `docs/guides/using-agentic-dev.md` | Guide 为主，但当前文件含混合正文 | human + initialization / adoption / upgrade | 保留 adoption / explanation；runtime procedure / local rule 分流 |
-| `docs/guides/verification-evidence-rules.md` | 文件级不可单类化 | reusable verification constraints；按 condition 激活 | V3-02 按 rule family 判断 existing Skill / reusable capability / principle / platform owner |
-| `docs/guides/external-operation-guidelines.md` | 文件级不可单类化 | 同时包含 reusable constraint、repository authorization、platform operation 与 explanation | V3-02 按 semantic body 拆分 owner；不直接整体改名即结束 |
-| Consumer Requirement / Specification | Project / Product Authority | consumer-native；ordinary runtime | 保持 Consumer-local Authority |
-| v3 GPT-6 raw result | Research / Input / Evidence | historical-evidence | 不进入 ordinary runtime；只把通过治理流程后的结论提升到正式 owner |
+| `docs/method/ai-development-method.md` | Method / Principle | `cross-repository-reusable` + `native`；方法权威 | 保留 |
+| `skills/technical-plan/SKILL.md` | Skill / Procedural Capability | `cross-repository-reusable` + `native`；JIT | 保留；不把 ADR / architecture procedure 复制到 Guide |
+| `skills/execute-unit/SKILL.md` | Skill / Procedural Capability | `cross-repository-reusable` + `native`；JIT | 保留；工程纪律只保留薄消费边界 |
+| `docs/architecture/engineering-disciplines.md` | Reusable Engineering Capability / Discipline / Profile | `cross-repository-reusable` + `native`；按条件 ordinary runtime | 保留为 reusable capability owner |
+| `docs/technology-profiles/vue3-typescript.md` | Reusable Engineering Capability / Discipline / Profile | `cross-repository-reusable` + `native`；选择性 adoption | 保留为 Technology Profile |
+| `docs/architecture/technology-profile-contract.md` | Reusable Engineering Capability / Discipline / Profile 的类型 / 准入 / 生命周期语义 | `cross-repository-reusable` + `native`；由 Architecture / Contract form 承载 | 保留为 Profile contract；不误判为 Consumer Project Authority |
+| `docs/guides/git-commit-guidelines.md` | Repository-local Policy / Standard / Rule | `repository-local` + `native`；当前主要约束 `agentic-dev` | 从 Guide 身份迁出候选；Consumer 初始化后形成自己的 local rule |
+| `docs/guides/terminology-guidelines.md` | Repository-local Policy / Standard / Rule | `repository-local` + `native`；`agentic-dev` 本地表达治理 | 从 Guide 身份迁出候选；概念职责仍由 Method / Architecture / Contract 定义 |
+| `docs/guides/using-agentic-dev.md` | Guide 为主，但当前文件含混合正文 | `cross-repository-reusable` + `native`；human + initialization / adoption / upgrade | 保留 adoption / explanation；runtime procedure / local rule 分流 |
+| `docs/guides/verification-evidence-rules.md` | 文件级不可单类化 | 当前包含 `cross-repository-reusable` verification constraints；按 condition 激活 | V3-02 按 rule family 判断 existing Skill / reusable capability / principle / platform owner |
+| `docs/guides/external-operation-guidelines.md` | 文件级不可单类化 | 同时含 reusable constraint、`agentic-dev` repository policy、platform operation 与 explanation | V3-02 按 semantic body 拆分 owner；不直接整体改名即结束 |
+| Consumer Requirement / Specification | Project / Product Authority | `repository-local` + `native` 或 `promoted-from-external-input`；ordinary runtime | 保持 Consumer-local Authority |
+| v3 GPT-6 raw result | Research / Input / Evidence | `historical-only` + `historical` | 不进入 ordinary runtime；只把经过治理后的结论提升到正式 owner |
 
 这些判例只验证 ownership decision matrix 的可用性，不在 V3-01 执行物理迁移。
 
@@ -457,6 +486,7 @@ Agent 会读 → 应该是 Skill
 来自 agentic-dev → Consumer ordinary runtime 应持续读取 upstream
 来自外部资料 → 自动成为 Requirement Authority
 有 YAML Front Matter → 自动成为 Current Authority
+Architecture / Contract 文件 → 自动成为一个新的 semantic owner 类别
 ```
 
 ## 14. V3-01 Gate
@@ -465,9 +495,11 @@ V3-01 只有在以下条件同时成立时完成：
 
 1. 独立 reviewer 可以基于本文对代表资源做出基本一致的 owner 判断；
 2. Engineering Discipline / Profile 不再被误判成 Skill 或 Repository-local Rule；
-3. Repository-local Rule 与 reusable upstream capability 的边界可解释；
-4. Guide admission 不再承担 catch-all 作用；
-5. mixed document 能够被识别为“按 semantic body 拆分”，而不是被迫文件级单分类；
-6. 不存在未解决的阻塞或中等级 ownership ambiguity。
+3. applicability scope 与 provenance state 不再被混为互斥身份；
+4. Repository-local Rule 与 reusable upstream capability 的边界可解释；
+5. Guide admission 不再承担 catch-all 作用；
+6. mixed document 能够被识别为“按 semantic body 拆分”，而不是被迫文件级单分类；
+7. Architecture / Contract representation 不被误判为独立 semantic owner；
+8. 不存在未解决的阻塞或中等级 ownership ambiguity。
 
 达到 Gate 只允许开始 V3-02 的 ownership audit；不自动授权物理迁移、Skill 重构或 discovery implementation。
