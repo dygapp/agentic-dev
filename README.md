@@ -35,22 +35,15 @@ GitHub Repository 是唯一项目事实来源。
 - **最近完成并已集成的有限里程碑：** 规则治理与知识激活 v1
 - **当前有限里程碑：** 规则治理与知识激活 v2 — Consumer-local 规则发现与激活
 - **跟踪入口：** Issue #92
-- **当前阶段：** Phase F — 真实 Consumer 验证
+- **当前阶段：** Phase G — 收敛与集成准备
 
-v2 已完成内部设计阶段 A～E：
+v2 已完成 Phase A～E 的设计与 reusable guidance 收敛，并完成 Phase F 真实 Consumer 验证。`dygapp/jilinjobs-cms` 的 R1～R5 全部 PASS，ordinary runtime upstream access 为 0，Base Drift 为 NO IMPACT，未发现 Blocking / Medium reusable Rule Governance v2 gap。
 
-- Consumer-local Runtime Target 与验收基线；
-- Rule Ownership / Guide Decomposition 审计；
-- Activation Manifest / Runtime Catalog 契约；
-- Discovery → Routing → Skill 接口；
-- Baseline Adoption / Consumer-local Projection 契约；
-- reusable Guide `docs/guides/consumer-local-rule-activation.md`。
+Phase F 结果：
 
-当前自然 Gate 是在真实 Consumer 中执行 R1～R5 验证。Phase F 验证计划：
+`docs/project/consumer-local-runtime-validation-result-v2.md`
 
-`docs/project/consumer-local-runtime-validation-plan-v2.md`
-
-最终完成仍必须证明 ordinary Consumer Fresh Context 不依赖日常读取 `agentic-dev` upstream，并保持 Consumer Authority、override、Stage Return、Skill activation、stale / rebuild 与 baseline lifecycle 正确。
+当前自然 Gate 是 Phase G：执行 v1 核心行为、Authority / Method / Architecture / Guide / Skill、stale / fail-closed、Root Bootstrap 回归与最终 AI Review；全部通过后才能达到“已具备进入人工集成决策的条件”。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
