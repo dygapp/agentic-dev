@@ -3,690 +3,471 @@ id: eval-rule-governance-v3-candidate-review-package
 title: 规则治理与知识激活 v3 候选评审包
 type: evaluation-candidate
 status: review-only
-version: "V0.1"
+version: "V0.2"
 classification:
   - rule-governance
-  - knowledge-activation
-  - repository-local-runtime
+  - knowledge-ownership
+  - consumer-lifecycle
 relations:
   upstream:
     - AGENTS.md
     - docs/project/rule-governance-knowledge-activation-v2.md
-    - docs/project/consumer-local-activation-metadata-contract-v2.md
     - docs/project/rule-ownership-decomposition-audit-v2.md
-    - docs/guides/rule-activation-guide.md
-    - docs/guides/using-agentic-dev.md
-    - docs/guides/consumer-local-rule-activation.md
+    - docs/architecture/skill-architecture.md
   related:
+    - evals/rule-governance-v3/v3-governance-convergence-summary.md
+    - evals/rule-governance-v3/v3-analysis-plan.md
     - evals/rule-governance-v3/gpt6-review-prompt.md
-    - evals/rule-governance-v3/review-output-schema.json
 ---
 
 # 规则治理与知识激活 v3 候选评审包
 
-## 1. 文档性质
+## 1. 评审对象已重新定义
 
-本文是临时评估分支上的 **v3 Candidate Design**，只用于独立模型评审，不是 `agentic-dev` 正式 Method、Architecture、Guide、Skill 或 Project Authority。
+本文不是 v3 Final Design，而是对当前**治理方向与分析路线**的 Candidate Review Package。
 
-评审基线：
+Frozen base：
 
 `agentic-dev@3c31ae96683c4a653f001402b889b40e87df976b`
 
-本方案只有在评审结果返回、Blocking / Medium finding 被人工裁决并正式建立新的 Milestone / Authority 后，才可能进入实现。
+当前评审不要求决定最终：
 
-本候选吸收一个历史 `jilinjobs` 需求分析规范中的 AI-ready Structured Markdown 经验作为外部设计输入：YAML Front Matter 只用于定位和路由，正文是业务 / 规范事实的唯一承载位置；Agent 先用 `type / classification / relations` 找到最小权威上下文，再读取正文。该外部规范本身不构成 `agentic-dev` Authority。
+- Front Matter schema；
+- Resource Index 格式；
+- Manifest / Catalog 是否存在；
+- 新 Skill 清单；
+- Guide 最终文件数量；
+- 目录命名；
+- ADR 数量。
 
-## 2. 为什么需要 v3
+这些都必须建立在更上游的 ownership / lifecycle 结论上。
 
-v2 已经证明以下长期方向有效：
+## 2. 为什么需要重新规划 v3
 
-- Thin Bootstrap；
-- Consumer Repository Authority first；
-- Progressive Disclosure；
-- derived discovery 不拥有规则正文；
-- source stale / missing / ambiguity 时 fail-closed；
-- primary responsibility 与 supporting context 分离；
-- routing-only 与 JIT Skill execution 分离；
-- Consumer baseline adoption 使用逐项 `adopt / retain-or-override / reject-not-applicable / supersede-remove`；
-- ordinary Consumer runtime 可以在完成 adoption 后完全 local-only；
-- v1 JSON rule-index runnable surface 已被 v2 supersede，不再作为 Current Discovery Mechanism。
+v1 证明结构化 discovery、最小规则集合与 fail-closed 有价值；v2 进一步证明 Consumer-local discovery、primary/supporting、routing-only/JIT Skill、baseline adoption 与 ordinary runtime local-only 可以成立。
 
-但 v2 仍存在四个结构性不足。
+但继续复核发现：当前真正的根因可能不在 discovery 技术，而在**知识与能力 ownership 被错误分类**。
 
-### 2.1 Activation metadata 与 semantic owner 双点维护
-
-v2 的长期逻辑模型允许：
+典型演进路径曾逐渐变成：
 
 ```text
-semantic owner
-+ manually maintained Activation Manifest
-→ optional Runtime Catalog
+发现新的长期规则
+→ 不应该扩大 Core Method
+→ 不应该随意新增 / 修改 Skill
+→ 进入 Guide
 ```
 
-Manifest 中的 `responsibility / conditions / risks / activation_role` 实际来自 semantic owner 的语义提炼。即使 source identity 能发现 stale，也仍要求维护者在修改 owner 后再次更新独立 Manifest。
+这个保护 Method / Skill 稳定性的动机合理，但最后一步把 Guide 变成了 catch-all bucket。
 
-这解决了“陈旧不能静默继续使用”，但没有解决“为什么需要维护第二份 activation semantics”。
+后果包括：
 
-### 2.2 `using-agentic-dev.md` 仍未完成真正的 semantic decomposition
+- `using-agentic-dev.md` 同时承担 human explanation、Consumer bootstrap、baseline adoption、ordinary runtime routing、Fresh Context recovery、project evolution 等不同职责；
+- Repository-local Git / terminology 等规则物理位于 Guide，但语义上更像 Repository Standard；
+- verification / external operation 等跨职责规则进入 Guide 后，可能与 existing Skill / Engineering Discipline / Repository Policy 重叠；
+- 为了从大 Guide 中发现规则，又需要人工导航、rule-index、Manifest / Catalog 等派生机制；
+- `agentic-dev` 自身还没有形成与 Consumer 一致的结构化 local discovery / Skill-centric runtime 模型。
 
-v2 ownership audit 已明确判断 `using-agentic-dev.md` 同时承载：
+因此 v3 需要先解决：
 
-1. Consumer bootstrap / adoption；
-2. Skill 使用与职责路由；
-3. 跨职责 verification / engineering coordination；
-4. 解释性使用说明。
+> **什么内容应该在哪里，由谁作为 semantic owner？**
 
-v2 已删除大量重复 Skill-owned procedure，并把验证规则迁到 `verification-evidence-rules.md`，但当前 `using-agentic-dev.md` 仍同时包含：
+而不是先回答：
 
-- 使用模型；
-- 知识边界；
-- requirement source adoption；
-- 新项目初始化；
-- 主导语言；
-- 长期结构建立；
-- Skill 使用；
-- responsibility routing；
-- baseline adoption；
-- Roadmap lifecycle；
-- Fresh Context recovery；
-- experiment / feedback。
+> Manifest / Index 应该怎样实现？
 
-因此它仍是一份多责任、较大的运行时 Guide，而不是纯 landing / routing entry。
+## 3. 当前候选 Ownership Model
 
-### 2.3 `rule-activation-guide.md` 仍是人工维护的导航索引
+### 3.1 Method / Principle
 
-当前 `rule-activation-guide.md` 以人工表格维护：
+拥有跨项目成立的开发生命周期、阶段和顶层不变量。
+
+判断重点：
+
+- 是否属于通用 lifecycle invariant；
+- 是否必须约束 Skill architecture；
+- 是否高于具体执行 capability。
+
+不承担 Consumer-specific policy、平台细节或项目事实。
+
+### 3.2 Skill
+
+拥有稳定的 Agent procedural capability。
+
+一个候选 Skill 应能够回答：
 
 ```text
-current responsibility / risk
-→ exact Guide / Skill / section pointer
+何时进入？
+输入是什么？
+怎么做？
+输出是什么？
+什么时候退出？
+何时 Stage Return？
+何时 Escalate？
 ```
 
-这实际上是一份手工 Runtime Index。Guide / Skill 结构变化时仍需要人工同步这些 pointer。
+必须避免两个极端：
 
-### 2.4 `agentic-dev` 自身尚未 self-host v2 discovery
+- Guide 中继续埋藏明显的 Agent workflow；
+- 为了减少 Guide 数量，把每条规则都变成微型 Skill。
 
-当前 `agentic-dev` Fresh Context 仍主要依赖：
+### 3.3 Repository-local Policy / Standard / Rule
 
-```text
-AGENTS.md
-→ README.md
-→ Project Roadmap
-→ Agent 自行判断需要打开哪个 Guide / Skill / Method
-```
+拥有当前 Repository 持续适用的本地约束。
 
-v2 的完整结构化 discovery 只在 Consumer 场景完成真实验证，`agentic-dev` 自身尚未通过同一模型发现和激活自己的规则。
+典型候选：
 
-## 3. v3 核心目标
+- Git Commit Standard；
+- terminology / language Standard；
+- Repository Operation / Integration Policy；
+- Consumer-specific validation / review policy。
 
-建议 v3 名称：
+这类内容通常没有独立 Procedure，不应仅因为 Agent 需要遵守就 Skill 化。
 
-> **规则治理与知识激活 v3 — Repository-local Structured Discovery & Self-Adoption**
+它们也不应被当作人类 Guide 的普通说明；应成为 Repository-local Current Resource，由该 Repository 自行演进。
 
-v3 把 v2 的 Consumer-local 模型提升为 Repository-local 通用模型：
+### 3.4 Project Authority Resource
 
-```text
-Repository Task
-→ Thin Bootstrap
-→ Repository Activation Index
-→ YAML Front Matter metadata
-→ minimum applicable semantic owners
-→ Primary Responsibility
-→ routing-only OR JIT Skill
-→ Execute / Verify / Stage Return
-```
+拥有当前项目事实，例如：
 
-该模型同时适用于：
-
-- `agentic-dev` 自身；
-- 已采用 `agentic-dev` 的 Consumer。
-
-Consumer 比 `agentic-dev` 多出的只是 upstream adoption / provenance lifecycle，而不是另一套 discovery architecture。
-
-## 4. 核心架构原则
-
-### 4.1 Front Matter 是 source-local Agent metadata
-
-对于会被 Agent 长期、反复发现和消费的权威 / reusable resource，activation metadata 应尽量与 semantic owner 共址：
-
-```text
-Authoritative Resource
-┌────────────────────────────┐
-│ YAML Front Matter          │  Agent routing metadata
-├────────────────────────────┤
-│ Structured Markdown Body   │  normative semantics
-└────────────────────────────┘
-```
-
-三条硬边界：
-
-1. Front Matter 只回答“它是什么、何时可能需要读、与谁有关”；
-2. Body 才能定义真实规则 / Requirement / Architecture / Skill procedure；
-3. Agent 不得仅依据 Front Matter 执行正文规则。
-
-### 4.2 Generated Activation Index 是唯一 Current Discovery Projection
-
-建议 Current Runtime 采用：
-
-```text
-Authoritative / reusable resources + Front Matter
-→ deterministic generator
-→ Repository Activation Index
-→ Agent discovery
-```
-
-Index 必须满足：
-
-- generated；
-- derived；
-- non-authoritative；
-- 可删除 / 可重建；
-- 记录 source identity；
-- 不保存规范性正文；
-- 不人工维护 activation semantics；
-- stale / invalid 时 fail-closed；
-- 同一个 Runtime scope 内是唯一 Current Discovery Mechanism。
-
-v3 如果正式采用该模型，应明确 supersede：
-
-- v2 以人工维护 Activation Manifest 为默认 authoring source 的做法；
-- `rule-activation-guide.md` 作为人工 Runtime mapping table 的职责。
-
-### 4.3 一个独立 activation unit 尽量对应一个独立 semantic owner 文件
-
-如果同一文件内存在多个拥有不同 `responsibility / conditions / lifecycle` 的长期规则族，一个文件级 Front Matter 很难准确激活。
-
-因此：
-
-> 只有当规则族具有独立长期 owner 与独立 activation semantics 时，才拆成独立文件；不得按 heading 数量机械拆分。
-
-这也是 v3 需要真正拆分 `using-agentic-dev.md` 的原因。
-
-## 5. 哪些资源需要统一 Front Matter
-
-v3 不要求“所有 Markdown 统一模板”。应区分 **长期 Agent-consumed authoritative / reusable resource** 与普通输入 / 历史材料。
-
-### 5.1 原则上必须
-
-- Requirement Authority；
-- Requirement Aspect；
+- Requirement / Domain Authority；
 - Specification；
-- Architecture Authority；
-- ADR；
-- Method / Principle；
-- reusable Guide Rule Module；
-- Skill；
-- Engineering Discipline；
-- Verification Strategy / reusable verification rule。
-
-### 5.2 原则上应有，但允许按 Repository 复杂度裁决
-
-- durable Execution Unit / Work Authority；
+- Architecture / ADR；
 - Project Roadmap；
-- Domain Authority；
-- Technology / Verification Profile。
+- Verification Strategy；
+- durable Work Authority。
 
-### 5.3 默认不要求
+这些资源回答 `What is true?`，不能被 Skill / upstream Guide / generic reusable rule 覆盖。
 
-- 原始需求输入；
-- 外部政策 / 标准原文；
-- Research 原始报告；
-- 一次性分析；
-- 临时 Task notes；
-- 历史 Evidence；
-- 普通 README；
-- 纯解释性材料。
+### 3.5 Guide
 
-Root `AGENTS.md` 是稳定 Bootstrap 特殊入口，可以继续作为预先约定入口，而不要求通过 Index 才能发现。
+候选边界：
 
-## 6. 统一逻辑 Metadata Contract
+> 面向人，以及 initialization / adoption / baseline upgrade 等低频 setup 场景，解释如何理解、选择、采用和升级 `agentic-dev`。
 
-v3 建议继承已验证的简单资源元数据风格，而不是发明复杂 ontology。
+Guide 可以在低频 adoption 时完整读取，因此“Guide 较长”本身不是核心问题；核心问题是它是否错误进入 ordinary runtime，或承载了本应属于 Skill / Standard / Authority 的正文。
 
-逻辑模型：
+### 3.6 Research / Input / Evidence
 
-```yaml
-id: stable-resource-id
-title: human-readable-title
-type: requirement | specification | architecture | adr | method | principle | guide | skill | discipline | verification | work | roadmap | profile
-status: active | draft | superseded | archived
-version: optional-human-version
-classification:
-  - stable-topic
-activation:
-  role:
-    - bootstrap | routing | constraint | execution
-  responsibility:
-    - stable-responsibility
-  scopes:
-    - stable-scope
-  conditions:
-    - only-when-materially-useful
-  risks:
-    - only-when-materially-useful
-relations:
-  upstream:
-    - stable-resource-id-or-path
-  related:
-    - stable-resource-id-or-path
-  overrides:
-    - stable-resource-id
-  supersedes:
-    - stable-resource-id
-  stage_return:
-    - stable-responsibility-or-resource
-provenance:
-  origin: consumer-native | adopted
-  repository: optional-upstream-repository
-  baseline: optional-exact-upstream-sha
-  source: optional-upstream-source
-```
+原始需求、政策原文、研究报告、一次性分析、历史 Evidence 等不因为进入 Repository 就自动成为 Authority。
 
-不是所有字段都必须出现。只有真实改变 discovery candidate set 的 metadata 才应该持久化。
+只有通过明确 adoption / promotion 才能形成前五类 Current Resource。
 
-## 7. Serialization Profiles
+## 4. 当前 Guide 重分类假设
 
-统一的是**逻辑 metadata contract**，不是要求所有工具消费完全相同的 YAML 顶层键。
+以下只是 V3-02 的待审计假设，不是最终迁移决定。
 
-### 7.1 Generic authoritative Markdown profile
+### `using-agentic-dev.md`
 
-普通权威 Markdown 可以直接使用：
+应主要保留：
 
-```yaml
----
-id: architecture-public-renderer
-title: Public Renderer Architecture
-type: architecture
-status: active
-classification:
-  - public-renderer
-activation:
-  role:
-    - routing
-    - constraint
-  responsibility:
-    - technical-plan
-    - readiness-check
-relations:
-  upstream:
-    - spec-public-renderer
----
-```
+- human-facing usage entry；
+- new Consumer initialization orientation；
+- existing Consumer baseline upgrade orientation；
+- adoption / setup explanation。
 
-正文保持完整 Architecture semantics。
+应退出 Consumer ordinary runtime。
 
-### 7.2 Codex `SKILL.md` compatibility profile
+其中真实 Agent procedure 应回到 Skill / setup capability；Repository-local rule 应进入 Consumer-local Standard；Project fact 不应存在于 Guide。
 
-当前 Codex Skill Runtime 对 `SKILL.md` 有自己的 Front Matter contract。`name` / `description` 是自动 Skill selection 读取的核心字段；当前官方 validator 允许的额外顶层字段有限，因此 v3 **不得**为了统一 schema 破坏原生 Skill 格式。
+### `git-commit-guidelines.md` / `terminology-guidelines.md`
 
-推荐：
+虽然当前位于 `docs/guides/`，语义上更像 `Repository Standard / Rule`。是否移动路径、是否改名是后续实施问题；首先需要确认 semantic owner 类型。
 
-```yaml
----
-name: technical-plan
-description: <Codex 原生 Skill activation description>
-metadata:
-  agentic-dev:
-    id: skill-technical-plan
-    type: skill
-    status: active
-    classification:
-      - architecture
-      - development-method
-    activation:
-      role:
-        - routing
-        - execution
-      responsibility:
-        - technical-plan
-      scopes:
-        - architecture
-        - technical-planning
-      conditions:
-        - durable-cross-unit-how
-        - shared-contract-change
-    relations:
-      upstream:
-        - method-ai-development
----
-```
+### `verification-evidence-rules.md`
 
-这里要保持两个独立事实：
+必须逐 rule-family 审计，不能继续假设“跨多个 Skill，所以统一放 Guide”。可能的 owner 包括：
 
-- Codex 原生 `name / description` 继续决定平台自身 Skill candidate selection；
-- `metadata.agentic-dev` 只用于 Repository-local generated index，不替代 Codex Runtime 自身的 Skill metadata contract。
+- existing Skill；
+- Skill supporting reference；
+- Engineering Discipline / Verification Standard；
+- platform-specific Skill；
+- 真正的 reusable constraint。
 
-评审必须重点检查：这是否会形成“两套互相漂移的 Skill activation metadata”，以及是否需要进一步收敛到更薄的映射。
+### `external-operation-guidelines.md`
 
-## 8. Source identity 与 stale 模型
+必须区分：
 
-### 8.1 Front Matter 不保存自己的 hash
+- reusable external operation procedure；
+- Repository-specific authorization policy；
+- platform-specific behavior。
 
-禁止在 source 自己的 Front Matter 中写入自身 `source_identity`，避免自引用 hash。
+### `rule-activation-guide.md`
 
-### 8.2 Index 保存 Current source identity
+当前职责→Guide/Skill/section 的人工映射表可能只是 ownership debt 下的过渡 Runtime Index。如果 native Skill discovery + structured Repository Resource discovery 足够，它可能应退出 Current Runtime；是否保留 human navigation 需后续判断。
 
-生成器读取 source 后投射：
+### `consumer-local-rule-activation.md`
 
-```yaml
-- id: skill-technical-plan
-  path: skills/technical-plan/SKILL.md
-  source_identity:
-    algorithm: git-blob-sha1
-    value: <current-blob-sha>
-  projected_activation: ...
-```
+必须把 adoption-time explanation、ordinary runtime procedure、Consumer-local discovery / policy 分开判断，而不是默认整份 Guide local projection。
 
-### 8.3 重新定义 stale
+## 5. Consumer 生命周期候选
 
-因为 v3 的 activation semantics 与 source 共址，普通 source 修改后重新生成 Index 不再需要“人工先同步 Manifest”的双点维护。
+### 5.1 New Consumer initialization
 
-但以下变更仍应阻止自动信任：
+初始化是一次 Repository Bootstrap / Adoption，不是整仓复制。
 
-- `id / type / status` 非法；
-- relations dangling / cyclic where forbidden；
-- duplicate active owner identity；
-- `supersedes / overrides` 矛盾；
-- generator 无法解析 Front Matter；
-- Current Index source identity 与仓库当前资源不一致；
-- resource 被删除而 Index 仍声明 active。
+可能输入：
 
-对于影响高风险 routing contract 的 metadata 语义变更，是否要求额外 Human / AI Review，应由 v3 governance 明确定义，而不是重新建立一份手工 Manifest。
+- candidate `agentic-dev` baseline；
+- Consumer 当前 Repository 状态；
+- 用户提供的原始需求 / 项目资料；
+- runtime capabilities。
 
-## 9. Activation Index 最小职责
-
-建议 Index 只保存：
-
-- resource id；
-- local path；
-- type / status；
-- classification；
-- activation role；
-- responsibility；
-- scopes；
-- conditions / risks；
-- relations；
-- provenance 中 ordinary runtime 真正需要的最小部分；
-- source identity。
-
-禁止保存：
-
-- Requirement / Architecture 摘要；
-- Guide 规则摘要；
-- Skill procedure；
-- expected answer；
-- Issue / PR / Run current state；
-- recommendation；
-- copied checklists。
-
-Index 回答的是：
-
-> 当前任务最应该继续读取哪些 Current semantic owners？
-
-而不是：
-
-> 当前规则正文是什么？
-
-## 10. Index Generator / Validator
-
-v3 应提供一个确定性、小型、Repository-local 工具，只承担 projection / validation，不承担 Method routing reasoning。
-
-至少检查：
-
-- YAML parse；
-- duplicate id；
-- required field profile；
-- unsupported status；
-- dangling relation；
-- duplicate / contradictory active owner；
-- source path existence；
-- source identity freshness；
-- generated Index 与 Current resources 一致；
-- superseded resource 不进入 active routing set；
-- optional policy: changed Front Matter that materially alters high-impact activation must have appropriate review evidence。
-
-工具不得：
-
-- 私下定义新的 Method Stage；
-- 根据关键词自己决定 primary responsibility；
-- 读取 upstream latest 改变 local runtime；
--复制正文；
--成为新的规则 Authority。
-
-## 11. `using-agentic-dev.md` 物理拆分候选
-
-v3 应把 `using-agentic-dev.md` 收敛成短 human landing page / scenario router，而不是继续作为多责任 Runtime Guide。
-
-候选 owner 边界：
+可能输出：
 
 ```text
-docs/guides/
-├── using-agentic-dev.md
-│   └── landing page / 使用场景导航
-├── consumer-bootstrap.md
-│   └── Knowledge Boundary / 最小 Consumer Authority / 新项目启动
-├── requirement-source-adoption.md
-│   └── 外部需求来源进入 Consumer Authority
-├── baseline-adoption.md
-│   └── adopt / retain / override / reject / supersede
-├── consumer-local-rule-activation.md
-│   └── adopted capabilities 的 Consumer-local runtime 特殊规则
-├── project-evolution-and-recovery.md
-│   └── Roadmap lifecycle / Fresh Context recovery
-├── agentic-dev-experiment-guidelines.md
-│   └── Consumer experiment / upstream feedback
-├── verification-evidence-rules.md
-└── external-operation-guidelines.md
+Consumer-local Method / Skills
++ Consumer-local Repository Rules
++ Consumer Project Authority
++ explicit non-Authority inputs / research / evidence
 ```
 
-这只是 semantic decomposition candidate，不冻结最终文件名。
+### 5.2 Consumer-local Rules
 
-拆分准入：
+初始化时可以基于 `agentic-dev` guidance 建立：
 
-> 一个规则族只有在具有独立长期语义 owner、独立 activation conditions / responsibility、且单独发现能降低误读或上下文成本时才独立成文件。
+- `AGENTS.md`；
+- terminology / language rules；
+- Git rules；
+- repository operation / integration rules；
+- verification / review policy。
 
-不得为了 Front Matter 一文件化而把每个 heading 机械拆成文件。
+一旦形成，这些内容由 Consumer 自己拥有和演进。Upstream origin / provenance 不能取代 Consumer current authority。
 
-## 12. `rule-activation-guide.md` 的 v3 归位
+### 5.3 初始化时存在原始需求
 
-当前手工 mapping table 不应继续承担 Current Runtime Index 职责。
-
-v3 候选方向：
-
-- Runtime mapping：由 Generated Activation Index 取代；
-- human explanation：如果仍有价值，保留一个非常短的“如何理解 activation index”说明；
-- 精确 responsibility / source mapping 不再由人工表格维护。
-
-## 13. `agentic-dev` Self-Adoption
-
-v3 必须让 `agentic-dev` 本身成为第一等使用方，而不是只让 Consumer 验证。
-
-目标 Fresh Context：
+候选路径：
 
 ```text
-AGENTS.md
-→ generated activation index
-→ current project-routing resources
-→ minimum Method / Guide / Skill / Discipline
-→ routing-only OR JIT execution
+Raw Requirement / Input
+→ requirements analysis / clarify / specify
+→ Consumer authoritative requirements
 ```
 
-self-adoption 必须覆盖真实场景，例如：
+原始需求不会因被复制、带 metadata 或被 Agent 读取就自动成为 Requirement Authority。
 
-1. 下一 Roadmap Planning；
-2. Requirement / Specification 语义问题；
-3. durable architecture decision；
-4. Ready Unit execution；
-5. unexpected runtime failure；
-6. GitHub Actions verification；
-7. external operation；
-8. convergence / evidence claim；
-9. Fresh Context recovery。
+### 5.4 初始化时没有原始需求
 
-至少验证：
+不预建空 Requirement / Architecture / ADR。
 
-- 正确 primary responsibility；
-- 必需 supporting owner 不遗漏；
-- 不加载明显无关 Guide / Skill；
-- routing-only 不预加载完整 Skill；
-- actual execution JIT Skill；
-- Stage Return 后重新 discovery；
-- stale / missing index fail-closed；
-- Index 删除后能确定性重建；
-- `AGENTS.md` 不重新膨胀。
+先建立足够继续工作的 Consumer-local governance / Method / Skill foundation；后续真实输入出现后，再用 Consumer-local method / Skill 逐步形成和完善 Requirement / Specification / Architecture 等 Authority。
 
-## 14. Consumer v3 Projection
+### 5.5 Ordinary runtime
 
-Consumer 不再以“复制 upstream Guide + 手写 Manifest”为默认 adoption 模型。
+完成 adoption 后：
 
-建议：
+- local-only；
+- 不默认读取 upstream `using-agentic-dev.md`；
+- 不因 upstream latest 变化自动修改当前行为；
+- 使用 Consumer-local Skill / Rule / Authority；
+- upstream 只在显式 baseline upgrade、真实 capability gap、实验或 Consumer Authority 明确要求时重新进入。
+
+### 5.6 Baseline upgrade
+
+显式低频流程：
 
 ```text
-upstream reusable capability
-→ classify
-→ adopt / retain-or-override / reject / supersede
-→ establish/update Consumer-local semantic owner
-→ persist local Front Matter + provenance
-→ regenerate Consumer Activation Index
-→ validate local-only runtime
+Current Consumer state
++ previous evaluated baseline
++ candidate upstream baseline
+→ read necessary upstream Method / Skill / Guide / reusable resources
+→ adopt / retain / override / reject / supersede
+→ persist Consumer-local Current Resources
+→ validate
+→ ordinary runtime local-only
 ```
 
-仍然保持 v2 的重要区分：
+upgrade-only history 不应成为 ordinary Fresh Context 输入。
 
-- last evaluated upstream baseline；
-- each active adopted asset `adopted_from`；
-- upgrade-only decision history。
+## 6. Skill-centric Runtime 假设
 
-rejected decision 与 upstream project-only state 不进入 ordinary Runtime Index。
+当前需要 GPT-6 重点挑战的候选是：
 
-## 15. v1 / v2 成果保留要求
+```text
+How Agent works?
+→ Skill / native Skill discovery
 
-v3 不得回退以下成果：
+What is true?
+→ Project Authority Resource
 
-### v1
+What locally constrains work?
+→ Repository Policy / Standard
 
-- minimal correct rule set；
-- derived discovery 不成为 Authority；
-- source currentness；
-- stale / missing / no-match fail-closed；
-- effectiveness 由行为证据判断，不由工具可运行性判断。
+How humans adopt / understand?
+→ Guide
+```
 
-### v2
+如果这个划分成立，v3 可能不再需要一个统一 Rule Activation System 管理所有对象。
+
+可能的更简单结构：
+
+```text
+Task
+├── procedural need
+│   → native Skill discovery
+│   → Skill
+│
+└── repository knowledge / constraints
+    → structured local resources
+    → minimal Resource Discovery
+```
+
+评审必须判断：
+
+- 这是否真正减少 duplication；
+- Repository-local policy 是否仍能可靠进入相关任务；
+- native Skill discovery 是否足以承担 Skill routing；
+- 是否需要额外 supporting-skill / cross-cutting constraint discovery；
+- 如何保留 primary responsibility / supporting context / Stage Return 等 v2 成果。
+
+## 7. AI-ready Resource Metadata：只冻结方向
+
+当前不冻结 Front Matter schema，只保留以下候选原则：
+
+- 长期由 Agent 反复定位的 Requirement / Architecture / Repository Standard 等资源适合 AI-ready Structured Markdown；
+- YAML Front Matter 只用于 identity / classification / relations / routing，不承载正文事实；
+- body 是 semantic owner；
+- 原始需求 / Research / historical Evidence 默认不要求统一 schema；
+- `SKILL.md` 保持平台原生 metadata compatibility；
+- 是否需要统一 logical resource metadata contract 留到 V3-05；
+- 是否需要 generated Resource Index 留到 V3-06。
+
+因此下列原 v3 假设被明确降级，不再视为已决定：
+
+```text
+manual Manifest 必然由 generated Index 替代
+所有长期资源必须统一 activation fields
+Index 必须统一索引 Skill + Authority + Guide
+Index 必须保存 source_identity
+Guide 必须按独立 activation unit 拆文件
+```
+
+它们只能在后续分析证据支持时采用。
+
+## 8. `agentic-dev` self-adoption
+
+v3 最终必须解决 `agentic-dev` 自身的规则发现与激活，而不能只优化 Consumer。
+
+但 self-adoption 的具体实现不能提前固定。
+
+必须先回答：
+
+- `agentic-dev` 自己有哪些 Repository-local Standards；
+- Method / Principle 什么时候需要加载；
+- native Skill discovery 能解决多少 procedural activation；
+- README / Roadmap / Project Authority 如何进入 Fresh Context；
+- 是否仍需要 Resource Index；
+- `AGENTS.md` 需要保留哪些 always-on pointers；
+- 如何避免再创建一个人工大导航 Guide。
+
+## 9. ADR 边界
+
+当前不创建正式 ADR。
+
+只有当专项分析形成以下特征时才记录 ADR：
+
+- 长期影响 Repository architecture；
+- 有真实替代方案；
+- 需要保存为什么选择 / 放弃某方案；
+- 后续 Agent 不知道该决定容易重新打开已关闭选择。
+
+高概率候选：
+
+1. Repository Knowledge & Capability Ownership Architecture；
+2. Skill-centric Runtime vs Guide/Rule-centric Runtime；
+3. AI-ready Markdown + Resource Discovery architecture。
+
+目录、文件名、字段名、Guide 数量等通常不值得 ADR。
+
+## 10. v1 / v2 必须保留的安全成果
+
+无论 v3 最终采用什么实现，都必须保护：
 
 - Thin Bootstrap；
-- Consumer Authority first；
-- semantic owner 单点正文；
-- primary responsibility / supporting context；
-- routing-only / Skill execution 分离；
-- Stage Return 后重新 routing；
-- Consumer local-only ordinary runtime；
-- explicit baseline adoption lifecycle；
-- adopted provenance 与 evaluated baseline 分离；
-- superseded / rejected 不进入 active discovery；
-- 一个 Runtime scope 只有一个 Current Discovery Mechanism。
+- Repository / Consumer Authority first；
+- Progressive Disclosure；
+- Evidence before claims；
+- single semantic body owner；
+- derived discovery non-authoritative；
+- stale / missing / ambiguity fail-closed；
+- primary responsibility + supporting context；
+- routing-only 不机械加载完整 Skill；
+- JIT Skill activation；
+- Stage Return 后重新路由；
+- Consumer ordinary runtime local-only；
+- per-item baseline adoption；
+- superseded / rejected content 不继续进入 Current Runtime；
+- 一个 discovery responsibility 不并行保留多个 current derived mechanisms。
 
-## 16. 候选实施阶段
+## 11. 分阶段分析路线
 
-### Phase A — AI-ready Resource Metadata Contract
+正式细化前采用：
 
-冻结：
+```text
+V3-01 Ownership Model
+→ V3-02 Current Repository Audit
+→ V3-03 Consumer Lifecycle
+→ V3-04 Skill Reclassification
+→ V3-05 AI-ready Resource Model
+→ V3-06 Minimal Discovery Architecture
+→ V3-07 agentic-dev Self-Adoption
+→ V3-08 Consumer Validation
+```
 
-- resource classes；
-- Front Matter applicability；
-- logical metadata contract；
-- Generic Markdown / SKILL.md compatibility profile；
-- Body / metadata Authority boundary。
+完整任务边界见：
 
-### Phase B — Semantic Owner & Physical Decomposition
+`evals/rule-governance-v3/v3-analysis-plan.md`
 
-- 审计所有 current Method / Guide / Skill / Discipline；
-- 真正拆分 `using-agentic-dev.md`；
-- 识别其他“一文件多 activation owner”问题；
-- 不按目录 / heading 机械拆分。
+## 12. GPT-6 本轮真正需要回答的问题
 
-### Phase C — Generated Activation Index
+本轮独立评审优先判断：
 
-- Index schema；
-- generator / validator；
+1. 当前是否正确识别了根因：ownership debt 是否比 discovery implementation 更上游；
+2. 六类 ownership 是否足够且互斥，是否存在错误分类；
+3. Guide 新边界是否合理；
+4. Skill admission 是否能同时避免 Guide catch-all 与 Skill explosion；
+5. Repository-local Standard 是否是必要独立类别；
+6. Consumer initialization / baseline upgrade / ordinary runtime 的生命周期是否划分正确；
+7. 原始需求存在 / 不存在的初始化路径是否合理；
+8. ordinary runtime local-only 是否被正确保留；
+9. `agentic-dev` self-adoption 是否被放在正确位置；
+10. V3-01～V3-08 顺序是否避免 premature design；
+11. 哪些当前“稳定判断”其实仍被过早冻结；
+12. v1 / v2 哪些有效成果最容易在 ownership 重构中回退。
+
+只有在这些问题成立后，才讨论：
+
+- Front Matter；
+- Resource Index；
 - source identity；
-- relations validation；
-- stale / fail-closed；
-- supersede manual Runtime mapping。
+- generator / validator；
+- 新 Skill；
+- physical Guide split。
 
-### Phase D — `agentic-dev` Self-Adoption
+## 13. 本轮非目标
 
-- 给自身 Authority / Guide / Skill / Discipline 添加符合准入条件的 Front Matter；
-- 生成唯一 Current Index；
-- 用真实 Fresh Context 验证。
+GPT-6 不应在本轮：
 
-### Phase E — Consumer Projection v3
+- 给出完整最终目录树并要求立即采用；
+- 决定最终 metadata schema；
+- 决定最终 Index 格式；
+- 要求立即实现 generator；
+- 因某规则重要就要求新增 Skill；
+- 把所有 Guide 删除；
+- 修改 v2 历史 evidence；
+- 修改 Consumer；
+- 创建正式 ADR / Milestone。
 
-- 从 manual Manifest authoring 迁移为 source-local Front Matter + generated Index；
-- 保持 v2 adoption lifecycle；
-- 不要求原始 / research / history 全仓结构化。
+## 14. 评审后 Gate
 
-### Phase F — Dual Runtime Validation
+如果 GPT-6 返回 Blocking / Medium：
 
-必须同时覆盖：
+```text
+finding
+→ current model 二次核验 Repository evidence
+→ 只修正成立的治理 / planning 缺陷
+→ 必要时再次独立评审
+```
 
-- `agentic-dev` self-runtime；
-- 至少一个真实 Consumer runtime。
+如果不存在未解决 Blocking / Medium：
 
-### Phase G — Convergence / Regression
-
-- v1 / v2 preservation；
-- current discovery uniqueness；
-- Front Matter / Index currentness；
-- Guide decomposition；
-- context / token / file-read efficiency；
-- Final AI Review；
-- Human integration decision。
-
-## 17. 明确非目标
-
-v3 当前候选不预设：
-
-- 向量数据库；
-- 图数据库；
-- MCP Rule Service；
-- 全仓所有 Markdown 强制统一模板；
-- 把 Front Matter 变成规范性事实正文；
-- 让生成器做 LLM routing reasoning；
-- 建立 Rule Super Skill / Stage Router Skill；
-- 固定全局 condition / risk taxonomy；
-- 将 Consumer upstream adoption 移回 ordinary runtime；
-- 因为 self-adoption 就让 `agentic-dev/docs/project/*` 自动成为 Consumer Authority。
-
-## 18. 评审必须挑战的问题
-
-GPT-6 独立评审不得只判断“方案看起来合理”，必须重点挑战：
-
-1. Front Matter + Generated Index 是否真的消除了双点维护，还是把重复转移到别处？
-2. `SKILL.md` 的 Codex-native `name / description` 与 `metadata.agentic-dev.activation` 是否形成两套会漂移的 activation semantics？最小修正是什么？
-3. 哪些 resource class 强制 Front Matter 的边界是否过宽 / 过窄？
-4. 一文件一个 activation owner 是否会导致过度拆分？是否需要允许稳定 section-level activation unit？
-5. Index generator / validator 是否真的能防止 v1 stale-index 类问题？
-6. source identity 与 review lifecycle 是否充分，还是重新生成 Index 会让高风险 metadata 变化被静默接受？
-7. `using-agentic-dev.md` 拆分是否有遗漏 / 重叠 owner？
-8. `rule-activation-guide.md` 被 Index 取代后，人类和 Fresh Context 是否仍有足够入口？
-9. `agentic-dev` self-hosting 与 Consumer adoption 是否真的共享一个 core model，还是只是表面统一？
-10. v1 / v2 的哪些行为可能被 v3 破坏？
-11. 是否存在明显更简单、长期维护成本更低、又能达到同样目标的方案？
-12. 这个候选是否已经过度设计，哪些部分应该延后到证据出现后？
-
-## 19. 候选完成定义
-
-v3 只有在未来正式 Milestone 中满足以下条件才能视为完成：
-
-- Agent 持续消费的权威 / reusable resources 具有一致、工具兼容的 Front Matter contract；
-- Front Matter 只承担 discovery semantics，正文保持唯一 normative owner；
-- Runtime Index 从 source metadata 确定性生成，不再人工维护第二份 activation semantics；
-- Index stale / invalid 能 fail-closed，删除后可重建；
-- `using-agentic-dev.md` 完成真正的 semantic decomposition；
-- `rule-activation-guide.md` 不再人工维护 Current Runtime mapping；
-- `agentic-dev` 自己通过同一 Repository-local discovery model 工作；
-- Consumer 使用同一 core model，同时保留 upstream adoption / provenance 特殊生命周期；
-- v1 / v2 所有长期有效行为不回退；
-- self-runtime 与真实 Consumer runtime 均有 Fresh Context Evidence；
-- 无未解决 Blocking / Medium finding；
-- 再进入人工集成决策。
+> 才进入是否正式建立 v3 Milestone 的人工路线决策；仍不直接进入具体实现。
