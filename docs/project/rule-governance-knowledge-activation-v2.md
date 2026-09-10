@@ -4,6 +4,10 @@
 
 **活动有限里程碑 — 规划与设计阶段**
 
+当前阶段：
+
+> **Phase B — Rule Ownership 与 Guide Decomposition 审计**
+
 人工决策日期：2026-09-10
 
 跟踪入口：Issue #92
@@ -181,34 +185,29 @@ Execute / Verify / Stage Return
 
 ### 阶段 A — Consumer-local 目标模型与验收基线
 
-状态：**当前**。
+状态：**已完成**。
 
-目标：先定义“成功的 Consumer-local Runtime 应该是什么”，避免从 `agentic-dev` 内部实现反推 Consumer。
+A1 已形成 Consumer-local Runtime Target：
 
-A1 — 建立 Consumer-local 目标基线：
+`docs/project/consumer-local-rule-runtime-target-v2.md`
 
-- 明确 Consumer Fresh Context 的最小启动输入；
-- 明确 Consumer-local 可发现资产类型及优先级；
-- 明确 adopted reusable capability 与 Consumer-native rule 如何共存；
-- 明确 ordinary work 不访问 upstream 的边界；
-- 明确可观察完成条件和失败模式。
+A2 已形成 Consumer-local Acceptance Baseline：
 
-A2 — 建立 Consumer-local 验收场景矩阵：
+`docs/project/consumer-local-rule-runtime-acceptance-v2.md`
 
-至少覆盖：
+阶段 A 已确认：
 
-- 普通单一职责发现；
-- 多职责 / Stage Return；
-- Consumer-specific rule 优先于 reusable default；
-- baseline adopt / retain-or-override / reject；
-- stale / missing metadata；
-- Consumer-native Domain / Architecture / Verification Rule 发现；
-- 真正进入职责后按需 Skill 激活；
-- 无 upstream 日常读取。
-
-阶段 A 完成后才能冻结正式 schema 或拆分方案。
+- ordinary Consumer runtime 不依赖 upstream；
+- Consumer-native Authority 与 adopted reusable rule 必须能在同一本地发现路径中工作，同时保持来源身份与 Consumer Authority 优先；
+- discovery layer 不拥有规则正文；
+- routing-only 不机械加载 Skill；
+- stale / missing / ambiguity / conflict 必须 fail-closed 到 Consumer-local Current Authority；
+- 最终完成必须经过真实 Consumer L3 验证；
+- token / context 降幅只能在语义正确和 Consumer-local 独立性通过后作为效率指标。
 
 ### 阶段 B — Rule Ownership 与 Guide Decomposition 审计
+
+状态：**当前**。
 
 目标：对当前可复用规则逐项确定长期 owner 和独立激活边界。
 
@@ -225,6 +224,8 @@ duplicate / obsolete / explanatory content
 ```
 
 阶段 B 不以“大文件”为拆分理由。每个候选激活单元必须说明 trigger、consumer、是否需要独立加载、语义 owner、Consumer-local 投射价值和取代关系。
+
+Phase B 必须以 A1 / A2 为验收约束，不能从临时 G-min manifest 直接生成正式拆分。
 
 ### 阶段 C — 最小 Metadata / Catalog 契约
 
