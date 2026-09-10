@@ -19,16 +19,16 @@
 > **规则治理与知识激活 v3 — 知识与能力所有权收敛**
 
 v3 跟踪入口：Issue #94。  
-当前工作入口：Issue #95 — V3-01 Knowledge & Capability Ownership Model。  
+当前工作入口：Issue #95 — V3-01 知识与能力所有权模型。  
 规划基线：`master@3c31ae96683c4a653f001402b889b40e87df976b`。
 
-v3 的当前目标不是继续增加 Rule Index、Manifest、Catalog 或 Front Matter Generator，而是先确认长期知识、规则和 Agent 能力是否由正确的 semantic owner 持有。
+v3 的当前目标不是继续增加 Rule Index、Manifest、Catalog 或 Front Matter Generator，而是先确认长期知识、规则和 Agent 能力是否由正确的**语义所有者**持有。
 
 当前下一 Gate：
 
-> **完成 V3-01 ownership decision matrix 的独立复核；没有未解决的阻塞或中等级 ownership ambiguity 后，才判断是否进入 V3-02。**
+> **完成 V3-01 所有权判断矩阵的独立复核；没有未解决的阻塞或中等级所有权歧义后，才判断是否进入 V3-02。**
 
-当前没有 V3-02 物理迁移、Skill 重构或 discovery implementation 的 Execute Authority。
+当前没有 V3-02 物理迁移、技能重构或发现机制实现的执行权限。
 
 详细规划：
 
@@ -39,46 +39,46 @@ v3 的当前目标不是继续增加 Rule Index、Manifest、Catalog 或 Front M
 
 v3 严格按以下顺序推进：
 
-1. V3-01 — Knowledge & Capability Ownership Model；
-2. V3-02 — Current Repository Ownership Audit；
-3. V3-03 — Consumer Initialization / Adoption / Upgrade / Runtime Lifecycle；
-4. V3-04 — Skill Reclassification & Admission；
-5. V3-05 — AI-ready Resource Model；
-6. V3-06 — Discovery Architecture；
-7. V3-07 — `agentic-dev` Self-Adoption；
-8. V3-08 — Consumer Validation；
-9. Independent Review；
-10. 必要 ADR / Formal v3 Design / Implementation Planning。
+1. V3-01 — 知识与能力所有权模型；
+2. V3-02 — 当前仓库所有权审计；
+3. V3-03 — Consumer 初始化、采用、升级与普通运行生命周期；
+4. V3-04 — 技能重分类与准入；
+5. V3-05 — 面向 Agent 的结构化资源模型；
+6. V3-06 — 资源发现架构；
+7. V3-07 — `agentic-dev` 自采用；
+8. V3-08 — Consumer 验证；
+9. 独立复核；
+10. 必要 ADR、正式 v3 设计与实现规划。
 
 顺序只定义规划依赖，不自动授予后序任务权限。
 
-当前 V3-01 采用四维 ownership 判断：
+当前 V3-01 采用四维所有权判断：
 
 ```text
-semantic owner role
-+ applicability / provenance scope
-+ runtime / lifecycle role
-+ representation / authority form
+语义所有者
++ 适用范围 / 来源状态
++ 运行 / 生命周期角色
++ 载体 / 权威形式
 ```
 
-至少区分：Method / Principle、Skill / Procedural Capability、Reusable Engineering Capability / Discipline / Profile、Repository-local Policy / Standard / Rule、Project / Product Authority、Guide、Research / Input / Evidence。
+至少区分：核心方法 / 原则、技能 / 过程型能力、可复用工程能力 / 工程纪律 / 画像、仓库本地政策 / 规范 / 规则、项目 / 产品权威资源、Guide、研究 / 输入 / 证据。
 
 ## 3. v2 已集成基线
 
 规则治理与知识激活 v2 已通过 PR #93 集成。其 Phase A～G 已完成：
 
-- Consumer-local Runtime Target / Acceptance；
-- Rule Ownership / Guide Decomposition；
-- Minimal Metadata / Catalog Contract；
-- Discovery / Routing / Skill Interface；
-- Baseline Adoption / Consumer-local Projection；
+- Consumer-local 运行目标与验收；
+- 规则所有权与 Guide 分解；
+- 最小 metadata / Catalog 契约；
+- 发现、路由与技能接口；
+- 基线采用与 Consumer-local 投影；
 - 真实 Consumer Phase F R1～R5；
-- Phase G Candidate Drift 定向重验与 Final AI Review；
-- Root Bootstrap / `AGENTS.md` 职责瘦身。
+- Phase G 候选漂移定向重验与最终 AI 复核；
+- 根启动入口与 `AGENTS.md` 职责瘦身。
 
-v2 已验证并继续受 v3 保护的行为至少包括：Thin Bootstrap、Repository / Consumer Authority first、Progressive Disclosure、Evidence before claims、semantic owner 单点正文、derived discovery 不拥有规范正文、stale / missing / ambiguity fail-closed、primary responsibility + minimal supporting context、routing-only / JIT Skill、Stage Return re-routing、Consumer ordinary runtime local-only、逐项 baseline adoption，以及同一 Runtime scope / discovery responsibility 不并行维护多个 Current derived mechanism。
+v2 已验证并继续受 v3 保护的行为至少包括：薄启动入口、仓库 / Consumer 权威优先、渐进式披露、证据先于结论、规范正文单点所有权、派生发现机制不拥有规范正文、陈旧 / 缺失 / 歧义时失败关闭、主职责与最小辅助上下文分离、只做路由判断时不机械加载完整技能、真正进入职责时按需加载技能、阶段返回后重新判断、Consumer 普通运行只依赖 Consumer-local 现行资源、逐项基线采用，以及同一运行范围 / 发现职责不并行维护多个现行派生机制。
 
-v3 规划期间，v2 当前 runtime discovery / activation 机制仍然有效；不得因为 v3 正在分析就提前移除 `rule-activation-guide`、Consumer-local activation 或其他现行入口。
+v3 规划期间，v2 当前运行发现 / 激活机制仍然有效；不得因为 v3 正在分析就提前移除 `rule-activation-guide`、Consumer-local activation 或其他现行入口。
 
 ## 4. 当前范围边界
 
@@ -89,11 +89,11 @@ V3-01 / V3-02 完成前，不：
 - 冻结全仓 Front Matter schema；
 - 实现 Front Matter generator；
 - 创建 Rule Super Skill / Stage Router Skill；
-- 批量新增或改造 Skill；
+- 批量新增或改造技能；
 - 修改 Consumer Repository；
-- 启动 WI-06、WI-07、WI-09、第四 Engineering Discipline 或 Issue #71 候选实施。
+- 启动 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 候选实施。
 
-临时 GPT-6 v3 评估只作为规划启动与 challenge Evidence，不是 ordinary runtime Authority，也不自动进入正式架构。
+临时 GPT-6 v3 评估只作为规划启动与挑战证据，不是普通运行权威，也不自动进入正式架构。
 
 ## 5. 候选库
 
@@ -111,7 +111,7 @@ V3-01 / V3-02 完成前，不：
 
 ### Issue #71 — 模型路由与盲测对照证据
 
-继续作为独立规划 / 研究输入，不构成常规 Method Gate、新 Skill 或默认模型策略。
+继续作为独立规划 / 研究输入，不构成常规 Method Gate、新技能或默认模型策略。
 
 Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经过 `agentic-dev` 自身分类与准入后才能改变长期权威。
 
@@ -137,7 +137,7 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 - `docs/project/*`：具体里程碑、项目治理、设计和验证记录；
 - Git / PR / Issue / Actions：精确外部状态与执行证据。
 
-当前阶段、里程碑进展、candidate、Issue / PR / Run、baseline history 与重复方法正文不得重新堆入 `AGENTS.md`。
+当前阶段、里程碑进展、候选、Issue / PR / Run、基线历史与重复方法正文不得重新堆入 `AGENTS.md`。
 
 ## 8. Fresh Context 恢复顺序
 
@@ -149,7 +149,7 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 4. 重新读取当前 GitHub `master`、Open PR / Issue 和必要 Actions；
 5. 当前 v3 规划期间读取 `docs/project/rule-governance-knowledge-activation-v3.md` 与 Issue #94；
 6. 当前工作若仍是 V3-01，再读取 `docs/project/knowledge-capability-ownership-model-v3.md` 与 Issue #95；
-7. 只读取当前分析直接需要的 Method / Architecture / Guide / Skill，不为了完整性加载全部历史；
+7. 只读取当前分析直接需要的方法、架构、Guide 和技能，不为了完整性加载全部历史；
 8. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
 
 ## 9. 更新触发
