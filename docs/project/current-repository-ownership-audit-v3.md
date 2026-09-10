@@ -152,7 +152,9 @@
 | §9 fail-closed | 可复用工程能力（discovery） | 跨仓库可复用 | 本仓原生 | ordinary runtime | Guide section | mislocated | reclassify → discovery architecture | 必须保持 v2 已验证行为 | V3-06 |
 | §10～11 baseline state / local projection | 可复用工程能力（Consumer lifecycle） | 跨仓库可复用 | 本仓原生 | adoption / upgrade | Guide sections | mislocated | reclassify → Consumer lifecycle | origin ≠ current authority | V3-03 |
 | §12 Runtime Adapter boundary | 可复用工程能力 | 跨仓库可复用 | 本仓原生 | runtime architecture | Guide section | mislocated | promote if retained → Runtime Adapter architecture | 不应由 Guide 定义工程能力身份 | V3-06 |
-| §13 adoption acceptance | 研究 / 输入 / 证据（validation contract） | 跨仓库验证输入 | 本仓原生 | verification | Guide section | mixed | migrate → V3-08 acceptance input；durable rules 先进入真实 owner | 验收不应成为 Guide runtime rule | V3-08 |
+| §13 adoption acceptance | 可复用工程能力（Consumer lifecycle / adoption verification） | 跨仓库可复用 | 本仓原生 | adoption / verification | Guide section | mixed；验收责任与派生验证清单共置 | extract / promote → Consumer lifecycle / adoption verification；派生 acceptance checklist → V3-08 input | 当前采用完成必须验证；被检查的 runtime 规则继续由各自 owner 持有，验收清单不成为第二规则 owner | V3-03、V3-06、V3-08 |
+
+`§13` 中“采用完成前必须验证”的责任进入 V3-03 Consumer lifecycle；各检查项的运行语义仍由对应 owner 持有，V3-08 只消费派生 acceptance checklist / validation input，不取得这些规则的 current ownership。
 
 在新的 owner 经验证前，本文件继续作为 v2 兼容入口，不能提前删除或失效。
 
