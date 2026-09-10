@@ -35,15 +35,22 @@ GitHub Repository 是唯一项目事实来源。
 - **最近完成并已集成的有限里程碑：** 规则治理与知识激活 v1
 - **当前有限里程碑：** 规则治理与知识激活 v2 — Consumer-local 规则发现与激活
 - **跟踪入口：** Issue #92
-- **当前阶段：** Phase D — Discovery → Routing → Skill 接口
+- **当前阶段：** Phase F — 真实 Consumer 验证
 
-v2 已完成：
+v2 已完成内部设计阶段 A～E：
 
-- Phase A：Consumer-local Runtime Target 与验收基线；
-- Phase B：Rule Ownership / Guide Decomposition 审计；
-- Phase C：最小 Activation Manifest / Runtime Catalog 契约。
+- Consumer-local Runtime Target 与验收基线；
+- Rule Ownership / Guide Decomposition 审计；
+- Activation Manifest / Runtime Catalog 契约；
+- Discovery → Routing → Skill 接口；
+- Baseline Adoption / Consumer-local Projection 契约；
+- reusable Guide `docs/guides/consumer-local-rule-activation.md`。
 
-当前进入 Phase D，目标是冻结 discovery、primary/supporting responsibility、Stage Return、routing-only 与 Skill execution 的最小运行接口。最终完成仍必须经过真实 Consumer-local Fresh Context 验证，且 ordinary Consumer runtime 不得依赖日常读取 `agentic-dev` upstream。
+当前自然 Gate 是在真实 Consumer 中执行 R1～R5 验证。Phase F 验证计划：
+
+`docs/project/consumer-local-runtime-validation-plan-v2.md`
+
+最终完成仍必须证明 ordinary Consumer Fresh Context 不依赖日常读取 `agentic-dev` upstream，并保持 Consumer Authority、override、Stage Return、Skill activation、stale / rebuild 与 baseline lifecycle 正确。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
@@ -80,6 +87,10 @@ GitHub Repository 是本项目长期事实来源。
 使用方项目的规则激活入口见：
 
 `docs/guides/rule-activation-guide.md`
+
+完成 baseline adoption 后的 Consumer-local 规则发现与激活见：
+
+`docs/guides/consumer-local-rule-activation.md`
 
 完整使用说明见：
 
