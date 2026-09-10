@@ -37,13 +37,23 @@ GitHub Repository 是唯一项目事实来源。
 - **跟踪入口：** Issue #92
 - **当前阶段：** Phase G — 收敛与集成准备
 
-v2 已完成 Phase A～E 的设计与 reusable guidance 收敛，并完成 Phase F 真实 Consumer 验证。`dygapp/jilinjobs-cms` 的 R1～R5 全部 PASS，ordinary runtime upstream access 为 0，Base Drift 为 NO IMPACT，未发现 Blocking / Medium reusable Rule Governance v2 gap。
+v2 已完成 Phase A～E 的设计与 reusable guidance 收敛，并完成 Phase F 真实 Consumer 验证。`dygapp/jilinjobs-cms` 的 R1～R5 在冻结 Candidate `ec945368...` 上全部 PASS，ordinary runtime upstream access 为 0，Base Drift 为 NO IMPACT，未发现 Blocking / Medium reusable Rule Governance v2 gap。
 
-Phase F 结果：
+Phase G Final AI Review 随后修正了两项 Medium：Consumer-local upstream 冲突措辞，以及 `using-agentic-dev.md` 对 Skill-owned 过程语义的重复维护。第二项导致 reusable Guide 集合发生实质性后续变化，因此旧 Phase F Evidence 不能未经影响映射直接覆盖最终 Candidate。
+
+当前已冻结 reusable candidate：
+
+`29f88efd25232e57ccb4a82ffff039be047e4d1e`
+
+当前下一 Gate 是按：
+
+`docs/project/consumer-local-runtime-candidate-drift-review-v2.md`
+
+在既有 Consumer 实验状态上执行最小 T1～T4 定向重验；不重跑完整 R1～R5。通过后继续 Phase G Final AI Review 与稳定状态收敛。
+
+Phase F 原始结果：
 
 `docs/project/consumer-local-runtime-validation-result-v2.md`
-
-当前自然 Gate 是 Phase G：执行 v1 核心行为、Authority / Method / Architecture / Guide / Skill、stale / fail-closed、Root Bootstrap 回归与最终 AI Review；全部通过后才能达到“已具备进入人工集成决策的条件”。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
@@ -84,6 +94,10 @@ GitHub Repository 是本项目长期事实来源。
 完成 baseline adoption 后的 Consumer-local 规则发现与激活见：
 
 `docs/guides/consumer-local-rule-activation.md`
+
+跨职责验证与证据条件规则见：
+
+`docs/guides/verification-evidence-rules.md`
 
 完整使用说明见：
 
