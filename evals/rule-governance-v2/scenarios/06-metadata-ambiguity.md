@@ -13,10 +13,10 @@
 - 当前 Technical Plan / Architecture Context 没有要求改变共享 Canonical Content contract；
 - 在实施前检查 Current Code / Contract 时，发现 Specification 所要求的稳定 provenance 语义必须同时被迁移、后续重处理和 Public Renderer 消费；
 - 当前系统的 provenance 只存在于迁移模块内部，Public Renderer 消费的共享 Canonical Content contract 中没有等价语义；
-- 因此，要满足已确认 Specification，至少需要重新决定一个会跨多个 Execution Units 持续协调的共享数据 / contract HOW，并可能更新跨功能持续有效的 Architecture Context；
+- 继续只修改当前 Unit 的局部适配无法让这三个消费者获得一致 provenance；当前至少存在“改变共享 contract”“增加独立映射 / seam”“调整其他组件责任”等多种可能做法，但现有 Authority 没有决定采用哪一种；
 - 当前没有 Observed Defect、Unexpected Failure、失败测试或运行时异常；
-- 当前也没有足够 Consumer Architecture 事实来决定应该新增字段、建立映射层、改变现有 contract，还是采用其他技术方案；
-- 是否需要重塑当前 Execution Unit Set，要等新的长期 HOW / Architecture basis 明确后才能判断；
+- 当前也没有足够 Consumer Architecture 事实来替这些技术做法作出选择；
+- 当前无法确定原 Execution Unit 边界在解决上述问题后是否仍然成立；
 - 不涉及生产写入、安全 / 隐私敏感操作或已经明确的不可逆决策。
 
 请说明当前工作应如何继续，并明确：
@@ -25,7 +25,7 @@
 2. 当前 Execution Unit 是否可以继续实施，还是应该发生 Stage Return；如果返回，返回到哪个职责；
 3. `systematic-debug` 是否适用，为什么；
 4. 历史 `readiness-check PASS` 现在是否仍然授予 Execute 权限；
-5. 上游 HOW / Architecture basis 被重新处理后，是否需要重新进入 `slice-work` / `readiness-check`，以及什么情况下可以保留原 Unit identity；
+5. 上游技术 / 架构基础被重新处理后，是否需要重新进入 `slice-work` / `readiness-check`，以及什么情况下可以保留原 Unit identity；
 6. 当前可以确定哪些方法边界，哪些 Consumer 技术决定不得在事实不足时自行发明；
 7. 如果现有规则不足，指出具体缺口，不要发明新规则。
 
