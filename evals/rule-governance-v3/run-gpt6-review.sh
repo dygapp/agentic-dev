@@ -2,7 +2,7 @@
 set -euo pipefail
 
 BASE_COMMIT="3c31ae96683c4a653f001402b889b40e87df976b"
-EXPECTED_BRANCH="eval/rule-governance-v3-gpt6-review"
+EVAL_REMOTE_REF="origin/eval/rule-governance-v3-gpt6-review"
 MODEL="gpt-6-astra"
 EFFORT="xhigh"
 MIN_CODEX_VERSION="0.153.0"
@@ -26,12 +26,19 @@ command -v codex >/dev/null 2>&1 || fail "codex not found"
 command -v jq >/dev/null 2>&1 || fail "jq not found"
 command -v sort >/dev/null 2>&1 || fail "sort not found"
 
-CURRENT_BRANCH="$(git branch --show-current)"
-[[ "$CURRENT_BRANCH" == "$EXPECTED_BRANCH" ]] || \
-  fail "expected branch '$EXPECTED_BRANCH', got '$CURRENT_BRANCH'"
+git rev-parse --verify "$EVAL_REMOTE_REF^{commit}" >/dev/null 2>&1 || \
+  fail "missing $EVAL_REMOTE_REF; run 'git fetch origin' first"
+
+EXPECTED_EVAL_HEAD="$(git rev-parse "$EVAL_REMOTE_REF")"
+HEAD_BEFORE="$(git rev-parse HEAD)"
+CURRENT_BRANCH="$(git branch --show-current || true)"
+[[ -n "$CURRENT_BRANCH" ]] || CURRENT_BRANCH="DETACHED"
+
+[[ "$HEAD_BEFORE" == "$EXPECTED_EVAL_HEAD" ]] || \
+  fail "HEAD must exactly match $EVAL_REMOTE_REF ($EXPECTED_EVAL_HEAD); current: $HEAD_BEFORE"
 
 git merge-base --is-ancestor "$BASE_COMMIT" HEAD || \
-  fail "current branch is not descended from frozen base $BASE_COMMIT"
+  fail "current eval head is not descended from frozen base $BASE_COMMIT"
 
 UNEXPECTED_FILES="$(git diff --name-only "$BASE_COMMIT"...HEAD | grep -v '^evals/rule-governance-v3/' || true)"
 [[ -z "$UNEXPECTED_FILES" ]] || {
@@ -60,14 +67,14 @@ STDERR_LOG="$OUT/stderr.log"
 FINAL="$OUT/review-result.json"
 META="$OUT/run-metadata.json"
 
-HEAD_BEFORE="$(git rev-parse HEAD)"
 STATUS_BEFORE="$(git status --porcelain --untracked-files=normal)"
 
 jq -n \
   --arg repository "dygapp/agentic-dev" \
   --arg base_commit "$BASE_COMMIT" \
-  --arg eval_branch "$CURRENT_BRANCH" \
+  --arg eval_ref "$EVAL_REMOTE_REF" \
   --arg eval_head "$HEAD_BEFORE" \
+  --arg local_checkout "$CURRENT_BRANCH" \
   --arg codex_version "$CODEX_VERSION" \
   --arg model_requested "$MODEL" \
   --arg reasoning_effort_requested "$EFFORT" \
@@ -75,8 +82,9 @@ jq -n \
   '{
     repository: $repository,
     base_commit: $base_commit,
-    eval_branch: $eval_branch,
+    eval_ref: $eval_ref,
     eval_head: $eval_head,
+    local_checkout: $local_checkout,
     codex_version: $codex_version,
     model_requested: $model_requested,
     reasoning_effort_requested: $reasoning_effort_requested,
@@ -84,7 +92,8 @@ jq -n \
   }' > "$META"
 
 echo "[INFO] repository: dygapp/agentic-dev"
-echo "[INFO] branch:     $CURRENT_BRANCH"
+echo "[INFO] checkout:   $CURRENT_BRANCH"
+echo "[INFO] eval ref:   $EVAL_REMOTE_REF"
 echo "[INFO] eval head:  $HEAD_BEFORE"
 echo "[INFO] base:       $BASE_COMMIT"
 echo "[INFO] codex:      $CODEX_VERSION_RAW"
