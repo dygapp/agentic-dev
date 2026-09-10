@@ -2,7 +2,7 @@
 
 本文说明已经采用 `agentic-dev` 能力的 Consumer，如何在**普通 Fresh Context 中只依赖自身 Repository** 发现当前适用规则、确定职责并按需加载 Skill。
 
-本文是使用指南，不重新定义核心 Method、Principle、Skill Contract 或 Consumer 项目事实。发生冲突时，以 Consumer Repository Authority 以及 `agentic-dev` 更高层 Method / Architecture / Contract 为准。
+本文是使用指南，不重新定义核心 Method、Principle、Skill Contract 或 Consumer 项目事实。发生冲突时，先服从 Consumer Repository Authority；对于已采用的 reusable method / architecture / contract 语义，以 Consumer 当前本地化并明确采用的对应版本为准。ordinary runtime 不因为存在 upstream 新版本就在线重读或自动覆盖本地规则；只有显式 baseline upgrade、Consumer-local 能力缺失或 Consumer Authority 明确要求时才重新进入 upstream。
 
 Baseline adoption / upgrade 的通用选择边界仍以 `docs/guides/using-agentic-dev.md` §6.1 为准；本文重点定义**采用完成后的本地发现与激活方式**，以及 adopted assets 如何进入 ordinary runtime。
 
