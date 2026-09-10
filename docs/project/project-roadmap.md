@@ -1,6 +1,6 @@
 # 项目演进路线与当前状态
 
-本文是 `agentic-dev` 仓库自身的 Project Roadmap，只维护**当前有效路线、活动里程碑、候选库、下一 Gate 与 Fresh Context 恢复入口**。
+本文是 `agentic-dev` 仓库自身的 Project Roadmap，只维护**当前有效路线、活动状态、候选库、下一 Gate 与 Fresh Context 恢复入口**。
 
 本文属于 `docs/project/*` 项目级 Authority，不覆盖更高优先级的方法、架构、契约、工程纪律或技术画像，也不得被 Consumer 自动继承。历史实施流水、精确 PR / Run / Review 证据由对应项目记录、Git、PR、Issue、Actions 与 `evals/` 保存；本文不重复维护完整历史证据。
 
@@ -10,42 +10,39 @@
 
 > **工程能力扩展与方法演进**
 
-最近完成并已集成的有限里程碑：
+规则治理与知识激活 v2 当前状态：
 
-> **规则治理与知识激活 v1**
+> **内部完成定义已满足，已具备进入人工集成决策的条件。**
 
-当前活动有限里程碑：
+跟踪入口：Issue #92 / PR #93  
+启动基线：`master@b6a20053a7a6f4f53915bea8218604720412c302`
 
-> **规则治理与知识激活 v2 — Consumer-local 规则发现与激活**
+v2 已完成 Phase A～G：
 
-跟踪入口：Issue #92  
-启动基线：`master@b6a20053a7a6f4f53915bea8218604720412c302`  
-当前阶段：**Phase G — 收敛与集成准备**
+- Consumer-local Runtime Target / Acceptance；
+- Rule Ownership / Guide Decomposition；
+- Minimal Metadata / Catalog Contract；
+- Discovery / Routing / Skill Interface；
+- Baseline Adoption / Consumer-local Projection；
+- 真实 Consumer Phase F R1～R5；
+- Phase G Candidate Drift 定向重验与 Final AI Review 收敛；
+- Root Bootstrap / `AGENTS.md` 职责瘦身。
 
-Phase A～E 已完成设计与 reusable guidance 收敛。Phase F 已在真实 Consumer `dygapp/jilinjobs-cms` 上完成 R1～R5，并在冻结 Candidate `ec945368678715732fe729c331bd3bcdd919bbdd` 上 PASS。
-
-Phase G Final AI Review 随后修复两项 Medium：
-
-1. Consumer-local Guide 的 upstream 冲突措辞；
-2. `using-agentic-dev.md` 对 Skill-owned 过程语义的重复维护，并将跨职责验证规则归位到 `verification-evidence-rules.md`。
-
-这些修复改变了 reusable Guide 集合，因此旧 Phase F Evidence 不能直接覆盖最终 Candidate。当前已冻结 reusable candidate：
+最终冻结 reusable candidate：
 
 `29f88efd25232e57ccb4a82ffff039be047e4d1e`
 
+真实 Consumer `dygapp/jilinjobs-cms` 的 Phase F R1～R5 全部 PASS；随后针对 reusable Guide drift 完成 T1～T4 定向重验，最终 Head `c29da21b41ff3ddad023ecb64e3628dc3136a77e`，ordinary runtime upstream access = 0，Blocking / Medium reusable findings = `0 / 0`。
+
 当前下一 Gate：
 
-> **在既有 Consumer 实验状态上执行 T1～T4 定向重验，而不是重跑完整 R1～R5。**
+> **只剩人工集成决策。**
 
-影响映射与重验边界：
+是否已经实际集成 v2，以 Git / PR #93 当前事实为准；Roadmap 不复制“PR 已打开 / 已合并”等瞬时状态。无论集成结果如何，当前都不会自动启动新的有限里程碑。
 
-`docs/project/consumer-local-runtime-candidate-drift-review-v2.md`
+## 2. v2 阶段结果
 
-通过后继续 Final AI Review 的受影响维度复核与稳定状态收敛。
-
-## 2. v2 阶段状态
-
-| 阶段 | 状态 | 结果 / 当前边界 |
+| 阶段 | 状态 | 结果 |
 |---|---|---|
 | Phase A — Runtime Target / Acceptance | 已完成 | Consumer-local Target + CL-01～CL-12 |
 | Phase B — Rule Ownership / Guide Decomposition | 已完成 | 单点 semantic owner；Guide 不按章节机械拆分 |
@@ -53,7 +50,7 @@ Phase G Final AI Review 随后修复两项 Medium：
 | Phase D — Discovery / Routing / Skill Interface | 已完成 | 一个 primary responsibility + 最小 supporting set；routing-only 与 Skill execution 分离 |
 | Phase E — Baseline Adoption / Projection | 已完成 | per-item adopt / override / reject / supersede；ordinary runtime local-only |
 | Phase F — Real Consumer Validation | 已完成 / PASS | `jilinjobs-cms` R1～R5 PASS；ordinary runtime upstream access = 0 |
-| Phase G — Convergence / Integration Readiness | **当前** | Candidate Drift T1～T4 → Final AI Review → stable-state convergence |
+| Phase G — Convergence / Integration Readiness | 已完成 | T1～T4 PASS；Final AI Review 收敛；已具备人工集成决策条件 |
 
 主要 Authority / Evidence：
 
@@ -69,7 +66,7 @@ Phase G Final AI Review 随后修复两项 Medium：
 
 - `AGENTS.md`：稳定 Repository Governance、Authority Boundary 与 Agent 工作约束；**不维护当前项目状态**；
 - `README.md`：简短当前状态与稳定导航；
-- 本 Roadmap：详细阶段、活动里程碑、候选和下一 Gate；
+- 本 Roadmap：详细项目路线、当前 Gate 与候选库；
 - `docs/project/*`：具体里程碑、项目治理、设计和验证记录；
 - Git / PR / Issue / Actions：精确外部状态与执行证据。
 
@@ -77,9 +74,7 @@ Phase G Final AI Review 随后修复两项 Medium：
 
 ## 4. 当前范围边界
 
-Phase G 只允许完成 v2 的证据与一致性收敛，不继续扩展设计。
-
-当前不启动：
+v2 已停止扩展设计。当前不因 v2 自动启动：
 
 - WI-06 — 第二及后续技术画像；
 - WI-07 — 代码复核能力 v1；
@@ -98,7 +93,7 @@ Consumer Phase F / T1～T4 都只是验证，不自动授权 Consumer 实验分�
 
 ### WI-07 — 代码复核能力 v1
 
-**优先后继候选，未启动。** 只有 v2 完成、取消或被取代后，由新的人工路线决策重新选择才可启动。
+**优先后继候选，未启动。** 只能在 v2 集成决策完成后，由新的人工路线决策重新选择；候选优先级本身不授予启动权限。
 
 ### WI-06 — 第二及后续技术画像
 
@@ -116,14 +111,15 @@ Consumer Phase F / T1～T4 都只是验证，不自动授权 Consumer 实验分�
 
 ## 6. 已完成里程碑索引
 
-以下里程碑均已完成；普通 Fresh Context 不默认读取其完整过程记录：
+普通 Fresh Context 不默认读取以下已完成工作的完整过程记录：
 
 1. 工程能力基础 v1 — `docs/project/engineering-capability-foundation-v1-closure.md`
 2. 工程纪律扩展 v1 — `docs/project/engineering-discipline-expansion-v1*.md`
 3. 中文交互与上下文清理 v1 — `docs/project/chinese-interaction-context-cleanup-v1.md`
 4. 工程术语语义安全与现行文档收敛 v1 — `docs/project/terminology-semantic-safety-v1.md`
 5. Squash Merge 下 Stacked PR 集成拓扑安全 v1 — `docs/project/stacked-pr-squash-topology-v1.md`
-6. 规则治理与知识激活 v1 — `docs/project/rule-governance-knowledge-activation-v1.md`；历史 Issue #73 / PR #89
+6. 规则治理与知识激活 v1 — `docs/project/rule-governance-knowledge-activation-v1.md`
+7. 规则治理与知识激活 v2 — `docs/project/rule-governance-knowledge-activation-v2.md`；其实际集成状态以 PR #93 / Git 为准
 
 Issue #58 继续承担长期 Consumer feedback 入口。
 
@@ -133,14 +129,14 @@ Issue #58 继续承担长期 Consumer feedback 入口。
 
 1. 读取根 `AGENTS.md`，恢复稳定仓库治理与 Authority Boundary；
 2. 读取根 `README.md`，取得简短当前状态；
-3. 读取本文，确认当前活动里程碑、阶段和下一 Gate；
+3. 读取本文，确认当前路线、Gate 和候选边界；
 4. 重新读取当前 GitHub `master`、Open PR / Issue 和必要 Actions；
-5. 当前 Phase G 定向重验 Gate 时，读取 Issue #92、PR #93、`docs/project/rule-governance-knowledge-activation-v2.md`、`consumer-local-runtime-validation-result-v2.md` 与 `consumer-local-runtime-candidate-drift-review-v2.md`；
-6. 只有具体一致性复核需要时才读取 Phase A～E Contract、Guide、Skill / Architecture；不默认恢复 v1 完整历史或全部 eval 输出；
+5. 如果 PR #93 尚未集成，只在需要审查 v2 候选时读取 Issue #92、PR #93 与 v2 Evidence；如果已经集成，则把 v2 视为已完成能力基线；
+6. 后续只有新的人工路线决策才能启动候选库中的下一有限里程碑；
 7. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
 
 ## 8. 更新触发
 
-出现活动里程碑完成 / 取消 / 被取代、人工选择新里程碑、当前阶段或下一 Gate 实质变化、新能力正式集成，或高质量证据改变长期边界时更新本文。
+出现人工选择新里程碑、当前路线或下一 Gate 实质变化、新能力正式集成且其集成事实会改变长期路线，或高质量证据改变长期边界时更新本文。
 
-单次 Run ID、临时分支删除等纯执行证据不为了记录而机械更新 Roadmap。
+单次 Run ID、临时分支删除、PR 从 Draft 变为 Ready、PR 合并提交等纯 GitHub 原生状态，不为了记录而机械更新 Roadmap；需要时直接从 Git / PR / Issue 恢复。
