@@ -2,7 +2,7 @@
 set -euo pipefail
 
 BASE_COMMIT="3c31ae96683c4a653f001402b889b40e87df976b"
-EVAL_REMOTE_REF="origin/eval/rule-governance-v3-gpt6-review"
+EXPECTED_REMOTE_REF="origin/eval/rule-governance-v3-gpt6-review"
 MODEL="gpt-6-astra"
 EFFORT="xhigh"
 MIN_CODEX_VERSION="0.153.0"
@@ -26,24 +26,25 @@ command -v codex >/dev/null 2>&1 || fail "codex not found"
 command -v jq >/dev/null 2>&1 || fail "jq not found"
 command -v sort >/dev/null 2>&1 || fail "sort not found"
 
-git rev-parse --verify "$EVAL_REMOTE_REF^{commit}" >/dev/null 2>&1 || \
-  fail "missing $EVAL_REMOTE_REF; run 'git fetch origin' first"
+git rev-parse --verify "$EXPECTED_REMOTE_REF" >/dev/null 2>&1 || \
+  fail "missing remote eval ref '$EXPECTED_REMOTE_REF'; run git fetch origin first"
 
-EXPECTED_EVAL_HEAD="$(git rev-parse "$EVAL_REMOTE_REF")"
 HEAD_BEFORE="$(git rev-parse HEAD)"
-CURRENT_BRANCH="$(git branch --show-current || true)"
-[[ -n "$CURRENT_BRANCH" ]] || CURRENT_BRANCH="DETACHED"
+EXPECTED_HEAD="$(git rev-parse "$EXPECTED_REMOTE_REF")"
+CURRENT_BRANCH="$(git branch --show-current)"
+CHECKOUT_MODE="named-branch"
+[[ -n "$CURRENT_BRANCH" ]] || CHECKOUT_MODE="detached"
 
-[[ "$HEAD_BEFORE" == "$EXPECTED_EVAL_HEAD" ]] || \
-  fail "HEAD must exactly match $EVAL_REMOTE_REF ($EXPECTED_EVAL_HEAD); current: $HEAD_BEFORE"
+[[ "$HEAD_BEFORE" == "$EXPECTED_HEAD" ]] || \
+  fail "current HEAD $HEAD_BEFORE does not equal remote eval HEAD $EXPECTED_HEAD"
 
 git merge-base --is-ancestor "$BASE_COMMIT" HEAD || \
-  fail "current eval head is not descended from frozen base $BASE_COMMIT"
+  fail "current eval HEAD is not descended from frozen base $BASE_COMMIT"
 
 UNEXPECTED_FILES="$(git diff --name-only "$BASE_COMMIT"...HEAD | grep -v '^evals/rule-governance-v3/' || true)"
 [[ -z "$UNEXPECTED_FILES" ]] || {
   echo "$UNEXPECTED_FILES" >&2
-  fail "evaluation branch contains changes outside evals/rule-governance-v3/"
+  fail "evaluation ref contains changes outside evals/rule-governance-v3/"
 }
 
 [[ -z "$(git status --porcelain --untracked-files=normal)" ]] || \
@@ -72,9 +73,10 @@ STATUS_BEFORE="$(git status --porcelain --untracked-files=normal)"
 jq -n \
   --arg repository "dygapp/agentic-dev" \
   --arg base_commit "$BASE_COMMIT" \
-  --arg eval_ref "$EVAL_REMOTE_REF" \
+  --arg eval_ref "$EXPECTED_REMOTE_REF" \
   --arg eval_head "$HEAD_BEFORE" \
-  --arg local_checkout "$CURRENT_BRANCH" \
+  --arg checkout_mode "$CHECKOUT_MODE" \
+  --arg local_branch "$CURRENT_BRANCH" \
   --arg codex_version "$CODEX_VERSION" \
   --arg model_requested "$MODEL" \
   --arg reasoning_effort_requested "$EFFORT" \
@@ -84,22 +86,23 @@ jq -n \
     base_commit: $base_commit,
     eval_ref: $eval_ref,
     eval_head: $eval_head,
-    local_checkout: $local_checkout,
+    checkout_mode: $checkout_mode,
+    local_branch: $local_branch,
     codex_version: $codex_version,
     model_requested: $model_requested,
     reasoning_effort_requested: $reasoning_effort_requested,
     started_at_utc: $started_at_utc
   }' > "$META"
 
-echo "[INFO] repository: dygapp/agentic-dev"
-echo "[INFO] checkout:   $CURRENT_BRANCH"
-echo "[INFO] eval ref:   $EVAL_REMOTE_REF"
-echo "[INFO] eval head:  $HEAD_BEFORE"
-echo "[INFO] base:       $BASE_COMMIT"
-echo "[INFO] codex:      $CODEX_VERSION_RAW"
-echo "[INFO] model:      $MODEL"
-echo "[INFO] effort:     $EFFORT"
-echo "[INFO] output:     $OUT"
+echo "[INFO] repository:  dygapp/agentic-dev"
+echo "[INFO] eval ref:    $EXPECTED_REMOTE_REF"
+echo "[INFO] eval head:   $HEAD_BEFORE"
+echo "[INFO] checkout:    $CHECKOUT_MODE${CURRENT_BRANCH:+ ($CURRENT_BRANCH)}"
+echo "[INFO] base:        $BASE_COMMIT"
+echo "[INFO] codex:       $CODEX_VERSION_RAW"
+echo "[INFO] model:       $MODEL"
+echo "[INFO] effort:      $EFFORT"
+echo "[INFO] output:      $OUT"
 
 # Fresh, read-only Codex execution. The prompt is passed through stdin so shell
 # quoting cannot alter the review text. stdout is JSONL telemetry; the final
@@ -159,7 +162,7 @@ jq '. + {completed: true}' "$META" > "$META.tmp"
 mv "$META.tmp" "$META"
 
 echo
-printf '[PASS] GPT-6 review run completed\n'
+printf '[PASS] GPT-6 governance review run completed\n'
 printf '[PASS] verdict: %s\n' "$(jq -r '.verdict' "$FINAL")"
 printf '[PASS] findings: Blocking=%s Medium=%s Low=%s\n' \
   "$(jq '[.findings[] | select(.severity == "Blocking")] | length' "$FINAL")" \
