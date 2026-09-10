@@ -33,16 +33,22 @@ GitHub Repository 是唯一项目事实来源。
 - **基线版本：** v0.1
 - **长期阶段：** 工程能力扩展与方法演进
 - **最近完成并已集成的有限里程碑：** 规则治理与知识激活 v1
-- **当前路线状态：** 待人工决策
-- **下一有限里程碑：** 尚未选择
+- **当前有限里程碑：** 规则治理与知识激活 v2 — Consumer-local 规则发现与激活
+- **当前工作入口：** Issue #92 / Phase A / A1 Consumer-local 目标基线
 
-当前没有活动有限里程碑。WI-07 — 代码复核能力 v1 仍是优先后继候选，但未启动；其他候选也不会因当前维护工作自动进入实施。
+v2 当前处于规划与设计阶段。核心验收目标是让已采用的可复用能力与 Consumer 自身规则在 Consumer-local Repository 中持续可发现、可路由、可按需激活；完成 baseline adoption 后，普通 Consumer 工作不得把 `agentic-dev` 作为日常运行依赖。
 
 当前路线、已完成里程碑、候选库与 Fresh Context 恢复顺序只在以下入口维护详细状态：
 
 `docs/project/project-roadmap.md`
 
-Issue #73、PR #89 以及规则治理 v1 的阶段计划属于已完成里程碑的历史证据，不再是普通 Fresh Context 的当前工作入口。需要研究技术依据时，从 `docs/research/README.md` 选择与当前 Authority 或技术问题直接相关的材料，而不是恢复已关闭里程碑的完整过程文档。
+当前 v2 项目级目标、边界和完成定义见：
+
+`docs/project/rule-governance-knowledge-activation-v2.md`
+
+Issue #73、PR #89 以及规则治理 v1 的阶段计划属于已完成里程碑的历史证据，不再是普通 Fresh Context 的当前工作入口。WI-07 — 代码复核能力 v1、WI-06、WI-09、第四工程纪律和 Issue #71 候选均未因 v2 启动而自动进入实施。
+
+需要研究技术依据时，从 `docs/research/README.md` 选择与当前 Authority 或技术问题直接相关的材料，而不是恢复已关闭里程碑的完整过程文档。v2 临时 Runtime Eval 的精确过程证据继续由对应 `eval/*` 分支、Issue #92 与本项目记录承接，不提升为第二套 Repository Authority。
 
 ## 仓库事实与权威
 
