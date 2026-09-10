@@ -23,10 +23,11 @@
 | 新项目初始化、外部需求来源采纳 | `using-agentic-dev.md` §2.1、§3、§3.1、§3.2 |
 | 已有 Consumer baseline upgrade | `using-agentic-dev.md` §6.1；需要把 adopted capability 变成 ordinary runtime 本地发现能力时再读 `consumer-local-rule-activation.md` |
 | 已完成 adoption 的 Consumer 普通工作 | **回到 Consumer-local Bootstrap / Discovery Entry**；普通 Runtime 不继续把本指南或 upstream 当作日常依赖 |
-| 规划候选、执行单元身份、工作切分 | `using-agentic-dev.md` §3、§5.4；`skills/slice-work/SKILL.md` |
-| 就绪门禁、上游 WHAT / HOW / Architecture basis 失效后的重新进入 | `skills/readiness-check/SKILL.md`，必要时补读 `using-agentic-dev.md` §5.4 |
-| 单个已就绪执行单元的实施 | `skills/execute-unit/SKILL.md`；`using-agentic-dev.md` §5.5 |
-| 验证证据类型、证据与完成声明匹配 | `using-agentic-dev.md` §5.7；当前执行 / 收敛 Skill |
+| 规划候选、执行单元身份、工作切分 | `using-agentic-dev.md` §3；`skills/slice-work/SKILL.md` |
+| 就绪门禁、上游 WHAT / HOW / Architecture basis 失效后的重新进入 | `skills/readiness-check/SKILL.md` |
+| 单个已就绪执行单元的实施 | `skills/execute-unit/SKILL.md` |
+| 验证证据类型、视觉证据、Human Review baseline、数据库迁移或 evidence reuse | `verification-evidence-rules.md` 对应 section；当前执行 / 收敛 Skill |
+| 配置责任、能力复用、推测性复杂度、差异范围、数据访问有界性 | `docs/architecture/engineering-disciplines.md` 对应 Discipline |
 | GitHub Actions 验证层、trigger / gate、可观察性或成本 | `skills/github-actions-verification/SKILL.md`，不要先加载整份外部操作指南 |
 | 临时执行证据被接受为长期稳定输入 | `external-operation-guidelines.md` §5.3；GitHub Actions Artifact 再补 `github-actions-verification` 对应部分 |
 | 异步外部操作 | `external-operation-guidelines.md` §5.1；GitHub Actions 场景再补平台 Skill |
@@ -36,9 +37,9 @@
 | 项目路线图、长期产物、集成后的稳定路线 | `using-agentic-dev.md` §6.2 |
 | 中断恢复、新聊天或新执行者 | `using-agentic-dev.md` §7，并从 Consumer 项目路线图或等价入口继续按需读取 |
 | 明确的 `agentic-dev` Consumer 实验 | `using-agentic-dev.md` §8 |
-| 项目主导语言 | Consumer Repository 本地规则优先；需要通用边界时读 `using-agentic-dev.md` §3.1、§7 |
+| 项目主导语言 | Consumer Repository 本地规则优先；需要通用边界时读 `using-agentic-dev.md` §3.1 |
 
-Skill 的完整执行过程由该 Skill 自己拥有。使用指南承担发现、协调和跨职责边界，不要求同时加载多个 Skill 的完整正文。
+Skill 的完整执行过程由该 Skill 自己拥有。使用指南承担发现、采用和跨职责协调，不要求同时加载多个 Skill 的完整正文。
 
 ## 3. Consumer-local adoption 后的边界
 
