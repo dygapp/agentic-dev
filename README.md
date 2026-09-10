@@ -21,7 +21,7 @@
 
 GitHub Repository 是唯一项目事实来源。
 
-开始后先读取当前仓库 AGENTS.md / README.md，并读取 agentic-dev 的规则激活导航；随后按当前 Repository Authority 恢复当前阶段和直接相关 Authority，从下一实际步骤继续。
+开始后先读取当前仓库 AGENTS.md / README.md；随后按当前 Repository Authority 恢复当前阶段和直接相关 Authority，从下一实际步骤继续。
 
 <必要的本轮特殊约束，如有>
 ```
@@ -34,33 +34,54 @@ GitHub Repository 是唯一项目事实来源。
 - **长期阶段：** 工程能力扩展与方法演进
 - **最近完成并已集成的有限里程碑：** 规则治理与知识激活 v1
 - **当前有限里程碑：** 规则治理与知识激活 v2 — Consumer-local 规则发现与激活
-- **当前工作入口：** Issue #92 / Phase A / A1 Consumer-local 目标基线
+- **跟踪入口：** Issue #92
+- **当前阶段：** Phase D — Discovery → Routing → Skill 接口
 
-v2 当前处于规划与设计阶段。核心验收目标是让已采用的可复用能力与 Consumer 自身规则在 Consumer-local Repository 中持续可发现、可路由、可按需激活；完成 baseline adoption 后，普通 Consumer 工作不得把 `agentic-dev` 作为日常运行依赖。
+v2 已完成：
 
-当前路线、已完成里程碑、候选库与 Fresh Context 恢复顺序只在以下入口维护详细状态：
+- Phase A：Consumer-local Runtime Target 与验收基线；
+- Phase B：Rule Ownership / Guide Decomposition 审计；
+- Phase C：最小 Activation Manifest / Runtime Catalog 契约。
+
+当前进入 Phase D，目标是冻结 discovery、primary/supporting responsibility、Stage Return、routing-only 与 Skill execution 的最小运行接口。最终完成仍必须经过真实 Consumer-local Fresh Context 验证，且 ordinary Consumer runtime 不得依赖日常读取 `agentic-dev` upstream。
+
+详细当前路线、候选与下一 Gate 统一维护在：
 
 `docs/project/project-roadmap.md`
 
-当前 v2 项目级目标、边界和完成定义见：
+v2 的目标、阶段、设计结论与完成定义统一维护在：
 
 `docs/project/rule-governance-knowledge-activation-v2.md`
 
-Issue #73、PR #89 以及规则治理 v1 的阶段计划属于已完成里程碑的历史证据，不再是普通 Fresh Context 的当前工作入口。WI-07 — 代码复核能力 v1、WI-06、WI-09、第四工程纪律和 Issue #71 候选均未因 v2 启动而自动进入实施。
+## 入口职责
 
-需要研究技术依据时，从 `docs/research/README.md` 选择与当前 Authority 或技术问题直接相关的材料，而不是恢复已关闭里程碑的完整过程文档。v2 临时 Runtime Eval 的精确过程证据继续由对应 `eval/*` 分支、Issue #92 与本项目记录承接，不提升为第二套 Repository Authority。
+为避免启动上下文膨胀，根入口职责明确分离：
+
+- `AGENTS.md`：只维护稳定 Repository Governance、Authority Boundary 与 Agent 工作约束；**不维护当前阶段、里程碑进展、候选路线、Issue / PR 状态或下一工作项**；
+- `README.md`：维护面向人的简短当前状态与稳定导航；
+- `docs/project/project-roadmap.md`：维护详细项目阶段、活动里程碑、候选库和下一 Gate；
+- `docs/project/*`：维护具体里程碑、项目治理与设计记录；
+- Git / PR / Issue / Actions：维护精确外部状态与执行证据。
+
+发生当前状态变化时优先更新 README / Roadmap / 对应项目记录，不把状态性正文复制回 `AGENTS.md`。
 
 ## 仓库事实与权威
 
-GitHub Repository 是本项目长期事实来源。完整 Repository Authority、知识边界、当前项目阶段和 `agentic-dev` 自身治理规则见：
+GitHub Repository 是本项目长期事实来源。
+
+稳定 Repository Authority、知识边界和仓库级 Agent 约束见：
 
 `AGENTS.md`
+
+当前项目阶段和恢复顺序见：
+
+`docs/project/project-roadmap.md`
 
 使用方项目的规则激活入口见：
 
 `docs/guides/rule-activation-guide.md`
 
-完整使用说明仍保存在：
+完整使用说明见：
 
 `docs/guides/using-agentic-dev.md`
 
@@ -97,9 +118,9 @@ Skill 清单、身份和职责边界统一维护在：
 
 `docs/architecture/engineering-capability-architecture.md`
 
-外部官方资料、成熟开源实践、专项评估和使用方证据可以成为研究输入，但不能自动覆盖 Repository Authority。研究材料位于：
+外部官方资料、成熟开源实践、专项评估和使用方证据可以成为研究输入，但不能自动覆盖 Repository Authority。研究入口：
 
-`docs/research/`
+`docs/research/README.md`
 
 ## 中文表达
 
@@ -107,7 +128,7 @@ Skill 清单、身份和职责边界统一维护在：
 
 `docs/guides/terminology-guidelines.md`
 
-使用方项目的主导语言由使用方自己的仓库权威决定，不从 `agentic-dev`、旧聊天或其他项目机械继承。
+使用方项目的主导语言由使用方自己的 Repository Authority 决定，不从 `agentic-dev`、旧聊天或其他项目机械继承。
 
 ## 仓库结构
 
