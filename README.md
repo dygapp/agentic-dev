@@ -35,11 +35,11 @@ GitHub Repository 是唯一项目事实来源。
 - **最近已集成里程碑：** 规则治理与知识激活 v2
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
-- **当前工作入口：** Issue #95 — V3-01 Knowledge & Capability Ownership Model
+- **当前工作入口：** Issue #95 — V3-01 知识与能力所有权模型
 
-v3 当前先解决长期知识、规则和 Agent 能力的 semantic ownership，不先实现新的 Rule Index、Manifest、Catalog、Front Matter Generator 或批量新 Skill。
+v3 当前先解决长期知识、规则和 Agent 能力的语义所有权，不先实现新的 Rule Index、Manifest、Catalog、Front Matter Generator 或批量新技能。
 
-V3-01 使用四维判断：semantic owner role、applicability / provenance scope、runtime / lifecycle role、representation / authority form。只有其 ownership decision matrix 通过独立复核、没有未解决的阻塞或中等级歧义后，才判断是否进入 V3-02。
+V3-01 使用四维判断：语义所有者、适用范围与来源状态、运行与生命周期角色、载体与权威形式。只有其所有权判断矩阵通过独立复核、没有未解决的阻塞或中等级歧义后，才判断是否进入 V3-02。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
@@ -50,7 +50,7 @@ v3 规划入口：
 - `docs/project/rule-governance-knowledge-activation-v3.md`
 - `docs/project/knowledge-capability-ownership-model-v3.md`
 
-v3 规划期间，v2 已验证的 Consumer-local ordinary runtime 和当前 discovery / activation 入口继续有效；不因为 v3 正在分析就提前替换现行 Runtime 行为。
+v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在分析就提前替换现行运行行为。
 
 ## 入口职责
 
