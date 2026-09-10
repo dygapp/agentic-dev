@@ -69,27 +69,39 @@ GitHub 仓库是本仓库唯一的长期基线来源。
 
 该里程碑已通过 PR #89 集成；Issue #73 已按完成关闭。精确里程碑历史、验证结果与集成事实由 Project Roadmap、项目记录、Git / PR / Issue 和 `evals/` 保存。
 
-当前路线状态是：
+当前活动有限里程碑是：
 
-> **待人工决策**
+> **规则治理与知识激活 v2 — Consumer-local 规则发现与激活**
 
-当前没有活动有限里程碑。WI-07 — 代码复核能力 v1 是优先后继候选，但尚未启动；WI-06、WI-09、第四工程纪律和 Issue #71 候选实施同样未启动。候选优先级不能替代新的人工里程碑决策。
+人工路线决策已记录在 Issue #92。启动基线为 `master@b6a20053a7a6f4f53915bea8218604720412c302`。当前处于 Phase A，下一实际工作为 A1 — Consumer-local 目标基线。
 
-`docs/research/` 只保留离开原实施阶段后仍具有独立技术参考价值的资料，或能够明确解释 / 支撑当前 Repository Authority 的技术资料。阶段审计、冻结基线、readiness、原型验证、A/B 执行报告和使用方阶段验收等过程证据不作为常驻 Research；需要追溯时从 `docs/project/*`、`tasks/plans/*`、`evals/*`、Git、PR 或 Issue 取得。
+v2 的最高约束是 Consumer-local-first：`agentic-dev` 的实验、方法和工程能力必须能够被 Consumer 选择性采用，并在 baseline adoption 后通过 Consumer-local Authority / Rule Modules / Skills / Discovery 机制持续发挥作用；普通 Consumer 工作不应把 `agentic-dev` 作为日常运行依赖。
 
-当前项目状态与恢复顺序以 `docs/project/project-roadmap.md` 为准。只有当前任务确实需要时，再按渐进式披露读取：
+当前项目状态与恢复顺序以 `docs/project/project-roadmap.md` 为准；v2 的项目级目标、阶段路线与完成定义位于：
+
+`docs/project/rule-governance-knowledge-activation-v2.md`
+
+A1 协调计划位于：
+
+`tasks/plans/20260910/01-rule-governance-knowledge-activation-v2.md`
+
+只有当前任务确实需要时，再按渐进式披露读取：
 
 - `docs/guides/rule-activation-guide.md`；
-- `docs/project/rule-governance-knowledge-activation-v1.md`（已完成里程碑记录）；
-- `docs/research/README.md`；
-- `docs/research/knowledge-activation-and-code-intelligence-analysis.md`；
-- `docs/research/knowledge-activation-evidence-appendix.md`；
-- `docs/research/llm-wiki-rule-governance-fit-analysis.md`；
-- `docs/research/rule-retrieval-design-reference.md`。
+- `docs/guides/using-agentic-dev.md` §6.1 / §7；
+- `docs/architecture/engineering-capability-architecture.md` §9 / §10 / §11；
+- Issue #58 中与 Consumer adoption / discoverability 直接相关的证据；
+- v2 临时 `eval/*` 分支中的实验细节。
 
-Issue #58 继续作为长期使用方经验反馈入口；Issue #71 继续作为独立高风险规划复核 / 模型路由相关研究输入，不与未来代码复核自动合并。
+不要为恢复 v2 默认加载 v1 已关闭里程碑的完整过程 Research、全部历史评估或所有 Guide / Skill。
 
-工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。不得因为当前处于待人工决策状态，就机械增加技能、超级技能、技术画像或流程层级。
+Issue #58 继续作为长期使用方经验反馈入口；Issue #71 继续作为独立高风险规划复核 / 模型路由相关研究输入，不与 v2 自动合并。
+
+WI-07 — 代码复核能力 v1、WI-06、WI-09、第四工程纪律和 Issue #71 候选实施均未因 v2 启动而进入实现。v2 当前也不预设 Runtime Rule Index、向量 / 图数据库、MCP、全仓 Front Matter、Rule Super Skill 或机械 Guide 拆分。
+
+工程能力的分层、证据进入方式和能力生命周期统一记录在 `docs/architecture/engineering-capability-architecture.md`。
+
+`docs/research/` 只保留离开原实施阶段后仍具有独立技术参考价值的资料，或能够明确解释 / 支撑当前 Repository Authority 的技术资料。阶段审计、冻结基线、readiness、原型验证、A/B 执行报告和使用方阶段验收等过程证据不作为常驻 Research；需要追溯时从 `docs/project/*`、`tasks/plans/*`、`evals/*`、Git、PR 或 Issue 取得。
 
 ## 核心规则
 
