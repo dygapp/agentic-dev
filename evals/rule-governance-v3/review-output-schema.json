@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Rule Governance v3 GPT-6 Review Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "review_target",
+    "verdict",
+    "dimension_verdicts",
+    "findings",
+    "preservation_assessment",
+    "complexity_assessment",
+    "recommended_next_action"
+  ],
+  "properties": {
+    "review_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "base_commit", "candidate_file"],
+      "properties": {
+        "repository": {"const": "dygapp/agentic-dev"},
+        "base_commit": {"type": "string", "minLength": 7},
+        "candidate_file": {"const": "evals/rule-governance-v3/v3-candidate-review-package.md"}
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["PASS", "REVISE", "REJECT"]
+    },
+    "dimension_verdicts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "front_matter_authoring_model",
+        "generated_index_model",
+        "guide_decomposition",
+        "agentic_dev_self_adoption",
+        "consumer_projection",
+        "v1_v2_preservation",
+        "complexity_control"
+      ],
+      "properties": {
+        "front_matter_authoring_model": {"$ref": "#/$defs/dimension"},
+        "generated_index_model": {"$ref": "#/$defs/dimension"},
+        "guide_decomposition": {"$ref": "#/$defs/dimension"},
+        "agentic_dev_self_adoption": {"$ref": "#/$defs/dimension"},
+        "consumer_projection": {"$ref": "#/$defs/dimension"},
+        "v1_v2_preservation": {"$ref": "#/$defs/dimension"},
+        "complexity_control": {"$ref": "#/$defs/dimension"}
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/finding"}
+    },
+    "preservation_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["v1_preserved", "v2_preserved", "regression_risks"],
+      "properties": {
+        "v1_preserved": {"type": "boolean"},
+        "v2_preserved": {"type": "boolean"},
+        "regression_risks": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "complexity_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overdesigned_elements", "defer_candidates", "simpler_alternative"],
+      "properties": {
+        "overdesigned_elements": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "defer_candidates": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "simpler_alternative": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "recommended_next_action": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["PASS", "REVISE", "REJECT"]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "severity",
+        "title",
+        "design_goal_violated",
+        "failure_scenario",
+        "affected_components",
+        "evidence_refs",
+        "minimal_fix"
+      ],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": ["Blocking", "Medium", "Low"]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "design_goal_violated": {
+          "type": "string",
+          "minLength": 1
+        },
+        "failure_scenario": {
+          "type": "string",
+          "minLength": 1
+        },
+        "affected_components": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "minimal_fix": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
