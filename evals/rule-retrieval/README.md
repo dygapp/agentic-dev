@@ -1,153 +1,60 @@
-# 规则检索与激活 A/B 评估
+# 规则检索与激活 v1 冻结评估证据
 
-本目录保存“规则治理与知识激活 v1”阶段 C 的规则检索 / 激活评估资产。
+本目录保留“规则治理与知识激活 v1”阶段 C 的**冻结设计与人工评分证据**。
 
-这些文件属于 `evals/` 评估资产，**不是 Repository Authority**。删除它们不会删除任何规范性规则；所有行为判断仍必须回到当前仓库权威。
+这些资产属于历史 Evaluation Evidence，不是 Repository Authority，也不是当前 Runtime Discovery 实现。v2 已将当前 Consumer 规则发现机制收敛为 Consumer-local `Activation Manifest + optional Runtime Catalog + local semantic owner / Skill`；普通 Runtime 不使用 v1 `rule-index.json`。
 
-## 当前资产
+## 当前保留资产
 
-- `rule-index.json`：B3 首轮派生规则索引；
-- `targeted-evaluation-design.json`：C1 冻结的 9 个 A/B 场景与隐藏评分语料；
-- `result-schema.json`：C2/C3 运行与人工评分结果结构；
-- `fixtures/consumer-local-authority/`：C2 使用方本地权威最小夹具；
-- `../query_rule_index.py`：B3/C1 派生索引查询器；
-- `../run_rule_retrieval_ab.py`：C2 A/B 装配与静态校验 runner；
-- `../run_rule_retrieval_c3.py`：C3 真实隔离运行与 provider model / reasoning effort 证据采集 runner。
+- `targeted-evaluation-design.json`：C1 冻结的 9 个 A/B 场景、隐藏断言、当时的 B 组查询与预期命中；
+- `c3-human-scoring.json`：C3 的 9 / 9 pair、公平性、29 / 29 必需规则命中、3 / 3 安全回退、行为评分与成本观察。
 
-## C2 静态校验
+这两个文件用于回答“v1 当时验证了什么、证据是什么”，不用于对当前 HEAD 重新执行规则发现。
 
-C2 不执行真正的 Agent A/B。运行：
+其中出现的 `UG-*` / `EO-*` / `CON-*` 键、旧章节号、`query_rule_index.py` 路径和旧 source identity 都属于**冻结实验身份**，不得解释为当前规则 ID、当前章节导航或当前可执行入口。
 
-```bash
-python3 evals/run_rule_retrieval_ab.py --validate-only
-```
+## 已退出当前树的 v1 运行原型
 
-静态校验至少确认：
-
-1. C1 设计、61 项索引与当前 8 个规范性来源结构有效；
-2. 所有 A 组声明的上下文文件和 Consumer fixture 均可解析；
-3. 9 个 B query 的实际命中键 / 回退结果与 C1 冻结预期一致；
-4. `RR-C1-08` 在临时副本中制造无语义内容身份漂移，并必须触发 `indexed_source_stale_or_missing`；
-5. `RR-C1-01` 的项目级零命中必须触发 `no_indexed_rule_match`；
-6. 运行时工作区不复制 `expected_behavior`、assertions、预期规则键或预期回退；
-7. A/B 使用同一个场景 prompt；
-8. B 无回退时只物化查询返回源指针对应的当前规范性源章节 / 职责载体；回退时重新加载 C1 声明的当前完整权威基线。
-
-`run_rule_retrieval_ab.py --run` 是 C2 实现阶段保留的早期诊断入口，**不得再作为 C3 可评分运行入口**，因为它不能为同一次实际 turn 提供足够的 provider model / reasoning effort 事实证据。
-
-## C3 Readiness 静态校验
-
-运行：
-
-```bash
-python3 evals/run_rule_retrieval_c3.py --validate-only
-```
-
-该命令不会调用 Codex。它在 C2 静态装配基础上继续确认：
-
-- C3 结果 schema 已包含请求值、provider / turn 运行时事实与 A/B 配对公平性字段；
-- runtime-facts 解析器能区分 `observed` / `ambiguous` / `unavailable`；
-- provider model 与客户端 turn model 不会被混为同一个事实；
-- 为事实取证开启的原始 SSE / turn trace 不会被写入持久结果 stderr；
-- 只有单一、可观察的 provider model 与主 turn reasoning effort 才允许进入比较。
-
-## C3 真实运行入口
-
-真正 C3 使用：
-
-```bash
-python3 evals/run_rule_retrieval_c3.py \
-  --run \
-  --model <model> \
-  --reasoning-effort <effort>
-```
-
-可定向运行一个或多个场景：
-
-```bash
-python3 evals/run_rule_retrieval_c3.py \
-  --run \
-  --scenario RR-C1-02 \
-  --model <model> \
-  --reasoning-effort <effort>
-```
-
-C3 scored run 不提供单独 `--variant` 入口；每个选中场景都连续执行 A、B 两侧，避免把定向单侧诊断伪装成首次公平 A/B。
-
-### 模型 / 推理强度证据
-
-C1 要求 A/B 使用同一**实际模型与推理强度**。请求参数和客户端解析值本身都不能证明 provider 最终返回的模型，因此 C3 分层记录：
-
-- `requested_model` / `requested_reasoning_effort`：传给 Codex 的共同请求值；
-- `client_turn_model`：Codex 主 turn span 中的客户端解析模型，仅作诊断；
-- `model`：Responses SSE `response.created` / `response.completed` 中 provider 返回的 `response.model`；
-- `reasoning_effort`：同一主 turn span 的 `codex.turn.reasoning_effort`；
-- `runtime_facts_status`：`observed` / `ambiguous` / `unavailable`；
-- `pair_fairness_status`：`comparable` / `insufficient` / `mismatch`。
-
-每次 Codex run 都设置独立 `log_dir`，并继续使用 `--ephemeral --json`。由于 `codex exec` 默认只启用 error 级日志，C3 只对该隔离子进程显式设置：
+v1 曾使用：
 
 ```text
-RUST_LOG=error,codex_core=info,codex_api::sse::responses=trace
+rule-index.json
+../query_rule_index.py
+../run_rule_retrieval_ab.py
+../run_rule_retrieval_c3.py
+result-schema.json
+fixtures/consumer-local-authority/*
 ```
 
-用途严格限定为运行时事实取证：
+该工具链完成了当时的验证职责，但在 v2 Guide ownership 与 Consumer-local discovery 模型确定后已经失去 Current Runtime / Regression 职责。继续保留会形成一套来源已经陈旧、却看起来仍可执行的第二发现机制，因此从当前树移除。
 
-- stdout JSONL 保存行为轨迹与主 thread ID；
-- SSE trace 提供 provider `response.model`；
-- turn span 提供客户端 turn model 与 reasoning effort；
-- trace 既可能出现在 stderr，也可能进入显式 `log_dir`，runner 会在同一次隔离进程的两处取并集；
-- 原始 trace 只在当前进程内存 / 临时 `log_dir` 中参与解析；持久化的 `stderr.txt` 会删除 SSE event 与 turn-fact 行；
-- 临时工作目录和 log 目录名称都不包含 A/B 分组；
-- 如果 provider model、reasoning effort 或客户端 turn 事实出现多值，标记 `ambiguous`；
-- 如果 provider model 或 reasoning effort 无法取得，标记 `unavailable`；
-- 若任一侧不是 `observed`，配对标记为 `insufficient`；
-- 若 A/B 两侧观察到的 provider model / reasoning effort 不一致，标记为 `mismatch`；
-- 只有 `comparable` 的配对才可进入效果比较。
+需要复核其精确实现时，从 v1 的 Git 历史、PR #81 / #82 及后续阶段 C 相关提交恢复，不在当前树维护其 source identity。
 
-这里的 provider `response.model` 仍是服务端返回的标识，不是模型权重的密码学证明；它满足本阶段“不能用请求值冒充实际服务模型”的证据边界。
+## v1 结论仍然有效
 
-当前做法属于阶段 C 的评估运行时证据适配，不改变长期 Method / Guide / Skill，也不把 Codex trace 格式固化为通用方法依赖。若 Codex 后续把 provider model 与 reasoning effort 作为正式结构化 `exec --json` / session API 暴露，应重新评估并优先迁移到正式接口。
+移除旧运行原型不删除 v1 已验证的长期结论：
 
-### 隔离与隐藏答案
+- Repository Authority 与派生发现层分离；
+- 派生发现信息必须可删除、可重建；
+- source stale / missing / unknown / no-match 时必须 fail-closed；
+- 规则发现应追求最小正确集合，而不是固定 Top-K；
+- 检索效果必须通过行为语义和 Current Evidence 判断，不能由“索引能运行”代替；
+- 直接命中可以显著减少规则上下文，但安全 fallback 的成本不能成为取消 fallback 的理由。
 
-每个运行时工作区只包含该变体允许看到的上下文。Agent 不看到：
+长期技术解释见：
 
-- `expected_behavior`；
-- assertions；
-- 预期规则键 / 回退；
-- `metric_focus`；
-- A / B 分组身份。
+`docs/research/rule-retrieval-design-reference.md`
 
-A/B 使用同一场景正文，差异只来自允许读取的规则上下文。C3 进一步固定：
+v1 里程碑记录见：
 
-- `--sandbox read-only`；
-- `approval_policy="never"`；
-- `web_search="disabled"`。
+`docs/project/rule-governance-knowledge-activation-v1.md`
 
-因此评估不依赖外部检索，也不会由 Agent 修改工作区。
+v2 当前 Consumer-local 机制见：
 
-运行结果写入：
+- `docs/guides/consumer-local-rule-activation.md`
+- `docs/project/consumer-local-activation-metadata-contract-v2.md`
+- `docs/project/rule-governance-knowledge-activation-v2.md`
 
-`evals/results/rule-retrieval/`
+## 历史文本解释边界
 
-每侧保留：
-
-- `<scenario>-<variant>.jsonl`；
-- `<scenario>-<variant>.stderr.txt`（已移除运行时事实 trace，仅保留其余诊断行）；
-- `<scenario>-<variant>.runtime-facts.json`；
-- `<scenario>-<variant>.result.json`。
-
-`runtime-facts.json` 只保存线程 ID、事实来源类别和观察到的模型 / effort 值集合，不复制完整 trace。完整临时 log_dir 随隔离工作区销毁；这些结果目录继续属于本地 / 临时评估证据，并已由 `.gitignore` 排除，不进入长期 Git 权威。
-
-进程退出码只说明 Codex 进程是否正常结束；A/B fairness `comparable` 也只说明比较条件成立。最终必须按 `result-schema.json` 和 C1 隐藏断言人工评分，进程成功与公平性成立都不等于 Eval PASS。
-
-## B 组章节物化边界
-
-B 组查询器返回 `source_pointer` 后，运行器从当前规范性源实时读取内容：
-
-- `§N` / `§N.M` 指针按 Markdown 数字标题提取对应章节；
-- `§N.M～§N.K` 按范围展开；
-- Skill 职责契约等无法继续用数字章节缩小的独立载体复制当前完整文件；
-- 物化文件带来源路径、章节和 blob identity 注释，但该注释只是 provenance，不成为规则权威；
-- 当前指针粒度若导致某个章节仍包含额外邻近规则，其上下文噪声应在 C3 如实计量，而不是为了美化 B 组偷偷重写规则或新增第二份摘要权威。
+v1 项目记录中出现的“当前索引”“当前可执行证据”等措辞描述的是**v1 完成当时的里程碑状态**。在 v2 之后恢复当前规则发现机制时，不应从这些历史措辞重新启用已退出的 JSON/Python rule-index 工具链。
