@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "review_target",
+    "verdict",
+    "targeted_checks",
+    "findings",
+    "gate_assessment",
+    "recommended_next_action"
+  ],
+  "properties": {
+    "review_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "candidate_head", "candidate_pr"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "const": "dygapp/agentic-dev"
+        },
+        "candidate_head": {
+          "type": "string",
+          "const": "e7e952850d99d59ef75767ec5cff5b5b22262a89"
+        },
+        "candidate_pr": {
+          "type": "integer",
+          "const": 102
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["PASS", "REVISE", "REJECT"]
+    },
+    "targeted_checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adoption_acceptance_owner",
+        "downstream_single_ownership",
+        "v2_compatibility_boundary"
+      ],
+      "properties": {
+        "adoption_acceptance_owner": {"$ref": "#/$defs/check"},
+        "downstream_single_ownership": {"$ref": "#/$defs/check"},
+        "v2_compatibility_boundary": {"$ref": "#/$defs/check"}
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/finding"}
+    },
+    "gate_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blocking_count",
+        "medium_count",
+        "low_count",
+        "v3_02_gate_ready",
+        "pr_ready_for_human_integration",
+        "reason"
+      ],
+      "properties": {
+        "blocking_count": {"type": "integer", "minimum": 0},
+        "medium_count": {"type": "integer", "minimum": 0},
+        "low_count": {"type": "integer", "minimum": 0},
+        "v3_02_gate_ready": {"type": "boolean"},
+        "pr_ready_for_human_integration": {"type": "boolean"},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "recommended_next_action": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason", "evidence_paths"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["PASS", "REVISE", "REJECT"]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_paths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "severity",
+        "category",
+        "title",
+        "violated_gate_or_goal",
+        "failure_scenario",
+        "affected_resources",
+        "evidence",
+        "minimum_fix",
+        "requires_candidate_change"
+      ],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": ["Blocking", "Medium", "Low"]
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "violated_gate_or_goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "failure_scenario": {
+          "type": "string",
+          "minLength": 1
+        },
+        "affected_resources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "minimum_fix": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requires_candidate_change": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
