@@ -19,9 +19,18 @@
       "additionalProperties": false,
       "required": ["repository", "base_commit", "candidate_file"],
       "properties": {
-        "repository": {"const": "dygapp/agentic-dev"},
-        "base_commit": {"type": "string", "minLength": 7},
-        "candidate_file": {"const": "evals/rule-governance-v3/v3-candidate-review-package.md"}
+        "repository": {
+          "type": "string",
+          "const": "dygapp/agentic-dev"
+        },
+        "base_commit": {
+          "type": "string",
+          "minLength": 7
+        },
+        "candidate_file": {
+          "type": "string",
+          "const": "evals/rule-governance-v3/v3-candidate-review-package.md"
+        }
       }
     },
     "verdict": {
