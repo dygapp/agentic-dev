@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "V3-01 Ownership Model Independent Review",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "review_target",
+    "verdict",
+    "dimension_verdicts",
+    "classifications",
+    "findings",
+    "gate_assessment",
+    "recommended_next_action"
+  ],
+  "properties": {
+    "review_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "candidate_head", "candidate_pr"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "const": "dygapp/agentic-dev"
+        },
+        "candidate_head": {
+          "type": "string",
+          "const": "8504d1b2fcb5a834de75279f4ec7dfc81af70119"
+        },
+        "candidate_pr": {
+          "type": "integer",
+          "const": 100
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["PASS", "REVISE", "REJECT"]
+    },
+    "dimension_verdicts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_owner_model",
+        "scope_provenance_orthogonality",
+        "lifecycle_separation",
+        "representation_separation",
+        "guide_boundary",
+        "skill_admission",
+        "consumer_lifecycle_compatibility",
+        "v1_v2_preservation",
+        "holdout_consistency"
+      ],
+      "properties": {
+        "semantic_owner_model": {"$ref": "#/$defs/dimension"},
+        "scope_provenance_orthogonality": {"$ref": "#/$defs/dimension"},
+        "lifecycle_separation": {"$ref": "#/$defs/dimension"},
+        "representation_separation": {"$ref": "#/$defs/dimension"},
+        "guide_boundary": {"$ref": "#/$defs/dimension"},
+        "skill_admission": {"$ref": "#/$defs/dimension"},
+        "consumer_lifecycle_compatibility": {"$ref": "#/$defs/dimension"},
+        "v1_v2_preservation": {"$ref": "#/$defs/dimension"},
+        "holdout_consistency": {"$ref": "#/$defs/dimension"}
+      }
+    },
+    "classifications": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {"$ref": "#/$defs/classification"}
+    },
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/finding"}
+    },
+    "gate_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ready_for_v3_02_audit", "reason"],
+      "properties": {
+        "ready_for_v3_02_audit": {"type": "boolean"},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "recommended_next_action": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["PASS", "REVISE", "REJECT"]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "semantic_owner",
+        "applicability_scope",
+        "provenance_state",
+        "lifecycle_roles",
+        "representation_form",
+        "mixed_semantic_bodies",
+        "confidence",
+        "reason",
+        "ambiguity"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "enum": [
+            "AGENTS.md",
+            "README.md",
+            "docs/project/ai-review-guidelines.md",
+            "docs/architecture/engineering-capability-architecture.md",
+            "docs/decisions/method-decisions.md",
+            "skills/github-actions-verification/SKILL.md",
+            "tasks/README.md",
+            "docs/research/llm-wiki-rule-governance-fit-analysis.md",
+            "docs/project/project-roadmap.md",
+            "docs/project/rule-governance-knowledge-activation-v2.md"
+          ]
+        },
+        "semantic_owner": {
+          "type": "string",
+          "enum": [
+            "核心方法 / 原则",
+            "技能 / 过程型能力",
+            "可复用工程能力 / 工程纪律 / 画像",
+            "仓库本地政策 / 规范 / 规则",
+            "项目 / 产品权威资源",
+            "Guide",
+            "研究 / 输入 / 证据",
+            "混合正文，需按语义拆分",
+            "模型缺少合适类别"
+          ]
+        },
+        "applicability_scope": {
+          "type": "string",
+          "enum": ["跨仓库可复用", "仓库本地", "外部输入", "仅历史"]
+        },
+        "provenance_state": {
+          "type": "string",
+          "enum": [
+            "本仓原生",
+            "从上游采用",
+            "从外部输入提升",
+            "派生投影",
+            "外部未采用",
+            "历史来源"
+          ]
+        },
+        "lifecycle_roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "启动 / 初始化",
+              "首次采用",
+              "基线升级",
+              "普通运行",
+              "职责按需加载",
+              "验证 / 复核",
+              "仅历史 / 证据"
+            ]
+          }
+        },
+        "representation_form": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mixed_semantic_bodies": {
+          "type": "boolean"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low"]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ambiguity": {
+          "type": "string"
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "severity",
+        "title",
+        "design_goal_violated",
+        "failure_scenario",
+        "affected_components",
+        "evidence_refs",
+        "minimal_fix"
+      ],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": ["Blocking", "Medium", "Low"]
+        },
+        "title": {"type": "string", "minLength": 1},
+        "design_goal_violated": {"type": "string", "minLength": 1},
+        "failure_scenario": {"type": "string", "minLength": 1},
+        "affected_components": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "minimal_fix": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
