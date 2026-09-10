@@ -8,19 +8,21 @@
 
 v3 的首要目标不是继续增加 Rule Index、Manifest、Catalog 或其他发现技术，而是先解决更上游的问题：
 
-> `agentic-dev` 中的长期知识、规则和 Agent 能力是否被放在正确的 semantic owner 中？
+> `agentic-dev` 中的长期知识、规则和 Agent 能力是否由正确的**语义所有者**持有？
 
-v1 / v2 已证明最小上下文、Consumer-local ordinary runtime、source currentness 和渐进式披露的重要性，但当前进一步暴露出：如果 Method、Skill、Engineering Capability、Repository-local Rule、Project Authority 与 Guide 的边界本身不清楚，任何新的 discovery mechanism 都会继承并放大 ownership debt。
+v1 / v2 已验证最小上下文、Consumer 本地普通运行、来源时效性和渐进式披露的重要性。当前进一步暴露出：如果核心方法、技能、可复用工程能力、仓库本地规则、项目权威与 Guide 的边界本身不清楚，任何新的发现机制都会继承并放大所有权债务。
 
 因此 v3 采用以下顺序：
 
 ```text
-先确定 owner
+先确定语义所有者
 → 再审计现有内容
-→ 再确定 Consumer lifecycle
-→ 再判断 Skill / reusable capability 边界
+→ 再确定 Consumer 生命周期
+→ 再判断技能 / 可复用工程能力边界
 → 最后才设计 metadata / discovery
 ```
+
+其中 `metadata`、`discovery` 等仅在需要指代具体技术机制时保留原样，不把它们扩展成文档主体语言。
 
 ## 2. 启动依据
 
@@ -28,117 +30,117 @@ v1 / v2 已证明最小上下文、Consumer-local ordinary runtime、source curr
 
 在正式启动 v3 前，临时评估分支 `eval/rule-governance-v3-gpt6-review` 对候选治理方向进行了独立挑战：
 
-- 首轮评审：`REVISE`，Blocking=0，Medium=1；
-- 唯一 Medium 指出原候选没有为 Engineering Discipline、Technology Profile、Verification Profile 等“跨项目可复用、但不具有独立任务流程”的能力提供明确归属；
-- 该 finding 经当前正式工程能力架构复核后接受；
-- 候选修订为四维 ownership 判断，并增加 Reusable Engineering Capability / Discipline / Profile；
-- 定向复评通过：Blocking=0，Medium=0，Low=0。
+- 首轮评审：结论为需要修订，阻塞问题 0 项，中等级问题 1 项；
+- 唯一中等级问题指出原候选没有为工程纪律、技术画像、验证画像等“跨项目可复用、但不具有独立任务流程”的能力提供明确归属；
+- 该问题经当前正式工程能力架构复核后接受；
+- 候选修订为四维所有权判断，并补充“可复用工程能力 / 工程纪律 / 画像”语义所有者；
+- 定向复评通过：阻塞、中等、低等级问题均为 0。
 
-这些评估结果只作为启动前 Evidence，不自动获得 Repository Authority。正式长期结论必须重新进入当前规划与后续 Architecture / Contract / ADR 等真实 owner。
+这些评估结果只作为启动前证据，不自动获得仓库权威。正式长期结论必须重新进入当前规划以及后续真正适用的架构、契约、ADR 等语义所有者。
 
 ## 3. 当前规划主线
 
 v3 按以下有限子任务顺序推进：
 
-1. **V3-01 — Knowledge & Capability Ownership Model**  
-   建立可执行的 ownership decision matrix，作为后续审计的唯一分类依据。
-2. **V3-02 — Current Repository Ownership Audit**  
-   对当前仓库按 semantic body / rule family 审计，形成 keep / move / merge / split / supersede / delete 候选，不先执行物理迁移。
-3. **V3-03 — Consumer Initialization / Adoption / Upgrade / Runtime Lifecycle**  
-   明确一次性 setup 与 ordinary runtime 的严格边界，以及 Consumer-local 资源如何形成并自行演进。
-4. **V3-04 — Skill Reclassification & Admission**  
-   判断现有 Guide / Rule 中哪些属于已有 Skill、Reusable Engineering Capability、Repository-local Rule 或真正的新 Skill 候选。
-5. **V3-05 — AI-ready Resource Model**  
-   在 owner 已确定后定义哪些长期资源需要结构化 metadata，以及普通 Markdown 与 `SKILL.md` 的兼容边界。
-6. **V3-06 — Discovery Architecture**  
-   判断 ownership 修正后还需要多复杂的 Repository Resource Discovery；不得预设一定需要统一 Index。
-7. **V3-07 — agentic-dev Self-Adoption**  
+1. **V3-01 — 知识与能力所有权模型**  
+   建立可执行的所有权判断矩阵，作为后续审计的唯一分类依据。
+2. **V3-02 — 当前仓库所有权审计**  
+   对当前仓库按规范正文 / 规则族审计，形成保留、移动、合并、拆分、取代、删除候选，不先执行物理迁移。
+3. **V3-03 — Consumer 初始化、采用、升级与普通运行生命周期**  
+   明确一次性启动说明与普通运行的严格边界，以及 Consumer-local 资源如何形成并自行演进。
+4. **V3-04 — 技能重分类与准入**  
+   判断现有 Guide / Rule 中哪些属于已有技能、可复用工程能力、仓库本地规则或真正的新技能候选。
+5. **V3-05 — 面向 Agent 的结构化资源模型**  
+   在所有权已经确定后，定义哪些长期资源需要结构化 metadata，以及普通 Markdown 与 `SKILL.md` 的兼容边界。
+6. **V3-06 — 资源发现架构**  
+   判断所有权修正后还需要多复杂的仓库资源发现机制；不得预设一定需要统一 Index。
+7. **V3-07 — `agentic-dev` 自采用**  
    让 `agentic-dev` 自身使用与 Consumer 相同的核心模型，避免维护两套架构。
-8. **V3-08 — Consumer Validation**  
-   在真实 Consumer 上验证 initialization / upgrade / ordinary runtime 与 source-currentness、上下文成本和 fail-closed 行为。
+8. **V3-08 — Consumer 验证**  
+   在真实 Consumer 上验证初始化、升级、普通运行、来源时效性、上下文成本和失败关闭行为。
 
 只有前序 Gate 满足后才能进入后序任务；Roadmap 顺序不自动授予 Execute Authority。
 
 ## 4. 当前稳定方向
 
-v3 当前至少区分以下 semantic owner role：
+v3 当前至少区分以下语义所有者：
 
-1. Method / Principle；
-2. Skill / Procedural Capability；
-3. Reusable Engineering Capability / Discipline / Profile；
-4. Repository-local Policy / Standard / Rule；
-5. Project / Product Authority Resource；
+1. 核心方法 / 原则；
+2. 技能 / 过程型能力；
+3. 可复用工程能力 / 工程纪律 / 画像；
+4. 仓库本地政策 / 规范 / 规则；
+5. 项目 / 产品权威资源；
 6. Guide；
-7. Research / Input / Evidence。
+7. 研究 / 输入 / 证据。
 
-同时必须把以下维度与 semantic owner 分开判断：
+同时必须把以下维度与语义所有者分开判断：
 
-- applicability / provenance scope；
-- runtime / lifecycle role；
-- representation / authority form。
+- 适用范围与来源状态；
+- 运行与生命周期角色；
+- 载体与权威形式。
 
-Architecture、Contract、Profile、`SKILL.md`、Guide、ADR、Requirement、generated index 等文件或载体形式不能直接替代 semantic ownership 判断。
+Architecture、Contract、Profile、`SKILL.md`、Guide、ADR、Requirement、generated index 等文件或载体形式不能直接替代语义所有权判断。
 
 ## 5. Guide 当前边界
 
 Guide 的候选边界收敛为：
 
-> 面向人，以及 initialization / adoption / baseline upgrade 等低频 setup 场景，解释如何理解、选择和采用 `agentic-dev`。
+> 面向人，以及初始化、首次采用、基线升级等低频启动场景，解释如何理解、选择和采用 `agentic-dev`。
 
 因此 Guide 可以在初始化或升级时被 Agent 完整读取；这种一次性 token 成本本身不是问题。
 
 Guide 不应继续承担：
 
-- ordinary runtime 的核心 Agent procedure；
-- Repository-local policy 的默认正文；
-- Project Authority 的事实正文；
-- Reusable Engineering Capability 的默认容器；
-- “不属于 Method / Skill”内容的 catch-all bucket。
+- 普通运行中的核心 Agent 执行过程；
+- 仓库本地政策的默认正文；
+- 项目权威的事实正文；
+- 可复用工程能力的默认容器；
+- “不属于核心方法 / 技能”内容的兜底容器。
 
 `using-agentic-dev.md`、`verification-evidence-rules.md`、`external-operation-guidelines.md`、`rule-activation-guide.md` 和 `consumer-local-rule-activation.md` 都必须在 V3-02 按正文语义重新审计，而不是按当前目录名决定身份。
 
 ## 6. Consumer 初始化与演进方向
 
-Consumer 初始化不是简单复制 `agentic-dev` 文件，而是一次显式 Repository Bootstrap / Adoption。
+Consumer 初始化不是简单复制 `agentic-dev` 文件，而是一次显式的仓库启动与采用过程。
 
 初始化至少可能处理：
 
-- 选择性采用 Method / Skill / Reusable Engineering Capability；
-- 建立 Consumer-local `AGENTS.md`、Git 规范、术语 / 语言规范、验证 / 集成政策等 Repository-local Rules；
-- 如果已经提供原始需求，分析并形成初始 Consumer authoritative requirements；
-- 如果没有原始需求，不为了模板完整制造空 Requirement / Architecture / ADR，后续按 Consumer-local Method / Skill 逐步形成；
-- 明确 Raw Input / Research / Evidence 与 Current Authority 的边界。
+- 选择性采用核心方法、技能和可复用工程能力；
+- 建立 Consumer-local `AGENTS.md`、Git 规范、术语 / 语言规范、验证 / 集成政策等仓库本地规则；
+- 如果已经提供原始需求，分析并形成初始 Consumer 权威需求；
+- 如果没有原始需求，不为了模板完整制造空 Requirement / Architecture / ADR，后续按 Consumer-local 方法和技能逐步形成；
+- 明确原始输入、研究、证据与现行权威的边界。
 
 采用完成后：
 
 ```text
-origin / upstream provenance
+来源 / 上游 provenance
 ≠
-current authority
+当前权威
 ```
 
-Consumer-local 规则和项目权威由 Consumer 自己拥有、维护和演进。ordinary runtime 不因 `agentic-dev` upstream 出现新提交就自动改变行为。
+Consumer-local 规则和项目权威由 Consumer 自己拥有、维护和演进。普通运行不因 `agentic-dev` 上游出现新提交就自动改变行为。
 
-baseline upgrade 是显式、低频操作；升级期间可以重新读取 upstream Guide / Method / Skill / reusable resources，完成逐项 adopt / retain-or-override / reject / supersede 后再次回到 local-only ordinary runtime。
+基线升级是显式、低频操作；升级期间可以重新读取上游 Guide、核心方法、技能和可复用资源，完成逐项采用、保留 / 覆盖、拒绝、取代后再次回到只依赖本地现行资源的普通运行。
 
-## 7. v1 / v2 Preservation
+## 7. v1 / v2 必须保留的成果
 
 v3 必须继续保护至少以下已经验证的长期成果：
 
-- Thin Bootstrap；
-- Repository / Consumer Authority first；
-- Progressive Disclosure；
-- Evidence before claims；
-- semantic body 单点 owner；
-- derived discovery 不拥有规范正文；
-- stale / missing / ambiguity fail-closed；
-- primary responsibility 与最小 supporting context 分离；
-- routing-only 不机械加载完整 Skill；
-- 真正进入职责时 JIT load Skill；
-- Stage Return 后重新判断；
-- Consumer ordinary runtime local-only；
-- baseline adoption 逐项 adopt / retain-or-override / reject / supersede；
-- 同一 Runtime scope / discovery responsibility 不并行维护多个 Current derived mechanism。
+- 薄启动入口；
+- 仓库 / Consumer 权威优先；
+- 渐进式披露；
+- 证据先于结论；
+- 规范正文单点所有权；
+- 派生发现机制不拥有规范正文；
+- 陈旧、缺失、歧义时失败关闭；
+- 主职责与最小辅助上下文分离；
+- 只做路由判断时不机械加载完整技能；
+- 真正进入职责时按需加载技能；
+- 阶段返回后重新判断；
+- Consumer 普通运行只依赖 Consumer-local 现行资源；
+- 基线采用逐项采用、保留 / 覆盖、拒绝、取代；
+- 同一运行范围 / 发现职责不并行维护多个现行派生机制。
 
 v3 不以“重新设计”为理由推翻这些已经通过真实 Consumer 验证的行为。
 
@@ -150,7 +152,7 @@ V3-01 / V3-02 完成前，不：
 - 实现 Front Matter generator；
 - 冻结统一 metadata schema；
 - 创建 Rule Super Skill / Stage Router Skill；
-- 批量新增或改造 Skill；
+- 批量新增或改造技能；
 - 物理移动 / 拆分 Guide；
 - 修改 Consumer Repository；
 - 启动 WI-06 / WI-07 / WI-09 或其他独立候选。
@@ -168,9 +170,9 @@ v3 不用一个“大 ADR”承载全部探索。
 
 高概率 ADR 候选包括：
 
-- Knowledge & Capability Ownership Architecture；
-- Skill-centric procedural runtime 与 Guide / rule-centric runtime 的长期边界；
-- AI-ready Resource Metadata / generated Resource Index（仅在 V3-05 / V3-06 证明需要后）。
+- 知识与能力所有权架构；
+- 以技能承担过程型能力，与以 Guide / Rule 承担普通运行过程之间的长期边界；
+- 面向 Agent 的资源 metadata / 派生资源索引（仅在 V3-05 / V3-06 证明需要后）。
 
 目录名、字段名、文件拆分数量等局部实现选择不因为属于 v3 就自动 ADR 化。
 
@@ -180,6 +182,6 @@ v3 不用一个“大 ADR”承载全部探索。
 
 当前只授权完成 V3-01 的规划、分析、候选文档和必要复核。V3-01 Gate 为：
 
-> ownership decision matrix 足以让独立 reviewer 对代表性资源得到一致分类，且不存在未解决的阻塞或中等级 ownership ambiguity。
+> 所有权判断矩阵足以让独立评审者对代表性资源得到一致分类，且不存在未解决的阻塞或中等级所有权歧义。
 
 达到 Gate 后，只能进入“是否启动 V3-02”的下一规划判断，不自动获得物理迁移或实现权限。
