@@ -26,26 +26,17 @@
 
 当前阶段：
 
-> **Phase D — Discovery → Routing → Skill 接口**
+> **Phase F — 真实 Consumer 验证**
 
-Phase A～C 已完成设计基线：
-
-- Phase A：Consumer-local Runtime Target 与验收基线；
-- Phase B：Rule Ownership / Guide Decomposition 审计；
-- Phase C：最小 Activation Manifest / Runtime Catalog 契约。
-
-当前下一实际 Gate：冻结 discovery → responsibility routing → routing-only / Skill execution → Stage Return / fail-closed 的最小运行接口，然后进入 Phase E baseline adoption / Consumer-local projection。
+Phase A～E 已完成设计与 reusable guidance 收敛。当前下一实际 Gate 是按 `docs/project/consumer-local-runtime-validation-plan-v2.md` 在真实 Consumer 中执行 R1～R5；只有 Consumer-local 行为验证通过后才进入 Phase G。
 
 v2 项目级 Authority：
 
 `docs/project/rule-governance-knowledge-activation-v2.md`
 
-当前设计输入：
+当前验证计划：
 
-- `docs/project/consumer-local-rule-runtime-target-v2.md`
-- `docs/project/consumer-local-rule-runtime-acceptance-v2.md`
-- `docs/project/rule-ownership-decomposition-audit-v2.md`
-- `docs/project/consumer-local-activation-metadata-contract-v2.md`
+`docs/project/consumer-local-runtime-validation-plan-v2.md`
 
 协调计划：
 
@@ -56,8 +47,8 @@ v2 项目级 Authority：
 | 路线 | 状态 | 当前边界 |
 |---|---|---|
 | 核心方法 | 稳定维护 | 只有高质量通用证据揭示生命周期或 Authority 缺口时才定向修改 |
-| 规则治理与知识激活 | **v2 当前** | Consumer-local-first；当前 Phase D，不直接产品化临时 eval 方案 |
-| 使用方采用 | **v2 核心完成门禁** | 必须证明 adopted capability 可在 Consumer-local Repository 中持续发现和激活，ordinary runtime 不依赖 upstream |
+| 规则治理与知识激活 | **v2 当前 / Phase F** | A～E 已完成；等待真实 Consumer R1～R5 验证，不直接把内部设计文档投射给 Consumer |
+| 使用方采用 | **当前核心完成门禁** | 必须证明 adopted capability 可在 Consumer-local Repository 中持续发现和激活，ordinary runtime 不依赖 upstream |
 | 工程纪律 | 已完成基础建设，可条件扩展 | 当前三项正式 Engineering Discipline；第四项未启动 |
 | 技术画像 | 候选库 | 当前代表性画像为 Vue 3 + TypeScript；WI-06 未启动 |
 | 任务型 Skill | 候选库 | WI-07 代码复核能力 v1 为优先后继候选，但不得在 v2 内提前启动 |
@@ -83,11 +74,7 @@ Thin Consumer-local Bootstrap
 
 其中不包含日常访问 `agentic-dev` upstream。
 
-### 3.2 已完成设计阶段
-
-#### Phase A — Consumer-local 目标模型与验收基线
-
-已完成。
+### 3.2 已完成 Phase A — Consumer-local Target / Acceptance
 
 结果：
 
@@ -96,25 +83,21 @@ Thin Consumer-local Bootstrap
 
 确认 Consumer-native Authority 与 adopted reusable capability 可以进入同一本地发现路径，但必须保持来源身份和 Consumer Authority 优先；最终必须由真实 Consumer Fresh Context 验证。
 
-#### Phase B — Rule Ownership / Guide Decomposition
-
-已完成。
+### 3.3 已完成 Phase B — Rule Ownership / Guide Decomposition
 
 结果：
 
 `docs/project/rule-ownership-decomposition-audit-v2.md`
 
-确认 Principle、Skill、Engineering Discipline、Guide Rule Module、Platform-specific capability 与 Consumer-native Authority 必须保持单点 semantic owner；Guide 不能按章节机械拆分，Catalog 也不能复制规则正文。
+确认 Principle、Skill、Engineering Discipline、Guide Rule Module、Platform-specific capability 与 Consumer-native Authority 必须保持单点 semantic owner；Guide 不能按章节机械拆分，Catalog 不能复制规则正文。
 
-#### Phase C — Minimal Metadata / Catalog Contract
-
-已完成。
+### 3.4 已完成 Phase C — Minimal Metadata / Catalog Contract
 
 结果：
 
 `docs/project/consumer-local-activation-metadata-contract-v2.md`
 
-当前采用逻辑两层模型：
+采用逻辑两层模型：
 
 ```text
 Activation Manifest
@@ -122,39 +105,55 @@ Activation Manifest
 → Consumer-local semantic owner
 ```
 
-Manifest / Catalog 只承担发现，不成为第二套 Authority；semantic-reviewed source 变化必须重新复核 metadata，current-locator 只定位当前 Authority、不缓存其当前状态正文。
+`semantic-reviewed` metadata 在 source 语义变化后必须重新复核；`current-locator` 只定位 Current Authority，不缓存易变化状态正文。
 
-### 3.3 当前 Phase D
+### 3.5 已完成 Phase D — Discovery → Routing → Skill Interface
 
-目标：冻结最小 Runtime Responsibility Interface，而不是创建新的 Stage Router / Rule Super Skill。
+结果：
 
-必须回答：
+`docs/project/consumer-local-runtime-routing-interface-v2.md`
 
-- task signal 如何映射到 primary responsibility；
-- supporting context 如何参与但不夺取 primary responsibility；
-- routing-only 何时可以不加载 Skill；
-- 真正进入职责执行时何时加载 Skill；
-- Stage Return 如何重新解析责任并使旧 routing / readiness 失效；
-- 多个规则命中时如何得到最小充分集合；
-- stale / missing / ambiguity / conflict / high-impact 情况如何 fail-closed；
-- runtime adapter 如何只负责交付 / 发现 / 加载，而不拥有 Method 语义。
+最小模型：一个 current primary responsibility + 最小 supporting constraints。`routing-only` 与 Skill execution 分离；Stage Return 后重新 routing；Runtime Adapter 只负责 discovery / delivery / loading，不拥有 Method 语义。
 
-Phase D 完成后进入 Phase E。
+### 3.6 已完成 Phase E — Baseline Adoption / Consumer-local Projection
 
-### 3.4 后续阶段
+结果：
 
-```text
-Phase D  Discovery / Routing / Skill Interface
-→ Phase E Baseline Adoption / Consumer-local Projection
-→ Phase F 真实 Consumer 验证
-→ Phase G 收敛、回归、最终 AI Review 与集成准备
-```
+- `docs/project/consumer-local-baseline-adoption-projection-v2.md`
+- reusable Guide：`docs/guides/consumer-local-rule-activation.md`
+- 上游薄导航同步：`docs/guides/rule-activation-guide.md`
 
-Phase F 是核心完成门禁，不是可选附加实验。Consumer Repository 的实际修改必须在 Consumer 自己的授权上下文中执行；`agentic-dev` 会话不得跨仓库静默修改 Consumer。
+关键边界：
+
+- `last evaluated upstream baseline` 与每个 active local asset 的 `adopted_from` 分离；
+- adoption decision history 只在显式升级时读取，不进入 ordinary Fresh Context；
+- `adopt / retain-or-override / reject-not-applicable / supersede-remove` 逐项决定；
+- adopted change 必须落成 Consumer-local current asset；
+- upstream `docs/project/*`、Roadmap、Issue / PR 状态和 Research / Eval 过程不投射为 Consumer runtime Authority。
+
+### 3.7 当前 Phase F — 真实 Consumer 验证
+
+验证计划：
+
+`docs/project/consumer-local-runtime-validation-plan-v2.md`
+
+首个真实 Consumer：`dygapp/jilinjobs-cms`。实际 Consumer 状态必须在其独立 Fresh Context 中从 GitHub 重新恢复，本 Roadmap 不保存其 Current State。
+
+Phase F 必须覆盖：
+
+- R1 Ordinary Fresh Context；
+- R2 Stage Return / Ambiguity / Routing-only；
+- R3 Consumer-specific override；
+- R4 Baseline upgrade lifecycle；
+- R5 stale / Catalog rebuild。
+
+Consumer Repository 的实际修改只能在 Consumer 自己授权的上下文中执行；当前 `agentic-dev` 会话不得跨仓库静默修改。
+
+只有 R1～R5 完整且没有未解决 Blocking / Medium reusable finding，才进入 Phase G。
 
 ## 4. 根入口职责
 
-为控制 Fresh Context 成本，当前根入口职责固定如下：
+为控制 Fresh Context 成本，根入口职责固定如下：
 
 - `AGENTS.md`：稳定 Repository Governance、Authority Boundary 与 Agent 工作约束；不维护当前项目状态；
 - `README.md`：简短当前状态与稳定导航；
@@ -162,7 +161,7 @@ Phase F 是核心完成门禁，不是可选附加实验。Consumer Repository �
 - 具体 `docs/project/*`：里程碑设计与治理记录；
 - Git / PR / Issue / Actions：精确外部状态和证据。
 
-当前阶段、里程碑、候选、Issue / PR 状态或下一工作项不得为了 Fresh Context 方便重新复制到 `AGENTS.md`。
+当前阶段、里程碑、候选、Issue / PR 状态、实验进展或下一工作项不得为了 Fresh Context 方便重新复制到 `AGENTS.md`。
 
 ## 5. 已完成里程碑索引
 
@@ -191,7 +190,7 @@ Issue #33 的既有 Consumer 实验已关闭；Issue #58 继承长期 Consumer f
 
 状态：**优先后继候选，未启动**。
 
-只有在 v2 完成、取消或被取代后，由新的人工路线决策重新选择才可启动。候选职责仍是独立、高信噪比、受控上下文的代码复核；不得变成通用方法阶段或“复核一切”的超级 Skill。
+只有在 v2 完成、取消或被取代后，由新的人工路线决策重新选择才可启动。不得变成通用方法阶段或“复核一切”的超级 Skill。
 
 ### WI-06 — 第二及后续技术画像
 
@@ -227,7 +226,7 @@ Issue #33 的既有 Consumer 实验已关闭；Issue #58 继承长期 Consumer f
 - Rule Super Skill；
 - 机械拆分全部 Guide。
 
-临时 `eval/*` 分支只保存设计证据，不是当前 Repository Authority。
+临时 `eval/*` 分支只保存设计证据，不是 Current Repository Authority。
 
 ## 8. Fresh Context 恢复顺序
 
@@ -237,10 +236,9 @@ Issue #33 的既有 Consumer 实验已关闭；Issue #58 继承长期 Consumer f
 2. 读取根 `README.md`，取得简短当前状态；
 3. 读取本文，确认当前活动里程碑、阶段和下一 Gate；
 4. 读取当前 GitHub `master`、Open PR / Issue 和必要 Actions，确认是否存在更新的集成事实或人工路线决定；
-5. 当前为 v2 时，读取 Issue #92 与 `docs/project/rule-governance-knowledge-activation-v2.md`；
-6. 再按当前 Phase 只读取对应设计结果、Guide / Skill / Research / Consumer Evidence；
-7. 已关闭里程碑、完整历史评估和全部 Research 不作为默认恢复输入；
-8. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
+5. 当前为 v2 Phase F 时，读取 Issue #92、`docs/project/rule-governance-knowledge-activation-v2.md` 与 `docs/project/consumer-local-runtime-validation-plan-v2.md`；
+6. Consumer 验证结果返回前，不默认恢复 v1 完整历史、全部 eval 输出或其他候选资料；
+7. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
 
 ## 9. 更新触发
 
