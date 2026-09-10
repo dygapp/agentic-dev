@@ -1,4 +1,4 @@
-# Knowledge & Capability Ownership Model v3
+# 知识与能力所有权模型 v3
 
 **状态：** V3-01 候选基线  
 **跟踪：** Issue #95  
@@ -6,49 +6,49 @@
 
 ## 1. 目的
 
-本文为 V3-01 提供可执行的 ownership decision matrix，用于判断一段长期内容应该由谁拥有，而不是根据它当前位于哪个目录、使用什么文件名或被哪个 Agent 读取来推断身份。
+本文为 V3-01 提供可执行的所有权判断矩阵，用于判断一段长期内容应该由谁拥有，而不是根据它当前位于哪个目录、使用什么文件名或被哪个 Agent 读取来推断身份。
 
-核心原则：
+本文把 **semantic owner** 固定翻译为“**语义所有者**”。核心原则是：
 
-> **先判断 semantic owner，再判断适用范围 / 来源、生命周期和 representation。**
+> **先判断语义所有者，再判断适用范围与来源、生命周期和载体形式。**
 
 以下四个维度必须分开：
 
 ```text
-semantic owner role
-+ applicability / provenance
-+ runtime / lifecycle role
-+ representation / authority form
+语义所有者
++ 适用范围 / 来源状态
++ 运行 / 生命周期角色
++ 载体 / 权威形式
 ```
 
-其中第二维内部继续区分 **applicability scope** 与 **provenance state**；两者可以同时成立，不能把“只在当前仓库生效”和“来源于 upstream adoption”误当成互斥身份。
+其中第二维内部继续区分“适用范围”与“来源状态”；两者可以同时成立，不能把“只在当前仓库生效”和“来源于上游采用”误当成互斥身份。
 
 任何单一 `type`、目录名、Front Matter 字段或文件扩展名都不能替代这些判断。
 
-## 2. 第一维：Semantic Owner Role
+## 2. 第一维：语义所有者
 
-### 2.1 Method / Principle
+### 2.1 核心方法 / 原则
 
 回答：
 
-> 通用开发生命周期、阶段职责、Authority 边界和顶层不变量是什么？
+> 通用开发生命周期、阶段职责、权威边界和顶层不变量是什么？
 
 进入条件：
 
 - 跨多个项目成立；
-- 会约束多个 Skill / capability；
-- 改变后会影响生命周期、阶段、完成语义、Authority precedence 或顶层工作原则。
+- 会约束多个技能或工程能力；
+- 改变后会影响生命周期、阶段、完成语义、权威优先级或顶层工作原则。
 
 不进入：
 
 - 单一技术栈规则；
-- 单一 Repository 的 Git / 语言 / 集成政策；
-- 某个稳定 Agent procedure 的具体步骤；
+- 单一仓库的 Git / 语言 / 集成政策；
+- 某个稳定 Agent 过程的具体步骤；
 - 项目业务事实。
 
-典型 owner：`docs/method/*`。
+典型载体：`docs/method/*`。
 
-### 2.2 Skill / Procedural Capability
+### 2.2 技能 / 过程型能力
 
 回答：
 
@@ -56,72 +56,72 @@ semantic owner role
 
 进入条件通常同时包括：
 
-- 有明确 trigger / Use When / Do Not Use；
+- 有明确触发条件和不适用条件；
 - 有稳定输入；
-- 有可重复 procedure；
+- 有可重复执行过程；
 - 有明确输出；
-- 有 Exit / Stage Return / Escalation；
+- 有退出、阶段返回或升级条件；
 - 可以作为独立职责被调用或组合；
-- 过程复杂度足以值得 JIT 加载和独立维护。
+- 过程复杂度足以值得按需加载和独立维护。
 
 不进入：
 
 - 只有若干约束，没有独立任务入口；
 - 只是“Agent 应遵守”的一条规则；
-- 单一 Repository 本地规范；
+- 单一仓库本地规范；
 - 仅供人理解的说明。
 
-“可复用”或“Agent 会读取”都不足以构成 Skill admission。
+“可复用”或“Agent 会读取”都不足以构成新增技能的准入理由。
 
-### 2.3 Reusable Engineering Capability / Discipline / Profile
+### 2.3 可复用工程能力 / 工程纪律 / 画像
 
 回答：
 
-> 跨项目复用的工程约束、默认知识、技术 / 验证边界是什么？
+> 跨项目复用的工程约束、默认知识、技术边界和验证关注点是什么？
 
 适用于：
 
-- Engineering Discipline；
-- Technology Profile；
-- Verification Profile；
-- 经当前工程能力架构准入的同类 reusable non-procedural capability。
+- 工程纪律（`Engineering Discipline`）；
+- 技术画像（`Technology Profile`）；
+- 验证画像（`Verification Profile`）；
+- 经当前工程能力架构准入的同类可复用非流程能力。
 
 典型特征：
 
-- 可以被多个 Skill 消费；
-- 通常跨多个 Consumer 复用；
-- 可以有 trigger / condition，但不一定有独立任务流程；
-- 没有必要为了被 Agent 激活而 Skill 化；
+- 可以被多个技能消费；
+- 通常可以跨多个 Consumer 复用；
+- 可以有触发条件，但不一定有独立任务流程；
+- 没有必要为了被 Agent 激活而技能化；
 - Consumer 可以选择性采用、覆盖或拒绝其默认值，但不能用本地偏好改写客观技术事实。
 
-Architecture / Contract 文档可以定义这类能力的身份、职责、准入和生命周期；这种 representation 不要求再新增一个平行 semantic owner 类别。
+架构或契约文档可以定义这类能力的身份、职责、准入和生命周期；这种载体形式不要求再新增一个平行语义所有者类别。
 
-如果一项 Engineering Discipline 后续形成稳定独立流程、明确输入输出和独立调度价值，再按 Skill admission 重新评估；不能提前升级。
+如果某项工程纪律后续形成稳定独立流程、明确输入输出和独立调度价值，再按技能准入规则重新评估；不能提前升级。
 
-### 2.4 Repository-local Policy / Standard / Rule
+### 2.4 仓库本地政策 / 规范 / 规则
 
 回答：
 
-> 当前 Repository 中相关工作持续必须遵守什么本地约束？
+> 当前仓库中相关工作持续必须遵守什么本地约束？
 
 典型内容：
 
-- Git Commit / Branch / Integration policy；
+- Git Commit、分支和集成政策；
 - 主导语言和术语规则；
 - 仓库授权边界；
-- 本地验证与 Review policy；
-- 当前 Repository 的目录 / 协作 / 运行约束。
+- 本地验证与复核政策；
+- 当前仓库的目录、协作和运行约束。
 
 典型特征：
 
-- 预期不同 Repository 可以合理不同；
-- 由当前 Repository 自己拥有和演进；
-- 通常没有独立可调用 procedure；
-- 可以从 upstream 模板 / Guide 初始化，但 adoption 后 current authority 属于本地。
+- 预期不同仓库可以合理不同；
+- 由当前仓库自己拥有和演进；
+- 通常没有独立可调用过程；
+- 可以从上游模板或 Guide 初始化，但采用后当前权威属于本地。
 
-Repository-local Rule 不因为可以被多个项目参考就自动成为 reusable upstream capability；关键是其正确值是否由各 Repository 自己决定并允许独立演进。
+仓库本地规则不因为可以被多个项目参考就自动成为上游可复用工程能力；关键是其正确值是否由各仓库自己决定并允许独立演进。
 
-### 2.5 Project / Product Authority Resource
+### 2.5 项目 / 产品权威资源
 
 回答：
 
@@ -137,67 +137,69 @@ Repository-local Rule 不因为可以被多个项目参考就自动成为 reusab
 - Verification Strategy；
 - durable Work / Execution Authority。
 
+这些对象的精确正式身份在需要时继续使用原始名称，但叙述主体保持中文。
+
 典型特征：
 
 - 由当前项目事实和决策产生；
-- 高于 Skill 对项目事实的推测；
-- upstream reusable capability 不得覆盖；
-- 原始需求 / 外部资料必须经过当前项目 adoption / confirmation 才能成为 Authority。
+- 高于技能对项目事实的推测；
+- 上游可复用能力不得覆盖；
+- 原始需求或外部资料必须经过当前项目采用 / 确认后才能成为权威。
 
 ### 2.6 Guide
 
 回答：
 
-> 人或低频 setup 场景中的 Agent，应该怎样理解、选择、采用或升级这些能力？
+> 人或低频启动场景中的 Agent，应该怎样理解、选择、采用或升级这些能力？
 
 Guide 的主要适用场景：
 
-- Human-facing explanation；
-- new Consumer initialization；
-- existing Consumer adoption；
-- baseline upgrade；
+- 面向人的解释；
+- 新 Consumer 初始化；
+- 已有 Consumer 首次采用；
+- 基线升级；
 - 能力清单、入口与解释性导航。
 
-Guide 可以较详细；在 initialization / upgrade 中完整读取属于可接受的一次性 token 成本。
+Guide 可以较详细；在初始化或升级中完整读取属于可接受的一次性 token 成本。
 
 Guide 不拥有：
 
-- ordinary runtime 的核心 Agent procedure；
-- Repository-local policy 的规范正文；
-- Project Authority 的事实正文；
-- Reusable Engineering Capability 的规范正文。
+- 普通运行中的核心 Agent 执行过程；
+- 仓库本地政策的规范正文；
+- 项目权威的事实正文；
+- 可复用工程能力的规范正文。
 
 因此：
 
 ```text
-not Method / not Skill
+不属于核心方法 / 不属于技能
 ≠
-Guide
+应该进入 Guide
 ```
 
-### 2.7 Research / Input / Evidence
+### 2.7 研究 / 输入 / 证据
 
 回答：
 
-> 哪些材料支持后续判断，但当前还不是 Current Authority？
+> 哪些材料支持后续判断，但当前还不是现行权威？
 
 包括：
 
-- raw requirement / customer material；
+- 原始需求和客户资料；
 - 外部政策 / 标准原文；
-- Research；
-- Experiment / Eval；
-- historical evidence；
-- 一次性 analysis；
+- 研究；
+- 实验 / Eval；
+- 历史证据；
+- 一次性分析；
 - 会议 / 调查输入。
 
-这些资源只有经过明确 adoption / promotion 后，才可能形成前六类 Current Resource。
+这些资源只有经过明确采用或提升后，才可能形成前六类现行资源。
 
-## 3. 第二维：Applicability / Provenance
+## 3. 第二维：适用范围与来源状态
 
 这一维内部使用两个正交字段，不要求二选一。
 
-### 3.1 Applicability Scope
+### 3.1 适用范围
 
 回答：
 
@@ -205,301 +207,301 @@ Guide
 
 至少区分：
 
-| Applicability scope | 含义 |
+| 适用范围 | 含义 |
 |---|---|
-| `cross-repository-reusable` | 语义设计为跨多个 Repository / Consumer 复用 |
-| `repository-local` | 语义只在当前 Repository Authority 下直接生效 |
-| `external-input` | 外部材料的原始适用范围，尚未被当前 Repository 采用 |
-| `historical-only` | 只用于历史追溯 / Evidence，不参与 Current Runtime |
+| 跨仓库可复用 | 语义设计为跨多个仓库 / Consumer 复用 |
+| 仓库本地 | 语义只在当前仓库权威下直接生效 |
+| 外部输入 | 外部材料的原始适用范围，尚未被当前仓库采用 |
+| 仅历史 | 只用于历史追溯 / 证据，不参与现行运行 |
 
-这里的“跨仓库可复用”只描述适用范围，不等于 Skill；Engineering Discipline / Profile 也可以是 `cross-repository-reusable`。
+“跨仓库可复用”只描述适用范围，不等于技能；工程纪律和画像同样可以属于该范围。
 
-### 3.2 Provenance State
+### 3.2 来源状态
 
 回答：
 
-> 当前资源是怎样进入当前 Repository 的？
+> 当前资源是怎样进入当前仓库的？
 
 至少区分：
 
-| Provenance state | 含义 |
+| 来源状态 | 含义 |
 |---|---|
-| `native` | 由当前 owner / Repository 自己形成 |
-| `adopted-from-upstream` | 来源于 reusable upstream，采用后由本地 Authority 管理 |
-| `promoted-from-external-input` | 来源于原始外部材料，经当前 Authority 确认后提升 |
-| `derived-projection` | 从 Current semantic owner 生成 / 投射，不拥有正文语义 |
-| `external-unadopted` | 外部输入，尚未成为 Current Authority |
-| `historical` | 只保留历史 / Evidence 来源关系 |
+| 本仓原生 | 由当前语义所有者 / 仓库自己形成 |
+| 从上游采用 | 来源于可复用上游，采用后由本地权威管理 |
+| 从外部输入提升 | 来源于原始外部材料，经当前权威确认后提升 |
+| 派生投影 | 从现行语义所有者生成或投射，不拥有正文语义 |
+| 外部未采用 | 外部输入，尚未成为现行权威 |
+| 历史来源 | 只保留历史 / 证据来源关系 |
 
 规则：
 
 ```text
-origin / provenance
+来源
 ≠
-current authority
+当前权威
 ```
 
 例如：
 
-- `agentic-dev` Technology Profile = Reusable Engineering Capability + `cross-repository-reusable` + `native`；
-- Consumer 自己的 Git 规范 = Repository-local Policy + `repository-local` + `native`；
-- Consumer 采用并局部调整的验证画像 = Reusable Engineering Capability 的 local projection + `repository-local` + `adopted-from-upstream`；
-- Consumer Requirement = Project Authority + `repository-local` + `native` 或 `promoted-from-external-input`。
+- `agentic-dev` 技术画像 = 可复用工程能力 + 跨仓库可复用 + 本仓原生；
+- Consumer 自己的 Git 规范 = 仓库本地规范 + 仓库本地 + 本仓原生；
+- Consumer 采用并局部调整的验证画像 = 可复用工程能力的本地投影 + 仓库本地 + 从上游采用；
+- Consumer Requirement = 项目权威 + 仓库本地 + 本仓原生或从外部输入提升。
 
-`repository-local` 与 `adopted-from-upstream` 可以同时成立。采用完成后的本地资产进入普通运行时，不要求继续访问 upstream 才能成立。
+“仓库本地”与“从上游采用”可以同时成立。采用完成后的本地资产进入普通运行时，不要求继续访问上游才成立。
 
-## 4. 第三维：Runtime / Lifecycle Role
+## 4. 第三维：运行 / 生命周期角色
 
-同一 semantic owner 可以在不同阶段被消费，生命周期不能反向定义 owner。
+同一语义所有者可以在不同阶段被消费，生命周期不能反向定义所有者。
 
 至少区分：
 
-| Lifecycle role | 说明 |
+| 生命周期角色 | 说明 |
 |---|---|
-| bootstrap / initialization | 建立最小 Consumer Repository Authority 和 local capability |
-| adoption | 首次采用 reusable baseline |
-| baseline upgrade | 显式比较 upstream candidate 与 current local state |
-| ordinary runtime | 常规项目工作时的当前资源 |
-| JIT execution | 进入某个真实职责时按需加载 |
-| verification / review | 只在验证 / 复核条件命中时读取 |
-| historical / evidence only | 不参与 Current Runtime Authority |
+| 启动 / 初始化 | 建立最小 Consumer 仓库权威和本地能力 |
+| 首次采用 | 首次采用可复用基线 |
+| 基线升级 | 显式比较上游候选与当前本地状态 |
+| 普通运行 | 常规项目工作时的现行资源 |
+| 职责按需加载 | 真正进入某个稳定职责时才加载 |
+| 验证 / 复核 | 只在验证 / 复核条件命中时读取 |
+| 仅历史 / 证据 | 不参与现行运行权威 |
 
 关键边界：
 
-- `using-agentic-dev.md` 可以在 initialization / upgrade 中完整读取，但不因此成为 ordinary runtime Authority；
-- Skill 通常在真实职责命中时 JIT load；
-- Consumer-local Repository Rules 和 Project Authority 可以是 ordinary runtime Current Resource；
-- rejected upgrade decision 和历史 eval 默认不进入普通 Fresh Context。
+- `using-agentic-dev.md` 可以在初始化 / 升级中完整读取，但不因此成为普通运行权威；
+- 技能通常在真实职责命中时按需加载；
+- Consumer-local 仓库规则和项目权威可以成为普通运行中的现行资源；
+- 被拒绝的升级决定和历史 Eval 默认不进入普通 Fresh Context。
 
-## 5. 第四维：Representation / Authority Form
+## 5. 第四维：载体 / 权威形式
 
 物理形式描述“如何承载”，不直接说明“谁拥有语义”。
 
 可能形式包括：
 
-- Method / Principle document；
-- Architecture / Contract document；
-- `SKILL.md` + references / scripts / templates；
-- Engineering Discipline / Profile document；
-- Repository Policy / Standard document；
+- 方法 / 原则文档；
+- 架构 / 契约文档；
+- `SKILL.md` 与其 references / scripts / templates；
+- 工程纪律 / 画像文档；
+- 仓库政策 / 规范文档；
 - Requirement / Specification / Architecture / ADR / Roadmap；
 - Guide / README；
 - configuration / manifest；
-- generated projection / index；
-- Research / Evidence artifact。
+- 派生投影 / index；
+- 研究 / 证据产物。
 
 特别规则：
 
-- `engineering-capability-architecture.md` / `skill-contracts.md` 等 Architecture / Contract 可以定义对应 semantic owner family 的身份、边界和准入，但“Architecture / Contract”本身不因为是文件类型就自动形成新的 semantic owner role；
-- `SKILL.md` 是 Skill 的平台兼容执行载体，不代表普通 Markdown 应强制使用相同 schema；
-- generated index / catalog 只能投射 metadata，不取得 semantic body ownership；
+- `engineering-capability-architecture.md`、`skill-contracts.md` 等架构 / 契约文档可以定义对应语义所有者家族的身份、边界和准入，但“架构 / 契约”本身不因为是文件类型就自动形成新的语义所有者类别；
+- `SKILL.md` 是技能的平台兼容执行载体，不代表普通 Markdown 应强制使用相同 schema；
+- generated index / catalog 只能投射 metadata，不取得规范正文所有权；
 - 文件位于 `docs/guides/` 不足以证明它语义上是 Guide。
 
-## 6. Ownership Decision Flow
+## 6. 所有权判断流程
 
 对任意长期内容按以下顺序判断。
 
-### Step 1 — 这是 Current Authority 还是输入 / Evidence？
+### 第 1 步 — 这是现行权威还是输入 / 证据？
 
-如果只是 raw source、Research、历史 Evidence 或一次性分析，归入 Research / Input / Evidence；只有明确 promotion 后继续分类。
+如果只是原始资料、研究、历史证据或一次性分析，归入研究 / 输入 / 证据；只有明确提升后继续分类。
 
-### Step 2 — 它是否改变顶层方法？
+### 第 2 步 — 它是否改变顶层方法？
 
-如果它定义或改变跨项目生命周期、阶段、Authority precedence、完成语义或顶层不变量，进入 Method / Principle。
+如果它定义或改变跨项目生命周期、阶段、权威优先级、完成语义或顶层不变量，进入核心方法 / 原则。
 
-### Step 3 — 它是否是当前项目事实或长期项目决定？
+### 第 3 步 — 它是否是当前项目事实或长期项目决定？
 
-如果回答“当前项目到底是什么 / 必须做什么 / 已决定什么”，进入 Project / Product Authority。
+如果回答“当前项目到底是什么 / 必须做什么 / 已决定什么”，进入项目 / 产品权威。
 
-### Step 4 — 它是否是独立 Agent procedure？
+### 第 4 步 — 它是否是独立 Agent 执行过程？
 
-如果具有稳定 trigger、输入、过程、输出、退出 / return / escalation，并可独立组合，先判断是否已由 existing Skill 拥有；只有现有 Skill 无法合理拥有且独立职责成立时才考虑 new Skill。
+如果具有稳定触发条件、输入、过程、输出、退出 / 返回 / 升级，并可独立组合，先判断是否已由现有技能拥有；只有现有技能无法合理拥有且独立职责成立时才考虑新增技能。
 
-### Step 5 — 它是否是跨项目 reusable engineering constraint / default / profile？
+### 第 5 步 — 它是否是跨项目可复用工程约束 / 默认知识 / 画像？
 
-如果跨项目成立、可被多个 Skill 消费，但缺少独立 task entry / output / 调度价值，进入 Reusable Engineering Capability / Discipline / Profile。
+如果跨项目成立、可被多个技能消费，但缺少独立任务入口、稳定独立输出或单独调度价值，进入可复用工程能力 / 工程纪律 / 画像。
 
-### Step 6 — 它是否由当前 Repository 自己决定并预期本地演进？
+### 第 6 步 — 它是否由当前仓库自己决定并预期本地演进？
 
-如果是 Git、语言、术语、授权、集成、本地验证等仓库约束，进入 Repository-local Policy / Standard / Rule。
+如果是 Git、语言、术语、授权、集成、本地验证等仓库约束，进入仓库本地政策 / 规范 / 规则。
 
-### Step 7 — 它是否只是解释如何理解 / 采用？
+### 第 7 步 — 它是否只是解释如何理解 / 采用？
 
-如果主要服务人类或 setup / adoption / upgrade explanation，进入 Guide。
+如果主要服务人类或初始化、采用、升级说明，进入 Guide。
 
-如果一个文件同时命中多个 owner，说明文件可能混合多个 semantic body；应在 V3-02 记录 split / move / merge 候选，不为了保留当前文件完整性强行指定单一 owner。
+如果一个文件同时命中多个语义所有者，说明文件可能混合多个规范正文；应在 V3-02 记录拆分、移动、合并候选，不为了保留当前文件完整性强行指定单一所有者。
 
-## 7. Existing Skill / New Skill / Discipline / Repository Standard 判定
+## 7. 现有技能、新技能、工程纪律与仓库规范的判定
 
-### 7.1 优先进入 existing Skill 的条件
+### 7.1 优先进入现有技能的条件
 
 当规则：
 
-- 只在某个既有 Skill 的职责内有意义；
-- 是该 Skill procedure / exit / return / escalation 的必要组成；
+- 只在某个既有技能的职责内有意义；
+- 是该技能过程、退出、返回或升级的必要组成；
 - 不需要被多个独立职责作为平级规范消费；
 
-则优先回到 existing Skill 或其 supporting resource，避免创建第二 owner。
+则优先回到现有技能或其 supporting resource，避免创建第二个规范正文所有者。
 
-### 7.2 New Skill admission
+### 7.2 新技能准入
 
-只有同时满足以下核心条件时才进入 new Skill 候选：
+只有同时满足以下核心条件时才进入新技能候选：
 
 1. 独立职责真实存在；
 2. 多次 / 多项目复用有证据；
-3. trigger 与 Do Not Use 可以稳定描述；
-4. 输入、procedure、输出、退出条件明确；
-5. 不能被现有 Skill 以薄扩展合理拥有；
-6. 独立维护与 JIT load 的收益高于新增 Skill 的 discovery / ambiguity 成本。
+3. 触发与不适用条件可以稳定描述；
+4. 输入、过程、输出、退出条件明确；
+5. 不能被现有技能通过薄扩展合理拥有；
+6. 独立维护与按需加载的收益高于新增技能带来的发现和歧义成本。
 
-否则不得因为“这条规则很重要”“跨职责”“Agent 经常用”而新增 Skill。
+否则不得因为“这条规则很重要”“跨职责”“Agent 经常用”而新增技能。
 
-### 7.3 Engineering Discipline / Profile 条件
+### 7.3 工程纪律 / 画像条件
 
 当内容：
 
 - 跨项目成立；
 - 描述阶段内部质量约束、技术默认知识或验证关注点；
-- 被多个 Skill / Consumer 复用；
-- 没有独立 task entry、稳定独立输出或单独调度价值；
+- 被多个技能 / Consumer 复用；
+- 没有独立任务入口、稳定独立输出或单独调度价值；
 
-则优先作为 Engineering Discipline / Technology Profile / Verification Profile 等 reusable capability。
+则优先作为工程纪律、技术画像、验证画像等可复用工程能力。
 
-### 7.4 Repository Standard 条件
+### 7.4 仓库规范条件
 
-当内容的正确值由 Repository 自己决定，且不同 Consumer 可以合理不同，例如：
+当内容的正确值由仓库自己决定，且不同 Consumer 可以合理不同，例如：
 
 - Git message / branch convention；
 - 语言 / 术语偏好；
 - 集成 / review policy；
 - 本地授权与验证规则；
 
-则应由 Repository-local Standard / Policy 拥有。upstream 可以提供 bootstrap guidance 或 candidate template，但不持续拥有 Consumer 的 current value。
+则应由仓库本地规范 / 政策拥有。上游可以提供启动说明或候选模板，但不持续拥有 Consumer 的当前值。
 
-## 8. Guide Admission Boundary
+## 8. Guide 准入边界
 
 一段内容只有在主要目标是以下之一时才应保留在 Guide：
 
 - 解释 `agentic-dev` 的能力和边界；
 - 帮助人选择采用哪些能力；
-- 说明 initialization / adoption / baseline upgrade 的入口；
-- 提供不拥有规范语义的 human-facing navigation。
+- 说明初始化、首次采用和基线升级的入口；
+- 提供不拥有规范语义的面向人导航。
 
-以下内容一旦稳定，不应继续留在 Guide 作为唯一 owner：
+以下内容一旦稳定，不应继续留在 Guide 作为唯一所有者：
 
-- 可执行的 Agent procedure；
-- reusable engineering constraint；
-- repository-local normative rule；
-- product / project fact；
-- architecture / contract semantics。
+- 可执行的 Agent 过程；
+- 可复用工程约束；
+- 仓库本地规范性规则；
+- 产品 / 项目事实；
+- 架构 / 契约语义。
 
-Guide 可以引用这些 owner，但不得复制第二份完整规则正文。
+Guide 可以引用这些所有者，但不得复制第二份完整规则正文。
 
-## 9. Consumer Lifecycle 与 Ownership
+## 9. Consumer 生命周期与所有权
 
 ### 9.1 初始化
 
-初始化 Consumer 时可以完整读取 adoption Guide，并基于当前输入：
+初始化 Consumer 时可以完整读取采用 Guide，并基于当前输入：
 
-- 选择性采用 Method / Skill / Reusable Engineering Capability；
-- 生成 Consumer-local Repository Rules，例如 Git、术语 / 语言、验证、集成政策；
-- 如果存在 raw requirement，分析并形成 Consumer Project Authority；
+- 选择性采用核心方法、技能和可复用工程能力；
+- 生成 Consumer-local 仓库规则，例如 Git、术语 / 语言、验证、集成政策；
+- 如果存在原始需求，分析并形成 Consumer 项目权威；
 - 如果没有需求，不制造空权威产物。
 
 ### 9.2 采用后
 
-完成 adoption 后：
+完成采用后：
 
-- Consumer-local rules 和 Authority 由 Consumer 自己演进；
-- ordinary runtime 只依赖 Consumer-local Current Resource；
-- upstream baseline 更新不会自动改变 Consumer 行为。
+- Consumer-local 规则和权威由 Consumer 自己演进；
+- 普通运行只依赖 Consumer-local 现行资源；
+- 上游基线更新不会自动改变 Consumer 行为。
 
-### 9.3 Baseline upgrade
+### 9.3 基线升级
 
-显式 upgrade 可以临时重新读取 upstream Guide / Method / Skill / reusable capability；完成逐项 adopt / retain-or-override / reject / supersede 后，再次退出 upstream ordinary dependency。
+显式基线升级可以临时重新读取上游 Guide、核心方法、技能和可复用工程能力；完成逐项采用、保留 / 覆盖、拒绝、取代后，再次退出上游普通运行依赖。
 
-## 10. Semantic Body 单点 Ownership
+## 10. 规范正文单点所有权
 
-对同一个规范语义，只允许一个 Current semantic body owner。
+对同一个规范语义，只允许一个现行规范正文所有者。
 
 其他资源只能：
 
-- 引用 owner；
-- 保存最小 routing metadata；
-- 保存 provenance；
-- 保存必要的 trigger / locator；
-- 作为 generated projection。
+- 引用所有者；
+- 保存最小路由 metadata；
+- 保存来源；
+- 保存必要触发 / 定位信息；
+- 作为派生投影。
 
-不得通过 Guide、Index、Skill reference、README、AGENTS 或 Manifest 再复制第二份会独立演进的正文规则。
+不得通过 Guide、Index、Skill reference、README、AGENTS 或 Manifest 再复制第二份会独立演进的规范正文。
 
 如果当前存在重复正文，V3-02 必须选择：
 
 ```text
-keep one owner
-+ replace duplicates with pointer / projection
-+ mark superseded / historical state
+保留一个所有者
++ 其他位置改为指针 / 投影
++ 明确取代 / 历史状态
 ```
 
-## 11. Supersede / Migration / Deletion 最小语义
+## 11. 取代、迁移和删除的最小语义
 
-任何 ownership 迁移至少记录：
+任何所有权迁移至少记录：
 
-- old owner / location；
-- new owner / location；
-- semantic body 是否迁移、合并或删除；
-- old resource 是 superseded、historical 还是仍保留 human explanation；
-- ordinary runtime 是否仍能发现唯一 Current owner；
-- 是否有 derived index / catalog / pointer 需要同步或淘汰。
+- 原所有者 / 位置；
+- 新所有者 / 位置；
+- 规范正文是迁移、合并还是删除；
+- 原资源是被取代、仅历史，还是继续保留面向人的解释；
+- 普通运行是否仍能发现唯一现行所有者；
+- 是否有派生 index、catalog 或 pointer 需要同步或淘汰。
 
-不允许仅复制新文件后保留旧规范正文继续被当作 Current。
+不允许仅复制新文件后保留旧规范正文继续被当作现行规则。
 
 ## 12. 代表资源判例
 
-| 当前资源 | Semantic owner 判断 | Scope / Provenance / Lifecycle | V3-02 候选动作 |
+| 当前资源 | 语义所有者判断 | 适用范围 / 来源 / 生命周期 | V3-02 候选动作 |
 |---|---|---|---|
-| `docs/method/ai-development-method.md` | Method / Principle | `cross-repository-reusable` + `native`；方法权威 | 保留 |
-| `skills/technical-plan/SKILL.md` | Skill / Procedural Capability | `cross-repository-reusable` + `native`；JIT | 保留；不把 ADR / architecture procedure 复制到 Guide |
-| `skills/execute-unit/SKILL.md` | Skill / Procedural Capability | `cross-repository-reusable` + `native`；JIT | 保留；工程纪律只保留薄消费边界 |
-| `docs/architecture/engineering-disciplines.md` | Reusable Engineering Capability / Discipline / Profile | `cross-repository-reusable` + `native`；按条件 ordinary runtime | 保留为 reusable capability owner |
-| `docs/technology-profiles/vue3-typescript.md` | Reusable Engineering Capability / Discipline / Profile | `cross-repository-reusable` + `native`；选择性 adoption | 保留为 Technology Profile |
-| `docs/architecture/technology-profile-contract.md` | Reusable Engineering Capability / Discipline / Profile 的类型 / 准入 / 生命周期语义 | `cross-repository-reusable` + `native`；由 Architecture / Contract form 承载 | 保留为 Profile contract；不误判为 Consumer Project Authority |
-| `docs/guides/git-commit-guidelines.md` | Repository-local Policy / Standard / Rule | `repository-local` + `native`；当前主要约束 `agentic-dev` | 从 Guide 身份迁出候选；Consumer 初始化后形成自己的 local rule |
-| `docs/guides/terminology-guidelines.md` | Repository-local Policy / Standard / Rule | `repository-local` + `native`；`agentic-dev` 本地表达治理 | 从 Guide 身份迁出候选；概念职责仍由 Method / Architecture / Contract 定义 |
-| `docs/guides/using-agentic-dev.md` | Guide 为主，但当前文件含混合正文 | `cross-repository-reusable` + `native`；human + initialization / adoption / upgrade | 保留 adoption / explanation；runtime procedure / local rule 分流 |
-| `docs/guides/verification-evidence-rules.md` | 文件级不可单类化 | 当前包含 `cross-repository-reusable` verification constraints；按 condition 激活 | V3-02 按 rule family 判断 existing Skill / reusable capability / principle / platform owner |
-| `docs/guides/external-operation-guidelines.md` | 文件级不可单类化 | 同时含 reusable constraint、`agentic-dev` repository policy、platform operation 与 explanation | V3-02 按 semantic body 拆分 owner；不直接整体改名即结束 |
-| Consumer Requirement / Specification | Project / Product Authority | `repository-local` + `native` 或 `promoted-from-external-input`；ordinary runtime | 保持 Consumer-local Authority |
-| v3 GPT-6 raw result | Research / Input / Evidence | `historical-only` + `historical` | 不进入 ordinary runtime；只把经过治理后的结论提升到正式 owner |
+| `docs/method/ai-development-method.md` | 核心方法 / 原则 | 跨仓库可复用 + 本仓原生；方法权威 | 保留 |
+| `skills/technical-plan/SKILL.md` | 技能 / 过程型能力 | 跨仓库可复用 + 本仓原生；职责命中时按需加载 | 保留；不把 ADR / Architecture 过程复制到 Guide |
+| `skills/execute-unit/SKILL.md` | 技能 / 过程型能力 | 跨仓库可复用 + 本仓原生；职责命中时按需加载 | 保留；工程纪律只保留薄消费边界 |
+| `docs/architecture/engineering-disciplines.md` | 可复用工程能力 / 工程纪律 / 画像 | 跨仓库可复用 + 本仓原生；按条件进入普通运行 | 保留为可复用工程能力所有者 |
+| `docs/technology-profiles/vue3-typescript.md` | 可复用工程能力 / 工程纪律 / 画像 | 跨仓库可复用 + 本仓原生；Consumer 选择性采用 | 保留为技术画像 |
+| `docs/architecture/technology-profile-contract.md` | 可复用工程能力家族的类型、准入和生命周期语义 | 跨仓库可复用 + 本仓原生；由架构 / 契约形式承载 | 保留为技术画像契约；不误判为 Consumer 项目权威 |
+| `docs/guides/git-commit-guidelines.md` | 仓库本地政策 / 规范 / 规则 | 仓库本地 + 本仓原生；当前主要约束 `agentic-dev` | 从 Guide 身份迁出候选；Consumer 初始化后形成自己的本地规则 |
+| `docs/guides/terminology-guidelines.md` | 仓库本地政策 / 规范 / 规则 | 仓库本地 + 本仓原生；`agentic-dev` 本地表达治理 | 从 Guide 身份迁出候选；概念职责仍由核心方法 / 架构 / 契约定义 |
+| `docs/guides/using-agentic-dev.md` | Guide 为主，但当前文件含混合正文 | 跨仓库可复用 + 本仓原生；面向人 + 初始化 / 采用 / 升级 | 保留采用 / 解释；普通运行过程和本地规则分流 |
+| `docs/guides/verification-evidence-rules.md` | 文件级不可单类化 | 当前包含跨仓库可复用验证约束；按条件激活 | V3-02 按 rule family 判断现有技能 / 可复用工程能力 / 原则 / 平台所有者 |
+| `docs/guides/external-operation-guidelines.md` | 文件级不可单类化 | 同时包含可复用约束、`agentic-dev` 本地政策、平台操作与解释 | V3-02 按规范正文拆分所有者；不直接整体改名即结束 |
+| Consumer Requirement / Specification | 项目 / 产品权威 | 仓库本地 + 本仓原生或从外部输入提升；普通运行 | 保持 Consumer-local 权威 |
+| v3 GPT-6 原始结果 | 研究 / 输入 / 证据 | 仅历史 + 历史来源 | 不进入普通运行；只把经过治理后的结论提升到正式所有者 |
 
-这些判例只验证 ownership decision matrix 的可用性，不在 V3-01 执行物理迁移。
+这些判例只验证所有权判断矩阵的可用性，不在 V3-01 执行物理迁移。
 
 ## 13. 反例检查
 
 以下推理全部判定为错误：
 
 ```text
-Agent 会读 → 应该是 Skill
-跨项目可复用 → 应该是 Skill
-不属于 Method → 应该放 Guide
+Agent 会读 → 应该是技能
+跨项目可复用 → 应该是技能
+不属于核心方法 → 应该放 Guide
 位于 docs/guides → 语义上就是 Guide
-需要按条件激活 → 必须有独立 Skill
-来自 agentic-dev → Consumer ordinary runtime 应持续读取 upstream
+需要按条件激活 → 必须有独立技能
+来自 agentic-dev → Consumer 普通运行应持续读取上游
 来自外部资料 → 自动成为 Requirement Authority
-有 YAML Front Matter → 自动成为 Current Authority
-Architecture / Contract 文件 → 自动成为一个新的 semantic owner 类别
+有 YAML Front Matter → 自动成为现行权威
+Architecture / Contract 文件 → 自动成为一个新的语义所有者类别
 ```
 
 ## 14. V3-01 Gate
 
 V3-01 只有在以下条件同时成立时完成：
 
-1. 独立 reviewer 可以基于本文对代表资源做出基本一致的 owner 判断；
-2. Engineering Discipline / Profile 不再被误判成 Skill 或 Repository-local Rule；
-3. applicability scope 与 provenance state 不再被混为互斥身份；
-4. Repository-local Rule 与 reusable upstream capability 的边界可解释；
-5. Guide admission 不再承担 catch-all 作用；
-6. mixed document 能够被识别为“按 semantic body 拆分”，而不是被迫文件级单分类；
-7. Architecture / Contract representation 不被误判为独立 semantic owner；
-8. 不存在未解决的阻塞或中等级 ownership ambiguity。
+1. 独立评审者可以基于本文对代表资源做出基本一致的所有者判断；
+2. 工程纪律 / 画像不再被误判成技能或仓库本地规则；
+3. 适用范围与来源状态不再被混为互斥身份；
+4. 仓库本地规则与上游可复用工程能力的边界可解释；
+5. Guide 准入不再承担 catch-all 作用；
+6. 混合文档能够被识别为“按规范正文拆分”，而不是被迫文件级单分类；
+7. 架构 / 契约载体不被误判为独立语义所有者；
+8. 不存在未解决的阻塞或中等级所有权歧义。
 
-达到 Gate 只允许开始 V3-02 的 ownership audit；不自动授权物理迁移、Skill 重构或 discovery implementation。
+达到 Gate 只允许开始 V3-02 的所有权审计；不自动授权物理迁移、技能重构或 discovery implementation。
