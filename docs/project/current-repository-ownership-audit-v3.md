@@ -62,7 +62,7 @@
 - `docs/architecture/engineering-capability-architecture.md`、`engineering-disciplines.md`、`technology-profile-contract.md` 作为可复用工程能力架构 / 契约 owner；
 - 当前 9 个 `SKILL.md` 作为过程型能力 owner；
 - `docs/technology-profiles/vue3-typescript.md` 作为技术 / 验证画像 owner；
-- `docs/research/*` 与 Eval 作为研究 / 证据，不参与普通运行权威；
+- `docs/research/*` 的研究正文与 Eval 的语料 / 结果保持研究 / 证据身份；但 Research / Eval 目录中的 README、执行说明与当前隔离 / 评分规则仍必须按自身 semantic body 单独判断，不能整目录降格为 Evidence；
 - Roadmap 作为当前项目路线权威。
 
 ## 4. 根入口、方法、架构、决策与技术画像
@@ -287,7 +287,24 @@
 
 ## 8. Research、Eval、Task 生命周期
 
-### 8.1 `docs/research/*`
+本节继续遵守“目录不是身份”。Research / Eval 目录中的**研究正文、语料、结果与历史证据**不直接拥有现行规范正文；但 README、执行说明、隔离 / 评分规则等 current control body 仍可能属于仓库本地政策、Guide 或其他现行责任，必须分开判断。
+
+### 8.1 `docs/research/README.md`
+
+| 字段 | 审计结论 |
+|---|---|
+| 语义所有者 | 混合：仓库本地政策 / 规范 + Guide / 派生 inventory |
+| 适用范围 | 仓库本地；其中目录清单用于人类 / Agent 导航 |
+| 来源状态 | 本仓原生 + 派生投影 |
+| 生命周期 | ordinary repository governance + research adoption / promotion + 按需导航 |
+| 载体 | Research-area README |
+| ownership 适配度 | mixed；目录位置合理，但正文不能整体按 Research Evidence 处理 |
+| overlap | `AGENTS.md` 只有“研究不能覆盖 Authority”的薄摘要；长期准入、排除、promotion 与使用规则由本文件当前承担 |
+| disposition | `keep`；V3-05 / V3-07 再判断 current policy body 与 derived inventory 是否需要结构化拆分或只保留稳定指针 |
+| downstream | 后续资源模型不得把该 README 降格为 evidence；Research 正文的 promotion 仍必须进入真实 owner |
+| dependency | V3-03、V3-05、V3-07 |
+
+### 8.2 `docs/research/*` 研究正文（不含 `README.md`）
 
 | 字段 | 审计结论 |
 |---|---|
@@ -302,22 +319,17 @@
 | downstream | 后续候选能力可以引用证据，但不能从 Research 直接覆盖 current authority |
 | dependency | 按未来 capability admission 需要 |
 
-### 8.2 `evals/*`
+### 8.3 `evals/*` 当前控制正文、评估资产与历史证据
 
-| 字段 | 审计结论 |
-|---|---|
-| 语义所有者 | 研究 / 输入 / 证据 + Evaluation tooling |
-| 适用范围 | 当前评估场景 |
-| 来源状态 | 本仓原生 / 历史来源 |
-| 生命周期 | verification / evidence / historical |
-| 载体 | schema、fixture、runner、score、result |
-| ownership 适配度 | fit |
-| overlap | Eval 只能验证 Method / Skill / Rule，不拥有其正文 |
-| disposition | `keep` |
-| downstream | `evals/rule-retrieval/*` 继续冻结为 v1 历史证据；旧 live index / runner 不得被 V3-06 误当 current implementation 复活 |
-| dependency | V3-08 / future evals |
+| 当前位置 / 规则族 | 语义所有者 | 适用范围 | 来源状态 | 生命周期 | 载体 | 适配度 / overlap | disposition → 目标责任 | downstream | 依赖 |
+|---|---|---|---|---|---|---|---|---|---|
+| `evals/README.md` 的隔离、污染判定、证据判定与当前 Eval 范围 | 仓库本地政策 / 规范（Evaluation Policy） | 仓库本地 | 本仓原生 | verification / evaluation ordinary governance | Eval-area README sections | mixed；与历史结果 / inventory 共文件 | keep；后续 split / reclassify candidate → Repository-local Evaluation Policy | 不得因为位于 `evals/` 就把当前隔离 / 评分规则降格为 evidence | V3-05、V3-07、V3-08 |
+| `evals/README.md` 的历史运行结果与演进记录 | 研究 / 输入 / 证据 | 仅历史 / 当前评估证据 | 历史来源 / 本仓原生 | evidence / historical | Eval-area README sections | mixed | keep historical / evidence | 可以证明既有行为，但不单独定义 Method / Skill / Rule | V3-08 |
+| `evals/CODEX.md`、`evals/governance/README.md` 的执行说明 / 使用入口 | Guide + 仓库本地 Evaluation Policy | 仓库本地 | 本仓原生 | evaluation execution / human operation / verification | Guide-like README / CODEX doc | mixed | keep；后续按 semantic body 决定 Guide pointer 与 current policy body 的边界 | 当前 runner、隔离、人工评分规则不能只靠历史 Evidence 反推 | V3-05、V3-07、V3-08 |
+| `evals/run_*.py`、schema、fixture、corpus / assertions | 研究 / 输入 / 证据的评估实现 / representation；不新增“Evaluation tooling”平行 semantic owner | 仓库本地评估 | 本仓原生 | evaluation execution / verification | runner / schema / fixture / corpus | fit if subordinate to current evaluation contract；实现不能反向改写被测 Authority | keep | V3-05 只处理表示与发现；V3-08 可复用执行资产，不把实现代码提升为规则正文 | V3-05、V3-08 |
+| `evals/results/*` 与冻结的历史 eval 资产 | 研究 / 输入 / 证据 | 仅历史 / 证据 | 历史来源 / 本仓原生 | evidence / historical | result / trace / frozen eval assets | fit | keep；`evals/rule-retrieval/*` 继续冻结为 v1 历史证据 | 旧 live index / runner 不得被 V3-06 误当 current implementation 复活 | V3-06、V3-08 |
 
-### 8.3 `tasks/README.md` 与 `tasks/plans/*`
+### 8.4 `tasks/README.md` 与 `tasks/plans/*`
 
 `tasks/README.md`：
 
@@ -350,6 +362,7 @@
 | `engineering-disciplines.md` vs `execute-unit` 长段薄规则 | 薄消费可能演化成复制正文 | semantic diff 后缩回 pointer / minimum execution judgment | V3-04 |
 | `external-operation-guidelines.md` vs `github-actions-verification` | 通用操作纪律与平台 procedure 混淆 | reusable discipline vs platform Skill 分层 | V3-04 |
 | `repository-baseline.md` vs `AGENTS.md` | source-of-truth / authority 边界双重规范 | 评估 merge / pointer 关系，AGENTS 保持薄 Bootstrap | V3-05、V3-07 |
+| `docs/research/README.md` / `evals/{README.md,CODEX.md,governance/README.md}` current control body vs 同目录 Research / Eval evidence | 若按目录统一降格，会丢失当前 research lifecycle / evaluation isolation / scoring policy，并迫使后续重新 inventory | current policy / Guide body 与 evidence / tooling 分开建模；实现与结果不获得规范正文所有权 | V3-05、V3-07、V3-08 |
 | `rule-activation-guide.md` vs future discovery mechanism | 多 current router | replacement 后显式 supersede | V3-06、V3-07 |
 | v2 `docs/project/*` runtime contracts vs future V3-03/05/06 owners | completed-project 仍隐式 current | 新 owner 建立并验证后显式 supersede | V3-03、V3-05、V3-06 |
 | `first-batch-skill-design.md` vs Skill contracts / current `SKILL.md` | 历史设计继续被当 current authority | Skills inventory 去除 current-authority 指向；保留历史 design evidence | V3-04 |
