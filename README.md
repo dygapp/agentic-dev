@@ -1,6 +1,6 @@
 # agentic-dev
 
-`agentic-dev` 是一个面向 AI Agent 驱动软件开发的方法体系、工程能力架构与可组合技能仓库。
+`agentic-dev` 是一个面向 AI Agent 驱动软件开发的方法体系、工程能力架构与可组合 Skill 仓库。
 
 ## 快速开始
 
@@ -10,7 +10,7 @@
 
 它只负责把当前任务路由到最小必要的 Guide / Skill / Repository Authority；不要默认把完整 `agentic-dev` 规则栈或完整历史加载进上下文。
 
-目标项目始终拥有自己的仓库权威、需求、架构、代码、测试和集成策略。`agentic-dev` 提供“如何工作”的可复用方法与能力，不替使用方仓库决定项目事实。
+目标项目始终拥有自己的仓库权威、需求、架构、代码、测试和集成策略。`agentic-dev` 提供“如何工作”的可复用方法与能力，不替 Consumer 决定项目事实。
 
 一个足够薄的 Fresh Context 可以是：
 
@@ -32,36 +32,26 @@ GitHub Repository 是唯一项目事实来源。
 
 - **基线版本：** v0.1
 - **长期阶段：** 工程能力扩展与方法演进
-- **最近完成并已集成的有限里程碑：** 规则治理与知识激活 v1
-- **当前有限里程碑：** 规则治理与知识激活 v2 — Consumer-local 规则发现与激活
-- **跟踪入口：** Issue #92
-- **当前阶段：** Phase G — 收敛与集成准备
+- **规则治理与知识激活 v2：** 内部完成定义已满足，已具备进入人工集成决策的条件
+- **跟踪入口：** Issue #92 / PR #93
 
-v2 已完成 Phase A～E 的设计与 reusable guidance 收敛，并完成 Phase F 真实 Consumer 验证。`dygapp/jilinjobs-cms` 的 R1～R5 在冻结 Candidate `ec945368...` 上全部 PASS，ordinary runtime upstream access 为 0，Base Drift 为 NO IMPACT，未发现 Blocking / Medium reusable Rule Governance v2 gap。
+v2 已完成 Consumer-local Runtime Target、Rule Ownership / Guide Decomposition、Activation Manifest / Runtime Catalog 契约、Discovery / Routing / Skill Interface、Baseline Adoption / Projection、真实 Consumer Phase F R1～R5 以及 Phase G Candidate Drift 定向重验。
 
-Phase G Final AI Review 随后修正了两项 Medium：Consumer-local upstream 冲突措辞，以及 `using-agentic-dev.md` 对 Skill-owned 过程语义的重复维护。第二项导致 reusable Guide 集合发生实质性后续变化，因此旧 Phase F Evidence 不能未经影响映射直接覆盖最终 Candidate。
-
-当前已冻结 reusable candidate：
+真实 Consumer `dygapp/jilinjobs-cms` 的 ordinary runtime upstream access 保持为 0；最终定向重验 T1～T4 全部 PASS，Blocking / Medium reusable findings 为 `0 / 0`。冻结 reusable candidate：
 
 `29f88efd25232e57ccb4a82ffff039be047e4d1e`
 
-当前下一 Gate 是按：
+详细证据：
 
-`docs/project/consumer-local-runtime-candidate-drift-review-v2.md`
+- `docs/project/consumer-local-runtime-validation-result-v2.md`
+- `docs/project/consumer-local-runtime-candidate-drift-review-v2.md`
+- `docs/project/rule-governance-knowledge-activation-v2.md`
 
-在既有 Consumer 实验状态上执行最小 T1～T4 定向重验；不重跑完整 R1～R5。通过后继续 Phase G Final AI Review 与稳定状态收敛。
-
-Phase F 原始结果：
-
-`docs/project/consumer-local-runtime-validation-result-v2.md`
+是否已经实际集成 v2，不由 README 复制瞬时 PR 状态；以 Git / PR #93 的当前事实为准。无论 PR 是否已经集成，v2 都不会自动启动 WI-06、WI-07、WI-09、Issue #71 或其他候选，后续仍需要新的人工路线决策。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
 `docs/project/project-roadmap.md`
-
-v2 的目标、阶段、设计结论与完成定义统一维护在：
-
-`docs/project/rule-governance-knowledge-activation-v2.md`
 
 ## 入口职责
 
@@ -69,8 +59,8 @@ v2 的目标、阶段、设计结论与完成定义统一维护在：
 
 - `AGENTS.md`：只维护稳定 Repository Governance、Authority Boundary 与 Agent 工作约束；**不维护当前阶段、里程碑进展、候选路线、Issue / PR 状态或下一工作项**；
 - `README.md`：维护面向人的简短当前状态与稳定导航；
-- `docs/project/project-roadmap.md`：维护详细项目阶段、活动里程碑、候选库和下一 Gate；
-- `docs/project/*`：维护具体里程碑、项目治理与设计记录；
+- `docs/project/project-roadmap.md`：维护详细项目路线、活动状态、候选库和下一 Gate；
+- `docs/project/*`：维护具体里程碑、项目治理、设计与验证记录；
 - Git / PR / Issue / Actions：维护精确外部状态与执行证据。
 
 发生当前状态变化时优先更新 README / Roadmap / 对应项目记录，不把状态性正文复制回 `AGENTS.md`。
@@ -83,11 +73,11 @@ GitHub Repository 是本项目长期事实来源。
 
 `AGENTS.md`
 
-当前项目阶段和恢复顺序见：
+当前项目路线和恢复顺序见：
 
 `docs/project/project-roadmap.md`
 
-使用方项目的规则激活入口见：
+Consumer 规则激活入口见：
 
 `docs/guides/rule-activation-guide.md`
 
@@ -103,7 +93,7 @@ GitHub Repository 是本项目长期事实来源。
 
 `docs/guides/using-agentic-dev.md`
 
-只有当前任务实际触发对应主题时，才按导航读取相关章节或 Skill。
+只有当前任务实际触发对应主题时，才按导航读取相关 Guide、Authority 或 Skill。
 
 ## 核心开发路径
 
@@ -136,7 +126,7 @@ Skill 清单、身份和职责边界统一维护在：
 
 `docs/architecture/engineering-capability-architecture.md`
 
-外部官方资料、成熟开源实践、专项评估和使用方证据可以成为研究输入，但不能自动覆盖 Repository Authority。研究入口：
+外部官方资料、成熟开源实践、专项评估和 Consumer 证据可以成为研究输入，但不能自动覆盖 Repository Authority。研究入口：
 
 `docs/research/README.md`
 
@@ -146,7 +136,7 @@ Skill 清单、身份和职责边界统一维护在：
 
 `docs/guides/terminology-guidelines.md`
 
-使用方项目的主导语言由使用方自己的 Repository Authority 决定，不从 `agentic-dev`、旧聊天或其他项目机械继承。
+Consumer 的主导语言由其自己的 Repository Authority 决定，不从 `agentic-dev`、旧聊天或其他项目机械继承。
 
 ## 仓库结构
 
