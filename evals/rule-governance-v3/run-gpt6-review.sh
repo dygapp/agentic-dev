@@ -53,6 +53,11 @@ UNEXPECTED_FILES="$(git diff --name-only "$BASE_COMMIT"...HEAD | grep -v '^evals
 [[ -f "$PROMPT" ]] || fail "missing prompt: $PROMPT"
 [[ -f "$SCHEMA" ]] || fail "missing schema: $SCHEMA"
 
+# Preflight the structured-output schema locally before spending a model call.
+jq -e . "$SCHEMA" >/dev/null || fail "review output schema is not valid JSON"
+jq -e '[.. | objects | select(has("const") and (has("type") | not))] | length == 0' "$SCHEMA" >/dev/null || \
+  fail "review output schema contains const without an explicit type"
+
 CODEX_VERSION_RAW="$(codex --version)"
 CODEX_VERSION="$(printf '%s\n' "$CODEX_VERSION_RAW" | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n1 || true)"
 [[ -n "$CODEX_VERSION" ]] || fail "cannot parse Codex version from: $CODEX_VERSION_RAW"
@@ -118,9 +123,11 @@ codex exec \
   --output-last-message "$FINAL" \
   - < "$PROMPT" \
   2> >(tee "$STDERR_LOG" >&2) | tee "$EVENTS"
-CODEX_EXIT=${PIPESTATUS[0]}
-TEE_EXIT=${PIPESTATUS[1]}
+PIPE_STATUS=("${PIPESTATUS[@]}")
 set -e
+
+CODEX_EXIT="${PIPE_STATUS[0]:-1}"
+TEE_EXIT="${PIPE_STATUS[1]:-1}"
 
 [[ "$CODEX_EXIT" -eq 0 ]] || fail "codex exec failed with exit $CODEX_EXIT"
 [[ "$TEE_EXIT" -eq 0 ]] || fail "tee failed with exit $TEE_EXIT"
