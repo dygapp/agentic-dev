@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Rule Governance v3 Ownership Medium Re-review Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "review_target",
+    "verdict",
+    "medium_resolved",
+    "dimension_verdicts",
+    "findings",
+    "recommended_next_action"
+  ],
+  "properties": {
+    "review_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "base_commit", "resolution_file"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "const": "dygapp/agentic-dev"
+        },
+        "base_commit": {
+          "type": "string",
+          "minLength": 7
+        },
+        "resolution_file": {
+          "type": "string",
+          "const": "evals/rule-governance-v3/v3-ownership-model-medium-resolution.md"
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["PASS", "REVISE", "REJECT"]
+    },
+    "medium_resolved": {
+      "type": "boolean"
+    },
+    "dimension_verdicts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_owner_coverage",
+        "scope_separation",
+        "engineering_capability_boundary",
+        "repository_policy_boundary",
+        "project_authority_boundary",
+        "guide_skill_boundary",
+        "consumer_local_only_preservation"
+      ],
+      "properties": {
+        "semantic_owner_coverage": {"$ref": "#/$defs/dimension"},
+        "scope_separation": {"$ref": "#/$defs/dimension"},
+        "engineering_capability_boundary": {"$ref": "#/$defs/dimension"},
+        "repository_policy_boundary": {"$ref": "#/$defs/dimension"},
+        "project_authority_boundary": {"$ref": "#/$defs/dimension"},
+        "guide_skill_boundary": {"$ref": "#/$defs/dimension"},
+        "consumer_local_only_preservation": {"$ref": "#/$defs/dimension"}
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/finding"}
+    },
+    "recommended_next_action": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["PASS", "REVISE", "REJECT"]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "severity",
+        "title",
+        "failure_scenario",
+        "evidence_refs",
+        "minimal_fix"
+      ],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": ["Blocking", "Medium", "Low"]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "failure_scenario": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "minimal_fix": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
