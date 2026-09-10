@@ -2,11 +2,11 @@
 
 ## 状态
 
-**活动有限里程碑 — 规划与设计阶段**
+**活动有限里程碑 — Consumer 验证阶段**
 
 当前阶段：
 
-> **Phase D — Discovery → Routing → Skill 接口**
+> **Phase F — 真实 Consumer 验证**
 
 人工决策日期：2026-09-10  
 跟踪入口：Issue #92  
@@ -28,83 +28,39 @@ Consumer 自己的 Repository Rules、Requirement / Specification、Domain / Arc
 
 ### 2.1 Consumer-local-first
 
-设计顺序固定为：
-
 ```text
 Consumer-local Runtime Target
-→ 需要的 Discovery / Routing / Skill / Authority 机制
-→ agentic-dev 应提供的可复用能力与 Adoption Contract
+→ Discovery / Routing / Skill / Authority 机制
+→ agentic-dev reusable capability / adoption model
 ```
 
-不得先构建完整 upstream Runtime，再把 Consumer 适配留到最后。
+Consumer 验证不是设计完成后的附加项，而是 v2 最终完成门禁。
 
 ### 2.2 单点 semantic owner
 
-同一规范性规则只能有一个长期正文 owner。Metadata、Catalog、导航只保存发现所需的最小信息和 source pointer，不复制完整规则正文，也不形成第二套 Authority。
+同一规范性规则只能有一个长期正文 owner。Metadata、Catalog、导航只保存发现所需的最小信息和 source pointer，不复制规则正文，也不形成第二套 Authority。
 
 ### 2.3 Adoption 后脱离日常 upstream
 
-只有以下情况才重新读取 upstream：
-
-- 显式 baseline upgrade；
-- Consumer-local Authority 无法回答当前真正需要的方法 / Skill 问题；
-- 当前任务明确属于 `agentic-dev` 实验 / 验证；
-- Consumer Repository Authority 另有要求。
-
-其他 ordinary work 应完全从 Consumer-local 入口恢复。
+只有显式 baseline upgrade、Consumer 本地确实缺少必要方法 / Skill、明确 `agentic-dev` 实验，或 Consumer Authority 要求时才重新读取 upstream。
 
 ### 2.4 最小机制优先
 
-当前不预设：
-
-- Runtime Rule Index 服务；
-- 向量数据库 / 图数据库；
-- MCP 规则服务；
-- 全仓统一 Front Matter；
-- Rule Super Skill；
-- 大量新专项 Skill；
-- 机械拆分全部 Guide；
-- 固定 Consumer 目录模板。
-
-静态 Consumer-local metadata / Catalog 足够时，不增加更复杂基础设施。
+当前没有证据要求 Runtime Rule Index 服务、向量 / 图数据库、MCP 规则服务、全仓统一 Front Matter、Rule Super Skill、大量专项 Skill 或固定 Consumer 目录模板。
 
 ## 3. 已接受证据边界
 
 ### 3.1 v1 基础
 
-继续沿用：
-
-- Consumer Repository Authority first；
-- Progressive Disclosure；
-- Evidence before claims；
-- 详细规则单点 Authority；
-- derived discovery 可删除 / 可重建；
-- stale / missing / ambiguity / conflict / high-impact 时 fail-closed；
-- 普通 Consumer 不要求运行 `evals/` 下的规则检索原型。
+继续沿用 Consumer Repository Authority first、Progressive Disclosure、Evidence before claims、单点 Authority、derived discovery 可删除 / 可重建和 stale / ambiguity / high-impact fail-closed。
 
 ### 3.2 v2 临时 Runtime 证据
 
-独立 `eval/*` 分支已经支持以下有限结论：
-
-- Skill-first 在正确 responsibility 下能明显减少 context fan-out；
-- Guide decomposition + metadata 可以帮助模型自主发现 `technical-planning`；
-- ambiguity 场景中可以区分 primary responsibility、supporting context、Stage Return 与 stale Readiness。
-
-这些证据只支持继续 v2 Planning，不授权原样产品化 eval manifest、全库 metadata 或 Runtime Rule Index。
+独立 `eval/*` 证据支持 Skill-first、metadata discovery 与 ambiguity routing 的可行性，但不授权原样产品化 eval manifest 或 Runtime Rule Index。
 
 ### 3.3 Consumer 现实证据
 
-Issue #58 已证明：只存在于 upstream、没有被 Consumer 显式采纳并本地固化的持续协作规则，在普通 Fresh Context 中不可靠。
-
-因此 baseline adoption / upgrade 必须允许逐项：
-
-```text
-adopt
-retain / override
-reject / not applicable
-```
-
-并把需要长期约束后续工作的结果固化到 Consumer-local Authority / capability 中。
+Issue #58 已证明：只存在 upstream、没有进入 Consumer-local Authority 的持续规则在普通 Fresh Context 中不可靠。因此 adoption 必须逐项 `adopt / retain-or-override / reject-not-applicable / supersede-remove`，并让 ordinary runtime 回到 local-only。
 
 ## 4. 已完成设计阶段
 
@@ -112,128 +68,106 @@ reject / not applicable
 
 **已完成。**
 
-结果：
-
 - `docs/project/consumer-local-rule-runtime-target-v2.md`
 - `docs/project/consumer-local-rule-runtime-acceptance-v2.md`
-
-确认 ordinary runtime 无 upstream；Consumer-native 与 adopted reusable asset 可以进入同一本地 discovery；routing-only 不机械加载 Skill；最终必须经过真实 Consumer L3 验证。
 
 ### Phase B — Rule Ownership / Guide Decomposition
 
 **已完成。**
 
-结果：
+- `docs/project/rule-ownership-decomposition-audit-v2.md`
 
-`docs/project/rule-ownership-decomposition-audit-v2.md`
-
-确认：
-
-- Principle 继续拥有顶层方法不变量；
-- 8 个核心 Skill 继续拥有完整职责执行过程；
-- Engineering Discipline 继续拥有跨技术栈阶段内工程约束；
-- 只有真正跨 Skill / adoption / verification / external-operation 的条件语义才成为 reusable Guide Rule Module 候选；
-- Consumer-native Authority 由 Consumer 自己拥有；
-- Catalog / metadata 只承担 derived discovery。
-
-Guide 不按文件大小或原章节机械拆分。
+Principle、核心 Skill、Engineering Discipline、Guide Rule Module、Platform capability 与 Consumer-native Authority 保持各自 semantic owner；Guide 不按章节机械拆分。
 
 ### Phase C — Minimal Metadata / Catalog Contract
 
 **已完成。**
 
-结果：
+- `docs/project/consumer-local-activation-metadata-contract-v2.md`
 
-`docs/project/consumer-local-activation-metadata-contract-v2.md`
+采用 `Activation Manifest → optional Runtime Catalog → Consumer-local semantic owner`，并区分 `semantic-reviewed` 与 `current-locator` source binding。
 
-采用逻辑两层模型：
+### Phase D — Discovery → Routing → Skill Interface
 
-```text
-Activation Manifest
-→ optional derived Runtime Catalog
-→ Consumer-local semantic owner
-```
+**已完成。**
 
-核心边界：
+- `docs/project/consumer-local-runtime-routing-interface-v2.md`
 
-- Manifest / Catalog 不保存规则正文；
-- `activation_role = bootstrap / routing / constraint / execution`；
-- `semantic-reviewed` metadata 在 source 语义变化后必须重新复核；
-- `current-locator` 只定位 Consumer Current Authority，不缓存易变化状态摘要；
-- Consumer-native / adopted 来源身份必须保留；
-- stale / missing / ambiguous discovery 必须 fail-closed 到 Consumer-local Current Authority。
-
-## 5. 根入口职责收敛
-
-2026-09-10 的 v2 复核发现：根 `AGENTS.md` 曾同时维护稳定仓库治理、当前里程碑 / 阶段、候选状态、方法摘要、AI 复核细则、中文表达细则和 Research 生命周期说明，造成职责混杂和 Fresh Context 常驻上下文膨胀。
-
-已接受并实施以下长期边界：
-
-- `AGENTS.md`：只维护稳定 Repository Governance、Authority Boundary 与 Agent 工作约束；
-- `README.md`：维护面向人的简短当前状态和稳定导航；
-- `docs/project/project-roadmap.md`：维护详细当前阶段、活动里程碑、候选库与下一 Gate；
-- 具体 `docs/project/*`：维护里程碑设计 / 项目治理；
-- Method / Principle / Architecture / Skill / Guide：继续各自单点拥有其规范性语义；
-- Git / PR / Issue / Actions：保存精确外部状态和执行证据。
-
-当前阶段、里程碑进展、候选路线、Issue / PR 状态、实验进展和下一工作项不得为了 Fresh Context 方便重新复制回 `AGENTS.md`。
-
-该收敛同时修正了 v1 之后出现的一个结构性矛盾：一方面要求薄启动和 Progressive Disclosure，另一方面又把易变化状态持续堆入最高优先级 `AGENTS.md`。v2 后续 Consumer-local Bootstrap 设计必须避免复现这一模式。
-
-## 6. 当前 Phase D — Discovery → Routing → Skill Interface
-
-当前目标不是增加新的 Stage Router Skill，而是冻结一个最小运行接口。
-
-必须回答：
-
-1. task signal 如何产生候选 responsibility；
-2. primary responsibility 与 supporting context 如何区分；
-3. routing-only 什么时候可以停止而不加载 Skill；
-4. 真正进入职责执行时何时加载 Skill；
-5. constraint module 如何与 execution owner 组合；
-6. Stage Return 后如何重新解析责任，并使旧 routing / Readiness 失效；
-7. 多个规则命中时如何得到最小充分集合；
-8. stale / missing / ambiguity / conflict / high-impact 时如何 fail-closed；
-9. runtime adapter 如何只负责发现 / 交付 / 加载，不拥有 Method 语义。
-
-Phase D 的结果必须直接受 Phase A Acceptance 和 Phase C metadata contract 约束。
-
-## 7. 后续阶段
+冻结：一个 current primary responsibility + 最小 supporting constraints；`routing-only` 与 Skill execution 分离；Stage Return 后重新 routing；Runtime Adapter 不拥有 Method 语义。
 
 ### Phase E — Baseline Adoption / Consumer-local Projection
 
-需要冻结：
+**已完成。**
 
-- exact upstream baseline；
-- reusable vs `agentic-dev` project-only；
-- adopt / retain-or-override / reject-not-applicable；
-- adopted rule / module / Skill 的 Consumer-local persistence；
-- provenance / source relation；
-- Consumer-specific override 与 supersede；
-- 再次升级时的 compare / update / retain / supersede；
-- 不机械复制完整 upstream 文档体系。
+- `docs/project/consumer-local-baseline-adoption-projection-v2.md`
+- reusable Guide：`docs/guides/consumer-local-rule-activation.md`
+- 薄导航：`docs/guides/rule-activation-guide.md`
 
-### Phase F — 真实 Consumer 验证
+冻结：
 
-**核心完成门禁。**
+- `last evaluated upstream baseline` 与 active local asset 的 `adopted_from` 分离；
+- adoption decision history 只在显式升级时使用；
+- partial adoption / override / reject / supersede 可审计；
+- adopted change 必须成为 Consumer-local current asset；
+- ordinary runtime 不读取 upstream 或 upgrade history。
 
-至少一个真实 Consumer 必须在新的 Fresh Context 中证明：
+## 5. Root Bootstrap / AGENTS 职责收敛
 
-- ordinary runtime 不读取 upstream；
-- 能从 Consumer Repository 自己恢复 Authority 与 local discovery；
-- 能发现 Consumer-native 与 adopted reusable rules；
-- primary / supporting responsibility 正确；
-- 需要时才加载 Skill；
-- Stage Return / fail-closed 正确；
-- Consumer 更具体规则优先；
-- baseline upgrade 仍显式、可审计；
-- 没有第二套 Authority 或明显机械维护负担。
+v2 期间发现根 `AGENTS.md` 曾同时承载稳定仓库治理、当前里程碑 / 阶段、候选状态、方法摘要、复核细则、表达细则与 Research 生命周期，违背薄启动与 Progressive Disclosure。
 
-Consumer Repository 的实际修改必须在 Consumer 自己的授权上下文中执行；本仓库不得跨仓库静默修改。
+已经实施：
 
-### Phase G — 收敛与集成准备
+- `AGENTS.md` 只保留稳定 Repository Governance、Authority Boundary 与 Agent 工作约束；
+- `README.md` 承载简短当前状态；
+- Project Roadmap 承载详细当前阶段、活动里程碑、候选和下一 Gate；
+- Method / Principle / Architecture / Skill / Guide 恢复各自单点 semantic ownership；
+- Git / PR / Issue / Actions 保存精确外部状态与证据；
+- 当前阶段、里程碑进展、候选路线、Issue / PR 状态、实验进展和下一工作项不得重新堆入 `AGENTS.md`。
 
-完成 v1 回归、Authority / Method / Architecture / Guide / Skill 一致性检查、Consumer-local 证据复核、stale / fail-closed 回归、最终 AI Review 与稳定状态同步。
+相对 v2 启动基线，`AGENTS.md` 已实现实质减法；Roadmap 也删除了大量默认恢复不需要的历史流水，只保留索引和当前路线。
+
+这项结果同时成为 Phase F Consumer Bootstrap 的真实验证要求：Consumer-local adoption 不能通过不断把状态和 baseline 历史塞进 AGENTS / Bootstrap 来获得“可发现性”。
+
+## 6. 当前 Phase F — 真实 Consumer 验证
+
+验证 Authority：
+
+`docs/project/consumer-local-runtime-validation-plan-v2.md`
+
+首个真实 Consumer：
+
+`dygapp/jilinjobs-cms`
+
+其实际 Current State 必须在独立 Consumer Fresh Context 中重新从 GitHub 恢复；本文不维护 Consumer 当前阶段或提交状态。
+
+Phase F 必须覆盖：
+
+- **R1 Ordinary Fresh Context**：Consumer-native Authority + adopted reusable capability + 实际按需 Skill；
+- **R2 Stage Return / Ambiguity / Routing-only**：正确 primary responsibility、无批量 Skill、local fail-closed；
+- **R3 Consumer Override**：真实 Consumer-specific rule 优先于 reusable default；
+- **R4 Baseline Upgrade Lifecycle**：adopt / retain-or-override / reject + evaluated baseline / adopted provenance 分离；
+- **R5 Stale / Rebuild**：stale metadata fail-closed + derived Catalog 可删除 / 重建。
+
+Consumer 验证还必须审计 AGENTS / Bootstrap 是否重复存在本项目刚刚修复的状态与 baseline-history 膨胀模式；如果存在，只能按 Consumer 自己的 Authority 做职责归位，不能机械套用 `agentic-dev` 文件结构。
+
+Consumer Repository 的实际修改必须在 Consumer 自己授权的会话 / 分支中执行。本 `agentic-dev` 会话只提供候选 reusable baseline、验证要求和后续证据复核。
+
+Phase F 完成条件：R1～R5 均取得可审计证据，且无未解决 Blocking / Medium reusable finding。否则结果必须是 INCONCLUSIVE / REJECT 或返回相应设计阶段，不能直接进入 Phase G。
+
+## 7. Phase G — 收敛与集成准备
+
+只有 Phase F PASS 后进入。
+
+完成：
+
+- v1 核心行为回归；
+- Authority / Method / Architecture / Guide / Skill 一致性检查；
+- Consumer-local validation evidence review；
+- stale / fail-closed 回归；
+- Root Bootstrap 职责回归；
+- 最终 AI Review；
+- README / Roadmap / 项目记录稳定状态收敛；
+- 达到“已具备进入人工集成决策的条件”。
 
 ## 8. 完成定义
 
@@ -242,12 +176,13 @@ Consumer Repository 的实际修改必须在 Consumer 自己的授权上下文�
 1. Consumer-local Runtime Target、discovery、semantic owner、routing 与 Skill activation 边界一致；
 2. 同一规范性规则只有一个长期正文 owner；
 3. stale / missing / ambiguity / conflict / high-impact 均有明确 fail-closed；
-4. baseline adoption / upgrade 支持 adopt / retain-or-override / reject；
-5. Consumer-native 与 adopted reusable asset 能被同一本地入口协调，同时保持 Consumer Authority 优先；
+4. baseline adoption / upgrade 支持 adopt / retain-or-override / reject / supersede；
+5. Consumer-native 与 adopted reusable asset 能由同一本地入口协调，同时保持 Consumer Authority 优先；
 6. 至少一个真实 Consumer 在 ordinary Fresh Context 中不依赖 upstream 仍能正确发现、路由并按需执行 Skill；
-7. Consumer 验证无未解决 Blocking / Medium 通用缺口；
+7. Consumer 验证无未解决 Blocking / Medium reusable finding；
 8. 没有第二套 Authority、机械 metadata 维护、全库复制或超级能力；
-9. 最终 AI Review 未解决 Blocking / Medium = `0 / 0`；
-10. README、Roadmap、项目记录和必要 adoption / usage 入口能让新的上下文恢复最终有效状态，`AGENTS.md` 保持稳定治理入口而不重新承载项目状态。
+9. Root AGENTS / Bootstrap 保持稳定治理入口，不重新累积项目状态、baseline history 或重复方法正文；
+10. 最终 AI Review 未解决 Blocking / Medium = `0 / 0`；
+11. README、Roadmap、项目记录和 adoption / usage 入口能让新上下文恢复最终有效状态。
 
 达到以上条件只表示已具备进入人工集成决策的条件；合并仍由人工权威或仓库策略决定。
