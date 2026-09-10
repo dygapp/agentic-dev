@@ -106,6 +106,8 @@ Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` �
 
 外部证据进入长期能力前必须先完成当前仓库的证据分类与架构适配。Consumer 采用时只选择对自身持续工作有价值的可复用能力，并固化到 Consumer-local Authority；`agentic-dev` 自身项目规则和当前项目状态不自动继承。
 
+同一 Runtime scope 中，同一个 discovery responsibility 只能有一个被声明为 current 的机制。被新机制取代的派生 index / catalog / retriever 必须退出 Current Runtime / Eval surface 或明确降为冻结历史证据；仍声明为 current 的派生机制必须保持 source-currentness 与语义映射真实有效，不允许保留“可执行但已陈旧”的中间状态。
+
 研究入口见 `docs/research/README.md`，Consumer 使用与采用边界见 `docs/guides/using-agentic-dev.md`。
 
 ## Git 提交
