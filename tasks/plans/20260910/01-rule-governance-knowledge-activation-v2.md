@@ -8,10 +8,10 @@
 
 `docs/project/rule-governance-knowledge-activation-v2.md`
 
-为准。本计划只维护当前协调状态，不复制第二份长期 Authority。
+为准。本计划只保留协调结果与集成边界，不复制第二份长期 Authority。
 
 启动基线：`master@b6a20053a7a6f4f53915bea8218604720412c302`  
-跟踪入口：Issue #92
+跟踪入口：Issue #92 / PR #93
 
 ## 已完成
 
@@ -22,54 +22,48 @@
 - Phase E — Baseline Adoption / Consumer-local Projection
 - Root Bootstrap / `AGENTS.md` 职责收敛
 - Phase F — 真实 Consumer 验证：R1～R5 PASS
+- Phase G — Candidate Drift T1～T4 定向重验：PASS
+- Final AI Review 中发现的 reusable Guide 两项中等级问题已修复并完成 Consumer 定向重验
+- README / Roadmap / v2 项目记录已收敛为与瞬时 PR 状态解耦的稳定后态
 
-Phase F 结果：
+## 最终验证锚点
+
+Phase F：
 
 `docs/project/consumer-local-runtime-validation-result-v2.md`
 
-## 当前工作项
-
-### Phase G — Candidate Drift 定向重验 Gate
-
-Final AI Review 在 Phase F 后修复两项 Medium，并改变 reusable Guide 集合。旧 Phase F Candidate 为：
-
-`ec945368678715732fe729c331bd3bcdd919bbdd`
-
-当前冻结 reusable candidate：
-
-`29f88efd25232e57ccb4a82ffff039be047e4d1e`
-
-影响分析：
+Phase G Candidate Drift：
 
 `docs/project/consumer-local-runtime-candidate-drift-review-v2.md`
 
-当前只需在既有 Consumer 实验状态上执行：
+冻结 reusable candidate：
 
-```text
-T1 updated adopted Guide ordinary local-only
-T2 Consumer override after updated local Guide
-T3 incremental baseline adoption ec945... → 29f88...
-T4 updated source identity / Catalog currentness
-```
+`29f88efd25232e57ccb4a82ffff039be047e4d1e`
 
-R2 Stage Return / ambiguity 和 R5 stale / rebuild 核心机制可以复用既有 Phase F Evidence，只补受当前 source identity 变化影响的 currentness 检查。
+Consumer 最终定向重验：
 
-## 定向重验之后
+- Repository：`dygapp/jilinjobs-cms`
+- Head：`c29da21b41ff3ddad023ecb64e3628dc3136a77e`
+- Workflow Run：`34450265966`
+- Artifact ID：`10141246815`
+- Artifact digest：`sha256:7d1a9dc47a6192e4b6c010585d2c69ff387392083448b504c89848465a74fb06`
+- T1～T4：全部 PASS
+- ordinary runtime upstream access：0
+- Blocking / Medium reusable findings：`0 / 0`
 
-T1～T4 PASS 且 Blocking / Medium reusable finding = 0 / 0 后：
+## 当前 Gate
 
-```text
-Final AI Review affected-dimension recheck
-→ v1 / Authority / stale / root-bootstrap regression closure
-→ README / Roadmap / PR / Issue stable-state convergence
-→ Ready to Integrate
-```
+v2 内部完成定义已经满足，当前只剩：
 
-如果定向重验暴露 Blocking / Medium reusable gap，只返回真正受影响的 owner 修订并定向重验，不机械重跑完整 Phase F。
+> **人工集成决策。**
 
-## 当前最小输入
+PR #93 是否已经实际集成、Issue #92 是否已经关闭，直接从 GitHub 当前事实读取；本计划不复制瞬时 PR 状态。
 
-`agentic-dev`：
+无论当前集成结果如何，都不会自动启动新的有限里程碑。WI-06、WI-07、WI-09、第四 Engineering Discipline、Issue #71 等仍只是候选，必须由新的人工路线决策选择。
+
+## Fresh Context 最小输入
+
+如果 PR #93 尚未集成、当前任务是审查 v2 候选，按需读取：
 
 - `AGENTS.md`
 - `README.md`
@@ -77,27 +71,29 @@ Final AI Review affected-dimension recheck
 - `docs/project/rule-governance-knowledge-activation-v2.md`
 - `docs/project/consumer-local-runtime-validation-result-v2.md`
 - `docs/project/consumer-local-runtime-candidate-drift-review-v2.md`
-- `docs/guides/consumer-local-rule-activation.md`
-- `docs/guides/using-agentic-dev.md`
-- `docs/guides/verification-evidence-rules.md`
-- Issue #92 / PR #93
+- PR #93 / Issue #92
 
-Consumer 定向重验必须在其独立授权上下文中执行；本 `agentic-dev` 会话不修改 Consumer。
+只有具体语义审查需要时再读 Phase A～E Contract、Guide、Skill / Architecture；不恢复完整实验历史。
+
+如果 PR #93 已集成，则 v2 作为已完成能力基线使用，本计划不再作为普通 Fresh Context 默认输入。
 
 ## 范围控制
 
-Phase G 不：
+本里程碑不：
 
-- 修改 Consumer Repository；
-- 合并 Consumer 实验 Branch；
-- 将验证视为 Consumer 正式 adoption；
+- 修改或合并 Consumer 实验 Branch；
+- 将 Consumer 验证视为正式 Consumer adoption；
 - 产品化 Runtime Rule Index；
 - 引入向量 / 图数据库、MCP、Rule Super Skill、Stage Router Skill；
-- 继续增加新的 Runtime Eval 场景；
+- 增加新的 Runtime Eval 场景；
 - 启动 WI-06 / WI-07 / WI-09 / Issue #71 候选实施。
+
+后续如果出现新的 reusable 问题，以新的 Evidence / Planning 边界处理，不为了维持本计划“当前”而无限追加状态。
 
 ## 完成
 
-定向 Consumer Evidence 与 Final AI Review 都通过后，把 PR #93、README、Roadmap、Issue #92 和项目记录收敛为“已具备进入人工集成决策的条件”。
+当前协调结论：
 
-实际 merge 前 Issue #92 保持 open；PR #93 保持 Draft，直到最终 AI Review 完成。合并仍由人工权威或仓库策略决定。
+> **规则治理与知识激活 v2 已具备进入人工集成决策的条件。**
+
+该结论不等于人工批准，也不授予 Merge。实际集成由人工权威或仓库策略决定；精确集成事实由 Git / PR #93 / Issue #92 保存，不要求合并后再创建纯状态同步提交。
