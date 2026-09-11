@@ -55,13 +55,13 @@ V3-05 把资源相关信息分成三层。
 - 来源状态；
 - 运行 / 生命周期角色；
 - 载体 / 权威形式；
-- 是否参与当前资源集合；
+- 足以判断当前有效性的原生事实与关系；
 - 本地可读取位置；
 - 必要的来源、取代或父资源关系。
 
 这些语义**不要求为每个资源新增一组独立 metadata 字段**。如果资源原生契约、稳定入口或当前仓库 Authority Map 已经能够无歧义恢复某项语义，应直接复用；只有缺失可稳定恢复方式时才新增结构。
 
-资源固有结构可以由资源自身、同目录契约、仓库本地 Authority Map、sidecar 或其他稳定载体共同表达。只要某个独立 sidecar / Authority Map section 承载的是资源固有结构，它就是该资源长期权威表示的一部分：
+资源固有结构可以由资源自身、同目录契约、仓库本地 Authority Map、sidecar 或其他稳定载体共同表达。只有当前仓库权威明确把某个独立 sidecar / Authority Map section 指定为该资源的固有描述时，它才成为该资源长期权威表示的一部分：
 
 - 必须由该资源语义所有者或当前仓库明确授权的维护职责共同维护；
 - 生命周期、更新和取代必须与资源本身保持一致；
@@ -77,6 +77,7 @@ V3-05 把资源相关信息分成三层。
 - 跨资源统一的职责候选；
 - 条件 / 风险标签；
 - routing-only / execution 等加载提示；
+- current resource set；
 - 查询索引；
 - Runtime Catalog；
 - 其他可以从当前资源固有结构、资源原生发现信息和正文重新建立的导航信息。
@@ -223,30 +224,33 @@ identity 可以来自：
 
 载体只决定读取 / 维护方式，不决定语义所有者优先级。
 
-### 5.7 当前集合参与状态
+### 5.7 当前有效性判断
 
-这一项只回答：
+资源模型要求**当前有效性必须能够从当前仓库权威确定**，但不新增统一的 `current / not-current / historical` 状态轴。
 
-> **该逻辑资源当前是否允许进入现行资源集合？**
+判断当前资源是否允许进入现行资源集合时，必须使用真实 owner 已有的原生状态与 V3-01 维度 / 关系，例如：
 
-最小只需要：
+- 适用范围是否为“仅历史”；
+- 来源状态是否为“历史来源”或“外部未采用”；
+- 生命周期是否为“仅历史 / 证据”；
+- 是否存在明确的 `superseded-by`；
+- 资源自身契约是否定义 current entry；
+- 当前仓库本地政策是否明确禁用 / 排除该资源。
 
-- **current**：当前允许参与现行发现 / 采用 / 运行；
-- **not-current**：当前不参与现行集合。
+因此：
 
-它不是新的所有权分类轴，不重新定义“仅历史”“历史来源”“仅历史 / 证据”等 V3-01 语义。`not-current` 的原因必须从已有维度和真实关系恢复，例如：
+```text
+current set
+=
+current repository authority
++ V3-01 dimensions
++ native resource state when defined
++ real supersede / disable relations
+```
 
-- 适用范围已经是“仅历史”；
-- 来源状态是“历史来源”；
-- 生命周期是“仅历史 / 证据”；
-- 存在明确 `superseded-by`；
-- 当前仓库政策显式禁用该资源。
+V3-06 可以基于这些当前事实形成可重建的 current resource set，但不能为了运行方便再维护一份脱离 owner 的 currentness 真值。
 
-因此不能再增加一个 `historical` state 去重复上述分类。
-
-普通运行和 V3-06 的 current set 只能消费 `current` 资源。
-
-`rejected / not-applicable` 的采用决定仍属于使用方升级历史，不要求制造一个可发现资源；如果某个旧资源因采用决定被取代，应通过当前参与状态 + 真实取代关系表达。
+`rejected / not-applicable` 的采用决定仍属于使用方升级历史，不要求制造一个可发现资源；如果旧资源被新资源取代，由真实取代关系和更新后的 V3-01 生命周期 / 来源事实使其退出 current set。
 
 ### 5.8 本地位置
 
@@ -277,7 +281,7 @@ local path
 
 不建立为了“更完整”而维护的大型资源图。
 
-关系只帮助追溯、当前集合参与和发现，不创造 Authority priority。
+关系只帮助追溯、当前有效性判断和发现，不创造 Authority priority。
 
 ## 6. 不进入通用固有结构的内容
 
@@ -333,7 +337,7 @@ V3-05 标准化逻辑语义，不强制一种文件格式。
 如果资源需要结构化，其逻辑结构可以来自：
 
 - 文档自身稳定区块；
-- 同目录或仓库级 sidecar；
+- 当前仓库权威明确指定的同目录或仓库级 sidecar；
 - 当前仓库 Authority Map；
 - 资源所属类型已经存在的契约；
 - 其他不会复制规范正文的稳定表示。
@@ -366,7 +370,7 @@ description: ...
 
 - 画像继续保留自身契约结构；
 - 技术身份、版本 / 版本范围、证据基线、适用 / 不适用范围等继续属于画像原生结构；
-- 资源模型只要求其稳定身份、所有权四维、当前集合参与状态和本地入口可被恢复；
+- 资源模型只要求其稳定身份、所有权四维、当前有效性和本地入口可被恢复；
 - 技术版本 / 证据基线等画像专有字段不提升为所有资源的统一字段。
 
 ### 7.4 仓库本地规则 / 项目权威
@@ -375,7 +379,7 @@ description: ...
 
 如果它们进入统一发现，只提供 locator 与必要资源身份；不得把当前政策正文、业务值、架构决定或 Gate 复制进 metadata。
 
-高频变化的 Current Authority 应优先使用“定位当前 owner”的模式，不因为正文正常变化就机械改变资源 identity 或当前集合参与状态。
+高频变化的 Current Authority 应优先使用“定位当前 owner”的模式，不因为正文正常变化就机械改变资源 identity 或当前有效性。
 
 ### 7.5 Skill supporting resources
 
@@ -394,7 +398,7 @@ V3-05 只固定当前有效性原则，不实现发现算法。
 
 ### 8.1 资源固有结构与正文共同维护
 
-资源固有结构无论内嵌正文还是放在独立 sidecar / Authority Map，都属于资源长期权威表示的一部分，必须按第 2.2 节与正文共同维护。
+资源固有结构无论内嵌正文还是放在当前仓库权威明确指定的独立 sidecar / Authority Map，都属于资源长期权威表示的一部分，必须按第 2.2 节与正文共同维护。
 
 如果二者矛盾：
 
@@ -441,27 +445,28 @@ Authority defect
 | `conditions` | **不作为统一固有字段**：资源原生适用 / 触发条件保持 owner-native；跨资源统一条件标签由 V3-06 派生并 source-bound | V3-05 / V3-06 |
 | `risks` | **默认移出统一固有结构**：资源自身契约明确拥有的风险边界保持原生；跨资源 risk taxonomy / 标签只作为 V3-06 派生提示，不冻结全局 taxonomy | V3-05 / V3-06 |
 | `origin` | **取代**：由 V3-01 来源状态 + 条件 provenance 表达，避免 `consumer/adopted` 过粗 | V3-05 |
-| `state` | **保留最小参与语义、去除重复分类**：只表达 `current / not-current`；历史、来源、生命周期和 supersede 原因继续由 V3-01 维度与真实关系表达 | V3-05 |
+| `state` | **不保留统一状态字段**：`active` 由当前仓库权威与 V3-01 维度 / 原生状态判断；`superseded` 由真实取代关系与更新后的生命周期 / 来源事实表达；`disabled` 由本地 Policy 或资源原生契约表达；reject / not-applicable 留在升级历史 | V3-05 / V3-06 |
 | `relations` | **保留但收窄**：只记录真实 supersede / derived / supporting / 明确 override 关系，不建立优先级图 | V3-05 |
 | `semantic-reviewed` | **保留原则、下移**：作为 V3-06 派生语义提示的 currentness 绑定方式 | V3-06 |
 | `current-locator` | **保留原则、下移**：作为 V3-06 纯 locator 投影的绑定方式 | V3-06 |
 | Activation Manifest | **不进入资源固有模型**：继续作为 v2 过渡兼容；V3-06 决定是否保留、简化或取代 | V3-06 |
 | Runtime Catalog | **明确为派生投影**：可删除 / 重建，不拥有规范正文；物理存在与否由 V3-06 决定 | V3-06 |
 
-因此 v3 不再把“Manifest 中的一条 record”与“真实长期资源”视为同一个对象。
+因此 v3 不再把“Manifest 中的一条 record”与“真实长期资源”视为同一个对象，也不为所有资源维护独立于真实 owner 的统一 current state。
 
 ## 10. V3-06 的输入契约
 
 V3-06 可以假定 V3-05 已经固定以下事实：
 
 1. discovery 的候选对象是**资源**，不是任意文件；
-2. 资源身份遵循 V3-01 四维所有权，并能够恢复稳定 identity、current / not-current 参与状态、locator 与必要关系；
-3. 规范正文不进入 Catalog / Index；
-4. 资源原生发现字段继续由资源 owner 持有；跨资源统一的 routing / conditions / risks 等紧凑信息属于可重建派生提示；
-5. 普通运行只能读取使用方本地 current resource；
-6. derived projection stale / missing / ambiguous 时必须失败关闭；
-7. `SKILL.md`、普通 Markdown、技术画像和仓库本地规则允许不同物理表示；
-8. 不要求全仓 Front Matter。
+2. 资源身份遵循 V3-01 四维所有权，并能够恢复稳定 identity、当前有效性、locator 与必要关系；
+3. 当前有效性来自真实 owner / V3-01 维度 / 取代和禁用事实，不存在独立统一 state 真值；
+4. 规范正文不进入 Catalog / Index；
+5. 资源原生发现字段继续由资源 owner 持有；跨资源统一的 routing / conditions / risks 等紧凑信息属于可重建派生提示；
+6. 普通运行只能读取使用方本地当前有效资源；
+7. derived projection stale / missing / ambiguous 时必须失败关闭；
+8. `SKILL.md`、普通 Markdown、技术画像和仓库本地规则允许不同物理表示；
+9. 不要求全仓 Front Matter。
 
 V3-06 必须自行回答：
 
@@ -500,4 +505,4 @@ V3-03 使用方生命周期继续约束 V3-05：
 - 把 Guide / supporting resource / derived projection 自动升级为平级 owner；
 - 修改任何使用方仓库。
 
-标准化的是**资源语义、所有权维度、当前集合参与状态和固有 / 派生边界**，不是统一文件格式或发现实现。
+标准化的是**资源语义、所有权维度、当前有效性判断和固有 / 派生边界**，不是统一文件格式或发现实现。
