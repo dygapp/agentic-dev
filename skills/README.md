@@ -55,18 +55,22 @@ Issue #18 随后的真实使用方项目证据触发了 `slice-work`、`readines
 
 | Skill | 状态 |
 |---|---|
-| `github-actions-verification` | 已实现；基于真实使用方证据形成的平台专项非核心工程纪律 Skill |
+| `github-actions-verification` | 已实现；基于真实使用方证据形成的平台专项非核心 Skill |
 
 该 Skill 只在使用方使用 GitHub Actions，且 CI 验证路径、证据可观察性、运行成本或诊断问题会实质影响验证可靠性时按需使用。它实现既有方法 / 治理语义，不新增方法阶段，也不接管集成、发布或部署。
 
 `github-actions-verification` 的形成路径是当前历史证据，不代表未来所有平台 / 技术专项 Skill 都必须重复等待使用方先暴露问题。新的候选 Skill 应按工程能力架构综合使用成熟外部证据、专项评估和使用方实践进行准入判断。
 
-权威设计参考：
+当前权威：
 
 - `../docs/architecture/engineering-capability-architecture.md`
 - `../docs/architecture/skill-architecture.md`
 - `../docs/architecture/skill-contracts.md`
-- `../docs/architecture/first-batch-skill-design.md`
+- 当前各 `SKILL.md`
+
+历史设计参考：
+
+- `../docs/architecture/first-batch-skill-design.md`：记录第一批 8 个核心 Skill 从契约到首版实现的历史设计基线，不再作为当前 Skill 设计权威。
 
 打包 / 互操作研究参考：
 

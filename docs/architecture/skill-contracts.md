@@ -481,13 +481,13 @@ constraints
 3. 从 Repository Rules 与实际仓库状态发现可用 Build / Test / Lint / Verification 方式；不硬编码通用命令，不把未经验证的命令当作事实。
 4. Create JIT Execution Plan if useful。
 5. Establish Expected / Failing Evidence when there is a stable behavior seam。
-6. Implement 当前 Unit 所需最小变更，并应用当前适用的 Engineering Discipline：新增复杂度应有当前正当性；最终有意义的差异区域应能追溯到当前逻辑变化及其必要责任。该检查不以最少行数 / 文件数为目标，也不得排除当前必要测试、范围受控的行为保持重构、已授权权威同步或本次修改直接产生的 cleanup。当 Unit 涉及集合 / 列表 / snapshot 数据访问时，还应确认真实 Consumer Scope、集合 boundedness / growth、lifecycle / freshness，以及 filtering / ordering / window / pagination / representation 与验证边界是否匹配当前 Authority；页面展示数量或已有 `LIMIT/OFFSET` 不替代业务 scope，且不得把本 Discipline 机械解释为“所有列表必须分页”。
+6. 实施当前 Unit 所需最小变更，并应用当前仓库权威可发现的现行 Engineering Discipline。Contract 只要求 `execute-unit` 识别并应用当前命中的纪律，确保纪律不覆盖更高权威或扩大 Unit Scope；具体纪律规则由当前工程纪律权威单点维护，不在本 Contract 复制第二份正文。
 7. 回到规格追踪 / 验收责任归属检查义务闭环，并执行足以证明当前执行单元所承担义务的定向验证。
 8. 不把实现存在、代码检查、历史证据或未覆盖关键差异的主路径证据当作义务闭环。
 9. 对意外失败调用 `systematic-debug`。
 10. 如果实施暴露长期领域事实缺失、冲突或失效，不在代码 / 测试中提升业务权威；返回 `clarify-intent` / `specify` 完成候选验证和领域权威路由。
 11. 如果实施暴露新的长期架构状态、长期架构决定或架构上下文失效，不在代码或局部即时计划中静默固化；返回 `technical-plan` 完成架构权威更新与必要 ADR 评估。
-12. 按风险需要进行复核，并逻辑区分规格符合性与工程质量；工程质量复核至少确认新增复杂度的当前正当性与最终 diff 的责任可追溯性；涉及集合型数据访问时同时检查数据作用域 / 有界性 / 生命周期与 window / representation 是否匹配当前消费者。
+12. 按风险需要进行复核，并逻辑区分规格符合性与工程质量；工程质量复核确认当前命中的 Engineering Discipline 已按其规范权威应用，具体纪律规则不在本 Contract 重述。
 13. 记录已执行的当前证据，并逐项说明其支持哪些执行单元负责的验收义务；显式归属功能整体验证责任的义务保持 `Pending`，不得由执行单元完成状态冒充已验证。
 
 ### Outputs
