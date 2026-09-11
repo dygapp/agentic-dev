@@ -110,7 +110,7 @@ AGENTS.md
 
 其中 `docs/README.md` 已经承担 Documentation Authority Map；当前没有独立名为 Local Discovery Entry、Activation Manifest 或 Runtime Catalog 的资产。
 
-### 3.4 当前静态状态漂移是现成验证样本
+### 3.4 当前存在真实 Current State 冲突
 
 当前 `main` 中：
 
@@ -119,13 +119,26 @@ AGENTS.md
 - Issue #60 Current Evidence 已记录 EU-54 `Readiness PASS / Execute Authority GRANTED`；
 - PR #138 已存在并处于 implementation 生命周期。
 
-这不是 V3-08 人工制造的错误，而是一个真实的“稳定 locator / Planning artifact 正文变化频率低于 GitHub Current Evidence”的 Consumer 场景。
+这里不能把两个静态 Work 文件简单解释为“纯 current-locator”。它们自身明确保存了 Readiness / Execute 状态，因此当前存在一个真实的 **Consumer-local Current State consistency conflict**。
 
-V3-08 将它作为 `current-locator` 语义验证样本：
+V3-08 对该样本的预期不是“GitHub 永远高于本地文件”，也不是“静态文件先出现所以优先”，而是：
 
-> 高频 Current Gate 不能因为静态文档摘要暂未回写就被旧值反向覆盖；Fresh Context 必须重新读取 GitHub Current Evidence，并按 Consumer Repository Authority 判断真实当前状态。
+```text
+发现两个当前来源给出冲突状态
+→ 不静默猜测 / 不沿用旧聊天
+→ 读取 Consumer Repository Authority、Current Evidence 与真实外部状态
+→ 识别冲突并 fail-closed / 对账
+→ 只有 Consumer Authority 足以确定当前有效授权时才继续
+→ 将是否需要修复状态复制机制分类为 Consumer-local finding
+```
 
-它不自动证明这些静态文件本身应删除或被视为 defect；是否需要后续 Consumer 状态治理调整属于 Consumer-local 结论。
+Issue #60 的明确 Current Evidence、PR #138 的 Execute baseline 与实际 implementation lifecycle 为“EU-54 已进入 Execute”提供了强当前证据；但 V3-08 不把这一观察提升为“所有 GitHub Issue 天然高于所有 Work artifact”的通用规则。
+
+该 finding 初步分类：
+
+> **Consumer-local state-governance / source-currentness finding。**
+
+它用于验证 V3 失败关闭与“Current locator 不缓存易变状态”的价值，但是否修改 Consumer Work 生命周期、状态 owner 或回写策略，必须在 Consumer Repository 内决定。
 
 ## 4. Context-cost observation baseline
 
@@ -151,6 +164,8 @@ V3-08 将它作为 `current-locator` 语义验证样本：
 因此 Gate A 固定一个可证伪假设：
 
 > 普通状态恢复不应机械加载完整 37 KB+ Consumer-local Development Method。Consumer 如果能够从稳定 Bootstrap / Documentation Authority Map / Roadmap / GitHub Current Evidence 恢复当前 Gate，应允许在进入职责 / capability discovery 前停止。
+
+`90,984 bytes` 是当前声明入口的静态文件大小观察值，不等价于模型 token，也不代表每次工具运行实际完整读取全部字节。V3-08 后续记录“声明默认集合”和“场景实际读取集合”两种指标，避免把文件大小误当成完整运行成本。
 
 V3-08 不以减少 bytes 为唯一目标。任何精简都必须先保证 correctness、Authority、fail-closed 与必要能力召回。
 
@@ -189,11 +204,11 @@ EU-54 自然 closure 后
 
 ## 6. Gate A 验证总体结构
 
-V3-08 分四个轨道。
+V3-08 分五个轨道。
 
 ### Track A — Pre-upgrade read-only observation
 
-目标：记录 Consumer 在旧 evaluated baseline 下的真实普通运行和 currentness 行为，形成对照组。
+目标：记录 Consumer 在旧 evaluated baseline 下的真实普通运行、状态冲突与 currentness 行为，形成对照组。
 
 不修改 Consumer。
 
@@ -207,19 +222,25 @@ V3-08 分四个轨道。
 
 ### Track D — Sustained-validity real evolution
 
-目标：不为 V3-08 人造产品任务。baseline upgrade 进入 Consumer current state 后，优先使用真实后续 Planning：Issue #137 Page Content Architecture，观察新的 Fresh Context / Planning / capability discovery 是否持续有效。
+目标：不为 V3-08 人造产品任务。baseline upgrade 成为 Consumer current 后，优先使用真实后续 Planning：Issue #137 Page Content Architecture，观察新的 Fresh Context / Planning / capability discovery 是否持续有效。
 
 如果届时 Consumer Authority 改变顺序或 Issue #137 不再是下一真实工作，则 Track D 选择当时第一个真实后续工作，并记录原因；不为了守住预设编号扰乱 Consumer Roadmap。
+
+### Track E — First-adoption coverage
+
+目标：因为 `jilinjobs-cms` 是成熟 Existing Consumer，不破坏其历史来伪造首次采用；通过 claim-level Evidence reuse 或独立最小 fixture 关闭首次采用语义验证。
+
+Track E 是 V3-08 closure 的必需覆盖项之一，不因为 Track B～D PASS 就自动省略。
 
 ## 7. Track A — Pre-upgrade observation matrix
 
 | ID | 场景 | 输入 | 预期 | Evidence |
 |---|---|---|---|---|
-| A-01 | 状态恢复 | current `main` + AGENTS / README / docs map / Roadmap / GitHub | 能识别 EU-54 已 Readiness PASS / Execute，不能被静态 PENDING 摘要反向覆盖 | 实际读取清单 + current verdict + source precedence |
-| A-02 | 状态-only stop | 只问当前工作 / Gate | 不要求打开完整 upstream；若本地 + GitHub 已足够，应避免完整 Method / Skills preload | 文件数 / bytes / 是否跨仓读取 |
-| A-03 | routing-only | 判断 EU-54 当前 primary responsibility | 返回 Execute / current work locator；不因为“SunEditor/Vue/GitHub”批量加载所有能力 | primary + supporting locator + loaded sources |
+| A-01 | 状态恢复 | current `main` + AGENTS / README / docs map / Roadmap / Work / GitHub | 识别 Work 与 GitHub Current Evidence 状态冲突，不静默接受旧 PENDING，也不建立“GitHub 永远更高”新规则 | 实际读取清单 + conflict trace + current verdict basis |
+| A-02 | 状态-only stop | 只问当前工作 / Gate | 不要求打开 upstream；在本地 + GitHub 足够时不为了保险加载全部 Method / Skill / history | 文件数 / bytes / 是否跨仓读取 |
+| A-03 | routing-only | 判断 EU-54 当前 primary responsibility | 当前 Authority 足以证明 Execute lifecycle 时返回 Execute / current work locator；不因为“SunEditor/Vue/GitHub”批量加载所有能力 | primary + supporting locator + loaded sources |
 | A-04 | supporting capability | PR #138 需要 GitHub Actions / Human Review / Vue / verification 时 | supporting capability 不夺取 EU-54 primary responsibility | candidate / supporting 解析结果 |
-| A-05 | stale current summary | Work artifact PENDING vs GitHub PASS | current-locator / Current Evidence 语义正确；不把 no-match / old summary 当 current truth | conflict resolution trace |
+| A-05 | duplicated current state | Work artifact PENDING vs Issue PASS | 识别为 current-state/source-currentness gap；不得用 no-match / old summary 证明无 Execute Authority | finding classification + Consumer-local follow-up candidate |
 
 Track A 只形成 baseline observation，不因为旧方案行为可工作就判定 V3-08 PASS。
 
@@ -288,6 +309,8 @@ supersede / remove
 
 优先评估**复用现有 `docs/README.md`** 作为 Consumer Local Discovery Entry，因为它已经是 Documentation Authority Map / Fresh Context 入口。
 
+这只是 Gate A 候选，不是预先决定的物理实现。
+
 只有现有入口职责无法保持薄、无法安全到达 current local capability discovery 时，才新增独立入口文件。
 
 不得为了与 `agentic-dev/docs/discovery/README.md` 路径一致而复制目录结构。
@@ -316,6 +339,19 @@ supersede / remove
 - 不把 branch candidate 描述为 Consumer current；
 - 若实验失败，Consumer `main` 继续按旧本地规则工作。
 
+### B-07 — Consumer-local current-state finding disposition
+
+Track A 发现的 Work / GitHub 状态冲突必须分类，但不要求 baseline upgrade PR 顺带修复所有 Consumer 文档。
+
+只有当：
+
+- 修复是采用新生命周期 / discovery semantics 的必要本地投射；或
+- 当前冲突会阻断 adoption verification；
+
+才进入同一 Consumer candidate。
+
+否则创建独立 Consumer-local governance / state-closure follow-up，避免 V3-08 以“规则治理”为名吸收无边界 cleanup。
+
 ## 9. Track C — Post-adoption runtime matrix
 
 只有 Track B candidate 完成本地验证后才能执行。
@@ -334,6 +370,7 @@ supersede / remove
 | C-10 | no-match + governance fact | 不解释为“无规则”；扩大最小本地读取 |
 | C-11 | ordinary runtime | upstream 新提交不改变 Consumer current runtime |
 | C-12 | rejected / historical decision | 不进入 ordinary Fresh Context |
+| C-13 | current-state conflict | 两个 current source 冲突时先暴露 conflict / fail-closed，不通过 derived Map 创建第三份状态真值 |
 
 如果 Consumer 不采用 Map，则 C-06 / C-07 改为验证实际采用的等价 local discovery currentness 机制；不得为了覆盖用例强制造 Map。
 
@@ -350,6 +387,8 @@ supersede / remove
 5. **no-match + known risk**：存在明确 governance fact 时空结果不得解释为无规则。
 
 这些变更全部是实验分支证据，不允许因 V3-08 测试需要进入 Consumer 产品 `main`。
+
+如果 Consumer 不采用 Map，不机械制造上述 metadata 结构；改为针对其真实 discovery mechanism 设计等价的 currentness / fail-closed negative test。
 
 ## 11. Track D — Sustained-validity real evolution
 
@@ -384,20 +423,37 @@ Issue #137 — Page Content Architecture & Special Page Rendering。
 
 如果 Issue #137 届时不再是当前真实下一工作，使用当时第一个真实后续 Planning / Execute 场景，并在 Evidence 中记录替代原因。
 
-## 12. First-adoption coverage
+## 12. Track E — First-adoption coverage
 
 `jilinjobs-cms` 是成熟 Existing Consumer，不适合把当前仓库伪装成“新项目首次采用”。
 
 V3-08 不通过删除其现有 baseline / Authority 来制造首次采用证据。
 
-首次采用语义采用次级隔离轨道：
+V3-08 closure 前必须用以下一种方式关闭 first-adoption claim：
 
-- 在 Gate B 完成后，如果现有真实证据不足，建立**最小隔离 Consumer fixture**；
-- fixture 只包含最小 Repository Authority / README / 一个真实工作目标，不复制 `agentic-dev` 目录树；
-- 验证初始化 → per-item adoption → local projection → adoption verification → local-only ordinary runtime；
-- fixture 只提供生命周期 / discovery 行为证据，不替代 `jilinjobs-cms` 的真实 Existing Consumer 证据。
+### E-01 — Claim-level Evidence reuse
 
-是否需要该 fixture 在 Track B / C Evidence 后再判断；若真实 Existing Consumer 证据已经充分覆盖同一语义，不为了数量机械扩大评估。
+如果 v2 / 既有 Consumer 实验中已有真实 first-adoption evidence，只有能证明：
+
+- exact historical Consumer / upstream baseline 可追溯；
+- V3-03～V3-07 没有改变该 claim 所依赖的语义；
+- candidate V3 只重分类 owner / representation 而未改变被复用行为；
+- 当前仓库 Evidence reuse 规则允许；
+
+才可按**具体 claim**复用。
+
+不能因为“以前 Phase F PASS”就整体复用。
+
+### E-02 — Minimal isolated Consumer fixture
+
+如果 E-01 不能完整证明，则建立最小隔离 fixture：
+
+- 只包含最小 Repository Authority / README / 一个真实工作目标；
+- 不复制 `agentic-dev` 项目状态或目录树；
+- 执行初始化 → per-item adoption → local projection → adoption verification → local-only ordinary runtime；
+- fixture 只提供 lifecycle / discovery 行为证据，不替代 `jilinjobs-cms` Existing Consumer 的真实持续运行证据。
+
+Track E 可以在 Track B/C 后执行，但在 V3-08 Gate D closure 前不可保持 `PENDING`。
 
 ## 13. Evidence Contract
 
@@ -414,6 +470,7 @@ previous_evaluated_upstream_baseline
 candidate_upstream_baseline
 current_goal
 current_authority_inputs
+conflicting_current_sources
 expected_primary_responsibility
 expected_supporting_sources
 actual_sources_read
@@ -489,13 +546,14 @@ Gate A 只有同时满足以下条件才可声明 Ready：
 - pre-upgrade read-only snapshot 已建立；
 - previous evaluated baseline 与 candidate upstream baseline 已精确固定；
 - 当前 active Consumer work / PR 已恢复，且 V3-08 不干扰 EU-54；
+- 当前 Work / GitHub 状态冲突被纳入明确 fail-closed / classification 场景，而不是预设某一来源无条件胜出；
 - baseline-upgrade 写实验明确延后到 EU-54 natural closure 后的 latest main；
-- Track A～D 场景与成功 / 失败判据明确；
+- Track A～E 场景与成功 / 失败判据明确；
 - Evidence Contract 明确；
 - controlled negative test 边界明确；
 - context-cost baseline / measurement 方式明确；
 - Consumer write / integration / cleanup 权限边界明确；
-- first-adoption 不通过破坏成熟 Consumer 状态伪造；
+- first-adoption 不通过破坏成熟 Consumer 状态伪造，并有 closure 前必选的 Evidence 路径；
 - 没有开始 Consumer write experiment；
 - 没有提前声明 V3-08 PASS。
 
@@ -522,12 +580,12 @@ Gate A 通过后，Consumer 独立会话应先重新读取：
 
 ## 17. 当前 Gate
 
-当前：**Gate A design candidate 已形成；Consumer write execution 尚未开始。**
+当前：**Gate A design candidate 已形成；第一轮风险复核已修正 current-state conflict 与 first-adoption coverage；Consumer write execution 尚未开始。**
 
 下一实际步骤：
 
-1. 对本 Gate A 设计执行风险复核；
-2. 固化协调计划与稳定 V3-08 恢复入口；
+1. 完成剩余 Gate A Authority / scope / Evidence / context-cost 复核；
+2. 固化稳定 V3-08 恢复入口；
 3. 若 Gate A 无 Blocking / Medium，记录 Gate A PASS；
 4. 生成 Consumer 独立会话的精确 handoff；
 5. 在 Consumer EU-54 closure 前只允许 Track A 只读 Evidence；
