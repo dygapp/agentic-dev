@@ -7,9 +7,9 @@
 
 本文定义 `agentic-dev` 在核心开发方法已经形成并完成首轮真实使用方验证后，如何继续扩展工程能力。
 
-核心目标不是继续增加方法阶段，而是建立一套能够承载工程纪律、技术栈实践、验证策略、任务型技能与运行时适配的分层能力架构，使 `agentic-dev` 可以主动吸收成熟外部经验，再通过专项评估和使用方集成持续修正。
+核心目标不是继续增加方法阶段，而是建立一套能够承载工程纪律、技术栈实践、验证策略、任务型技能、Consumer 生命周期与运行时适配的分层能力架构，使 `agentic-dev` 可以主动吸收成熟外部经验，再通过专项评估和使用方集成持续修正。
 
-本文不改变 `docs/method/ai-development-method.md` 已定义的开发生命周期，也不允许技术画像（`Technology Profile`）、技能（`Skill`）或运行时适配器（`Runtime Adapter`）反向覆盖核心方法、顶层原则或使用方仓库权威（`Consumer Repository Authority`）。
+本文不改变 `docs/method/ai-development-method.md` 已定义的开发生命周期，也不允许 Consumer 生命周期（`Consumer Lifecycle`）、技术画像（`Technology Profile`）、技能（`Skill`）或运行时适配器（`Runtime Adapter`）反向覆盖核心方法、顶层原则或使用方仓库权威（`Consumer Repository Authority`）。
 
 ## 2. 演进驱动原则
 
@@ -77,6 +77,8 @@ AI 复核
     │
     ├── 任务型技能
     │
+    ├── Consumer 生命周期
+    │
     └── 运行时适配器
 
 使用方仓库权威
@@ -84,6 +86,16 @@ AI 复核
 ```
 
 这些层次解决不同问题，不应因为内容都“可复用”就合并成一个大型技能。
+
+### 3.1 Consumer 生命周期
+
+Consumer 生命周期（`Consumer Lifecycle`）定义 reusable capability 从 upstream 被 Consumer **初始化 / 首次采用 / baseline upgrade**，经过 Consumer-local projection 与 adoption verification，最终回到 local-only ordinary runtime 的生命周期边界，以及何时允许显式重新进入 upstream。
+
+它是跨仓库可复用工程能力，但不是新的 Product Development Method Stage，也不因为具有过程顺序就自动成为 Skill。Consumer 自己的 Repository Authority 始终决定项目事实、当前状态、授权与集成策略；metadata / discovery / routing 的具体实现由相应后续架构承担。
+
+详细长期 owner：
+
+`docs/architecture/consumer-lifecycle.md`
 
 ## 4. 核心方法
 
@@ -322,7 +334,7 @@ AI 复核
 
 - 研究可以由当前仓库授权的 Agent、维护者或研究工作形成；研究结果只产生证据和候选结论，不自动写入更高权威；
 - 架构由当前 `agentic-dev` 仓库权威授权的架构职责确定能力层次和职责边界；
-- 画像、技能或适配器的正式建立与重大修改必须由当前仓库授权的对应维护职责执行，并遵循其上游架构 / 契约；
+- 画像、技能、Consumer 生命周期或适配器的正式建立与重大修改必须由当前仓库授权的对应维护职责执行，并遵循其上游架构 / 契约；
 - 使用方可以提交实践证据和采用反馈，但不能通过使用方本地文档直接改写 `agentic-dev` 上游权威；
 - 使用方负责自身项目采用、本地化事实和项目规则。
 
@@ -345,13 +357,14 @@ AI 复核
 - `systematic-debug`；
 - 平台专项技能；
 - 使用方 Agent；
+- Consumer adoption / baseline upgrade；
 - 运行时适配器。
 
 ### 11.4 持久化
 
 长期能力必须进入与其层次匹配的仓库权威，不能只停留在聊天、Issue 评论或研究报告。
 
-研究只保存证据；架构决定职责；画像 / 技能 / 适配器保存可执行的稳定能力。
+研究只保存证据；架构决定职责；Consumer 生命周期、画像 / 技能 / 适配器保存各自稳定能力。
 
 ### 11.5 更新与取代
 
@@ -367,7 +380,7 @@ AI 复核
 
 重大更新应重新检查证据基线、适用范围和专项评估；如果属于 `AGENTS.md`、方法、架构、契约、核心技能或其他高影响规则变更，还必须重新执行适用的 AI 复核。
 
-旧画像、技能或适配器被新版本取代时，必须更新当前可发现入口并显式处理取代 / 替换关系，避免旧版与新版同时被解释为当前规范性能力。历史内容可以保留用于追溯，但只能有一个明确的当前有效入口。
+旧画像、技能、Consumer lifecycle contract 或适配器被新版本取代时，必须更新当前可发现入口并显式处理取代 / 替换关系，避免旧版与新版同时被解释为当前规范性能力。历史内容可以保留用于追溯，但只能有一个明确的当前有效入口。
 
 ### 11.6 升级
 
