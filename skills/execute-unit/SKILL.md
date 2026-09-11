@@ -222,14 +222,16 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 - 不静默覆盖当前有效 Domain / Architecture / ADR Authority，也不在代码或测试中直接确立新的跨功能长期权威；
 - 不把当前 Unit 变成整个 Feature 的重构机会。
 
-当前 Unit 命中工程纪律条件时，读取并应用 `docs/architecture/engineering-disciplines.md` 中对应的现行纪律。`execute-unit` 只负责：
+当前 Unit 命中工程纪律条件时，读取并应用**当前仓库权威可发现的、当前有效的工程纪律权威**。在 `agentic-dev` 源仓库中，现行规范源是 `docs/architecture/engineering-disciplines.md`；使用方采用后只消费自己的本地已采用版本，不把上游物理路径变成普通运行依赖。
+
+`execute-unit` 只负责：
 
 - 在当前执行上下文识别哪些纪律实际命中；
 - 把纪律应用到当前 Unit 的实现、验证和最终差异判断；
 - 确保纪律不覆盖更高层权威，也不借“工程质量”扩大 Unit Scope；
 - 在纪律暴露上游权威或执行单元边界问题时返回真实职责层。
 
-实现最小化、精准修改、数据访问作用域与有界性，以及其中的配置责任 / 既有能力复用等具体规则，只由 `engineering-disciplines.md` 单点维护；本 Skill 不复制第二份纪律正文。
+实现最小化、精准修改、数据访问作用域与有界性，以及其中的配置责任 / 既有能力复用等具体规则，只由当前有效的工程纪律权威单点维护；本 Skill 不复制第二份纪律正文。
 
 发现超出 Unit 边界但会阻塞完成的问题时，记录并返回相应职责层，而不是顺手接管。
 
@@ -241,7 +243,7 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 
 - 最小、针对性的验证；
 - 能直接覆盖当前必需行为 / 验收义务的证据；
-- 当前命中的 Engineering Discipline 对验证边界提出的必要证据（如适用）；
+- 当前命中的工程纪律对验证边界提出的必要证据（如适用）；
 - 仓库规则要求的必要检查。
 
 根据变更风险和仓库约束，再按需扩大到：
@@ -291,11 +293,11 @@ Review 逻辑上至少区分两个维度：
 **Engineering Quality**
 
 - 实现是否与当前 Architecture / Repository Rules 一致；
-- 当前实际命中的 Engineering Discipline 是否已按其规范 owner 应用；
+- 当前实际命中的工程纪律是否已按其规范权威应用；
 - 是否引入明显隐藏耦合、脆弱性或不可维护结构；
 - 测试 / 验证是否与变更风险相称。
 
-在声明 Completed 前，按当前命中的 Surgical Change & Diff Scope Control 执行最终差异范围检查；具体允许 / 禁止的差异类别只由 `engineering-disciplines.md` 维护，本 Skill 不复制第二份范围规则。
+在声明 Completed 前，按当前命中的“精准修改与差异范围控制”工程纪律执行最终差异范围检查；具体允许 / 禁止的差异类别只由当前工程纪律权威维护，本 Skill 不复制第二份范围规则。
 
 这两个维度不要求两个独立 Reviewer Agent，也不要求每个低风险 Unit 都执行重型 Review 流程。
 
