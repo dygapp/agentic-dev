@@ -37,6 +37,8 @@ v1 / v2 已验证最小上下文、Consumer 本地普通运行、来源时效性
 
 V3-01 随后又通过独立 holdout 复核发现并修正“项目 / 产品权威”过宽的问题：仓库协作、授权、验证、复核和集成政策即使经过正式决定，也仍由仓库本地政策拥有，不因为“项目已经决定”就自动成为项目 / 产品权威。定向复评通过后，V3-01 已完成并通过 PR #100 集成。
 
+V3-02 基于 V3-01 的四维模型完成当前仓库语义所有权审计。收敛过程中先通过 Repository Evidence 自查识别并修正 Research / Eval current control body 的目录机械分类风险；随后独立复核发现并修正 Consumer adoption acceptance 被整体归为 Evidence 的所有权问题。最终定向复核不存在未解决的 Blocking / Medium finding。V3-02 已完成并集成，其审计矩阵成为 V3-03～V3-06 的直接分析输入。
+
 上述评估只作为证据与复核输入；长期结论以已经集成的仓库权威为准。
 
 ## 3. 当前规划主线
@@ -45,10 +47,10 @@ v3 按以下有限子任务顺序推进：
 
 1. **V3-01 — 知识与能力所有权模型 — 已完成并集成**  
    已建立四维所有权判断矩阵，作为后续审计的分类依据。
-2. **V3-02 — 当前仓库所有权审计 — 当前**  
-   按规范正文 / 规则族审计当前仓库，形成保留、移动、合并、拆分、取代、删除、重分类候选，但不执行物理迁移。当前入口：Issue #101 与 `docs/project/current-repository-ownership-audit-v3.md`。
-3. **V3-03 — Consumer 初始化、采用、升级与普通运行生命周期**  
-   明确一次性启动说明与普通运行的严格边界，以及 Consumer-local 资源如何形成并自行演进。
+2. **V3-02 — 当前仓库所有权审计 — 已完成并集成**  
+   已按规范正文 / 规则族审计当前仓库并形成后续 disposition 候选；未执行物理迁移。审计矩阵：`docs/project/current-repository-ownership-audit-v3.md`。
+3. **V3-03 — Consumer 初始化、采用、升级与普通运行生命周期 — 下一 Planning Candidate，未启动**  
+   目标是明确一次性启动说明与普通运行的严格边界，以及 Consumer-local 资源如何形成并自行演进；只有新的 Planning Authority 建立后才可正式推进。
 4. **V3-04 — 技能重分类与准入**  
    判断现有 Guide / Rule 中哪些属于已有技能、可复用工程能力、仓库本地规则或真正的新技能候选。
 5. **V3-05 — 面向 Agent 的结构化资源模型**  
@@ -84,16 +86,18 @@ Architecture、Contract、Profile、`SKILL.md`、Guide、ADR、Requirement、gen
 
 正式判断矩阵：`docs/project/knowledge-capability-ownership-model-v3.md`。
 
-## 5. V3-02 当前审计方向
+## 5. V3-02 已完成的审计结论
 
-V3-02 不按目录判断身份，而按规范正文 / 规则族判断。当前审计已经识别四类主要 ownership debt：
+V3-02 不按目录判断身份，而按规范正文 / 规则族判断。已识别并形成 disposition 候选的主要 ownership debt 包括：
 
 1. `docs/guides/*` 中混入人类说明、仓库本地规范、可复用工程能力、Consumer 生命周期和普通运行发现语义；
 2. 已完成 v2 的 `docs/project/*` 中仍有若干 discovery / adoption / runtime 契约继续支撑当前行为；
 3. `rule-activation-guide.md` 属于手工派生导航而不是规范正文 owner，未来如果出现新的 current discovery mechanism 必须显式取代而不能长期并存；
-4. Skill、工程纪律和验证规则之间存在需要 V3-04 逐规则族复核的正文重叠风险。
+4. Skill、工程纪律和验证规则之间存在需要 V3-04 逐规则族复核的正文重叠风险；
+5. Research / Eval 的 current lifecycle、isolation、scoring、execution control body 不能因目录位置整体降格为 Evidence；
+6. Consumer adoption acceptance 中“采用完成前必须验证”的责任属于 Consumer lifecycle / adoption verification，而被检查的 runtime / discovery 规则继续由各自 semantic owner 持有，V3-08 只消费派生验收输入。
 
-审计矩阵只形成 disposition 候选，不在 V3-02 执行迁移。
+审计矩阵只形成 disposition 候选。V3-02 已完成并不授权立即迁移；后续必须由 V3-03～V3-06 在各自 Gate 下设计和验证真实 owner / replacement。
 
 ## 6. Guide 边界
 
@@ -137,7 +141,7 @@ Consumer-local 规则和项目权威由 Consumer 自己拥有、维护和演进�
 
 基线升级是显式、低频操作；升级期间可以重新读取上游 Guide、核心方法、技能和可复用资源，完成逐项采用、保留 / 覆盖、拒绝、取代后再次回到只依赖本地现行资源的普通运行。
 
-这些生命周期语义将在 V3-03 依据 V3-02 审计矩阵正式收敛；V3-02 不提前冻结其最终载体。
+这些生命周期语义将在 V3-03 依据已经集成的 V3-02 审计矩阵正式收敛；在 V3-03 Planning Authority 建立前，不提前冻结其最终载体或执行审计中的 disposition。
 
 ## 8. v1 / v2 必须保留的成果
 
@@ -162,7 +166,7 @@ v3 不以“重新设计”为理由推翻这些已经通过真实 Consumer 验�
 
 ## 9. 当前非目标与 ADR Gate
 
-V3-02 完成前，不：
+在 V3-03 获得明确 Planning Authority 前，不：
 
 - 实现新的 Rule Index / Manifest / Catalog；
 - 实现 Front Matter generator；
@@ -171,6 +175,7 @@ V3-02 完成前，不：
 - 批量新增或改造技能；
 - 物理移动、拆分、重命名或删除 Guide / Authority；
 - 修改 Consumer Repository；
+- 把 V3-02 disposition 候选直接当作已经批准的 V3-03 / V3-04 设计；
 - 启动 WI-06 / WI-07 / WI-09 或其他独立候选。
 
 v3 不用一个“大 ADR”承载全部探索。只有专项分析形成跨任务长期约束、存在实质替代方案与长期后果、且决定已经稳定时才创建或更新 ADR。
@@ -185,18 +190,16 @@ v3 不用一个“大 ADR”承载全部探索。只有专项分析形成跨任�
 
 ## 10. 当前 Gate
 
-当前正式工作入口：Issue #101 — V3-02 当前仓库所有权审计。
+V3-01 与 V3-02 已完成并集成；当前没有活动 V3 子任务。
 
-当前只授权：
+下一 Planning Candidate：
 
-- 完成当前 Repository inventory；
-- 按规范正文 / 规则族形成 ownership audit；
-- 形成后续 disposition 候选；
-- 更新本阶段恢复入口；
-- 执行必要 AI 复核与独立一致性复核。
+> **V3-03 — Consumer 初始化、采用、升级与普通运行生命周期**
 
-V3-02 Gate 为：
+当前下一 Gate 只回答：
 
-> 当前重要长期资源和主要规则族都具有明确语义所有者与 lifecycle 判断，Guide catch-all、重复 owner、过渡性 current contract 和 derived router 风险都有可执行 disposition 候选；独立复核不存在未解决的阻塞或中等级 ownership ambiguity。
+> 是否正式启动 V3-03，并为其建立明确的 Planning Authority、范围边界、完成定义与非目标？
 
-达到 Gate 后，只能进入“是否启动 V3-03”的下一规划判断，不自动获得物理迁移、Skill 重构、Front Matter / Index 实现或 Consumer 修改权限。
+V3-02 的完成证明了 V3-03 的上游 ownership inventory 已具备直接消费条件，因此 **V3-03 已具备成为下一规划任务的前置条件**；但 Roadmap 顺序和本结论都不自动创建 V3-03 Issue / Plan，也不授予其正式规划或执行权限。
+
+在人工或后续明确规划决定正式启动 V3-03 前，只允许恢复当前 Authority、评估启动条件和维护 V3-02 closure；不实施物理迁移、Skill 重构、Front Matter / Index、discovery architecture 或 Consumer 修改。

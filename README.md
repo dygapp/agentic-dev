@@ -35,12 +35,13 @@ GitHub Repository 是唯一项目事实来源。
 - **最近已集成里程碑：** 规则治理与知识激活 v2
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
-- **已完成并集成：** V3-01 — 知识与能力所有权模型
-- **当前工作入口：** Issue #101 — V3-02 当前仓库所有权审计
+- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计
+- **当前活动子任务：** 无
+- **下一 Planning Candidate：** V3-03 — Consumer 初始化、采用、升级与普通运行生命周期（尚未启动）
 
-V3-01 已建立四维所有权判断：语义所有者、适用范围与来源状态、运行与生命周期角色、载体与权威形式。V3-02 正在基于该模型审计当前仓库，重点区分 Guide、仓库本地规范、可复用工程能力、过程型 Skill、项目权威以及历史 / 证据资源。
+V3-01 已建立四维所有权判断：语义所有者、适用范围与来源状态、运行与生命周期角色、载体与权威形式。V3-02 已据此完成当前仓库审计，并形成后续 `keep / move / merge / split / supersede / delete / reclassify` 候选；独立复核已确认不存在未解决的 Blocking / Medium ownership ambiguity。
 
-当前只形成 `keep / move / merge / split / supersede / delete / reclassify` 候选，不执行 Guide 物理迁移、Skill 重构、Front Matter / Index 实现或 Consumer 修改。
+V3-02 的 disposition 仍只是后续设计输入，不因 V3-02 完成而自动执行 Guide 物理迁移、Skill 重构、Front Matter / Index 实现或 Consumer 修改。当前下一步只是判断是否正式启动 V3-03。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
@@ -52,7 +53,7 @@ v3 当前规划 / 审计入口：
 - `docs/project/knowledge-capability-ownership-model-v3.md`
 - `docs/project/current-repository-ownership-audit-v3.md`
 
-v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在分析就提前替换现行运行行为。
+v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在演进就提前替换现行运行行为。
 
 ## 入口职责
 
@@ -94,7 +95,7 @@ Consumer 规则激活入口见：
 
 `docs/guides/using-agentic-dev.md`
 
-上述入口在 V3-02 中正在接受语义所有权审计；在后续替代 owner 完成并验证前仍保持现行兼容，不提前删除或改写其运行语义。
+V3-02 已完成对上述入口的语义所有权审计；在后续真实 owner / replacement 经设计、验证并正式集成前，这些入口继续保持现行兼容，不提前删除或改写其运行语义。
 
 ## 核心开发路径
 
