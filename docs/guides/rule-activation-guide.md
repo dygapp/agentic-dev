@@ -1,108 +1,97 @@
 # 规则激活导航
 
-本文是 `agentic-dev` 面向使用方的**薄规则导航入口**。它只负责告诉 Agent 当前任务应继续读取哪些现行来源，不复制详细规则正文，也不成为第二套规则权威。
+本文是 `agentic-dev` 面向使用方的**低频采用 / 恢复导航 Guide**。它帮助人和 Agent 找到初始化、首次采用、基线升级、实验与 Consumer-local 普通运行的正确入口，但**不再维护 ordinary runtime 的手工职责 / 风险路由表**。
 
-详细语义继续由现有 Repository Authority、对应 Guide / Skill / Engineering Capability 承担。发生冲突、来源陈旧或适用范围不明确时，必须回到当前仓库权威重新读取。
+长期规范语义分别由当前 Repository Authority、使用方生命周期、资源模型、资源发现架构、Skill / Engineering Capability 与 Consumer 自己的仓库权威持有。
 
-## 1. 常驻最小不变量
+## 1. 先区分工作位置
 
-使用 `agentic-dev` 推进任何 Consumer 时，只持续保持三个薄不变量：
+### 1.1 在 `agentic-dev` 仓库自身工作
 
-1. **Consumer Repository Authority 优先。** `agentic-dev` 提供方法、Skill 与使用指导，不替 Consumer 定义项目事实。
-2. **渐进式披露。** 只加载当前任务真正需要的最小 Authority Context，不把旧聊天、个人记忆或完整历史作为项目事实。
-3. **证据先于完成声明。** 完成、通过或可集成结论必须由与当前目标和验收义务匹配的 Current Evidence 支持。
+普通 Fresh Context 从本仓库：
 
-“重要”不等于“每次都加载完整正文”。其余规则按当前职责和风险条件继续发现。
+`docs/discovery/README.md`
 
-## 2. 按职责 / 风险继续读取
+进入本地发现机制。
 
-先识别当前工作的 `scope + responsibility`；只有确实有辨识需要时，再补充阶段、对象或条件。不要为了保险默认读取全部指南。
+该入口只使用 `agentic-dev` 自身当前资源；本 Guide 不再作为本仓库 ordinary runtime 的 current discovery mechanism。
 
-| 当前职责或风险 | 继续读取的最小来源 |
-|---|---|
-| 新项目初始化、外部需求来源采纳 | `docs/architecture/consumer-lifecycle.md` 第 5 节；人类说明与示例再读 `using-agentic-dev.md` §2.1、§3、§3.1、§3.2 |
-| 已有 Consumer baseline upgrade | `docs/architecture/consumer-lifecycle.md` 第 6～11 节；人类说明再读 `using-agentic-dev.md` §6.1；需要把已采用能力变成普通运行本地发现能力时再读 `consumer-local-rule-activation.md` |
-| 已完成 adoption 的 Consumer 普通工作 | **回到 Consumer-local Bootstrap / Discovery Entry**；普通 Runtime 不继续把本指南或 upstream 当作日常依赖 |
-| 规划候选、执行单元身份、工作切分 | `using-agentic-dev.md` §3；`skills/slice-work/SKILL.md` |
-| 就绪门禁、上游 WHAT / HOW / Architecture basis 失效后的重新进入 | `skills/readiness-check/SKILL.md` |
-| 单个已就绪执行单元的实施 | `skills/execute-unit/SKILL.md` |
-| 验证证据类型、视觉证据、Human Review baseline、数据库迁移或 evidence reuse | `verification-evidence-rules.md` 对应 section；当前执行 / 收敛 Skill |
-| 配置责任、能力复用、推测性复杂度、差异范围、数据访问有界性 | `docs/architecture/engineering-disciplines.md` 对应 Discipline |
-| GitHub Actions 验证层、trigger / gate、可观察性或成本 | `skills/github-actions-verification/SKILL.md`，不要先加载整份外部操作指南 |
-| 临时执行证据被接受为长期稳定输入 | `external-operation-guidelines.md` §5.3；GitHub Actions Artifact 再补 `github-actions-verification` 对应部分 |
-| 异步外部操作 | `external-operation-guidelines.md` §5.1；GitHub Actions 场景再补平台 Skill |
-| 共享资源、单实例 owner / lease / stale run | `external-operation-guidelines.md` §5.2；GitHub Actions 场景再补平台 Skill |
-| 普通外部写操作、PR / Issue / 仓库状态修改 | `external-operation-guidelines.md` §1、§2、§5；只在实际出现更具体风险时继续读取对应小节 |
-| 依赖 PR / stacked PR 的当前集成拓扑 | `external-operation-guidelines.md` §5.4 |
-| 项目路线图、长期产物、集成后的稳定路线 | `using-agentic-dev.md` §6.2 |
-| 中断恢复、新聊天或新执行者 | `using-agentic-dev.md` §7，并从 Consumer 项目路线图或等价入口继续按需读取 |
-| 明确的 `agentic-dev` Consumer 实验 | `using-agentic-dev.md` §8；涉及重新进入上游与是否采用时同时服从 `docs/architecture/consumer-lifecycle.md` 第 11 节 |
-| 项目主导语言 | Consumer Repository 本地规则优先；需要通用边界时读 `using-agentic-dev.md` §3.1 |
+### 1.2 新 Consumer 初始化 / 首次采用
 
-Skill 的完整执行过程由该 Skill 自己拥有。使用指南承担发现、采用和跨职责协调，不要求同时加载多个 Skill 的完整正文。
+规范生命周期：
 
-其中，使用方初始化、首次采用、基线升级、采用验证、基线推进、普通运行仅依赖本地当前状态与重新进入上游的长期规范语义由 `docs/architecture/consumer-lifecycle.md` 单点拥有；`using-agentic-dev.md` 保留面向人的说明与示例职责。
+`docs/architecture/consumer-lifecycle.md`
 
-## 3. Consumer-local adoption 后的边界
+面向人的说明、初始化示例与采用方式：
 
-`consumer-local-rule-activation.md` 定义采用完成后的本地发现与激活方式，包括：
+`docs/guides/using-agentic-dev.md`
 
-- Thin Bootstrap；
-- Consumer-local Activation Manifest / optional Runtime Catalog；
-- Consumer-native 与 adopted reusable assets 的同路发现；
-- primary responsibility / supporting context；
-- routing-only 与 Skill execution 分离；
-- Stage Return 后重新 routing；
-- stale / missing / ambiguity fail-closed；
-- last evaluated upstream baseline 与 active asset provenance 分离。
+Consumer 自己的 Repository Authority 始终决定项目事实、权限与本地化方式。
 
-其中最后一项的长期生命周期身份与基线推进边界以 `docs/architecture/consumer-lifecycle.md` 为准；本 Guide Module 继续承担采用完成后的本地发现与激活说明。
+### 1.3 已有 Consumer 基线升级
 
-这项 Guide Module 用于 adoption / projection 设计和 Consumer 本地化，不意味着普通 Consumer 工作每次都读取 upstream Guide。完成本地化后，ordinary runtime 应从 Consumer-local discovery entry 开始。
+先按：
 
-## 4. 激活规则
+`docs/architecture/consumer-lifecycle.md`
 
-使用上述导航时遵守：
+执行显式重新进入上游、逐项采用 / 保留 / 覆盖 / 拒绝 / 取代、采用验证和基线推进。
 
-```text
-当前任务
-→ 确认 Consumer Repository Authority
-→ 识别当前职责 / 风险
-→ 读取最小来源指针
-→ 只激活当前适用规则
-→ 执行 / 验证
-```
+需要人类说明时再读取 `using-agentic-dev.md`。上游出现新提交本身不会自动改变 Consumer 普通运行。
 
-具体要求：
+### 1.4 已完成采用的 Consumer 普通运行
 
-- 不得为了控制数量而截断仍然适用的必需规则；
-- 不因为某个关键词出现，就无条件激活同名主题的全部规则；
-- 相似规则适用范围不同时，保留仓库、职责、阶段和风险条件；
-- 详细规则只在其 current semantic owner 维护一次；导航只保存足以发现来源的短指针；
-- Consumer 自己的 `AGENTS.md`、Roadmap、Requirement、Specification、Architecture 等事实始终优先于 reusable default。
+完成采用后，普通运行必须回到 **Consumer 自己的 Local Discovery Entry / Current Authority**。
 
-本导航不要求普通 Consumer 运行 `evals/` 下的规则检索原型；是否需要额外 discovery tooling 由 Consumer 自己的实际需要和证据决定。
+长期发现语义以：
 
-## 5. 安全回退
+`docs/architecture/resource-discovery-architecture.md`
 
-如果出现以下任一情况，不继续依赖当前导航 / discovery result：
+为上游规范；如何在 Consumer 中落地见：
 
-- 指向来源不存在；
-- source identity / selector 陈旧或无法解析；
-- 当前任务无法用现有职责 / 条件可靠分类；
-- no-match 但当前风险显然仍需要治理判断；
-- 多个规则适用范围冲突；
-- high-impact authorization、重大 Architecture、安全 / 隐私或不可逆边界不明确。
+`docs/guides/consumer-local-rule-activation.md`
 
-此时：
+这不意味着 Consumer 普通任务需要在线读取本仓库。本地化完成后，ordinary runtime 默认只依赖 Consumer-local current state。
 
-```text
-停止依赖当前 derived discovery
-→ 重新读取当前 Repository Authority
-→ 按当前问题补读必要 Guide / Skill / local Authority
-→ 再做判断
-```
+## 2. 低频使用场景
 
-对于已经完成 adoption 的 Consumer，ordinary runtime 的回退优先回到 **Consumer-local Current Authority**，不自动访问 upstream。
+本 Guide 只在以下场景作为导航入口有持续价值：
 
-回退是安全路径，不是任务失败。不得用近似规则、旧索引或历史聊天填补未知边界。
+- 新 Consumer 初始化；
+- 首次采用 `agentic-dev`；
+- 显式 baseline upgrade；
+- 需要理解上游 Method / Skill / Engineering Capability 如何投射到 Consumer；
+- 明确的 `agentic-dev` Consumer 实验 / validation；
+- 人工需要解释 adoption / localization / recovery 路径。
+
+如果当前工作已经在某个 Consumer 的普通运行阶段，应优先使用该 Consumer 自己的本地入口，而不是回到本 Guide 重新做职责路由。
+
+## 3. 本 Guide 不拥有的语义
+
+本文不再维护第二份：
+
+- Method Stage / Stage Return；
+- Skill Use When / Procedure；
+- 工程纪律触发规则；
+- 验证 / 证据条件表；
+- 外部操作条件表；
+- 技术画像适用规则；
+- primary responsibility / supporting context 路由表；
+- stale / missing / ambiguity 算法；
+- Manifest / Catalog schema；
+- current-state 真值。
+
+这些内容由当前真实 semantic owner 与 `docs/architecture/resource-discovery-architecture.md` 单点持有。
+
+## 4. 安全边界
+
+无论处于哪种使用场景，都保持：
+
+1. Consumer Repository Authority 优先；
+2. 普通运行默认只依赖 Consumer-local current state；
+3. 未知条件不猜测；
+4. 派生发现陈旧 / 缺失 / 歧义时回到本地当前权威；
+5. fail-closed 不自动访问 upstream；
+6. 完成 / 通过 / 可集成声明必须有匹配的 Current Evidence；
+7. 使用方项目状态、Requirement、Architecture、Issue / PR / Actions 不从 `agentic-dev` 项目状态自动继承。
+
+完整语义仍应从对应 current owner 读取；本 Guide 只负责把低频使用者带到正确入口。
