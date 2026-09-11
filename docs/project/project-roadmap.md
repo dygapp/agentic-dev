@@ -19,28 +19,30 @@
 > **规则治理与知识激活 v3 — 知识与能力所有权收敛**
 
 v3 跟踪入口：Issue #94。  
-当前工作入口：Issue #95 — V3-01 知识与能力所有权模型。  
-规划基线：`master@3c31ae96683c4a653f001402b889b40e87df976b`。
+V3-01 — 知识与能力所有权模型已完成并集成。  
+当前工作入口：Issue #101 — V3-02 当前仓库所有权审计。  
+V3-02 审计基线：`master@c646e4182cb32344feb9e0872bb3828d4be01481`。
 
-v3 的当前目标不是继续增加 Rule Index、Manifest、Catalog 或 Front Matter Generator，而是先确认长期知识、规则和 Agent 能力是否由正确的**语义所有者**持有。
+v3 当前不继续增加 Rule Index、Manifest、Catalog 或 Front Matter Generator，而是基于 V3-01 已建立的四维所有权模型，审计当前长期知识、规则与 Agent 能力是否由正确的**语义所有者**持有。
 
 当前下一 Gate：
 
-> **完成 V3-01 所有权判断矩阵的独立复核；没有未解决的阻塞或中等级所有权歧义后，才判断是否进入 V3-02。**
+> **完成 V3-02 当前仓库所有权审计及独立复核；高风险 ownership ambiguity 的阻塞 / 中等级问题为 0 后，才判断是否进入 V3-03。**
 
-当前没有 V3-02 物理迁移、技能重构或发现机制实现的执行权限。
+当前只形成 `keep / move / merge / split / supersede / delete / reclassify` 候选，没有 Guide 物理迁移、技能重构或发现机制实现权限。
 
-详细规划：
+详细当前规划 / 审计：
 
 - `docs/project/rule-governance-knowledge-activation-v3.md`
 - `docs/project/knowledge-capability-ownership-model-v3.md`
+- `docs/project/current-repository-ownership-audit-v3.md`
 
 ## 2. v3 当前路线
 
 v3 严格按以下顺序推进：
 
-1. V3-01 — 知识与能力所有权模型；
-2. V3-02 — 当前仓库所有权审计；
+1. V3-01 — 知识与能力所有权模型 — **已完成并集成**；
+2. V3-02 — 当前仓库所有权审计 — **当前**；
 3. V3-03 — Consumer 初始化、采用、升级与普通运行生命周期；
 4. V3-04 — 技能重分类与准入；
 5. V3-05 — 面向 Agent 的结构化资源模型；
@@ -52,7 +54,7 @@ v3 严格按以下顺序推进：
 
 顺序只定义规划依赖，不自动授予后序任务权限。
 
-当前 V3-01 采用四维所有权判断：
+V3-01 已建立以下四维所有权判断：
 
 ```text
 语义所有者
@@ -62,6 +64,8 @@ v3 严格按以下顺序推进：
 ```
 
 至少区分：核心方法 / 原则、技能 / 过程型能力、可复用工程能力 / 工程纪律 / 画像、仓库本地政策 / 规范 / 规则、项目 / 产品权威资源、Guide、研究 / 输入 / 证据。
+
+V3-02 以规范正文 / 规则族为主要审计单位，不按现有目录机械分类。当前特别关注：Guide catch-all、已完成项目记录中仍承担现行可复用语义的过渡契约、派生路由器与真实 semantic owner 的重叠，以及 Skill 与工程纪律 / 验证规则之间的正文复制风险。
 
 ## 3. v2 已集成基线
 
@@ -78,19 +82,23 @@ v3 严格按以下顺序推进：
 
 v2 已验证并继续受 v3 保护的行为至少包括：薄启动入口、仓库 / Consumer 权威优先、渐进式披露、证据先于结论、规范正文单点所有权、派生发现机制不拥有规范正文、陈旧 / 缺失 / 歧义时失败关闭、主职责与最小辅助上下文分离、只做路由判断时不机械加载完整技能、真正进入职责时按需加载技能、阶段返回后重新判断、Consumer 普通运行只依赖 Consumer-local 现行资源、逐项基线采用，以及同一运行范围 / 发现职责不并行维护多个现行派生机制。
 
+V3-02 审计已明确：部分 v2 `docs/project/*` 虽属于已完成里程碑记录，仍承载当前 discovery / adoption / runtime 的过渡性可复用契约；在 V3-03～V3-06 建立并验证替代 owner 前不得提前归档、删除或失效。
+
 v3 规划期间，v2 当前运行发现 / 激活机制仍然有效；不得因为 v3 正在分析就提前移除 `rule-activation-guide`、Consumer-local activation 或其他现行入口。
 
 ## 4. 当前范围边界
 
-V3-01 / V3-02 完成前，不：
+V3-02 完成前，不：
 
-- 物理拆分或移动 `docs/guides/*`；
+- 物理拆分、移动、重命名或删除 `docs/guides/*` 或其他现行 Authority；
+- 修改当前 `SKILL.md`；
 - 新增 Rule Index / Manifest / Catalog；
 - 冻结全仓 Front Matter schema；
 - 实现 Front Matter generator；
 - 创建 Rule Super Skill / Stage Router Skill；
 - 批量新增或改造技能；
 - 修改 Consumer Repository；
+- 提前把 V3-03 / V3-04 的候选结论提升为正式设计；
 - 启动 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 候选实施。
 
 临时 GPT-6 v3 评估只作为规划启动与挑战证据，不是普通运行权威，也不自动进入正式架构。
@@ -115,7 +123,7 @@ V3-01 / V3-02 完成前，不：
 
 Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经过 `agentic-dev` 自身分类与准入后才能改变长期权威。
 
-## 6. 已完成里程碑索引
+## 6. 已完成里程碑 / 子阶段索引
 
 普通 Fresh Context 不默认读取以下已完成工作的完整过程记录：
 
@@ -126,6 +134,7 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 5. Squash Merge 下 Stacked PR 集成拓扑安全 v1 — `docs/project/stacked-pr-squash-topology-v1.md`
 6. 规则治理与知识激活 v1 — `docs/project/rule-governance-knowledge-activation-v1.md`
 7. 规则治理与知识激活 v2 — `docs/project/rule-governance-knowledge-activation-v2.md`
+8. 规则治理与知识激活 v3 / V3-01 — `docs/project/knowledge-capability-ownership-model-v3.md`（其结果仍是当前 V3-02 分类权威，不加载历史评估过程）
 
 ## 7. Root Bootstrap 职责
 
@@ -148,8 +157,8 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 3. 读取本文，确认当前路线、Gate 和候选边界；
 4. 重新读取当前 GitHub `master`、Open PR / Issue 和必要 Actions；
 5. 当前 v3 规划期间读取 `docs/project/rule-governance-knowledge-activation-v3.md` 与 Issue #94；
-6. 当前工作若仍是 V3-01，再读取 `docs/project/knowledge-capability-ownership-model-v3.md` 与 Issue #95；
-7. 只读取当前分析直接需要的方法、架构、Guide 和技能，不为了完整性加载全部历史；
+6. 当前 V3-02 读取 `docs/project/knowledge-capability-ownership-model-v3.md`、`docs/project/current-repository-ownership-audit-v3.md` 与 Issue #101；
+7. 只读取当前审计直接需要的方法、架构、Guide、技能和项目记录，不为了完整性加载全部历史；
 8. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
 
 ## 9. 更新触发

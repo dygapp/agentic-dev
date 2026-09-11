@@ -35,20 +35,22 @@ GitHub Repository 是唯一项目事实来源。
 - **最近已集成里程碑：** 规则治理与知识激活 v2
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
-- **当前工作入口：** Issue #95 — V3-01 知识与能力所有权模型
+- **已完成并集成：** V3-01 — 知识与能力所有权模型
+- **当前工作入口：** Issue #101 — V3-02 当前仓库所有权审计
 
-v3 当前先解决长期知识、规则和 Agent 能力的语义所有权，不先实现新的 Rule Index、Manifest、Catalog、Front Matter Generator 或批量新技能。
+V3-01 已建立四维所有权判断：语义所有者、适用范围与来源状态、运行与生命周期角色、载体与权威形式。V3-02 正在基于该模型审计当前仓库，重点区分 Guide、仓库本地规范、可复用工程能力、过程型 Skill、项目权威以及历史 / 证据资源。
 
-V3-01 使用四维判断：语义所有者、适用范围与来源状态、运行与生命周期角色、载体与权威形式。只有其所有权判断矩阵通过独立复核、没有未解决的阻塞或中等级歧义后，才判断是否进入 V3-02。
+当前只形成 `keep / move / merge / split / supersede / delete / reclassify` 候选，不执行 Guide 物理迁移、Skill 重构、Front Matter / Index 实现或 Consumer 修改。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
 `docs/project/project-roadmap.md`
 
-v3 规划入口：
+v3 当前规划 / 审计入口：
 
 - `docs/project/rule-governance-knowledge-activation-v3.md`
 - `docs/project/knowledge-capability-ownership-model-v3.md`
+- `docs/project/current-repository-ownership-audit-v3.md`
 
 v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在分析就提前替换现行运行行为。
 
@@ -92,7 +94,7 @@ Consumer 规则激活入口见：
 
 `docs/guides/using-agentic-dev.md`
 
-只有当前任务实际触发对应主题时，才按导航读取相关 Guide、Authority 或 Skill。
+上述入口在 V3-02 中正在接受语义所有权审计；在后续替代 owner 完成并验证前仍保持现行兼容，不提前删除或改写其运行语义。
 
 ## 核心开发路径
 
