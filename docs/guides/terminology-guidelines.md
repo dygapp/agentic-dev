@@ -168,6 +168,7 @@ Readiness FAIL 后需要 re-slice Candidate Execution Units，再重新 gate。
 | 工程能力层 | 技术画像 | `Technology Profile` | 工程能力架构、技术画像契约 |
 | 工程能力层 | 验证画像 | `Verification Profile` | 工程能力架构、技术画像契约 |
 | 工程能力层 | 任务型技能 | `Task-oriented Skill` | 工程能力架构、Skill 架构 |
+| 工程能力层 | 使用方生命周期 | `Consumer Lifecycle` | 工程能力架构、`docs/architecture/consumer-lifecycle.md` |
 | 工程能力层 | 运行时适配器 | `Runtime Adapter` | 工程能力架构 |
 | 技能体系 | 技能 | `Skill` | Skill 架构、Skill 契约 |
 | 技能体系 | 技能契约 | `Skill Contract` | Skill 契约 |
@@ -194,6 +195,7 @@ Readiness FAIL 后需要 re-slice Candidate Execution Units，再重新 gate。
 | 就绪门禁 | 方法门禁 `Readiness Gate` | 精确 Skill 调用名 `readiness-check` |
 | 技术画像 | 工程能力层 `Technology Profile` | 任务型技能或项目技术配置文件 |
 | 验证画像 | 工程能力层 `Verification Profile` | 固定验证命令清单或某次运行结果 |
+| 使用方生命周期 | 工程能力层 `Consumer Lifecycle` | 产品开发方法阶段、单个采用 / 升级 Skill 或使用方项目事实 |
 | 运行时适配器 | 工程能力层 `Runtime Adapter` | 通用方法或新的方法阶段 |
 | 技能 | 仓库正式 `Skill` 概念 | 某项普通技术知识或技术画像 |
 
