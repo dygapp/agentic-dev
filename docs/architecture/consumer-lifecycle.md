@@ -121,6 +121,15 @@ local rule body
 
 upstream 新提交、模型好奇、local discovery stale 或 routing ambiguity 都不能自行触发“读取最新 upstream 并改变当前行为”。重新进入 upstream 必须满足本文定义的显式条件。
 
+### 3.9 双侧 currentness
+
+一次 adoption / upgrade 同时依赖两个不同的 currentness 边界：
+
+- upstream candidate 必须固定为 exact identity；评估期间出现的新 upstream commit 不自动进入本次 scope；
+- Consumer-local Authority / owner 必须在完成前重新确认仍与 adoption decision 的比较前提一致。
+
+如果 Consumer 在评估期间发生与本次 reusable delta 相关的实质变化，只重算受影响的 classification / decision / verification，不机械重启全部 upgrade，也不能继续使用已失效的旧 decision 直接推进 baseline。
+
 ## 4. 生命周期状态模型
 
 本文定义五个语义状态。实现不要求使用这些名称、字段或固定目录。
@@ -168,11 +177,11 @@ upstream 新提交、模型好奇、local discovery stale 或 routing ambiguity 
 
 Consumer 在 ordinary runtime 中命中显式 upstream re-entry 条件时进入的过渡判断状态。
 
-它只决定是否进入新的 `ADOPTION_EVALUATION` / experiment path，不授权直接用 upstream 内容覆盖本地 current owner。
+它只决定是否允许访问 upstream，以及获准后进入 adoption / upgrade 还是受限的 non-adoption read / compare / experiment path；不授权直接用 upstream 内容覆盖本地 current owner。
 
 ### 4.6 合法状态转换
 
-状态名称只是语义模型，但转换边界必须一致。合法主路径为：
+状态名称只是语义模型，但转换边界必须一致。合法 adoption 主路径为：
 
 ```text
 New Consumer
@@ -189,13 +198,24 @@ ORDINARY_RUNTIME
 → ORDINARY_RUNTIME
 ```
 
+non-adoption re-entry 路径为：
+
+```text
+ORDINARY_RUNTIME
+→ REENTRY_REQUESTED
+→ authorized read / compare / experiment / validation
+→ evidence or analysis only
+→ ORDINARY_RUNTIME
+```
+
 其中：
 
 - 新 Consumer 只有在需要采用 upstream reusable capability 时进入 `ADOPTION_EVALUATION`；如果当前没有需要采用的 reusable capability，仍必须满足最小 Consumer Authority 与可恢复普通工作的要求后才能进入 `ORDINARY_RUNTIME`，不得为了形式完整制造一次空 adoption；
 - Existing Consumer 的任何 upstream 重新进入都先经过 `REENTRY_REQUESTED` 的条件判断；显式 baseline upgrade 是使该判断成立的条件之一，而不是绕过 re-entry 边界的另一条隐式路径；
-- `REENTRY_REQUESTED` 若只批准 `agentic-dev` experiment / validation，可进入对应受限实验路径并在完成后返回 Consumer-local 状态，不要求伪造一次 baseline adoption；
+- `REENTRY_REQUESTED` 获准后必须根据明确任务意图区分 adoption path 与 non-adoption path；仅阅读、比较、研究、experiment / validation 不自动转化为 adoption；
+- non-adoption path 只能形成分析 / evidence / feedback，不更新 Consumer local current owner，不推进 evaluated upstream baseline；若随后决定采用，必须显式进入 `ADOPTION_EVALUATION`；
 - `ADOPTION_EVALUATION` 只有在当前相关 reusable delta 已完成逐项决定后才能进入 `LOCAL_PROJECTION_PENDING_VERIFICATION`；
-- `LOCAL_PROJECTION_PENDING_VERIFICATION` 只有在 adoption verification 与 baseline advance Gate 满足后才能进入 `ORDINARY_RUNTIME`；
+- `LOCAL_PROJECTION_PENDING_VERIFICATION` 只有在 adoption verification、Consumer-side currentness re-check 与 baseline advance Gate 满足后才能进入 `ORDINARY_RUNTIME`；
 - 任一 adoption / upgrade 流程失败或中断，都不得用状态跳转绕过 §9.3 的 partial-state 规则；Existing Consumer 的旧 current state 继续按 Consumer Authority 保持有效，新 Consumer 则保持未完成初始化 / 采用状态，不伪装成已完成 ordinary runtime。
 
 V3-05 / V3-06 可以为这些语义状态设计 representation 或 discovery behavior，但不得新增另一套冲突的 lifecycle transition。
@@ -245,8 +265,9 @@ Consumer-native project fact
 5. reject / not-applicable items 不进入 active ordinary runtime；
 6. Consumer-specific override / precedence 保持明确；
 7. 必要 adoption verification 已完成；
-8. first evaluated upstream baseline 可以被真实记录；
-9. 新 Fresh Context 不依赖 upstream 即可继续 ordinary work。
+8. Consumer-side currentness 在完成前已重新确认；
+9. first evaluated upstream baseline 可以被真实记录；
+10. 新 Fresh Context 不依赖 upstream 即可继续 ordinary work。
 
 如果新 Consumer 当前没有采用任何 upstream reusable capability，则不要求制造虚假的 evaluated upstream baseline；此时只需完成最小 Consumer Authority / recovery Gate，即可进入 ordinary work，未来首次真实 adoption 再建立 evaluated baseline。
 
@@ -258,7 +279,7 @@ Existing Consumer 不在普通任务中持续跟随 upstream latest。一次 upg
 
 ### 6.2 upgrade 最小输入
 
-至少需要：
+通常至少需要：
 
 - Consumer Current Repository Authority；
 - current Consumer-local capability / discovery state；
@@ -267,6 +288,8 @@ Existing Consumer 不在普通任务中持续跟随 upstream latest。一次 upg
 - 两个 baseline 的实际 reusable delta；
 - 与当前 delta 相关的 retained / overridden / rejected history；
 - 当前 Consumer 技术栈、平台、验证与项目约束中的最小必要事实。
+
+如果 previous evaluated upstream baseline 缺失、无法验证或 Consumer 属于迁入该模型前的 legacy state，不得根据本地文件时间、旧聊天或猜测伪造 baseline。此时应把 candidate 视为一次显式的 **baseline recovery / first evaluated comparison**：以 Consumer Current Authority 和可验证的 active asset provenance 为事实边界，对当前真正相关的 reusable surface 做足够覆盖的首次比较，记录历史不确定性；只有完成逐项 decision 与 verification 后才建立新的 evaluated baseline。
 
 不为了升级读取全部历史聊天或 unrelated upstream project history。
 
@@ -284,6 +307,18 @@ Existing Consumer 不在普通任务中持续跟随 upstream latest。一次 upg
 - Research / Eval / historical evidence。
 
 只有 Consumer 可能持续消费的 reusable delta 进入 adoption decision。
+
+### 6.4 Consumer-side drift
+
+在进入 baseline advance 前，必须确认与本次 decision 相关的 Consumer Current Authority / local owner 是否仍与比较时一致。
+
+如果出现实质 drift：
+
+- 识别受 drift 影响的 reusable item / local owner；
+- 仅对这些项重新执行必要 classification、`adopt / retain / reject / supersede` decision 与 verification；
+- 无关项可以保留已验证结论；
+- 不把整个升级机械作废，也不得无视 drift 使用陈旧 decision；
+- 如果无法安全判断 drift 影响范围，则 fail-closed，扩大 Consumer-local Authority 读取或升级给人工，而不是用 upstream candidate 覆盖本地变化。
 
 ## 7. 单项 Adoption Decision
 
@@ -382,16 +417,18 @@ Existing Consumer 不在普通任务中持续跟随 upstream latest。一次 upg
 只有以下条件满足后，candidate baseline 才能成为新的 evaluated upstream baseline：
 
 1. candidate exact identity 已确认；
-2. reusable / project-only / research / evidence delta 已分类；
-3. Consumer 相关 reusable delta 均已逐项决定；
-4. adopted / retained local owners 已按需要更新；
-5. rejected / not-applicable 不进入 active runtime；
-6. superseded old asset 不再作为 current owner；
-7. Consumer Authority precedence 未被 upstream 覆盖；
-8. lifecycle-level adoption verification 已完成；
-9. 各具体 semantic owner 要求的必要验证已经满足；
-10. ordinary-runtime local-only 路径仍成立；
-11. baseline advance 没有被描述为“全部 upstream 内容均已采用”。
+2. previous evaluated baseline 已确认，或已按 §6.2 完成显式 baseline recovery；
+3. reusable / project-only / research / evidence delta 已分类；
+4. Consumer 相关 reusable delta 均已逐项决定；
+5. adopted / retained local owners 已按需要更新；
+6. rejected / not-applicable 不进入 active runtime；
+7. superseded old asset 不再作为 current owner；
+8. Consumer Authority precedence 未被 upstream 覆盖；
+9. Consumer-side relevant currentness 已在完成前重新确认，任何实质 drift 已按 §6.4 处理；
+10. lifecycle-level adoption verification 已完成；
+11. 各具体 semantic owner 要求的必要验证已经满足；
+12. ordinary-runtime local-only 路径仍成立；
+13. baseline advance 没有被描述为“全部 upstream 内容均已采用”。
 
 若 Consumer 的 integration policy 要求 PR / review / merge 才能使 candidate local asset 成为 current，则相应 integration Gate 也是本次 adoption / upgrade 完成的前置条件；本文不绕过 Consumer 自己的集成策略。
 
@@ -471,9 +508,11 @@ ordinary runtime 只有在以下至少一个条件成立时才重新进入 upstr
 - 某条 upstream rule 看起来“更新”或“最佳实践更强”；
 - 为了完整性想同步全部 upstream 文档。
 
-### 11.3 re-entry 不等于 adoption
+### 11.3 re-entry 后必须先区分任务性质
 
-即使允许读取 upstream，也必须重新经过：
+允许访问 upstream 不等于必须 adoption。`REENTRY_REQUESTED` 获准后先区分两类路径。
+
+**Adoption / upgrade path**：任务明确要求首次采用、baseline upgrade、补齐并采用缺失 reusable capability，或在 read / compare 后又显式决定采用。此时必须经过：
 
 ```text
 read / compare upstream
@@ -484,9 +523,17 @@ read / compare upstream
 → baseline advance
 ```
 
-只有 experiment / validation 路径可以在不产生 adoption decision 的情况下读取 upstream；其输出仍只是 evidence / feedback，除非随后显式进入 adoption / upgrade flow。
+**Non-adoption path**：任务只要求 read / compare、研究、experiment / validation 或形成是否值得升级的证据。此时：
 
-不能把“允许查看 upstream”解释成“允许覆盖 Consumer current state”。
+- 可以按授权读取所需 upstream；
+- 输出只属于 analysis / research / evidence / feedback；
+- 不修改 Consumer local current owner；
+- 不改变 active asset provenance；
+- 不推进 evaluated upstream baseline；
+- 完成后返回 Consumer-local ordinary state；
+- 后续若决定采用，必须重新显式进入 `ADOPTION_EVALUATION`。
+
+不能把“允许查看 upstream”解释成“允许覆盖 Consumer current state”，也不能把 non-adoption comparison 伪装成已经完成的 baseline evaluation / advance。
 
 ## 12. 与其他 owner 的责任分界
 
@@ -548,12 +595,15 @@ V3-03 的语义至少必须能一致解释以下场景：
 | 新 Consumer 没有原始需求 | 不制造空 Requirement；先建立最小治理骨架，后续按真实工作形成项目 Authority |
 | 新 Consumer 当前无需任何 upstream reusable capability | 不制造空 adoption 或虚假 baseline；完成最小 Consumer Authority 后进入 ordinary work |
 | Existing Consumer 发现 upstream 新 baseline | ordinary runtime 不变；只有显式 upgrade 经 re-entry 判断后才进入比较 |
+| Existing Consumer 没有可验证 previous baseline | 不猜测旧 baseline；以当前 Authority / provenance 做 baseline recovery，再建立 first evaluated baseline |
 | upstream 新规则与 local override 冲突 | 可 `retain / override`；推进 evaluated baseline 不伪造该 asset 的 provenance |
 | upstream 新 Skill 当前 Consumer 不使用 | `reject / not applicable`，不进入 active runtime |
 | replacement 尚未验证完成 | 旧 current owner 不提前退出；新 candidate 不因写入分支自动 current |
+| upgrade 期间 Consumer local owner 发生相关 drift | 仅重算受影响 decision / verification；未处理前不推进 baseline |
 | upgrade 中途失败 | evaluated baseline 不推进；不得声明 upgrade complete；旧 current owner 不自动失效 |
 | local discovery stale | 先 fail-closed 到 Consumer Current Authority，不自动在线读取 upstream |
 | Consumer 明确缺少必要 reusable capability | 经 Consumer Authority 允许后显式 re-entry，再走 adoption flow |
+| Consumer Authority 只要求比较 upstream | 走 non-adoption path，仅形成分析 / evidence，不修改 local current state 或 baseline |
 | 明确 `agentic-dev` experiment / validation | 可受限读取 upstream 形成 evidence；不因实验本身自动 adoption / baseline advance |
 | upstream 在 ordinary runtime 中继续提交 | 不改变 Consumer local current behavior |
 
@@ -563,6 +613,9 @@ V3-03 只有在以下条件满足后才可以声明完成：
 
 - 初始化、首次采用、baseline upgrade、local projection、adoption verification、baseline advance、ordinary runtime 和 upstream re-entry 构成单一一致生命周期；
 - 五个语义状态及其合法转换边界明确，不允许后续 representation / discovery 实现重新定义第二套 lifecycle；
+- adoption re-entry 与 non-adoption read / compare / experiment path 明确分离；
+- upstream exact candidate 与 Consumer-side currentness 两侧边界均受控制；
+- previous evaluated baseline 缺失时 fail-closed 到显式 recovery，不伪造历史；
 - evaluated baseline、active asset provenance 与 upgrade-only decision history 职责分离；
 - `adopt / retain-or-override / reject-not-applicable / supersede-remove` 语义稳定；
 - partial / failed upgrade 不会制造假的完成状态或隐式覆盖；
