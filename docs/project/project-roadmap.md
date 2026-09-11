@@ -26,18 +26,18 @@ V3-04 — 技能重分类与准入，跟踪入口为 Issue #107。
 V3-04 工作产物：`docs/project/skill-reclassification-admission-v3.md`。  
 V3-04 启动基线：`master@3043e95193f462348dd9fcb99f8a1871145d503d`。
 
-V3-04 直接消费 V3-02 的 Skill / Guide overlap 审计和 V3-03 的使用方生命周期边界，不重新设计第一批核心 Skill。目标是确认当前 9 个 Skill 的身份，去除跨语义所有者重复正文，明确历史 Skill 设计与当前权威关系，并形成稳定的新 Skill 准入与 supporting-resource 边界。
+V3-04 直接消费 V3-02 的 Skill / Guide 重叠审计和 V3-03 的使用方生命周期边界，不重新设计第一批核心 Skill。目标是确认当前 9 个 Skill 的身份，去除跨语义所有者重复正文，明确历史 Skill 设计与当前权威关系，并形成稳定的新 Skill 准入与支持资源边界。
 
 V3-04 的精确审查、集成与完成状态由 Issue #107 和 GitHub 当前状态记录，不在 Roadmap 复制瞬时 PR 状态。Fresh Context 恢复时：
 
-- 如果 Issue #107 仍开放，继续 V3-04 当前未完成 Gate；
+- 如果 Issue #107 仍开放，继续 V3-04 当前未完成门禁；
 - 如果 Issue #107 已以完成原因关闭，V3-04 视为已收口，**V3-05 只成为下一规划候选**，仍需新的规划权威才能启动。
 
-当前 Gate：
+当前门禁：
 
-> **V3-04 未完成时，先完成 Skill 身份、overlap、历史权威关系与准入规则的收敛及 AI 复核；V3-04 完成后，只判断是否正式启动 V3-05，不继承 V3-04 权限。**
+> **V3-04 未完成时，先完成 Skill 身份、重叠、历史权威关系与准入规则的收敛及 AI 复核；V3-04 完成后，只判断是否正式启动 V3-05，不继承 V3-04 权限。**
 
-V3-04 不批量新增、删除或重写 Skill，不创建 Rule Super Skill / Stage Router Skill，不冻结 Front Matter / metadata schema，不实现完整资源发现架构，也不修改使用方仓库。
+V3-04 不批量新增、删除或重写 Skill，不创建规则超级 Skill / 阶段路由 Skill，不冻结 Front Matter / metadata 结构，不实现完整资源发现架构，也不修改使用方仓库。
 
 详细当前规划 / 审计 / 架构：
 
@@ -80,7 +80,7 @@ V3-02 已以规范正文 / 规则族为主要审计单位完成当前仓库审�
 
 V3-03 已将“使用方生命周期”提升为可复用工程能力，而不是新的产品开发方法阶段或自动 Skill 候选。长期语义所有者为 `docs/architecture/consumer-lifecycle.md`；`docs/architecture/engineering-capability-architecture.md` 负责其上层能力分类。
 
-V3-04 当前确认：9 个现有 Skill 的身份继续成立；阶段主要处理 `execute-unit` 与工程纪律、`converge` 与跨职责验证、`github-actions-verification` 与通用验证 / 外部操作能力的 owner 边界，以及第一批历史设计与 current Skill Authority 的关系。新增 Skill 只有在具备独立触发、输入、过程、输出、退出 / 返回 / 升级、组合价值、所有权边界、证据与可辨识评估时才准入。
+V3-04 当前确认：9 个现有 Skill 的身份继续成立；阶段主要处理 `execute-unit` 与工程纪律、`converge` 与跨职责验证、`github-actions-verification` 与通用验证 / 外部操作能力的所有权边界，以及第一批历史设计与当前 Skill 权威的关系。新增 Skill 只有在具备独立触发、输入、过程、输出、退出 / 返回 / 升级、组合价值、所有权边界、证据与可辨识评估时才准入。
 
 ## 3. v2 已集成基线
 
@@ -105,19 +105,19 @@ V3-03 已提炼长期有效的使用方生命周期语义。具体资源发现 /
 
 V3-04 只授权：
 
-- 基于 V3-02 审计逐一复核当前 9 个 Skill 的身份与 overlap；
+- 基于 V3-02 审计逐一复核当前 9 个 Skill 的身份与重叠；
 - 裁决 Skill、工程纪律 / 验证能力 / 外部操作能力 / 使用方生命周期、Guide 与平台专项过程的边界；
-- 裁决 `first-batch-skill-design.md` 与当前 Skill Architecture / Contracts / `SKILL.md` 的历史 / current 关系；
-- 把稳定的新 Skill 准入与 supporting-resource 边界提升到现行 Skill Architecture；
-- 只在真实重复规范正文已经确认时做必要、最小的 current-authority 去重；
+- 裁决 `first-batch-skill-design.md` 与当前 Skill 架构 / 契约 / `SKILL.md` 的历史 / 当前关系；
+- 把稳定的新 Skill 准入与支持资源边界提升到现行 Skill 架构；
+- 只在真实重复规范正文已经确认时做必要、最小的当前权威去重；
 - 更新本阶段恢复入口并执行必要 AI 复核。
 
 V3-04 不：
 
 - 重新设计 V3-03 使用方生命周期；
 - 批量新增、删除或重写当前 Skill；
-- 创建 Rule Super Skill、Stage Router Skill 或 adoption / upgrade Skill；
-- 冻结全仓 Front Matter / metadata schema；
+- 创建规则超级 Skill、阶段路由 Skill 或采用 / 升级 Skill；
+- 冻结全仓 Front Matter / metadata 结构；
 - 新增或实现 Rule Index / Manifest / Catalog / generator；
 - 实现完整资源发现 / 路由架构；
 - 物理迁移 Guide / Policy / Authority；
@@ -184,7 +184,7 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 4. 重新读取当前 GitHub `master`、Open PR / Issue 和必要 Actions；
 5. 当前 v3 规划期间读取 `docs/project/rule-governance-knowledge-activation-v3.md` 与 Issue #94；
 6. 读取 Issue #107 的当前状态和 `docs/project/skill-reclassification-admission-v3.md`：若 #107 仍开放，继续 V3-04；若已经完成关闭，则只把 V3-05 视为下一规划候选；
-7. 只在 Skill 身份 / overlap 结论需要证据时按需读取 V3-02 审计矩阵、Skill Architecture / Contracts、对应 `SKILL.md`、工程纪律、验证 / 外部操作规则与 V3-03 生命周期；不重新做仓库盘点；
+7. 只在 Skill 身份 / 重叠结论需要证据时按需读取 V3-02 审计矩阵、Skill 架构 / 契约、对应 `SKILL.md`、工程纪律、验证 / 外部操作规则与 V3-03 生命周期；不重新做仓库盘点；
 8. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
 
 ## 9. 更新触发
