@@ -61,12 +61,16 @@ Issue #18 随后的真实使用方项目证据触发了 `slice-work`、`readines
 
 `github-actions-verification` 的形成路径是当前历史证据，不代表未来所有平台 / 技术专项 Skill 都必须重复等待使用方先暴露问题。新的候选 Skill 应按工程能力架构综合使用成熟外部证据、专项评估和使用方实践进行准入判断。
 
-权威设计参考：
+当前权威：
 
 - `../docs/architecture/engineering-capability-architecture.md`
 - `../docs/architecture/skill-architecture.md`
 - `../docs/architecture/skill-contracts.md`
-- `../docs/architecture/first-batch-skill-design.md`
+- 当前各 `SKILL.md`
+
+历史设计参考：
+
+- `../docs/architecture/first-batch-skill-design.md`：记录第一批 8 个核心 Skill 从契约到首版实现的历史设计基线，不再作为当前 Skill 设计权威。
 
 打包 / 互操作研究参考：
 
