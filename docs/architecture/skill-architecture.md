@@ -179,6 +179,39 @@ Skill 不保存某个具体项目的长期事实，也不拥有覆盖项目权�
 
 这类职责分配落实产物生命周期闭环，但不新增方法阶段、领域上下文 Skill、架构管理 Skill 或完整生命周期超级 Skill。
 
+### 2.10 新 Skill 准入门禁
+
+新增 Skill 至少必须同时满足并能够证明以下边界：
+
+1. **Trigger**：什么时候应进入该职责，什么时候明确不进入；
+2. **Inputs**：存在稳定、可描述的最小输入；
+3. **Procedure**：存在可重复、足够复杂、值得按需加载和独立维护的过程；
+4. **Outputs**：存在稳定独立输出，而不是只要求“遵守若干规则”；
+5. **Exit / Return / Escalation**：可以明确停止、返回上游或升级；
+6. **Composability**：可以作为独立职责被调用，不接管完整开发生命周期；
+7. **Ownership**：不会复制核心方法、工程纪律 / 画像、使用方生命周期、仓库本地规则或 Guide 已拥有的规范正文；
+8. **Evidence**：存在官方 / 成熟工程实践、专项评估或使用方证据支持该独立职责，而不是只由命名偏好推动；
+9. **Evaluation**：可以设计有辨识力的行为评估，证明独立 Skill 身份比现有 owner 或 supporting capability 更合适。
+
+“可复用”“Agent 会读取”“内容重要”“存在步骤”或“多个 Skill 都需要”都不能单独满足准入。
+
+如果一个候选主要表达横切约束、默认技术知识、仓库本地值、人类说明或跨多个过程的生命周期语义，应优先进入对应 Engineering Discipline / Profile / Consumer Lifecycle / Repository Policy / Guide；只有形成独立稳定 procedure 后再重新评估 Skill 身份。
+
+新的 Skill 不得成为 Rule Super Skill、Stage Router Skill、产物管理超级 Skill或接管初始化→执行→集成的完整生命周期 Controller。
+
+### 2.11 Skill supporting resource 边界
+
+某个 Skill 目录下的 `references/*`、fixture、template、script 或其他 supporting body 只有在以下条件同时成立时，才继续作为该 Skill 的内部资源：
+
+- 直接服务该 Skill 的 procedure；
+- 不独立定义跨 Skill / 跨仓库长期规范语义；
+- 生命周期与该 Skill 的当前身份一起管理；
+- 删除该资源不会丢失 Skill 之外的规范事实。
+
+如果某个 supporting resource 开始被多个 Skill / Guide 独立消费，或形成自己的触发、适用范围、更新 / 取代责任，就必须重新判断真实语义所有者；物理位于 Skill 目录不足以继续证明它只是内部附件。
+
+当前 `skills/github-actions-verification/references/*` 继续属于 `github-actions-verification` 的 supporting body，没有证据要求提升为平级 owner。
+
 ## 3. 第一批 8 个核心 Skill
 
 | Skill | 类型 | 核心职责 |
