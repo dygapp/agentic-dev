@@ -25,18 +25,18 @@ V3-03 — 使用方初始化、采用、升级与普通运行生命周期，跟�
 V3-03 工作产物：`docs/architecture/consumer-lifecycle.md`。  
 V3-03 启动基线：`master@ce7ab292f8ddf8b8512d406061a31a7db8ad9409`。
 
-V3-03 直接消费 V3-02 已确认的生命周期规则族，不重复仓库盘点。目标是建立单一使用方生命周期 owner，明确新使用方首次采用、已有使用方 baseline upgrade、逐项 adoption decision、采用验证与 baseline advance、ordinary runtime local-only，以及显式 upstream re-entry。
+V3-03 直接消费 V3-02 已确认的生命周期规则族，不重复仓库盘点。目标是建立单一使用方生命周期语义所有者，明确新使用方首次采用、已有使用方基线升级、逐项采用决定、采用验证与基线推进、仅依赖本地当前状态的普通运行，以及显式重新进入上游。
 
 V3-03 的精确审查、集成与完成状态由 Issue #104 和 GitHub 当前状态记录，不在 Roadmap 复制瞬时 PR 状态。Fresh Context 恢复时：
 
 - 如果 Issue #104 仍开放，继续 V3-03 当前未完成 Gate；
-- 如果 Issue #104 已以完成原因关闭，V3-03 视为已收口，**V3-04 只成为下一 Planning Candidate**，仍需新的 Planning Authority 才能启动。
+- 如果 Issue #104 已以完成原因关闭，V3-03 视为已收口，**V3-04 只成为下一规划候选**，仍需新的规划权威才能启动。
 
 当前 Gate：
 
 > **V3-03 未完成时，先完成使用方生命周期的一致性复核与人工集成 Gate；V3-03 完成后，只判断是否正式启动 V3-04，不继承 V3-03 权限。**
 
-V3-03 不执行 V3-02 的物理 disposition 候选，也不修改 Consumer Repository、`SKILL.md`、metadata / Front Matter schema 或 discovery implementation。
+V3-03 不执行 V3-02 的物理处理候选，也不修改使用方仓库、`SKILL.md`、Front Matter / metadata schema 或资源发现实现。
 
 详细当前规划 / 审计 / 生命周期：
 
@@ -76,7 +76,7 @@ V3-01 已建立以下四维所有权判断：
 
 V3-02 已以规范正文 / 规则族为主要审计单位完成当前仓库审计，而不是按现有目录机械分类。其结果特别识别了 Guide catch-all、已完成项目记录中仍承担现行可复用语义的过渡契约、派生路由器与真实 semantic owner 的重叠，以及 Skill 与工程纪律 / 验证规则之间的正文复制风险。
 
-V3-03 将“使用方生命周期”明确为可复用工程能力，而不是新的产品开发 Method stage 或自动 Skill 候选。长期 owner 为 `docs/architecture/consumer-lifecycle.md`；`docs/architecture/engineering-capability-architecture.md` 负责其上层能力分类。
+V3-03 将“使用方生命周期”明确为可复用工程能力，而不是新的产品开发方法阶段或自动 Skill 候选。长期语义所有者为 `docs/architecture/consumer-lifecycle.md`；`docs/architecture/engineering-capability-architecture.md` 负责其上层能力分类。
 
 ## 3. v2 已集成基线
 
@@ -95,18 +95,18 @@ v2 已验证并继续受 v3 保护的行为至少包括：薄启动入口、仓�
 
 V3-02 审计已明确：部分 v2 `docs/project/*` 虽属于已完成里程碑记录，仍承载当前 discovery / adoption / runtime 的过渡性可复用契约；在 V3-03～V3-06 建立并验证替代 owner 前不得提前归档、删除或失效。
 
-V3-03 提炼其中长期有效的 Consumer lifecycle 语义；在 V3-03 正式集成前，v2 当前运行发现 / 激活机制和过渡性现行生命周期入口继续有效。V3-03 集成后，具体 discovery / routing 内容仍继续等待 V3-05 / V3-06 处理，不因 V3-03 完成而提前删除兼容入口。
+V3-03 提炼其中长期有效的使用方生命周期语义；在 V3-03 正式集成前，v2 当前运行发现 / 激活机制和过渡性现行生命周期入口继续有效。V3-03 集成后，具体资源发现 / 路由内容仍继续等待 V3-05 / V3-06 处理，不因 V3-03 完成而提前删除兼容入口。
 
 ## 4. 当前范围边界
 
 V3-03 只授权：
 
 - 从 V3-02 审计矩阵消费生命周期规则族；
-- 建立使用方生命周期长期 owner；
-- 明确初始化、首次采用、baseline upgrade、本地投影、采用验证、baseline advance、ordinary runtime 与 upstream re-entry；
-- 明确 evaluated upstream baseline、active local asset provenance 与 upgrade-only decision history 之间的职责分离；
-- 明确 partial / failed upgrade 的完成声明与 current-state 边界；
-- 明确与 Core Method、Guide、Skill、V3-05、V3-06、V3-08 的 ownership boundary；
+- 建立使用方生命周期长期语义所有者；
+- 明确初始化、首次采用、基线升级、本地投影、采用验证、基线推进、普通运行与重新进入上游；
+- 明确上游评估基线、当前本地资产来源与仅升级使用的决策历史之间的职责分离；
+- 明确部分完成 / 失败升级的完成声明与当前状态边界；
+- 明确与核心方法、Guide、Skill、V3-05、V3-06、V3-08 的所有权边界；
 - 更新本阶段恢复入口并执行必要 AI 复核。
 
 V3-03 不：
@@ -117,8 +117,8 @@ V3-03 不：
 - 冻结全仓 Front Matter / metadata schema；
 - 实现 Front Matter generator；
 - 创建 Rule Super Skill / Stage Router Skill；
-- 实现完整 discovery / routing architecture；
-- 修改 Consumer Repository；
+- 实现完整资源发现 / 路由架构；
+- 修改使用方仓库；
 - 启动 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 候选实施。
 
 临时 GPT-6 / 其他 AI 评估只作为挑战和复核证据，不自动提升为长期架构，也不授予后序执行权限。
@@ -178,7 +178,7 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 3. 读取本文，确认当前路线、Gate 和候选边界；
 4. 重新读取当前 GitHub `master`、Open PR / Issue 和必要 Actions；
 5. 当前 v3 规划期间读取 `docs/project/rule-governance-knowledge-activation-v3.md` 与 Issue #94；
-6. 读取 Issue #104 的当前状态和 `docs/architecture/consumer-lifecycle.md`：若 #104 仍开放，继续 V3-03；若已经完成关闭，则只把 V3-04 视为下一 Planning Candidate；
+6. 读取 Issue #104 的当前状态和 `docs/architecture/consumer-lifecycle.md`：若 #104 仍开放，继续 V3-03；若已经完成关闭，则只把 V3-04 视为下一规划候选；
 7. 只在生命周期结论需要证据时按需读取 V3-02 审计矩阵、`using-agentic-dev.md`、`consumer-local-rule-activation.md` 和 v2 过渡性现行生命周期文档；不重新做仓库盘点；
 8. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
 
