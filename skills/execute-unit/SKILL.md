@@ -222,15 +222,14 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 - 不静默覆盖当前有效 Domain / Architecture / ADR Authority，也不在代码或测试中直接确立新的跨功能长期权威；
 - 不把当前 Unit 变成整个 Feature 的重构机会。
 
-应用当前 Engineering Discipline 时，只保留以下薄执行判断：
+当前 Unit 命中工程纪律条件时，读取并应用 `docs/architecture/engineering-disciplines.md` 中对应的现行纪律。`execute-unit` 只负责：
 
-- **实现最小化：** 新增功能、抽象、配置、扩展点、依赖或层次必须能够追溯到当前需求、当前长期约束、当前非功能责任、真实消费者 / 变体、Repository Rule 或正确复用已有能力的需要；仅服务假想未来的复杂度默认不进入当前实现。不要把“最小化”机械解释成最少代码，也不要据此跳过当前必要的安全、测试、验证或范围受控的行为保持重构。
-- **精准修改：** 当前逻辑变化可以包含直接实现、验证、已授权权威同步、必要准备性重构、本次修改直接产生的 cleanup 和 Repository Rule 确定触发的机械伴随变化；多文件本身不是越界证据，但“同一逻辑变化”不能绕过公共契约、重大架构或其他高影响事项的上游授权。
-- **数据访问作用域与有界性：** 当 Unit 涉及集合、列表或 snapshot 数据访问时，先确认真实 consumer scope、集合 boundedness / growth 与 lifecycle / freshness，再决定 filtering、stable ordering、window / pagination、representation 和复用方式。页面最终展示 N 条、已有 `LIMIT/OFFSET` 或客户端过滤不能替代业务 scope；若业务 scope 决定集合成员资格，应先形成该 scope 再 window / paginate，但当前 Authority 明确定义 global Top-N / ranking 本身为业务语义时不得机械改写。规模稳定有界的共享 snapshot 可以在当前证据支持下完整读取并按合适生命周期复用，不为了形式一致机械分页。
+- 在当前执行上下文识别哪些纪律实际命中；
+- 把纪律应用到当前 Unit 的实现、验证和最终差异判断；
+- 确保纪律不覆盖更高层权威，也不借“工程质量”扩大 Unit Scope；
+- 在纪律暴露上游权威或执行单元边界问题时返回真实职责层。
 
-当 Unit 包含“消除硬编码”、配置审计或类似要求时，不把每个字面量机械外部化。先根据当前 Repository Authority 和实际变化证据判断：谁负责维护、何时变化、变化来自产品运营、结构定义、部署实例还是 CI / 评审 / 发布环境，以及是否受稳定领域规则、安全、协议、模板或算法约束。稳定且没有已证明外部维护责任的值默认保留在代码或既有权威载体中；管理员维护的运营数据、低频结构元数据、部署差异和流程参数分别进入 Consumer 已有的适当责任层。不得只为消除字面量而新增数据库字段、设置页面、环境变量或配置机制。
-
-实现通用技术能力前，先检查当前代码库、框架、标准库和已引入依赖。已有能力满足当前功能契约及安全、可观察性、性能和生命周期约束时，优先复用，并只用最薄适配层承载项目特有差异。存在可证明的不匹配时可以采用自有实现；不机械执行“框架优先”，也不为了复用扩大依赖面、改变产品行为或覆盖当前 Architecture Authority。
+实现最小化、精准修改、数据访问作用域与有界性，以及其中的配置责任 / 既有能力复用等具体规则，只由 `engineering-disciplines.md` 单点维护；本 Skill 不复制第二份纪律正文。
 
 发现超出 Unit 边界但会阻塞完成的问题时，记录并返回相应职责层，而不是顺手接管。
 
@@ -242,8 +241,7 @@ TDD 是 when useful 的内嵌纪律，而不是所有 Unit 的机械要求。
 
 - 最小、针对性的验证；
 - 能直接覆盖当前必需行为 / 验收义务的证据；
-- 能证明分页、排序、边界 / 失败、多状态、跨入口等关键差异的场景（如适用）；
-- 涉及集合 / 列表 / snapshot 时，能越过 page / Top-N / scope 边界并包含足以暴露截断、顺序或 freshness 问题的数据规模（如适用）；
+- 当前命中的 Engineering Discipline 对验证边界提出的必要证据（如适用）；
 - 仓库规则要求的必要检查。
 
 根据变更风险和仓库约束，再按需扩大到：
@@ -293,13 +291,11 @@ Review 逻辑上至少区分两个维度：
 **Engineering Quality**
 
 - 实现是否与当前 Architecture / Repository Rules 一致；
-- 新增复杂度是否有当前正当性，而不是只服务假想未来；
-- 最终有意义的 changed regions 是否都能追溯到当前逻辑变化及其必要责任；
-- 涉及集合型数据访问时，scope、boundedness / growth、lifecycle / freshness、ordering、window / pagination 与 representation 是否匹配当前消费者和权威，而不是机械套用全量或分页策略；
+- 当前实际命中的 Engineering Discipline 是否已按其规范 owner 应用；
 - 是否引入明显隐藏耦合、脆弱性或不可维护结构；
 - 测试 / 验证是否与变更风险相称。
 
-在声明 Completed 前，对最终 diff 做轻量 Scope Check：识别主要变更区域，确认它们属于当前直接实现、验证、已授权权威同步、必要准备性重构、本次修改直接产生的 cleanup 或确定性机械伴随变化；无法形成当前责任链的顺带修改应移除、记录或拆分。不要使用行数 / 文件数作为主要判断标准。
+在声明 Completed 前，按当前命中的 Surgical Change & Diff Scope Control 执行最终差异范围检查；具体允许 / 禁止的差异类别只由 `engineering-disciplines.md` 维护，本 Skill 不复制第二份范围规则。
 
 这两个维度不要求两个独立 Reviewer Agent，也不要求每个低风险 Unit 都执行重型 Review 流程。
 
