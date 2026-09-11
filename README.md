@@ -35,26 +35,27 @@ GitHub Repository 是唯一项目事实来源。
 - **最近已集成里程碑：** 规则治理与知识激活 v2
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
-- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计
-- **V3-03 跟踪入口：** Issue #104 — 使用方初始化、采用、升级与普通运行生命周期
-- **V3-03 工作产物：** `docs/architecture/consumer-lifecycle.md`
+- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计；V3-03 — 使用方初始化、采用、升级与普通运行生命周期
+- **V3-04 跟踪入口：** Issue #107 — 技能重分类与准入
+- **V3-04 工作产物：** `docs/project/skill-reclassification-admission-v3.md`
 
-V3-03 将 V3-02 已识别的使用方生命周期规则族收敛到单一长期语义所有者，重点区分新使用方首次采用、已有使用方基线升级、逐项采用决定、采用验证与基线推进、仅依赖本地当前状态的普通运行，以及显式重新进入上游。
+V3-04 直接消费 V3-02 的 Skill / Guide overlap 审计和 V3-03 的使用方生命周期边界，目标是确认当前 9 个 Skill 的身份、去除跨语义所有者重复正文、明确历史 Skill 设计与当前权威关系，并把新增 Skill 的准入与 supporting-resource 边界提升到现行 Skill Architecture。
 
-V3-03 的精确审查、集成与完成状态以 Issue #104 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-03 完成后，V3-04 只成为下一规划候选，不自动启动。
+V3-04 的精确审查、集成与完成状态以 Issue #107 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-04 完成后，V3-05 只成为下一规划候选，不自动启动。
 
-V3-02 的其他处理候选仍只是后续设计输入。V3-03 不执行 Guide 物理迁移、Skill 重构、Front Matter / Index 实现、完整资源发现架构或 Consumer 修改。
+V3-04 不批量新增、删除或重写 Skill，不创建 Rule Super Skill / Stage Router Skill，不冻结 Front Matter / metadata schema，不实现完整资源发现架构，也不修改 Consumer Repository。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
 `docs/project/project-roadmap.md`
 
-v3 当前规划 / 审计 / 生命周期入口：
+v3 当前规划 / 审计 / 架构入口：
 
 - `docs/project/rule-governance-knowledge-activation-v3.md`
 - `docs/project/knowledge-capability-ownership-model-v3.md`
 - `docs/project/current-repository-ownership-audit-v3.md`
 - `docs/architecture/consumer-lifecycle.md`
+- `docs/project/skill-reclassification-admission-v3.md`
 
 v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在演进就提前替换现行运行行为。
 
