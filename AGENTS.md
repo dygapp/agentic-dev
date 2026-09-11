@@ -2,7 +2,7 @@
 
 ## 仓库职责
 
-`agentic-dev` 用于定义通用的 AI Agent 驱动软件开发方法，并维护工程纪律、技术画像、验证画像、小型可组合 Skill 与运行时适配等可复用工程能力。
+`agentic-dev` 用于定义通用的 AI Agent 驱动软件开发方法，并维护工程纪律、技术画像、验证画像、Consumer 生命周期、小型可组合 Skill 与运行时适配等可复用工程能力。
 
 本文件只维护**稳定的仓库治理、权威边界与 Agent 工作约束**，不承担当前阶段、当前里程碑、候选路线、Issue / PR 状态、实验进展或下一工作项的状态记录。
 
@@ -25,16 +25,17 @@
 2. `docs/method/ai-development-method.md`
 3. `docs/method/principles.md`
 4. `docs/architecture/engineering-capability-architecture.md`
-5. `docs/architecture/skill-architecture.md`
-6. `docs/architecture/skill-contracts.md`
-7. `docs/decisions/method-decisions.md`
-8. `docs/architecture/engineering-disciplines.md`
-9. `docs/architecture/technology-profile-contract.md`
-10. `docs/technology-profiles/*`
-11. `docs/project/*`
-12. `docs/guides/git-commit-guidelines.md`
-13. `docs/research/*`
-14. 任务与临时工作记录
+5. `docs/architecture/consumer-lifecycle.md`
+6. `docs/architecture/skill-architecture.md`
+7. `docs/architecture/skill-contracts.md`
+8. `docs/decisions/method-decisions.md`
+9. `docs/architecture/engineering-disciplines.md`
+10. `docs/architecture/technology-profile-contract.md`
+11. `docs/technology-profiles/*`
+12. `docs/project/*`
+13. `docs/guides/git-commit-guidelines.md`
+14. `docs/research/*`
+15. 任务与临时工作记录
 
 `docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行状态，不得覆盖更高优先级的方法、架构、契约、工程纪律或技术画像权威，也不得被 Consumer 自动继承。
 
@@ -64,7 +65,7 @@ GitHub Repository 是本仓库唯一的长期项目事实来源。
 
 方法生命周期、WHAT / WHY 与 HOW、阶段、执行单元、上下文适配、证据、人工升级等方法语义由 `docs/method/*` 及相应 Architecture / Skill Contract 单点定义；本文件不维护第二份方法摘要。
 
-Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` 和 Consumer 自己的 Repository Authority 进入；Consumer-local adoption / baseline upgrade 的完整边界见 `docs/guides/using-agentic-dev.md`。
+Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` 和 Consumer 自己的 Repository Authority 进入。面向人的初始化 / 采用 / baseline upgrade 说明见 `docs/guides/using-agentic-dev.md`；Consumer 初始化、首次采用、baseline upgrade、采用验收、ordinary runtime local-only 与 upstream re-entry 的规范生命周期由 `docs/architecture/consumer-lifecycle.md` 定义。
 
 ## 外部操作治理
 
@@ -104,11 +105,11 @@ Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` �
 
 `docs/research/*` 只保存研究依据和横向比较，不因外部项目、论文、工具或规范使用某种机制就自动改变本仓库 Method / Architecture / Skill。
 
-外部证据进入长期能力前必须先完成当前仓库的证据分类与架构适配。Consumer 采用时只选择对自身持续工作有价值的可复用能力，并固化到 Consumer-local Authority；`agentic-dev` 自身项目规则和当前项目状态不自动继承。
+外部证据进入长期能力前必须先完成当前仓库的证据分类与架构适配。Consumer 采用时只选择对自身持续工作有价值的可复用能力，并按 `docs/architecture/consumer-lifecycle.md` 的生命周期形成 Consumer-local current state；`agentic-dev` 自身项目规则和当前项目状态不自动继承。
 
 同一 Runtime scope 中，同一个 discovery responsibility 只能有一个被声明为 current 的机制。被新机制取代的派生 index / catalog / retriever 必须退出 Current Runtime / Eval surface 或明确降为冻结历史证据；仍声明为 current 的派生机制必须保持 source-currentness 与语义映射真实有效，不允许保留“可执行但已陈旧”的中间状态。
 
-研究入口见 `docs/research/README.md`，Consumer 使用与采用边界见 `docs/guides/using-agentic-dev.md`。
+研究入口见 `docs/research/README.md`，Consumer 使用说明见 `docs/guides/using-agentic-dev.md`，规范采用生命周期见 `docs/architecture/consumer-lifecycle.md`。
 
 ## Git 提交
 
