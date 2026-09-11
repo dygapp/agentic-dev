@@ -65,7 +65,7 @@ GitHub Repository 是本仓库唯一的长期项目事实来源。
 
 方法生命周期、WHAT / WHY 与 HOW、阶段、执行单元、上下文适配、证据、人工升级等方法语义由 `docs/method/*` 及相应 Architecture / Skill Contract 单点定义；本文件不维护第二份方法摘要。
 
-Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` 和 Consumer 自己的 Repository Authority 进入；面向人的初始化 / 采用 / baseline upgrade 说明见 `docs/guides/using-agentic-dev.md`。Consumer 初始化、首次采用、baseline upgrade、采用验证、ordinary runtime local-only 与 upstream re-entry 的规范生命周期由 `docs/architecture/consumer-lifecycle.md` 定义。
+Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` 和 Consumer 自己的 Repository Authority 进入；面向人的初始化 / 采用 / 基线升级说明见 `docs/guides/using-agentic-dev.md`。Consumer 初始化、首次采用、基线升级、采用验证、普通运行仅依赖本地当前状态与重新进入上游的规范生命周期由 `docs/architecture/consumer-lifecycle.md` 定义。
 
 ## 外部操作治理
 
@@ -105,7 +105,7 @@ Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` �
 
 `docs/research/*` 只保存研究依据和横向比较，不因外部项目、论文、工具或规范使用某种机制就自动改变本仓库 Method / Architecture / Skill。
 
-外部证据进入长期能力前必须先完成当前仓库的证据分类与架构适配。Consumer 采用时只选择对自身持续工作有价值的可复用能力，并按 `docs/architecture/consumer-lifecycle.md` 的生命周期形成 Consumer-local current state；`agentic-dev` 自身项目规则和当前项目状态不自动继承。
+外部证据进入长期能力前必须先完成当前仓库的证据分类与架构适配。Consumer 采用时只选择对自身持续工作有价值的可复用能力，并按 `docs/architecture/consumer-lifecycle.md` 的生命周期形成 Consumer 本地当前状态；`agentic-dev` 自身项目规则和当前项目状态不自动继承。
 
 同一 Runtime scope 中，同一个 discovery responsibility 只能有一个被声明为 current 的机制。被新机制取代的派生 index / catalog / retriever 必须退出 Current Runtime / Eval surface 或明确降为冻结历史证据；仍声明为 current 的派生机制必须保持 source-currentness 与语义映射真实有效，不允许保留“可执行但已陈旧”的中间状态。
 
