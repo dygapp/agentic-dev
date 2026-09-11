@@ -39,6 +39,8 @@ V3-01 随后又通过独立 holdout 复核发现并修正“项目 / 产品权�
 
 V3-02 基于 V3-01 的四维模型完成当前仓库语义所有权审计。收敛过程中先通过 Repository Evidence 自查识别并修正 Research / Eval current control body 的目录机械分类风险；随后独立复核发现并修正 Consumer adoption acceptance 被整体归为 Evidence 的所有权问题。最终定向复核不存在未解决的 Blocking / Medium finding。V3-02 已完成并集成，其审计矩阵成为 V3-03～V3-06 的直接分析输入。
 
+V3-03 已由 Issue #104 正式启动，候选长期 owner 为 `docs/architecture/consumer-lifecycle.md`。本阶段不重新做 inventory，而是把 V3-02 已识别的 Consumer lifecycle 规则族从 Guide / completed-project transitional contract 中提炼为单一规范性可复用工程能力。
+
 上述评估只作为证据与复核输入；长期结论以已经集成的仓库权威为准。
 
 ## 3. 当前规划主线
@@ -49,8 +51,8 @@ v3 按以下有限子任务顺序推进：
    已建立四维所有权判断矩阵，作为后续审计的分类依据。
 2. **V3-02 — 当前仓库所有权审计 — 已完成并集成**  
    已按规范正文 / 规则族审计当前仓库并形成后续 disposition 候选；未执行物理迁移。审计矩阵：`docs/project/current-repository-ownership-audit-v3.md`。
-3. **V3-03 — Consumer 初始化、采用、升级与普通运行生命周期 — 下一 Planning Candidate，未启动**  
-   目标是明确一次性启动说明与普通运行的严格边界，以及 Consumer-local 资源如何形成并自行演进；只有新的 Planning Authority 建立后才可正式推进。
+3. **V3-03 — Consumer 初始化、采用、升级与普通运行生命周期 — 当前**  
+   跟踪 Issue #104；候选 PR #106。目标是建立单一 lifecycle owner，明确一次性初始化 / 采用 / 升级与 ordinary local-only runtime 的边界。
 4. **V3-04 — 技能重分类与准入**  
    判断现有 Guide / Rule 中哪些属于已有技能、可复用工程能力、仓库本地规则或真正的新技能候选。
 5. **V3-05 — 面向 Agent 的结构化资源模型**  
@@ -115,33 +117,48 @@ Guide 不应继续承担：
 - 可复用工程能力的默认容器；
 - “不属于核心方法 / 技能”内容的兜底容器。
 
-`using-agentic-dev.md` 保留 Guide 主身份，但其生命周期、routing、Roadmap 等规范性段落需要在后续阶段归位；`verification-evidence-rules.md`、`external-operation-guidelines.md`、Git / 术语规范及 Consumer-local activation 则已在 V3-02 识别出不同程度的重分类 / 拆分候选。
+`using-agentic-dev.md` 保留 Guide 主身份。V3-03 正在将其中 initialization / adoption / baseline upgrade 的长期 normative lifecycle 归入 `docs/architecture/consumer-lifecycle.md`；routing / Fresh Context discovery 等 ordinary runtime discovery 语义仍等待 V3-06，当前不执行 Guide 物理拆分。
 
-## 7. Consumer 初始化与演进方向
+## 7. V3-03 Consumer 生命周期候选
 
-Consumer 初始化不是简单复制 `agentic-dev` 文件，而是一次显式的仓库启动与采用过程。
+V3-03 将 Consumer lifecycle 作为**可复用工程能力**，而不是新的 Product Development Method Stage，也不因为它有过程顺序就自动 Skill 化。
 
-初始化至少可能处理：
+候选长期 owner：
 
-- 选择性采用核心方法、技能和可复用工程能力；
-- 建立 Consumer-local `AGENTS.md`、Git 规范、术语 / 语言规范、验证 / 集成政策等仓库本地规则；
-- 如果已经提供原始需求，分析并形成初始 Consumer 权威需求；
-- 如果没有原始需求，不为了模板完整制造空 Requirement / Architecture / ADR，后续按 Consumer-local 方法和技能逐步形成；
-- 明确原始输入、研究、证据与现行权威的边界。
+`docs/architecture/consumer-lifecycle.md`
 
-采用完成后：
+上层分类：
+
+`docs/architecture/engineering-capability-architecture.md`
+
+当前生命周期主线为：
 
 ```text
-来源 / 上游 provenance
-≠
-当前权威
+upstream reusable source
+→ new Consumer initialization / first adoption
+   OR Existing Consumer explicit baseline upgrade
+→ reusable delta classification
+→ per-item adopt / retain-or-override / reject-not-applicable / supersede-remove
+→ Consumer-local current owner / capability candidate
+→ adoption verification
+→ evaluated upstream baseline advance
+→ ordinary runtime local-only
+→ explicit upstream re-entry condition
 ```
 
-Consumer-local 规则和项目权威由 Consumer 自己拥有、维护和演进。普通运行不因 `agentic-dev` 上游出现新提交就自动改变行为。
+必须保持三类状态职责分离：
 
-基线升级是显式、低频操作；升级期间可以重新读取上游 Guide、核心方法、技能和可复用资源，完成逐项采用、保留 / 覆盖、拒绝、取代后再次回到只依赖本地现行资源的普通运行。
+- evaluated upstream baseline：最近完整比较并完成 adoption 判断的 exact upstream boundary；
+- active local asset provenance：每个 current local asset 的真实来源与后续本地演进；
+- upgrade-only decision history：此前 retain / override / reject / supersede 的判断证据。
 
-这些生命周期语义将在 V3-03 依据已经集成的 V3-02 审计矩阵正式收敛；在 V3-03 Planning Authority 建立前，不提前冻结其最终载体或执行审计中的 disposition。
+一个 baseline pointer 不能代表“全部 upstream 已采用”。Existing Consumer upgrade 失败或中断时，不推进 evaluated baseline，不声明 upgrade complete，也不因为 upgrade attempt 自动使原 current owner 失效。
+
+采用 / 升级完成前存在 lifecycle-level verification responsibility；具体测试、runtime / discovery rule、Skill behavior 与 Evidence Claim 继续由真实 semantic owner 和 Consumer Authority 决定，V3-03 不复制第二份验收规则正文。
+
+进入 ordinary runtime 后，Consumer 默认只依赖 Consumer-local current state。local discovery stale / missing / ambiguous 本身不允许自动打开 upstream；普通路径先 fail-closed 到 Consumer Current Authority。只有显式 baseline upgrade、确认本地必要 reusable capability 缺失且 Consumer Authority 允许、明确 `agentic-dev` experiment / validation、Consumer Authority 明确要求或首次采用时，才允许重新进入 upstream。
+
+V3-03 只冻结这些 lifecycle semantics，不冻结目录、metadata 字段、Manifest / Catalog、安装方式或 discovery algorithm。
 
 ## 8. v1 / v2 必须保留的成果
 
@@ -162,11 +179,13 @@ v3 必须继续保护至少以下已经验证的长期成果：
 - 基线采用逐项采用、保留 / 覆盖、拒绝、取代；
 - 同一运行范围 / 发现职责不并行维护多个现行派生机制。
 
+V3-03 进一步显式保护：evaluated baseline 与 active asset provenance 分离、upgrade-only history 不进入普通 Fresh Context、partial / failed upgrade 不制造完成状态、upstream 更新不自动改变 ordinary runtime。
+
 v3 不以“重新设计”为理由推翻这些已经通过真实 Consumer 验证的行为。
 
 ## 9. 当前非目标与 ADR Gate
 
-在 V3-03 获得明确 Planning Authority 前，不：
+V3-03 当前不：
 
 - 实现新的 Rule Index / Manifest / Catalog；
 - 实现 Front Matter generator；
@@ -175,7 +194,8 @@ v3 不以“重新设计”为理由推翻这些已经通过真实 Consumer 验�
 - 批量新增或改造技能；
 - 物理移动、拆分、重命名或删除 Guide / Authority；
 - 修改 Consumer Repository；
-- 把 V3-02 disposition 候选直接当作已经批准的 V3-03 / V3-04 设计；
+- 实现完整 resource discovery / routing architecture；
+- 启动 V3-04～V3-08；
 - 启动 WI-06 / WI-07 / WI-09 或其他独立候选。
 
 v3 不用一个“大 ADR”承载全部探索。只有专项分析形成跨任务长期约束、存在实质替代方案与长期后果、且决定已经稳定时才创建或更新 ADR。
@@ -190,16 +210,13 @@ v3 不用一个“大 ADR”承载全部探索。只有专项分析形成跨任�
 
 ## 10. 当前 Gate
 
-V3-01 与 V3-02 已完成并集成；当前没有活动 V3 子任务。
+当前正式工作入口：Issue #104 — V3-03 Consumer 初始化、采用、升级与普通运行生命周期。  
+当前候选：PR #106（Draft）。
 
-下一 Planning Candidate：
+V3-03 当前允许形成和收敛 Consumer lifecycle Authority、父级能力分类、稳定 Root 指针与项目恢复入口，并执行与风险相称的 AI 复核。
 
-> **V3-03 — Consumer 初始化、采用、升级与普通运行生命周期**
+V3-03 Gate 为：
 
-当前下一 Gate 只回答：
+> 初始化、首次采用、baseline upgrade、local projection、adoption verification、baseline advance、ordinary runtime 与 upstream re-entry 形成单一一致生命周期；与 Method、Guide、Skill、V3-05、V3-06、V3-08 的 semantic owner 边界清晰；v2 已验证行为完整保留；高影响 lifecycle ambiguity 的 Blocking / Medium finding 为 0。
 
-> 是否正式启动 V3-03，并为其建立明确的 Planning Authority、范围边界、完成定义与非目标？
-
-V3-02 的完成证明了 V3-03 的上游 ownership inventory 已具备直接消费条件，因此 **V3-03 已具备成为下一规划任务的前置条件**；但 Roadmap 顺序和本结论都不自动创建 V3-03 Issue / Plan，也不授予其正式规划或执行权限。
-
-在人工或后续明确规划决定正式启动 V3-03 前，只允许恢复当前 Authority、评估启动条件和维护 V3-02 closure；不实施物理迁移、Skill 重构、Front Matter / Index、discovery architecture 或 Consumer 修改。
+达到 Gate 后，只能进入 PR #106 的人工集成决策。只有 V3-03 实际集成并完成必要 Post-Integration closure 后，才判断是否正式启动 V3-04；不自动获得物理迁移、Skill 重构、metadata / discovery 实现或 Consumer 修改权限。
