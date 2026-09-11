@@ -1,7 +1,9 @@
-# 第一批核心 Skill 设计基线
+# 第一批核心 Skill 历史设计基线
 
-**状态：** 设计基线 v0.1  
-**输入权威：** `AGENTS.md`、`docs/method/ai-development-method.md`、`docs/architecture/skill-architecture.md`、`docs/architecture/skill-contracts.md`
+**状态：** 历史设计 / Evidence  
+**原输入权威：** `AGENTS.md`、`docs/method/ai-development-method.md`、`docs/architecture/skill-architecture.md`、`docs/architecture/skill-contracts.md`
+
+> 本文记录第一批 8 个核心 Skill 从已复核契约进入首版 `SKILL.md` 的历史实现设计，不再作为当前 Skill 设计权威。当前 Skill 身份与职责以 `engineering-capability-architecture.md`、`skill-architecture.md`、`skill-contracts.md` 和当前各 `SKILL.md` 为准。
 
 ## 1. 目的
 
