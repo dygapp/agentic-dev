@@ -8,7 +8,7 @@
 
 本文定义 `agentic-dev` 的长期资源发现架构，回答：
 
-> 在使用方仓库已经拥有当前资源和仓库权威的前提下，新上下文或当前职责怎样只依赖本地事实找到真正需要的资源，确定一个主职责、最小辅助上下文和可解释阶段动作，同时避免把发现层升级成第二份方法、规则或 current-state 真值。
+> 在使用方仓库已经拥有当前资源和仓库权威的前提下，新上下文或当前职责怎样只依赖本地事实找到真正需要的资源，确定一个主职责、最小辅助上下文和可解释阶段动作，同时避免把发现层升级成第二份方法、规则或当前状态真值。
 
 本文直接消费：
 
@@ -31,9 +31,9 @@ V3-06 **不重新定义资源身份**。发现架构只能组织、筛选、定�
 
 ### 2.3 派生发现不拥有规范正文
 
-索引、Catalog、查询提示、路由结果和运行 trace 都不能保存第二份 Requirement、Architecture、Policy、Rule 或 Skill procedure。
+发现映射、索引、Catalog、查询提示、路由结果和运行 trace 都不能保存第二份 Requirement、Architecture、Policy、Rule 或 Skill procedure。
 
-### 2.4 不维护第二 current-state 真值
+### 2.4 不维护第二当前状态真值
 
 资源是否当前有效，继续由：
 
@@ -46,7 +46,7 @@ V3-06 **不重新定义资源身份**。发现架构只能组织、筛选、定�
 
 共同确定。
 
-发现层可以缓存或投射“当前候选”，但不得独立声明某资源 `active` 并在真实 owner 已变化后继续把它当作当前事实。
+发现层可以缓存或投射当前候选，但不得独立声明某资源 `active` 并在真实语义所有者已经变化后继续把它当作当前事实。
 
 ### 2.5 渐进式披露
 
@@ -58,21 +58,29 @@ V3-06 **不重新定义资源身份**。发现架构只能组织、筛选、定�
 
 一次发现 / 路由决策只能有一个当前**主职责**。验证、工程纪律、平台能力、外部操作规则等可以构成辅助上下文，但只要没有改变当前职责所有权，就不能夺取主职责。
 
+如果一次用户请求包含多个彼此独立的目标，应先按当前仓库权威与工作关系拆成可顺序处理的当前目标，再分别形成发现决策；不能为了“一次回答全部”把多个独立职责平铺成多个同时有效的主职责。
+
 ### 2.7 同一发现职责只有一个 current 派生机制
 
-同一 Runtime scope 中，新的派生发现机制一旦正式取代旧机制，旧 Index / Catalog / manual router 必须退出 current surface 或明确降为历史 / 兼容证据，不能长期并行维护两个现行真值来源。
+同一 Runtime scope 中，新的派生发现机制一旦正式取代旧机制，旧 Index / Catalog / manual router 必须退出 current surface 或明确降为历史 / 兼容证据。
+
+一个已复核发现映射及其**由同一映射确定性生成的运行视图**属于同一个发现机制；只要运行视图不独立维护语义，就不构成第二套 current discovery truth。
 
 ## 3. 最小发现架构
 
-V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期逻辑只需要三类对象：
+V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期逻辑为：
 
 ```text
 本地当前资源与稳定入口
         ↓
-可选：派生发现视图
+可选：已复核发现映射
+        ↓
+可选：纯生成运行视图
         ↓
 每次任务的临时发现决策
 ```
+
+后两层都可以不存在。小型仓库可以直接从稳定入口和资源原生发现信息完成发现。
 
 ### 3.1 本地当前资源与稳定入口
 
@@ -86,21 +94,19 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 
 这些是真实资源，不是发现层复制品。
 
-### 3.2 可选派生发现视图
+### 3.2 已复核发现映射
 
-当当前资源数量、异构程度或条件激活复杂度使固定入口 + 原生资源信息不足以低成本发现时，可以建立一个**派生发现视图**。
+当资源异构程度或条件激活复杂度使固定入口 + 原生资源信息不足以低成本、稳定发现时，可以维护一个**已复核发现映射（Reviewed Discovery Map）**。
 
-它是逻辑角色，不规定必须叫 Index、Catalog、Manifest，也不要求固定 JSON / YAML / Front Matter。
-
-允许保存的最小信息包括：
+它是**非规范性、但需要维护的派生语义输入**。它可以记录：
 
 - 对真实资源的稳定引用；
 - 本地 locator / selector；
 - 资源原生发现信息的引用；
-- 为跨资源查询正规化得到的职责 / 条件 / 风险提示；
-- routing-only / execution 等非规范性加载提示；
+- 为跨资源查询正规化并经过复核的职责 / 条件 / 风险提示；
+- `routing-only / execution` 等非规范性加载提示；
 - 派生语义提示所需的 source binding；
-- 纯定位投影所需的 locator binding。
+- 纯定位条目所需的 locator binding。
 
 它不保存：
 
@@ -111,7 +117,27 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 - 全局数值 priority；
 - 隐藏 Method / Stage / Skill routing 语义。
 
-### 3.3 临时发现决策
+“派生”只表示它不拥有规范正文，不表示其中已经完成的语义复核可以靠生成器随意重建。
+
+### 3.3 纯生成运行视图
+
+如果运行时确实需要更紧凑的入口，可以从：
+
+- 当前真实资源状态；
+- 当前已复核发现映射（如有）；
+- 资源原生发现信息；
+
+确定性生成一个 compact Runtime View / Catalog。
+
+该运行视图：
+
+- 可以删除 / 重建；
+- 不独立维护语义映射；
+- 不拥有 current-state 真值；
+- 不允许出现映射层没有的“智能补充”；
+- 只是同一发现机制的运行投影。
+
+### 3.4 临时发现决策
 
 每次任务根据当前事实产生一个临时**发现决策**。它只服务当前判断，不构成长久权威，也默认不持久化。
 
@@ -128,7 +154,7 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 
 字段名不是固定协议；重要的是职责与生命周期边界。
 
-## 4. 何时不需要持久化派生发现视图
+## 4. 何时不需要持久化发现映射
 
 以下条件同时成立时，可以只使用固定本地入口与资源原生信息：
 
@@ -139,20 +165,20 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 - 新上下文可以在可接受的读取成本内可靠得到正确主职责与辅助集合；
 - 不存在需要跨多个 mixed resource 做稳定语义切片发现的持续问题。
 
-这种仓库不因为使用 `agentic-dev` 就必须新增 Manifest、Catalog 或生成器。
+这种仓库不因为使用 `agentic-dev` 就必须新增 Manifest、Catalog、Discovery Map 或生成器。
 
-## 5. 何时需要派生发现视图
+## 5. 何时需要已复核发现映射
 
-出现以下持续需求之一时，派生视图才有明确价值：
+出现以下持续需求之一时，映射才有明确价值：
 
 - 多类异构资源需要统一按职责 / 条件筛选；
 - mixed resource 的稳定区块需要独立发现；
 - 多个工程纪律 / 验证能力 / 平台能力按条件横切多个职责；
 - 资源规模使每次从目录 / Guide 手工扫描成本明显过高；
-- 需要确定性验证派生语义提示是否仍对应当前 source；
-- 需要机器可读 trace 来证明 ordinary runtime 没有访问 upstream 或加载无关能力。
+- 需要保存已经完成的跨资源语义正规化判断，而不把这些判断塞回真实 owner；
+- 需要机器可读 trace 来验证 ordinary runtime 没有访问 upstream 或加载无关能力。
 
-即使需要，也优先从**一个逻辑派生视图**开始，不为了层次完整额外复制第二个 current Catalog。
+即使需要，也只维护**一个 current 已复核发现映射**。如果另有 Runtime Catalog，它只能由该映射和当前真实资源生成，不能独立维护另一套职责 / 条件 / 风险语义。
 
 ## 6. Activation Manifest 与 Runtime Catalog 的长期裁决
 
@@ -163,27 +189,29 @@ V2 Activation Manifest 是已经验证过渡期价值的**混合载体**，但�
 它当前可能同时保存：
 
 - 长期 provenance / locator / supersede 等固有事实；
-- 跨资源职责 / 条件 / 风险等派生发现提示；
-- 运行时 active / loading 等过渡字段。
+- 跨资源职责 / 条件 / 风险等已复核派生发现提示；
+- 运行时 `active / loading` 等过渡字段。
 
 V3 长期方向：
 
 1. 固有事实进入真实资源结构、当前仓库明确授权的资源描述或 V3-03 采用 / 升级历史；
-2. 可重建派生提示进入可选派生发现视图；
-3. 不再要求一个独立 Manifest 同时承担两类责任。
+2. 仍有长期发现价值的已复核派生提示进入 Reviewed Discovery Map；
+3. 纯运行过滤 / compact projection 进入可删除 Runtime View；
+4. 不再要求一个独立 Manifest 同时承担上述三类责任。
 
-在 V3-07 自采用完成这些迁移并验证 replacement 之前，现有 Manifest 语义继续作为兼容输入，不能提前整体删除。
+在 V3-07 自采用完成迁移并验证 replacement 之前，现有 Manifest 语义继续作为兼容输入，不能提前整体删除。
 
 ### 6.2 Runtime Catalog
 
-Runtime Catalog 被收敛为**派生发现视图的一种可选物理实现**。
+Runtime Catalog 被收敛为**纯生成运行视图的一种可选物理实现**。
 
 如果 Consumer 很小，可以不存在独立 Catalog；如果需要 compact runtime entry，可以生成一个 Catalog。无论是否存在，它都：
 
 - 可删除 / 确定性重建；
 - 不拥有规范正文；
 - 不拥有 current-state 真值；
-- 只投射当前可验证的资源引用与派生提示。
+- 不独立保存新的语义复核结论；
+- 只投射当前可验证的资源引用与已复核派生提示。
 
 因此 V3 不再要求“Manifest 维护输入 + Runtime Catalog 运行投影”必须物理分成两层。
 
@@ -205,14 +233,14 @@ Runtime Catalog 被收敛为**派生发现视图的一种可选物理实现**。
 
 一个 mixed 文件不能整体进入或退出 current set。发现粒度必须服从 V3-05 已确定的稳定资源单元。
 
-### 7.3 派生视图中的 current filtering
+### 7.3 派生层中的 current filtering
 
-派生视图可以只暴露当前候选，但 filtering 必须从真实 owner / 关系重新计算或验证。
+Reviewed Discovery Map 或 Runtime View 可以只暴露当前候选，但 filtering 必须从真实 owner / 关系重新计算或验证。
 
 禁止：
 
 ```text
-Catalog 里仍写 active
+旧 Catalog 里仍写 active
 → 就把已经被真实 owner 取代的资源继续视为当前
 ```
 
@@ -235,9 +263,9 @@ Catalog 里仍写 active
 这些事实：
 
 - 随任务变化；
-- 默认不持久化进资源结构；
+- 默认不持久化进资源结构或 Reviewed Discovery Map；
 - 不成为未来任务的默认真值；
-- 可以作为派生查询输入；
+- 可以作为当前查询输入；
 - 未知值不得为了提高召回率而猜测。
 
 ## 9. 候选发现
@@ -251,6 +279,8 @@ Catalog 里仍写 active
 ```
 
 得到值得继续做 applicability / currentness 判断的候选资源。
+
+候选可以直接来自稳定本地入口 / 资源原生发现信息，也可以由 Reviewed Discovery Map 加速；发现映射不是唯一入口。
 
 ### 9.1 候选命中不等于适用
 
@@ -364,7 +394,7 @@ Stage Return 后：
 
 以下情况停止依赖当前派生发现：
 
-- 派生视图 / Catalog 陈旧；
+- Reviewed Discovery Map / Runtime View 陈旧；
 - locator / selector 丢失；
 - 当前语义所有者不明确；
 - no-match 但仍存在治理 / 风险事实；
@@ -386,11 +416,11 @@ Stage Return 后：
 
 普通运行的 fail-closed 不自动打开 upstream。
 
-## 15. 派生发现视图的生成与 currentness
+## 15. Reviewed Discovery Map 的维护与 currentness
 
-### 15.1 纯定位条目
+### 15.1 纯定位映射
 
-如果派生条目只保存 resource ref + locator，不提炼规则适用语义：
+如果映射条目只保存 resource ref + locator，不提炼规则适用语义：
 
 - 正文普通内容变化不自动使 locator 陈旧；
 - 路径、selector 或 authority role 被取代时才需要更新；
@@ -398,31 +428,52 @@ Stage Return 后：
 
 这继承 v2 `current-locator` 的有效思想。
 
-### 15.2 语义提炼条目
+### 15.2 语义提炼映射
 
-如果条目保存跨资源正规化职责 / 条件 / 风险提示：
+如果映射条目保存跨资源正规化职责 / 条件 / 风险提示：
 
 - 必须绑定已复核 source / selector identity；
 - source 语义变化后旧提示立即退出可信候选；
 - 不能只重算 hash / commit id 就自动恢复；
-- 必须重新判断变化是否影响派生语义。
+- 必须重新判断变化是否影响派生语义；
+- 新的语义映射只有经过当前仓库允许的人工 / AI 复核后才能重新进入 current map。
 
 这继承 v2 `semantic-reviewed` 原则，但绑定的是**派生提示**，不是资源身份本身。
 
-### 15.3 确定性重建
+### 15.3 删除与重建边界
 
-派生视图必须可以从：
+Reviewed Discovery Map 不拥有规范正文，所以删除它不会删除项目 / 规则事实；但如果其中包含已复核的跨资源语义映射，删除后不能声称生成器可以无语义判断地自动恢复同等发现能力。
 
-- 当前真实资源；
-- 当前仓库授权的资源固有结构；
-- 资源原生发现信息；
-- 已人工 / AI 复核过的必要跨资源派生提示；
+删除后只有两条安全路径：
 
-确定性重建。
+1. 退回稳定本地 Authority Entry + 资源原生发现信息工作；或
+2. 重新执行必要语义复核，建立新的 current Reviewed Discovery Map。
 
-如果某项内容删除后无法从真实 owner / 持久采用历史恢复，它就不是纯派生数据，不能只存在于可删除视图中。
+因此“可从真实 owner 重新分析得到”不等于“可确定性生成”。
 
-## 16. Generator / Runtime Adapter 边界
+## 16. 纯生成 Runtime View 的重建
+
+Runtime View 必须能够从：
+
+- 当前真实资源状态；
+- 当前资源原生发现信息；
+- 当前 Reviewed Discovery Map（如有）；
+
+**确定性重建**。
+
+生成过程只做：
+
+- source / selector resolution；
+- current-set filtering；
+- schema / reference validation；
+- 已复核派生提示的投影；
+- compact serialization。
+
+它不做新的语义判断。
+
+如果某项内容删除后既不能从真实 owner 恢复，也不能从 current Reviewed Discovery Map / 持久采用历史恢复，它就不是纯 Runtime View 数据。
+
+## 17. Generator / Runtime Adapter 边界
 
 生成器 / 适配器是**可选优化**，不是发现架构的规范语义所有者。
 
@@ -431,8 +482,8 @@ Stage Return 后：
 - 解析稳定 locator / selector；
 - 校验 schema / resource reference；
 - 校验 source binding；
-- 根据显式、已复核派生提示做确定性过滤；
-- 生成 compact 派生视图；
+- 根据显式、已复核映射做确定性过滤；
+- 生成 compact Runtime View；
 - 暴露选定本地 source / Skill；
 - 输出可观察 discovery trace；
 - 返回 stale / missing / ambiguity signal。
@@ -440,27 +491,27 @@ Stage Return 后：
 不可以：
 
 - 通过 LLM 自动发明职责 / 条件 / 风险；
-- 静默修改资源语义；
+- 静默修改资源语义或 Reviewed Discovery Map；
 - 维护隐藏 Method Stage / Stage Router；
 - 自动访问 upstream 并改变 ordinary runtime；
 - 缓存第二份 Requirement / Architecture / Rule 正文；
 - 通过算法优先级覆盖仓库权威；
 - 接管完整开发生命周期。
 
-## 17. V2 资产处置
+## 18. V2 资产处置
 
 | 当前 v2 资产 / 规则族 | V3-06 处置 | replacement / compatibility |
 |---|---|---|
-| `docs/guides/rule-activation-guide.md` | **过渡派生导航** | 在 V3-07 自采用切换到新发现入口前继续 current；其手工职责 / 风险表不能与新 current 派生视图长期并行 |
+| `docs/guides/rule-activation-guide.md` | **过渡派生导航** | 在 V3-07 自采用切换到新发现入口前继续 current；其手工职责 / 风险表不能与新 current Reviewed Discovery Map 长期并行 |
 | `docs/guides/consumer-local-rule-activation.md` 人类 adoption / localization 说明 | **保留 Guide 身份** | 继续解释采用后的本地运行；长期规范发现语义由本架构单点拥有后，应删减为说明 / 指针 |
-| `consumer-local-rule-activation.md` 普通运行 discovery / routing 规范段落 | **被本架构 supersede 的兼容正文候选** | 本架构集成后语义 owner 转移完成；物理去重 / 指针调整留 V3-07 自采用，期间不得继续独立演进第二套语义 |
+| `consumer-local-rule-activation.md` 普通运行 discovery / routing 规范段落 | **被本架构 supersede 的兼容正文候选** | 本架构集成后长期语义 owner 转移完成；物理去重 / 指针调整留 V3-07 自采用，期间不得继续独立演进第二套语义 |
 | `consumer-local-activation-metadata-contract-v2.md` | **历史项目契约 + 过渡兼容输入** | 长期资源语义已由 V3-05 接管；发现绑定 / 派生语义由本架构接管；V3-07 完成自采用迁移后降为历史证据 |
 | `consumer-local-runtime-routing-interface-v2.md` | **历史项目契约 + 已验证行为输入** | 主职责、辅助上下文、routing-only、Stage Return、fail-closed 等长期语义由本架构接管；V3-07 后不再作为 current runtime owner |
-| V2 Activation Manifest | **混合过渡载体** | 固有 provenance / locator / supersede 先迁入真实资源结构 / 采用历史；派生提示可迁入可选发现视图；迁移验证前不得整体删除 |
-| V2 Runtime Catalog | **可选派生发现视图的旧物理实例** | 可以被一个新的 compact view 复用、简化或不再生成；只要 replacement 已验证即可删除 / 重建 |
-| 手工 responsibility / risk routing 表 | **派生导航** | V3-07 自采用时只能保留人类说明或由 current discovery 视图派生；不得与机器 current routing 长期双维护 |
+| V2 Activation Manifest | **混合过渡载体** | 固有 provenance / locator / supersede 先迁入真实资源结构 / 采用历史；仍有价值的已复核语义映射迁入 Reviewed Discovery Map；迁移验证前不得整体删除 |
+| V2 Runtime Catalog | **旧的纯运行投影** | 可以被 Runtime View 复用、简化或取消；只要 replacement 已验证即可删除 / 重建 |
+| 手工 responsibility / risk routing 表 | **派生导航** | V3-07 自采用时只能保留人类说明或由 current discovery mechanism 派生；不得与机器 current routing 长期双维护 |
 
-## 18. 替代时序
+## 19. 替代时序
 
 V3-06 只确定长期架构和 replacement 关系，不在本阶段提前拆掉现有入口。
 
@@ -469,9 +520,11 @@ V3-06 只确定长期架构和 replacement 关系，不在本阶段提前拆掉�
 ```text
 V3-06 架构集成
 → V3-07 agentic-dev 自采用
+   → 检查是否真的需要 Reviewed Discovery Map
    → 建立 / 选择实际本地 discovery entry
    → 迁出 Manifest 中长期固有事实
-   → 建立必要派生视图（如需要）
+   → 如需要，迁移 / 复核跨资源派生语义映射
+   → 如需要，生成纯 Runtime View
    → 验证 current-set / routing / fail-closed / no-upstream
    → 切换 root / Guide 指针
    → 旧 current 派生机制退出 current surface
@@ -480,31 +533,34 @@ V3-06 架构集成
 
 因此“本架构已经定义 replacement”不等于“旧 v2 入口现在可以删除”。
 
-## 19. V3-07 自采用输入契约
+## 20. V3-07 自采用输入契约
 
 V3-07 可以直接假定：
 
-1. 发现长期只需要真实本地资源 + 可选单一派生发现视图 + 临时发现决策；
+1. 发现长期基础是真实本地资源与稳定入口；
 2. Manifest + Catalog 两层不是必选架构；
-3. `agentic-dev` 应先检查自身规模是否真的需要持久化派生视图；
-4. 如果需要，只建立一个 current 派生 discovery responsibility，不与 `rule-activation-guide.md` 手工路由长期并行；
-5. current resource set 从真实 owner / V3-01 维度 / 关系形成，不维护第二 `active` 真值；
-6. routing 使用当前任务事实 + only-known 条件，不猜未知风险；
-7. 一次决策只有一个主职责 + 最小辅助集合；
-8. routing-only 不加载完整 Skill，执行时才按需加载；
-9. Stage Return 后重新发现；
-10. stale / missing / ambiguity 回到本地当前权威；
-11. 普通运行不访问 upstream；
-12. V2 Manifest 的长期事实必须先迁出，再允许移除过渡容器。
+3. 小型仓库可以不维护任何持久化派生发现映射；
+4. 需要跨资源语义正规化时，只维护一个 current Reviewed Discovery Map；
+5. Runtime View 只是同一机制的可选纯生成投影，不能独立维护语义；
+6. current resource set 从真实 owner / V3-01 维度 / 关系形成，不维护第二 `active` 真值；
+7. routing 使用当前任务事实 + only-known 条件，不猜未知风险；
+8. 一次决策只有一个主职责 + 最小辅助集合；
+9. routing-only 不加载完整 Skill，执行时才按需加载；
+10. Stage Return 后重新发现；
+11. stale / missing / ambiguity 回到本地当前权威；
+12. 普通运行不访问 upstream；
+13. V2 Manifest 的长期事实必须先迁出，再允许移除过渡容器；
+14. 已复核派生语义映射删除后需要重新复核，不能由 generator 静默恢复。
 
 V3-07 的任务是**把这套架构投射到 `agentic-dev` 自己的真实仓库状态并验证**，而不是重新设计上述发现语义。
 
-## 20. 非目标
+## 21. 非目标
 
 本文不要求：
 
 - Activation Manifest 必须存在；
 - Runtime Catalog 必须存在；
+- Reviewed Discovery Map 必须存在；
 - 所有仓库都有生成器；
 - 全仓统一 Front Matter / YAML / JSON；
 - 数据库、向量库、图数据库、MCP 服务或后台 daemon；
@@ -514,4 +570,4 @@ V3-07 的任务是**把这套架构投射到 `agentic-dev` 自己的真实仓库
 - 在 V3-07 前物理删除当前 v2 discovery / activation 兼容入口；
 - 修改任何使用方仓库。
 
-标准化的是**本地 current resources 如何被最小、可验证、可解释地发现和加载**，不是统一存储格式或运行平台。
+标准化的是**本地当前资源如何被最小、可验证、可解释地发现和加载**，不是统一存储格式或运行平台。
