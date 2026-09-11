@@ -1,260 +1,202 @@
 # Consumer-local 规则发现与激活
 
-本文说明已经采用 `agentic-dev` 能力的 Consumer，如何在**普通 Fresh Context 中只依赖自身 Repository** 发现当前适用规则、确定职责并按需加载 Skill。
+本文说明已经采用 `agentic-dev` 能力的 Consumer，如何把已采用能力投射为**只依赖自身 Repository 的 ordinary runtime**。
 
-本文是使用指南，不重新定义核心 Method、Principle、Skill Contract 或 Consumer 项目事实。发生冲突时，先服从 Consumer Repository Authority；对于已采用的 reusable method / architecture / contract 语义，以 Consumer 当前本地化并明确采用的对应版本为准。ordinary runtime 不因为存在 upstream 新版本就在线重读或自动覆盖本地规则；只有显式 baseline upgrade、Consumer-local 能力缺失或 Consumer Authority 明确要求时才重新进入 upstream。
+本文是使用指南，不重新定义长期规范。发生冲突时，按以下 owner 读取：
 
-Baseline adoption / upgrade 的通用选择边界仍以 `docs/guides/using-agentic-dev.md` §6.1 为准；本文重点定义**采用完成后的本地发现与激活方式**，以及 adopted assets 如何进入 ordinary runtime。
+- 初始化、首次采用、基线升级、采用验证、普通运行与重新进入上游：`docs/architecture/consumer-lifecycle.md`；
+- 长期资源身份、资源固有结构与派生发现边界：`docs/architecture/agent-resource-model.md`；
+- Local Discovery Entry、Reviewed Discovery Map、可选 Runtime View、routing-only / execute、Stage Return、fail-closed：`docs/architecture/resource-discovery-architecture.md`；
+- Method / Skill 行为：当前 Method / Skill Contract / `SKILL.md`；
+- Consumer 项目事实：Consumer 自己的 Repository Authority。
 
-## 1. 适用目标
+本文只解释如何在 Consumer 中落地这些规范。
 
-适用于希望满足以下目标的 Consumer：
+## 1. 目标状态
+
+完成采用后的普通路径应是：
 
 ```text
 Fresh Consumer Task
 → Consumer-local Bootstrap
-→ Consumer-local Discovery
-→ Applicable Authority / Rule / Responsibility
+→ Local Discovery Entry
+→ current Consumer resources
+→ 可选 Reviewed Discovery Map
+→ 一个主职责 + 最小辅助上下文
 → routing-only 或按需 Skill
 → Execute / Verify / Stage Return
 ```
 
-普通路径中不需要重新打开 `agentic-dev` upstream。
+普通路径默认不访问 `agentic-dev` upstream。
 
-本文不要求所有 Consumer 建立固定目录、统一 Front Matter、数据库、MCP 服务、Rule Super Skill 或 Runtime Rule Index。
+## 2. Bootstrap 保持薄
 
-## 2. Consumer-local Bootstrap 必须保持薄
-
-Bootstrap 只需要让新的 Agent 知道：
+Consumer Bootstrap 只需要稳定回答：
 
 - 当前 Repository Authority 在哪里；
-- 本地规则发现入口在哪里；
+- 当前项目状态 / Roadmap 从哪里恢复；
+- Local Discovery Entry 在哪里；
 - Consumer Repository Authority 优先；
-- ordinary runtime 是否允许访问 upstream；
-- 当前状态应继续从哪个本地入口恢复。
+- ordinary runtime 默认不访问 upstream。
 
-不要把以下易变化内容持续堆入最高优先级 Bootstrap：
+不要把当前里程碑、Issue / PR / Run、历史 baseline upgrade、全部 Skill 正文、完整上游文档树或临时实验结果持续堆入最高优先级 Bootstrap。
 
-- 当前里程碑 / 阶段的详细进展；
-- 历史 baseline upgrade 流水；
-- Issue / PR / Run 状态；
-- 全部 Skill / Guide 正文；
-- 完整候选路线；
-- 临时实验结果。
+文件名由 Consumer 自己决定；`AGENTS.md` 只是常见实现，不是上游强制格式。
 
-Consumer 可以使用 `AGENTS.md` 作为 Bootstrap，但本文不要求固定文件名。项目状态、路线和历史证据应由 Consumer 自己的 README、Roadmap、项目记录、Git / PR / Issue / Actions 或等价载体承担。
+## 3. 先投射真实本地资源
 
-## 3. 本地发现对象
+采用完成后，需要持续影响普通运行的能力必须成为 Consumer-local current resource，例如：
 
-Consumer-local discovery 可以同时定位以下对象，但不会改变它们原有的 Authority 身份：
+- Consumer 自身 Requirement / Specification / Architecture / ADR / Verification / Integration Authority；
+- 已采用的 Skill；
+- 已采用的 Engineering Discipline；
+- 已采用的 Technology / Verification Profile；
+- Consumer 本地规则 / Policy；
+- 必要的 provenance / supersede / override 关系。
 
-- Consumer-native Repository / Requirement / Specification / Domain / Architecture / ADR / Verification / Integration Authority；
-- Consumer 已显式采用的 reusable rule / module；
-- Consumer 本地可用的 Skill / Engineering Discipline / Technology / Verification Profile；
-- 当前 Work / Evidence；
-- 用于发现这些对象的本地 metadata / Catalog。
+优先复用 Consumer 已有 semantic owner，不为每个上游变化机械新建文件。
 
-统一发现不等于统一优先级。Consumer 自己声明的 Repository Authority 始终决定项目事实。
+不要把 `agentic-dev/docs/project/*`、上游 Roadmap、Issue / PR 状态、Research / Eval 流水或完整上游文档树投射为 Consumer ordinary-runtime Authority。
 
-## 4. Activation Manifest / Runtime Catalog
+## 4. Manifest / Map / Runtime View 都不是必选
 
-Consumer 可以维护一个很小的 **Activation Manifest**，记录普通 Runtime 需要发现的 current assets。
+V3 不再要求固定 Activation Manifest + Runtime Catalog 两层。
 
-一个 record 只需要表达当前有辨识价值的信息，例如：
+Consumer 应按实际复杂度选择：
 
-```text
-id
-kind
-authority / rule / skill source pointer
-activation role
-scope
-optional responsibility
-optional conditions / risks
-origin
-current / superseded state
-optional provenance / relation
-```
+### 4.1 不需要持久化 Map
 
-其中：
+如果固定 Authority Entry、Skill 原生 `name / description`、Profile inventory 和少量本地规则已经足以可靠发现，可以只使用这些真实本地入口。
 
-- `activation role` 至少能区分 `bootstrap / routing / constraint / execution`；
-- metadata 只负责“继续读什么”，不复制规则正文；
-- rejected / not-applicable candidate 不进入 active ordinary-runtime 集合；
-- superseded asset 不继续参与 Current routing；
-- Consumer-specific override 保持自己的 Authority 身份，不通过数值 priority 伪造优先级。
+### 4.2 需要 Reviewed Discovery Map
 
-Consumer 很小时可以直接读取 Manifest；需要更快运行时入口时，可以从 Manifest 与 current local source identities 生成可删除的 Runtime Catalog。
+如果存在持续的跨资源职责 / 条件 / 风险正规化需求，可以建立一个 current Reviewed Discovery Map。
 
-Catalog 删除后不得损失任何规范性事实。
+它只保存 locator、跨资源派生提示、coverage / source binding 和加载提示，不拥有规范正文，也不建立第二 `active/current` 真值。
+
+### 4.3 Runtime View 只是可选优化
+
+只有 Map / current resources 的直接读取成本已经形成真实问题时，才考虑生成 compact Runtime View / Catalog。
+
+Runtime View 必须可以从真实 current resources + current Map（如有）确定性重建，不能独立维护新的语义判断。
+
+因此 Consumer 不因为采用 `agentic-dev` 就必须创建 Manifest、Catalog、generator、数据库、向量库、MCP 服务或 Runtime Controller。
 
 ## 5. Source currentness
 
-发现信息不能因为“只是 metadata”就绕过陈旧检查。
+### 5.1 current-locator
 
-### 5.1 语义提炼型 metadata
+如果发现条目只负责定位 Current Roadmap、Requirement index、Architecture entry 等 source，而不提炼其规则语义：
 
-如果 `responsibility / conditions / risks` 是从某个规则 / Skill / Discipline 的语义提炼出来的，metadata 必须绑定已复核的 local source identity。
+- 正文正常演进不自动使 locator stale；
+- path / selector / authority role 被取代时才更新；
+- runtime 始终读取 current source。
 
-source 发生实质变化后：
+### 5.2 semantic-reviewed
 
-```text
-mark discovery stale
-→ stop trusting old activation metadata
-→ re-review current local semantic owner
-→ rebuild / update discovery
-```
+如果 Map 提炼了 `responsibility / conditions / risks` 等跨资源提示：
 
-不得只更新 hash 就自动声称旧 metadata 仍正确。
+- 必须绑定已复核 source / selector identity；
+- source 变化后旧提示先退出可信候选；
+- 不能只刷新 hash 就恢复 current；
+- 需要重新判断 source 变化是否影响派生语义。
 
-### 5.2 Current Authority locator
+### 5.3 coverage drift
 
-对于 Roadmap、Current Requirement、Architecture Map 等会正常频繁演进的 Consumer-native Authority，metadata 可以只承担稳定定位职责，而不缓存当前状态摘要。
+Map 声称覆盖 Skill / Profile / Discipline inventory 时，新增、删除、重分类或无法确认 membership 的变化会使受影响范围 stale。
 
-这种 locator 只检查“当前入口仍可解析”，实际状态始终从 current source 读取，避免每次正常状态变化都产生机械 metadata 更新。
+在重新复核前，no-match 不能被解释为“没有适用规则”。
 
-## 6. Responsibility Routing
+## 6. Ordinary routing
 
-Discovery 先形成 candidate，再根据 Consumer Current Authority 和实际 task signals 确定一个当前 **primary responsibility**。
+具体发现 / 路由算法由 `resource-discovery-architecture.md` 单点定义。Consumer 落地时只需要保持：
 
-基本规则：
+- Consumer Authority first；
+- 一次发现一个当前主职责；
+- supporting context 只包含会改变正确执行 / 完成声明的最小资源；
+- routing-only 不机械加载完整 Skill；
+- execute 才加载当前主 Skill；
+- platform-specific Skill 只有条件真实命中时按需进入；
+- 未知 condition / risk 不猜测；
+- 不使用固定 Top-K 或全局数值 priority 覆盖仓库权威。
 
-1. Consumer Authority first；
-2. 如果当前工作暴露 Product / Specification / Architecture / Authorization 基础缺口，拥有该缺口的职责成为新的 primary responsibility；
-3. 前置基础有效时，当前明确要求执行的职责保持 primary；
-4. `systematic-debug` 只处理 expected behavior 已明确下的 unexpected implementation / runtime failure；
-5. Verification、Engineering Discipline、外部操作、平台专项能力等不改变职责所有权时保持 supporting context。
+本文不维护第二份职责转换表。
 
-不要根据一个关键词平铺激活多个 Skill。
+## 7. Stage Return 与失败关闭
 
-## 7. Routing-only 与 Skill Execution 分离
-
-如果当前任务只需要判断：
-
-- 下一职责；
-- Stage Return；
-- 当前 Readiness / Execute 是否仍有效；
-
-而本地 metadata + Current Authority 已经足够，则直接返回 routing 结果，不机械加载完整 Skill。
-
-真正进入稳定职责执行时才：
+Stage Return 的具体语义仍由 Method / Skill Contract / Current Authority 持有。发现层只负责：
 
 ```text
-resolve primary responsibility
-→ load corresponding local Skill
-→ read minimal Consumer Current Authority
-→ apply required supporting constraints
-→ execute / verify
+已有 owner 判定返回 / 旧执行基础失效
+→ 停止当前职责
+→ 丢弃旧 discovery decision 作为继续授权
+→ 重新读取受影响 Consumer Current Authority
+→ 重新发现
 ```
 
-额外 platform-specific Skill 只有在当前条件真实命中、且作为 primary Skill 允许的 supporting capability 时才加载。
+以下情况停止信任当前派生发现并回到本地权威：
 
-## 8. Stage Return
+- Map / Runtime View stale；
+- coverage drift；
+- source / selector missing；
+- current owner / override / supersede 不明确；
+- no-match 但仍存在治理 / 风险事实；
+- 多个主职责无法可靠区分；
+- 高影响授权、安全 / 隐私、重大架构或不可逆边界不清；
+- 需要的 Skill 本地不存在或身份不明确。
 
-Stage Return 后必须重新解析责任：
+ordinary runtime 的 fail-closed 不自动打开 upstream。
 
-```text
-stop current responsibility
-→ discard old routing decision as continuation authority
-→ read affected Consumer Current Authority
-→ re-run local discovery / routing
-```
+## 8. 基线升级与本地状态
 
-如果 Product Intent、Specification、durable Technical Plan、Architecture / ADR 或 Execution Unit scope / acceptance ownership 发生实质变化，旧 Readiness 只对应旧语义基础，必须重新执行必要的 `slice-work` / `readiness-check`。
+显式 baseline upgrade 继续由 `consumer-lifecycle.md` 定义，并区分：
 
-如果 `systematic-debug` 只修复实现缺陷且没有改变上述基础，不机械重做全部上游阶段。
+- 最近评估到的 upstream baseline；
+- 当前本地资源实际来源；
+- 只在下次升级需要的历史决策。
 
-## 9. Fail-closed
+这些不能合成一个“当前 baseline”真值。
 
-出现以下任一情况时，不继续依赖当前 derived discovery：
+采用 / 升级完成后：
 
-- metadata / Catalog stale；
-- source missing 或 selector 无法解析；
-- no-match 但当前仍存在治理 / 风险判断；
-- 多个 primary candidate 无法可靠区分；
-- Consumer override / supersede 关系不明确；
-- high-impact / irreversible / security / privacy / authorization boundary 不清；
-- 需要的 Skill 本地不存在或 identity 无法确认。
+- adopted change 进入真实 Consumer-local owner；
+- rejected / not-applicable 不进入普通 active surface；
+- superseded 资源退出 current；
+- ordinary runtime 回到 Consumer-local Local Discovery Entry。
 
-回退：
+## 9. Runtime Adapter 边界
 
-```text
-stop derived discovery
-→ return to Consumer-local Current Authority / Authority Map
-→ expand local reads only as needed
-→ re-route
-→ escalate only when current Authority / permission requires it
-```
+Consumer 使用脚本、Plugin 或 Runtime Adapter 加速 discovery 时，可以：
 
-ordinary runtime 的安全回退不自动访问 upstream。
-
-## 10. Baseline adoption 后的本地状态
-
-显式 baseline upgrade 时，Consumer 仍按 `using-agentic-dev.md` §6.1 逐项判断：
-
-```text
-adopt
-retain / override
-reject / not applicable
-supersede / remove
-```
-
-完成后需要区分：
-
-- **last evaluated upstream baseline**：最近比较到哪个 exact upstream commit；
-- **active local asset provenance**：某个 current local asset 实际采用自哪个 upstream source / baseline；
-- **upgrade-only decision history**：此前 retain / override / reject 的判断。
-
-这三者不能混成一个“当前 baseline”声明。
-
-特别是：Consumer 可以已经比较到较新的 upstream baseline，同时继续合法保留一个来自更早 baseline 的 local capability 或 Consumer-specific override。
-
-升级历史和 rejected decision 默认只在下一次显式 upgrade 时读取，不进入 ordinary Fresh Context。
-
-## 11. Local projection
-
-需要持续约束 ordinary runtime 的 adopted change 必须成为 Consumer-local current asset，例如：
-
-- 更新已有 Consumer-local rule owner；
-- 建立小型 local reusable rule module；
-- 安装 / 复制 / 暴露 current Skill 或 Profile；
-- 更新 Activation Manifest / Catalog。
-
-优先复用已有 local semantic owner，不为了 upstream 每个变化额外创建新文件。
-
-不要把 `agentic-dev/docs/project/*`、Roadmap、Issue / PR 状态、Research / Eval 过程或完整 upstream 文档树投射为 Consumer runtime Authority。
-
-## 12. Runtime Adapter 边界
-
-如果 Consumer 使用脚本、Plugin、Agent Runtime Adapter 或其他工具加速 discovery，它可以：
-
-- 验证 Manifest / Catalog；
-- 检查 source identity；
-- 按显式 metadata 过滤 candidates；
+- 验证 locator / source binding / coverage；
+- 做确定性 candidate filtering；
+- 生成纯 Runtime View；
 - 暴露选定 local source / Skill；
-- 返回 stale / missing signal。
+- 返回 stale / missing / ambiguity signal。
 
-它不能：
+不能：
 
-- 私下定义新的 Method Stage；
-- 在代码中维护另一套隐藏 routing 语义；
+- 发明 Method Stage、职责、conditions 或 risks；
 - 覆盖 Consumer Repository Authority；
-- 自动拉取 upstream latest 改变 ordinary runtime；
+- 自动读取 upstream latest 改变 ordinary runtime；
 - 缓存第二份 Requirement / Architecture / Rule 正文；
 - 接管完整开发生命周期。
 
-## 13. 采用后的验收
+## 10. 采用后验收清单
 
-至少检查：
+以下只是从当前生命周期 / 发现架构导出的**验收清单**，不是第二规范 owner：
 
-- 一个普通 Fresh Context 能从 Consumer-local entry 找到正确 primary responsibility；
-- 能发现至少一个 Consumer-native Authority 与一个 adopted reusable capability；
+- Fresh Context 可以从 Consumer-local entry 恢复当前 Authority / Work；
+- 至少能发现一个 Consumer-native Authority 与一个已采用 reusable capability；
 - routing-only 不加载完整 Skill；
-- execute 时按需加载 local Skill；
-- Consumer-specific rule 可以覆盖 reusable default；
-- stale / missing / ambiguity 能 fail-closed；
-- upstream 新提交不会在未升级时改变 Consumer ordinary runtime；
-- superseded / rejected rule 不继续激活；
-- Catalog 可删除 / 重建；
-- Bootstrap 不因多轮 baseline upgrade 和项目状态演进持续膨胀。
+- execute 时只加载主 Skill 与真正必要的 supporting capability；
+- Consumer-specific Authority 可以合法覆盖 reusable default；
+- stale / missing / coverage drift / ambiguity 能 fail-closed；
+- no-match 不会在 coverage 不完整时被解释为“无规则”；
+- Stage Return 后重新发现；
+- upstream 新提交不会在未升级时改变 ordinary runtime；
+- superseded / rejected 资源不继续作为 current；
+- Bootstrap 不因多轮升级持续膨胀；
+- 若存在 Runtime View，删除 / 重建不会丢失规范事实或已复核语义。
 
-这些行为通过后，再比较 context bytes、token、文件读取与 wall-clock 等效率指标。
+行为正确后，再按项目实际需要比较 context bytes、token、文件读取、wall-clock 与维护成本。
