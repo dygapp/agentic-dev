@@ -35,11 +35,11 @@ GitHub Repository 是唯一项目事实来源。
 - **最近已集成里程碑：** 规则治理与知识激活 v2
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
-- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计；V3-03 — 使用方初始化、采用、升级与普通运行生命周期；V3-04 — 技能重分类与准入；V3-05 — 面向 Agent 的结构化资源模型；V3-06 — 资源发现架构
-- **V3-07 跟踪入口：** Issue #113 — `agentic-dev` 自采用与发现机制切换
-- **V3-07 工作产物：** `docs/discovery/README.md`、`docs/discovery/reviewed-discovery-map.md`、`docs/project/rule-governance-v3-v3-07-self-adoption.md`
+- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计；V3-03 — 使用方初始化、采用、升级与普通运行生命周期；V3-04 — 技能重分类与准入；V3-05 — 面向 Agent 的结构化资源模型；V3-06 — 资源发现架构；V3-07 — `agentic-dev` 自采用与发现机制切换
+- **V3-08 跟踪入口：** Issue #115 — Consumer 验证与持续有效性复核
+- **V3-08 工作产物：** `docs/project/rule-governance-v3-v3-08-consumer-validation.md`、`tasks/plans/20260911/06-rule-governance-v3-v3-08-consumer-validation.md`
 
-V3-07 把已集成的使用方生命周期、资源模型与资源发现架构投射到 `agentic-dev` 自身真实仓库状态。当前 self-runtime 采用：
+V3-07 已把 `agentic-dev` 自身 ordinary runtime 收敛为：
 
 ```text
 Local Discovery Entry
@@ -48,15 +48,17 @@ Local Discovery Entry
 
 当前没有真实证据要求额外 Runtime View / Catalog / generator。
 
-V3-07 的精确审查、集成与完成状态以 Issue #113 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。Issue #113 完成后，V3-08 只成为下一规划候选，不自动启动。
+V3-08 现在验证这套生命周期、资源与发现模型能否在真实 Consumer 中正确采用、升级、本地运行并持续有效。主要真实 Consumer 为 `dygapp/jilinjobs-cms`，但 `agentic-dev` 当前会话只负责验证设计、只读观察和 Evidence 分类；Consumer 写实验必须在 Consumer 自身 Repository Authority 下独立执行。
 
-V3-07 不修改 Consumer Repository，不创建 Rule Super Skill / Stage Router / Runtime Controller，也不把 `agentic-dev` 自身 `docs/discovery/*` 自动投射给 Consumer。
+V3-08 当前 Gate 为 **Gate A — Validation Design**。Gate A 已固定 Existing Consumer baseline upgrade、ordinary runtime / fail-closed、持续有效性和 first-adoption coverage 轨道，并明确 `jilinjobs-cms` 当前 EU-54 执行期间只做旁路只读观察，不启动 Consumer baseline-upgrade 写实验。
+
+V3-08 的精确 Gate、Evidence 与完成状态以 Issue #115 和当前 GitHub 状态为准，不在 README 复制瞬时 Consumer PR / Actions 状态。Issue #115 完成后，独立复核只成为下一规划候选，不自动启动。
 
 详细当前路线、候选与下一门禁统一维护在：
 
 `docs/project/project-roadmap.md`
 
-v3 当前规划 / 审计 / 架构 / 自采用入口：
+v3 当前规划 / 审计 / 架构 / 自采用 / Consumer 验证入口：
 
 - `docs/project/rule-governance-knowledge-activation-v3.md`
 - `docs/project/knowledge-capability-ownership-model-v3.md`
@@ -66,6 +68,7 @@ v3 当前规划 / 审计 / 架构 / 自采用入口：
 - `docs/architecture/agent-resource-model.md`
 - `docs/architecture/resource-discovery-architecture.md`
 - `docs/project/rule-governance-v3-v3-07-self-adoption.md`
+- `docs/project/rule-governance-v3-v3-08-consumer-validation.md`
 - `docs/discovery/README.md`
 
 ## 入口职责
