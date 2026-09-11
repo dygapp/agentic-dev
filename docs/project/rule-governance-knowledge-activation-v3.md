@@ -10,19 +10,19 @@ v3 的首要目标不是继续增加 Rule Index、Manifest、Catalog 或其他�
 
 > `agentic-dev` 中的长期知识、规则和 Agent 能力是否被正确的**语义所有者**持有？
 
-v1 / v2 已验证最小上下文、使用方本地普通运行、来源时效性和渐进式披露的重要性。当前进一步暴露出：如果核心方法、技能、可复用工程能力、仓库本地规则、项目权威与 Guide 的边界本身不清楚，任何新的发现机制都会继承并放大所有权债务。
+v1 / v2 已验证最小上下文、Consumer 本地普通运行、来源时效性和渐进式披露的重要性。当前进一步暴露出：如果核心方法、技能、可复用工程能力、仓库本地规则、项目权威与 Guide 的边界本身不清楚，任何新的发现机制都会继承并放大所有权债务。
 
 因此 v3 采用以下顺序：
 
 ```text
 先确定语义所有者
 → 再审计现有内容
-→ 再确定使用方生命周期
+→ 再确定 Consumer 生命周期
 → 再判断技能 / 可复用工程能力边界
 → 最后才设计 metadata / discovery
 ```
 
-其中 `metadata`、`discovery` 等只在需要指代具体技术机制时保留原样，不把它们扩展成文档主体语言。
+其中 `metadata`、`discovery` 等仅在需要指代具体技术机制时保留原样，不把它们扩展成文档主体语言。
 
 ## 2. 启动依据
 
@@ -35,11 +35,11 @@ v1 / v2 已验证最小上下文、使用方本地普通运行、来源时效性
 - 候选修订为四维所有权判断，并补充“可复用工程能力 / 工程纪律 / 画像”语义所有者；
 - 定向复评后阻塞、中等、低等级问题均为 0。
 
-V3-01 随后又通过独立复核发现并修正“项目 / 产品权威”过宽的问题：仓库协作、授权、验证、复核和集成政策即使经过正式决定，也仍由仓库本地政策拥有，不因为“项目已经决定”就自动成为项目 / 产品权威。定向复评通过后，V3-01 已完成并通过 PR #100 集成。
+V3-01 随后又通过独立 holdout 复核发现并修正“项目 / 产品权威”过宽的问题：仓库协作、授权、验证、复核和集成政策即使经过正式决定，也仍由仓库本地政策拥有，不因为“项目已经决定”就自动成为项目 / 产品权威。定向复评通过后，V3-01 已完成并通过 PR #100 集成。
 
-V3-02 基于 V3-01 的四维模型完成当前仓库语义所有权审计。收敛过程中先通过仓库证据自查识别并修正 Research / Eval 当前控制正文的目录机械分类风险；随后独立复核发现并修正使用方采用验收被整体归为 Evidence 的所有权问题。最终定向复核不存在未解决的阻塞或中等级问题。V3-02 已完成并集成，其审计矩阵成为 V3-03～V3-06 的直接分析输入。
+V3-02 基于 V3-01 的四维模型完成当前仓库语义所有权审计。收敛过程中先通过 Repository Evidence 自查识别并修正 Research / Eval current control body 的目录机械分类风险；随后独立复核发现并修正 Consumer adoption acceptance 被整体归为 Evidence 的所有权问题。最终定向复核不存在未解决的 Blocking / Medium finding。V3-02 已完成并集成，其审计矩阵成为 V3-03～V3-06 的直接分析输入。
 
-V3-03 由 Issue #104 跟踪，工作产物为 `docs/architecture/consumer-lifecycle.md`。本阶段不重新做仓库盘点，而是把 V3-02 已识别的使用方生命周期规则族从 Guide / 已完成项目的过渡契约中提炼为单一规范性可复用工程能力。
+V3-03 已由 Issue #104 正式启动，工作产物为 `docs/architecture/consumer-lifecycle.md`。本阶段直接消费 V3-02 已识别的 lifecycle rule families，不重新执行 Repository inventory。
 
 上述评估只作为证据与复核输入；长期结论以已经集成的仓库权威为准。
 
@@ -50,9 +50,9 @@ v3 按以下有限子任务顺序推进：
 1. **V3-01 — 知识与能力所有权模型 — 已完成并集成**  
    已建立四维所有权判断矩阵，作为后续审计的分类依据。
 2. **V3-02 — 当前仓库所有权审计 — 已完成并集成**  
-   已按规范正文 / 规则族审计当前仓库并形成后续处理候选；未执行物理迁移。审计矩阵：`docs/project/current-repository-ownership-audit-v3.md`。
+   已按规范正文 / 规则族审计当前仓库并形成后续 disposition 候选；未执行物理迁移。审计矩阵：`docs/project/current-repository-ownership-audit-v3.md`。
 3. **V3-03 — 使用方初始化、采用、升级与普通运行生命周期 — 状态见 Issue #104**  
-   工作产物：`docs/architecture/consumer-lifecycle.md`。目标是建立单一生命周期所有者，明确一次性初始化 / 采用 / 升级与仅依赖本地当前状态的普通运行边界。
+   工作产物：`docs/architecture/consumer-lifecycle.md`。目标是把 Guide / v2 transitional-current 文档中已识别的长期 lifecycle semantics 收敛到单一可复用工程能力 owner。
 4. **V3-04 — 技能重分类与准入**  
    判断现有 Guide / Rule 中哪些属于已有技能、可复用工程能力、仓库本地规则或真正的新技能候选。
 5. **V3-05 — 面向 Agent 的结构化资源模型**  
@@ -60,11 +60,11 @@ v3 按以下有限子任务顺序推进：
 6. **V3-06 — 资源发现架构**  
    判断所有权修正后还需要多复杂的仓库资源发现机制；不得预设一定需要统一 Index。
 7. **V3-07 — `agentic-dev` 自采用**  
-   让 `agentic-dev` 自身使用与使用方相同的核心模型，避免维护两套架构。
-8. **V3-08 — 使用方验证**  
-   在真实使用方上验证初始化、升级、普通运行、来源时效性、上下文成本和失败关闭行为。
+   让 `agentic-dev` 自身使用与 Consumer 相同的核心模型，避免维护两套架构。
+8. **V3-08 — Consumer 验证**  
+   在真实 Consumer 上验证初始化、升级、普通运行、来源时效性、上下文成本和失败关闭行为。
 
-只有前序门禁满足后才能进入后序任务；路线顺序不自动授予执行权限。
+只有前序 Gate 满足后才能进入后序任务；Roadmap 顺序不自动授予执行权限。
 
 ## 4. V3-01 已确认的所有权模型
 
@@ -90,16 +90,16 @@ Architecture、Contract、Profile、`SKILL.md`、Guide、ADR、Requirement、gen
 
 ## 5. V3-02 已完成的审计结论
 
-V3-02 不按目录判断身份，而按规范正文 / 规则族判断。已识别并形成处理候选的主要所有权债务包括：
+V3-02 不按目录判断身份，而按规范正文 / 规则族判断。已识别并形成 disposition 候选的主要 ownership debt 包括：
 
-1. `docs/guides/*` 中混入人类说明、仓库本地规范、可复用工程能力、使用方生命周期和普通运行发现语义；
-2. 已完成 v2 的 `docs/project/*` 中仍有若干发现 / 采用 / 运行契约继续支撑当前行为；
-3. `rule-activation-guide.md` 属于手工派生导航而不是规范正文所有者，未来如果出现新的当前发现机制必须显式取代，不能长期并存；
-4. 技能、工程纪律和验证规则之间存在需要 V3-04 逐规则族复核的正文重叠风险；
-5. Research / Eval 的当前生命周期、隔离、评分、执行控制正文不能因目录位置整体降格为 Evidence；
-6. 使用方采用验收中“采用完成前必须验证”的责任属于使用方生命周期 / 采用验证，而被检查的运行 / 发现规则继续由各自语义所有者持有，V3-08 只消费派生验收输入。
+1. `docs/guides/*` 中混入人类说明、仓库本地规范、可复用工程能力、Consumer 生命周期和普通运行发现语义；
+2. 已完成 v2 的 `docs/project/*` 中仍有若干 discovery / adoption / runtime 契约继续支撑当前行为；
+3. `rule-activation-guide.md` 属于手工派生导航而不是规范正文 owner，未来如果出现新的 current discovery mechanism 必须显式取代而不能长期并存；
+4. Skill、工程纪律和验证规则之间存在需要 V3-04 逐规则族复核的正文重叠风险；
+5. Research / Eval 的 current lifecycle、isolation、scoring、execution control body 不能因目录位置整体降格为 Evidence；
+6. Consumer adoption acceptance 中“采用完成前必须验证”的责任属于 Consumer lifecycle / adoption verification，而被检查的 runtime / discovery 规则继续由各自 semantic owner 持有，V3-08 只消费派生验收输入。
 
-审计矩阵只形成处理候选。V3-02 已完成并不授权立即迁移；后续必须由 V3-03～V3-06 在各自门禁下设计和验证真实所有者 / 替代关系。
+审计矩阵只形成 disposition 候选。V3-02 已完成并不授权立即迁移；后续必须由 V3-03～V3-06 在各自 Gate 下设计和验证真实 owner / replacement。
 
 ## 6. Guide 边界
 
@@ -117,59 +117,55 @@ Guide 不应继续承担：
 - 可复用工程能力的默认容器；
 - “不属于核心方法 / 技能”内容的兜底容器。
 
-`using-agentic-dev.md` 保留 Guide 主身份。V3-03 把其中初始化 / 采用 / 基线升级的长期规范生命周期归入 `docs/architecture/consumer-lifecycle.md`；路由与新上下文发现等普通运行发现语义仍等待 V3-06，V3-03 不执行 Guide 物理拆分。
+`using-agentic-dev.md` 保留 Guide 主身份。V3-03 将其中初始化 / 采用 / baseline upgrade 的长期规范 lifecycle semantics 归入 `docs/architecture/consumer-lifecycle.md`；routing、Fresh Context discovery 等普通运行发现语义仍等待 V3-06。V3-03 本身不执行 Guide 物理拆分。
 
-## 7. V3-03 使用方生命周期
+## 7. Consumer 初始化与演进方向
 
-V3-03 将“使用方生命周期”作为**可复用工程能力**，而不是新的产品开发方法阶段，也不因为它有过程顺序就自动技能化。
+V3-03 将“使用方生命周期”定义为可复用工程能力，而不是新的产品开发 Method stage，也不因为它具有过程顺序就自动成为 Skill。
 
-长期所有者：
+长期 owner：
 
 `docs/architecture/consumer-lifecycle.md`
-
-上层分类：
-
-`docs/architecture/engineering-capability-architecture.md`
 
 生命周期主线为：
 
 ```text
 上游可复用来源
-→ 新使用方初始化 / 首次采用
-   或 已有使用方显式基线升级
-→ 可复用变化分类
+→ 新 Consumer 初始化 / 首次采用
+   或 Existing Consumer 显式 baseline upgrade
+→ reusable delta 分类
 → 逐项 adopt / retain-or-override / reject-not-applicable / supersede-remove
-→ 使用方本地能力候选
-→ 采用验证
-→ 上游评估基线推进
-→ 仅依赖本地当前状态的普通运行
-→ 显式重新进入上游
+→ Consumer-local candidate state
+→ adoption verification
+→ evaluated upstream baseline advance
+→ ordinary runtime local-only
+→ explicit upstream re-entry
 ```
 
 必须保持三类状态职责分离：
 
-- 上游评估基线：最近完整比较并完成采用判断的精确上游边界；
-- 当前本地资产来源：每个当前本地资产的真实来源与后续本地演进；
-- 仅升级使用的决策历史：此前保留、覆盖、拒绝、取代的判断证据。
+- evaluated upstream baseline：最近完整比较并完成 adoption decision 的 exact upstream boundary；
+- active local asset provenance：每个 current local asset 的真实来源与后续 Consumer-local 演进；
+- upgrade-only decision history：此前 retain / override / reject / supersede 的判断证据。
 
-一个基线指针不能代表“全部上游已采用”。已有使用方升级失败或中断时，不推进上游评估基线，不声明升级完成，也不因为升级尝试自动使原当前所有者失效。
+一个 baseline pointer 不能代表“全部 upstream 已采用”。Existing Consumer upgrade 失败或中断时，不推进 evaluated upstream baseline，不声明 upgrade complete，也不因为 upgrade attempt 自动使原 current owner 失效。
 
-采用 / 升级同时控制两侧当前有效性：上游候选固定为精确标识；完成前重新确认使用方侧相关仓库权威 / 本地所有者。如果本地发生实质漂移，只重算受影响决定与验证；无法安全判断影响范围时失败关闭。
+adoption / upgrade 同时控制两侧 currentness：upstream candidate 固定为 exact identity；完成前重新确认 Consumer-side 相关 Repository Authority / local owner。如果本地发生实质 drift，只重算受影响 decision 与 validation；无法安全判断影响范围时 fail-closed。
 
-重新进入上游后必须区分采用路径与非采用路径。只读比较、研究、实验或验证只能形成分析 / 证据，不修改使用方当前状态，也不推进上游评估基线。
+upstream re-entry 后必须区分 adoption path 与 non-adoption path。只读 compare、research、experiment 或 validation 只能形成 analysis / evidence，不修改 Consumer current state，也不推进 evaluated upstream baseline。
 
-采用 / 升级完成前存在生命周期层面的验证责任；具体测试、运行 / 发现规则、技能行为与证据声明继续由真实语义所有者和使用方仓库权威决定，V3-03 不复制第二份验收规则正文。
+采用 / 升级完成前存在 lifecycle-level verification responsibility；具体 test、runtime / discovery rule、Skill behavior 与 evidence claim 继续由真实 semantic owner 和 Consumer Repository Authority 决定，V3-03 不复制第二份验收规则正文。
 
-进入普通运行后，使用方默认只依赖本地当前状态。本地发现信息陈旧、缺失或歧义本身不允许自动打开上游；普通路径先失败关闭到使用方当前仓库权威。只有显式基线升级、确认本地必要可复用能力缺失且使用方仓库权威允许、明确 `agentic-dev` 实验 / 验证、使用方仓库权威明确要求，或首次采用时，才允许重新进入上游。
+进入 ordinary runtime 后，Consumer 默认只依赖 Consumer-local current state。local discovery stale / missing / ambiguous 本身不允许自动打开 upstream；普通路径先 fail-closed 到 Consumer Current Authority。只有显式 baseline upgrade、确认 local necessary reusable capability 缺失且 Consumer Repository Authority 允许、明确 `agentic-dev` experiment / validation、Consumer Repository Authority 明确要求，或首次采用时，才允许重新进入 upstream。
 
-V3-03 只固定这些生命周期语义，不冻结目录、metadata 字段、Manifest / Catalog、安装方式或发现算法。
+V3-03 只固定这些 lifecycle semantics，不冻结目录、metadata 字段、Manifest / Catalog、安装方式或 discovery algorithm。
 
 ## 8. v1 / v2 必须保留的成果
 
 v3 必须继续保护至少以下已经验证的长期成果：
 
 - 薄启动入口；
-- 仓库 / 使用方权威优先；
+- 仓库 / Consumer 权威优先；
 - 渐进式披露；
 - 证据先于结论；
 - 规范正文单点所有权；
@@ -179,15 +175,15 @@ v3 必须继续保护至少以下已经验证的长期成果：
 - 只做路由判断时不机械加载完整技能；
 - 真正进入职责时按需加载技能；
 - 阶段返回后重新判断；
-- 使用方普通运行只依赖本地现行资源；
+- Consumer 普通运行只依赖 Consumer-local 现行资源；
 - 基线采用逐项采用、保留 / 覆盖、拒绝、取代；
 - 同一运行范围 / 发现职责不并行维护多个现行派生机制。
 
-V3-03 进一步显式保护：上游评估基线与当前本地资产来源分离、仅升级使用的历史不进入普通新上下文、部分完成 / 失败升级不制造完成状态、上游更新不自动改变普通运行。
+V3-03 进一步显式保护：evaluated upstream baseline 与 active local asset provenance 分离、upgrade-only history 不进入 ordinary Fresh Context、partial / failed upgrade 不制造完成状态、upstream update 不自动改变 ordinary runtime。
 
-v3 不以“重新设计”为理由推翻这些已经通过真实使用方验证的行为。
+v3 不以“重新设计”为理由推翻这些已经通过真实 Consumer 验证的行为。
 
-## 9. 当前非目标与 ADR 门禁
+## 9. 当前非目标与 ADR Gate
 
 V3-03 不：
 
@@ -197,8 +193,8 @@ V3-03 不：
 - 创建 Rule Super Skill / Stage Router Skill；
 - 批量新增或改造技能；
 - 物理移动、拆分、重命名或删除 Guide / Authority；
-- 修改使用方仓库；
-- 实现完整资源发现 / 路由架构；
+- 修改 Consumer Repository；
+- 实现完整 discovery / routing architecture；
 - 启动 V3-04～V3-08；
 - 启动 WI-06 / WI-07 / WI-09 或其他独立候选。
 
@@ -208,21 +204,21 @@ v3 不用一个“大 ADR”承载全部探索。只有专项分析形成跨任�
 
 - 知识与能力所有权架构；
 - 以技能承担过程型能力，与以 Guide / Rule 承担普通运行过程之间的长期边界；
-- 面向 Agent 的资源 metadata / 派生资源索引（只在 V3-05 / V3-06 证明需要后）。
+- 面向 Agent 的资源 metadata / 派生资源索引（仅在 V3-05 / V3-06 证明需要后）。
 
 目录名、字段名、文件拆分数量等局部实现选择不自动 ADR 化。
 
-## 10. 当前门禁
+## 10. 当前 Gate
 
 V3-03 跟踪入口：Issue #104。  
 工作产物：`docs/architecture/consumer-lifecycle.md`。
 
 V3-03 的精确审查、集成与完成状态以 Issue #104 和 GitHub 当前状态为准，本文件不复制瞬时 PR 状态。
 
-V3-03 完成门禁为：
+V3-03 完成 Gate 为：
 
-> 初始化、首次采用、基线升级、本地投影、采用验证、基线推进、普通运行与重新进入上游形成单一一致生命周期；与核心方法、Guide、技能、V3-05、V3-06、V3-08 的语义所有权边界清晰；v2 已验证行为完整保留；高影响生命周期歧义的阻塞 / 中等级问题为 0。
+> 初始化、首次采用、baseline upgrade、本地投影、adoption verification、baseline advance、ordinary runtime 与 upstream re-entry 形成单一一致生命周期；与 Core Method、Guide、Skill、V3-05、V3-06、V3-08 的 semantic ownership boundary 清晰；v2 已验证行为完整保留；高影响 lifecycle ambiguity 的 Blocking / Medium finding 为 0。
 
-如果 Issue #104 仍开放，应继续完成上述未满足门禁；如果 Issue #104 已以完成原因关闭，则 V3-03 已收口，V3-04 只成为下一规划候选。只有新的 V3-04 Planning Authority 建立后才能启动 V3-04。
+如果 Issue #104 仍开放，应继续完成上述未满足 Gate；如果 Issue #104 已以完成原因关闭，则 V3-03 已收口，V3-04 只成为下一 Planning Candidate。只有新的 V3-04 Planning Authority 建立后才能启动 V3-04。
 
-无论 V3-03 状态如何，本阶段结论都不自动授予物理迁移、技能重构、metadata / discovery 实现或使用方仓库修改权限。
+无论 V3-03 状态如何，本阶段结论都不自动授予物理迁移、Skill 重构、metadata / discovery implementation 或 Consumer Repository 修改权限。
