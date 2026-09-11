@@ -71,7 +71,9 @@ V3-06 **不重新定义资源身份**。发现架构只能组织、筛选、定�
 V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期逻辑为：
 
 ```text
-本地当前资源与稳定入口
+薄本地发现入口
+        ↓
+本地当前资源与稳定 Authority Entry
         ↓
 可选：已复核发现映射
         ↓
@@ -80,11 +82,11 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 每次任务的临时发现决策
 ```
 
-后两层都可以不存在。小型仓库可以直接从稳定入口和资源原生发现信息完成发现。
+映射与运行视图都可以不存在。小型仓库可以直接从薄入口、稳定 Authority Entry 和资源原生发现信息完成发现。
 
 ### 3.1 本地当前资源与稳定入口
 
-这是发现的真实输入，包括：
+真实发现输入包括：
 
 - 仓库根 Bootstrap / Authority Entry；
 - 当前 Requirement / Specification / Architecture / Roadmap 等项目权威入口；
@@ -94,7 +96,28 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 
 这些是真实资源，不是发现层复制品。
 
-### 3.2 已复核发现映射
+### 3.2 Local Discovery Entry
+
+每个完成 `agentic-dev` 采用、需要普通运行的仓库，都必须能从薄 Bootstrap 到达一个**本地发现入口（Local Discovery Entry）**。
+
+它是稳定 seam，而不是新的规则正文 owner。它只需要让新上下文知道：
+
+- 当前仓库权威入口在哪里；
+- 是否存在 current Reviewed Discovery Map / Runtime View；
+- 没有派生映射时从哪些原生 current entries 继续；
+- 发现失败时回到哪个本地 Authority Entry。
+
+它不能复制：
+
+- 完整职责 / 风险路由表；
+- 当前 Roadmap Gate；
+- 规则摘要；
+- 全部 Skill 清单正文；
+- 上游项目状态。
+
+物理上它可以是 `AGENTS.md` / Authority Map / 小型本地导航 / Runtime View 入口中的一个稳定指针，不要求统一文件名。
+
+### 3.3 已复核发现映射
 
 当资源异构程度或条件激活复杂度使固定入口 + 原生资源信息不足以低成本、稳定发现时，可以维护一个**已复核发现映射（Reviewed Discovery Map）**。
 
@@ -107,7 +130,7 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 - `routing-only / execution` 等非规范性加载提示；
 - 派生语义提示所需的 source binding；
 - 纯定位条目所需的 locator binding；
-- 它声称覆盖的发现范围及相应 **coverage anchors**。
+- 它声称覆盖的发现范围及相应 coverage anchors。
 
 它不保存：
 
@@ -120,7 +143,7 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 
 “派生”只表示它不拥有规范正文，不表示其中已经完成的语义复核可以靠生成器随意重建。
 
-### 3.3 纯生成运行视图
+### 3.4 纯生成运行视图
 
 如果运行时确实需要更紧凑的入口，可以从：
 
@@ -138,7 +161,7 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 - 不允许出现映射层没有的“智能补充”；
 - 只是同一发现机制的运行投影。
 
-### 3.4 临时发现决策
+### 3.5 临时发现决策
 
 每次任务根据当前事实产生一个临时**发现决策**。它只服务当前判断，不构成长久权威，也默认不持久化。
 
@@ -157,7 +180,7 @@ V3-06 不把 v2 的“两层 Manifest + Catalog”提升为必选架构。长期
 
 ## 4. 何时不需要持久化发现映射
 
-以下条件同时成立时，可以只使用固定本地入口与资源原生信息：
+以下条件同时成立时，可以只使用 Local Discovery Entry、固定本地 Authority Entry 与资源原生信息：
 
 - 当前独立发现资源数量较少；
 - 主要 Authority Entry 稳定且可直接定位；
@@ -201,12 +224,20 @@ Map 不要求覆盖所有 Markdown，也不能把“当前仓库全部文件”�
 
 每个声称完整覆盖的范围必须关联能够反映真实 membership 的本地 current anchor，例如当前仓库明确指定的：
 
-- 资源 inventory / Authority Map；
+- 资源 membership owner / Authority Map；
 - Skill / Profile current entry；
 - 稳定资源描述集合；
 - 其他能够由仓库权威确认该发现范围 membership 的入口。
 
-coverage anchor **不拥有资源正文，也不重新定义资源身份**；它只让发现层知道“这个范围的成员集合是否发生变化”。
+coverage anchor 不拥有被覆盖资源正文，也不重新定义资源身份。
+
+如果 anchor 本身是派生 inventory，它只有满足以下条件才可以支撑完整性判断：
+
+- 能从真实 current resources / membership owner 确定性重建；
+- 自身 source-currentness / membership identity 可验证；
+- 不需要另一个未绑定的手工派生清单来证明自己完整。
+
+否则它只能作为导航提示，不能成为 completeness anchor。
 
 如果当前仓库没有可靠 anchor，Reviewed Discovery Map 就不能声称该范围完整。该范围 no-match 时必须回到本地 Authority Entry 做扩展发现。
 
@@ -217,7 +248,7 @@ coverage anchor **不拥有资源正文，也不重新定义资源身份**；它
 - 新增一个应该独立发现的资源；
 - 删除 / supersede 一个已发现资源；
 - mixed-resource section 被拆分、合并或重新分类；
-- current inventory / Authority Entry membership 发生变化；
+- current membership owner / Authority Entry 发生变化；
 - 覆盖范围本身被当前仓库权威调整。
 
 发生 coverage drift 后，不能因为旧条目的 source hash 都没变就继续声称 Map 完整。
@@ -362,12 +393,12 @@ zero-match 只有在相关 coverage scope 的 anchors 与语义映射都 current
 解析顺序：
 
 1. **使用方仓库权威优先**：项目事实、权限和当前约束先由本地权威决定；
-2. **基础缺口拥有阶段返回**：Product Intent / Specification / Architecture / Authorization 基础出现缺口时，拥有该缺口的职责成为新的主职责；
+2. **基础缺口拥有阶段返回**：当前 Method / Skill Contract 判定基础权威存在缺口时，拥有该缺口的既有职责成为新的主职责；
 3. **当前请求职责**：前置基础仍有效时，当前明确要求执行的稳定职责保持主职责；
-4. **unexpected failure 不自动等于 debug**：只有 expected behavior 已明确、问题属于实现 / runtime 非预期失败时，`systematic-debug` 才成为主职责；
+4. **unexpected failure 不自动等于 debug**：只有 expected behavior 已由当前权威明确、且当前调试契约允许时，`systematic-debug` 才成为主职责；
 5. **辅助责任不夺取主职责**：验证、平台、外部操作、工程纪律等只要没有改变职责所有权，就保持辅助上下文。
 
-该顺序只描述 discovery 如何消费现有 Method / Skill Contract，不创建新的方法优先级。
+该顺序只描述 discovery 如何消费现有 Method / Skill Contract，不创建新的方法优先级或第二份阶段返回规则。
 
 ## 12. 最小辅助上下文
 
@@ -427,19 +458,20 @@ resolve responsibility
 
 ## 14. Stage Return 与旧状态
 
-Stage Return 后：
+V3-06 不维护第二份“哪些变化使 Readiness / Execute Authority 失效”的方法规则；这些判断继续由当前 Method、Skill Contract 与对应当前 Authority 单点拥有。
+
+发现层只负责以下后果：
 
 ```text
-停止当前职责
+现有 owner 判定需要 Stage Return / 旧执行基础失效
+→ 停止当前职责
 → 丢弃旧发现决策作为继续授权
 → 重新读取受影响的本地当前权威
 → 重新形成当前任务事实
 → 重新发现 / 路由
 ```
 
-如果 Product Intent、Specification、durable Technical Plan、Architecture / ADR 或 Execution Unit scope / acceptance ownership 发生实质变化，旧 Readiness / Candidate Unit 只对应旧语义基础，必须按当前 Method / Skill Contract 回到必要上游职责。
-
-如果 `systematic-debug` 只修复实现缺陷，没有改变这些基础，则取得匹配回归证据后可以恢复原执行路径，不机械重跑完整生命周期。
+如果当前 Method / Skill Contract 与证据确认只是实现缺陷修复、上游语义基础仍有效，则可以按原 owner 的规则恢复执行路径；V3-06 不机械要求重跑完整生命周期。
 
 ## 15. 失败关闭与本地回退
 
@@ -575,6 +607,17 @@ Runtime View 必须能够从：
 | V2 Runtime Catalog | **旧的纯运行投影** | 可以被 Runtime View 复用、简化或取消；只要 replacement 已验证即可删除 / 重建 |
 | 手工 responsibility / risk routing 表 | **派生导航** | V3-07 自采用时只能保留人类说明或由 current discovery mechanism 派生；不得与机器 current routing 长期双维护 |
 
+### 19.1 compatibility freeze
+
+V3-06 一旦集成，以上被长期架构 supersede 的 v2 发现 / 路由正文仍可作为**兼容 surface**继续服务当前入口，但不再是可以独立演进的第二规范 owner。
+
+在 V3-07 完成物理迁移前：
+
+- 新的长期 discovery / routing 语义只进入本架构；
+- v2 Guide / project contract 只允许为保持兼容、修复错误或同步指针做必要修改；
+- 如果兼容正文与本架构冲突，视为 compatibility defect，按当前 Authority 顺序修正旧 surface；
+- 不允许同时给旧表和新 Map 分别维护两套不同 current routing 结论。
+
 ## 20. 替代时序
 
 V3-06 只确定长期架构和 replacement 关系，不在本阶段提前拆掉现有入口。
@@ -585,7 +628,7 @@ V3-06 只确定长期架构和 replacement 关系，不在本阶段提前拆掉�
 V3-06 架构集成
 → V3-07 agentic-dev 自采用
    → 检查是否真的需要 Reviewed Discovery Map
-   → 建立 / 选择实际本地 discovery entry
+   → 建立 / 选择实际 Local Discovery Entry
    → 为需要完整覆盖的范围确定 coverage anchors
    → 迁出 Manifest 中长期固有事实
    → 如需要，迁移 / 复核跨资源派生语义映射
@@ -602,21 +645,23 @@ V3-06 架构集成
 
 V3-07 可以直接假定：
 
-1. 发现长期基础是真实本地资源与稳定入口；
-2. Manifest + Catalog 两层不是必选架构；
-3. 小型仓库可以不维护任何持久化派生发现映射；
-4. 需要跨资源语义正规化时，只维护一个 current Reviewed Discovery Map；
-5. Map 声称完整覆盖的每个范围必须有 current coverage anchors；没有可靠 anchor 的范围不能把 no-match 当作完整发现结果；
-6. Runtime View 只是同一机制的可选纯生成投影，不能独立维护语义；
-7. current resource set 从真实 owner / V3-01 维度 / 关系形成，不维护第二 `active` 真值；
-8. routing 使用当前任务事实 + only-known 条件，不猜未知风险；
-9. 一次决策只有一个主职责 + 最小辅助集合；
-10. routing-only 不加载完整 Skill，执行时才按需加载；
-11. Stage Return 后重新发现；
-12. stale / missing / ambiguity / coverage drift 回到本地当前权威；
-13. 普通运行不访问 upstream；
-14. V2 Manifest 的长期事实必须先迁出，再允许移除过渡容器；
-15. 已复核派生语义映射删除后需要重新复核，不能由 generator 静默恢复。
+1. 每个普通运行仓库必须能从薄 Bootstrap 到达一个 Local Discovery Entry；
+2. 发现长期基础是真实本地资源与稳定 Authority Entry；
+3. Manifest + Catalog 两层不是必选架构；
+4. 小型仓库可以不维护任何持久化派生发现映射；
+5. 需要跨资源语义正规化时，只维护一个 current Reviewed Discovery Map；
+6. Map 声称完整覆盖的每个范围必须有 current coverage anchors；没有可靠 anchor 的范围不能把 no-match 当作完整发现结果；
+7. Runtime View 只是同一机制的可选纯生成投影，不能独立维护语义；
+8. current resource set 从真实 owner / V3-01 维度 / 关系形成，不维护第二 `active` 真值；
+9. routing 使用当前任务事实 + only-known 条件，不猜未知风险；
+10. 一次决策只有一个主职责 + 最小辅助集合；
+11. routing-only 不加载完整 Skill，执行时才按需加载；
+12. Stage Return 后重新发现；具体上游状态失效条件继续由 Method / Skill Contract 拥有；
+13. stale / missing / ambiguity / coverage drift 回到本地当前权威；
+14. 普通运行不访问 upstream；
+15. V2 Manifest 的长期事实必须先迁出，再允许移除过渡容器；
+16. 已复核派生语义映射删除后需要重新复核，不能由 generator 静默恢复；
+17. V3-06 集成后 v2 发现 / 路由正文进入 compatibility freeze，直到 V3-07 完成 replacement。
 
 V3-07 的任务是**把这套架构投射到 `agentic-dev` 自己的真实仓库状态并验证**，而不是重新设计上述发现语义。
 
