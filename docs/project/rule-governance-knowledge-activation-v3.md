@@ -37,7 +37,7 @@ v1 / v2 已验证最小上下文、Consumer 本地普通运行、来源时效性
 
 V3-01 随后又通过独立 holdout 复核发现并修正“项目 / 产品权威”过宽的问题：仓库协作、授权、验证、复核和集成政策即使经过正式决定，也仍由仓库本地政策拥有，不因为“项目已经决定”就自动成为项目 / 产品权威。定向复评通过后，V3-01 已完成并通过 PR #100 集成。
 
-V3-02 基于 V3-01 的四维模型完成当前仓库语义所有权审计。独立复核先后识别并修正 Research / Eval current control body 的目录机械分类风险，以及 Consumer adoption acceptance 被整体归为 Evidence 的所有权问题；最终定向复核不存在未解决的 Blocking / Medium finding。V3-02 已完成并集成，其审计矩阵成为 V3-03～V3-06 的直接分析输入。
+V3-02 基于 V3-01 的四维模型完成当前仓库语义所有权审计。收敛过程中先通过 Repository Evidence 自查识别并修正 Research / Eval current control body 的目录机械分类风险；随后独立复核发现并修正 Consumer adoption acceptance 被整体归为 Evidence 的所有权问题。最终定向复核不存在未解决的 Blocking / Medium finding。V3-02 已完成并集成，其审计矩阵成为 V3-03～V3-06 的直接分析输入。
 
 上述评估只作为证据与复核输入；长期结论以已经集成的仓库权威为准。
 
