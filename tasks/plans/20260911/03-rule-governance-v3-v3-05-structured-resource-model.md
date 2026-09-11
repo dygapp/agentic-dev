@@ -21,7 +21,7 @@
 - `docs/architecture/consumer-lifecycle.md`
 - `docs/architecture/skill-architecture.md`
 - `docs/architecture/technology-profile-contract.md`
-- 当前 `SKILL.md`、工程纪律、技术画像、仓库本地规则、项目权威、指南、研究 / 评估控制体实例
+- 当前 `SKILL.md`、工程纪律、技术画像、仓库本地规则、项目权威、Guide、Research / Eval 控制体实例
 - `docs/project/consumer-local-activation-metadata-contract-v2.md`（过渡输入，不自动继承）
 - Issue #94 / #109
 
@@ -29,7 +29,7 @@
 
 ```text
 恢复 V3-01 四维所有权模型
-→ 消费 V3-02 资源审计处理结论
+→ 消费 V3-02 资源审计处置结论
 → 消费 V3-03 生命周期与 V3-04 技能 / 支持资源边界
 → 复核 v2 metadata / Manifest / Catalog 契约
 → 确定需要结构化的资源范围
@@ -37,7 +37,7 @@
 → 区分固有结构 / 派生发现信息
 → 定义 Markdown / SKILL.md / 画像 / 本地规则兼容方式
 → 裁决当前有效性 / 来源追溯 / 取代 / 派生语义
-→ 逐项记录 v2 字段与两层模型处理结论
+→ 逐项记录 v2 字段与两层模型处置结论
 → 更新稳定恢复入口
 → 对精确候选执行 AI 复核
 → V3-05 门禁
@@ -62,7 +62,7 @@
 - 设计完整发现、查询、排序、路由或阶段返回算法；
 - 全仓批量增加 Front Matter；
 - 建立数据库、向量库、图数据库、MCP 服务或后台 daemon；
-- 物理迁移全部指南、Policy、Project、Research-Eval 文件；
+- 物理迁移全部 Guide / Policy / Project / Research-Eval 文件；
 - 修改任何使用方仓库；
 - 重新设计 V3-03 生命周期或 V3-04 技能身份；
 - 启动 V3-06～V3-08。
@@ -74,7 +74,19 @@
 - 固有结构与派生发现信息边界明确；
 - Markdown、`SKILL.md`、画像、本地规则与支持资源兼容方式明确；
 - 当前有效性 / 来源追溯 / 取代 / 派生语义明确；
-- v2 metadata / Manifest / Catalog 完成逐项处理结论；
+- v2 metadata / Manifest / Catalog 完成逐项处置；
 - V3-06 可以直接消费资源模型而无需重新定义资源身份；
-- AI 复核不存在未解决的阻塞或中等级问题；
+- AI 复核不存在未解决的 Blocking / Medium；
 - 未越界实施 V3-06～V3-08。
+
+## 最终复核
+
+精确候选 Head：`e25141bfb9e3851d4d7b2e266075d319f3c6490e`。
+
+修复后 AI 复核结论：
+
+- Blocking：0
+- Medium：0
+- 范围：V3-01 四维正交性、混合载体资源边界、资源原生 / 派生发现信息、当前有效性、伴随描述生命周期、资源家族默认策略、v2 Manifest 迁移安全、V3-06 边界、使用方本地普通运行与集成后恢复状态。
+
+只有该精确 Head 未发生漂移时，本结论才可用于最终集成判断。
