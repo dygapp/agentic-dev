@@ -1,6 +1,7 @@
 # V3-04 技能重分类与准入审计
 
-**状态：** 审计候选  
+**状态：** v0.1（V3-04）  
+**性质：** 项目级技能重分类与准入结果  
 **跟踪：** Issue #107  
 **审计基线：** `master@3043e95193f462348dd9fcb99f8a1871145d503d`
 
@@ -33,19 +34,21 @@
 
 如果一个能力主要表达横切约束、默认知识、仓库本地值、使用方生命周期或人类说明，应由对应工程能力、仓库本地规则、生命周期权威或 Guide 持有，而不是为了激活方便升级为 Skill。
 
+稳定的新增 Skill 准入门禁已经提升到 `docs/architecture/skill-architecture.md`；本文记录 V3-04 的项目级裁决与证据关系，不维护第二份长期 Skill Architecture。
+
 ## 3. 当前 9 个 Skill 身份结论
 
-| Skill | 当前身份 | 结论 | overlap / 边界 | V3-04 disposition |
+| Skill | 当前身份 | 结论 | overlap / 边界 | V3-04 结果 |
 |---|---|---|---|---|
 | `clarify-intent` | 核心工作流 Skill | keep | 只处理高影响 Product Intent 歧义；长期领域事实只识别候选并返回 `specify` | 保持 current Skill |
 | `specify` | 核心工作流 Skill | keep | 拥有 WHAT / WHY 形成过程；长期领域事实写入仍服从使用方仓库权威 | 保持 current Skill |
 | `technical-plan` | 核心工作流 Skill | keep | 拥有跨执行单元长期 HOW 与 Architecture / ADR 评估过程，不拥有产品意图 | 保持 current Skill |
 | `slice-work` | 核心工作流 Skill | keep | 拥有执行单元塑形与验收 / 验证责任映射，不拥有最终 Readiness | 保持 current Skill |
 | `readiness-check` | 核心工作流 Skill | keep | 只读门禁；消费验证 / 治理规则但不取得它们的规范正文所有权 | 保持 current Skill |
-| `execute-unit` | 核心工作流 Skill | keep with overlap correction | 单执行单元实施 / 验证职责成立；当前正文对三个 Engineering Discipline 复制过厚 | 保持 Skill；缩回薄消费与必要触发判断，纪律正文由 `engineering-disciplines.md` 单点拥有 |
+| `execute-unit` | 核心工作流 Skill | keep；overlap 已修正 | 单执行单元实施 / 验证职责成立；原正文对三个 Engineering Discipline 复制过厚 | 已缩回薄消费；纪律正文由 `engineering-disciplines.md` 单点拥有 |
 | `systematic-debug` | 核心调查 Skill | keep | Expected Behavior 未定义时返回上游，不接管 Requirement / Specification | 保持 current Skill |
-| `converge` | 核心工作流 Skill | keep with boundary clarification | Feature-wide 收敛、Evidence coverage 与 Gap routing 属其过程；跨职责证据类型 / currentness 规则仍由 verification capability 持有 | 保持 Skill；只保留过程所需判断和 owner 指针，不形成第二验证规则正文 |
-| `github-actions-verification` | 平台专项非核心 Skill | keep | GitHub Actions trigger / observability / runtime / artifact / diagnostics 是稳定平台过程；通用外部操作与跨职责证据规则由各自 owner 持有 | 保持平台 Skill；平台实现可详细，通用纪律只消费不重写 |
+| `converge` | 核心工作流 Skill | keep | Feature-wide 收敛、Evidence coverage 与 Gap routing 属其过程；跨职责证据类型 / currentness 规则仍由 verification capability 持有 | 复核后无需修改 Skill 正文 |
+| `github-actions-verification` | 平台专项非核心 Skill | keep | GitHub Actions trigger / observability / runtime / artifact / diagnostics 是稳定平台过程；通用外部操作与跨职责证据规则由各自 owner 持有 | 复核后无需修改 Skill 正文 |
 
 当前没有证据支持删除、合并或批量重写上述 9 个 Skill，也没有证据支持新增第 10 个 Skill。
 
@@ -55,21 +58,18 @@
 
 `execute-unit` 的稳定任务入口、输入、输出、退出和阶段返回均成立，因此 Skill 身份不受影响。
 
-但 `docs/architecture/engineering-disciplines.md` 已明确：三个工程纪律没有独立任务入口，应由多个职责消费，`execute-unit` **只需要保留薄执行规则，不复制完整纪律正文**。
+`docs/architecture/engineering-disciplines.md` 已明确：三个工程纪律没有独立任务入口，应由多个职责消费，`execute-unit` **只需要保留薄执行规则，不复制完整纪律正文**。
 
-当前 `execute-unit/SKILL.md` 在实施步骤中直接展开：
+V3-04 已将 `execute-unit/SKILL.md` 中原先展开的：
 
 - 实现最小化与推测性复杂度控制；
 - 精准修改与差异范围控制；
 - 数据访问作用域与有界性控制；
+- 相关配置责任与既有能力复用细则；
 
-并进一步包含配置责任、已有框架 / 标准库能力复用等详细判断。这些正文应收缩为：
+缩回为当前 Unit 中的条件识别、规范 owner 指针和薄执行判断。具体纪律规则只在 `engineering-disciplines.md` 单点维护。
 
-1. 当前条件命中时读取 `engineering-disciplines.md` 对应纪律；
-2. `execute-unit` 只保留“本次执行必须应用当前命中的纪律，且纪律不得扩大 Unit Scope / 覆盖更高权威”的薄执行判断；
-3. 具体纪律规则只在其规范 owner 维护一次。
-
-这属于 V3-04 当前 owner 去重，不改变 `execute-unit` 的职责、触发、输入、输出或退出条件。
+本次去重没有改变 `execute-unit` 的职责、触发、输入、输出、一次一 Unit、调试返回、阶段返回或退出条件。
 
 ### 4.2 `converge` 与跨职责验证规则
 
@@ -93,7 +93,7 @@
 - Human Review Baseline Isolation；
 - Database Migration Completion Evidence。
 
-它们应由跨职责验证工程能力持有。`converge` 可以引用并应用当前命中的规则，不复制完整规范正文。
+它们应由跨职责验证工程能力持有。对当前 `converge/SKILL.md` 复核后，没有发现需要在 V3-04 立即删除的第二份完整规范正文，因此不为了阶段形式机械修改该 Skill。
 
 当前证据不足以创建 `verify-evidence` Skill：这些规则没有统一独立任务入口、独立输出或稳定单独调度价值。
 
@@ -126,7 +126,7 @@
 - 使用方的 Merge / Release / Deploy 权限；
 - 所有 Consumer 的统一 CI 拓扑。
 
-平台专项正文可以详细描述 GitHub Actions 的适配方式，但跨平台规则只引用真实 owner。
+当前 `github-actions-verification/SKILL.md` 已明确自身实现既有方法 / 外部操作 / 验证语义并服从使用方策略；复核后没有证据要求在 V3-04 机械重写。
 
 ### 4.4 使用方生命周期不是 adoption / upgrade Skill
 
@@ -190,7 +190,7 @@ Skill inventory / responsibility routing 表属于 Guide / 派生导航，不拥
 
 `docs/architecture/first-batch-skill-design.md` 记录第一批 8 个核心 Skill 从已复核 Contract 转换为 `SKILL.md` 的**历史实现设计基线**。
 
-当前长期规范关系已经是：
+当前长期规范关系是：
 
 ```text
 Engineering Capability Architecture
@@ -199,16 +199,16 @@ Engineering Capability Architecture
 → 当前 `SKILL.md`
 ```
 
-因此：
+V3-04 已完成：
 
-- `first-batch-skill-design.md` 不再作为 current Skill design Authority；
-- 它保留历史设计 / Evidence 身份，用于追溯第一批实现为什么这样形成；
-- `skills/README.md` 不应继续把它列在“权威设计参考”中；
-- 其历史内容不因为保留在 `docs/architecture/` 就自动 current；物理移动是否需要留给 V3-07 自采用 / repository migration 决定。
+- `first-batch-skill-design.md` 显式降为历史设计 / Evidence；
+- `skills/README.md` 不再把它列为“权威设计参考”；
+- `skills/README.md` 明确当前权威为 Engineering Capability Architecture、Skill Architecture、Skill Contracts 和当前 `SKILL.md`；
+- 历史设计物理上仍位于 `docs/architecture/`，但其状态已明确，不再因目录位置自动 current；是否物理迁移留给 V3-07 自采用 / repository migration。
 
 ## 8. Supporting resource 边界
 
-某个 Skill 下的 `references/*`、fixture、template 或脚本只有在以下条件下才保持 supporting body：
+稳定规则已经提升到 `docs/architecture/skill-architecture.md`：某个 Skill 下的 `references/*`、fixture、template 或脚本只有在以下条件下才保持 supporting body：
 
 - 直接服务该 Skill procedure；
 - 不独立定义跨 Skill / 跨仓库长期规范语义；
@@ -221,7 +221,7 @@ Engineering Capability Architecture
 
 ## 9. 新 Skill 准入门禁
 
-未来新增 Skill 至少必须同时回答：
+稳定准入规则已经提升到 `docs/architecture/skill-architecture.md`。未来新增 Skill 至少必须同时回答：
 
 1. **Trigger**：什么时候应进入该职责？什么时候明确不进入？
 2. **Inputs**：是否存在稳定、可描述的最小输入？
@@ -235,21 +235,21 @@ Engineering Capability Architecture
 
 任一高影响边界无法回答时，保持工程能力 / Guide / Research 候选，不为了目录完整或运行时激活便利提前 Skill 化。
 
-## 10. V3-04 当前处理候选
+## 10. V3-04 已执行的 current-authority 修正
 
-V3-04 当前允许的最小 current-authority 修正候选：
+V3-04 当前已完成以下最小修正：
 
-1. `skills/README.md`：将 `first-batch-skill-design.md` 从“权威设计参考”降为历史设计参考；
-2. `docs/architecture/first-batch-skill-design.md`：显式标记为历史设计 / Evidence，不改变其历史正文；
-3. `skill-architecture.md`：如现有准入规则不足，补充 V3-04 已确认的 admission / supporting-resource / no-super-skill 边界；
-4. `execute-unit/SKILL.md`：只有在最终 overlap 复核确认后，缩回对三个 Engineering Discipline 的详细复制，只保留薄消费；
-5. `converge/SKILL.md` / `github-actions-verification/SKILL.md`：只有发现真实重复规范正文时才最小缩正，不因 V3-04 机械重写。
+1. `skills/README.md`：将 `first-batch-skill-design.md` 从 current authority 列表中移出并明确为历史设计参考；
+2. `docs/architecture/first-batch-skill-design.md`：显式标记为历史设计 / Evidence，保留其历史正文；
+3. `docs/architecture/skill-architecture.md`：加入 V3-04 已确认的新增 Skill admission、supporting-resource 与 no-super-skill 边界；
+4. `skills/execute-unit/SKILL.md`：缩回对三个 Engineering Discipline 的详细复制，只保留当前 Unit 内的薄消费与 owner 指针；
+5. `converge/SKILL.md` / `github-actions-verification/SKILL.md`：针对性复核后未发现需要立即修改的第二份完整规范正文，因此保持不变。
 
 Guide 物理拆分、verification capability 最终载体、external-operation capability 最终载体、metadata 表示和 discovery implementation 均留给后序阶段。
 
 ## 11. V3-04 门禁
 
-进入人工集成决策前必须确认：
+进入集成决策前必须确认：
 
 - 9 个当前 Skill 的身份和 overlap 均有明确结论；
 - `execute-unit` 的工程纪律消费不再形成第二规范 owner；
