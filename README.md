@@ -41,9 +41,9 @@ GitHub Repository 是唯一项目事实来源。
 
 V3-03 将 V3-02 已识别的使用方生命周期规则族收敛到单一长期语义所有者，重点区分新使用方首次采用、已有使用方基线升级、逐项采用决定、采用验证与基线推进、仅依赖本地当前状态的普通运行，以及显式重新进入上游。
 
-V3-03 的精确审查、集成与完成状态以 Issue #104 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-03 完成后，V3-04 只成为下一 Planning Candidate，不自动启动。
+V3-03 的精确审查、集成与完成状态以 Issue #104 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-03 完成后，V3-04 只成为下一规划候选，不自动启动。
 
-V3-02 的其他 disposition 仍只是后续设计输入。V3-03 不执行 Guide 物理迁移、Skill 重构、Front Matter / Index 实现、完整 discovery architecture 或 Consumer 修改。
+V3-02 的其他处理候选仍只是后续设计输入。V3-03 不执行 Guide 物理迁移、Skill 重构、Front Matter / Index 实现、完整资源发现架构或 Consumer 修改。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
@@ -102,7 +102,7 @@ Consumer 规则激活入口见：
 
 `docs/guides/using-agentic-dev.md`
 
-V3-02 已完成对上述现有入口的语义所有权审计；在后续真实 owner / replacement 经设计、验证并正式集成前，v2 Guide / activation 入口继续保持现行兼容，不提前删除或改写其运行语义。
+V3-02 已完成对上述现有入口的语义所有权审计；在后续真实语义所有者或替代机制经设计、验证并正式集成前，v2 Guide / activation 入口继续保持现行兼容，不提前删除或改写其运行语义。
 
 ## 核心开发路径
 
