@@ -39,7 +39,9 @@ V3-01 随后又通过独立 holdout 复核发现并修正“项目 / 产品权�
 
 V3-02 基于 V3-01 的四维模型完成当前仓库语义所有权审计。收敛过程中先通过 Repository Evidence 自查识别并修正 Research / Eval current control body 的目录机械分类风险；随后独立复核发现并修正 Consumer adoption acceptance 被整体归为 Evidence 的所有权问题。最终定向复核不存在未解决的 Blocking / Medium finding。V3-02 已完成并集成，其审计矩阵成为 V3-03～V3-06 的直接分析输入。
 
-V3-03 已由 Issue #104 正式启动，工作产物为 `docs/architecture/consumer-lifecycle.md`。本阶段直接消费 V3-02 已识别的生命周期规则族，不重新执行仓库盘点。
+V3-03 已完成并通过 PR #106 集成，集成提交为 `3043e95193f462348dd9fcb99f8a1871145d503d`。`docs/architecture/consumer-lifecycle.md` 已成为使用方初始化、采用、升级、普通运行与重新进入上游的长期规范权威。
+
+V3-04 已由 Issue #107 正式启动，直接消费 V3-02 的 Skill / Guide overlap 审计与 V3-03 的使用方生命周期边界，不重新执行仓库盘点或重新设计 V3-03。
 
 上述评估只作为证据与复核输入；长期结论以已经集成的仓库权威为准。
 
@@ -51,10 +53,10 @@ v3 按以下有限子任务顺序推进：
    已建立四维所有权判断矩阵，作为后续审计的分类依据。
 2. **V3-02 — 当前仓库所有权审计 — 已完成并集成**  
    已按规范正文 / 规则族审计当前仓库并形成后续 disposition 候选；未执行物理迁移。审计矩阵：`docs/project/current-repository-ownership-audit-v3.md`。
-3. **V3-03 — 使用方初始化、采用、升级与普通运行生命周期 — 状态见 Issue #104**  
-   工作产物：`docs/architecture/consumer-lifecycle.md`。目标是把 Guide 与 v2 过渡性现行文档中已识别的长期生命周期语义收敛到单一可复用工程能力语义所有者。
-4. **V3-04 — 技能重分类与准入**  
-   判断现有 Guide / Rule 中哪些属于已有技能、可复用工程能力、仓库本地规则或真正的新技能候选。
+3. **V3-03 — 使用方初始化、采用、升级与普通运行生命周期 — 已完成并集成**  
+   长期权威：`docs/architecture/consumer-lifecycle.md`。
+4. **V3-04 — 技能重分类与准入 — 状态见 Issue #107**  
+   工作产物：`docs/project/skill-reclassification-admission-v3.md`。确认当前 Skill 身份、跨 owner overlap、历史设计 currentness、新 Skill 准入和 supporting-resource 边界。
 5. **V3-05 — 面向 Agent 的结构化资源模型**  
    在所有权已经确定后，定义哪些长期资源需要结构化 metadata，以及普通 Markdown 与 `SKILL.md` 的兼容边界。
 6. **V3-06 — 资源发现架构**  
@@ -117,7 +119,7 @@ Guide 不应继续承担：
 - 可复用工程能力的默认容器；
 - “不属于核心方法 / 技能”内容的兜底容器。
 
-`using-agentic-dev.md` 保留 Guide 主身份。V3-03 将其中初始化 / 采用 / 基线升级的长期规范生命周期语义归入 `docs/architecture/consumer-lifecycle.md`；路由、新上下文中的资源发现等普通运行发现语义仍等待 V3-06。V3-03 本身不执行 Guide 物理拆分。
+`using-agentic-dev.md` 保留 Guide 主身份。V3-03 已将其中初始化 / 采用 / 基线升级的长期规范生命周期语义归入 `docs/architecture/consumer-lifecycle.md`；路由、新上下文中的资源发现等普通运行发现语义仍等待 V3-06。V3-04 只处理 Guide 与 Skill procedure / inventory 的边界，不执行 Guide 物理拆分。
 
 ## 7. Consumer 初始化与演进方向
 
@@ -160,7 +162,25 @@ V3-03 将“使用方生命周期”定义为可复用工程能力，而不是�
 
 V3-03 只固定这些生命周期语义，不冻结目录、metadata 字段、Manifest / Catalog、安装方式或资源发现算法。
 
-## 8. v1 / v2 必须保留的成果
+## 8. V3-04 技能重分类与准入
+
+V3-04 当前结论以 `docs/project/skill-reclassification-admission-v3.md` 为项目级审计记录，稳定长期 Skill 规则提升到 `docs/architecture/skill-architecture.md`。
+
+当前确认：
+
+- 现有 9 个 Skill 的独立身份继续成立，没有证据要求新增第 10 个 Skill、删除或合并现有 Skill；
+- `execute-unit` 保持单执行单元实施 / 验证职责，但 Engineering Discipline 详细规则应由 `engineering-disciplines.md` 单点拥有，Skill 只做薄消费；
+- `converge` 保持 Feature-wide 收敛过程，跨职责验证规则继续由对应验证工程能力持有；
+- `github-actions-verification` 保持平台专项 Skill，GitHub Actions 平台过程可以详细，但通用外部操作 / 验证规则不由它拥有；
+- verification / external-operation rule families 当前都没有足够证据形成新的通用 Skill；
+- 使用方生命周期不会因为具有过程顺序就转化为 adoption / upgrade Skill；
+- `first-batch-skill-design.md` 只保留第一批 Skill 的历史实现设计 / Evidence 身份，不再与当前 Skill Architecture / Contracts / `SKILL.md` 平行；
+- 新 Skill 准入必须同时证明 Trigger、Inputs、Procedure、Outputs、Exit / Return / Escalation、Composability、Ownership、Evidence 与 Evaluation；
+- supporting resource 只有直接服务一个 Skill 且不独立拥有跨 Skill 规范语义时，才继续作为 Skill 内部资源。
+
+V3-04 不把“可复用”“Agent 会读取”“内容重要”“存在步骤”或“被多个 Skill 消费”单独视为 Skill 准入理由，也不创建 Rule Super Skill、Stage Router Skill 或完整生命周期 Controller。
+
+## 9. v1 / v2 必须保留的成果
 
 v3 必须继续保护至少以下已经验证的长期成果：
 
@@ -181,21 +201,24 @@ v3 必须继续保护至少以下已经验证的长期成果：
 
 V3-03 进一步显式保护：上游评估基线与当前本地资产来源分离、仅升级使用的决策历史不进入普通新上下文、部分完成 / 失败升级不制造完成状态、上游更新不自动改变普通运行。
 
+V3-04 进一步保护：Skill 只拥有稳定独立 procedure，Engineering Discipline / Consumer Lifecycle / Repository Policy / Guide 不为了运行时激活便利被机械 Skill 化，supporting body 不因物理目录自动取得平级规范所有权。
+
 v3 不以“重新设计”为理由推翻这些已经通过真实 Consumer 验证的行为。
 
-## 9. 当前非目标与 ADR Gate
+## 10. 当前非目标与 ADR Gate
 
-V3-03 不：
+V3-04 不：
 
+- 重新设计 V3-03 使用方生命周期；
+- 批量新增、删除或重写当前 Skill；
+- 创建 Rule Super Skill、Stage Router Skill 或 adoption / upgrade Skill；
 - 实现新的 Rule Index / Manifest / Catalog；
 - 实现 Front Matter generator；
 - 冻结统一 metadata schema；
-- 创建 Rule Super Skill / Stage Router Skill；
-- 批量新增或改造技能；
 - 物理移动、拆分、重命名或删除 Guide / Authority；
 - 修改使用方仓库；
 - 实现完整资源发现 / 路由架构；
-- 启动 V3-04～V3-08；
+- 启动 V3-05～V3-08；
 - 启动 WI-06 / WI-07 / WI-09 或其他独立候选。
 
 v3 不用一个“大 ADR”承载全部探索。只有专项分析形成跨任务长期约束、存在实质替代方案与长期后果、且决定已经稳定时才创建或更新 ADR。
@@ -208,17 +231,18 @@ v3 不用一个“大 ADR”承载全部探索。只有专项分析形成跨任�
 
 目录名、字段名、文件拆分数量等局部实现选择不自动 ADR 化。
 
-## 10. 当前 Gate
+## 11. 当前 Gate
 
-V3-03 跟踪入口：Issue #104。  
-工作产物：`docs/architecture/consumer-lifecycle.md`。
+V3-04 跟踪入口：Issue #107。  
+工作产物：`docs/project/skill-reclassification-admission-v3.md`。  
+长期 Skill 准入权威：`docs/architecture/skill-architecture.md`。
 
-V3-03 的精确审查、集成与完成状态以 Issue #104 和 GitHub 当前状态为准，本文件不复制瞬时 PR 状态。
+V3-04 的精确审查、集成与完成状态以 Issue #107 和 GitHub 当前状态为准，本文件不复制瞬时 PR 状态。
 
-V3-03 完成 Gate 为：
+V3-04 完成 Gate 为：
 
-> 初始化、首次采用、基线升级、本地投影、采用验证、基线推进、普通运行与重新进入上游形成单一一致生命周期；与核心方法、Guide、Skill、V3-05、V3-06、V3-08 的语义所有权边界清晰；v2 已验证行为完整保留；高影响生命周期歧义不存在未解决的阻塞或中等级问题。
+> 当前 9 个 Skill 的身份与主要 overlap 均有明确结论；Skill、工程纪律 / 画像 / 使用方生命周期、仓库本地规则、Guide 与平台专项过程边界稳定；历史 Skill design 不再形成平行 current Authority；新 Skill 准入与 supporting-resource 规则已进入长期 Skill Architecture；高影响 Skill ownership / admission 歧义不存在未解决的 Blocking / Medium finding。
 
-如果 Issue #104 仍开放，应继续完成上述未满足 Gate；如果 Issue #104 已以完成原因关闭，则 V3-03 已收口，V3-04 只成为下一规划候选。只有新的 V3-04 规划权威建立后才能启动 V3-04。
+如果 Issue #107 仍开放，应继续完成上述未满足 Gate；如果 Issue #107 已以完成原因关闭，则 V3-04 已收口，V3-05 只成为下一规划候选。只有新的 V3-05 规划权威建立后才能启动 V3-05。
 
-无论 V3-03 状态如何，本阶段结论都不自动授予物理迁移、Skill 重构、metadata / 资源发现实现或使用方仓库修改权限。
+无论 V3-04 状态如何，本阶段结论都不自动授予 Guide 物理迁移、metadata / 资源发现实现、Consumer Repository 修改或后序阶段权限。
