@@ -55,7 +55,7 @@ Issue #18 随后的真实使用方项目证据触发了 `slice-work`、`readines
 
 | Skill | 状态 |
 |---|---|
-| `github-actions-verification` | 已实现；基于真实使用方证据形成的平台专项非核心工程纪律 Skill |
+| `github-actions-verification` | 已实现；基于真实使用方证据形成的平台专项非核心 Skill |
 
 该 Skill 只在使用方使用 GitHub Actions，且 CI 验证路径、证据可观察性、运行成本或诊断问题会实质影响验证可靠性时按需使用。它实现既有方法 / 治理语义，不新增方法阶段，也不接管集成、发布或部署。
 
