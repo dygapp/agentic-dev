@@ -20,8 +20,8 @@
 
 | 当前职责或风险 | 继续读取的最小来源 |
 |---|---|
-| 新项目初始化、外部需求来源采纳 | `using-agentic-dev.md` §2.1、§3、§3.1、§3.2 |
-| 已有 Consumer baseline upgrade | `using-agentic-dev.md` §6.1；需要把 adopted capability 变成 ordinary runtime 本地发现能力时再读 `consumer-local-rule-activation.md` |
+| 新项目初始化、外部需求来源采纳 | `docs/architecture/consumer-lifecycle.md` 第 5 节；人类说明与示例再读 `using-agentic-dev.md` §2.1、§3、§3.1、§3.2 |
+| 已有 Consumer baseline upgrade | `docs/architecture/consumer-lifecycle.md` 第 6～11 节；人类说明再读 `using-agentic-dev.md` §6.1；需要把已采用能力变成普通运行本地发现能力时再读 `consumer-local-rule-activation.md` |
 | 已完成 adoption 的 Consumer 普通工作 | **回到 Consumer-local Bootstrap / Discovery Entry**；普通 Runtime 不继续把本指南或 upstream 当作日常依赖 |
 | 规划候选、执行单元身份、工作切分 | `using-agentic-dev.md` §3；`skills/slice-work/SKILL.md` |
 | 就绪门禁、上游 WHAT / HOW / Architecture basis 失效后的重新进入 | `skills/readiness-check/SKILL.md` |
@@ -36,10 +36,12 @@
 | 依赖 PR / stacked PR 的当前集成拓扑 | `external-operation-guidelines.md` §5.4 |
 | 项目路线图、长期产物、集成后的稳定路线 | `using-agentic-dev.md` §6.2 |
 | 中断恢复、新聊天或新执行者 | `using-agentic-dev.md` §7，并从 Consumer 项目路线图或等价入口继续按需读取 |
-| 明确的 `agentic-dev` Consumer 实验 | `using-agentic-dev.md` §8 |
+| 明确的 `agentic-dev` Consumer 实验 | `using-agentic-dev.md` §8；涉及重新进入上游与是否采用时同时服从 `docs/architecture/consumer-lifecycle.md` 第 11 节 |
 | 项目主导语言 | Consumer Repository 本地规则优先；需要通用边界时读 `using-agentic-dev.md` §3.1 |
 
 Skill 的完整执行过程由该 Skill 自己拥有。使用指南承担发现、采用和跨职责协调，不要求同时加载多个 Skill 的完整正文。
+
+其中，使用方初始化、首次采用、基线升级、采用验证、基线推进、普通运行仅依赖本地当前状态与重新进入上游的长期规范语义由 `docs/architecture/consumer-lifecycle.md` 单点拥有；`using-agentic-dev.md` 保留面向人的说明与示例职责。
 
 ## 3. Consumer-local adoption 后的边界
 
@@ -53,6 +55,8 @@ Skill 的完整执行过程由该 Skill 自己拥有。使用指南承担发现�
 - Stage Return 后重新 routing；
 - stale / missing / ambiguity fail-closed；
 - last evaluated upstream baseline 与 active asset provenance 分离。
+
+其中最后一项的长期生命周期身份与基线推进边界以 `docs/architecture/consumer-lifecycle.md` 为准；本 Guide Module 继续承担采用完成后的本地发现与激活说明。
 
 这项 Guide Module 用于 adoption / projection 设计和 Consumer 本地化，不意味着普通 Consumer 工作每次都读取 upstream Guide。完成本地化后，ordinary runtime 应从 Consumer-local discovery entry 开始。
 
