@@ -36,22 +36,25 @@ GitHub Repository 是唯一项目事实来源。
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
 - **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计
-- **当前活动子任务：** 无
-- **下一 Planning Candidate：** V3-03 — Consumer 初始化、采用、升级与普通运行生命周期（尚未启动）
+- **V3-03 跟踪入口：** Issue #104 — 使用方初始化、采用、升级与普通运行生命周期
+- **V3-03 工作产物：** `docs/architecture/consumer-lifecycle.md`
 
-V3-01 已建立四维所有权判断：语义所有者、适用范围与来源状态、运行与生命周期角色、载体与权威形式。V3-02 已据此完成当前仓库审计，并形成后续 `keep / move / merge / split / supersede / delete / reclassify` 候选；独立复核已确认不存在未解决的 Blocking / Medium ownership ambiguity。
+V3-03 将 V3-02 已识别的使用方生命周期规则族收敛到单一长期语义所有者，重点区分新使用方首次采用、已有使用方基线升级、逐项采用决定、采用验证与基线推进、仅依赖本地当前状态的普通运行，以及显式重新进入上游。
 
-V3-02 的 disposition 仍只是后续设计输入，不因 V3-02 完成而自动执行 Guide 物理迁移、Skill 重构、Front Matter / Index 实现或 Consumer 修改。当前下一步只是判断是否正式启动 V3-03。
+V3-03 的精确审查、集成与完成状态以 Issue #104 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-03 完成后，V3-04 只成为下一规划候选，不自动启动。
+
+V3-02 的其他处理候选仍只是后续设计输入。V3-03 不执行 Guide 物理迁移、Skill 重构、Front Matter / Index 实现、完整资源发现架构或 Consumer 修改。
 
 详细当前路线、候选与下一 Gate 统一维护在：
 
 `docs/project/project-roadmap.md`
 
-v3 当前规划 / 审计入口：
+v3 当前规划 / 审计 / 生命周期入口：
 
 - `docs/project/rule-governance-knowledge-activation-v3.md`
 - `docs/project/knowledge-capability-ownership-model-v3.md`
 - `docs/project/current-repository-ownership-audit-v3.md`
+- `docs/architecture/consumer-lifecycle.md`
 
 v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在演进就提前替换现行运行行为。
 
@@ -87,6 +90,10 @@ Consumer 规则激活入口见：
 
 `docs/guides/consumer-local-rule-activation.md`
 
+使用方初始化、首次采用、基线升级、采用验证、普通运行与重新进入上游的长期生命周期见：
+
+`docs/architecture/consumer-lifecycle.md`
+
 跨职责验证与证据条件规则见：
 
 `docs/guides/verification-evidence-rules.md`
@@ -95,7 +102,7 @@ Consumer 规则激活入口见：
 
 `docs/guides/using-agentic-dev.md`
 
-V3-02 已完成对上述入口的语义所有权审计；在后续真实 owner / replacement 经设计、验证并正式集成前，这些入口继续保持现行兼容，不提前删除或改写其运行语义。
+V3-02 已完成对上述现有入口的语义所有权审计；在后续真实语义所有者或替代机制经设计、验证并正式集成前，v2 Guide / activation 入口继续保持现行兼容，不提前删除或改写其运行语义。
 
 ## 核心开发路径
 
@@ -127,6 +134,10 @@ Skill 清单、身份和职责边界统一维护在：
 工程能力分层、证据进入方式和长期生命周期统一维护在：
 
 `docs/architecture/engineering-capability-architecture.md`
+
+使用方生命周期见：
+
+`docs/architecture/consumer-lifecycle.md`
 
 外部官方资料、成熟开源实践、专项评估和 Consumer 证据可以成为研究输入，但不能自动覆盖 Repository Authority。研究入口：
 

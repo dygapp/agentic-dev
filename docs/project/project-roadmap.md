@@ -21,22 +21,30 @@
 v3 跟踪入口：Issue #94。  
 V3-01 — 知识与能力所有权模型已完成并集成。  
 V3-02 — 当前仓库所有权审计已完成并集成。  
-当前活动 v3 子任务：**无**。  
-下一 Planning Candidate：**V3-03 — Consumer 初始化、采用、升级与普通运行生命周期**，尚未启动。
+V3-03 — 使用方初始化、采用、升级与普通运行生命周期，跟踪入口为 Issue #104。  
+V3-03 工作产物：`docs/architecture/consumer-lifecycle.md`。  
+V3-03 启动基线：`master@ce7ab292f8ddf8b8512d406061a31a7db8ad9409`。
 
-V3-01 已建立四维所有权模型；V3-02 已基于该模型完成当前长期知识、规则、Guide、Skill、仓库本地政策、Research / Eval 与历史资源的语义所有权审计，并形成后续 disposition 候选。V3-02 独立复核最终不存在未解决的 Blocking / Medium ownership ambiguity。
+V3-03 直接消费 V3-02 已确认的生命周期规则族，不重复仓库盘点。目标是建立单一使用方生命周期语义所有者，明确新使用方首次采用、已有使用方基线升级、逐项采用决定、采用验证与基线推进、仅依赖本地当前状态的普通运行，以及显式重新进入上游。
 
-当前下一 Gate：
+V3-03 的精确审查、集成与完成状态由 Issue #104 和 GitHub 当前状态记录，不在 Roadmap 复制瞬时 PR 状态。Fresh Context 恢复时：
 
-> **基于已经集成的 V3-02 审计矩阵，判断是否正式启动 V3-03；在新的 Planning Authority 建立前，不继承 V3-02 的执行权限，也不实施任何 disposition。**
+- 如果 Issue #104 仍开放，继续 V3-03 当前未完成 Gate；
+- 如果 Issue #104 已以完成原因关闭，V3-03 视为已收口，**V3-04 只成为下一规划候选**，仍需新的规划权威才能启动。
 
-V3-02 形成的 `keep / move / merge / split / supersede / delete / reclassify` 继续只是后续分析输入，没有 Guide 物理迁移、技能重构或发现机制实现权限。
+当前 Gate：
 
-详细当前规划 / 审计：
+> **V3-03 未完成时，先完成使用方生命周期的一致性复核与人工集成 Gate；V3-03 完成后，只判断是否正式启动 V3-04，不继承 V3-03 权限。**
+
+V3-03 不执行 V3-02 的物理处理候选，也不修改使用方仓库、`SKILL.md`、Front Matter / metadata schema 或资源发现实现。
+
+详细当前规划 / 审计 / 生命周期：
 
 - `docs/project/rule-governance-knowledge-activation-v3.md`
 - `docs/project/knowledge-capability-ownership-model-v3.md`
 - `docs/project/current-repository-ownership-audit-v3.md`
+- `docs/architecture/consumer-lifecycle.md`
+- `tasks/plans/20260911/01-rule-governance-v3-v3-03-consumer-lifecycle.md`
 
 ## 2. v3 当前路线
 
@@ -44,7 +52,7 @@ v3 严格按以下顺序推进：
 
 1. V3-01 — 知识与能力所有权模型 — **已完成并集成**；
 2. V3-02 — 当前仓库所有权审计 — **已完成并集成**；
-3. V3-03 — Consumer 初始化、采用、升级与普通运行生命周期 — **下一 Planning Candidate，未启动**；
+3. V3-03 — 使用方初始化、采用、升级与普通运行生命周期 — **状态见 Issue #104**；
 4. V3-04 — 技能重分类与准入；
 5. V3-05 — 面向 Agent 的结构化资源模型；
 6. V3-06 — 资源发现架构；
@@ -68,6 +76,8 @@ V3-01 已建立以下四维所有权判断：
 
 V3-02 已以规范正文 / 规则族为主要审计单位完成当前仓库审计，而不是按现有目录机械分类。其结果特别识别了 Guide catch-all、已完成项目记录中仍承担现行可复用语义的过渡契约、派生路由器与真实 semantic owner 的重叠，以及 Skill 与工程纪律 / 验证规则之间的正文复制风险。
 
+V3-03 将“使用方生命周期”明确为可复用工程能力，而不是新的产品开发方法阶段或自动 Skill 候选。长期语义所有者为 `docs/architecture/consumer-lifecycle.md`；`docs/architecture/engineering-capability-architecture.md` 负责其上层能力分类。
+
 ## 3. v2 已集成基线
 
 规则治理与知识激活 v2 已通过 PR #93 集成。其 Phase A～G 已完成：
@@ -85,24 +95,33 @@ v2 已验证并继续受 v3 保护的行为至少包括：薄启动入口、仓�
 
 V3-02 审计已明确：部分 v2 `docs/project/*` 虽属于已完成里程碑记录，仍承载当前 discovery / adoption / runtime 的过渡性可复用契约；在 V3-03～V3-06 建立并验证替代 owner 前不得提前归档、删除或失效。
 
-v3 规划期间，v2 当前运行发现 / 激活机制仍然有效；不得因为 v3 正在分析就提前移除 `rule-activation-guide`、Consumer-local activation 或其他现行入口。
+V3-03 提炼其中长期有效的使用方生命周期语义；在 V3-03 正式集成前，v2 当前运行发现 / 激活机制和过渡性现行生命周期入口继续有效。V3-03 集成后，具体资源发现 / 路由内容仍继续等待 V3-05 / V3-06 处理，不因 V3-03 完成而提前删除兼容入口。
 
 ## 4. 当前范围边界
 
-在 V3-03 获得明确 Planning Authority 前，不：
+V3-03 只授权：
+
+- 从 V3-02 审计矩阵消费生命周期规则族；
+- 建立使用方生命周期长期语义所有者；
+- 明确初始化、首次采用、基线升级、本地投影、采用验证、基线推进、普通运行与重新进入上游；
+- 明确上游评估基线、当前本地资产来源与仅升级使用的决策历史之间的职责分离；
+- 明确部分完成 / 失败升级的完成声明与当前状态边界；
+- 明确与核心方法、Guide、Skill、V3-05、V3-06、V3-08 的所有权边界；
+- 更新本阶段恢复入口并执行必要 AI 复核。
+
+V3-03 不：
 
 - 物理拆分、移动、重命名或删除 `docs/guides/*` 或其他现行 Authority；
-- 修改当前 `SKILL.md`；
-- 新增 Rule Index / Manifest / Catalog；
-- 冻结全仓 Front Matter schema；
+- 修改当前 `SKILL.md` 或启动 V3-04；
+- 新增或实现 Rule Index / Manifest / Catalog；
+- 冻结全仓 Front Matter / metadata schema；
 - 实现 Front Matter generator；
 - 创建 Rule Super Skill / Stage Router Skill；
-- 批量新增或改造技能；
-- 修改 Consumer Repository；
-- 把 V3-02 disposition 候选直接提升为 V3-03 / V3-04 的正式设计；
+- 实现完整资源发现 / 路由架构；
+- 修改使用方仓库；
 - 启动 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 候选实施。
 
-临时 GPT-6 v3 评估只作为规划启动与挑战证据，不是普通运行权威，也不自动进入正式架构。
+临时 GPT-6 / 其他 AI 评估只作为挑战和复核证据，不自动提升为长期架构，也不授予后序执行权限。
 
 ## 5. 候选库
 
@@ -159,8 +178,8 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 3. 读取本文，确认当前路线、Gate 和候选边界；
 4. 重新读取当前 GitHub `master`、Open PR / Issue 和必要 Actions；
 5. 当前 v3 规划期间读取 `docs/project/rule-governance-knowledge-activation-v3.md` 与 Issue #94；
-6. 在 V3-03 尚未启动时，读取已经集成的 `docs/project/current-repository-ownership-audit-v3.md` 与 V3-02 closure evidence，只用于判断是否启动 V3-03；不得继承 V3-02 的工作权限；
-7. 只有新的 V3-03 Planning Authority 建立后，才按其明确范围继续读取 lifecycle 直接相关资源并推进；
+6. 读取 Issue #104 的当前状态和 `docs/architecture/consumer-lifecycle.md`：若 #104 仍开放，继续 V3-03；若已经完成关闭，则只把 V3-04 视为下一规划候选；
+7. 只在生命周期结论需要证据时按需读取 V3-02 审计矩阵、`using-agentic-dev.md`、`consumer-local-rule-activation.md` 和 v2 过渡性现行生命周期文档；不重新做仓库盘点；
 8. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
 
 ## 9. 更新触发
