@@ -269,7 +269,7 @@
 | `consumer-local-activation-metadata-contract-v2.md` | 可复用工程能力（discovery metadata contract） | 跨仓库可复用 | 本仓原生 | adoption + ordinary runtime transition | Completed-project contract | transitional-current | V3-05/06 决定 `promote` 或 `supersede` → resource/discovery contract | 替代前仍保护 v2 currentness / metadata 语义 | V3-05、V3-06 |
 | `consumer-local-baseline-adoption-projection-v2.md` | 可复用工程能力（Consumer lifecycle） | 跨仓库可复用 | 本仓原生 | adoption / baseline upgrade | Completed-project design | transitional-current；与 using Guide 重叠 | extract / promote durable lifecycle；原文件 historical | V3-03 不再重新发明 adoption inventory | V3-03 |
 | `consumer-local-rule-runtime-target-v2.md` | 可复用工程能力（Consumer runtime architecture） | 跨仓库可复用 | 本仓原生 | ordinary runtime | Completed-project target | transitional-current | extract durable runtime invariants；原文件随后 supersede historical | 保护 local-only / minimum context 等已验证行为 | V3-03、V3-06 |
-| `consumer-local-runtime-routing-interface-v2.md` | 可复用工程能力（discovery/routing interface） | 跨仓库可复用 | 本仓原生 | adoption / ordinary runtime | Completed-project interface | transitional-current；与 activation Guide / routing table 重叠 | promote or supersede → Discovery Architecture | V3-06 必须保持 Stage Return / routing-only 等有效语义 | V3-06 |
+| `consumer-local-runtime-routing-interface-v2.md` | 可复用工程能力（discovery/routing interface） | 跨仓库可复用 | 本仓原生 | ordinary runtime | Completed-project interface | transitional-current；与 activation Guide / routing table 重叠 | promote or supersede → Discovery Architecture | V3-06 必须保持 Stage Return / routing-only 等有效语义 | V3-06 |
 | `consumer-local-rule-runtime-acceptance-v2.md` | 项目 / 产品权威（v2 acceptance contract） | 仓库本地于 v2 milestone；可复用结论作为输入 | 本仓原生 | validation / historical transition | Project acceptance contract | historical-with-reusable-input | retain evidence；durable reusable constraints 进入真实 owner，作为 V3-08 input | 不让旧 acceptance file 永久成为 runtime owner | V3-08 |
 
 ### 7.4 已完成项目记录 / Evidence
@@ -279,7 +279,7 @@
 | 资源 / 组 | 语义所有者 | 适用范围 | 来源状态 | 生命周期 | 载体 | 适配度 | disposition | downstream / 依赖 |
 |---|---|---|---|---|---|---|---|---|
 | `consumer-local-runtime-validation-plan-v2.md` | 研究 / 输入 / 证据 | 仅历史 | 历史来源 | 仅验证 / 历史 | Validation plan | historical | keep historical | V3-08 可参考但不继承为 current contract |
-| `consumer-local-runtime-validation-result-v2.md`、`consumer-local-runtime-candidate-drift-review-v2.md` | 研究 / 输入 / 证据 | 仅历史 / 当前评估证据 | 历史来源 / 本仓原生 | Evidence only | Result / review | historical | keep historical | 证明 v2 行为，不定义 v3 runtime |
+| `consumer-local-runtime-validation-result-v2.md`、`consumer-local-runtime-candidate-drift-review-v2.md` | 研究 / 输入 / 证据 | 仅历史 | 历史来源 | Evidence only | Result / review | historical | keep historical | 证明 v2 行为，不定义 v3 runtime |
 | `rule-governance-knowledge-activation-v1.md` / `v2.md` | 项目 / 产品权威（历史里程碑记录） | 仅历史 | 历史来源 | 历史 | Milestone docs | historical | keep historical | 不进入普通 Fresh Context |
 | `rule-ownership-decomposition-audit-v2.md` | 研究 / 输入 / 证据 | 仅历史 | 历史来源 | historical analysis | Audit doc | historical | keep historical | V3-02 可参考但以 V3-01 分类为准 |
 | `engineering-capability-foundation-v1*.md`、`engineering-discipline-expansion-v1*.md` | 项目 / 产品权威（历史里程碑） | 仅历史 | 历史来源 | 历史 | Project docs | historical | keep historical | 长期能力已经提升到 Architecture / Discipline / Profile |
