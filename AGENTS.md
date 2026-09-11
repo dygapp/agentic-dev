@@ -13,6 +13,8 @@
 - `docs/project/*`：具体里程碑、项目治理与设计记录；
 - Git / PR / Issue / Actions：精确外部状态与执行证据。
 
+`agentic-dev` 自身普通运行的本地资源发现入口为 `docs/discovery/README.md`。其 Reviewed Discovery Map 只承担非规范性的跨资源发现，不属于新的 Authority 层。
+
 不得为了方便恢复上下文，把这些易变化状态重新复制回 `AGENTS.md`。
 
 **方法定义高于 Skill 实现。** Skill 必须实现方法与架构已经允许的职责，不得通过修改 `SKILL.md` 暗中改变方法、架构或仓库权威。
@@ -41,6 +43,8 @@
 
 其中资源模型与资源发现架构只拥有跨资源身份 / 发现语义，不得覆盖更高优先级的方法、使用方生命周期、Skill 架构 / 契约、工程纪律或技术画像对其自身规范正文的定义。
 
+`docs/discovery/*` 是由真实 Authority / semantic owner 派生的本地发现机制，不进入上述 Authority 顺序。其 locator、职责 / 条件提示或 coverage 与真实 source 冲突时，必须让位于当前 source 并失败关闭到本地权威。
+
 `docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行状态，不得覆盖更高优先级的方法、架构、契约、工程纪律或技术画像权威，也不得被 Consumer 自动继承。
 
 ## 仓库事实与知识边界
@@ -64,12 +68,16 @@ GitHub Repository 是本仓库唯一的长期项目事实来源。
 1. 读取本文件，取得稳定 Repository Governance 与 Authority Boundary；
 2. 读取 `README.md`，取得简短当前状态和稳定入口；
 3. 读取 `docs/project/project-roadmap.md`，确认当前阶段、活动里程碑和下一 Gate；
-4. 只在当前任务需要时读取对应项目记录、Issue、计划、Method、Architecture、Guide、Skill、Research 或历史证据；
-5. 已关闭里程碑、历史评估和完整 Research 不作为普通 Fresh Context 默认输入。
+4. 重新读取当前 GitHub `master`、Open Issue / PR 和当前任务需要的 Actions 等精确外部状态；
+5. 只有当前任务需要跨资源判断职责、条件性规则或按需能力时，读取 `docs/discovery/README.md`；该入口会按需指向 current Reviewed Discovery Map 和真实 semantic owner；
+6. 只在当前任务需要时读取对应项目记录、Issue、计划、Method、Architecture、Guide、Skill、Research 或历史证据；
+7. 已关闭里程碑、历史评估和完整 Research 不作为普通 Fresh Context 默认输入。
+
+如果只需要恢复项目状态、确认当前 Gate 或回答当前仓库事实，到第 4 步即可，不为了“完整发现”机械加载 Map 或全部 Skill。
 
 方法生命周期、WHAT / WHY 与 HOW、阶段、执行单元、上下文适配、证据、人工升级等方法语义由 `docs/method/*` 及相应 Architecture / Skill Contract 单点定义；本文件不维护第二份方法摘要。
 
-Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` 和 Consumer 自己的 Repository Authority 进入；面向人的初始化 / 采用 / 基线升级说明见 `docs/guides/using-agentic-dev.md`。Consumer 初始化、首次采用、基线升级、采用验证、普通运行仅依赖本地当前状态与重新进入上游的规范生命周期由 `docs/architecture/consumer-lifecycle.md` 定义。
+Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` 和 Consumer 自己的 Repository Authority 进入；面向人的初始化 / 采用 / 基线升级说明见 `docs/guides/using-agentic-dev.md`。Consumer 初始化、首次采用、基线升级、采用验证、普通运行仅依赖本地当前状态与重新进入上游的规范生命周期由 `docs/architecture/consumer-lifecycle.md` 定义。完成采用后的普通运行应使用 Consumer 自己的 Local Discovery Entry，而不是 `agentic-dev` 自身的 `docs/discovery/*`。
 
 ## 外部操作治理
 
@@ -109,7 +117,7 @@ Consumer 使用 `agentic-dev` 时，从 `docs/guides/rule-activation-guide.md` �
 
 `docs/research/*` 只保存研究依据和横向比较，不因外部项目、论文、工具或规范使用某种机制就自动改变本仓库 Method / Architecture / Skill。
 
-外部证据进入长期能力前必须先完成当前仓库的证据分类与架构适配。Consumer 采用时只选择对自身持续工作有价值的可复用能力，并按 `docs/architecture/consumer-lifecycle.md` 的生命周期形成 Consumer 本地当前状态；`agentic-dev` 自身项目规则和当前项目状态不自动继承。
+外部证据进入长期能力前必须先完成当前仓库的证据分类与架构适配。Consumer 采用时只选择对自身持续工作有价值的可复用能力，并按 `docs/architecture/consumer-lifecycle.md` 的生命周期形成 Consumer 本地当前状态；`agentic-dev` 自身项目规则、`docs/discovery/*` 和当前项目状态不自动继承。
 
 同一 Runtime scope 中，同一个 discovery responsibility 只能有一个被声明为 current 的机制。被新机制取代的派生 index / catalog / retriever 必须退出 Current Runtime / Eval surface 或明确降为冻结历史证据；仍声明为 current 的派生机制必须保持 source-currentness 与语义映射真实有效，不允许保留“可执行但已陈旧”的中间状态。
 
