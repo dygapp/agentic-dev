@@ -1,10 +1,10 @@
 # 已复核资源发现映射
 
-**状态：** V3-07 candidate  
+**状态：** 基线 v0.1  
 **性质：** 非规范性、需复核维护的派生发现映射  
 **跟踪：** Issue #113
 
-本文是 `agentic-dev` 自采用的候选 **Reviewed Discovery Map**。它只保存跨资源发现所需的稳定 locator、职责 / 条件提示与 source binding；不拥有任何规范正文，也不维护第二份 `active/current` 真值。
+本文是 `agentic-dev` 自采用后的 **Reviewed Discovery Map**。它只保存跨资源发现所需的稳定 locator、职责 / 条件提示与 source binding；不拥有任何规范正文，也不维护第二份 `active/current` 真值。
 
 真实语义始终由 Map 指向的 current semantic owner 持有。Map 与 source 冲突时，**source / Repository Authority 优先，Map 立即失去可信发现资格**。
 
