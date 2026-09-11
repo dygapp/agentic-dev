@@ -23,22 +23,23 @@ V3-01 — 知识与能力所有权模型已完成并集成。
 V3-02 — 当前仓库所有权审计已完成并集成。  
 V3-03 — 使用方初始化、采用、升级与普通运行生命周期已完成并集成。  
 V3-04 — 技能重分类与准入已完成并集成。  
-V3-05 — 面向 Agent 的结构化资源模型，跟踪入口为 Issue #109。  
-V3-05 工作产物：`docs/architecture/agent-resource-model.md`。  
-V3-05 启动基线：`master@cd61ab06c0194cc1cf0703aabc8aff5261529950`。
+V3-05 — 面向 Agent 的结构化资源模型已完成并集成。  
+V3-06 — 资源发现架构，跟踪入口为 Issue #111。  
+V3-06 工作产物：`docs/architecture/resource-discovery-architecture.md`。  
+V3-06 启动基线：`master@640f1e3a8e7b5a6e67ad9ea028e51ba621e37964`。
 
-V3-05 直接消费 V3-01 四维所有权模型、V3-02 资源审计、V3-03 使用方生命周期和 V3-04 技能 / 支持资源边界。目标不是立即实现新的 Manifest / Catalog，而是先固定真实长期资源、资源固有结构与派生发现投影的边界，并逐项裁决 v2 metadata 契约。
+V3-06 直接消费 V3-05 的资源模型和 v2 已验证的发现 / 路由行为。当前目标不是机械保留 Manifest + Catalog 两层，而是收敛：真实本地当前资源、可选已复核发现映射、可选纯生成运行视图和临时发现决策之间的边界，并固定一个主职责、最小辅助上下文、routing-only / 按需 Skill、Stage Return 与失败关闭接口。
 
-V3-05 的精确审查、集成与完成状态由 Issue #109 和 GitHub 当前状态记录，不在 Roadmap 复制瞬时 PR 状态。Fresh Context 恢复时：
+V3-06 的精确审查、集成与完成状态由 Issue #111 和 GitHub 当前状态记录，不在 Roadmap 复制瞬时 PR 状态。Fresh Context 恢复时：
 
-- 如果 Issue #109 仍开放，继续 V3-05 当前未完成门禁；
-- 如果 Issue #109 已以完成原因关闭，V3-05 视为已收口，**V3-06 只成为下一规划候选**，仍需新的规划权威才能启动。
+- 如果 Issue #111 仍开放，继续 V3-06 当前未完成门禁；
+- 如果 Issue #111 已以完成原因关闭，V3-06 视为已收口，**V3-07 只成为下一规划候选**，仍需新的规划权威才能启动。
 
 当前门禁：
 
-> **V3-05 未完成时，先完成资源身份、结构化范围、固有 / 派生边界、物理表示兼容、当前有效性与 v2 metadata 处理结论的收敛及 AI 复核；V3-05 完成后，只判断是否正式启动 V3-06，不继承 V3-05 权限。**
+> **V3-06 未完成时，先完成最小发现架构、current-set、任务事实、主职责 / 辅助上下文、按需 Skill、Stage Return、fail-closed、派生表示生命周期和 v2 replacement / compatibility 的收敛及 AI 复核；V3-06 完成后，只判断是否正式启动 V3-07，不继承 V3-06 权限。**
 
-V3-05 不实现完整资源发现 / 路由，不冻结 Runtime Catalog / Activation Manifest，不全仓增加 Front Matter，不物理迁移全部指南 / Policy / Project / Research-Eval 资源，也不修改使用方仓库。
+V3-06 不修改使用方仓库，不创建规则超级 Skill / 阶段路由 Skill / Runtime Controller，不全仓增加 Front Matter，也不在 V3-07 自采用前删除当前 v2 discovery / activation 兼容入口。
 
 详细当前规划 / 审计 / 架构：
 
@@ -48,7 +49,8 @@ V3-05 不实现完整资源发现 / 路由，不冻结 Runtime Catalog / Activat
 - `docs/architecture/consumer-lifecycle.md`
 - `docs/project/skill-reclassification-admission-v3.md`
 - `docs/architecture/agent-resource-model.md`
-- `tasks/plans/20260911/03-rule-governance-v3-v3-05-structured-resource-model.md`
+- `docs/architecture/resource-discovery-architecture.md`
+- `tasks/plans/20260911/04-rule-governance-v3-v3-06-resource-discovery.md`
 
 ## 2. v3 当前路线
 
@@ -58,10 +60,10 @@ v3 严格按以下顺序推进：
 2. V3-02 — 当前仓库所有权审计 — **已完成并集成**；
 3. V3-03 — 使用方初始化、采用、升级与普通运行生命周期 — **已完成并集成**；
 4. V3-04 — 技能重分类与准入 — **已完成并集成**；
-5. V3-05 — 面向 Agent 的结构化资源模型 — **状态见 Issue #109**；
-6. V3-06 — 资源发现架构；
+5. V3-05 — 面向 Agent 的结构化资源模型 — **已完成并集成**；
+6. V3-06 — 资源发现架构 — **状态见 Issue #111**；
 7. V3-07 — `agentic-dev` 自采用；
-8. V3-08 — 使用方验证；
+8. V3-08 — Consumer 验证；
 9. 独立复核；
 10. 必要 ADR、正式 v3 设计与实现规划。
 
@@ -84,7 +86,7 @@ V3-03 已把使用方生命周期收敛为单一可复用工程能力语义所�
 
 V3-04 已确认当前 9 个技能身份继续成立，并把新增技能准入与支持资源边界提升到 `docs/architecture/skill-architecture.md`；工程纪律 / 技能契约 / `execute-unit` 已收敛为单点正文 + 薄消费。
 
-V3-05 当前建立三层资源模型：
+V3-05 已建立三层资源模型：
 
 ```text
 规范 / 事实正文
@@ -92,7 +94,18 @@ V3-05 当前建立三层资源模型：
 → 派生发现投影
 ```
 
-资源固有结构只表达真实长期身份 / 生命周期事实，派生发现投影服务 V3-06 的跨资源发现并可以删除 / 重建。V3-05 不把 Manifest 记录等同于真实长期资源，也不新增独立于真实语义所有者的统一当前状态真值。
+资源固有结构表达真实长期身份 / 生命周期事实；跨资源正规化职责 / 条件 / 风险等属于派生发现提示；V3-05 不把 Manifest record 等同于真实长期资源，也不新增独立于真实语义所有者的统一当前状态真值。现有 Activation Manifest 被判定为混合过渡载体，长期 provenance / locator / supersede 等固有事实迁出前不得整体删除。
+
+V3-06 当前进一步把长期发现架构收敛为：
+
+```text
+本地当前资源与稳定入口
+→ 可选 Reviewed Discovery Map
+→ 可选纯生成 Runtime View
+→ 临时发现决策
+```
+
+小型仓库可以不维护派生映射；需要跨资源语义正规化时，只维护一个 current 已复核发现映射。纯生成运行视图只能由真实资源 + current 映射确定性生成，不独立维护语义。
 
 ## 3. v2 已集成基线
 
@@ -111,31 +124,33 @@ v2 已验证并继续受 v3 保护的行为至少包括：薄启动入口、仓�
 
 V3-02 已明确部分 v2 `docs/project/*` 仍承载现行过渡契约；在真实替代语义所有者 / 机制集成前不得提前归档或删除。
 
-V3-03 已提炼长期使用方生命周期；V3-04 已提炼技能 / 工程能力边界；V3-05 正在重新裁决 v2 metadata / Manifest / Catalog。具体发现、查询、路由与对 `rule-activation-guide.md` 的显式取代仍等待 V3-06，因此当前 v2 发现 / 激活兼容入口继续有效。
+V3-03 已提炼长期使用方生命周期；V3-04 已提炼技能 / 工程能力边界；V3-05 已提炼长期资源模型；V3-06 当前接管长期 discovery / routing 语义并设计 replacement。当前 v2 发现 / 激活入口在 V3-07 自采用完成切换和验证前继续有效，不能因 V3-06 设计已形成就提前删除。
 
 ## 4. 当前范围边界
 
-V3-05 只授权：
+V3-06 只授权：
 
-- 定义哪些资源需要结构化及其最小长期资源身份；
-- 让资源模型保持 V3-01 语义所有者、适用范围 / 来源状态、生命周期角色、载体形式正交；
-- 明确资源原生结构、规范正文与派生发现提示的所有权关系；
-- 明确普通 Markdown、`SKILL.md`、工程纪律、技术 / 验证画像、仓库本地规则、项目权威与技能支持资源的兼容方式；
-- 固定当前有效性、来源、取代、派生关系的最小语义，但不建立第二当前状态真值；
-- 逐项裁决 v2 `id / kind / source / activation_role / scope / responsibility / conditions / risks / origin / state / relations` 以及 `semantic-reviewed / current-locator`；
-- 裁决 Activation Manifest / Runtime Catalog 属于资源固有模型还是 V3-06 派生层；
+- 裁决最小发现架构是否需要 Manifest / Catalog / Index / generator；
+- 定义 current resource set 如何从真实仓库权威、V3-01 维度、原生状态和 supersede / disable 关系形成；
+- 区分当前任务事实、资源原生结构、已复核派生映射和纯生成运行视图；
+- 定义候选发现、一个主职责、最小辅助上下文；
+- 定义 routing-only / 按需 Skill、Stage Return 和旧状态失效；
+- 定义 stale / missing / ambiguity 的本地 fail-closed；
+- 定义 Reviewed Discovery Map 与纯生成 Runtime View 的更新、source binding、语义复核和重建边界；
+- 完成 v2 `rule-activation-guide.md`、`consumer-local-rule-activation.md`、metadata contract、routing interface、Activation Manifest、Runtime Catalog 与手工路由表的逐项处置；
+- 定义 V3-07 自采用所需 replacement / compatibility 输入契约；
 - 更新本阶段稳定恢复入口并执行必要 AI 复核。
 
-V3-05 不：
+V3-06 不：
 
-- 实现或冻结 Runtime Catalog / Activation Manifest / Rule Index / generator；
-- 设计完整资源发现、查询、排序、路由或 Stage Return 算法；
+- 重新定义 V3-01～V3-05；
+- 创建规则超级 Skill、阶段路由 Skill 或 Runtime Controller；
+- 把完整开发生命周期塞入 Adapter / generator；
 - 全仓批量增加 Front Matter 或统一 YAML / JSON schema；
-- 建立数据库、向量库、图数据库、MCP 服务或后台 daemon；
-- 物理迁移全部指南 / Policy / Project / Research-Eval 文件；
 - 修改任何使用方仓库；
-- 重新设计 V3-03 生命周期或 V3-04 技能身份；
-- 启动 V3-06～V3-08；
+- 直接执行 V3-07 / V3-08；
+- 在 replacement 验证并集成前删除当前 v2 discovery / activation 入口；
+- 建立数据库、向量库、图数据库、MCP 服务或后台 daemon；
 - 启动 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 候选实施。
 
 临时 GPT-6 / 其他 AI 评估只作为挑战和复核证据，不自动提升为长期架构，也不授予后序执行权限。
@@ -172,9 +187,10 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 6. 规则治理与知识激活 v1 — `docs/project/rule-governance-knowledge-activation-v1.md`
 7. 规则治理与知识激活 v2 — `docs/project/rule-governance-knowledge-activation-v2.md`
 8. 规则治理与知识激活 v3 / V3-01 — `docs/project/knowledge-capability-ownership-model-v3.md`（其结果仍是当前后续阶段分类权威）
-9. 规则治理与知识激活 v3 / V3-02 — `docs/project/current-repository-ownership-audit-v3.md`（其审计矩阵仍是 V3-05 / V3-06 直接分析输入）
+9. 规则治理与知识激活 v3 / V3-02 — `docs/project/current-repository-ownership-audit-v3.md`（其审计矩阵仍是 V3-06 直接分析输入）
 10. 规则治理与知识激活 v3 / V3-03 — `docs/architecture/consumer-lifecycle.md`（当前长期使用方生命周期权威）
 11. 规则治理与知识激活 v3 / V3-04 — `docs/project/skill-reclassification-admission-v3.md`（技能身份 / 重叠裁决记录；稳定准入规则已进入技能架构）
+12. 规则治理与知识激活 v3 / V3-05 — `docs/architecture/agent-resource-model.md`（当前长期资源语义与最小结构契约）
 
 ## 7. Root Bootstrap 职责
 
@@ -197,8 +213,8 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 3. 读取本文，确认当前路线、门禁和候选边界；
 4. 重新读取当前 GitHub `master`、Open PR / Issue 和必要 Actions；
 5. 当前 v3 规划期间读取 `docs/project/rule-governance-knowledge-activation-v3.md` 与 Issue #94；
-6. 读取 Issue #109 的当前状态和 `docs/architecture/agent-resource-model.md`：若 #109 仍开放，继续 V3-05；若已经完成关闭，则只把 V3-06 视为下一规划候选；
-7. 只在资源模型结论需要证据时按需读取 V3-01 所有权模型、V3-02 审计矩阵、V3-03 生命周期、V3-04 技能重分类结果、代表性 `SKILL.md` / 技术画像 / 仓库本地规则，以及 `consumer-local-activation-metadata-contract-v2.md`；不重新做仓库盘点；
+6. 读取 Issue #111 的当前状态和 `docs/architecture/resource-discovery-architecture.md`：若 #111 仍开放，继续 V3-06；若已经完成关闭，则只把 V3-07 视为下一规划候选；
+7. 只在发现架构结论需要证据时按需读取 `docs/architecture/agent-resource-model.md`、V3-02 审计矩阵、V3-03 生命周期、V3-04 技能边界、`rule-activation-guide.md`、`consumer-local-rule-activation.md`、v2 metadata / routing contract 与对应 Skill / 工程能力；不重新做 V3-01～V3-05 分类工作；
 8. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
 
 ## 9. 更新触发

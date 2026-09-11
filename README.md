@@ -35,15 +35,15 @@ GitHub Repository 是唯一项目事实来源。
 - **最近已集成里程碑：** 规则治理与知识激活 v2
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
-- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计；V3-03 — 使用方初始化、采用、升级与普通运行生命周期；V3-04 — 技能重分类与准入
-- **V3-05 跟踪入口：** Issue #109 — 面向 Agent 的结构化资源模型
-- **V3-05 工作产物：** `docs/architecture/agent-resource-model.md`
+- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计；V3-03 — 使用方初始化、采用、升级与普通运行生命周期；V3-04 — 技能重分类与准入；V3-05 — 面向 Agent 的结构化资源模型
+- **V3-06 跟踪入口：** Issue #111 — 资源发现架构
+- **V3-06 工作产物：** `docs/architecture/resource-discovery-architecture.md`
 
-V3-05 直接消费 V3-01 的四维所有权、V3-02 的资源审计、V3-03 的使用方生命周期与 V3-04 的技能 / 支持资源边界，目标是建立长期资源语义与最小结构契约，并把**规范正文、资源固有结构、派生发现投影**分层。
+V3-06 直接消费 V3-05 的资源模型和 v2 已验证的发现 / 路由行为，目标是固定**本地当前资源、可选已复核发现映射、可选纯生成运行视图、临时发现决策**之间的长期边界，并定义一个主职责、最小辅助上下文、按需 Skill、Stage Return 与失败关闭接口。
 
-V3-05 的精确审查、集成与完成状态以 Issue #109 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-05 完成后，V3-06 只成为下一规划候选，不自动启动。
+V3-06 的精确审查、集成与完成状态以 Issue #111 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-06 完成后，V3-07 只成为下一规划候选，不自动启动。
 
-V3-05 不实现 Runtime Catalog / Activation Manifest / Rule Index，不全仓批量增加 Front Matter，不设计完整资源发现 / 路由算法，也不修改使用方仓库。
+V3-06 不修改使用方仓库，不创建规则超级 Skill / 阶段路由 Skill / Runtime Controller，不全仓增加 Front Matter，也不在 V3-07 自采用前删除当前 v2 discovery / activation 兼容入口。
 
 详细当前路线、候选与下一门禁统一维护在：
 
@@ -57,8 +57,9 @@ v3 当前规划 / 审计 / 架构入口：
 - `docs/architecture/consumer-lifecycle.md`
 - `docs/project/skill-reclassification-admission-v3.md`
 - `docs/architecture/agent-resource-model.md`
+- `docs/architecture/resource-discovery-architecture.md`
 
-v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在演进就提前替换现行运行行为。
+v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；只有 V3-07 按已集成 V3-06 架构完成 `agentic-dev` 自采用、replacement 验证与入口切换后，旧 current 派生机制才退出现行 surface。
 
 ## 入口职责
 
@@ -100,6 +101,10 @@ Consumer 规则激活入口见：
 
 `docs/architecture/agent-resource-model.md`
 
+当前长期本地资源发现与职责路由架构见：
+
+`docs/architecture/resource-discovery-architecture.md`
+
 跨职责验证与证据条件规则见：
 
 `docs/guides/verification-evidence-rules.md`
@@ -108,7 +113,7 @@ Consumer 规则激活入口见：
 
 `docs/guides/using-agentic-dev.md`
 
-V3-02 已完成对现有入口的语义所有权审计；V3-03～V3-05 已逐步建立使用方生命周期、技能边界和资源模型语义所有者。具体普通运行资源发现 / 路由仍等待 V3-06，因此 v2 指南 / 激活入口继续保持现行兼容，不提前删除或改写其运行语义。
+V3-02 已完成现有入口的语义所有权审计；V3-03～V3-05 已建立使用方生命周期、技能边界和资源模型。V3-06 当前收敛长期 discovery / routing 语义，但在 V3-07 自采用完成 replacement 前，现有 v2 Guide / activation 入口继续保持兼容，不提前删除或让两套 current 派生机制并行演进。
 
 ## 核心开发路径
 
@@ -148,6 +153,10 @@ Skill 清单、身份和职责边界统一维护在：
 Agent 资源模型见：
 
 `docs/architecture/agent-resource-model.md`
+
+资源发现架构见：
+
+`docs/architecture/resource-discovery-architecture.md`
 
 外部官方资料、成熟开源实践、专项评估和 Consumer 证据可以成为研究输入，但不能自动覆盖 Repository Authority。研究入口：
 
