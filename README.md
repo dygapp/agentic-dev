@@ -39,13 +39,13 @@ GitHub Repository 是唯一项目事实来源。
 - **V3-04 跟踪入口：** Issue #107 — 技能重分类与准入
 - **V3-04 工作产物：** `docs/project/skill-reclassification-admission-v3.md`
 
-V3-04 直接消费 V3-02 的 Skill / Guide overlap 审计和 V3-03 的使用方生命周期边界，目标是确认当前 9 个 Skill 的身份、去除跨语义所有者重复正文、明确历史 Skill 设计与当前权威关系，并把新增 Skill 的准入与 supporting-resource 边界提升到现行 Skill Architecture。
+V3-04 直接消费 V3-02 的 Skill / Guide 重叠审计和 V3-03 的使用方生命周期边界，目标是确认当前 9 个 Skill 的身份、去除跨语义所有者的重复正文、明确历史 Skill 设计与当前权威关系，并把新增 Skill 的准入与支持资源边界提升到现行 Skill 架构。
 
 V3-04 的精确审查、集成与完成状态以 Issue #107 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-04 完成后，V3-05 只成为下一规划候选，不自动启动。
 
-V3-04 不批量新增、删除或重写 Skill，不创建 Rule Super Skill / Stage Router Skill，不冻结 Front Matter / metadata schema，不实现完整资源发现架构，也不修改 Consumer Repository。
+V3-04 不批量新增、删除或重写 Skill，不创建规则超级 Skill / 阶段路由 Skill，不冻结 Front Matter / metadata 结构，不实现完整资源发现架构，也不修改使用方仓库。
 
-详细当前路线、候选与下一 Gate 统一维护在：
+详细当前路线、候选与下一门禁统一维护在：
 
 `docs/project/project-roadmap.md`
 
