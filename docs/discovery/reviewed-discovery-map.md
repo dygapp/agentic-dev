@@ -23,35 +23,43 @@
 
 当前项目状态、Issue / PR / Actions、Requirement / 当前工作正文**不进入 Map**，而由 `AGENTS.md → README.md → project-roadmap.md → current GitHub state` 直接恢复。
 
-## 2. Coverage anchors
+## 2. Coverage anchors 与 source binding
 
-只有以下 coverage anchors 与当前 source identity 一致时，Map 才可以声称对应范围已复核：
+Map 区分三种绑定，避免把所有变化机械等同为 stale：
 
-| Coverage | Anchor | Reviewed identity | 期望成员 / 语义单元 |
+- **membership-reviewed**：只复核当前成员集合；inventory 普通说明文字变化不自动使 Map stale，但新增 / 删除 / 重分类成员会使对应范围 stale；
+- **semantic-reviewed**：Map 从 source 提炼了职责 / 条件 / 风险提示；绑定的 source identity 变化后，对应提示先退出可信范围，必须重新判断语义影响；
+- **current-locator**：只保存稳定定位 / authority role；正文正常变化不使 locator stale，但路径 / role / owner 被取代时必须更新。
+
+当前 coverage：
+
+| Coverage | Anchor / source | Binding | Reviewed identity / membership |
 |---|---|---|---|
-| Skill inventory | `skills/README.md` | `5ff2c65ec48e9899b6a1d4a4785aa0425de7c2c4` | 8 个核心 Skill + `github-actions-verification` |
-| 工程纪律 | `docs/architecture/engineering-disciplines.md` | `d7512a776ea8473af2b4460afb3fbb11c80672c6` | 3 个 current Discipline |
-| 技术画像 inventory | `docs/technology-profiles/README.md` | `ef6b4311364f876437186f0d702a48ad4d2b4e10` | `vue3-typescript.md` |
-| 使用方生命周期 | `docs/architecture/consumer-lifecycle.md` | `79849c46b37bb3707eb41ccad29405fef17c8c3b` | 初始化 / 采用 / 升级 / 普通运行 / 上游重新进入 |
-| 验证规则族 | `docs/guides/verification-evidence-rules.md` | `b18a1102a5f0ff637100984ab05f7144dcf192ba` | §1～§6 条件性规则族 |
-| 外部操作规则族 | `docs/guides/external-operation-guidelines.md` | `f22de650351b89563a70653d4fdb96d4f24e6be3` | 外部写、媒体输入、异步、共享资源、持久输入、依赖 PR 等规则族 |
-| 中文 / 术语 | `docs/guides/terminology-guidelines.md` | `f1aa6fad778125db37e1bd1da60589ae0f82dcf2` | `agentic-dev` 自身表达规则 |
-| Git 提交 | `docs/guides/git-commit-guidelines.md` | `2f699b1f81ac52d9ff5244a7363d034e7840c9e9` | 当前提交规范 |
-| AI 复核 | `docs/project/ai-review-guidelines.md` | `e832172c1d6ab5001fc75d204ece082906bb450e` | 当前高影响 AI 复核规则 |
+| Skill inventory | `skills/README.md` | membership-reviewed | `clarify-intent`, `specify`, `technical-plan`, `slice-work`, `readiness-check`, `execute-unit`, `systematic-debug`, `converge`, `github-actions-verification` |
+| GitHub Actions Skill 触发语义 | `skills/github-actions-verification/SKILL.md` | semantic-reviewed | `5040e60a8a2274d8fead8375aaf66311392769ce` |
+| 工程纪律 | `docs/architecture/engineering-disciplines.md` | semantic-reviewed | `d7512a776ea8473af2b4460afb3fbb11c80672c6`；3 个 current Discipline |
+| 技术画像 inventory | `docs/technology-profiles/README.md` | membership-reviewed | `vue3-typescript` |
+| Vue 3 + TypeScript 画像适用语义 | `docs/technology-profiles/vue3-typescript.md` | semantic-reviewed | `d6bc3e17d20153dcc0e777f1f044b65126e1a2a5` |
+| 使用方生命周期 | `docs/architecture/consumer-lifecycle.md` | semantic-reviewed | `79849c46b37bb3707eb41ccad29405fef17c8c3b` |
+| 验证规则族 | `docs/guides/verification-evidence-rules.md` | semantic-reviewed | `b18a1102a5f0ff637100984ab05f7144dcf192ba`；§1～§6 |
+| 外部操作规则族 | `docs/guides/external-operation-guidelines.md` | semantic-reviewed | `f22de650351b89563a70653d4fdb96d4f24e6be3` |
+| 中文 / 术语 | `docs/guides/terminology-guidelines.md` | semantic-reviewed | `f1aa6fad778125db37e1bd1da60589ae0f82dcf2` |
+| Git 提交 | `docs/guides/git-commit-guidelines.md` | semantic-reviewed | `2f699b1f81ac52d9ff5244a7363d034e7840c9e9` |
+| AI 复核 | `docs/project/ai-review-guidelines.md` | semantic-reviewed | `e832172c1d6ab5001fc75d204ece082906bb450e` |
 
 ### 2.1 Coverage drift
 
-出现以下任一情况，对应 coverage 范围立即视为 **stale**：
+以下变化会让对应范围 stale：
 
-- anchor identity 改变；
-- inventory 新增 / 删除 / 重分类成员；
-- selector / source path 不再存在；
-- semantic owner 的条件语义发生变化；
+- membership-reviewed inventory 的成员新增、删除、改名或重分类；
+- semantic-reviewed source identity 改变；
+- source / selector 不再存在；
+- current-locator 的 path / authority role / owner 被取代；
 - 当前仓库明确 supersede / disable 相关资源。
 
 stale 范围在重新复核前不得用 no-match 证明“没有适用规则”。
 
-纯 locator entry 如果不提炼 source 语义，可以只检查 path / authority role 是否仍 current；本文不会为了所有 locator 强制绑定正文 hash。
+semantic-reviewed source identity 改变后，不允许只刷新 identity；必须先判断变化是否影响本 Map 的派生提示。若不影响，可以更新 reviewed identity；若影响，先更新对应提示并完成必要复核。
 
 ## 3. Current Project / Authority locator
 
@@ -80,15 +88,15 @@ stale 范围在重新复核前不得用 no-match 证明“没有适用规则”�
 | `systematic-debug` | `skills/systematic-debug/SKILL.md` | execute 时加载；是否适用由 current Method / Skill Contract 判断 |
 | `converge` | `skills/converge/SKILL.md` | execute 时加载；routing-only 只返回 locator |
 
-Skill membership 以 `skills/README.md` 为 coverage anchor；Map 不通过自身表格宣布 Skill current。
+Skill membership 以 `skills/README.md` 的成员集合为 coverage anchor；Map 不通过自身表格宣布 Skill current，也不提炼核心 Skill 的完整 Use When。
 
 ## 5. Platform-specific Skill
 
 | ID | Source | Derived trigger hint | Role |
 |---|---|---|---|
-| `github-actions-verification` | `skills/github-actions-verification/SKILL.md` | 当前工作真实涉及 GitHub Actions 的 trigger / gate / artifact / log / timeout / cancellation / reusable runtime / 验证成本或可观察性 | supporting platform capability；只有专项过程成为当前目标时才可作为 primary |
+| `github-actions-verification` | `skills/github-actions-verification/SKILL.md` | 当前工作真实涉及 GitHub Actions 的 completion evidence、trigger / gate、artifact / log、timeout / cancellation、reusable runtime、验证成本或可观察性 | supporting platform capability；只有专项过程本身成为当前目标时才可作为 primary |
 
-是否加载完整 Skill 仍服从其当前 `description` / Skill Contract；本提示只用于 candidate discovery。
+该提示绑定 §2 中 `github-actions-verification/SKILL.md` 的 semantic-reviewed identity。是否加载完整 Skill 仍服从其 current `description` / Skill Contract。
 
 ## 6. Engineering Disciplines
 
@@ -108,7 +116,7 @@ Skill membership 以 `skills/README.md` 为 coverage anchor；Map 不通过自�
 |---|---|---|---|
 | `vue3-typescript` | `docs/technology-profiles/vue3-typescript.md` | 当前任务真实涉及 Vue 3 / TypeScript，且技术默认、边界或验证画像会影响正确实施 | supporting technology profile |
 
-画像 membership 以 `docs/technology-profiles/README.md` 为 coverage anchor。未来新增画像未完成 Map 复核前，不得因为本表无条目就判断“不存在适用画像”。
+画像 membership 以 `docs/technology-profiles/README.md` 的成员集合为 coverage anchor；当前提示同时绑定 `vue3-typescript.md` 的 semantic-reviewed identity。未来新增画像未完成 Map 复核前，不得因为本表无条目就判断“不存在适用画像”。
 
 ## 8. Consumer lifecycle / adoption
 
@@ -120,31 +128,29 @@ Skill membership 以 `skills/README.md` 为 coverage anchor；Map 不通过自�
 
 ## 9. Verification / Evidence rule units
 
-每个条目只对应 `verification-evidence-rules.md` 中一个稳定 section；触发提示是派生发现语义，不替代规则正文。
+每个条目只对应 `docs/guides/verification-evidence-rules.md` 中一个稳定资源单元；触发提示是派生发现语义，不替代规则正文。
 
-| ID | Selector | Derived trigger hint |
+| ID | Source / selector | Derived trigger hint |
 |---|---|---|
-| `verification-currentness` | §1 | 测试 / Workflow / assertion 与当前 Requirement / Specification / Architecture 疑似不一致，或验证契约可能陈旧 |
-| `visual-evidence` | §2 | 视觉复刻、设计稿还原、品牌 / UI fidelity 属于当前验收义务 |
-| `human-review-baseline-isolation` | §3 | 自动验证修改共享状态，且同一环境随后用于 Human Review |
-| `database-migration-completion` | §4 | 当前变化包含数据库 schema / migration lifecycle，需要完整初始化完成证据 |
-| `evidence-reuse-across-commits` | §5 | 拟复用祖先提交证据支持当前提交的完成声明 |
-| `evidence-type-matches-claim` | §6 | 当前准备做 completion / pass / ready-to-integrate 声明 |
-
-Source：`docs/guides/verification-evidence-rules.md`。
+| `verification-currentness` | `docs/guides/verification-evidence-rules.md` §1 | 测试 / Workflow / assertion 与当前 Requirement / Specification / Architecture 疑似不一致，或验证契约可能陈旧 |
+| `visual-evidence` | `docs/guides/verification-evidence-rules.md` §2 | 视觉复刻、设计稿还原、品牌 / UI fidelity 属于当前验收义务 |
+| `human-review-baseline-isolation` | `docs/guides/verification-evidence-rules.md` §3 | 自动验证修改共享状态，且同一环境随后用于 Human Review |
+| `database-migration-completion` | `docs/guides/verification-evidence-rules.md` §4 | 当前变化包含数据库 schema / migration lifecycle，需要完整初始化完成证据 |
+| `evidence-reuse-across-commits` | `docs/guides/verification-evidence-rules.md` §5 | 拟复用祖先提交证据支持当前提交的完成声明 |
+| `evidence-type-matches-claim` | `docs/guides/verification-evidence-rules.md` §6 | 当前准备做 completion / pass / ready-to-integrate 声明 |
 
 ## 10. External-operation rule units
 
 | ID | Source / selector | Derived trigger hint |
 |---|---|---|
-| `external-state-write` | `docs/guides/external-operation-guidelines.md` §1～§5 | GitHub / Issue / PR / 仓库 / 外部 API 等状态读取或写入；要求读 → 最小写 → 重读验证 |
-| `external-binary-media` | §4.1 | 外部二进制 / 图片 / 媒体资源将被版本化或运行环境消费，需要核对真实内容类型 |
-| `async-external-operation` | §5.1 | Workflow / deployment / remote task 等异步外部操作需要观察、诊断与闭环 |
-| `shared-external-resource` | §5.2 | 多运行争用固定域名、代理、端口、环境、数据库、账号等共享资源 |
-| `artifact-promotion` | §5.3 | 临时 Artifact / snapshot / output 将被接受为后续稳定输入 |
-| `dependent-pr-topology` | §5.4 | 依赖 PR / stacked PR / squash integration topology 会影响当前安全集成路径 |
+| `external-state-mutation` | `docs/guides/external-operation-guidelines.md` §1～§5 | 当前将修改 GitHub / Issue / PR / 仓库 / 外部 API 等外部状态，或存在明确外部副作用 / 授权边界；要求读 → 最小必要写 → 重读验证 |
+| `external-binary-media` | `docs/guides/external-operation-guidelines.md` §4.1 | 外部二进制 / 图片 / 媒体资源将被版本化或运行环境消费，需要核对真实内容类型 |
+| `async-external-operation` | `docs/guides/external-operation-guidelines.md` §5.1 | Workflow / deployment / remote task 等异步外部操作需要观察、诊断与闭环 |
+| `shared-external-resource` | `docs/guides/external-operation-guidelines.md` §5.2 | 多运行争用固定域名、代理、端口、环境、数据库、账号等共享资源 |
+| `artifact-promotion` | `docs/guides/external-operation-guidelines.md` §5.3 | 临时 Artifact / snapshot / output 将被接受为后续稳定输入 |
+| `dependent-pr-topology` | `docs/guides/external-operation-guidelines.md` §5.4 | 依赖 PR / stacked PR / squash integration topology 会影响当前安全集成路径 |
 
-这些条目是仓库本地操作治理 / supporting constraints；是否拥有当前 primary responsibility 由当前任务和 Repository Authority 决定。
+纯只读的仓库状态恢复本身不要求为了形式完整性加载完整外部操作 Guide；只有写入、副作用、授权或其他具体风险命中时才加载对应正文。
 
 ## 11. Repository-local governance
 
@@ -158,37 +164,33 @@ Source：`docs/guides/verification-evidence-rules.md`。
 
 ## 12. Stable architecture locators
 
-以下 entry 只帮助处理相关架构变更，不复制架构正文：
+以下 entry 只承担稳定 locator，不复制架构正文：
 
-| ID | Source | Use when |
+| ID | Source | Authority role |
 |---|---|---|
-| `engineering-capability-architecture` | `docs/architecture/engineering-capability-architecture.md` | 新可复用工程能力分类、生命周期或层次边界 |
-| `skill-architecture` | `docs/architecture/skill-architecture.md` | Skill 身份、准入、支持资源边界变化 |
-| `skill-contracts` | `docs/architecture/skill-contracts.md` | Skill 输入 / 输出 / 退出 / 返回 / 契约变化 |
-| `technology-profile-contract` | `docs/architecture/technology-profile-contract.md` | 新建 / 修改技术画像契约或画像结构 |
-| `agent-resource-model` | `docs/architecture/agent-resource-model.md` | 资源身份、固有结构、派生发现边界变化 |
-| `resource-discovery-architecture` | `docs/architecture/resource-discovery-architecture.md` | Local Discovery Entry / Reviewed Discovery Map / Runtime View / discovery semantics 变化 |
+| `engineering-capability-architecture` | `docs/architecture/engineering-capability-architecture.md` | 可复用工程能力分类、生命周期与层次边界 |
+| `skill-architecture` | `docs/architecture/skill-architecture.md` | Skill 身份、准入与支持资源边界 |
+| `skill-contracts` | `docs/architecture/skill-contracts.md` | Skill 输入 / 输出 / 退出 / 返回契约 |
+| `technology-profile-contract` | `docs/architecture/technology-profile-contract.md` | 技术画像长期契约 |
+| `agent-resource-model` | `docs/architecture/agent-resource-model.md` | 资源身份、固有结构与派生发现边界 |
+| `resource-discovery-architecture` | `docs/architecture/resource-discovery-architecture.md` | Local Discovery Entry / Map / Runtime View / discovery semantics |
 
-这些 locator 的 applicability 仍由当前任务事实与更高 Repository Authority 判断。
+这些 current-locator 的 applicability 由当前任务事实与更高 Repository Authority 判断；Map 不保存额外 Use When 摘要。
 
-## 13. Discovery decision rules
+## 13. 使用边界
 
-使用本 Map 时：
+本 Map 只提供 **candidate discovery**。主职责解析、最小辅助集合、routing-only / execute、Stage Return、fail-closed 与 ordinary-runtime local-only 的完整语义统一由：
 
-1. 先从 `AGENTS.md`、README / Roadmap 与 current GitHub state 确认项目事实；
-2. 只在需要跨资源发现时读取本 Map；
-3. candidate 命中不等于最终适用；
-4. 先形成一个 primary responsibility；
-5. 只保留会改变当前正确执行 / 完成声明的最小 supporting set；
-6. routing-only 不加载完整 Skill；
-7. execute 才按需加载 primary Skill；
-8. Stage Return 后旧 discovery decision 失效，重新读取受影响权威并重新发现；
-9. 未知 condition / risk 不猜测；
-10. 不使用固定 Top-K 或全局数值 priority；
-11. no-match 但治理 / 风险事实仍存在时 fail-closed，不解释为无规则；
-12. ordinary runtime 不访问 upstream。
+`docs/architecture/resource-discovery-architecture.md`
 
-具体 Method / Skill / Stage Return / Readiness / verification / authorization 语义继续由原 owner 单点拥有。
+单点拥有。
+
+使用 Map 时只额外保持：
+
+- candidate 命中不等于最终适用；
+- stale coverage 不允许用 no-match 证明“无规则”；
+- Map 不创建 Authority priority；
+- Map 不持久化一次任务的 discovery decision。
 
 ## 14. Map maintenance
 
@@ -196,10 +198,9 @@ Source：`docs/guides/verification-evidence-rules.md`。
 
 出现以下变化时重新检查受影响条目：
 
-- coverage anchor identity 改变；
-- Skill / Profile / Discipline membership 变化；
+- coverage membership 改变；
+- semantic-reviewed source identity 改变；
 - source path / selector 改变；
-- 条件性规则语义实质变化；
 - 新资源被证明需要独立跨资源发现；
 - 真实 supersede / disable / override 关系改变。
 
@@ -208,10 +209,10 @@ Source：`docs/guides/verification-evidence-rules.md`。
 - 先读取真实 owner 当前内容；
 - 判断变化是否影响派生职责 / 条件 / 风险提示；
 - 只更新受影响条目；
-- 重新记录 reviewed identity；
+- 重新记录 reviewed identity / membership；
 - 对高影响发现语义变化按仓库 AI 复核规则处理。
 
-不得仅刷新 hash 就声称 semantic-reviewed 映射仍然有效。
+不得仅刷新 source identity 就声称 semantic-reviewed 映射仍然有效。
 
 ### 14.3 删除
 
