@@ -1,11 +1,9 @@
 # 本地资源发现入口
 
-**状态：** V3-07 candidate  
+**状态：** 基线 v0.1  
 **跟踪：** Issue #113
 
-本文是 `agentic-dev` 自身普通运行的候选 **Local Discovery Entry**。它只提供稳定入口与失败关闭路径，不复制 Method、Skill、Policy、Project Authority 或完整职责路由表。
-
-在 V3-07 candidate 验证和原子 replacement 完成前，当前 `master` 仍以既有 v2 discovery surface 为现行入口；本文件只在 V3-07 分支中承担候选验证。
+本文是 `agentic-dev` 自身普通运行的 **Local Discovery Entry**。它只提供稳定入口与失败关闭路径，不复制 Method、Skill、Policy、Project Authority 或完整职责路由表。
 
 ## 1. Fresh Context 起点
 
@@ -83,9 +81,9 @@ AGENTS.md
 
 普通运行失败关闭**不自动访问 upstream**，也不使用历史聊天、个人记忆或旧索引填补未知事实。
 
-## 6. 当前候选机制
+## 6. 当前机制
 
-V3-07 当前候选只使用：
+`agentic-dev` 当前 self-runtime discovery 只使用：
 
 ```text
 Local Discovery Entry
