@@ -35,15 +35,15 @@ GitHub Repository 是唯一项目事实来源。
 - **最近已集成里程碑：** 规则治理与知识激活 v2
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
-- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计；V3-03 — 使用方初始化、采用、升级与普通运行生命周期
-- **V3-04 跟踪入口：** Issue #107 — 技能重分类与准入
-- **V3-04 工作产物：** `docs/project/skill-reclassification-admission-v3.md`
+- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计；V3-03 — 使用方初始化、采用、升级与普通运行生命周期；V3-04 — 技能重分类与准入
+- **V3-05 跟踪入口：** Issue #109 — 面向 Agent 的结构化资源模型
+- **V3-05 工作产物：** `docs/architecture/agent-resource-model.md`
 
-V3-04 直接消费 V3-02 的 Skill / Guide 重叠审计和 V3-03 的使用方生命周期边界，目标是确认当前 9 个 Skill 的身份、去除跨语义所有者的重复正文、明确历史 Skill 设计与当前权威关系，并把新增 Skill 的准入与支持资源边界提升到现行 Skill 架构。
+V3-05 直接消费 V3-01 的四维所有权、V3-02 的资源审计、V3-03 的使用方生命周期与 V3-04 的 Skill / 支持资源边界，目标是建立长期资源语义与最小结构契约，并把**规范正文、资源固有结构、派生发现投影**分层。
 
-V3-04 的精确审查、集成与完成状态以 Issue #107 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-04 完成后，V3-05 只成为下一规划候选，不自动启动。
+V3-05 的精确审查、集成与完成状态以 Issue #109 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-05 完成后，V3-06 只成为下一规划候选，不自动启动。
 
-V3-04 不批量新增、删除或重写 Skill，不创建规则超级 Skill / 阶段路由 Skill，不冻结 Front Matter / metadata 结构，不实现完整资源发现架构，也不修改使用方仓库。
+V3-05 不实现 Runtime Catalog / Activation Manifest / Rule Index，不全仓批量增加 Front Matter，不设计完整资源发现 / 路由算法，也不修改使用方仓库。
 
 详细当前路线、候选与下一门禁统一维护在：
 
@@ -56,6 +56,7 @@ v3 当前规划 / 审计 / 架构入口：
 - `docs/project/current-repository-ownership-audit-v3.md`
 - `docs/architecture/consumer-lifecycle.md`
 - `docs/project/skill-reclassification-admission-v3.md`
+- `docs/architecture/agent-resource-model.md`
 
 v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在演进就提前替换现行运行行为。
 
@@ -95,6 +96,10 @@ Consumer 规则激活入口见：
 
 `docs/architecture/consumer-lifecycle.md`
 
+当前长期资源语义与最小结构契约见：
+
+`docs/architecture/agent-resource-model.md`
+
 跨职责验证与证据条件规则见：
 
 `docs/guides/verification-evidence-rules.md`
@@ -103,7 +108,7 @@ Consumer 规则激活入口见：
 
 `docs/guides/using-agentic-dev.md`
 
-V3-02 已完成对上述现有入口的语义所有权审计；在后续真实语义所有者或替代机制经设计、验证并正式集成前，v2 Guide / activation 入口继续保持现行兼容，不提前删除或改写其运行语义。
+V3-02 已完成对现有入口的语义所有权审计；V3-03～V3-05 已逐步建立生命周期、Skill 边界和资源模型 owner。具体普通运行资源发现 / 路由仍等待 V3-06，因此 v2 Guide / activation 入口继续保持现行兼容，不提前删除或改写其运行语义。
 
 ## 核心开发路径
 
@@ -139,6 +144,10 @@ Skill 清单、身份和职责边界统一维护在：
 使用方生命周期见：
 
 `docs/architecture/consumer-lifecycle.md`
+
+Agent 资源模型见：
+
+`docs/architecture/agent-resource-model.md`
 
 外部官方资料、成熟开源实践、专项评估和 Consumer 证据可以成为研究输入，但不能自动覆盖 Repository Authority。研究入口：
 
