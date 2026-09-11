@@ -27,7 +27,7 @@ V3-05 — 面向 Agent 的结构化资源模型，跟踪入口为 Issue #109。
 V3-05 工作产物：`docs/architecture/agent-resource-model.md`。  
 V3-05 启动基线：`master@cd61ab06c0194cc1cf0703aabc8aff5261529950`。
 
-V3-05 直接消费 V3-01 四维所有权模型、V3-02 资源审计、V3-03 使用方生命周期和 V3-04 Skill / 支持资源边界。目标不是立即实现新的 Manifest / Catalog，而是先固定真实长期资源、资源固有结构与派生发现投影的边界，并逐项裁决 v2 metadata 契约。
+V3-05 直接消费 V3-01 四维所有权模型、V3-02 资源审计、V3-03 使用方生命周期和 V3-04 技能 / 支持资源边界。目标不是立即实现新的 Manifest / Catalog，而是先固定真实长期资源、资源固有结构与派生发现投影的边界，并逐项裁决 v2 metadata 契约。
 
 V3-05 的精确审查、集成与完成状态由 Issue #109 和 GitHub 当前状态记录，不在 Roadmap 复制瞬时 PR 状态。Fresh Context 恢复时：
 
@@ -36,9 +36,9 @@ V3-05 的精确审查、集成与完成状态由 Issue #109 和 GitHub 当前状
 
 当前门禁：
 
-> **V3-05 未完成时，先完成资源身份、结构化范围、固有 / 派生边界、物理表示兼容、当前有效性与 v2 metadata disposition 的收敛及 AI 复核；V3-05 完成后，只判断是否正式启动 V3-06，不继承 V3-05 权限。**
+> **V3-05 未完成时，先完成资源身份、结构化范围、固有 / 派生边界、物理表示兼容、当前有效性与 v2 metadata 处理结论的收敛及 AI 复核；V3-05 完成后，只判断是否正式启动 V3-06，不继承 V3-05 权限。**
 
-V3-05 不实现完整资源发现 / 路由，不冻结 Runtime Catalog / Activation Manifest，不全仓增加 Front Matter，不物理迁移全部 Guide / Policy / Project / Research-Eval 资源，也不修改使用方仓库。
+V3-05 不实现完整资源发现 / 路由，不冻结 Runtime Catalog / Activation Manifest，不全仓增加 Front Matter，不物理迁移全部指南 / Policy / Project / Research-Eval 资源，也不修改使用方仓库。
 
 详细当前规划 / 审计 / 架构：
 
@@ -61,7 +61,7 @@ v3 严格按以下顺序推进：
 5. V3-05 — 面向 Agent 的结构化资源模型 — **状态见 Issue #109**；
 6. V3-06 — 资源发现架构；
 7. V3-07 — `agentic-dev` 自采用；
-8. V3-08 — Consumer 验证；
+8. V3-08 — 使用方验证；
 9. 独立复核；
 10. 必要 ADR、正式 v3 设计与实现规划。
 
@@ -78,11 +78,11 @@ V3-01 已建立四维所有权判断：
 
 目录、文件名、Front Matter、Markdown 形式或单一 `type` 都不能替代这些判断。
 
-V3-02 已按规范正文 / 规则族完成当前仓库审计，识别 Guide catch-all、已完成项目记录中的现行过渡契约、派生路由与真实语义所有者重叠，以及 Skill / 工程能力复制风险。
+V3-02 已按规范正文 / 规则族完成当前仓库审计，识别指南兜底、已完成项目记录中的现行过渡契约、派生路由与真实语义所有者重叠，以及技能 / 工程能力复制风险。
 
-V3-03 已把使用方生命周期收敛为单一可复用工程能力 owner：采用 / 升级与普通运行分离，普通运行默认只依赖使用方本地当前状态。
+V3-03 已把使用方生命周期收敛为单一可复用工程能力语义所有者：采用 / 升级与普通运行分离，普通运行默认只依赖使用方本地当前状态。
 
-V3-04 已确认当前 9 个 Skill 身份继续成立，并把新增 Skill 准入与支持资源边界提升到 `docs/architecture/skill-architecture.md`；工程纪律 / Skill Contract / `execute-unit` 已收敛为单点正文 + 薄消费。
+V3-04 已确认当前 9 个技能身份继续成立，并把新增技能准入与支持资源边界提升到 `docs/architecture/skill-architecture.md`；工程纪律 / 技能契约 / `execute-unit` 已收敛为单点正文 + 薄消费。
 
 V3-05 当前建立三层资源模型：
 
@@ -92,7 +92,7 @@ V3-05 当前建立三层资源模型：
 → 派生发现投影
 ```
 
-资源固有结构只表达真实长期身份 / 生命周期事实，派生发现投影服务 V3-06 的跨资源发现并可以删除 / 重建。V3-05 不把 Manifest record 等同于真实长期资源，也不新增独立于真实 owner 的统一 current-state 真值。
+资源固有结构只表达真实长期身份 / 生命周期事实，派生发现投影服务 V3-06 的跨资源发现并可以删除 / 重建。V3-05 不把 Manifest 记录等同于真实长期资源，也不新增独立于真实语义所有者的统一当前状态真值。
 
 ## 3. v2 已集成基线
 
@@ -109,9 +109,9 @@ V3-05 当前建立三层资源模型：
 
 v2 已验证并继续受 v3 保护的行为至少包括：薄启动入口、仓库 / Consumer 权威优先、渐进式披露、证据先于结论、规范正文单点所有权、派生发现机制不拥有规范正文、陈旧 / 缺失 / 歧义时失败关闭、主职责与最小辅助上下文分离、只做路由判断时不机械加载完整技能、真正进入职责时按需加载技能、阶段返回后重新判断、Consumer 普通运行只依赖 Consumer-local 现行资源、逐项基线采用，以及同一运行范围 / 发现职责不并行维护多个现行派生机制。
 
-V3-02 已明确部分 v2 `docs/project/*` 仍承载现行过渡契约；在真实替代 owner / mechanism 集成前不得提前归档或删除。
+V3-02 已明确部分 v2 `docs/project/*` 仍承载现行过渡契约；在真实替代语义所有者 / 机制集成前不得提前归档或删除。
 
-V3-03 已提炼长期使用方生命周期；V3-04 已提炼 Skill / 工程能力边界；V3-05 正在重新裁决 v2 metadata / Manifest / Catalog。具体发现、查询、路由与对 `rule-activation-guide.md` 的显式取代仍等待 V3-06，因此当前 v2 discovery / activation 兼容入口继续有效。
+V3-03 已提炼长期使用方生命周期；V3-04 已提炼技能 / 工程能力边界；V3-05 正在重新裁决 v2 metadata / Manifest / Catalog。具体发现、查询、路由与对 `rule-activation-guide.md` 的显式取代仍等待 V3-06，因此当前 v2 发现 / 激活兼容入口继续有效。
 
 ## 4. 当前范围边界
 
@@ -120,8 +120,8 @@ V3-05 只授权：
 - 定义哪些资源需要结构化及其最小长期资源身份；
 - 让资源模型保持 V3-01 语义所有者、适用范围 / 来源状态、生命周期角色、载体形式正交；
 - 明确资源原生结构、规范正文与派生发现提示的所有权关系；
-- 明确普通 Markdown、`SKILL.md`、工程纪律、技术 / 验证画像、仓库本地规则、项目权威与 Skill supporting resource 的兼容方式；
-- 固定当前有效性、来源、取代、派生关系的最小语义，但不建立第二 current-state truth；
+- 明确普通 Markdown、`SKILL.md`、工程纪律、技术 / 验证画像、仓库本地规则、项目权威与技能支持资源的兼容方式；
+- 固定当前有效性、来源、取代、派生关系的最小语义，但不建立第二当前状态真值；
 - 逐项裁决 v2 `id / kind / source / activation_role / scope / responsibility / conditions / risks / origin / state / relations` 以及 `semantic-reviewed / current-locator`；
 - 裁决 Activation Manifest / Runtime Catalog 属于资源固有模型还是 V3-06 派生层；
 - 更新本阶段稳定恢复入口并执行必要 AI 复核。
@@ -132,9 +132,9 @@ V3-05 不：
 - 设计完整资源发现、查询、排序、路由或 Stage Return 算法；
 - 全仓批量增加 Front Matter 或统一 YAML / JSON schema；
 - 建立数据库、向量库、图数据库、MCP 服务或后台 daemon；
-- 物理迁移全部 Guide / Policy / Project / Research-Eval 文件；
+- 物理迁移全部指南 / Policy / Project / Research-Eval 文件；
 - 修改任何使用方仓库；
-- 重新设计 V3-03 生命周期或 V3-04 Skill 身份；
+- 重新设计 V3-03 生命周期或 V3-04 技能身份；
 - 启动 V3-06～V3-08；
 - 启动 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 候选实施。
 
@@ -174,7 +174,7 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 8. 规则治理与知识激活 v3 / V3-01 — `docs/project/knowledge-capability-ownership-model-v3.md`（其结果仍是当前后续阶段分类权威）
 9. 规则治理与知识激活 v3 / V3-02 — `docs/project/current-repository-ownership-audit-v3.md`（其审计矩阵仍是 V3-05 / V3-06 直接分析输入）
 10. 规则治理与知识激活 v3 / V3-03 — `docs/architecture/consumer-lifecycle.md`（当前长期使用方生命周期权威）
-11. 规则治理与知识激活 v3 / V3-04 — `docs/project/skill-reclassification-admission-v3.md`（Skill 身份 / 重叠裁决记录；稳定准入规则已进入 Skill Architecture）
+11. 规则治理与知识激活 v3 / V3-04 — `docs/project/skill-reclassification-admission-v3.md`（技能身份 / 重叠裁决记录；稳定准入规则已进入技能架构）
 
 ## 7. Root Bootstrap 职责
 
