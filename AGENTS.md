@@ -32,10 +32,14 @@
 9. `docs/architecture/engineering-disciplines.md`
 10. `docs/architecture/technology-profile-contract.md`
 11. `docs/technology-profiles/*`
-12. `docs/project/*`
-13. `docs/guides/git-commit-guidelines.md`
-14. `docs/research/*`
-15. 任务与临时工作记录
+12. `docs/architecture/agent-resource-model.md`
+13. `docs/architecture/resource-discovery-architecture.md`
+14. `docs/project/*`
+15. `docs/guides/git-commit-guidelines.md`
+16. `docs/research/*`
+17. 任务与临时工作记录
+
+其中资源模型与资源发现架构只拥有跨资源身份 / 发现语义，不得覆盖更高优先级的方法、使用方生命周期、Skill 架构 / 契约、工程纪律或技术画像对其自身规范正文的定义。
 
 `docs/project/*` 只定义 `agentic-dev` 仓库自身的项目级治理与运行状态，不得覆盖更高优先级的方法、架构、契约、工程纪律或技术画像权威，也不得被 Consumer 自动继承。
 
