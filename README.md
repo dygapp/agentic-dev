@@ -8,11 +8,11 @@
 
 `docs/guides/rule-activation-guide.md`
 
-它只负责把当前任务路由到最小必要的 Guide / Skill / 仓库权威；不要默认把完整 `agentic-dev` 规则栈或完整历史加载进上下文。
+它只负责把当前任务路由到最小必要的 Guide / Skill / Repository Authority；不要默认把完整 `agentic-dev` 规则栈或完整历史加载进上下文。
 
-目标项目始终拥有自己的仓库权威、需求、架构、代码、测试和集成策略。`agentic-dev` 提供“如何工作”的可复用方法与能力，不替使用方决定项目事实。
+目标项目始终拥有自己的仓库权威、需求、架构、代码、测试和集成策略。`agentic-dev` 提供“如何工作”的可复用方法与能力，不替 Consumer 决定项目事实。
 
-一个足够薄的新上下文可以是：
+一个足够薄的 Fresh Context 可以是：
 
 ```text
 这是一个 Fresh Context。
@@ -26,7 +26,7 @@ GitHub Repository 是唯一项目事实来源。
 <必要的本轮特殊约束，如有>
 ```
 
-项目目标、当前工作入口或必要特殊约束可以按实际任务补充；不要为了“完整”复制仓库权威、开发方法或详细规则正文，它们应从仓库中的当前权威来源读取。
+项目目标、当前工作入口或必要特殊约束可以按实际任务补充；不要为了“完整”复制 Repository Authority、Development Method 或详细规则正文，它们应从仓库中的当前权威来源读取。
 
 ## 当前状态
 
@@ -39,13 +39,13 @@ GitHub Repository 是唯一项目事实来源。
 - **V3-03 跟踪入口：** Issue #104 — 使用方初始化、采用、升级与普通运行生命周期
 - **V3-03 工作产物：** `docs/architecture/consumer-lifecycle.md`
 
-V3-03 把 V3-02 已识别的使用方生命周期规则族收敛到单一长期语义所有者，重点区分新使用方首次采用、已有使用方基线升级、逐项采用决定、采用验证与基线推进、仅依赖本地当前状态的普通运行，以及显式重新进入上游。
+V3-03 将 V3-02 已识别的使用方生命周期规则族收敛到单一长期语义所有者，重点区分新使用方首次采用、已有使用方基线升级、逐项采用决定、采用验证与基线推进、仅依赖本地当前状态的普通运行，以及显式重新进入上游。
 
-V3-03 的精确审查 / 集成 / 完成状态以 Issue #104 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-03 完成后，V3-04 只成为下一规划候选，不自动启动。
+V3-03 的精确审查、集成与完成状态以 Issue #104 和当前 GitHub 状态为准，不在 README 复制瞬时 PR 状态。V3-03 完成后，V3-04 只成为下一 Planning Candidate，不自动启动。
 
-V3-02 的其他处理候选仍只是后续设计输入。V3-03 不执行 Guide 物理迁移、技能重构、Front Matter / Index 实现、完整发现架构或使用方仓库修改。
+V3-02 的其他 disposition 仍只是后续设计输入。V3-03 不执行 Guide 物理迁移、Skill 重构、Front Matter / Index 实现、完整 discovery architecture 或 Consumer 修改。
 
-详细当前路线、候选与下一门禁统一维护在：
+详细当前路线、候选与下一 Gate 统一维护在：
 
 `docs/project/project-roadmap.md`
 
@@ -56,15 +56,15 @@ v3 当前规划 / 审计 / 生命周期入口：
 - `docs/project/current-repository-ownership-audit-v3.md`
 - `docs/architecture/consumer-lifecycle.md`
 
-v3 规划期间，v2 已验证的使用方本地普通运行和当前发现 / 激活入口继续有效；不因为 v3 正在演进就提前替换现行运行行为。
+v3 规划期间，v2 已验证的 Consumer-local 普通运行和当前 discovery / activation 入口继续有效；不因为 v3 正在演进就提前替换现行运行行为。
 
 ## 入口职责
 
 为避免启动上下文膨胀，根入口职责明确分离：
 
-- `AGENTS.md`：只维护稳定仓库治理、权威边界与 Agent 工作约束；**不维护当前阶段、里程碑进展、候选路线、Issue / PR 状态或下一工作项**；
+- `AGENTS.md`：只维护稳定 Repository Governance、Authority Boundary 与 Agent 工作约束；**不维护当前阶段、里程碑进展、候选路线、Issue / PR 状态或下一工作项**；
 - `README.md`：维护面向人的简短当前状态与稳定导航；
-- `docs/project/project-roadmap.md`：维护详细项目路线、活动状态、候选库和下一门禁；
+- `docs/project/project-roadmap.md`：维护详细项目路线、活动状态、候选库和下一 Gate；
 - `docs/project/*`：维护具体里程碑、项目治理、设计与验证记录；
 - Git / PR / Issue / Actions：维护精确外部状态与执行证据。
 
@@ -74,7 +74,7 @@ v3 规划期间，v2 已验证的使用方本地普通运行和当前发现 / �
 
 GitHub Repository 是本项目长期事实来源。
 
-稳定仓库权威、知识边界和仓库级 Agent 约束见：
+稳定 Repository Authority、知识边界和仓库级 Agent 约束见：
 
 `AGENTS.md`
 
@@ -82,11 +82,11 @@ GitHub Repository 是本项目长期事实来源。
 
 `docs/project/project-roadmap.md`
 
-使用方规则激活入口见：
+Consumer 规则激活入口见：
 
 `docs/guides/rule-activation-guide.md`
 
-完成基线采用后的使用方本地规则发现与激活见：
+完成 baseline adoption 后的 Consumer-local 规则发现与激活见：
 
 `docs/guides/consumer-local-rule-activation.md`
 
@@ -102,7 +102,7 @@ GitHub Repository 是本项目长期事实来源。
 
 `docs/guides/using-agentic-dev.md`
 
-V3-02 已完成对上述现有入口的语义所有权审计；在后续真实所有者 / 替代方案经设计、验证并正式集成前，v2 Guide / 激活入口继续保持现行兼容，不提前删除或改写其运行语义。
+V3-02 已完成对上述现有入口的语义所有权审计；在后续真实 owner / replacement 经设计、验证并正式集成前，v2 Guide / activation 入口继续保持现行兼容，不提前删除或改写其运行语义。
 
 ## 核心开发路径
 
@@ -139,7 +139,7 @@ Skill 清单、身份和职责边界统一维护在：
 
 `docs/architecture/consumer-lifecycle.md`
 
-外部官方资料、成熟开源实践、专项评估和使用方证据可以成为研究输入，但不能自动覆盖仓库权威。研究入口：
+外部官方资料、成熟开源实践、专项评估和 Consumer 证据可以成为研究输入，但不能自动覆盖 Repository Authority。研究入口：
 
 `docs/research/README.md`
 
@@ -149,7 +149,7 @@ Skill 清单、身份和职责边界统一维护在：
 
 `docs/guides/terminology-guidelines.md`
 
-使用方的主导语言由其自己的仓库权威决定，不从 `agentic-dev`、旧聊天或其他项目机械继承。
+Consumer 的主导语言由其自己的 Repository Authority 决定，不从 `agentic-dev`、旧聊天或其他项目机械继承。
 
 ## 仓库结构
 
