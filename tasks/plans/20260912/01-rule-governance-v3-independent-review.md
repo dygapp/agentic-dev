@@ -65,8 +65,11 @@
 - [x] 建立 Issue #118 Planning Authority；
 - [x] 冻结启动基线；
 - [x] 建立独立复核范围、Finding schema 与 Gate；
-- [ ] 对齐 README / Roadmap 当前状态；
-- [ ] 形成 Planning PR 并完成高影响 AI Review / Integration。
+- [x] 对齐 README / Roadmap / v3 项目记录的拟集成恢复状态；
+- [x] 形成 Planning PR #119；
+- [ ] 完成 PR #119 最终高影响 AI Review，并进入人工集成决策。
+
+PR #119 的候选文档必须表达**拟集成后的稳定状态**：Gate A protocol 已建立，真正下一实际步骤为新的 Fresh Context Independent Review。PR 是否已经合并属于 GitHub 原生事实，不在计划中派生尾部状态提交。
 
 ### IR-2 — Independent Fresh Context Review
 
