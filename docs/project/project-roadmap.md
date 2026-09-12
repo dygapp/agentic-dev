@@ -26,8 +26,8 @@ V3-04 — 技能重分类与准入已完成并集成。
 V3-05 — 面向 Agent 的结构化资源模型已完成并集成。  
 V3-06 — 资源发现架构已完成并集成。  
 V3-07 — `agentic-dev` 自采用与发现机制切换已完成并集成。  
-V3-08 — Consumer 验证与持续有效性复核，跟踪入口为 Issue #115。  
-V3-08 工作产物：`docs/project/rule-governance-v3-v3-08-consumer-validation.md`、`tasks/plans/20260911/06-rule-governance-v3-v3-08-consumer-validation.md`。  
+V3-08 — Consumer 验证与持续有效性复核已完成；Issue #115 已以 `completed` 关闭，最终全轨高影响复核 Blocking=0 / Medium=0。  
+V3-08 工作产物：`docs/project/rule-governance-v3-v3-08-consumer-validation.md`、`tasks/plans/20260911/06-rule-governance-v3-v3-08-consumer-validation.md`；最终精确 Evidence 以 Issue #115 为准。  
 V3-08 启动基线：`master@2fe193035c629f6b8805fd473bd322f70fe6e172`。
 
 V3-07 已把 `agentic-dev` 自身 ordinary runtime 收敛为：
@@ -39,37 +39,21 @@ Local Discovery Entry
 
 Reviewed Discovery Map 是非规范性派生输入，不进入 Repository Authority；当前没有证据要求额外 Runtime View / Catalog / generator。
 
-V3-08 不继续设计新的 discovery 容器，而是用真实 Consumer 验证 V3-03～V3-07 的生命周期、资源与发现语义是否能够：
+V3-08 已用成熟 Existing Consumer 与最小 first-adoption fixture 验证 V3-03～V3-07 的长期语义：
 
-- 被 Existing Consumer 显式 baseline upgrade 采用；
-- 在 ordinary Fresh Context 中只依赖 Consumer-local current state；
-- 正确处理职责、supporting capability、Stage Return、source currentness、coverage drift 与失败关闭；
-- 降低不必要的默认上下文成本而不牺牲 correctness；
-- 在真实后续项目演进中持续有效；
-- 对 first-adoption 语义取得可审计 Evidence。
+- Existing Consumer 可以显式完成 baseline upgrade 与逐项 adopt / retain-or-override / reject / supersede；
+- ordinary Fresh Context 可以只依赖 Consumer-local current resources，普通运行 upstream access = 0；
+- primary responsibility、最小 supporting context、Stage Return、source currentness 与失败关闭在真实运行中成立；
+- Page Content Architecture → EU-55 的真实后续演进完整走过 Planning、Technical Planning、slice/readiness、Execute、verification/debug、Human Review、Integration 与 Post-Integration closure；
+- 最小新 Consumer fixture 完成 first adoption，并在新的 ordinary-runtime Fresh Context 中保持 local-only；
+- 成熟 Consumer 与最小 fixture 都没有真实证据要求 Reviewed Discovery Map / Runtime View，这只证明其 optionality，不推导为“任何 Consumer 都不需要”；
+- 没有 V3-08 Evidence 要求回改 V3-03 / V3-05 / V3-06 / V3-07 的长期 reusable Architecture。
 
-Primary real Consumer 为 `dygapp/jilinjobs-cms`。当前 `agentic-dev` 工作只允许读取该 Consumer、设计验证并接收 Evidence；Consumer 写实验必须在其自身 Repository Authority 下独立执行。
-
-V3-08 当前 Gate：**Gate A — Validation Design**。
-
-Gate A 已恢复到 Consumer 当前真实状态，并明确：
-
-- Consumer 当前 evaluated `agentic-dev` baseline 为 `d9fad0da83dbdb61cac5eb9778b0258c6861eef1`；
-- V3-08 candidate baseline 为 `2fe193035c629f6b8805fd473bd322f70fe6e172`；
-- exact upstream delta 为 34 commits ahead / 0 behind，必须逐项分类，不允许复制完整 upstream；
-- Consumer 当前 EU-54 已进入独立 Execute 生命周期，V3-08 在其自然收口前只做旁路只读观察；
-- Consumer `docs/work/current/*` 与 Issue / PR Current Evidence 当前存在真实状态冲突，V3-08 要验证 conflict detection / fail-closed，而不是预设某一载体天然优先；
-- Existing Consumer baseline upgrade、post-adoption runtime、持续有效性和 first-adoption claim coverage 分轨验证；
-- `docs/README.md` 只是 Consumer Local Discovery Entry 的候选，不是预设物理答案；Reviewed Discovery Map 同样必须由 Consumer local inventory 决定是否需要。
-
-V3-08 的精确 Gate、Consumer Evidence、PR / Actions 与完成状态由 Issue #115 和当前 GitHub 状态记录，不在 Roadmap 复制瞬时 Consumer PR Head 或 workflow 状态。Fresh Context 恢复时：
-
-- 如果 Issue #115 仍开放，继续 V3-08 当前未完成 Gate；
-- 如果 Issue #115 已以完成原因关闭，V3-08 视为已收口，**独立复核只成为下一规划候选**，仍需独立授权才能启动。
+V3-08 完成后，**独立复核只是下一规划候选**。V3-08 closure 不授予独立复核、ADR、正式 v3 设计、实现规划、WI-06 / WI-07 / WI-09 或其他候选的自动权限。
 
 当前门禁：
 
-> **先完成 Gate A 验证设计、风险 / AI 复核和 Consumer handoff；EU-54 未自然收口前不得进入 Consumer baseline-upgrade 写实验。后续必须取得真实 Consumer Gate B～D Evidence，不能用设计推演代替 V3-08 完成。**
+> **V3-01～V3-08 已完成；下一正式路线仍未启动。只有取得独立 Planning Authority 后才进入 v3 独立复核。经人工明确授权的局部一致性修订 / 状态收敛可以执行，但不得借此推导后续路线权限。**
 
 详细当前规划 / 审计 / 架构 / 自采用 / Consumer 验证：
 
@@ -96,9 +80,9 @@ v3 严格按以下顺序推进：
 5. V3-05 — 面向 Agent 的结构化资源模型 — **已完成并集成**；
 6. V3-06 — 资源发现架构 — **已完成并集成**；
 7. V3-07 — `agentic-dev` 自采用与发现机制切换 — **已完成并集成**；
-8. V3-08 — Consumer 验证与持续有效性复核 — **状态见 Issue #115**；
-9. 独立复核；
-10. 必要 ADR、正式 v3 设计与实现规划。
+8. V3-08 — Consumer 验证与持续有效性复核 — **已完成 / Issue #115 closed as completed**；
+9. 独立复核 — **下一规划候选 / 未启动**；
+10. 必要 ADR、正式 v3 设计与实现规划 — **未启动，取决于前序 Gate**。
 
 顺序只定义规划依赖，不自动授予后序任务权限。
 
@@ -130,7 +114,7 @@ V3-06 建立长期发现架构：
 
 V3-07 根据本仓库真实复杂度选择**一个 Reviewed Discovery Map、无 Runtime View**，并把 `agentic-dev` 自身 ordinary runtime 入口切换到 `docs/discovery/README.md`。旧手工 Guide routing 已显式退出 current discovery responsibility。
 
-V3-08 当前不改变上述架构，而通过真实 Consumer 回答：这些 owner / lifecycle / discovery semantics 是否真的可以被局部采用、保持 Consumer Authority 优先，并在长期 ordinary runtime 中持续运转。
+V3-08 通过真实 Existing Consumer、完整持续演进和最小 first-adoption fixture 验证上述 owner / lifecycle / discovery semantics 可以被局部采用、保持 Consumer Authority 优先，并在 ordinary runtime 中持续运转。该 Evidence 支持当前架构继续进入独立复核，而不是自动启动新的实现路线。
 
 ## 3. v2 已集成基线与兼容退出
 
@@ -153,34 +137,24 @@ V3-08 当前不改变上述架构，而通过真实 Consumer 回答：这些 own
 
 V3-03～V3-06 已把这些长期语义分别提升到使用方生命周期、资源模型和资源发现架构。V3-07 已把 `agentic-dev` 自身仍 current 的 v2 手工发现 surface 降级为 Guide / historical / compatibility 角色，并建立唯一 current self-runtime discovery mechanism。
 
-V2 项目记录继续保留历史设计与验证证据价值；它们不因为被长期架构取代而删除。V3-08 可以按 claim-level Evidence reuse 规则复用仍未被新语义改变的历史 Consumer evidence，但不能用“v2 总体通过”替代当前 V3 claim 证明。
+V2 项目记录继续保留历史设计与验证证据价值；它们不因为被长期架构取代而删除。V3-08 已按 claim-level Evidence reuse 规则复用仍未被新语义改变的历史 Consumer evidence，并通过独立最小 fixture 补齐无法复用的 first-adoption 语义；“v2 总体通过”没有被用来替代当前 V3 claim 证明。
 
 ## 4. 当前范围边界
 
-V3-08 当前授权 `agentic-dev`：
+V3-08 已完成，不再拥有活动执行权限。当前可以在显式授权下进行与已发现事实直接相关的局部一致性修订、状态收敛和证据回写，但这类维护工作不得被解释为自动进入独立复核或后续路线。
 
-- 读取真实 Consumer 当前 Repository Authority / GitHub Evidence；
-- 建立 Gate A～D 验证矩阵、Evidence Contract、context-cost 口径与 finding classification；
-- 记录 Existing Consumer previous / candidate upstream baseline；
-- 设计 Consumer baseline upgrade 的逐项 adopt / retain-or-override / reject-not-applicable / supersede-remove 判定；
-- 验证 local-only ordinary runtime、primary + supporting、currentness、coverage drift、fail-closed；
-- 设计受控 negative tests，但不在本仓库会话直接执行 Consumer 写操作；
-- 以真实后续 Consumer 工作验证 sustained validity；
-- 关闭 first-adoption claim：优先 claim-level Evidence reuse，不足时用最小隔离 Consumer fixture；
-- 对 Consumer findings 进行 reusable / Consumer-only / defect / efficiency 分类；
-- 必要时修订 `agentic-dev` 当前长期 owner 并重新验证。
+如果后续正式启动独立复核，其职责应是挑战当前 V3-01～V3-08 的长期架构与 Evidence 泛化边界，判断是否存在 Blocking / Medium 或真实 ADR candidate；它不应默认重新设计 V3，也不应因为 V3-08 PASS 降低复核强度。
 
-V3-08 当前不：
+当前仍不自动：
 
-- 重新设计 V3-01～V3-07 作为默认起点；
-- 在 `agentic-dev` 会话直接修改 `jilinjobs-cms`；
-- 打断或扩大 Consumer 当前 EU-54 Execute scope；
+- 重新设计 V3-01～V3-07；
+- 修改 Consumer Repository；
 - 把 `agentic-dev/docs/discovery/*` 实例复制给 Consumer；
 - 强制 Consumer 建立 Reviewed Discovery Map / Runtime View / Manifest / Catalog；
 - 用文件大小 / token 优化覆盖 correctness / Authority / fail-closed；
-- 把 Consumer 产品事实提升为通用规则；
-- 因一次 Consumer PASS 自动关闭 v3；
-- 自动进入独立复核、ADR 或正式 v3 实现规划；
+- 把单一 Consumer 或 fixture 事实泛化成所有 Consumer 的通用结论；
+- 因 V3-08 PASS 自动关闭 v3；
+- 自动创建 ADR、正式 v3 设计或实现规划；
 - 启动 WI-06、WI-07、WI-09、第四工程纪律或 Issue #71 候选实施。
 
 临时 GPT-6 / 其他 AI 评估只作为挑战和复核证据，不自动提升为长期架构，也不授予后序执行权限。
@@ -223,6 +197,7 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 12. v3 / V3-05 — `docs/architecture/agent-resource-model.md`
 13. v3 / V3-06 — `docs/architecture/resource-discovery-architecture.md`
 14. v3 / V3-07 — `docs/project/rule-governance-v3-v3-07-self-adoption.md`、`docs/discovery/README.md`
+15. v3 / V3-08 — `docs/project/rule-governance-v3-v3-08-consumer-validation.md`、Issue #115
 
 ## 7. Root Bootstrap 与本地发现职责
 
@@ -237,7 +212,7 @@ Issue #58 继续承担长期 Consumer feedback 入口；其中新证据只有经
 
 如果当前工作只是状态恢复、确认 Gate 或回答仓库事实，在读取 AGENTS / README / Roadmap / GitHub 当前状态后即可停止，不机械读取 Map 或所有 Skill。
 
-V3-08 读取 Consumer 时同样遵守 Consumer Repository Authority；`agentic-dev` 自身发现入口和 Map 不自动成为 Consumer runtime input。
+Consumer 的采用与 ordinary runtime 始终遵守 Consumer 自己的 Repository Authority；`agentic-dev` 自身发现入口和 Map 不自动成为 Consumer runtime input。
 
 ## 8. Fresh Context 恢复顺序
 
@@ -248,10 +223,10 @@ V3-08 读取 Consumer 时同样遵守 Consumer Repository Authority；`agentic-d
 3. 读取本文，确认当前路线、门禁和候选边界；
 4. 重新读取当前 GitHub `master`、Open PR / Issue 和必要 Actions；
 5. 当前 v3 规划期间读取 Issue #94；
-6. 读取 Issue #115 与 `docs/project/rule-governance-v3-v3-08-consumer-validation.md`：若 #115 仍开放，继续 V3-08 当前 Gate；若已经完成关闭，则只把独立复核视为下一规划候选；
-7. V3-08 Gate A / Consumer handoff 只读恢复 `dygapp/jilinjobs-cms` 当前 GitHub / Repository Authority；不得从本文复制某个历史 Consumer PR Head 作为当前事实；
+6. Issue #115 已完成关闭，因此 V3-08 是已完成 Evidence，而不是活动 Gate；只有当前任务需要复核 V3-08 claim 时才按需读取其项目记录与 Issue Evidence；
+7. 独立复核只有在获得独立 Planning Authority 后才成为活动任务；此前不得从路线顺序继承权限；
 8. 只有当前 `agentic-dev` 任务需要跨资源发现时读取 `docs/discovery/README.md`，并按需进入 Reviewed Discovery Map / current semantic owner；
-9. 只在 V3-08 结论需要证据时按需读取 V3-03～V3-07 架构 / 项目记录与 v2 historical Evidence；不重新做已完成阶段设计；
+9. 只有具体结论需要追溯时才按 Evidence locator 最小扩读已完成 V3-01～V3-08、v2 historical Evidence、Research 或 Eval；不重新做已完成阶段设计；
 10. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
 
 ## 9. 更新触发
