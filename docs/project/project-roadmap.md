@@ -34,7 +34,8 @@ V3-08 启动基线：`master@2fe193035c629f6b8805fd473bd322f70fe6e172`。
 
 > **v3 Independent Review — Issue #118 / Gate A**
 
-Independent Review 启动基线：`master@86fe96756c7b3678d7b0bac10f32358a9372e84c`。  
+Independent Review 复核对象冻结基线：`agentic-dev@86fe96756c7b3678d7b0bac10f32358a9372e84c`。  
+Independent Review 执行时必须重新读取届时 GitHub current `master`；冻结 subject baseline 不等于执行时 current repository state。  
 协调计划：`tasks/plans/20260912/01-rule-governance-v3-independent-review.md`。
 
 V3-07 已把 `agentic-dev` 自身 ordinary runtime 收敛为：
@@ -60,7 +61,7 @@ V3-08 已完成并退出活动执行权限。Independent Review 现在拥有独�
 
 当前门禁：
 
-> **Issue #118 / Gate A — Independent Review Protocol Ready 候选。当前只授权冻结独立复核输入、Finding schema、Fresh Context 独立性要求与恢复入口；不自动授予 ADR、正式 v3 设计、实现规划或其他候选工作权限。**
+> **Issue #118 / Gate A — Independent Review Protocol Ready 候选。当前只授权冻结独立复核 subject baseline、execution-time current-state recovery、Finding schema、Fresh Context 独立性要求与恢复入口；不自动授予 ADR、正式 v3 设计、实现规划或其他候选工作权限。**
 
 详细当前规划 / 审计 / 架构 / 自采用 / Consumer 验证：
 
@@ -124,7 +125,7 @@ V3-07 根据本仓库真实复杂度选择**一个 Reviewed Discovery Map、无 
 
 V3-08 通过真实 Existing Consumer、完整持续演进和最小 first-adoption fixture 验证上述 owner / lifecycle / discovery semantics 可以被局部采用、保持 Consumer Authority 优先，并在 ordinary runtime 中持续运转。
 
-Independent Review 的任务不是继续扩建上述架构，而是从新的 Fresh Context 挑战 V3-01～V3-08 与 PR #117 后的一致性状态，判断是否存在 Blocking / Medium、Evidence 泛化越界或真实 ADR candidate。只有最终 Blocking=0 / Medium=0 后，才能决定直接进入 v3 Closure，或进入 finding 支持的必要 ADR。
+Independent Review 的任务不是继续扩建上述架构，而是从新的 Fresh Context 挑战 `86fe967…` 冻结 subject 上的 V3-01～V3-08 与 PR #117 后的一致性状态，判断是否存在 Blocking / Medium、Evidence 泛化越界或真实 ADR candidate。执行时仍必须恢复届时 current Repository State，以识别 subject baseline 之后的 planning / recovery-only 变化或任何需要显式刷新复核对象的实质语义变化。只有最终 Blocking=0 / Medium=0 后，才能决定直接进入 v3 Closure，或进入 finding 支持的必要 ADR。
 
 ## 3. v2 已集成基线与兼容退出
 
@@ -153,12 +154,13 @@ V2 项目记录继续保留历史设计与验证证据价值；它们不因为�
 
 Independent Review 当前拥有 Planning Authority，但 Gate A 不等于 Independent Review 已经完成。当前允许：
 
-- 冻结 exact baseline、review scope、Finding schema 与独立性要求；
+- 冻结 subject baseline、review scope、Finding schema 与独立性要求；
+- 固定 execution-time current-state recovery 与 subject refresh 条件；
 - 更新 README / Roadmap / Issue #94 / #118 等必要 recovery surface；
 - 建立供新的 Fresh Context 使用的最小协调计划；
 - 对 Gate A planning diff 执行与风险相称的 AI Review 与集成收敛。
 
-真正 Independent Review 必须在新的 Fresh Context 中重新恢复 Repository Authority、当前 GitHub State 与必要 V3 Authority，不得把作者会话、历史聊天、旧 AI Review PASS 或 Issue #118 中的总结性 claim 当作结论前提。
+真正 Independent Review 必须在新的 Fresh Context 中重新恢复 Repository Authority、当前 GitHub State 与必要 V3 Authority，不得把冻结 subject SHA 当作 current master，也不得把作者会话、历史聊天、旧 AI Review PASS 或 Issue #118 中的总结性 claim 当作结论前提。
 
 当前仍不自动：
 
@@ -236,10 +238,10 @@ Consumer 的采用与 ordinary runtime 始终遵守 Consumer 自己的 Repositor
 1. 读取根 `AGENTS.md`，恢复稳定 Repository Governance 与 Authority Boundary；
 2. 读取根 `README.md`，取得简短当前状态；
 3. 读取本文，确认当前路线、门禁和候选边界；
-4. 重新读取当前 GitHub `master`、Open PR / Issue 和必要 Actions；
+4. 重新读取执行时当前 GitHub `master`、Open PR / Issue 和必要 Actions；
 5. 当前 v3 规划期间读取 Issue #94；
 6. Issue #115 已完成关闭，因此 V3-08 是已完成 Evidence，而不是活动 Gate；只有当前任务需要挑战 V3-08 claim 时才按需读取其项目记录与 Issue Evidence；
-7. 当前 Independent Review 的 Planning / Evidence Authority 为 Issue #118；真正复核必须在新的 Fresh Context 中执行，并从当前 Repository State 重新判断所需 V3 Authority / Evidence，不从旧会话继承复核结论；
+7. 当前 Independent Review 的 Planning / Evidence Authority 为 Issue #118；复核对象冻结在 `86fe967…`，但真正执行必须使用新的 Fresh Context 恢复届时 current Repository State，并确认 subject baseline 之后没有未处理的 V3 语义变化；
 8. 只有当前 `agentic-dev` 任务需要跨资源发现时读取 `docs/discovery/README.md`，并按需进入 Reviewed Discovery Map / current semantic owner；
 9. 只有具体 Finding 需要追溯时才按 Evidence locator 最小扩读已完成 V3-01～V3-08、v2 historical Evidence、Research 或 Eval；不重新做已完成阶段设计；
 10. 不依赖其他聊天、历史会话或个人记忆补充未固化项目事实。
