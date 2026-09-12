@@ -71,10 +71,9 @@
 - [x] 建立 execution-time current-state recovery 规则；
 - [x] 建立独立复核范围、Finding schema 与 Gate；
 - [x] 对齐 README / Roadmap / v3 项目记录的拟集成恢复状态；
-- [x] 形成 Planning PR #119；
-- [ ] 完成 PR #119 最终高影响 AI Review，并进入人工集成决策。
+- [x] 形成 Planning PR #119 并进入高影响 AI Review / 人工集成决策链。
 
-PR #119 的候选文档必须表达**拟集成后的稳定状态**：Gate A protocol 已建立，真正下一实际步骤为新的 Fresh Context Independent Review。PR 是否已经合并属于 GitHub 原生事实，不在计划中派生尾部状态提交。
+Final AI Review、Draft / Ready、是否合并与集成提交都属于 GitHub 原生事实，直接从 PR #119 恢复，不在计划中用 checkbox 复制。PR #119 的候选文档表达**拟集成后的稳定状态**：Gate A protocol 已建立，真正下一实际步骤为新的 Fresh Context Independent Review；因此不需要再派生只用于记录“PR 已合并”的尾部状态提交。
 
 ### IR-2 — Independent Fresh Context Review
 
