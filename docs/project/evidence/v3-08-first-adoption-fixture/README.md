@@ -20,12 +20,13 @@
 
 ## 2. Durable fixture tree
 
-`fixture/` 是定向复核使用的 final ordinary-runtime snapshot：
+`fixture/` 是定向复核使用的 final ordinary-runtime snapshot，加上一份只服务 Evidence 的 pre-verification candidate-state record：
 
 - `AGENTS.md`
 - `README.md`
 - `SPECIFICATION.md`
 - `docs/README.md`
+- `governance/candidate-baseline-before-verification.md` — Evidence-only candidate state，不进入 ordinary runtime
 - `governance/current-evaluated-baseline.md`
 - `governance/active-asset-provenance.md`
 - `governance/history/first-adoption.md`
@@ -35,11 +36,11 @@
 
 ## 3. Seed / candidate / final lifecycle
 
-为了避免把 Evidence fixture 变成三份长期 Consumer 模板，本目录只版本化 final snapshot；seed 与 candidate 状态由 `revalidation.md` 中的可核对 delta 明确表达：
+为了避免把 Evidence fixture 变成三份长期 Consumer 模板，本目录只版本化 final snapshot，并用一个明确标记为 Evidence-only 的 candidate-state record 保留 baseline advancement 前边界：
 
 - seed：只有最小 Repository Authority / README / product Specification；没有 evaluated baseline、Local Discovery Entry、adopted Skill、Map/View/Catalog；
-- candidate：在 exact baseline 上完成 per-item adoption 与本地投影，但 `current-evaluated-baseline` 仍保持未推进；
-- final：adoption verification 通过后才把 evaluated baseline 推进到 `2fe193035...`，随后进入 ordinary runtime。
+- candidate：在 exact baseline 上完成 per-item adoption 与本地投影，但 `candidate-baseline-before-verification.md` 明确 current evaluated baseline 不得推进；
+- final：adoption verification 通过后才由 `current-evaluated-baseline.md` 表达 evaluated baseline 已推进到 `2fe193035...`，随后进入 ordinary runtime。
 
 这种记录方式只服务 Evidence durability，不规定真实 Consumer 必须使用这些文件名或目录。
 
