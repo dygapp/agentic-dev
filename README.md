@@ -37,7 +37,8 @@ GitHub Repository 是唯一项目事实来源。
 - **总体跟踪：** Issue #94
 - **V3-01～V3-08：** 已全部完成；V3-08 Issue #115 已以 `completed` 关闭，最终全轨高影响复核为 Blocking=0 / Medium=0
 - **当前活动子任务：** v3 Independent Review — Issue #118；当前处于 Gate A，Planning Authority 已建立，真正独立复核必须在新的 Fresh Context 中执行
-- **Independent Review 启动基线：** `master@86fe96756c7b3678d7b0bac10f32358a9372e84c`
+- **Independent Review 复核对象冻结基线：** `agentic-dev@86fe96756c7b3678d7b0bac10f32358a9372e84c`
+- **Independent Review 执行恢复：** 真正开始时必须重新读取届时 GitHub current `master`；冻结 subject baseline 不等于执行时 current repository state
 - **后续边界：** Independent Review 不自动授予 ADR、正式设计、实现规划或其他候选工作权限；只有最终 Blocking=0 / Medium=0 后才能判断直接关闭 v3 或进入必要 ADR
 - **V3-08 工作产物：** `docs/project/rule-governance-v3-v3-08-consumer-validation.md`、`tasks/plans/20260911/06-rule-governance-v3-v3-08-consumer-validation.md`；最终精确 Evidence 以 Issue #115 为准
 - **Independent Review 协调计划：** `tasks/plans/20260912/01-rule-governance-v3-independent-review.md`
@@ -55,7 +56,7 @@ V3-08 已验证：成熟 Existing Consumer 可以显式完成 baseline upgrade �
 
 V3-08 的精确 Track、Evidence 与 closure 由 Issue #115 和当前 GitHub 状态记录；README 只保留可恢复的里程碑结论，不复制瞬时 Consumer PR / Actions 状态。
 
-Independent Review 的精确 Planning / Evidence Authority 为 Issue #118。该复核只挑战已经集成的 V3-01～V3-08、PR #117 后的一致性状态与 Evidence 泛化边界，不重新设计 v3，也不把既有 PASS 当作复核前提。
+Independent Review 的精确 Planning / Evidence Authority 为 Issue #118。该复核只挑战已经集成的 V3-01～V3-08、PR #117 后的一致性状态与 Evidence 泛化边界，不重新设计 v3，也不把既有 PASS 当作复核前提。Gate A planning / recovery-only 变更可以成为执行时 current state，但不能静默改变冻结的 V3 subject claims。
 
 详细当前路线、候选与下一门禁统一维护在：
 
