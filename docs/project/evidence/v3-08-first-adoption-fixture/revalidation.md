@@ -25,6 +25,7 @@ Final fixture root：
 - `README.md`
 - `SPECIFICATION.md`
 - `docs/README.md`
+- `governance/candidate-baseline-before-verification.md` — Evidence-only pre-verification state
 - `governance/current-evaluated-baseline.md`
 - `governance/active-asset-provenance.md`
 - `governance/history/first-adoption.md`
@@ -59,28 +60,28 @@ seed
   = thin docs/README.md
   + local adopted technical-plan Skill
   + separated provenance / history
-  + baseline not yet allowed to advance
+  + candidate-baseline-before-verification explicitly forbids current baseline advancement
 
 → adoption verification PASS
 → current-evaluated-baseline advances to 2fe193035...
 → ordinary runtime
 ```
 
-`governance/history/first-adoption.md` 持久保存 per-item disposition 与 verification-before-baseline-advance 规则；final `current-evaluated-baseline.md` 只保存已通过验证后的 evaluated frontier。普通 Local Discovery Entry 不引用 evaluated-baseline provenance 或 adoption history。
+`governance/history/first-adoption.md` 持久保存 per-item disposition 与 verification-before-baseline-advance 规则；`candidate-baseline-before-verification.md` 保存 pre-verification gate；final `current-evaluated-baseline.md` 只保存已通过验证后的 evaluated frontier。普通 Local Discovery Entry 不引用 evaluated-baseline provenance、candidate-state record 或 adoption history。
 
 ## 4. Targeted assertions
 
 | ID | Assertion | Evidence | Result |
 |---|---|---|---|
 | T-01 | fixture 是独立最小 Consumer Evidence，不是 production template | `README.md` / fixture `AGENTS.md` | PASS |
-| T-02 | exact upstream candidate baseline 可追溯 | provenance + baseline owner | PASS |
+| T-02 | exact upstream candidate baseline 可追溯 | provenance + candidate/final baseline records | PASS |
 | T-03 | per-item adoption 明确区分 adopt / retain-or-override / reject | `governance/history/first-adoption.md` | PASS |
 | T-04 | adopted `technical-plan` 是 exact local asset，而非 upstream runtime pointer | local blob = upstream blob `14bdac2...` | PASS |
 | T-05 | Consumer-specific Product Authority 高于 reusable Skill | fixture `AGENTS.md` + `SPECIFICATION.md` | PASS |
 | T-06 | Local Discovery Entry 足够薄，不复制 Skill / Product / project-state 正文，也不吸收 adoption provenance | fixture `docs/README.md` | PASS |
 | T-07 | 当前复杂度不要求 Reviewed Discovery Map | one Specification + one adopted Skill + stable Authority | PASS |
 | T-08 | 当前复杂度不要求 Runtime View / Catalog / Manifest | same as T-07 | PASS |
-| T-09 | evaluated baseline 与 active asset provenance / adoption history 分离 | three governance roles separated | PASS |
+| T-09 | candidate baseline、evaluated baseline、active asset provenance、adoption history 分离，且 baseline 只在 verification 后推进 | four governance roles separated | PASS |
 | T-10 | state-only / routing-only 不加载完整 Skill 或 adoption history | ordinary trace below | PASS |
 | T-11 | execute 才 JIT 加载 local `technical-plan`，且 Skill 不覆盖 Consumer constraint | ordinary trace + planning result below | PASS |
 | T-12 | ordinary discovery failure 不自动访问 upstream；history 不进入普通输入 | fixture `AGENTS.md` + `docs/README.md` + ordinary trace | PASS |
@@ -98,7 +99,7 @@ Actual fixture-local content reads：
 3. `fixture/docs/README.md`
 4. `fixture/governance/current-evaluated-baseline.md`
 
-第 4 项只因为本次 state-only 复核明确要求同时恢复“当前 evaluated upstream baseline”而进入读取；`docs/README.md` 并不把 baseline owner 作为 ordinary capability discovery entry。定位动作只在 fixture-local `governance/**` 范围内最小完成，没有读取 active provenance、adoption history 或 upstream。
+第 4 项只因为本次 state-only 复核明确要求同时恢复“当前 evaluated upstream baseline”而进入读取；`docs/README.md` 并不把 baseline owner 作为 ordinary capability discovery entry。定位动作只在 fixture-local `governance/**` 范围内最小完成，没有读取 candidate-state record、active provenance、adoption history 或 upstream。
 
 Recovered：
 
@@ -112,6 +113,7 @@ Recovered：
 Not loaded in state-only：
 
 - full `technical-plan` Skill；
+- `candidate-baseline-before-verification.md`；
 - `active-asset-provenance.md`；
 - `governance/history/first-adoption.md`；
 - any upstream project file。
@@ -154,7 +156,7 @@ Result：**PASS**。
 
 ### 5.4 History isolation / fail-closed
 
-During state-only, routing-only and execute input formation, adoption history is not required. The history file remains durable provenance / decision Evidence only.
+During state-only, routing-only and execute input formation, candidate-state / provenance / adoption history are not required. They remain durable adoption / decision Evidence only.
 
 If the technical-plan locator becomes missing or primary responsibility becomes ambiguous, the Local Discovery Entry requires returning to fixture-local Authority / Specification and stopping if unresolved. Upstream is not an implicit ordinary-runtime fallback.
 
@@ -169,7 +171,7 @@ This targeted replacement does not prove that the old `/tmp` commit can now be r
 Result：
 
 - original E-02 summary remains historical Evidence；
-- replacement fixture provides current durable auditability for first-adoption / local projection / JIT / Consumer override claims；
+- replacement fixture provides current durable auditability for first-adoption / local projection / verification-before-baseline-advance / JIT / Consumer override claims；
 - no new V3 lifecycle / resource / discovery defect identified；
 - no Reviewed Discovery Map / Runtime View universal conclusion is introduced；
 - M-03 can be considered **resolved candidate** only after the final Gate C PR exact Head is re-read and this Evidence remains complete and internally consistent。
