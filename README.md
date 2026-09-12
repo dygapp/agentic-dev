@@ -35,12 +35,14 @@ GitHub Repository 是唯一项目事实来源。
 - **最近已集成里程碑：** 规则治理与知识激活 v2
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
-- **V3-01～V3-08：** 已全部完成；V3-08 Issue #115 已以 `completed` 关闭，最终全轨高影响复核为 Blocking=0 / Medium=0
-- **当前活动子任务：** v3 Independent Review — Issue #118；当前处于 Gate A，Planning Authority 已建立，真正独立复核必须在新的 Fresh Context 中执行
+- **V3-01～V3-08：** 已全部完成；V3-08 Issue #115 已以 `completed` 关闭
+- **当前活动子任务：** v3 Independent Review — Issue #118；Gate A / Gate B 已完成，当前进入 Gate C — Finding Resolution
+- **Gate B 结果：** Blocking=0 / Medium=3 / Low=0 / ADR candidate=0；三个 Medium 只涉及 recovery/current-state、completed project-record lifecycle 与 first-adoption Evidence durability，不要求重设计 V3 Architecture
 - **Independent Review 复核对象冻结基线：** `agentic-dev@86fe96756c7b3678d7b0bac10f32358a9372e84c`
-- **Independent Review 执行恢复：** 真正开始时必须重新读取届时 GitHub current `master`；冻结 subject baseline 不等于执行时 current repository state
-- **后续边界：** Independent Review 不自动授予 ADR、正式设计、实现规划或其他候选工作权限；只有最终 Blocking=0 / Medium=0 后才能判断直接关闭 v3 或进入必要 ADR
-- **V3-08 工作产物：** `docs/project/rule-governance-v3-v3-08-consumer-validation.md`、`tasks/plans/20260911/06-rule-governance-v3-v3-08-consumer-validation.md`；最终精确 Evidence 以 Issue #115 为准
+- **Independent Review 执行恢复：** 每个 Gate 仍必须重新读取届时 GitHub current `master`；冻结 subject baseline 不等于执行时 current repository state
+- **后续边界：** Gate C 只解决 Gate B Findings；Independent Review 不自动授予 ADR、正式设计、实现规划或其他候选工作权限
+- **V3-08 工作产物：** `docs/project/rule-governance-v3-v3-08-consumer-validation.md`、`tasks/plans/20260911/06-rule-governance-v3-v3-08-consumer-validation.md`；最终精确历史 Evidence 以 Issue #115 为准
+- **Gate C first-adoption durable Evidence：** `docs/project/evidence/v3-08-first-adoption-fixture/`
 - **Independent Review 协调计划：** `tasks/plans/20260912/01-rule-governance-v3-independent-review.md`
 
 V3-07 已把 `agentic-dev` 自身 ordinary runtime 收敛为：
@@ -52,11 +54,11 @@ Local Discovery Entry
 
 当前没有真实证据要求额外 Runtime View / Catalog / generator。
 
-V3-08 已验证：成熟 Existing Consumer 可以显式完成 baseline upgrade 并在普通运行中保持 Consumer-local / upstream access = 0；真实后续工程生命周期可以持续使用该机制；最小新 Consumer fixture 也完成 first-adoption 与 Fresh Context local-only 验证。Consumer 是否需要 Reviewed Discovery Map / Runtime View 继续由其真实复杂度决定，V3-08 不把“本次不需要”泛化为普遍禁止。
+V3-08 已验证：成熟 Existing Consumer 可以显式完成 baseline upgrade 并在普通运行中保持 Consumer-local / upstream access = 0；真实后续工程生命周期可以持续使用该机制。Independent Review 对 first-adoption fixture 的长期架构结论没有发现 reusable defect，但发现原 E-02 `/tmp` fixture 的底层 Evidence 不具备可重新解析的 GitHub locator；Gate C 通过新的 Evidence-only replacement fixture 定向补足 durability，不把它提升为 Consumer template 或 mandatory runtime structure。
 
-V3-08 的精确 Track、Evidence 与 closure 由 Issue #115 和当前 GitHub 状态记录；README 只保留可恢复的里程碑结论，不复制瞬时 Consumer PR / Actions 状态。
+V3-08 的精确 Track、历史 Evidence 与 closure 由 Issue #115 记录；Independent Review Finding 与 resolution Evidence 由 Issue #118 记录。README 只保留可恢复的里程碑结论，不复制瞬时 PR / Actions 状态。
 
-Independent Review 的精确 Planning / Evidence Authority 为 Issue #118。该复核只挑战已经集成的 V3-01～V3-08、PR #117 后的一致性状态与 Evidence 泛化边界，不重新设计 v3，也不把既有 PASS 当作复核前提。Gate A planning / recovery-only 变更可以成为执行时 current state，但不能静默改变冻结的 V3 subject claims。
+Independent Review 的精确 Planning / Evidence Authority 为 Issue #118。该复核只挑战已经集成的 V3-01～V3-08、PR #117 后的一致性状态与 Evidence 泛化边界，不重新设计 v3，也不把既有 PASS 当作复核前提。
 
 详细当前路线、候选与下一门禁统一维护在：
 
@@ -73,6 +75,7 @@ v3 当前规划 / 审计 / 架构 / 自采用 / Consumer 验证入口：
 - `docs/architecture/resource-discovery-architecture.md`
 - `docs/project/rule-governance-v3-v3-07-self-adoption.md`
 - `docs/project/rule-governance-v3-v3-08-consumer-validation.md`
+- `docs/project/evidence/v3-08-first-adoption-fixture/README.md`
 - `docs/discovery/README.md`
 
 ## 入口职责
@@ -84,10 +87,10 @@ v3 当前规划 / 审计 / 架构 / 自采用 / Consumer 验证入口：
 - `docs/project/project-roadmap.md`：维护详细项目路线、活动状态、候选库和下一 Gate；
 - `docs/discovery/README.md`：`agentic-dev` 自身普通运行的 Local Discovery Entry；
 - `docs/discovery/reviewed-discovery-map.md`：非规范性、需复核维护的跨资源发现映射；
-- `docs/project/*`：维护具体里程碑、项目治理、设计与验证记录；
+- `docs/project/*`：维护具体里程碑、项目治理、设计与验证记录；已完成项目记录中的“状态 / 当前 Gate / 下一步”如果与 Roadmap / current Issue 冲突，只表示当时 snapshot，不重新取得 current-state Authority；
 - Git / PR / Issue / Actions：维护精确外部状态与执行证据。
 
-发生当前状态变化时优先更新 README / Roadmap / 对应项目记录，不把状态性正文复制回 `AGENTS.md`，也不把当前项目状态复制进 Reviewed Discovery Map。
+发生当前状态变化时优先更新 README / Roadmap / 对应 current Issue，不把状态性正文复制回 `AGENTS.md`，也不把当前项目状态复制进 Reviewed Discovery Map。已完成项目记录保留历史与 Evidence 价值，但不会因为仍被引用而恢复旧执行权限。
 
 ## 仓库事实与权威
 
