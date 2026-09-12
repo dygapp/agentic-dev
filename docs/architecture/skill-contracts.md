@@ -19,7 +19,7 @@
 6. `converge` 负责 Feature-wide 收敛检查。发现 Gap 时描述缺口并触发必要的重新切分或阶段回退，不通过静默修改 Specification / Technical Plan / Domain / Architecture / ADR Authority 来“修平”差异。
 7. Verification-before-claim、Code Review、TDD、Context Discipline 和 Human Escalation 暂继续作为内嵌纪律，不进入第一批独立 Skill。
 8. Implementation Minimality & Speculative Complexity Control、Surgical Change & Diff Scope Control 与 Data Access Scope & Boundedness Control 作为独立 Engineering Discipline 由 `execute-unit` 薄消费，不形成新的独立 Skill，也不改变 `execute-unit` 的输入、输出、Stage Return 或 Exit Condition。
-9. `handoff` 暂不进入第一批核心 Skill。它属于 Transition Skill，后续在核心 Feature / Defect 路径稳定后再评估。
+9. `handoff` 暂不进入第一批核心 Skill。当前只把它视为按需的运行时转换能力 / 临时交接产物，不是当前 Transition Skill；只有未来真实证据证明其形成稳定、独立、可复用且可验证的过程，并满足 Skill 准入门禁时，才重新评估 Skill 身份。
 
 ## 2. Contract Matrix
 
@@ -736,7 +736,7 @@ Feature Behavior、Implementation State 和 Current Verification Evidence 已与
 - `prototype`
 - Project Bootstrap Skill
 
-这些能力要么继续作为 Embedded Discipline，要么等待核心路径稳定后再单独评估。
+前五项继续作为 Embedded Discipline；`handoff` 当前只作为按需的运行时转换能力 / 临时交接产物存在，不是待实现 Skill。`research`、`prototype` 与 Project Bootstrap Skill 只有在后续形成独立稳定职责并满足准入证据时再评估。
 
 ## 12. 原待解决问题的处理结果
 
@@ -753,7 +753,7 @@ Feature Behavior、Implementation State 和 Current Verification Evidence 已与
    第一批不拆。Review 继续按风险触发，并保持 Specification Compliance / Engineering Quality 两个逻辑 Verdict。
 
 5. **`handoff` 是否进入第一批？**  
-   不进入。它属于 Transition Skill，不是核心 Feature / Defect Path 的必要前置。
+   不进入。当前只作为按需运行时交接能力 / 临时产物；不是当前 Skill，也不是核心 Feature / Defect Path 的必要前置。只有未来真实证据满足 Skill 准入门禁时才重新评估。
 
 6. **Execution Unit 的 Reference Implementation 用什么持久化形式？**  
    第一批不规定统一持久化形式。只冻结逻辑契约；Markdown Task、Issue、Runtime Object 等均可作为载体。
