@@ -23,13 +23,14 @@ v3 顺序保持：
 → 资源发现架构
 → agentic-dev 自采用
 → Consumer 验证
+→ Independent Review
 ```
 
 ## 2. 已完成收敛
 
 规则治理与知识激活 v2 已通过 PR #93 集成，已验证行为继续作为 v3 必须保护的基线。
 
-V3-01～V3-07 已完成并集成：
+V3-01～V3-08 已完成并集成 / 收口：
 
 - **V3-01 — 知识与能力所有权模型**：PR #100；建立语义所有者、适用范围 / 来源状态、运行 / 生命周期角色、载体 / 权威形式四维判断；
 - **V3-02 — 当前仓库所有权审计**：完成主要 rule family / semantic body 审计并独立复核；
@@ -37,9 +38,14 @@ V3-01～V3-07 已完成并集成：
 - **V3-04 — 技能重分类与准入**：PR #108；当前 9 个 Skill 身份继续成立，Skill 准入与 supporting resource 边界进入 Skill Architecture；
 - **V3-05 — 面向 Agent 的结构化资源模型**：PR #110；长期权威 `docs/architecture/agent-resource-model.md`；
 - **V3-06 — 资源发现架构**：PR #112；长期权威 `docs/architecture/resource-discovery-architecture.md`；
-- **V3-07 — `agentic-dev` 自采用与发现机制切换**：PR #114，集成提交 `2fe193035c629f6b8805fd473bd322f70fe6e172`；当前 self-runtime 入口 `docs/discovery/README.md`，Reviewed Discovery Map 为 `docs/discovery/reviewed-discovery-map.md`。
+- **V3-07 — `agentic-dev` 自采用与发现机制切换**：PR #114，集成提交 `2fe193035c629f6b8805fd473bd322f70fe6e172`；当前 self-runtime 入口 `docs/discovery/README.md`，Reviewed Discovery Map 为 `docs/discovery/reviewed-discovery-map.md`；
+- **V3-08 — Consumer 验证与持续有效性复核**：Issue #115 已以 `completed` 关闭；最终全轨高影响复核 Blocking=0 / Medium=0；成熟 Existing Consumer、持续真实演进与最小 first-adoption fixture 均完成约定 Evidence。
 
 V3-07 已证明 `agentic-dev` 自身不需要 Manifest / Runtime Catalog / generator；其 ordinary runtime 使用一个 Local Discovery Entry + 一个非规范性 Reviewed Discovery Map，旧 Guide 手工 routing surface 已退出 current discovery responsibility。
+
+V3-08 没有发现要求回改 V3-03 / V3-05 / V3-06 / V3-07 长期 reusable Architecture 的证据；Consumer 对 Reviewed Discovery Map / Runtime View 的需求继续由真实复杂度决定。
+
+PR #117 又完成 Artifact lifecycle / Skill inventory consistency 收敛，当前 9 个 Skill = 8 core + 1 platform-specific；`handoff` 为可选临时运行时转换产物，不是当前 Skill。
 
 历史 GPT / 其他 AI 评估只作为挑战和复核证据；长期结论以已经集成的仓库权威为准。
 
@@ -54,9 +60,9 @@ v3 按以下有限子任务推进：
 5. **V3-05 — 面向 Agent 的结构化资源模型 — 已完成并集成**
 6. **V3-06 — 资源发现架构 — 已完成并集成**
 7. **V3-07 — `agentic-dev` 自采用与发现机制切换 — 已完成并集成**
-8. **V3-08 — Consumer 验证与持续有效性复核 — 状态见 Issue #115**
-9. 独立复核
-10. 必要 ADR、正式 v3 设计与实现规划
+8. **V3-08 — Consumer 验证与持续有效性复核 — 已完成 / Issue #115 closed as completed**
+9. **Independent Review — 已启动 Planning / Issue #118 / Gate A**
+10. 必要 ADR、正式 v3 设计与实现规划 — **未启动，取决于 Independent Review 最终 Gate**
 
 只有前序门禁满足后才能进入后序任务；路线顺序不自动授予执行权限。
 
@@ -166,9 +172,9 @@ AGENTS / README / Roadmap / GitHub current state
 
 Candidate validation、post-cutover validation 与最终高影响 AI Review 均通过，Blocking / Medium = 0。Issue #113 已完成关闭。
 
-## 10. V3-08：Consumer 验证与持续有效性复核
+## 10. V3-08：Consumer 验证与持续有效性复核 — 已完成
 
-跟踪：Issue #115。  
+跟踪：Issue #115（closed / completed）。  
 项目记录：`docs/project/rule-governance-v3-v3-08-consumer-validation.md`。  
 协调计划：`tasks/plans/20260911/06-rule-governance-v3-v3-08-consumer-validation.md`。
 
@@ -178,82 +184,80 @@ V3-08 验证 V3-03～V3-07 是否真正服务真实 Consumer，而不是只在 `
 
 Primary real Consumer：`dygapp/jilinjobs-cms`。
 
-当前 `agentic-dev` 会话只读 Consumer。需要 baseline upgrade、local projection 或 controlled negative test 时必须进入 Consumer 自己的 Repository Authority / 独立会话；V3-08 Authority 不授予 Consumer merge 权限。
+V3-08 执行期间，`agentic-dev` 会话只读 Consumer；baseline upgrade、local projection 或 controlled negative test 均在 Consumer 自己的 Repository Authority / 独立会话内执行，V3-08 Authority 从未授予 Consumer merge 权限。
 
-### 10.2 Gate A 当前设计
+### 10.2 已执行验证轨道
 
-Gate A 已固定五个轨道：
+V3-08 最终覆盖：
 
-- **Track A — Pre-upgrade read-only observation**：真实 old-baseline ordinary runtime / state conflict 对照；
-- **Track B — Existing Consumer explicit baseline upgrade**：exact baseline comparison + per-item adoption / local projection；
-- **Track C — Post-adoption runtime / fail-closed**：local-only、primary/supporting、drift、coverage、Stage Return；
-- **Track D — Sustained validity**：使用 Consumer 后续真实项目演进，不人为制造业务任务；
-- **Track E — First-adoption coverage**：按 claim 复用历史 Evidence；不足时使用最小隔离 fixture，不破坏成熟 Existing Consumer。
+- **Track A — Pre-upgrade read-only observation**；
+- **Track B — Existing Consumer explicit baseline upgrade**；
+- **Track C — Post-adoption runtime / fail-closed**；
+- **Track D — Sustained validity**；
+- **Track E — First-adoption coverage**。
 
-Consumer 当前 evaluated baseline 为 `d9fad0da83dbdb61cac5eb9778b0258c6861eef1`；V3-08 candidate upstream baseline 固定为 `2fe193035c629f6b8805fd473bd322f70fe6e172`。两者 exact compare 为 34 commits ahead / 0 behind，必须分类 reusable 与 `agentic-dev` project-only，不允许复制完整 upstream。
+Existing Consumer previous evaluated baseline 为 `d9fad0da83dbdb61cac5eb9778b0258c6861eef1`；V3-08 candidate upstream baseline 为 `2fe193035c629f6b8805fd473bd322f70fe6e172`。Baseline upgrade 按 exact delta 逐项分类 reusable 与 `agentic-dev` project-only，没有复制完整 upstream。
 
-### 10.3 当前真实 Consumer finding
+### 10.3 Consumer finding 与处置
 
-Gate A 只读恢复发现：Consumer 当前静态 `docs/work/current/*` 仍保存 EU-54 Readiness PENDING / Execute NOT GRANTED，而 Issue #60 Current Evidence 与活动 implementation PR 已进入 Readiness PASS / Execute lifecycle。
+Track A 曾发现 Consumer 多个 current-state surface 的状态冲突。该 finding 被分类为 Consumer-local state-governance / source-currentness，并在 Consumer 自己的 Authority 边界内完成收敛；最终 Gate D 没有未解决 Consumer / fixture Blocking 或 Medium。
 
-这不是纯 current-locator 的正常漂移，而是**两个 current surface 的状态冲突**。V3-08 的预期是：发现冲突 → 回到 Consumer Authority / Current Evidence / 外部事实对账 → fail-closed 或取得足够授权依据后继续；不得静默猜测，也不得新造“GitHub 永远高于 Work artifact”的通用优先级。
+该过程没有建立“GitHub 永远高于 Work artifact”的通用优先级，而是保持 conflict detection → Consumer Authority / Current Evidence 对账 → fail-closed / 有依据继续的规则。
 
-该 finding 初步属于 Consumer-local state-governance / source-currentness，是否修复 Consumer 状态 owner / 回写策略由 Consumer Repository 决定。
+### 10.4 Context-cost 结果
 
-### 10.4 Context-cost 假设
+V3-08 证明 state-only / routing-only 场景不需要机械加载完整 Consumer-local Method / Skills；ordinary runtime 可以维持 Consumer-local current resources，upstream access = 0。
 
-Consumer 当前声明的五个默认 Fresh Context 入口文件静态大小合计约 `90,984 bytes`，其中 `docs/project/development-method.md` 约 37.5 KB。该数字只是静态文件大小，不等于 token 或每次真实读取成本。
+成熟 Consumer 与最小 fixture 都没有真实证据要求 Consumer-local Reviewed Discovery Map / Runtime View；该结果只验证 optionality，不推导为普遍禁止。
 
-Gate A 的可证伪假设是：state-only / routing-only 场景不应为了保险机械加载完整 Consumer-local Method / Skills。Existing `docs/README.md` 是 Local Discovery Entry 的强候选，但不是预设答案；是否需要 Consumer-local Reviewed Discovery Map 同样必须由 local inventory / measured cost / correctness 决定。
+### 10.5 Sustained validity / first adoption
 
-### 10.5 与当前 Consumer Execute 的隔离
+真实 Page Content Architecture → EU-55 后续演进覆盖 Planning、Technical Planning、slice/readiness、Execute、verification/debug、Human Review、Integration 与 Post-Integration closure；最小新 Consumer fixture 完成 first adoption 并在新的 ordinary-runtime Fresh Context 中保持 local-only。
 
-Consumer 当前 EU-54 已进入独立 Execute 生命周期，因此：
-
-```text
-EU-54 未自然收口
-→ V3-08 只允许 Track A 旁路只读观察
-
-EU-54 收口后
-→ 重新读取届时 latest Consumer main / Authority
-→ 若无 conflicting active Execute work
-→ 才建立独立 baseline-upgrade experiment branch
-```
-
-这样避免方法升级反向扩大当前产品 EU scope，或把两类 Evidence 混成同一 claim。
+V3-08 最终全轨高影响复核：**PASS — Blocking=0 / Medium=0**。Issue #115 已以完成原因关闭。
 
 ## 11. v1 / v2 必须保留的成果
 
 v3 必须继续保护：薄启动入口、Consumer Authority 优先、渐进式披露、证据先于声明、规范正文单点所有权、派生发现不拥有正文、stale / missing / ambiguity fail-closed、主职责 + 最小辅助、routing-only / execute 分离、Stage Return rediscovery、ordinary runtime local-only、基线逐项采用，以及同一 runtime scope 不并行维护多个 current derived mechanism。
 
-V3-08 的责任是取得真实 Consumer Evidence；不能为了证明新模型成功而改变这些已验证行为或把 Consumer 改造成 `agentic-dev` 镜像。
+Independent Review 必须把这些行为当作待挑战的 current claim，而不是因为 v2 / V3-08 已通过就免于复核；只有证据支持时才继续作为 v3 closure 基线。
 
 ## 12. 当前非目标与 ADR 门禁
 
-V3-08 不：
+Independent Review 不：
 
-- 重新定义 V3-01～V3-07 作为默认起点；
+- 以重新设计 V3-01～V3-08 为默认起点；
 - 在 `agentic-dev` 会话直接修改 Consumer Repository；
 - 强制 Consumer 使用 Reviewed Discovery Map / Runtime View / Manifest / Catalog；
 - 用 context-cost 优化覆盖 correctness / Authority / fail-closed；
 - 把 Consumer 产品事实提升为通用规则；
-- 因单次 Consumer PASS 就关闭 v3；
-- 自动进入独立复核 / ADR / 正式实现规划；
+- 因既有 PASS 降低挑战强度；
+- 自动创建 ADR、正式 v3 设计或实现规划；
 - 启动 WI-06 / WI-07 / WI-09 或其他独立候选。
 
-v3 不用一个“大 ADR”承载全部探索。只有专项分析形成跨任务长期约束、存在实质替代方案与长期后果、且决定已经稳定时才创建或更新 ADR。资源模型 / 派生发现架构是否需要单独 ADR，应在 V3-08 Consumer Evidence 与后续独立复核之后判断。
+v3 不用一个“大 ADR”承载全部探索。只有 Independent Review 形成跨任务长期约束、存在实质替代方案与长期后果、且确实需要显式记录不可逆 / 高影响设计决定时，才创建或更新必要 ADR。
+
+如果 Independent Review 最终 Blocking=0 / Medium=0 且没有真实 ADR candidate，应优先进入 v3 Closure，而不是为了路线形式完整性制造 formal design / implementation work。
 
 ## 13. 当前门禁
 
-V3-08 跟踪入口：Issue #115。  
-当前 Gate：**Gate A — Validation Design**。
+Independent Review 跟踪入口：Issue #118。  
+协调计划：`tasks/plans/20260912/01-rule-governance-v3-independent-review.md`。  
+复核对象冻结基线：`agentic-dev@86fe96756c7b3678d7b0bac10f32358a9372e84c`。  
+执行恢复基线：真正 Independent Review 开始时的 GitHub current `master`，必须在新的 Fresh Context 中重新读取。  
+当前 Gate：**Gate A — Independent Review Protocol Ready 候选**。
 
-Gate A 完成条件由 `docs/project/rule-governance-v3-v3-08-consumer-validation.md` 单点记录；本文件只保留阶段边界：
+Gate A 只负责固定：
 
-> Primary Consumer、exact baselines、Active Consumer Work 隔离、Tracks A～E、Evidence Contract、negative-test 边界、context-cost 口径与 Consumer handoff 均明确；Current State conflict 已纳入 fail-closed / classification；first-adoption 有 closure 路径；风险 / AI 复核不存在未解决 Blocking / Medium；未修改 Consumer Repository、未提前进入 Consumer 写实验。
+- subject baseline；
+- execution-time current-state recovery 与 subject refresh 条件；
+- review scope / exclusions；
+- Finding schema；
+- Fresh Context 独立性要求；
+- README / Roadmap / v3 项目记录的 recovery entry。
 
-Gate A PASS 只允许把验证设计交给 Consumer 独立会话；它不等于 V3-08 PASS。
+`86fe967…` 是冻结的 V3 subject，不是执行时 current master。Gate A planning / recovery-only 变更如果已经集成，应作为执行环境事实恢复；如果 Gate A 后出现实质改变 V3 subject semantics 的提交，必须先明确是否刷新 subject baseline。
 
-V3-08 后续必须满足 Issue #115 Gate B～D：真实 Consumer runtime Evidence → finding classification / impact review → 必要修订与重验 → sustained-validity / first-adoption closure → 高影响复核 → Blocking / Medium = 0。
+真正 Independent Review 必须在新的 Fresh Context 中重新恢复 GitHub Repository State 与必要 Authority，不能从作者会话、历史聊天、个人记忆或旧 AI Review verdict 继承结论。
 
-如果 Issue #115 仍开放，应继续 V3-08 当前未完成 Gate；如果 Issue #115 已以完成原因关闭，则 V3-08 已收口，**独立复核只成为下一规划候选**，仍需新的规划权威才能启动。
+Gate A PASS / integration 不等于 Independent Review PASS，也不授予 ADR、正式设计或实现规划权限。后续按 Issue #118 Gate B～D 推进：Independent Review Evidence → Finding Resolution → V3 Closure Decision。
