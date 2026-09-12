@@ -243,16 +243,20 @@ v3 不用一个“大 ADR”承载全部探索。只有 Independent Review 形�
 
 Independent Review 跟踪入口：Issue #118。  
 协调计划：`tasks/plans/20260912/01-rule-governance-v3-independent-review.md`。  
-启动基线：`master@86fe96756c7b3678d7b0bac10f32358a9372e84c`。  
+复核对象冻结基线：`agentic-dev@86fe96756c7b3678d7b0bac10f32358a9372e84c`。  
+执行恢复基线：真正 Independent Review 开始时的 GitHub current `master`，必须在新的 Fresh Context 中重新读取。  
 当前 Gate：**Gate A — Independent Review Protocol Ready 候选**。
 
 Gate A 只负责固定：
 
-- exact baseline；
+- subject baseline；
+- execution-time current-state recovery 与 subject refresh 条件；
 - review scope / exclusions；
 - Finding schema；
 - Fresh Context 独立性要求；
 - README / Roadmap / v3 项目记录的 recovery entry。
+
+`86fe967…` 是冻结的 V3 subject，不是执行时 current master。Gate A planning / recovery-only 变更如果已经集成，应作为执行环境事实恢复；如果 Gate A 后出现实质改变 V3 subject semantics 的提交，必须先明确是否刷新 subject baseline。
 
 真正 Independent Review 必须在新的 Fresh Context 中重新恢复 GitHub Repository State 与必要 Authority，不能从作者会话、历史聊天、个人记忆或旧 AI Review verdict 继承结论。
 
