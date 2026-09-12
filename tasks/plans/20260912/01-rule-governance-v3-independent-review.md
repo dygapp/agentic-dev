@@ -4,16 +4,19 @@
 
 协调 Issue #118 — 规则治理与知识激活 v3 独立复核，在不重新设计 V3-01～V3-08 的前提下，以新的 Fresh Context 挑战当前长期架构、Evidence 泛化边界与 v3 closure 条件。
 
-## 启动基线
+## 基线边界
 
 - Repository：`dygapp/agentic-dev`
-- Base：`master@86fe96756c7b3678d7b0bac10f32358a9372e84c`
 - Parent：Issue #94
 - Planning / Evidence Authority：Issue #118
+- **复核对象冻结基线：** `agentic-dev@86fe96756c7b3678d7b0bac10f32358a9372e84c`
+- **执行恢复基线：** Independent Review 真正开始时的 GitHub current `master`，必须在新的 Fresh Context 中重新读取，不预先固定 SHA。
+
+`86fe967…` 是 PR #117 集成后的 V3 closure candidate subject baseline，不代表执行时 current Repository State。Gate A planning / recovery-only 变更可以在执行时作为 current state 被读取，但不能静默改变冻结 subject 的 Architecture / Evidence claim；如果 Gate A 之后出现实质改变 V3 subject semantics 的提交，必须先明确刷新 subject baseline，而不是自动扩大复核对象。
 
 ## 直接 Authority / 输入
 
-复核执行上下文先按 `AGENTS.md` 的 Fresh Context 恢复规则读取当前 Repository State；随后按 Issue #118 的 review scope 最小扩读：
+复核执行上下文先按 `AGENTS.md` 的 Fresh Context 恢复规则读取执行时当前 Repository State；随后按 Issue #118 的 review scope 最小扩读：
 
 - `docs/project/rule-governance-knowledge-activation-v3.md`
 - V3-01 / V3-02 项目记录；
@@ -51,19 +54,21 @@
 真正 Independent Review 必须在新的 Fresh Context 中执行：
 
 1. 不带入本计划之外的作者会话推理；
-2. 从当前 GitHub Repository 重新恢复事实；
-3. 不先读取历史 AI Review verdict 作为判断依据；
-4. 先完成 Authority / Architecture 语义审查，再按需追溯 Evidence；
-5. 每个 Finding 必须包含：`severity / locator / claim / impact / evidence / minimal recommendation`；
-6. 如果证据不足，明确标记 `insufficient evidence`，不得猜测；
-7. 最终分别给出 Blocking / Medium / Low 数量、ADR candidate、v3 closure recommendation。
+2. 从执行时当前 GitHub Repository 重新恢复事实；
+3. 明确区分 current repository state 与冻结 subject baseline `86fe967…`；
+4. 不先读取历史 AI Review verdict 作为判断依据；
+5. 先完成 Authority / Architecture 语义审查，再按需追溯 Evidence；
+6. 每个 Finding 必须包含：`severity / locator / claim / impact / evidence / minimal recommendation`；
+7. 如果证据不足，明确标记 `insufficient evidence`，不得猜测；
+8. 最终分别给出 Blocking / Medium / Low 数量、ADR candidate、v3 closure recommendation。
 
 ## 工作顺序
 
 ### IR-1 — Protocol / Recovery Entry
 
 - [x] 建立 Issue #118 Planning Authority；
-- [x] 冻结启动基线；
+- [x] 冻结复核对象 subject baseline；
+- [x] 建立 execution-time current-state recovery 规则；
 - [x] 建立独立复核范围、Finding schema 与 Gate；
 - [x] 对齐 README / Roadmap / v3 项目记录的拟集成恢复状态；
 - [x] 形成 Planning PR #119；
@@ -73,7 +78,8 @@ PR #119 的候选文档必须表达**拟集成后的稳定状态**：Gate A prot
 
 ### IR-2 — Independent Fresh Context Review
 
-- [ ] 新 Fresh Context 从已集成 Gate A baseline 恢复；
+- [ ] 新 Fresh Context 从执行时 current `master` 恢复 Repository State；
+- [ ] 以 `86fe967…` 作为冻结 V3 subject baseline；
 - [ ] 完成 A～F 六个审查面；
 - [ ] 回写完整 Finding Evidence 到 Issue #118；
 - [ ] 明确 Blocking / Medium / Low 与 ADR candidate。
@@ -94,6 +100,7 @@ PR #119 的候选文档必须表达**拟集成后的稳定状态**：Gate A prot
 ## 完成条件
 
 - Independent Review 以新的 Fresh Context 完成；
+- current execution state 与冻结 subject baseline 的边界可恢复；
 - Finding 可追溯且无未解决 Blocking / Medium；
 - Evidence generalization 未超出来源；
 - v3 closure / ADR necessity 有明确结论；
