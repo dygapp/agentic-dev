@@ -66,7 +66,7 @@ seed
 → ordinary runtime
 ```
 
-`governance/history/first-adoption.md` 持久保存 per-item disposition 与 verification-before-baseline-advance 规则；final `current-evaluated-baseline.md` 只保存已通过验证后的 evaluated frontier。普通 Local Discovery Entry 不引用 adoption history。
+`governance/history/first-adoption.md` 持久保存 per-item disposition 与 verification-before-baseline-advance 规则；final `current-evaluated-baseline.md` 只保存已通过验证后的 evaluated frontier。普通 Local Discovery Entry 不引用 evaluated-baseline provenance 或 adoption history。
 
 ## 4. Targeted assertions
 
@@ -77,7 +77,7 @@ seed
 | T-03 | per-item adoption 明确区分 adopt / retain-or-override / reject | `governance/history/first-adoption.md` | PASS |
 | T-04 | adopted `technical-plan` 是 exact local asset，而非 upstream runtime pointer | local blob = upstream blob `14bdac2...` | PASS |
 | T-05 | Consumer-specific Product Authority 高于 reusable Skill | fixture `AGENTS.md` + `SPECIFICATION.md` | PASS |
-| T-06 | Local Discovery Entry 足够薄，不复制 Skill / Product / project-state 正文 | fixture `docs/README.md` | PASS |
+| T-06 | Local Discovery Entry 足够薄，不复制 Skill / Product / project-state 正文，也不吸收 adoption provenance | fixture `docs/README.md` | PASS |
 | T-07 | 当前复杂度不要求 Reviewed Discovery Map | one Specification + one adopted Skill + stable Authority | PASS |
 | T-08 | 当前复杂度不要求 Runtime View / Catalog / Manifest | same as T-07 | PASS |
 | T-09 | evaluated baseline 与 active asset provenance / adoption history 分离 | three governance roles separated | PASS |
@@ -91,12 +91,14 @@ seed
 
 Trace boundary 从这里开始计数；不再读取 upstream。
 
-Actual fixture-local reads：
+Actual fixture-local content reads：
 
 1. `fixture/AGENTS.md`
 2. `fixture/SPECIFICATION.md`
 3. `fixture/docs/README.md`
 4. `fixture/governance/current-evaluated-baseline.md`
+
+第 4 项只因为本次 state-only 复核明确要求同时恢复“当前 evaluated upstream baseline”而进入读取；`docs/README.md` 并不把 baseline owner 作为 ordinary capability discovery entry。定位动作只在 fixture-local `governance/**` 范围内最小完成，没有读取 active provenance、adoption history 或 upstream。
 
 Recovered：
 
