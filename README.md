@@ -35,9 +35,9 @@ GitHub Repository 是唯一项目事实来源。
 - **最近已集成里程碑：** 规则治理与知识激活 v2
 - **当前活动规划里程碑：** 规则治理与知识激活 v3 — 知识与能力所有权收敛
 - **总体跟踪：** Issue #94
-- **已完成并集成：** V3-01 — 知识与能力所有权模型；V3-02 — 当前仓库所有权审计；V3-03 — 使用方初始化、采用、升级与普通运行生命周期；V3-04 — 技能重分类与准入；V3-05 — 面向 Agent 的结构化资源模型；V3-06 — 资源发现架构；V3-07 — `agentic-dev` 自采用与发现机制切换
-- **V3-08 跟踪入口：** Issue #115 — Consumer 验证与持续有效性复核
-- **V3-08 工作产物：** `docs/project/rule-governance-v3-v3-08-consumer-validation.md`、`tasks/plans/20260911/06-rule-governance-v3-v3-08-consumer-validation.md`
+- **V3-01～V3-08：** 已全部完成；V3-08 Issue #115 已以 `completed` 关闭，最终全轨高影响复核为 Blocking=0 / Medium=0
+- **下一规划候选：** v3 独立复核；尚未自动启动，也不自动授予 ADR、正式设计、实现规划或其他候选工作权限
+- **V3-08 工作产物：** `docs/project/rule-governance-v3-v3-08-consumer-validation.md`、`tasks/plans/20260911/06-rule-governance-v3-v3-08-consumer-validation.md`；最终精确 Evidence 以 Issue #115 为准
 
 V3-07 已把 `agentic-dev` 自身 ordinary runtime 收敛为：
 
@@ -48,11 +48,9 @@ Local Discovery Entry
 
 当前没有真实证据要求额外 Runtime View / Catalog / generator。
 
-V3-08 现在验证这套生命周期、资源与发现模型能否在真实 Consumer 中正确采用、升级、本地运行并持续有效。主要真实 Consumer 为 `dygapp/jilinjobs-cms`，但 `agentic-dev` 当前会话只负责验证设计、只读观察和 Evidence 分类；Consumer 写实验必须在 Consumer 自身 Repository Authority 下独立执行。
+V3-08 已验证：成熟 Existing Consumer 可以显式完成 baseline upgrade 并在普通运行中保持 Consumer-local / upstream access = 0；真实后续工程生命周期可以持续使用该机制；最小新 Consumer fixture 也完成 first-adoption 与 Fresh Context local-only 验证。Consumer 是否需要 Reviewed Discovery Map / Runtime View 继续由其真实复杂度决定，V3-08 不把“本次不需要”泛化为普遍禁止。
 
-V3-08 当前 Gate 为 **Gate A — Validation Design**。Gate A 已固定 Existing Consumer baseline upgrade、ordinary runtime / fail-closed、持续有效性和 first-adoption coverage 轨道，并明确 `jilinjobs-cms` 当前 EU-54 执行期间只做旁路只读观察，不启动 Consumer baseline-upgrade 写实验。
-
-V3-08 的精确 Gate、Evidence 与完成状态以 Issue #115 和当前 GitHub 状态为准，不在 README 复制瞬时 Consumer PR / Actions 状态。Issue #115 完成后，独立复核只成为下一规划候选，不自动启动。
+V3-08 的精确 Track、Evidence 与 closure 由 Issue #115 和当前 GitHub 状态记录；README 只保留可恢复的里程碑结论，不复制瞬时 Consumer PR / Actions 状态。
 
 详细当前路线、候选与下一门禁统一维护在：
 
@@ -159,6 +157,8 @@ Consumer 初始化 / 采用 / 升级导航见：
 完整方法以 `docs/method/ai-development-method.md` 和当前架构 / 契约权威为准；README 不维护第二份方法定义。
 
 ## 工程能力
+
+当前仓库共实现 9 个 Skill：8 个核心 Skill + 1 个平台专项非核心 Skill（`github-actions-verification`）。新增平台专项 Skill 不等于重新打开第一批核心 Skill 工程；新的核心 Skill 仍必须由真实方法职责与准入证据支持。
 
 Skill 清单、身份和职责边界统一维护在：
 
