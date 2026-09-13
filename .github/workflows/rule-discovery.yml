@@ -8,6 +8,8 @@ on:
       - 'docs/**/*.md'
       - 'skills/**/*.md'
       - 'evals/**/*.md'
+      - 'evals/**/*.json'
+      - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
       - '.github/workflows/rule-discovery.yml'
   push:
@@ -18,6 +20,8 @@ on:
       - 'docs/**/*.md'
       - 'skills/**/*.md'
       - 'evals/**/*.md'
+      - 'evals/**/*.json'
+      - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
       - '.github/workflows/rule-discovery.yml'
 
