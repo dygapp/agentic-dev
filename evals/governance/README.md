@@ -1,5 +1,5 @@
 ---
-id: eval-guide:governance
+id: eval:governance
 type: eval-guide
 status: active
 ---
