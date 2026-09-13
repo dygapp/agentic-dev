@@ -1,5 +1,5 @@
 ---
-id: eval-guide:index
+id: eval:index
 type: eval-guide
 status: active
 ---
