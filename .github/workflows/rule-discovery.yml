@@ -1,0 +1,44 @@
+name: Rule Discovery
+
+on:
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - 'README.md'
+      - 'docs/**/*.md'
+      - 'skills/**/*.md'
+      - 'evals/**/*.md'
+      - 'tools/rule-discovery/**'
+      - '.github/workflows/rule-discovery.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'AGENTS.md'
+      - 'README.md'
+      - 'docs/**/*.md'
+      - 'skills/**/*.md'
+      - 'evals/**/*.md'
+      - 'tools/rule-discovery/**'
+      - '.github/workflows/rule-discovery.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  rule-discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run deterministic tests
+        run: python3 -m unittest discover -s tools/rule-discovery/tests -v
+
+      - name: Lint V4 resources
+        run: python3 tools/rule-discovery/rule_discovery.py --repo-root . lint
