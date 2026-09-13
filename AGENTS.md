@@ -54,9 +54,19 @@ Rule metadata 与 Rule 正文必须同源、同文件维护。不得维护 Revie
 python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-json '<task-signals-json>'
 ```
 
-`task-signals-json` 必须显式包含 `phases`、`activities`、`technologies`、`artifacts`、`risks` 五个数组，只能来自当前任务与仓库事实。成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选本身不等于最终适用，必须读取候选正文后做语义确认。
+`task-signals-json` 必须显式包含 `phases`、`activities`、`technologies`、`artifacts`、`risks` 五个维度。每个维度使用以下三态语义：
 
-当当前 phase、activity、technology、artifact 或 risk facts 发生会改变候选集合的实质变化时，重新执行 discovery，不把旧 candidate set 当作整个会话永久上下文。Discovery 返回 `fail-closed` 时停止依赖其结果，修复当前 signals、metadata 或扫描完整性后重试；不得降级到全量 Rule 加载、旧中心 Map 或 upstream discovery。
+- 非空数组：当前事实能够安全规范化出的少量已知 token；
+- `[]`：当前事实明确没有该维度的正向 signal；
+- `null`：该维度相关事实未知，或无法在不猜测的情况下确定 canonical token；未知不得伪装成空数组，也不得通过同义词堆叠碰撞 metadata。
+
+每个非空数组最多 6 个 lowercase kebab-case token。不得把目标 Rule 名、期望答案、Rule 文件名或会话历史写入 signals，也不得为了让候选出现而批量添加同义词、推测风险或近义技术名。
+
+阶段 token 使用 Method 的稳定阶段身份：`clarify-intent`、`specification`、`technical-planning`、`slice-ready`、`execute`、`converge`。活动优先使用直接责任词，如 `implementation`、`verification`、`review`、`external-operation`、`design`。技术与工件使用当前事实的稳定机器身份；常见规范化示例：Vue 3.x → `vue3`、TypeScript → `typescript`、`.vue` SFC → `vue-sfc`、普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。这些只是 token 规范化，不构成 Rule→token 路由表。
+
+成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选本身不等于最终适用，必须读取候选正文后做语义确认。若某个维度的 canonical token 不确定，优先用 `null` 保留未知语义，而不是读取未命中 Rule 的 Front Matter 反向推断 token。
+
+当当前 phase、activity、technology、artifact 或 risk facts 发生会改变候选集合的实质变化时，重新执行 discovery，不把旧 candidate set 当作整个会话永久上下文。Discovery 返回 `fail-closed` 时停止依赖其结果，修复当前 signals、metadata 或扫描完整性后重试；不得降级到全量 Rule 加载、旧中心 Map 或 upstream discovery。`status=ok` 但候选为空也不得通过读取未命中 Rule metadata 进行校准；只能基于新的当前事实重新发现，或明确保留规则发现缺口。
 
 Rule Discovery Tool 只返回少量 `{id, path}` locator；LLM 读取候选正文后完成最终语义适用性判断。目录路径不得成为隐藏匹配条件。schema、重复 id 或扫描完整性异常必须失败关闭。
 
