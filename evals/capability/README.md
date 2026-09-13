@@ -1,5 +1,5 @@
 ---
-id: eval-guide:capability
+id: eval:capability
 type: eval-guide
 status: active
 ---
