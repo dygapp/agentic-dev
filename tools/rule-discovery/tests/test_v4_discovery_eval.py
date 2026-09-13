@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -87,6 +88,34 @@ class DiscoveryCorpusTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             with self.assertRaises(RuntimeError):
                 runner.populate_discovery_context(Path(temp_dir), case)
+
+    def test_current_source_commit_is_precise_git_identity(self):
+        commit = runner.current_source_commit()
+        self.assertEqual(40, len(commit))
+        self.assertTrue(all(char in "0123456789abcdef" for char in commit))
+
+    def test_run_metadata_records_source_commit_and_codex_version(self):
+        previous = dict(runner.RUN_CONTEXT)
+        runner.RUN_CONTEXT["source_commit"] = "1" * 40
+        runner.RUN_CONTEXT["codex_version"] = "codex-cli test-version"
+        try:
+            with tempfile.TemporaryDirectory() as temp_dir:
+                result_dir = Path(temp_dir)
+                runner.write_run_metadata(
+                    result_dir,
+                    "D-V4-TEST-META",
+                    ["codex", "exec"],
+                    result_dir,
+                    0,
+                )
+                data = json.loads(
+                    (result_dir / "D-V4-TEST-META.run.json").read_text(encoding="utf-8")
+                )
+                self.assertEqual("1" * 40, data["source_commit"])
+                self.assertEqual("codex-cli test-version", data["codex_version"])
+                self.assertEqual("pending", data["grading"])
+        finally:
+            runner.RUN_CONTEXT.update(previous)
 
 
 if __name__ == "__main__":
