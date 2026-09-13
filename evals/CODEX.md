@@ -1,5 +1,5 @@
 ---
-id: eval-guide:codex-runtime
+id: eval:codex-runtime
 type: eval-guide
 status: active
 ---
