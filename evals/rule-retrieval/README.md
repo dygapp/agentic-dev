@@ -1,5 +1,5 @@
 ---
-id: eval-guide:historical-rule-retrieval
+id: eval:historical-rule-retrieval
 type: eval-guide
 status: active
 ---
