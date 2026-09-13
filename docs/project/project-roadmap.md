@@ -85,16 +85,36 @@ Codex CLI：`0.154.0`。7/7 场景结果完整，全部进程正常退出且 std
 
 因此 V4-06 首轮结论为 **FAIL**，不得进入 V4-07。
 
+### Second Fresh Runtime result
+
+第二轮 Fresh Runtime 基于：
+
+`1e8e09aed4388d169a75e8029c20fc8b87edf4ff`
+
+Codex CLI：`0.154.0`。7/7 场景结果完整，全部 `returncode=0`、stderr 为空。按 corpus v2 的 35 条显式 assertions，第二轮可达到 **35/35 PASS**：
+
+- generation 直接使用 bounded `execute / implementation / vue3 / typescript / vue-sfc / code / null-risk` signals，读取 16 个返回候选并完成语义收窄；
+- verification 直接命中 database-migration completion + evidence claim 两条 Rule；
+- mixed responsibility 分三次 discovery：implementation 16 candidates → external-operation 4 candidates → converge verification 1 candidate；
+- negative / ambiguity 用 unknown `null` 保留 artifact 缺口，读取保守候选后拒绝 migration-specific 结论；
+- invalid metadata 正确 fail closed；
+- Skill vs Rule 保持 `execute-unit` 与 supporting Rules 分层；
+- Consumer-local 不访问 upstream，并在本地重新发现后正确应用 Vue build-vs-typecheck / evidence semantics。
+
+但第二轮仍发现一个**高于 v2 grader assertion 的 Runtime Target 缺陷**：Consumer-local 在第一次 discovery 之前执行 `rg --files`，把完整 `docs/rules/**` 路径集合送入 LLM context。虽然没有读取未命中 Front Matter/body，也没有据此反向校准 token，但这违反“LLM 只接收 candidate locators + candidate bodies”，并会使模型上下文随 Rule 总量 N 增长。
+
+因此第二轮不用于关闭 Gate；V4-06 仍为 **CURRENT / REWORK**。
+
 ### Current rework
 
-V4-06 内部按证据修订 task-signal contract：
+当前 contract 已进一步收紧：
 
-- task-side 五维值采用三态：非空数组 = known；`[]` = known-empty；`null` = unknown / unsafe-to-canonicalize；
-- unknown 维度不用于排除 Rule，避免为了精确 metadata 猜 taxonomy；
-- 每个非空维度最多 6 个 lowercase kebab-case token，禁止 synonym cloud；
-- Method phase 与常见 technology / artifact machine identity 提供稳定规范化入口，但不建立 Rule→token 映射表；
-- `status=ok` 且候选为空时，不允许读取未命中 Rule Front Matter / body 反向校准；
-- eval corpus 明确把这种反向探测判为协议失败；
-- Consumer-local fixture 同步采用相同 signal contract。
+- task-side 五维值继续采用 known / known-empty `[]` / unknown `null` 三态，每维最多 6 token；
+- Rule Discovery 返回的 `candidates[]` 是 ordinary runtime 获得 Rule locator 的唯一入口；
+- 禁止通过 `rg --files`、`find`、目录树、IDE index 或脚本预枚举 `docs/rules/**` 的完整 locator / 文件名集合；
+- `status=ok` 且候选为空时，既不得读取未命中 Rule metadata/body，也不得枚举未命中 locator 反向校准；
+- eval corpus v3 将 locator enumeration 明确定义为 protocol failure；
+- Consumer-local fixture 同步 locator-only progressive-disclosure contract；
+- deterministic tests 固化 corpus v3 与 Consumer-local locator-only Authority。
 
-当前 rework 必须先通过 deterministic CI，再在新的精确 Head 上重新执行全部 7 个 Fresh Runtime 场景和人工逐 assertion 评分。只有 rerun clean PASS 后才可进入 V4-07。
+当前 rework 必须先通过 deterministic CI，再在新的精确 Head 上重新执行全部 7 个 Fresh Runtime 场景和人工逐 assertion / protocol 评分。只有第三轮 clean PASS 后才可进入 V4-07。
