@@ -1,3 +1,9 @@
+---
+id: research:mattpocock-skills
+type: research
+status: active
+---
+
 # 研究总结 — mattpocock/skills
 
 **研究日期：** 2026-08-17  
