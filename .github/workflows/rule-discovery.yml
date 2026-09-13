@@ -41,6 +41,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Compile eval runners
+        run: python3 -m py_compile evals/run_codex_evals.py evals/run_governance_evals.py evals/run_v4_scaling.py
+
       - name: Run deterministic tests
         run: python3 -m unittest discover -s tools/rule-discovery/tests -v
 
