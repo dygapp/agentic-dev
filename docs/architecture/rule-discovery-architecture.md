@@ -131,9 +131,11 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 
 不得返回未命中 Rule、全量 metadata、正文摘要、score 或推荐方案。LLM 只读取候选路径的正文。
 
+Rule Discovery 返回的 `candidates[]` 是 ordinary runtime 的唯一 Rule locator 来源。Agent 不得在 discovery 前后通过 `rg --files`、`find`、目录树、IDE 索引、脚本扫描或其他文件枚举，把未命中 Rule 的 locator / 文件名集合送入模型上下文。工具内部可以扫描全部 Front Matter，但该扫描结果不得泄漏给普通 LLM。
+
 因此允许 Tool CPU / I/O 随 N 增长，但 ordinary runtime 的 LLM discovery context 只能随候选数 k 增长。
 
-如果 `status=ok` 但候选为空，调用方不得读取未命中 Rule metadata 反向校准 signals。只有当前任务 / 仓库事实发生变化时才重新构造 signals；否则保留“当前没有已发现 Rule”或上游事实缺口。
+如果 `status=ok` 但候选为空，调用方不得读取或枚举未命中 Rule locator / metadata 来反向校准 signals。只有当前任务 / 仓库事实发生变化时才重新构造 signals；否则保留“当前没有已发现 Rule”或上游事实缺口。
 
 ## 7. Fail-closed
 
@@ -152,7 +154,7 @@ YAML 无法解析、schema 不完整、未知 Rule 顶层字段、scope 类型�
 
 Consumer ordinary runtime 使用 Consumer-local current Rules 与本地 Rule Discovery Tool。上游 `agentic-dev` 只作为显式 adoption / upgrade 来源；普通任务发现失败不能自动在线回到 upstream 补规则。
 
-Consumer adoption 必须携带当前 task-signal 三态与 bounded-token contract；否则同一组 Rule 在 Consumer 中可能出现系统性 false negative 或 metadata 反向探测。
+Consumer adoption 必须携带当前 task-signal 三态、bounded-token contract 与 locator-only progressive-disclosure contract；否则同一组 Rule 在 Consumer 中可能出现系统性 false negative、metadata 反向探测或规则规模随目录枚举进入模型上下文。
 
 ## 10. Ordinary Runtime Integration
 
@@ -172,10 +174,11 @@ current task / repository facts
 
 1. task signals 必须来自当前可观察事实，不包含目标 Rule 名、期望答案或历史候选集；
 2. unknown 使用 `null`，不得通过 synonym cloud 或未命中 Rule metadata 反向校准；
-3. tool candidate 只是“值得读取”，不是“已经适用”；LLM 必须读取正文后确认该 Rule 对当前工作真实成立；
-4. 当前 phase、activity、technology、artifact 或 risk facts 发生足以改变候选集合的变化时，重新执行 discovery；旧 candidate set 不跨职责永久有效；
-5. Skill discovery 与 Rule discovery 分离：Agent Skills 负责选择独立执行能力，Rule Discovery 负责给该职责补充条件约束；
-6. `fail-closed` 时不得把无候选、旧候选或全量 Rules 当替代结果；先修复 signals、metadata 或扫描完整性，再继续依赖 Rule Discovery；
-7. ordinary runtime 的模型上下文只接收 locator 与最终读取的候选正文，不接收全量 metadata、未命中 Rules 或工具内部扫描状态。
+3. Rule Discovery 返回值是 ordinary runtime 获得 Rule locator 的唯一入口；不得枚举未命中 Rule 路径或完整 Rule tree；
+4. tool candidate 只是“值得读取”，不是“已经适用”；LLM 必须读取正文后确认该 Rule 对当前工作真实成立；
+5. 当前 phase、activity、technology、artifact 或 risk facts 发生足以改变候选集合的变化时，重新执行 discovery；旧 candidate set 不跨职责永久有效；
+6. Skill discovery 与 Rule discovery 分离：Agent Skills 负责选择独立执行能力，Rule Discovery 负责给该职责补充条件约束；
+7. `fail-closed` 时不得把无候选、旧候选或全量 Rules 当替代结果；先修复 signals、metadata 或扫描完整性，再继续依赖 Rule Discovery；
+8. ordinary runtime 的模型上下文只接收 Discovery 返回的 candidate locator 与最终读取的候选正文，不接收全量 locator、全量 metadata、未命中 Rules 或工具内部扫描状态。
 
 稳定 CLI 入口与最小规范化约定由根 `AGENTS.md` 声明；具体实现可以重构，但不得改变上述运行语义而不先修改本 Architecture。
