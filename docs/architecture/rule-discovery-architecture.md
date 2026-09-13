@@ -109,3 +109,28 @@ YAML 无法解析、schema 不完整、未知 Rule 顶层字段、scope 类型�
 ## 9. Consumer 边界
 
 Consumer ordinary runtime 使用 Consumer-local current Rules 与本地 Rule Discovery Tool。上游 `agentic-dev` 只作为显式 adoption / upgrade 来源；普通任务发现失败不能自动在线回到 upstream 补规则。
+
+## 10. Ordinary Runtime Integration
+
+普通 Agent 运行时按当前责任重复执行以下最小闭环：
+
+```text
+current task / repository facts
+→ current task signals
+→ discover
+→ locator-only candidates
+→ read candidate bodies
+→ semantic applicability confirmation
+→ current Skill / responsibility
+```
+
+运行边界：
+
+1. task signals 必须来自当前可观察事实，不包含目标 Rule 名、期望答案或历史候选集；
+2. tool candidate 只是“值得读取”，不是“已经适用”；LLM 必须读取正文后确认该 Rule 对当前工作真实成立；
+3. 当前 phase、activity、technology、artifact 或 risk facts 发生足以改变候选集合的变化时，重新执行 discovery；旧 candidate set 不跨职责永久有效；
+4. Skill discovery 与 Rule discovery 分离：Agent Skills 负责选择独立执行能力，Rule Discovery 负责给该职责补充条件约束；
+5. `fail-closed` 时不得把无候选、旧候选或全量 Rules 当替代结果；先修复 signals、metadata 或扫描完整性，再继续依赖 Rule Discovery；
+6. ordinary runtime 的模型上下文只接收 locator 与最终读取的候选正文，不接收全量 metadata、未命中 Rules 或工具内部扫描状态。
+
+稳定 CLI 入口由根 `AGENTS.md` 声明；具体实现可以重构，但不得改变上述运行语义而不先修改本 Architecture。
