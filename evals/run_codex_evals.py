@@ -4,9 +4,11 @@
 This runner deliberately stays thin:
 - one `codex exec --ephemeral --json` process per scenario;
 - Skill activation / behavior runs use external temporary workspaces with Skill copies;
-- non-Skill capability runs are explicit and copy only context paths declared by that corpus;
-- the Codex process cwd/PWD matches the isolated workspace so repository paths do not leak through the launcher;
-- behavior runs use explicit Skill invocation, while capability runs do not invent a Skill;
+- non-Skill capability runs copy only context paths declared by that corpus;
+- V4 discovery runs copy only current runtime entry files, Rule Discovery, current Rules,
+  current Skills, and scenario fixture inputs; grader-only expectations never enter the workspace;
+- the Codex process cwd/PWD matches the isolated workspace so repository paths do not leak;
+- behavior runs use explicit Skill invocation, while capability/discovery runs do not invent a Skill;
 - B-EU-01 additionally receives a fresh writable fixture and its final snapshot is preserved;
 - saves raw JSONL/stdout and stderr;
 - does NOT grade semantic assertions automatically.
@@ -44,6 +46,7 @@ BEHAVIOR_FILES = [
 CAPABILITY_FILES = [
     EVALS / "capability" / "vue3-typescript-profile.json",
 ]
+DISCOVERY_FILE = EVALS / "discovery" / "v4-discriminating.json"
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
@@ -52,6 +55,29 @@ FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
 def load_json(path: Path):
     with path.open("r", encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def checked_relative_path(relative: str) -> Path:
+    relative_path = Path(relative)
+    if relative_path.is_absolute() or ".." in relative_path.parts:
+        raise RuntimeError(f"Invalid relative path: {relative}")
+    return relative_path
+
+
+def copy_repo_path(workspace: Path, relative: str) -> None:
+    relative_path = checked_relative_path(relative)
+    source = (ROOT / relative_path).resolve()
+    if not source.is_relative_to(ROOT):
+        raise RuntimeError(f"Repository context escapes root: {relative}")
+    if not source.exists():
+        raise RuntimeError(f"Repository context does not exist: {relative}")
+
+    target = workspace / relative_path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if source.is_dir():
+        shutil.copytree(source, target)
+    else:
+        shutil.copy2(source, target)
 
 
 def iter_skill_dirs() -> Iterable[Path]:
@@ -72,22 +98,42 @@ def populate_isolated_skill_copies(workspace: Path) -> None:
 def copy_capability_context(workspace: Path, context_paths: list[str]) -> None:
     """Copy only declared non-Skill capability context, preserving repo-relative paths."""
     for relative in context_paths:
-        relative_path = Path(relative)
-        if relative_path.is_absolute() or ".." in relative_path.parts:
-            raise RuntimeError(f"Invalid capability context path: {relative}")
+        copy_repo_path(workspace, relative)
 
-        source = (ROOT / relative_path).resolve()
-        if not source.is_relative_to(ROOT):
-            raise RuntimeError(f"Capability context escapes repository root: {relative}")
-        if not source.exists():
-            raise RuntimeError(f"Capability context does not exist: {relative}")
 
+def materialize_workspace_files(workspace: Path, files: dict[str, str]) -> None:
+    """Create scenario input files without exposing the corpus itself to the runtime."""
+    for relative, content in files.items():
+        relative_path = checked_relative_path(relative)
         target = workspace / relative_path
         target.parent.mkdir(parents=True, exist_ok=True)
-        if source.is_dir():
-            shutil.copytree(source, target)
-        else:
-            shutil.copy2(source, target)
+        target.write_text(content, encoding="utf-8")
+
+
+def populate_discovery_context(workspace: Path, case: dict) -> None:
+    """Build a minimal V4 ordinary-runtime workspace for one discovery scenario."""
+    context_mode = case.get("context_mode", "agentic-dev")
+
+    if context_mode == "agentic-dev":
+        for relative in (
+            "AGENTS.md",
+            "README.md",
+            "docs/project/project-roadmap.md",
+        ):
+            copy_repo_path(workspace, relative)
+    elif context_mode == "consumer-local":
+        # Consumer-local AGENTS/README are scenario inputs. Do not copy upstream project state.
+        pass
+    else:
+        raise RuntimeError(f"Unknown discovery context_mode: {context_mode}")
+
+    copy_repo_path(workspace, "docs/rules")
+    copy_repo_path(workspace, "tools/rule-discovery/rule_discovery.py")
+    populate_isolated_skill_copies(workspace)
+    materialize_workspace_files(workspace, case.get("workspace_files", {}))
+
+    if not (workspace / "AGENTS.md").is_file():
+        raise RuntimeError(f"Discovery scenario {case['id']} has no AGENTS.md")
 
 
 def copy_fixture_into(workspace: Path) -> None:
@@ -234,6 +280,11 @@ def capability_cases() -> Iterable[tuple[str, list[str], dict]]:
             yield capability_name, context_paths, case
 
 
+def discovery_cases() -> list[dict]:
+    document = load_json(DISCOVERY_FILE)
+    return document["evals"]
+
+
 def run_activation(codex_bin: str, selected: set[str] | None) -> int:
     failures = 0
 
@@ -336,6 +387,39 @@ def run_capability(codex_bin: str, selected: set[str] | None) -> int:
     return failures
 
 
+def run_discovery(codex_bin: str, selected: set[str] | None) -> int:
+    failures = 0
+
+    for case in discovery_cases():
+        scenario_id = case["id"]
+        if selected and scenario_id not in selected:
+            continue
+
+        with tempfile.TemporaryDirectory(
+            prefix=f"agentic-dev-discovery-{scenario_id}-"
+        ) as temp_dir:
+            cwd = Path(temp_dir)
+            populate_discovery_context(cwd, case)
+
+            prompt = (
+                "这是一个隔离 Fresh Runtime 场景。当前工作目录中的文件与本提示构成"
+                "本次全部可用 Repository Context；不要读取或搜索当前工作目录之外的路径，"
+                "也不要访问网络。先读取 AGENTS.md，再像普通 Agent 一样处理任务。\n\n"
+                f"{case['prompt']}"
+            )
+
+            failures += run_codex(
+                codex_bin=codex_bin,
+                scenario_id=scenario_id,
+                prompt=prompt,
+                result_group="discovery",
+                cwd=cwd,
+                skip_git_repo_check=True,
+            ) != 0
+
+    return failures
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run agentic-dev Fresh Runtime evals with isolated Codex sessions."
@@ -347,6 +431,11 @@ def parse_args() -> argparse.Namespace:
         "--capability",
         action="store_true",
         help="run non-Skill capability targeted-eval corpus",
+    )
+    mode.add_argument(
+        "--discovery",
+        action="store_true",
+        help="run V4 Rule Discovery discriminating corpus",
     )
     mode.add_argument(
         "--all",
@@ -374,6 +463,7 @@ def main() -> int:
     known = {case["id"] for case in activation_cases()}
     known.update(case["id"] for _, case in behavior_cases())
     known.update(case["id"] for _, _, case in capability_cases())
+    known.update(case["id"] for case in discovery_cases())
     if selected:
         unknown = selected - known
         if unknown:
@@ -389,6 +479,8 @@ def main() -> int:
         failures = run_behavior(args.codex_bin, selected)
     elif args.capability:
         failures = run_capability(args.codex_bin, selected)
+    elif args.discovery:
+        failures = run_discovery(args.codex_bin, selected)
     else:
         failures = run_activation(args.codex_bin, selected)
         failures += run_behavior(args.codex_bin, selected)
