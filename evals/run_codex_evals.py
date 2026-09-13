@@ -10,7 +10,7 @@ This runner deliberately stays thin:
 - the Codex process cwd/PWD matches the isolated workspace so repository paths do not leak;
 - behavior runs use explicit Skill invocation, while capability/discovery runs do not invent a Skill;
 - B-EU-01 additionally receives a fresh writable fixture and its final snapshot is preserved;
-- saves raw JSONL/stdout and stderr;
+- saves raw JSONL/stdout, stderr, source commit, and Codex CLI version;
 - does NOT grade semantic assertions automatically.
 
 No third-party Python packages are required.
@@ -50,6 +50,10 @@ DISCOVERY_FILE = EVALS / "discovery" / "v4-discriminating.json"
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
+RUN_CONTEXT = {
+    "source_commit": None,
+    "codex_version": None,
+}
 
 
 def load_json(path: Path):
@@ -164,7 +168,27 @@ def preserve_execute_fixture_snapshot(workspace: Path) -> None:
             shutil.copy2(source, destination)
 
 
-def check_codex(codex_bin: str) -> None:
+def current_source_commit() -> str:
+    completed = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError(
+            f"Cannot resolve evaluation source commit ({completed.returncode}): "
+            f"{completed.stderr.strip()}"
+        )
+    commit = completed.stdout.strip()
+    if len(commit) != 40:
+        raise RuntimeError(f"Unexpected evaluation source commit: {commit!r}")
+    return commit
+
+
+def check_codex(codex_bin: str) -> str:
     try:
         completed = subprocess.run(
             [codex_bin, "--version"],
@@ -184,7 +208,10 @@ def check_codex(codex_bin: str) -> None:
         )
 
     version = completed.stdout.strip() or completed.stderr.strip()
+    if not version:
+        raise RuntimeError("Codex CLI version output is empty")
     print(f"Codex: {version}")
+    return version
 
 
 def write_run_metadata(
@@ -194,8 +221,15 @@ def write_run_metadata(
     cwd: Path,
     returncode: int,
 ) -> None:
+    source_commit = RUN_CONTEXT["source_commit"]
+    codex_version = RUN_CONTEXT["codex_version"]
+    if not source_commit or not codex_version:
+        raise RuntimeError("Run context is incomplete; source commit / Codex version missing")
+
     metadata = {
         "scenario_id": scenario_id,
+        "source_commit": source_commit,
+        "codex_version": codex_version,
         "cwd": str(cwd.relative_to(ROOT)) if cwd.is_relative_to(ROOT) else str(cwd),
         "command": command,
         "returncode": returncode,
@@ -470,7 +504,10 @@ def main() -> int:
             print(f"Unknown scenario id(s): {', '.join(sorted(unknown))}", file=sys.stderr)
             return 2
 
-    check_codex(args.codex_bin)
+    RUN_CONTEXT["source_commit"] = current_source_commit()
+    RUN_CONTEXT["codex_version"] = check_codex(args.codex_bin)
+    print(f"Source commit: {RUN_CONTEXT['source_commit']}")
+
     RESULTS.mkdir(parents=True, exist_ok=True)
 
     if args.activation:
