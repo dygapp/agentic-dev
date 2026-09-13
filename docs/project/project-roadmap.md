@@ -8,7 +8,7 @@ status: active
 
 ## Current Foundation Rebuild
 
-当前项目进入 **V4 — 分布式规则发现与仓库基础重构**。
+当前项目处于 **V4 — 分布式规则发现与仓库基础重构**。
 
 Frozen V3 locator：
 
@@ -16,9 +16,7 @@ Frozen V3 locator：
 
 V4 是断代式、减法优先 Foundation Rebuild，不维护 V1～V3 current working-tree compatibility layer。过程设计、分类、实验与阶段证据主要由 Issue #122、PR、Git 与 Actions 持有；本 Roadmap 只保留当前阶段与稳定下一 Gate。
 
-## Current Goal
-
-建立如下普通运行模型：
+## Current Runtime Target
 
 ```text
 current task / repository facts
@@ -37,15 +35,16 @@ current task / repository facts
 - 不维护 Reviewed Discovery Map / Activation Manifest / Runtime Catalog / rule-index；
 - Skill 只承担稳定独立执行闭环；
 - Guide 只承担面向人的低频说明；
-- current project state 不为每个 Gate 创建长期 Markdown。
+- current project state 不为每个 Gate 创建长期 Markdown；
+- fixture / frozen eval input 属于测试数据，不因 current-resource metadata 治理被机械改写。
 
 ## Gates
 
 - V4-00 Baseline Freeze & Rebuild Boundary — PASS
 - V4-01 Asset Inventory & Classification — PASS
 - V4-02 Front Matter & Rule Discovery Contract — PASS
-- V4-03 Information Architecture & Rule Decomposition — CURRENT
-- V4-04 Rule Discovery Tool & Lint — pending V4-03 completion
+- V4-03 Information Architecture & Rule Decomposition — PASS
+- V4-04 Rule Discovery Tool & Lint — CURRENT
 - V4-05 Runtime Integration
 - V4-06 Generation / Verification Discriminating Evals
 - V4-07 Token Scaling Gate（20 / 100 / 500 rules）
@@ -54,14 +53,29 @@ current task / repository facts
 
 Gate 编号不是自动推进授权；每一 Gate 先验证上一 Gate Completion Conditions。
 
-## V4-03 Completion Target
+## V4-03 Completion State
 
-- current Rules 已完成原子化并拥有 frozen Front Matter contract；
-- Skill / Rule / Guide 边界已按实际职责落地；
-- 旧 V1～V3 project/discovery/profile/task surfaces 已退出 current tree；
-- Method / Architecture / Guide 已改写为最终 current owner；
-- 最终保留 Markdown 都具备对应 Front Matter；
+V4-03 已完成：
+
+- current runtime Rules 已拆为独立 Markdown 单元并使用 frozen Front Matter contract；
+- 11 个 Skill 按独立闭环重新收敛，其中 `external-operation` / `review-change` 从旧聚合文档提升；
+- Guide 只保留人类 adoption / upgrade / recovery 说明；
+- V1～V3 project/discovery/profile/task/decision surfaces 已退出 current tree；
 - `docs/project/` 只保留本 Roadmap；
-- 不存在为了历史兼容保留的中心发现映射。
+- Research 只保留非权威技术证据，并退出旧 current-owner 叙述；
+- 旧聚合 runtime Guide 与 orphan Skill reference 已删除；
+- current resource Markdown 使用 V4 Front Matter；`SKILL.md` 使用 Agent Skills-compatible metadata extension；eval fixture Markdown 作为测试数据保留原语义。
 
-V4-03 通过后，下一实际 Gate 是 V4-04：实现 `tools/rule-discovery/`、严格 schema lint、deterministic candidate filtering 与 fail-closed tests。
+## Current Gate — V4-04
+
+实现 `tools/rule-discovery/` 与严格 lint：
+
+- metadata scan；
+- task-signal validation；
+- deterministic candidate filtering；
+- stable `{id,path}` output；
+- duplicate / malformed / invalid-state / incomplete-scan fail-closed；
+- current Markdown / Rule / Skill metadata lint；
+- 自动化测试覆盖 Generation / Verification 代表场景和失败路径。
+
+V4-04 通过后再进入 Runtime Integration；不得以工具“能运行”代替 V4-06/V4-07 的判别能力与 token-scaling 验收。
