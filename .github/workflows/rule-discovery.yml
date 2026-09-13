@@ -42,3 +42,8 @@ jobs:
 
       - name: Lint V4 resources
         run: python3 tools/rule-discovery/rule_discovery.py --repo-root . lint
+
+      - name: Smoke discover locator output
+        run: >-
+          python3 tools/rule-discovery/rule_discovery.py --repo-root . discover
+          --signals-json '{"phases":["execute"],"activities":["implementation"],"technologies":[],"artifacts":["code"],"risks":[]}'
