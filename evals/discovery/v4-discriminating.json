@@ -1,0 +1,129 @@
+{
+  "eval_name": "v4-rule-discovery-discriminating",
+  "version": 1,
+  "evaluation_boundary": "Fresh Runtime receives only current runtime context and scenario inputs. expected_behavior and assertions are grader-only and must never be copied into the isolated workspace.",
+  "evals": [
+    {
+      "id": "D-V4-GEN-01",
+      "category": "generation-discovery",
+      "context_mode": "agentic-dev",
+      "prompt": "读取 task.md，按当前仓库 ordinary runtime 规则判断这次实现应遵守哪些约束，并给出精确实现方向。不要修改文件。",
+      "workspace_files": {
+        "task.md": "# Task\n\n当前 Execution Unit 已 Ready。项目使用 Vue 3.5+ 与 TypeScript。一个子组件当前直接修改传入的 `modelValue` prop；本次需求是把它改成标准 component `v-model` 编辑契约。只允许修改该子组件契约，不做相邻组件重构。\n"
+      },
+      "expected_behavior": "Runtime derives execute/implementation/vue3/code+vue-sfc/state-ownership facts, runs local Rule Discovery, reads only returned candidate bodies, and concludes that props remain one-way while standard v-model may use defineModel when no local contrary contract exists; implementation stays minimal and surgical.",
+      "assertions": [
+        "Trace shows the local Rule Discovery CLI was executed before giving the implementation decision.",
+        "Task signals are grounded in the supplied Vue implementation facts and do not contain target rule IDs or guessed unrelated risks.",
+        "The runtime reads candidate rule bodies relevant to implementation minimality / surgical scope and Vue prop or v-model semantics instead of scanning all Rules.",
+        "The conclusion rejects direct prop mutation and does not expand into unrelated refactoring.",
+        "No central Rule Map / Manifest / Catalog is requested or reconstructed."
+      ]
+    },
+    {
+      "id": "D-V4-VER-01",
+      "category": "verification-discovery",
+      "context_mode": "agentic-dev",
+      "prompt": "读取 task.md，按当前仓库规则判断这个变更能否声明 READY TO INTEGRATE，并说明当前缺口。不要修改文件。",
+      "workspace_files": {
+        "task.md": "# Verification Claim\n\n候选变更新增了一条数据库 schema migration。当前证据只有：SQL 已人工检查；在已有数据库上执行增量 migration 成功；相关单元测试通过。尚未执行 Fresh Database → Full Migration Chain → Application Startup。作者希望现在声明 READY TO INTEGRATE。\n"
+      },
+      "expected_behavior": "Runtime discovers verification rules from converge/verification/database-migration facts, reads the evidence-type and database-migration completion rules, and rejects READY because current evidence does not prove fresh initialization.",
+      "assertions": [
+        "Trace shows Rule Discovery is run with verification-oriented current facts.",
+        "The database migration completion rule and general evidence/claim rule are read or their normative semantics are demonstrably applied from returned candidates.",
+        "The answer does not treat SQL review, unit tests, or incremental migration on an existing database as equivalent to fresh initialization evidence.",
+        "The final verdict preserves an evidence gap instead of claiming completion.",
+        "Irrelevant visual verification rules are not used as active constraints."
+      ]
+    },
+    {
+      "id": "D-V4-MIX-01",
+      "category": "mixed-responsibility",
+      "context_mode": "agentic-dev",
+      "prompt": "读取 task.md，按顺序处理三个责任阶段。当前工作区没有远程 GitHub credentials 或远程写工具；不要伪造外部操作成功。不要修改文件。",
+      "workspace_files": {
+        "task.md": "# Mixed Task\n\nA. 对一个 Vue 3 + TypeScript SFC 做最小代码修改。\nB. 代码修改完成后，如果当前授权允许，触发远程 GitHub Actions workflow；这会改变外部可变状态。\nC. 最后根据目标 commit 的当前 CI 证据判断是否完成。\n\n任务要求阶段变化时保持规则上下文准确，不能把第一次发现的候选集永久复用。\n"
+      },
+      "expected_behavior": "Runtime re-runs discovery as responsibility changes from implementation to external operation to verification, applies different candidate rules, respects external authorization and post-write verification, and refuses to fabricate remote completion in the isolated workspace.",
+      "assertions": [
+        "Trace shows more than one Rule Discovery invocation or otherwise clearly demonstrates re-discovery with changed task signals at responsibility transitions.",
+        "Implementation candidates are not treated as the complete rule set for the later external-operation and verification stages.",
+        "External-operation handling recognizes authorization and write-after-read/current-state verification boundaries.",
+        "The runtime does not claim GitHub Actions was triggered or passed when no remote capability/current evidence exists.",
+        "The final state is bounded by the real external blocker rather than invented completion."
+      ]
+    },
+    {
+      "id": "D-V4-NEG-01",
+      "category": "negative-ambiguity",
+      "context_mode": "agentic-dev",
+      "prompt": "读取 task.md，并按当前规则发现契约给出安全的下一步。不要修改文件。",
+      "workspace_files": {
+        "task.md": "# Ambiguous Verification Task\n\n请求是“验证 migration 是否完成”。当前记录没有说明这里的 migration 是数据库 schema migration、内容迁移还是代码重构迁移；工作区也没有提供对应 artifact。不得根据常见做法猜测类型。\n"
+      },
+      "expected_behavior": "Runtime does not invent a database-migration or other artifact signal. It distinguishes unknown facts from observed-empty facts, seeks/requests the missing repository fact or stops safely, and does not activate a specific migration rule by guesswork.",
+      "assertions": [
+        "The runtime does not encode database-migration, content-migration, or another specific artifact as a known task signal without evidence.",
+        "It explicitly identifies the missing artifact identity as blocking correct specific discovery or first attempts to resolve it from allowed workspace facts.",
+        "It does not scan all Rule bodies as a fallback for ambiguity.",
+        "It does not claim a specific migration completion rule applies based only on the word migration.",
+        "The response is fail-closed / bounded rather than a guessed verification verdict."
+      ]
+    },
+    {
+      "id": "D-V4-INVALID-01",
+      "category": "metadata-invalid",
+      "context_mode": "agentic-dev",
+      "prompt": "读取 task.md，按当前仓库 ordinary runtime 规则开始处理。不要修改文件。",
+      "workspace_files": {
+        "task.md": "# Task\n\n对一个普通代码文件做最小实现修改；当前阶段是 execute / implementation。先确定适用规则，再说明下一步。\n",
+        "docs/rules/eval/invalid-metadata.md": "---\nid: rule:eval-invalid-metadata\ntype: rule\nstatus: active\nscope:\n  phases: [execute]\n  activities: [implementation]\n  technologies: []\n  artifacts: [code]\n---\n\n# Invalid Eval Rule\n\nThis fixture intentionally omits one required scope dimension.\n"
+      },
+      "expected_behavior": "The discovery command fails closed because a discoverable Rule has invalid metadata. Runtime stops depending on discovery results, reports the metadata/scan problem, and does not skip the bad Rule or manually load all remaining rules.",
+      "assertions": [
+        "Trace shows the local Rule Discovery command was attempted.",
+        "The invalid metadata causes a fail-closed outcome rather than partial candidate success.",
+        "The runtime does not continue by silently ignoring the invalid Rule.",
+        "The runtime does not fall back to a central map, full Rule scan, or guessed candidate set.",
+        "The final response identifies repair of the local metadata/scan integrity as the prerequisite to rule-dependent execution."
+      ]
+    },
+    {
+      "id": "D-V4-SKILL-01",
+      "category": "skill-vs-rule",
+      "context_mode": "agentic-dev",
+      "prompt": "读取 task.md，说明当前应使用的独立执行能力与条件约束；不要修改文件。",
+      "workspace_files": {
+        "task.md": "# Ready Unit\n\n一个 Execution Unit 已通过 readiness。现在要对普通代码做一个很小的实现修改；要求最低必要复杂度、只改当前责任范围，并取得当前验证证据。\n"
+      },
+      "expected_behavior": "Runtime keeps the Task-oriented Skill and Rule layers separate: execute-unit is the independent execution workflow, while implementation minimality and surgical change are discovered Rules, not fabricated Skills.",
+      "assertions": [
+        "The runtime does not invent or invoke an implementation-minimality / surgical-change Skill.",
+        "It recognizes execute-unit as the independent execution capability when discussing the ready unit workflow, or equivalently preserves that Skill boundary.",
+        "It uses Rule Discovery for implementation minimality and diff-scope constraints.",
+        "Rule candidates are treated as conditional constraints inside the execution responsibility, not as replacement workflows.",
+        "No obsolete Skill Contract / Engineering Discipline owner is required to explain the boundary."
+      ]
+    },
+    {
+      "id": "D-V4-CONSUMER-01",
+      "category": "consumer-local",
+      "context_mode": "consumer-local",
+      "prompt": "按这个 Consumer Repository 的本地 Authority 处理 task.md，并判断当前验证是否足以完成。不要修改文件。",
+      "workspace_files": {
+        "AGENTS.md": "# Consumer Repository Authority\n\n本仓库是当前项目事实来源。ordinary runtime 只使用本地 Method / Skills / Rules / Rule Discovery；不得为了普通任务在线读取 upstream agentic-dev 当前状态。\n\n当前 Rule Discovery 入口：\n\n```bash\npython3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-json '<task-signals-json>'\n```\n\n五维 signals 为 phases / activities / technologies / artifacts / risks。只读取返回 candidates 的 Rule 正文并做语义确认；fail-closed 时修复本地事实或 metadata，不自动回 upstream。\n",
+        "README.md": "# Consumer Fixture\n\n这是已完成 adoption 的 Consumer-local runtime fixture。\n",
+        "task.md": "# Verification Task\n\n当前 Consumer 使用 Vue 3 + TypeScript。一个 `.vue` SFC 变更已经通过 `vite build`，但没有执行仓库当前 Vue-aware type-check。请判断是否可以据此声明类型责任已经闭环。\n"
+      },
+      "expected_behavior": "Runtime uses only the Consumer-local discovery tool/rules and concludes that Vite build does not prove Vue SFC type safety. It does not require or fetch upstream agentic-dev current state to answer the ordinary task.",
+      "assertions": [
+        "Trace shows the local Rule Discovery tool is used from the Consumer workspace.",
+        "The runtime discovers and applies the local Vue build-vs-typecheck / evidence semantics.",
+        "It rejects build-only evidence as sufficient for Vue SFC type responsibility.",
+        "It does not attempt to read agentic-dev Roadmap, upstream current branch, Issue, PR, or online baseline state.",
+        "The answer is complete from Consumer-local current authority or clearly reports only a local evidence gap."
+      ]
+    }
+  ]
+}
