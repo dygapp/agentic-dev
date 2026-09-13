@@ -44,8 +44,8 @@ current task / repository facts
 - V4-01 Asset Inventory & Classification — PASS
 - V4-02 Front Matter & Rule Discovery Contract — PASS
 - V4-03 Information Architecture & Rule Decomposition — PASS
-- V4-04 Rule Discovery Tool & Lint — CURRENT
-- V4-05 Runtime Integration
+- V4-04 Rule Discovery Tool & Lint — PASS
+- V4-05 Runtime Integration — CURRENT
 - V4-06 Generation / Verification Discriminating Evals
 - V4-07 Token Scaling Gate（20 / 100 / 500 rules）
 - V4-08 Consumer Validation
@@ -53,29 +53,36 @@ current task / repository facts
 
 Gate 编号不是自动推进授权；每一 Gate 先验证上一 Gate Completion Conditions。
 
-## V4-03 Completion State
+## V4-04 Completion State
 
-V4-03 已完成：
+V4-04 已取得当前执行证据：
 
-- current runtime Rules 已拆为独立 Markdown 单元并使用 frozen Front Matter contract；
-- 11 个 Skill 按独立闭环重新收敛，其中 `external-operation` / `review-change` 从旧聚合文档提升；
-- Guide 只保留人类 adoption / upgrade / recovery 说明；
-- V1～V3 project/discovery/profile/task/decision surfaces 已退出 current tree；
-- `docs/project/` 只保留本 Roadmap；
-- Research 只保留非权威技术证据，并退出旧 current-owner 叙述；
-- 旧聚合 runtime Guide 与 orphan Skill reference 已删除；
-- current resource Markdown 使用 V4 Front Matter；`SKILL.md` 使用 Agent Skills-compatible metadata extension；eval fixture Markdown 作为测试数据保留原语义。
+- Rule Discovery Tool 只扫描 Rule Front Matter，并稳定输出 `{id, path}` locator；
+- deterministic test suite：23 / 23 PASS；
+- repository lint：45 Rules / 11 Skills / 33 current Markdown resources PASS；
+- generation CLI smoke 扫描 45 条 Rule，仅返回 2 个 candidates；
+- malformed metadata、duplicate id、invalid signals、incomplete scan 等失败路径均 fail closed；
+- 当前实现不维护人工同步的中心 Rule Map / Manifest / Catalog。
 
-## Current Gate — V4-04
+## Current Gate — V4-05
 
-实现 `tools/rule-discovery/` 与严格 lint：
+把普通运行时真正收敛为：
 
-- metadata scan；
-- task-signal validation；
-- deterministic candidate filtering；
-- stable `{id,path}` output；
-- duplicate / malformed / invalid-state / incomplete-scan fail-closed；
-- current Markdown / Rule / Skill metadata lint；
-- 自动化测试覆盖 Generation / Verification 代表场景和失败路径。
+```text
+Task / repository facts
+→ extract current task signals
+→ Rule Discovery prefilter
+→ read candidate Rule bodies only
+→ semantic applicability confirmation
+→ execute current Skill / responsibility
+```
 
-V4-04 通过后再进入 Runtime Integration；不得以工具“能运行”代替 V4-06/V4-07 的判别能力与 token-scaling 验收。
+V4-05 必须保持：
+
+- AGENTS / README / Skills 只有最小稳定发现入口，不复制 Rule index；
+- task phase / activity / technology / artifact / risk facts 发生实质变化时重新发现，不跨职责永久复用旧 candidates；
+- Discovery `fail-closed` 时停止依赖其结果并修复当前输入 / metadata，不降级到旧中心发现路径；
+- Skill 原生发现与 Rule Discovery 保持独立；
+- ordinary runtime 不加载全量 Rule metadata / body，也不恢复 V1～V3 discovery assets。
+
+完成 V4-05 后才进入 V4-06 判别性运行评估。
