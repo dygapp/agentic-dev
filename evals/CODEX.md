@@ -21,7 +21,7 @@ Runtime 不得读取：
 
 如发生污染，该运行记为 infrastructure invalid，而不是 PASS / FAIL。
 
-## 2. Skill / capability / discovery runner
+## 2. Skill / discovery runner
 
 主运行器：
 
@@ -29,12 +29,11 @@ Runtime 不得读取：
 evals/run_codex_evals.py
 ```
 
-历史 Skill / capability 命令：
+Skill regression：
 
 ```bash
 python3 evals/run_codex_evals.py --activation --scenario A-CI-01
 python3 evals/run_codex_evals.py --behavior --scenario B-EU-01
-python3 evals/run_codex_evals.py --capability --scenario C-VTS-01
 ```
 
 V4 Rule Discovery 判别评估：
@@ -46,13 +45,15 @@ python3 evals/run_codex_evals.py --discovery --scenario D-V4-GEN-01
 
 `--discovery` 每个场景只复制当前 runtime entry、Rule Discovery Tool、current Rules、current Skills 与场景输入；corpus、expected behavior、assertions 和历史结果不进入 workspace。
 
+V4 已删除 monolithic Technology Profile runtime owner；旧 `--capability` / Profile eval 入口不属于 current baseline。技术行为通过 current technology Rules 与 V4 discovery corpus 验证。
+
 ## 3. Governance runner
 
 ```text
 evals/run_governance_evals.py
 ```
 
-只保留仍有 current Rule / Authority owner 的治理回归场景。语料迁移前先检查其是否仍对应 V4 current semantics。
+只保留仍有 current Rule / Authority owner 的治理回归场景。语料迁移前先检查其是否仍对应当前语义。
 
 ## 4. Execute fixture
 
@@ -64,20 +65,25 @@ evals/run_governance_evals.py
 
 ## 5. Rule Discovery / scaling
 
-V4-04 以后，Rule Discovery 的确定性 schema / matching / fail-closed 优先使用普通自动化测试，不需要用 LLM 证明确定性代码行为。
+Rule Discovery 的确定性 schema / matching / fail-closed 使用普通自动化测试；LLM Evals 只验证真正需要模型参与的部分：
 
-V4-06 的 LLM 评估验证真正需要模型参与的部分：
-
-- 从当前任务事实提取 task signals；
+- 从当前任务事实提取 bounded task signals；
 - 候选 Rule 正文的最终语义适用性；
 - generation / verification / mixed task 行为；
 - responsibility 变化时重新发现；
 - ambiguity / invalid metadata 的安全停止；
 - Skill / Rule 与 Consumer-local 边界。
 
-Task signals 还必须符合 current runtime contract：known array / known-empty `[]` / unknown `null` 三态；每维数组最多 6 个 token；不得用同义词云碰撞 Rule metadata。
+Task signals 必须符合 current runtime contract：known array / known-empty `[]` / unknown `null` 三态；每维数组最多 6 个 token；不得用同义词云碰撞 Rule metadata。
 
-V4-07 再使用 20 / 100 / 500 rules 的等价任务验证 discovery context scaling；不得在 V4-06 用场景数量代替 token-scaling 证据。
+Scaling 运行：
+
+```bash
+python3 evals/run_v4_scaling.py
+python3 evals/run_v4_scaling.py --scenario S-V4-100
+```
+
+20 / 100 / 500 Rules 场景用于验证：Tool scan cost 可以随 N 增长，但 ordinary LLM context 应只随候选 k 增长。
 
 ## 6. 结果判定
 
