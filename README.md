@@ -23,7 +23,7 @@ V4 采用减法优先的 Foundation Rebuild：
 
 ## Fresh Context
 
-本仓库工作从 `AGENTS.md` 恢复稳定 Repository Authority，再读取 `README.md`、Project Roadmap 与 GitHub 当前事实。普通任务只提取少量 task signals，通过本地 Rule Discovery 加载候选 Rules；不得加载全量 Rule metadata / body。
+本仓库工作从 `AGENTS.md` 恢复稳定 Repository Authority，再读取 `README.md`、Project Roadmap 与 GitHub 当前事实。普通任务只提取少量 current task signals，通过本地 Rule Discovery 取得候选 locator，只读取候选正文并做最终语义确认；signals 实质变化时重新发现。精确 CLI 与 fail-closed 边界由 `AGENTS.md` 持有。
 
 ## Consumer
 
@@ -45,7 +45,7 @@ docs/
   project/
   research/
 evals/
-tools/        # V4-04 建立 Rule Discovery Tool
+tools/        # Rule Discovery Tool
 ```
 
 真正的运行时规则由 `docs/rules/**` 持有；目录分类只服务人类阅读，不参与匹配。
