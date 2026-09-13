@@ -29,7 +29,8 @@ class DiscoveryCorpusTests(unittest.TestCase):
         document = self.document()
         cases = document["evals"]
         ids = [case["id"] for case in cases]
-        self.assertGreaterEqual(document["version"], 2)
+        self.assertGreaterEqual(document["version"], 3)
+        self.assertIn("unreturned Rule paths/file names", document["evaluation_boundary"])
         self.assertIn("unreturned Rule Front Matter/body", document["evaluation_boundary"])
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(
@@ -78,6 +79,8 @@ class DiscoveryCorpusTests(unittest.TestCase):
             self.assertIn("Consumer Repository Authority", agents)
             self.assertIn("`null`=未知", agents)
             self.assertIn("最多 6 个 token", agents)
+            self.assertIn("Rule locator 的唯一入口", agents)
+            self.assertIn("不得用 `rg --files`", agents)
             self.assertTrue((workspace / "docs/rules").is_dir())
             self.assertTrue((workspace / "tools/rule-discovery/rule_discovery.py").is_file())
             self.assertFalse((workspace / "docs/project/project-roadmap.md").exists())
