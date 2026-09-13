@@ -1,16 +1,13 @@
 from __future__ import annotations
 
-import importlib.util
-import json
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 
-MODULE_PATH = Path(__file__).resolve().parents[1] / "rule_discovery.py"
-SPEC = importlib.util.spec_from_file_location("rule_discovery", MODULE_PATH)
-assert SPEC and SPEC.loader
-rd = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(rd)
+TOOL_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(TOOL_DIR))
+import rule_discovery as rd  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
