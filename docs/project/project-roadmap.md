@@ -66,7 +66,7 @@ V4-05 已完成 ordinary runtime 切换：
 
 ## Current Gate — V4-06
 
-建立能够区分“工具能运行”和“Agent 能正确发现并应用规则”的运行时评估，至少覆盖：
+建立能够区分“工具能运行”和“Agent 能正确发现并应用规则”的运行时评估，覆盖：
 
 1. generation discovery；
 2. verification discovery；
@@ -76,4 +76,20 @@ V4-05 已完成 ordinary runtime 切换：
 6. Skill vs Rule 边界；
 7. Consumer-local ordinary runtime 不依赖 upstream current state。
 
-V4-06 必须使用 Fresh Runtime、隔离 expected behavior / assertions，并由人工语义判分；进程成功、候选数量或静态测试通过均不能替代行为结论。
+当前状态：**Evaluation Infrastructure READY / Fresh Runtime Evidence PENDING**。
+
+已完成：
+
+- 7 类 V4 current corpus；
+- `run_codex_evals.py --discovery` Fresh Runtime 隔离入口；
+- agentic-dev / Consumer-local workspace 隔离；
+- expected behavior / assertions / historical results 不进入被评 workspace；
+- mixed / ambiguity 场景已移除会直接提示目标行为的题面信息；
+- deterministic infrastructure tests、current-resource lint 与 discovery smoke 通过。
+
+仍需取得：
+
+- 实际 Fresh Codex Runtime 的 7 场景 JSONL / stderr / run metadata；
+- 人工逐 assertion 语义评分。
+
+当前 GitHub Actions 只提供无模型认证的确定性 Rule Discovery CI，不能替代 Fresh Runtime。V4-06 在上述运行与评分完成前保持 CURRENT，不进入 V4-07。
