@@ -75,6 +75,8 @@ V4-06 的 LLM 评估验证真正需要模型参与的部分：
 - ambiguity / invalid metadata 的安全停止；
 - Skill / Rule 与 Consumer-local 边界。
 
+Task signals 还必须符合 current runtime contract：known array / known-empty `[]` / unknown `null` 三态；每维数组最多 6 个 token；不得用同义词云碰撞 Rule metadata。
+
 V4-07 再使用 20 / 100 / 500 rules 的等价任务验证 discovery context scaling；不得在 V4-06 用场景数量代替 token-scaling 证据。
 
 ## 6. 结果判定
@@ -93,6 +95,15 @@ evidence references
 infrastructure notes
 ```
 
-Discovery 场景还应检查 JSONL trace 是否真实执行 local discovery、读取哪些 candidate paths、是否跨责任重新发现，以及是否出现全量 Rule scan / upstream fallback。
+Discovery 场景还必须检查 JSONL trace：
+
+- 是否真实执行 local discovery；
+- task signals 是否有当前事实依据并保持 bounded；
+- 实际读取了哪些 candidate paths；
+- 是否跨 responsibility 重新发现；
+- 是否出现全量 Rule scan / upstream fallback；
+- 是否读取**未由当前 discover result 返回**的 Rule Front Matter / body 来反向校准 token。
+
+最后一项属于协议违规：即使最终答案正确、后续 discovery 命中正确 Rule，也不能把该场景评为 clean PASS。唯一允许在候选之外读取 Rule 文件的例外，是 fail-closed diagnostic 精确指出 malformed resource，需要核对该诊断文件本身。
 
 没有运行轨迹时不能仅凭最终回答风格推断 Skill 或 Rule 被激活；Skill / Rule / Discovery contract 改变后不得沿用受影响的历史运行结果。
