@@ -51,3 +51,27 @@ jobs:
         run: >-
           python3 tools/rule-discovery/rule_discovery.py --repo-root . discover
           --signals-json '{"phases":["execute"],"activities":["implementation"],"technologies":[],"artifacts":["code"],"risks":[]}'
+
+      - name: Smoke unknown-risk conservative discovery
+        shell: bash
+        run: |
+          python3 tools/rule-discovery/rule_discovery.py --repo-root . discover \
+            --signals-json '{"phases":["execute"],"activities":["implementation"],"technologies":["vue3","typescript"],"artifacts":["code","vue-sfc"],"risks":null}' \
+            > /tmp/v4-generation.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path('/tmp/v4-generation.json').read_text(encoding='utf-8'))
+          ids = {item['id'] for item in payload['candidates']}
+          required = {
+              'rule:implementation-minimality',
+              'rule:surgical-change',
+              'rule:vue-props-one-way-input',
+              'rule:vue-define-model-default',
+          }
+          missing = sorted(required - ids)
+          if missing:
+              raise SystemExit(f'missing expected conservative candidates: {missing}')
+          print(json.dumps(payload, ensure_ascii=False))
+          PY
