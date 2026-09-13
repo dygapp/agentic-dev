@@ -16,6 +16,9 @@ SPEC.loader.exec_module(runner)
 
 
 class DiscoveryCorpusTests(unittest.TestCase):
+    def document(self):
+        return runner.load_json(runner.DISCOVERY_FILE)
+
     def cases(self):
         return runner.discovery_cases()
 
@@ -23,8 +26,11 @@ class DiscoveryCorpusTests(unittest.TestCase):
         return next(case for case in self.cases() if case["id"] == scenario_id)
 
     def test_required_v4_categories_are_present_once(self):
-        cases = self.cases()
+        document = self.document()
+        cases = document["evals"]
         ids = [case["id"] for case in cases]
+        self.assertGreaterEqual(document["version"], 2)
+        self.assertIn("unreturned Rule Front Matter/body", document["evaluation_boundary"])
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(
             {
@@ -39,6 +45,12 @@ class DiscoveryCorpusTests(unittest.TestCase):
             {case["category"] for case in cases},
         )
         self.assertEqual(7, len(cases))
+
+    def test_generation_fixture_exposes_real_vue_sfc_fact(self):
+        task = self.case("D-V4-GEN-01")["workspace_files"]["task.md"]
+        self.assertIn("`.vue`", task)
+        self.assertIn("Vue 3.5+", task)
+        self.assertIn("modelValue", task)
 
     def test_agentic_dev_workspace_contains_runtime_not_grader_material(self):
         case = self.case("D-V4-GEN-01")
@@ -64,6 +76,8 @@ class DiscoveryCorpusTests(unittest.TestCase):
 
             agents = (workspace / "AGENTS.md").read_text(encoding="utf-8")
             self.assertIn("Consumer Repository Authority", agents)
+            self.assertIn("`null`=未知", agents)
+            self.assertIn("最多 6 个 token", agents)
             self.assertTrue((workspace / "docs/rules").is_dir())
             self.assertTrue((workspace / "tools/rule-discovery/rule_discovery.py").is_file())
             self.assertFalse((workspace / "docs/project/project-roadmap.md").exists())
