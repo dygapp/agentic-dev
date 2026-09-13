@@ -12,6 +12,10 @@ import rule_discovery as rd  # noqa: E402
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
+def _signal_value(value):
+    return None if value is None else list(value)
+
+
 def signals(
     *,
     phases=(),
@@ -21,11 +25,11 @@ def signals(
     risks=(),
 ):
     return {
-        "phases": list(phases),
-        "activities": list(activities),
-        "technologies": list(technologies),
-        "artifacts": list(artifacts),
-        "risks": list(risks),
+        "phases": _signal_value(phases),
+        "activities": _signal_value(activities),
+        "technologies": _signal_value(technologies),
+        "artifacts": _signal_value(artifacts),
+        "risks": _signal_value(risks),
     }
 
 
@@ -142,6 +146,32 @@ class CurrentRepositoryTests(unittest.TestCase):
         self.assertIn("rule:vue-build-vs-typecheck", ids)
         self.assertIn("rule:evidence-type-must-match-claim", ids)
 
+    def test_unknown_risk_does_not_exclude_risk_scoped_rule(self):
+        result = self.discover(
+            signals(
+                phases=["execute"],
+                activities=["implementation"],
+                technologies=["vue3"],
+                artifacts=["vue-sfc"],
+                risks=None,
+            )
+        )
+        ids = {item["id"] for item in result["candidates"]}
+        self.assertIn("rule:vue-props-one-way-input", ids)
+
+    def test_known_empty_risk_excludes_risk_scoped_rule(self):
+        result = self.discover(
+            signals(
+                phases=["execute"],
+                activities=["implementation"],
+                technologies=["vue3"],
+                artifacts=["vue-sfc"],
+                risks=[],
+            )
+        )
+        ids = {item["id"] for item in result["candidates"]}
+        self.assertNotIn("rule:vue-props-one-way-input", ids)
+
     def test_candidate_output_does_not_leak_metadata(self):
         result = self.discover(
             signals(phases=["execute"], activities=["implementation"], artifacts=["code"])
@@ -221,6 +251,23 @@ class ContractFailureTests(unittest.TestCase):
 
     def test_illegal_task_signal_token_fails_closed(self):
         bad = signals(phases=["Execute"], activities=["implementation"], artifacts=["code"])
+        with self.assertRaises(rd.ContractError):
+            rd.validate_task_signals(bad)
+
+    def test_signal_synonym_cloud_fails_closed(self):
+        bad = signals(
+            phases=["execute"],
+            activities=[
+                "implementation",
+                "coding",
+                "authoring",
+                "editing",
+                "modification",
+                "generation",
+                "development",
+            ],
+            artifacts=["code"],
+        )
         with self.assertRaises(rd.ContractError):
             rd.validate_task_signals(bad)
 
