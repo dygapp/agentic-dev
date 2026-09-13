@@ -42,7 +42,7 @@ Rule 可以约束 Skill 的阶段内执行，但不得重定义 Method / Archite
 6. 需要独立执行能力时，通过 Agent Skills 原生发现选择并读取相应 `SKILL.md`；
 7. 只加载当前任务直接需要的 Method / Architecture / Guide / Research。
 
-不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills 或完整 Research。
+不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills 或完整 Research。ordinary runtime 不得通过 `rg --files`、`find`、目录遍历、IDE tree、脚本或其他方式预先枚举 `docs/rules/**` 的完整 locator / 文件名集合；Rule Discovery 的返回值是普通运行时获得 Rule locator 的唯一入口。
 
 ## Rule Discovery
 
@@ -64,7 +64,7 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 
 阶段 token 使用 Method 的稳定阶段身份：`clarify-intent`、`specification`、`technical-planning`、`slice-ready`、`execute`、`converge`。活动优先使用直接责任词，如 `implementation`、`verification`、`review`、`external-operation`、`design`。技术与工件使用当前事实的稳定机器身份；常见规范化示例：Vue 3.x → `vue3`、TypeScript → `typescript`、`.vue` SFC → `vue-sfc`、普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。这些只是 token 规范化，不构成 Rule→token 路由表。
 
-成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选本身不等于最终适用，必须读取候选正文后做语义确认。若某个维度的 canonical token 不确定，优先用 `null` 保留未知语义，而不是读取未命中 Rule 的 Front Matter 反向推断 token。
+成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选本身不等于最终适用，必须读取候选正文后做语义确认。若某个维度的 canonical token 不确定，优先用 `null` 保留未知语义，而不是读取未命中 Rule 的 Front Matter 反向推断 token。除 Discovery 返回的 `candidates[].path` 外，ordinary runtime 不得提前枚举、读取或把其他 Rule locator 送入模型上下文。
 
 当当前 phase、activity、technology、artifact 或 risk facts 发生会改变候选集合的实质变化时，重新执行 discovery，不把旧 candidate set 当作整个会话永久上下文。Discovery 返回 `fail-closed` 时停止依赖其结果，修复当前 signals、metadata 或扫描完整性后重试；不得降级到全量 Rule 加载、旧中心 Map 或 upstream discovery。`status=ok` 但候选为空也不得通过读取未命中 Rule metadata 进行校准；只能基于新的当前事实重新发现，或明确保留规则发现缺口。
 
