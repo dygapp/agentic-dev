@@ -6,17 +6,17 @@ status: active
 
 # Project Roadmap
 
-## Current Foundation Rebuild
+## Current Foundation
 
-当前项目处于 **V4 — 分布式规则发现与仓库基础重构**。
+当前项目处于 **V4 — 分布式规则发现与仓库基础重构** 的最终 Closure 阶段。
 
 Frozen V3 locator：
 
 `agentic-dev@1c8cdfea9ecf23ef33ffab20eec3c93679fd4578`
 
-V4 是断代式、减法优先 Foundation Rebuild，不维护 V1～V3 current working-tree compatibility layer。过程设计、分类、实验与阶段证据主要由 Issue #122、PR、Git 与 Actions 持有；本 Roadmap 只保留当前阶段与稳定下一 Gate。
+V4 是断代式、减法优先 Foundation Rebuild，不维护 V1～V3 current working-tree compatibility layer。过程设计、分类、实验与阶段证据由 Issue #122、PR #123、Git 与 Actions 持有；本 Roadmap 只保留当前 Foundation、Gate 状态和稳定下一步。
 
-## Current Runtime Target
+## Current Runtime
 
 ```text
 current task / repository facts
@@ -29,16 +29,15 @@ current task / repository facts
 → semantic applicability confirmation
 ```
 
-核心约束：
+稳定约束：
 
-- Rule metadata 与正文同文件维护；
+- Rule metadata 与规范正文同文件维护；
 - 不维护 Reviewed Discovery Map / Activation Manifest / Runtime Catalog / rule-index；
 - Rule Discovery 返回的 `candidates[]` 是 ordinary runtime 获得 Rule locator 的唯一入口；
-- 未命中 Rule locator / metadata / body 不进入普通 LLM context；
-- Skill 只承担稳定独立执行闭环；
-- Guide 只承担面向人的低频说明；
-- current project state 不为每个 Gate 创建长期 Markdown；
-- fixture / frozen eval input 属于测试数据，不因 current-resource metadata 治理被机械改写。
+- 未命中 Rule locator / metadata / body 不进入 ordinary LLM context；
+- task signals 使用 known array / known-empty `[]` / unknown `null` 三态，每个非空维度最多 6 个 canonical token；
+- Skill 只承担稳定独立执行闭环；Rule 只承担条件/约束/默认值/不变量/完成声明；Guide 只承担面向人的低频 adoption / upgrade / recovery 说明；
+- Consumer adoption 后 ordinary runtime 默认只依赖 Consumer-local Authority / Method / Skills / Rules / Rule Discovery，不在线依赖 upstream current state。
 
 ## Gates
 
@@ -49,51 +48,37 @@ current task / repository facts
 - V4-04 Rule Discovery Tool & Lint — PASS
 - V4-05 Runtime Integration — PASS
 - V4-06 Generation / Verification Discriminating Evals — PASS
-- V4-07 Token Scaling Gate（20 / 100 / 500 rules）— PASS
-- V4-08 Consumer Validation — CURRENT
-- V4-09 Closure & Baseline Replacement — PENDING
+- V4-07 Token Scaling Gate（20 / 100 / 500 Rules）— PASS
+- V4-08 Consumer Validation — PASS（natural Rule Evolution observation deferred）
+- **V4-09 Closure & Baseline Replacement — CURRENT**
 
-Gate 编号不是自动推进授权；每一 Gate 先验证上一 Gate Completion Conditions。
+Gate 编号不是自动集成授权。
 
-## V4-06 Completion State
+## Current Evidence
 
-V4-06 已通过三轮 Fresh Runtime 收敛：
+V4-06 已以 Fresh Runtime 证明 generation、verification、mixed responsibility、negative/ambiguity、invalid metadata、Skill/Rule boundary 与 Consumer-local ordinary runtime；最终 7 / 7 场景、35 / 35 assertions PASS。
 
-- 首轮暴露 canonical task-signal 不稳定、synonym probing 与未命中 metadata 反向探测；
-- 第二轮显式 assertions 通过，但暴露完整 Rule locator 枚举导致 LLM context 随 N 增长；
-- contract 随证据收敛为 bounded known / known-empty / unknown signals，以及 locator-only progressive disclosure；
-- 第三轮基于 `395c803987667180a258d8ce8f51136ab64ad325`、Codex CLI `0.154.0`，7/7 场景、35/35 assertions 与 locator-only protocol 全部 PASS。
-
-详细过程证据由 Issue #122 持有；本 Roadmap 不复制完整评分流水账。
-
-## V4-07 Completion State
-
-V4-07 已验证同一任务在 20 / 100 / 500 Rules 三种规模下的真实 Fresh Runtime scaling：
-
-- 三个 fixture 分别精确扫描 20 / 100 / 500 条 Rule metadata；
-- 三种规模都只返回同样 4 条候选：`implementation-minimality`、`surgical-change`、`vue-define-model-default`、`vue-props-one-way-input`；
-- Runtime 只读取这 4 条候选正文，无 synthetic decoy locator、未命中 Rule metadata/body 或目录枚举进入模型上下文；
-- 100 → 500 Rules 增长 5 倍时，总 input tokens `88,673 → 88,556`（-0.13%），uncached input `12,769 → 12,780`（+0.09%），stdout bytes `25,791 → 25,545`（-0.95%）；
-- 20 → 500 Rules 增长 25 倍时，uncached input 仅 `12,198 → 12,780`（+4.77%）；20-rule 运行的总 token 差异可由不同 bootstrap/tool-call grouping 解释，trace 没有显示额外 Rule context 泄漏。
-
-因此当前证据直接排除了“LLM discovery context 随 Rule 总量 N 近似线性增长”的失败条件，并支持：
+V4-07 已验证 20 / 100 / 500 Rules 下仅相同少量 candidates 进入模型上下文；当前证据支持：
 
 ```text
 Tool side: O(N metadata scan/filter)
-LLM side: O(k locator + k rule body), k=4 << N
+LLM side: O(k locator + k rule body), k << N
 ```
 
-详细 scaling 表与 trace 结论记录于 Issue #122。
+V4-08 已在真实 Consumer `dygapp/jilinjobs-cms` 完成显式 adoption、Consumer-local projection、ordinary generation / verification discovery、无中心同步资产和 post-adoption upstream decoupling。自然 Rule Evolution 尚未实际发生；按项目负责人明确决策，该 gap 保留为 post-adoption observation，不阻塞本轮 V4 Closure，后续真实使用问题通过 Consumer feedback 继续演进。
 
-## Current Gate — V4-08
+详细证据由 Issue #122、PR #123 与对应 Actions 持有，本 Roadmap 不复制完整评分流水账。
 
-V4-08 在不修改 Consumer 产品语义的前提下，用真实 Consumer 验证：
+## Current Gate — V4-09
 
-- baseline adoption；
-- Consumer-local rule projection；
-- ordinary generation discovery；
-- ordinary verification discovery；
-- 后续规则新增 / 修改时无需同步中心 Map；
-- upstream 演进与 Consumer ordinary runtime 解耦。
+Closure & Baseline Replacement 只做最终有效状态收敛：
 
-Consumer 修改必须在 Consumer 自己的 Repository Authority / 会话中完成；`agentic-dev` 当前会话不得越界直接修改 Consumer。V4-08 的下一实际动作是建立 Consumer-side Fresh Context 验证入口，在 Consumer 仓库中按其当前 Repository Authority 执行 adoption / local projection / ordinary runtime validation，并把可复核 Evidence 反馈回 Issue #122。
+- 删除 temporary / superseded V4 与前代运行资产；
+- 核心 Method / Architecture / Skills / Rules / Guides 只保留最终有效设计；
+- `docs/project/` 只保留本 Roadmap；
+- Fresh Context 不需要理解 V1～V3 历史即可工作；
+- Consumer adoption / explicit baseline upgrade 路径由 current Consumer Lifecycle 与 Guide 持有；
+- V4 实施历史继续保存在 Issue #122 / PR #123 / Git / Actions；
+- 完成 exact-head closure verification 后进入 Integration Gate；只有 PR #123 集成到 `master` 后，`master` 才成为正式 V4 baseline。
+
+当前 Closure audit 已移除被 V4 Rule Discovery 取代的旧 `evals/capability/**` 与 `evals/rule-retrieval/**` 入口，并收敛 Evals runner / guide。下一实际动作是完成最终 current-tree / exact-head verification；merge 仍需独立授权。
