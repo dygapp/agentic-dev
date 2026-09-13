@@ -68,16 +68,16 @@ Consumer Repository 始终拥有自己的项目事实、需求、架构、代码
 
 外部可变状态操作使用 `external-operation` Skill，并通过 Rule Discovery 加载当前适用的授权、写后验证、异步观察、共享资源等 operation Rules。工具可写不等于已授权；merge、release、deploy、破坏性远程操作仍服从仓库策略和人工权威。
 
-高影响仓库变更按 `rule:high-impact-ai-review-required` 触发 `review-change` Skill。AI 复核通过不等于人工批准，也不授予集成权限。
+高影响仓库变更按 `rule:high-impact-ai-review-required` 判断是否必须执行 `review-change`。Review 通过不等于人工批准或集成授权。
 
-## 语言与提交
+## 研究
 
-本仓库面向人的内容默认使用自然中文；机器标识保持原样。详细条件通过 repository Rules 按需发现。
+`docs/research/**` 只保存外部规范、工程证据和设计参考，不参与 ordinary runtime discovery，也不自动改变 Method / Architecture / Rule / Skill。长期结论只有进入真实 current owner 后才成为规范。
 
-Git commit 格式、单一目的、权威层顺序和 breaking 标记由 `docs/rules/repository/` 中的适用 Rules 管理，不再维护独立 commit Guide。
+## Project State
 
-## 历史与研究
+`docs/project/` 只保留真正当前的 `project-roadmap.md`。临时计划、Gate 过程、资产分类、实验结果和阶段验证优先记录在 Issue #122、PR、Git commit 与 Actions，不为 V4 再建立一组过程 Markdown。
 
-当前工作树只表达当前有效状态。V1～V3 的设计过程、审计、closure、旧 discovery surfaces 和已完成临时计划由 Git / Issue / PR 保留，不在 current tree 建兼容层或 archive。
+## Git 与表达
 
-`docs/research/` 只保存仍有独立外部机制、技术或规范参考价值的非 Authority 资料，不参与 ordinary runtime discovery。
+Git commit、中文人类表达、精确机器标识符和正式概念身份等运行约束由 `docs/rules/repository/**` 按 task signals 发现；本文件不复制第二份规则正文。
