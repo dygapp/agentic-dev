@@ -33,6 +33,7 @@ COMMON_TYPES = {
     "repository",
     "eval-guide",
 }
+MAX_TASK_TOKENS_PER_DIMENSION = 6
 TOKEN_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 RESOURCE_ID_RE = re.compile(r"^[a-z0-9]+(?::[a-z0-9]+(?:-[a-z0-9]+)*)+$")
 RULE_ID_RE = re.compile(r"^rule:[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -182,6 +183,20 @@ def _validate_token_list(value: Any, *, field: str, source: str) -> tuple[str, .
     return tuple(result)
 
 
+def _validate_task_signal_value(
+    value: Any, *, field: str
+) -> tuple[str, ...] | None:
+    if value is None:
+        return None
+    tokens = _validate_token_list(value, field=field, source="task-signals")
+    if len(tokens) > MAX_TASK_TOKENS_PER_DIMENSION:
+        raise ContractError(
+            f"task-signals: {field} contains too many tokens "
+            f"({len(tokens)} > {MAX_TASK_TOKENS_PER_DIMENSION})"
+        )
+    return tokens
+
+
 def validate_rule(parsed: ParsedMarkdown, *, path: Path, locator: str) -> RuleRecord:
     metadata = parsed.metadata
     unknown = set(metadata) - RULE_KEYS
@@ -223,7 +238,7 @@ def validate_rule(parsed: ParsedMarkdown, *, path: Path, locator: str) -> RuleRe
     return RuleRecord(id=rule_id, path=path, locator=locator, scope=normalized)
 
 
-def validate_task_signals(signals: Any) -> dict[str, tuple[str, ...]]:
+def validate_task_signals(signals: Any) -> dict[str, tuple[str, ...] | None]:
     if not isinstance(signals, dict):
         raise ContractError("task signals must be a JSON object")
     if set(signals) != set(SCOPE_KEYS):
@@ -236,9 +251,9 @@ def validate_task_signals(signals: Any) -> dict[str, tuple[str, ...]]:
             details.append(f"unknown={sorted(unknown)}")
         raise ContractError(f"invalid task signal shape ({', '.join(details)})")
 
-    normalized: dict[str, tuple[str, ...]] = {}
+    normalized: dict[str, tuple[str, ...] | None] = {}
     for key in SCOPE_KEYS:
-        normalized[key] = _validate_token_list(signals[key], field=key, source="task-signals")
+        normalized[key] = _validate_task_signal_value(signals[key], field=key)
     return normalized
 
 
@@ -322,7 +337,12 @@ def discover(
         applicable = True
         for key in SCOPE_KEYS:
             rule_tokens = record.scope[key]
-            if rule_tokens and not (set(rule_tokens) & set(normalized_signals[key])):
+            if not rule_tokens:
+                continue
+            task_tokens = normalized_signals[key]
+            if task_tokens is None:
+                continue
+            if not (set(rule_tokens) & set(task_tokens)):
                 applicable = False
                 break
         if applicable:
