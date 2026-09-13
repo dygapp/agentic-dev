@@ -8,7 +8,7 @@ status: active
 
 ## Current Foundation
 
-当前项目处于 **V4 — 分布式规则发现与仓库基础重构** 的最终 Closure 阶段。
+当前项目处于 **V4 — 分布式规则发现与仓库基础重构** 的最终 Integration Gate。
 
 Frozen V3 locator：
 
@@ -50,7 +50,7 @@ current task / repository facts
 - V4-06 Generation / Verification Discriminating Evals — PASS
 - V4-07 Token Scaling Gate（20 / 100 / 500 Rules）— PASS
 - V4-08 Consumer Validation — PASS（natural Rule Evolution observation deferred）
-- **V4-09 Closure & Baseline Replacement — CURRENT**
+- **V4-09 Closure & Baseline Replacement — CURRENT / INTEGRATION GATE**
 
 Gate 编号不是自动集成授权。
 
@@ -69,16 +69,16 @@ V4-08 已在真实 Consumer `dygapp/jilinjobs-cms` 完成显式 adoption、Consu
 
 详细证据由 Issue #122、PR #123 与对应 Actions 持有，本 Roadmap 不复制完整评分流水账。
 
-## Current Gate — V4-09
+## V4-09 Closure State
 
-Closure & Baseline Replacement 只做最终有效状态收敛：
+Closure audit 已完成 current-tree 收敛：
 
-- 删除 temporary / superseded V4 与前代运行资产；
-- 核心 Method / Architecture / Skills / Rules / Guides 只保留最终有效设计；
 - `docs/project/` 只保留本 Roadmap；
-- Fresh Context 不需要理解 V1～V3 历史即可工作；
-- Consumer adoption / explicit baseline upgrade 路径由 current Consumer Lifecycle 与 Guide 持有；
-- V4 实施历史继续保存在 Issue #122 / PR #123 / Git / Actions；
-- 完成 exact-head closure verification 后进入 Integration Gate；只有 PR #123 集成到 `master` 后，`master` 才成为正式 V4 baseline。
+- `tasks/**`、旧 discovery Map / Manifest / Catalog、旧 Technology Profile runtime owner 等前代过程或运行资产不在 current tree；
+- 被 V4 current Rule Discovery corpus 取代的旧 `evals/capability/**` 与 `evals/rule-retrieval/**` 已删除；
+- Evals current inventory / runner / guide 已收敛，并由 CI 编译 runner、执行 Rule Discovery deterministic tests / lint / smoke discovery；
+- `AGENTS.md` → `README.md` → Roadmap → GitHub current state 的 Fresh Context 路径不要求读取 V1～V3 项目过程即可工作；
+- Consumer adoption / explicit baseline upgrade 路径由 `docs/architecture/consumer-lifecycle.md` 与 current Guides 持有；
+- V4 实施历史继续保存在 Issue #122 / PR #123 / Git / Actions，而不恢复为第二套 current state。
 
-当前 Closure audit 已移除被 V4 Rule Discovery 取代的旧 `evals/capability/**` 与 `evals/rule-retrieval/**` 入口，并收敛 Evals runner / guide。下一实际动作是完成最终 current-tree / exact-head verification；merge 仍需独立授权。
+当前下一实际动作只有 **PR #123 Integration**。merge 仍需独立人工授权；只有集成并完成 post-integration verification 后，`master` 才成为唯一正式 V4 baseline，V4-09 才可最终 PASS / close。
