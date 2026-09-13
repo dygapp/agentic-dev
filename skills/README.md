@@ -1,14 +1,14 @@
 ---
-id: guide:skills
+id: guide:skill-inventory
 type: guide
 status: active
 ---
 
 # Skills
 
-当前仓库维护 11 个 Skill：8 个核心 Method Skill、2 个 reusable supporting Skill、1 个平台专项 Skill。
+当前仓库维护 11 个可复用 Skill：
 
-## 核心 Method Skills
+## Core Method Skills
 
 - `clarify-intent`
 - `specify`
@@ -19,7 +19,7 @@ status: active
 - `systematic-debug`
 - `converge`
 
-## Reusable supporting Skills
+## Supporting Skills
 
 - `external-operation`
 - `review-change`
@@ -28,6 +28,4 @@ status: active
 
 - `github-actions-verification`
 
-Skill 是否成立只取决于是否拥有稳定独立执行闭环，不取决于历史分类或希望减少 Rule 数量。完整边界见 `docs/architecture/skill-architecture.md`。
-
-普通横切约束由 `docs/rules/` 中的 Rule 按需发现，不复制到 Skill inventory。
+Skill 必须符合 `docs/architecture/skill-architecture.md` 的独立闭环与准入要求。普通横切约束由 `docs/rules/**` 持有，并通过 Rule Discovery 按需加载；不得为减少 Rule 数量把普通条件机械升级为 Skill。
