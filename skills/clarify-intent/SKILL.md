@@ -1,6 +1,10 @@
 ---
 name: clarify-intent
 description: Clarifies only product-intent ambiguities that materially affect goal, scope, user-visible behavior, business boundaries, acceptance, or significant non-functional obligations. Use before specification when authoritative context cannot resolve a high-impact product decision; do not use for ordinary reversible implementation choices.
+metadata:
+  agentic-dev-id: "skill:clarify-intent"
+  agentic-dev-type: "skill"
+  agentic-dev-status: "active"
 ---
 
 # clarify-intent
