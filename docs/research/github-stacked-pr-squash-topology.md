@@ -1,134 +1,58 @@
+---
+id: research:github-stacked-pr-squash-topology
+type: research
+status: active
+---
+
 # GitHub Stacked PR + Squash Merge 集成拓扑研究
 
-## 研究目的
+**证据日期：** 2026-09-07  
+**性质：** 非规范性平台研究
 
-为 Issue #69“Squash Merge 下 Stacked PR 集成拓扑安全 v1”提供当前平台证据，判断 Issue #33 中历史 Consumer 故障应如何映射到 GitHub 当前能力。
+## 1. 研究问题
 
-本文属于研究材料，不直接定义方法、架构、技能契约或使用方仓库策略。
+普通依赖式 PR 链在 squash merge 后可能出现“审查 ancestry”与“最终集成 ancestry”分离；但 GitHub 原生 stacked pull requests 已有自己的 stack lifecycle，因此不能把历史手工链故障机械推广到所有 stack。
 
-## 证据日期
+## 2. Consumer 历史证据
 
-2026-09-07。
+Issue #33 曾观察到：父层 squash merge 后，下游普通 branch 仍保留未 squash 的 ancestry，导致旧 PR changed files 明显扩大；重新规范化 Head 后才恢复窄职责 diff。
 
-## 既有 Consumer 证据
+该证据支持的结论是：普通手工依赖 PR 链不能假设 squash merge 会自动把 child branch ancestry 改写成最终集成 ancestry。
 
-Issue #33 已独立核验以下历史事实：
+## 3. GitHub 官方证据
 
-- `dygapp/jilinjobs-cms` 曾使用普通依赖式 PR 链进行分层审查；
-- 父层通过 squash merge 集成后，下游 branch 仍保留未 squash 的审查 ancestry；
-- 原 PR #38 最终显示 48 个 changed files，而规范化后的替代 PR #39 只包含 2 个职责文件；
-- 原 PR #37 最终显示 58 个 changed files且未合并，而规范化后的替代 PR #40 只包含 13 个职责文件；
-- Head 规范化后重新取得当前证据；
-- 该风险被独立分类为 `Low / Future Improvement Candidate`，不支持禁止 stacked PR，也不支持修改核心方法、技能契约或新增 Skill。
+研究时 GitHub 文档显示：
 
-该证据证明普通手工依赖 PR 链在 squash merge 后可能出现审查 ancestry 与最终集成 ancestry 分离，但不证明 GitHub 当前所有 stacked PR 模式都具有同一故障路径。
+- 原生 stacked pull requests 处于 public preview；
+- stack 是同仓库线性 PR 依赖链；
+- 原生 stack 对 required reviews/checks、stack trunk、cascading rebase 和 bottom-up merge 有专门语义；
+- squash merge 时每层形成独立 squashed commit，剩余上层可按 stack lifecycle rebase / retarget；
+- 普通 PR 的 squash merge 仍可能导致继续使用同一 head branch 时后续 PR 再次包含已 squash 的提交；
+- 修改 base、rebase 或更新 head 会改变 PR 当前比较状态，必须重新读取实际 diff/checks/evidence。
 
-## GitHub 当前官方证据
+来源包括 GitHub 关于 stacked PR、merging stacked PR、pull request merges、changing base branch 和 keeping a PR in sync 的官方文档。
 
-### 1. 原生 stacked pull requests 已成为平台能力
+## 4. 模式边界
 
-来源：
+### GitHub 原生 stack
 
-- https://docs.github.com/en/pull-requests/get-started/about-stacked-prs
-- https://docs.github.com/en/pull-requests/reference/stacked-pull-requests
+只有当前平台事实明确证明相关 PR 正由原生 stack lifecycle 管理时，才按当前 GitHub stack 语义判断。由于该能力在研究时仍为 public preview，具体 UI/CLI/API 行为不是长期 Method contract。
 
-当前文档明确：
+### 普通手工依赖 PR 链
 
-- stacked pull requests 处于 **public preview**，行为可能继续变化；
-- 一个 stack 是同仓库内的 PR 依赖链，底层 PR 指向 trunk，其余 PR 逐层指向下层 branch；
-- GitHub CLI、GitHub website、GitHub Mobile 与程序化 API 均可识别 stack；
-- 原生 stack 的 required reviews、required checks、CODEOWNERS 与 GitHub Actions 以 stack trunk 为统一基准评估，而不是只按每层直接 base branch 处理；
-- stack 必须保持层间线性历史。
+如果只是通过 branch base 形成依赖而没有原生 stack 证据：
 
-### 2. 原生 stack 对 squash merge 有专门语义
+- 审查拓扑不自动等于最终集成拓扑；
+- 父层集成后重新读取 trunk、child branch、PR base/head/diff；
+- child 若仍携带已集成父层 ancestry，需要先建立可验证的当前集成拓扑；
+- rebase/rebuild/force-update/PR replacement 后，旧 Head 的验证证据不得自动复用。
 
-来源：
+## 5. V4 边界
 
-- https://docs.github.com/en/pull-requests/reference/stacked-pull-requests
-- https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/merging-stacked-pull-requests
+该研究不支持新增方法阶段、统一分支策略、强制使用 GitHub 原生 stack 或禁止普通 dependent PR。
 
-当前文档明确：
+V4 的 `external-operation` / `review-change` 流程以及写后重新读取、evidence currentness、integration closure Rules 已覆盖通用运行约束；本文件只在 GitHub stacked/squash 拓扑本身成为当前任务事实时提供平台研究依据，不参与 ordinary Rule Discovery。
 
-- 原生 stack 支持 merge commit、squash、rebase 三种 merge method；
-- 使用 squash 时，每个 PR 层形成一个独立的 squashed commit；
-- stack 从 bottom 向上集成，可以一次合并从最低未合并层开始的连续一组 PR；
-- 底层或连续下层完成集成后，剩余上层 PR 会自动 rebase / retarget 到 stack trunk，使下一层成为新的底层；
-- 如果 stack 因 trunk 前进或下层变化失去线性历史，GitHub 要求 cascading rebase，可通过 `gh stack rebase` / `gh stack push` 或网站上的 `Rebase stack` 恢复。
+## 6. 结论
 
-因此，Issue #33 中“父 PR squash 后 child 仍需人工规范化并可能产生旧 PR 快照”的故障路径，**不能直接视为 GitHub 当前原生 stack 的标准行为**。
-
-### 3. 普通 PR 的 squash merge 仍可能保留旧 branch ancestry
-
-来源：
-
-- https://docs.github.com/en/pull-requests/reference/pull-request-merges
-
-GitHub 对普通 PR 的 squash merge 会把 PR 中的提交合并成 base branch 上的一个新提交；官方文档同时明确指出，如果继续在同一 head branch 上工作，后续 PR 可能重新包含已经被 squash 到 base branch 的提交。
-
-这个平台事实与 Issue #33 的历史 Consumer 现象方向一致：当依赖 PR 链**没有被 GitHub 原生 stack 生命周期接管**时，不能假设 squash merge 会自动把 child branch 的 Git ancestry 改写成最终集成 ancestry。
-
-### 4. 普通 PR 的 base / head 变化会影响审查快照
-
-来源：
-
-- https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/changing-the-base-branch-of-a-pull-request
-- https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/keeping-your-pull-request-in-sync-with-the-base-branch
-
-当前文档明确：
-
-- PR 比较的是 head branch 与 base branch；
-- 修改 base branch 可能使部分 commits 从 timeline 消失，也可能让已有 review comments 变为 outdated；
-- 更新 PR branch 可以通过 merge base 或 rebase 到最新 base；
-- branch 更新是新的仓库状态，不能沿用旧 Head 的验证声明。
-
-最后一点“不能沿用旧 Head 的验证声明”由 `agentic-dev` 当前证据规则提供，不是 GitHub 文档直接定义。
-
-## 模式分类
-
-### 模式 A — GitHub 原生 stack
-
-识别条件：GitHub 将相关 PR 识别为同一 stack，存在 stack metadata / stack map / stack merge requirements，或使用 `gh stack` / 对应平台操作管理其生命周期。
-
-安全含义：
-
-- 优先遵循 GitHub 当前 stack merge / rebase 语义；
-- 不需要把 Issue #33 的人工 branch normalization 路径机械复制到原生 stack；
-- 进入集成决策前仍必须读取实际 stack / PR 状态、Head、diff、checks 与当前证据；
-- 因功能仍处于 public preview，不能把具体 UI、CLI 子命令或自动重写行为提升为长期不变的方法契约；
-- 在面向集成判断的最终结论中，应显式保留这一边界：public preview 的具体 UI、CLI、API 与自动化行为只是当前平台能力，不能提升为永久核心方法或技能契约，也不能据此要求所有使用方仓库采用 GitHub 原生 stack。
-
-### 模式 B — 普通手工依赖 PR 链
-
-识别条件：PR 只是通过 branch base 形成依赖关系，但没有当前证据证明平台把它们作为原生 stack 管理。
-
-安全含义：
-
-- 审查拓扑只表示审查依赖，不自动等于最终集成拓扑；
-- 父层 squash merge 后，应重新读取 trunk、child branch、PR base / Head / diff；
-- 如果 child 仍携带已集成父层 ancestry，应先规范化 / rebase / rebuild 到实际集成基线，再决定是否继续使用原 PR；
-- branch rewrite、rebase、rebuild、force-update 或 PR 替换后，旧 Head 的当前证据不得自动复用；
-- 如果 GitHub PR 快照无法可靠证明当前 Head 与职责 diff，应停止该 PR 的集成并创建或使用可验证的干净载体，而不是对语义不明的旧快照继续合并。
-
-## 架构适配判断
-
-当前证据支持的最小长期落点是：
-
-- `docs/guides/external-operation-guidelines.md` 的 GitHub / 外部状态验证指导；
-- 必要时由项目级评估验证该指导。
-
-当前证据**不支持**：
-
-- 修改核心方法；
-- 修改技能契约；
-- 新增 Skill；
-- 规定统一分支策略；
-- 规定所有使用方必须使用 GitHub 原生 stack；
-- 禁止普通 stacked / dependent PR。
-
-## 研究结论
-
-Issue #33 的历史风险仍成立，但它现在必须被更精确地表述为：
-
-> 在 squash merge 场景中，Agent 不能仅凭“这些 PR 曾以依赖链方式审查”推断审查拓扑会自动成为最终集成拓扑。必须先判断当前依赖链是否由 GitHub 原生 stack 生命周期管理；原生 stack 按当前平台 stack 语义验证和集成，普通手工依赖 PR 链则必须在每次父层集成或 Head 变化后重新建立可验证的集成拓扑与当前证据。
-
-这是一条平台 / 外部操作安全边界，而不是新的方法阶段或仓库级分支策略。
+在 squash merge 场景中，不能仅凭“这些 PR 曾以依赖链方式审查”推断审查拓扑会自动成为最终集成拓扑。必须先识别当前平台管理模式，再以当前 trunk/head/diff/checks 建立证据。

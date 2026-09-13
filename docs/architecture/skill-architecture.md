@@ -1,437 +1,76 @@
+---
+id: architecture:skill
+type: architecture
+status: active
+---
+
 # Skill 架构
 
-**状态：** 基线 v0.1  
-**性质：** 规范性架构文档
+## 1. Skill 定义
 
-## 1. 目标
+Skill 是拥有稳定独立执行闭环的能力：
 
-Skill 用于实现已经确定的开发方法，而不是另外定义一套生命周期。
+```text
+Trigger / Purpose
+→ Inputs
+→ Procedure
+→ Outputs
+→ Exit Conditions
+→ Escalation
+```
 
-工程能力的更高层分层、证据进入方式和能力生命周期由 `engineering-capability-architecture.md` 定义；本文专门定义 Skill 的分类、调用关系、契约形状和当前 Skill 清单。
+Skill 实现既定 Method，不创建隐藏生命周期，也不通过自身存在取得仓库写入、集成、发布或部署授权。
 
-当前架构明确避免创建类似 `develop-feature` 的超级 Skill。
+## 2. 当前分类
 
-## 2. Skill 分类
+### 核心 Method Skills（8）
 
-### 2.1 工作流 Skill
-
-负责推动工作在方法阶段之间转换。
-
-当前成员：
-
-1. `clarify-intent`
-2. `specify`
-3. `technical-plan`
-4. `slice-work`
-5. `readiness-check`
-6. `execute-unit`
-7. `converge`
-
-通常由用户、控制者或工作流运行时显式发起。
-
-### 2.2 工程纪律 Skill / 内嵌纪律
-
-负责规定阶段内部如何高质量工作。
-
-候选能力包括：
-
-- 测试驱动开发；
-- 代码复核；
-- 声明前验证；
-- 代码 / 设计质量；
-- 上下文纪律。
-
-并不是每项工程纪律都应该做成独立 Skill。
-
-只有当某项工程纪律：
-
-- 有独立可复用流程；
-- 被多个工作流重复调用；
-- 复杂度足以独立维护；
-
-时，才考虑升级为正式 Skill。
-
-### 2.3 调查型 Skill
-
-只在出现特定未知问题时调用。
-
-候选：
-
+- `clarify-intent`
+- `specify`
+- `technical-plan`
+- `slice-work`
+- `readiness-check`
+- `execute-unit`
 - `systematic-debug`
-- `research`
-- `prototype`
+- `converge`
 
-其中 `systematic-debug` 已进入第一批核心 Skill，因为缺陷需要独立处理路径。
+### Reusable supporting Skills（2）
 
-### 2.4 转换型能力（当前不 Skill 化）
+- `external-operation`：对外部可变状态执行读取、最小操作、重新读取验证和有界升级；
+- `review-change`：对当前最终变更执行 authority-aware review，输出 findings 或通过结论。
 
-上下文 / 会话切换并不自动形成独立 Skill，也不要求默认创建交接产物。
+### Platform-specific Skills（1）
 
-只有当存在真实的未完成工作状态，需要由后续运行时、新上下文或明确接手者继续消费时，才可以形成临时交接产物（`handoff`）。该产物只转移继续工作所需的当前状态、阻塞项与权威定位信息，不复制项目长期知识，也不取得新的规范性所有权。
+- `github-actions-verification`
 
-如果没有明确的产生者、触发条件和后续消费者，就不创建 `handoff`。当前仓库没有独立 `handoff` Skill，也不把它作为默认待实现 Skill；只有未来真实证据证明它形成稳定、独立、可复用且可验证的过程，并满足本文 Skill 准入门禁时，才重新评估是否 Skill 化。
+总数为 11。新增 supporting Skill 不意味着重新打开核心 Method Skill 设计。
 
-### 2.5 项目初始化 / 启动能力
+## 3. Rule 边界
 
-项目初始化可能需要建立或确认：
+以下内容默认不是 Skill：
 
-- 仓库规则；
-- 权威层级；
-- 治理规则；
-- 项目路线图（满足项目级长期协调与新上下文恢复条件时）；
-- 上下文 / 文档位置；
-- 验证命令；
-- 集成策略。
+- 实现最小化、差异范围、数据访问有界性；
+- 证据类型、视觉证据、migration completion；
+- Git commit 约束；
+- 语言 / 术语约束；
+- 技术 API / framework 约束；
+- 外部操作过程中的单项授权或并发不变量。
 
-这类能力统称为项目初始化 / 启动能力。它可以由 Skill、模板、脚本、设置工作流或人工引导实现，不预设必须 Skill 化。
+它们由 Rule 按任务 signals 发现，Skill 只在过程真正需要时消费候选 Rule。
 
-只有在项目预计跨越多个里程碑、方法阶段或新上下文，且整体路线无法从其他产物可靠恢复时，才建立薄的项目路线图。初始路线可以不完整，但必须区分已完成、当前、下一步、条件性与未知内容；载体由使用方仓库选择，不强制固定路径或模板。
+## 4. Agent Skills 互操作
 
-项目启动不属于正常功能工作流。
+每个 `SKILL.md` 必须遵守当前 Agent Skills Specification。`name` 与 `description` 为 required top-level fields；本仓逻辑 `id/type/status` 通过官方 `metadata` string map 扩展：
 
-仅当成熟外部实践、专项评估或真实使用证据能够支持某个启动能力具有以下性质时，才考虑将其升级为正式 Skill：
-
-- 能跨多个项目重复使用；
-- 具有独立、稳定的过程；
-- 输入、输出与退出条件可以明确；
-- 主要承载可复用能力，而不是某个项目自己的事实与决策。
-
-**“可复用”本身不足以成为新增 Skill 的理由。**
-
-### 2.6 可复用能力与项目规则边界
-
-本架构区分三类内容。
-
-#### 可复用 Skill
-
-Skill 表达可跨项目复用的执行能力。它应具有清晰职责、稳定过程、明确输入输出和退出条件，并能独立组合使用。
-
-Skill 不保存某个具体项目的长期事实，也不拥有覆盖项目权威的权限。
-
-#### 项目规则
-
-项目规则表达当前仓库的具体权威、策略、上下文与约束，例如：
-
-- 权威来源和优先级；
-- 当前阶段；
-- 文档与任务位置；
-- 验证 / 集成策略；
-- 当前项目允许或要求使用哪些 Skill。
-
-项目规则应固化在当前项目的 `AGENTS.md`、规范文档、配置或其他合适的仓库产物中。
-
-项目规则可以选择、要求或限制可复用 Skill，但 Skill 不得反向覆盖项目权威。
-
-#### 启动 / 设置能力
-
-启动 / 设置能力使用可复用流程帮助项目建立或更新项目规则。其产物通常是项目实例自己的 `AGENTS.md`、配置、目录约定或其他仓库产物。
-
-它可能最终实现为 Skill，但必须先有足够证据证明其具有稳定独立职责，并按工程能力架构完成分层与专项验证；不得因为某条规则“可能在别的项目也有用”就提前创建 Skill。
-
-### 2.7 平台 / 技术专项可复用 Skill
-
-当官方权威实践、成熟外部工程经验、专项评估或使用方证据能够证明某个平台、技术或工具生态存在稳定、可复用且足够复杂的操作能力时，可以建立**平台 / 技术专项非核心 Skill**。
-
-这类 Skill：
-
-- 实现既有方法 / 契约 / 治理语义，不新增方法阶段；
-- 可以包含平台或技术专有对象、API、CI/CD 机制和运行模式；
-- 只有在使用方实际满足触发条件时才加载，不成为所有项目的默认依赖；
-- 必须服从使用方仓库权威、仓库策略与运行时实际能力；
-- 不得把平台或技术实现细节反向升级为通用方法强制规则；
-- 不得接管完整功能生命周期、集成、发布或部署；
-- 不得仅因为某项技术重要就把完整框架知识打包成一个 Skill。
-
-平台 / 技术专项 Skill 与第一批核心 Skill 是组合关系，而不是替代关系。核心工作流 Skill 可以在当前工作确实需要时调用专项 Skill，以取得更可靠的实现或验证能力。
-
-`github-actions-verification` 的历史准入证据来自真实使用方实验：GitHub Actions 验证被证明存在独立可复用的路径选择、证据可观察性、运行时成本控制和诊断流程，因此允许新增：
-
-- `github-actions-verification`：面向使用 GitHub Actions 的使用方，建立或优化可观察、可追踪、成本可控的 CI 验证路径。
-
-该 Skill 属于**平台专项非核心 Skill**，不计入第一批 8 个核心 Skill，也不意味着重新打开核心 Skill 工程。
-
-后续新的平台 / 技术专项 Skill 可以按照 `engineering-capability-architecture.md` 使用成熟外部证据、专项评估和使用方证据的组合进行准入判断，不再把既有 `github-actions-verification` 的使用方驱动形成路径机械复制为唯一模式。
-
-### 2.8 当前 Skill 清单
-
-当前仓库实际实现并维护 9 个 Skill：
-
-| 分类 | 数量 | 当前成员 | 状态语义 |
-|---|---:|---|---|
-| 核心 Skill | 8 | `clarify-intent`、`specify`、`technical-plan`、`slice-work`、`readiness-check`、`execute-unit`、`systematic-debug`、`converge` | 历史基线已关闭；Issue #18 触发的定向强化已完成，针对性行为评估 `4 / 4 PASS` |
-| 平台专项 Skill | 1 | `github-actions-verification` | 由真实使用方证据支持形成的现有非核心 Skill |
-| 未来实验性 Skill | 0 | 无 | 按工程能力架构，在成熟外部证据、专项评估或使用方证据支持稳定职责时评估 |
-
-因此，“第一批 8 个核心 Skill”描述的是核心基线，不是仓库全部 Skill 数量。`github-actions-verification` 是当前第 9 个已实现 Skill，但不是“第 9 个核心 Skill”，其存在不重新打开核心 Skill 工程。Issue #18 的历史定向强化已经完成并达到“已具备进入集成决策的条件”；后续工程能力扩展也不等于无条件重新设计这 8 个核心 Skill。
-
-### 2.9 产物生命周期与 Skill 边界
-
-长期权威产物的生命周期由方法职责和使用方仓库权威共同决定，不由新增的“产物管理超级 Skill”接管：
-
-- `clarify-intent` 可以识别长期领域事实候选，`specify` 负责在权威输入支持下验证相关“做什么 / 为什么”；需要独立长期维护的候选由使用方仓库权威指定的领域责任方确认并持久化，阶段转换本身不授予写入权限；
-- `technical-plan` 负责判断并维护跨功能持续有效的架构上下文变化，其中满足条件的重要架构决定按需形成或更新 ADR；
-- 项目初始化 / 启动能力或使用方仓库授权的项目治理职责按条件建立和维护项目路线图；
-- `execute-unit`、`systematic-debug` 与 `converge` 可以发现权威产物缺口，但必须返回拥有该事实或决定的上游职责层，不得在下游静默提升长期权威；
-- `converge` 可以在本次工作明确触发已有项目路线图更新时识别其陈旧状态，但不得自行规划路线、创建路线图或发明下一步工作；
-- 项目规则、仓库策略或人工权威决定具体载体、写入权限与集成方式，Skill 不强制固定目录、模板或审批流程。
-
-这类职责分配落实产物生命周期闭环，但不新增方法阶段、领域上下文 Skill、架构管理 Skill 或完整生命周期超级 Skill。
-
-### 2.10 新 Skill 准入门禁
-
-新增 Skill 至少必须同时满足并能够证明以下边界：
-
-1. **触发条件**：什么时候应进入该职责，什么时候明确不进入；
-2. **输入**：存在稳定、可描述的最小输入；
-3. **过程**：存在可重复、足够复杂、值得按需加载和独立维护的过程；
-4. **输出**：存在稳定独立输出，而不是只要求“遵守若干规则”；
-5. **退出 / 返回 / 升级**：可以明确停止、返回上游或升级；
-6. **可组合性**：可以作为独立职责被调用，不接管完整开发生命周期；
-7. **所有权**：不会复制核心方法、工程纪律 / 画像、使用方生命周期、仓库本地规则或 Guide 已拥有的规范正文；
-8. **证据**：存在官方 / 成熟工程实践、专项评估或使用方证据支持该独立职责，而不是只由命名偏好推动；
-9. **评估**：可以设计有辨识力的行为评估，证明独立 Skill 身份比现有语义所有者或支持能力更合适。
-
-“可复用”“Agent 会读取”“内容重要”“存在步骤”或“多个 Skill 都需要”都不能单独满足准入。
-
-如果一个候选主要表达横切约束、默认技术知识、仓库本地值、人类说明或跨多个过程的生命周期语义，应优先进入对应工程纪律 / 画像 / 使用方生命周期 / 仓库本地规则 / Guide；只有形成独立稳定过程后再重新评估 Skill 身份。
-
-新的 Skill 不得成为规则超级 Skill、阶段路由 Skill、产物管理超级 Skill，也不得成为接管初始化→执行→集成完整生命周期的控制器。
-
-### 2.11 Skill 支持资源边界
-
-某个 Skill 目录下的 `references/*`、fixture、template、script 或其他支持资源只有在以下条件同时成立时，才继续作为该 Skill 的内部资源：
-
-- 直接服务该 Skill 的执行过程；
-- 不独立定义跨 Skill / 跨仓库长期规范语义；
-- 生命周期与该 Skill 的当前身份一起管理；
-- 删除该资源不会丢失 Skill 之外的规范事实。
-
-如果某个支持资源开始被多个 Skill / Guide 独立消费，或形成自己的触发、适用范围、更新 / 取代责任，就必须重新判断真实语义所有者；物理位于 Skill 目录不足以继续证明它只是内部附件。
-
-当前 `skills/github-actions-verification/references/*` 继续属于 `github-actions-verification` 的支持资源，没有证据要求提升为平级语义所有者。
-
-## 3. 第一批 8 个核心 Skill
-
-| Skill | 类型 | 核心职责 |
-|---|---|---|
-| `clarify-intent` | 工作流 | 消除意图层关键歧义 |
-| `specify` | 工作流 | 形成或更新“做什么 / 为什么”权威 |
-| `technical-plan` | 工作流 | 按需解决长期“如何实现”决策 |
-| `slice-work` | 工作流 | 形成上下文适配的纵向执行单元 |
-| `readiness-check` | 工作流 | 判断是否可以进入实施 |
-| `execute-unit` | 工作流 | 实现并验证一个执行单元 |
-| `systematic-debug` | 调查 | 复现、诊断、修复、回归验证 |
-| `converge` | 工作流 | 功能整体完成检查 |
-
-这 8 个 Skill 已完成契约复核，作为第一批核心 Skill 的设计与后续实现范围。
-
-正式实现 `SKILL.md` 时必须遵循 `skill-contracts.md` 的已复核契约，不得通过实现扩大职责边界。
-
-### 3.1 第一批暂不独立 Skill 化的能力
-
-以下能力第一批不独立实现：
-
-- `verify-evidence`；
-- `code-review`；
-- 独立 `tdd`；
-- 独立 `context-discipline`；
-- 独立 `human-escalation`；
-- `handoff` / 运行时交接。
-
-其中前五项继续作为内嵌纪律；`handoff` 只作为按需的临时运行时转换能力 / 产物存在，不是默认方法产物，也不是当前待实现 Skill。只有未来出现明确生产者、消费者、稳定独立流程与验证证据，并满足本文准入门禁时，才重新评估其 Skill 身份。
-
-## 4. 暂不独立 Skill 化的横切规则
-
-### 上下文纪律
-
-- 权威优先；
-- 渐进式披露；
-- 不依赖会话记忆；
-- 不重复持久化已有长期知识。
-
-### 人工升级
-
-统一使用：
-
-- 权限；
-- 影响；
-- 可逆性。
-
-### 声明前验证
-
-任何完成或状态声明必须有当前证据。
-
-### 复核语义
-
-逻辑上保持两个裁决：
-
-- 规格符合性；
-- 工程质量。
-
-不要求一定使用两个复核 Agent。
-
-### TDD
-
-当存在稳定行为接缝时，优先：
-
-```text
-预期行为
-→ 失败证据
-→ 最小实现
-→ 通过证据
+```yaml
+metadata:
+  agentic-dev-id: "skill:example"
+  agentic-dev-type: "skill"
+  agentic-dev-status: "active"
 ```
 
-不强制把所有工作都机械套入测试仪式。
+不得添加规范未定义的自定义 top-level metadata key。
 
-## 5. Skill 调用关系
+## 5. 准入门禁
 
-```text
-clarify-intent
-      ↓
-specify
-      ↓
-technical-plan?  （条件）
-      ↓
-slice-work
-      ↓
-readiness-check
-      ↓
-execute-unit
-      │
-      ├─ 内嵌验证
-      ├─ 内嵌 / 可选 TDD
-      ├─ 失败时 systematic-debug
-      ├─ 适用时平台专项验证 Skill
-      └─ 风险需要时复核
-      ↓
-converge
-```
-
-工作流 Skill 不允许静默接管整个生命周期。
-
-`execute-unit` 不得自动：
-
-- 执行所有剩余执行单元；
-- 自动进入 `converge`；
-- Merge / Push / Release；
-- 执行破坏性清理。
-
-## 6. 执行单元作为统一工作协议
-
-本方法不绑定任何任务管理工具。
-
-执行单元可以由以下载体承载：
-
-- GitHub Issue；
-- Jira；
-- Linear；
-- Markdown Task；
-- 运行时对象；
-- 其他跟踪器。
-
-最小逻辑契约：
-
-```text
-id
-goal
-spec_reference
-completion_condition
-dependencies
-constraints
-```
-
-除上述最小字段外，整个执行单元集合还必须表达以下逻辑关系，但不要求采用固定字段名或固定模板：
-
-```text
-规格验收义务
-→ 实现责任 / 验证责任
-→ 计划验证证据
-```
-
-其中：
-
-- `spec_reference` 或等价覆盖视图必须能识别执行单元承接的必需行为 / 验收义务；
-- `completion_condition` 与计划验证证据必须足以证明这些义务，而不只是证明实现存在或主路径可用；
-- 只有确实需要跨执行单元组合状态才能证明的义务，才可以显式归属功能整体验证责任；
-- `execute-unit` 形成已执行的当前证据，`converge` 仍独立从规格说明重新检查功能整体覆盖；
-- 不要求一条验收义务对应一个测试，也不规定测试层级、CI 平台或证据载体。
-
-可选元数据：
-
-- `priority`；
-- `status`；
-- `risk`；
-- `owner / worker`；
-- 验收责任归属；
-- `planned verification`；
-- `evidence references`。
-
-长期执行单元不要求精确文件路径。
-
-## 7. 未来 `SKILL.md` 推荐结构
-
-工作流 Skill 统一采用：
-
-```text
-Purpose
-
-Use When
-
-Do Not Use When
-
-Inputs
-
-Authority Sources
-
-Procedure
-
-Outputs
-
-Exit Conditions
-
-Escalation Conditions
-
-Context Rules
-
-Allowed Sub-skills / Disciplines
-```
-
-这些英文标题是当前 Skill 契约的结构字段身份，保持原样；正文说明仍使用自然中文。
-
-三个最重要的字段：
-
-### `Authority Sources`
-
-明确 Skill 应信任哪些来源，以及冲突优先级。
-
-### `Exit Conditions`
-
-防止无限分析和过度处理。
-
-### `Escalation Conditions`
-
-同时避免两种错误：
-
-- 一有歧义就问人；
-- 无授权仍擅自决定。
-
-## 8. 非目标
-
-本架构不强制：
-
-- Slash Command 命名约定；
-- 一个阶段一个产物；
-- 单一 Issue 跟踪工具；
-- 单一 Agent 运行时；
-- 子 Agent；
-- Git Worktree；
-- 特定 TDD 框架；
-- 强制技术计划；
-- 多复核 Agent；
-- 自动集成；
-- 项目启动必须实现为 Skill；
-- `handoff` 必须实现为 Skill；
-- 项目规则必须采用一种固定文件布局；
-- 所有使用方使用同一个平台 / 技术专项 Skill。
-
-标准化的是语义职责，而不是具体工具承载方式。
+新增 Skill 至少证明：独立 trigger、稳定输入、可重复 procedure、稳定输出、明确退出 / 升级、可组合性、单一语义 owner，以及有辨识力的行为评估。仅“重要”“可复用”“多个 Skill 都要遵守”“存在步骤”不足以升级为 Skill。

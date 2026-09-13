@@ -1,0 +1,80 @@
+name: Rule Discovery
+
+on:
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - 'README.md'
+      - 'docs/**/*.md'
+      - 'skills/**/*.md'
+      - 'evals/**/*.md'
+      - 'evals/**/*.json'
+      - 'evals/**/*.py'
+      - 'tools/rule-discovery/**'
+      - '.github/workflows/rule-discovery.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'AGENTS.md'
+      - 'README.md'
+      - 'docs/**/*.md'
+      - 'skills/**/*.md'
+      - 'evals/**/*.md'
+      - 'evals/**/*.json'
+      - 'evals/**/*.py'
+      - 'tools/rule-discovery/**'
+      - '.github/workflows/rule-discovery.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  rule-discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile eval runners
+        run: python3 -m py_compile evals/run_codex_evals.py evals/run_governance_evals.py evals/run_v4_scaling.py
+
+      - name: Run deterministic tests
+        run: python3 -m unittest discover -s tools/rule-discovery/tests -v
+
+      - name: Lint V4 resources
+        run: python3 tools/rule-discovery/rule_discovery.py --repo-root . lint
+
+      - name: Smoke discover locator output
+        run: >-
+          python3 tools/rule-discovery/rule_discovery.py --repo-root . discover
+          --signals-json '{"phases":["execute"],"activities":["implementation"],"technologies":[],"artifacts":["code"],"risks":[]}'
+
+      - name: Smoke unknown-risk conservative discovery
+        shell: bash
+        run: |
+          python3 tools/rule-discovery/rule_discovery.py --repo-root . discover \
+            --signals-json '{"phases":["execute"],"activities":["implementation"],"technologies":["vue3","typescript"],"artifacts":["code","vue-sfc"],"risks":null}' \
+            > /tmp/v4-generation.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path('/tmp/v4-generation.json').read_text(encoding='utf-8'))
+          ids = {item['id'] for item in payload['candidates']}
+          required = {
+              'rule:implementation-minimality',
+              'rule:surgical-change',
+              'rule:vue-props-one-way-input',
+              'rule:vue-define-model-default',
+          }
+          missing = sorted(required - ids)
+          if missing:
+              raise SystemExit(f'missing expected conservative candidates: {missing}')
+          print(json.dumps(payload, ensure_ascii=False))
+          PY

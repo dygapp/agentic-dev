@@ -1,3 +1,9 @@
+---
+id: method:principles
+type: method
+status: active
+---
+
 # AI 开发方法原则
 
 **状态：** 基线 v0.1  
