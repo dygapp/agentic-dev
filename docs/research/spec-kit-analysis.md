@@ -1,3 +1,9 @@
+---
+id: research:spec-kit
+type: research
+status: active
+---
+
 # 研究总结 — github/spec-kit
 
 **研究日期：** 2026-08-17  
