@@ -1,3 +1,9 @@
+---
+id: research:superpowers
+type: research
+status: active
+---
+
 # 研究总结 — obra/superpowers
 
 **研究日期：** 2026-08-17  
@@ -61,7 +67,7 @@ Reproduce
 → Regression
 ```
 
-因此当前架构把 `systematic-debug` 列为核心候选 Skill。
+因此当前架构把 `systematic-debug` 列为核心 Skill。
 
 ### 2.5 Execution Isolation 有独立价值
 
