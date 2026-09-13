@@ -20,7 +20,7 @@ V4 是断代式、减法优先 Foundation Rebuild，不维护 V1～V3 current wo
 
 ```text
 current task / repository facts
-→ task signals
+→ bounded task signals
 → Rule Discovery Tool
 → scan Rule YAML Front Matter
 → deterministic candidate filtering
@@ -46,7 +46,7 @@ current task / repository facts
 - V4-03 Information Architecture & Rule Decomposition — PASS
 - V4-04 Rule Discovery Tool & Lint — PASS
 - V4-05 Runtime Integration — PASS
-- V4-06 Generation / Verification Discriminating Evals — CURRENT
+- V4-06 Generation / Verification Discriminating Evals — CURRENT / REWORK
 - V4-07 Token Scaling Gate（20 / 100 / 500 rules）
 - V4-08 Consumer Validation
 - V4-09 Closure & Baseline Replacement
@@ -66,30 +66,35 @@ V4-05 已完成 ordinary runtime 切换：
 
 ## Current Gate — V4-06
 
-建立能够区分“工具能运行”和“Agent 能正确发现并应用规则”的运行时评估，覆盖：
+V4-06 验证“Agent 能正确发现并应用规则”，覆盖 generation、verification、mixed responsibility、negative / ambiguity、invalid metadata、Skill vs Rule 与 Consumer-local ordinary runtime。
 
-1. generation discovery；
-2. verification discovery；
-3. generation + external operation + verification mixed task；
-4. negative / ambiguity 与 fail-closed；
-5. metadata drift / invalid resource；
-6. Skill vs Rule 边界；
-7. Consumer-local ordinary runtime 不依赖 upstream current state。
+### First Fresh Runtime result
 
-当前状态：**Evaluation Infrastructure READY / Fresh Runtime Evidence PENDING**。
+首轮 Fresh Runtime 基于：
 
-已完成：
+`60dfb3bb97f937d329f198bab78c20a6f29e39f0`
 
-- 7 类 V4 current corpus；
-- `run_codex_evals.py --discovery` Fresh Runtime 隔离入口；
-- agentic-dev / Consumer-local workspace 隔离；
-- expected behavior / assertions / historical results 不进入被评 workspace；
-- mixed / ambiguity 场景已移除会直接提示目标行为的题面信息；
-- deterministic infrastructure tests、current-resource lint 与 discovery smoke 通过。
+Codex CLI：`0.154.0`。7/7 场景结果完整，全部进程正常退出且 stderr 为空，但**语义 Gate 未通过**：原始 assertion 约 30/35 通过，只有 negative / ambiguity 与 invalid metadata 两个场景达到 clean PASS。
 
-仍需取得：
+主要失败不是最终业务结论错误，而是 discovery protocol 出现系统性缺陷：
 
-- 实际 Fresh Codex Runtime 的 7 场景 JSONL / stderr / run metadata；
-- 人工逐 assertion 语义评分。
+- runtime 缺少稳定 task-token 规范化边界，出现大量同义词 / 推测风险碰撞；
+- `generation` 与 `Skill vs Rule` 因 canonical token 不一致产生 false negative；
+- mixed / Consumer-local 场景读取未返回 Rule 的 Front Matter 反向校准 signals，破坏 `prefilter → candidate-only read` 边界；
+- verification 最终判断正确，但依赖大规模 synonym probing 才命中目标 Rule。
 
-当前 GitHub Actions 只提供无模型认证的确定性 Rule Discovery CI，不能替代 Fresh Runtime。V4-06 在上述运行与评分完成前保持 CURRENT，不进入 V4-07。
+因此 V4-06 首轮结论为 **FAIL**，不得进入 V4-07。
+
+### Current rework
+
+V4-06 内部按证据修订 task-signal contract：
+
+- task-side 五维值采用三态：非空数组 = known；`[]` = known-empty；`null` = unknown / unsafe-to-canonicalize；
+- unknown 维度不用于排除 Rule，避免为了精确 metadata 猜 taxonomy；
+- 每个非空维度最多 6 个 lowercase kebab-case token，禁止 synonym cloud；
+- Method phase 与常见 technology / artifact machine identity 提供稳定规范化入口，但不建立 Rule→token 映射表；
+- `status=ok` 且候选为空时，不允许读取未命中 Rule Front Matter / body 反向校准；
+- eval corpus 明确把这种反向探测判为协议失败；
+- Consumer-local fixture 同步采用相同 signal contract。
+
+当前 rework 必须先通过 deterministic CI，再在新的精确 Head 上重新执行全部 7 个 Fresh Runtime 场景和人工逐 assertion 评分。只有 rerun clean PASS 后才可进入 V4-07。
