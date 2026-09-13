@@ -45,44 +45,35 @@ current task / repository facts
 - V4-02 Front Matter & Rule Discovery Contract — PASS
 - V4-03 Information Architecture & Rule Decomposition — PASS
 - V4-04 Rule Discovery Tool & Lint — PASS
-- V4-05 Runtime Integration — CURRENT
-- V4-06 Generation / Verification Discriminating Evals
+- V4-05 Runtime Integration — PASS
+- V4-06 Generation / Verification Discriminating Evals — CURRENT
 - V4-07 Token Scaling Gate（20 / 100 / 500 rules）
 - V4-08 Consumer Validation
 - V4-09 Closure & Baseline Replacement
 
 Gate 编号不是自动推进授权；每一 Gate 先验证上一 Gate Completion Conditions。
 
-## V4-04 Completion State
+## V4-05 Completion State
 
-V4-04 已取得当前执行证据：
+V4-05 已完成 ordinary runtime 切换：
 
-- Rule Discovery Tool 只扫描 Rule Front Matter，并稳定输出 `{id, path}` locator；
-- deterministic test suite：23 / 23 PASS；
-- repository lint：45 Rules / 11 Skills / 33 current Markdown resources PASS；
-- generation CLI smoke 扫描 45 条 Rule，仅返回 2 个 candidates；
-- malformed metadata、duplicate id、invalid signals、incomplete scan 等失败路径均 fail closed；
-- 当前实现不维护人工同步的中心 Rule Map / Manifest / Catalog。
+- `AGENTS.md` 持有稳定 CLI、五维 task signal、semantic confirmation、re-discovery 与 fail-closed 边界；
+- Rule Discovery Architecture 持有 ordinary runtime lifecycle；
+- README / Skills 只保留薄入口，不复制 Rule index；
+- 11 个 Skill 已回归清点并退出旧 V3 Discipline / central-discovery 依赖；
+- Reviewed Discovery Map 与被替代运行路径不存在于 current tree；
+- 当前 Head 的 deterministic tests、resource lint 与 discover smoke 均通过。
 
-## Current Gate — V4-05
+## Current Gate — V4-06
 
-把普通运行时真正收敛为：
+建立能够区分“工具能运行”和“Agent 能正确发现并应用规则”的运行时评估，至少覆盖：
 
-```text
-Task / repository facts
-→ extract current task signals
-→ Rule Discovery prefilter
-→ read candidate Rule bodies only
-→ semantic applicability confirmation
-→ execute current Skill / responsibility
-```
+1. generation discovery；
+2. verification discovery；
+3. generation + external operation + verification mixed task；
+4. negative / ambiguity 与 fail-closed；
+5. metadata drift / invalid resource；
+6. Skill vs Rule 边界；
+7. Consumer-local ordinary runtime 不依赖 upstream current state。
 
-V4-05 必须保持：
-
-- AGENTS / README / Skills 只有最小稳定发现入口，不复制 Rule index；
-- task phase / activity / technology / artifact / risk facts 发生实质变化时重新发现，不跨职责永久复用旧 candidates；
-- Discovery `fail-closed` 时停止依赖其结果并修复当前输入 / metadata，不降级到旧中心发现路径；
-- Skill 原生发现与 Rule Discovery 保持独立；
-- ordinary runtime 不加载全量 Rule metadata / body，也不恢复 V1～V3 discovery assets。
-
-完成 V4-05 后才进入 V4-06 判别性运行评估。
+V4-06 必须使用 Fresh Runtime、隔离 expected behavior / assertions，并由人工语义判分；进程成功、候选数量或静态测试通过均不能替代行为结论。
