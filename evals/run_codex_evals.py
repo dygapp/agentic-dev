@@ -4,11 +4,10 @@
 This runner deliberately stays thin:
 - one `codex exec --ephemeral --json` process per scenario;
 - Skill activation / behavior runs use external temporary workspaces with Skill copies;
-- non-Skill capability runs copy only context paths declared by that corpus;
 - V4 discovery runs copy only current runtime entry files, Rule Discovery, current Rules,
   current Skills, and scenario fixture inputs; grader-only expectations never enter the workspace;
 - the Codex process cwd/PWD matches the isolated workspace so repository paths do not leak;
-- behavior runs use explicit Skill invocation, while capability/discovery runs do not invent a Skill;
+- behavior runs use explicit Skill invocation, while discovery runs do not invent a Skill;
 - B-EU-01 additionally receives a fresh writable fixture and its final snapshot is preserved;
 - saves raw JSONL/stdout, stderr, source commit, and Codex CLI version;
 - does NOT grade semantic assertions automatically.
@@ -42,9 +41,6 @@ BEHAVIOR_FILES = [
     EVALS / "behavior" / "systematic-debug.json",
     EVALS / "behavior" / "converge.json",
     EVALS / "behavior" / "github-actions-verification.json",
-]
-CAPABILITY_FILES = [
-    EVALS / "capability" / "vue3-typescript-profile.json",
 ]
 DISCOVERY_FILE = EVALS / "discovery" / "v4-discriminating.json"
 RESULTS = EVALS / "results"
@@ -97,12 +93,6 @@ def populate_isolated_skill_copies(workspace: Path) -> None:
 
     for skill_dir in iter_skill_dirs():
         shutil.copytree(skill_dir, skill_root / skill_dir.name)
-
-
-def copy_capability_context(workspace: Path, context_paths: list[str]) -> None:
-    """Copy only declared non-Skill capability context, preserving repo-relative paths."""
-    for relative in context_paths:
-        copy_repo_path(workspace, relative)
 
 
 def materialize_workspace_files(workspace: Path, files: dict[str, str]) -> None:
@@ -305,15 +295,6 @@ def behavior_cases() -> Iterable[tuple[str, dict]]:
             yield skill_name, case
 
 
-def capability_cases() -> Iterable[tuple[str, list[str], dict]]:
-    for path in CAPABILITY_FILES:
-        document = load_json(path)
-        capability_name = document["capability_name"]
-        context_paths = document["context_paths"]
-        for case in document["evals"]:
-            yield capability_name, context_paths, case
-
-
 def discovery_cases() -> list[dict]:
     document = load_json(DISCOVERY_FILE)
     return document["evals"]
@@ -386,41 +367,6 @@ def run_behavior(codex_bin: str, selected: set[str] | None) -> int:
     return failures
 
 
-def run_capability(codex_bin: str, selected: set[str] | None) -> int:
-    failures = 0
-
-    for capability_name, context_paths, case in capability_cases():
-        scenario_id = case["id"]
-        if selected and scenario_id not in selected:
-            continue
-
-        with tempfile.TemporaryDirectory(
-            prefix=f"agentic-dev-capability-{scenario_id}-"
-        ) as temp_dir:
-            cwd = Path(temp_dir)
-            copy_capability_context(cwd, context_paths)
-
-            context_list = "\n".join(f"- {path}" for path in context_paths)
-            prompt = (
-                f"当前评估对象：{capability_name}。\n"
-                "先读取以下当前 Capability Context；这些文件与本提示构成本场景"
-                "全部可用上下文，不要读取当前工作目录之外的路径：\n"
-                f"{context_list}\n\n"
-                f"{case['prompt']}"
-            )
-
-            failures += run_codex(
-                codex_bin=codex_bin,
-                scenario_id=scenario_id,
-                prompt=prompt,
-                result_group="capability",
-                cwd=cwd,
-                skip_git_repo_check=True,
-            ) != 0
-
-    return failures
-
-
 def run_discovery(codex_bin: str, selected: set[str] | None) -> int:
     failures = 0
 
@@ -462,11 +408,6 @@ def parse_args() -> argparse.Namespace:
     mode.add_argument("--activation", action="store_true", help="run Skill activation corpus")
     mode.add_argument("--behavior", action="store_true", help="run Skill behavior corpus")
     mode.add_argument(
-        "--capability",
-        action="store_true",
-        help="run non-Skill capability targeted-eval corpus",
-    )
-    mode.add_argument(
         "--discovery",
         action="store_true",
         help="run V4 Rule Discovery discriminating corpus",
@@ -496,7 +437,6 @@ def main() -> int:
 
     known = {case["id"] for case in activation_cases()}
     known.update(case["id"] for _, case in behavior_cases())
-    known.update(case["id"] for _, _, case in capability_cases())
     known.update(case["id"] for case in discovery_cases())
     if selected:
         unknown = selected - known
@@ -514,8 +454,6 @@ def main() -> int:
         failures = run_activation(args.codex_bin, selected)
     elif args.behavior:
         failures = run_behavior(args.codex_bin, selected)
-    elif args.capability:
-        failures = run_capability(args.codex_bin, selected)
     elif args.discovery:
         failures = run_discovery(args.codex_bin, selected)
     else:
