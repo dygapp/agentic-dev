@@ -8,7 +8,7 @@ status: active
 
 ## 1. 目标
 
-V4 的规则发现只解决一个问题：在不把全量规则 metadata 或正文发送给模型的前提下，从当前任务可观察事实中筛出少量值得读取的 Rule locator。
+Rule Discovery 只解决一个问题：在不把全量规则 metadata 或正文发送给模型的前提下，从当前任务可观察事实中筛出少量值得读取的 Rule locator。
 
 ```text
 当前任务 / 仓库事实
@@ -21,21 +21,26 @@ V4 的规则发现只解决一个问题：在不把全量规则 metadata 或正�
 → LLM 做最终语义适用性确认
 ```
 
+Rule 的规范定义、Skill / Rule 边界、granularity 与 Consumer-local specialization 由 `docs/architecture/rule-architecture.md` 持有。本文件只拥有发现机制、渐进披露与 fail-closed contract。
+
 规则 metadata 与规范正文必须同源、同文件维护。不得维护需要与 Rule 同步的 Reviewed Discovery Map、Activation Manifest、Runtime Catalog、rule-index 或其他中心路由表。
 
-## 2. 资源边界
+## 2. 发现资源边界
 
-### Skill
+### Discoverable Rule
 
-Skill 拥有稳定独立执行闭环：Trigger / Purpose、Inputs、Procedure、Outputs、Exit Conditions、Escalation。Skill 的选择继续使用 Agent Skills 原生发现机制，不进入 Rule Discovery Tool。
+configured Rule root 下除保留导航文件外的 Markdown 都必须是合法 discoverable Rule。Rule 必须 `type: rule`、`status: active`，并满足本 Architecture 的 Front Matter contract；坏文件不能被静默跳过。
 
-### Rule
+### Reserved Human README
 
-Rule 是执行工作时必须遵守的条件、约束、默认值、不变量或完成声明要求，但本身不是完整任务流程。一个独立发现单元对应一个最小 Rule Markdown 文件。
+文件名**恰为 `README.md`** 的 Markdown 是 Rule root 内唯一允许退出 Rule scan 的 Human Navigation 资源：
 
-### Guide
+- 不作为 Rule；
+- 不进入 Rule Discovery candidate corpus；
+- 不提供 Rule routing / activation metadata；
+- 仍参加 repository Markdown lint，必须拥有合法 common Front Matter、唯一资源 id 与非空正文。
 
-Guide 只承担面向人的初始化、采用、升级、低频说明和导航。普通 Agent runtime 的生成、验证、外部操作、仓库治理约束不得以 Guide 作为规范 owner。
+这个保留例外只服务 Human View，不提供通用 `discoverable: false` 逃逸机制。其他文件名的 `.md` 若位于 configured Rule root，仍必须按 Rule contract fail closed。
 
 ## 3. Rule Front Matter
 
@@ -59,7 +64,7 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 
 ## 4. Task Signals
 
-调用方从当前任务和当前仓库事实形成同构的五个维度。五个字段必须全部出现，但 task-side value 是三态：
+调用方从当前 task responsibility 和当前仓库事实形成同构五维 signals。五个字段必须全部出现，但 task-side value 是三态：
 
 ```json
 {
@@ -79,9 +84,9 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 
 每个非空 task-signal 数组最多 6 个 token。禁止通过大量同义词、近义阶段名、推测风险或候选 Rule 术语做碰撞式检索；超过上限必须 fail closed。
 
-### 4.1 稳定规范化
+### 4.1 Phase identity
 
-`phases` 使用 Method 的稳定阶段身份：
+AI Development Method 当前稳定 phase token：
 
 - `clarify-intent`
 - `specification`
@@ -89,6 +94,10 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 - `slice-ready`
 - `execute`
 - `converge`
+
+其他 Method 不自动复用或猜测这些 token。如果某个新 Method 需要可发现的 Method-specific Rule，必须先由其 canonical Method / discovery contract 定义稳定 phase identity，再进入 Rule Front Matter；在此之前 phase 不确定时使用 `null`，而不是凭自然语言猜 token。
+
+### 4.2 其他维度规范化
 
 `activities` 优先使用直接责任类别，例如 `implementation`、`verification`、`review`、`external-operation`、`design`。不得把同一责任扩写成多个近义活动。
 
@@ -102,7 +111,7 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 
 ## 5. 确定性匹配
 
-对每个 `type: rule`、`status: active` 的 Rule：
+对每个 discoverable Rule：
 
 - Rule 某维度为空：该维度不限制；
 - Task 某维度为 `null`：该维度未知，不用于排除该 Rule；
@@ -112,7 +121,7 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 
 不使用 score、priority、embedding、模型置信度或目录分类做隐式路由。候选按 `id` 稳定排序。
 
-`null` 的目的不是扩大普通上下文，而是防止 Agent 为了命中精确 metadata 而猜测 taxonomy；候选扩大后仍必须由正文语义确认收窄。V4-07 必须继续验证这种保守未知语义不会破坏 `k << N` 的规模目标。
+`null` 的目的不是扩大普通上下文，而是防止 Agent 为了命中精确 metadata 而猜测 taxonomy；候选扩大后仍必须由正文语义确认收窄。
 
 ## 6. 输出与渐进式披露
 
@@ -131,15 +140,17 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 
 不得返回未命中 Rule、全量 metadata、正文摘要、score 或推荐方案。LLM 只读取候选路径的正文。
 
-Rule Discovery 返回的 `candidates[]` 是 ordinary runtime 的唯一 Rule locator 来源。Agent 不得在 discovery 前后通过 `rg --files`、`find`、目录树、IDE 索引、脚本扫描或其他文件枚举，把未命中 Rule 的 locator / 文件名集合送入模型上下文。工具内部可以扫描全部 Front Matter，但该扫描结果不得泄漏给普通 LLM。
+Rule Discovery 返回的 `candidates[]` 是 ordinary runtime 的唯一 Rule locator 来源。Agent 不得在 discovery 前后通过 `rg --files`、`find`、目录树、Human README、IDE 索引、脚本扫描或其他文件枚举，把未命中 Rule 的 locator / 文件名集合送入模型上下文。
 
-因此允许 Tool CPU / I/O 随 N 增长，但 ordinary runtime 的 LLM discovery context 只能随候选数 k 增长。
+工具内部可以扫描全部 Rule Front Matter；Human README 也可以为人展示 inventory，但这些信息不得作为 ordinary Agent runtime 的替代候选输入。
 
 如果 `status=ok` 但候选为空，调用方不得读取或枚举未命中 Rule locator / metadata 来反向校准 signals。只有当前任务 / 仓库事实发生变化时才重新构造 signals；否则保留“当前没有已发现 Rule”或上游事实缺口。
 
 ## 7. Fail-closed
 
-YAML 无法解析、schema 不完整、未知 Rule 顶层字段、scope 类型错误、非法 token、重复 Rule id、discoverable Rule 非 active、task signals 非法、单维 task tokens 超过上限、扫描不完整或重复扫描同一 Rule 时，Discovery 必须返回 `fail-closed`，不得跳过坏文件后继续给出候选。
+YAML 无法解析、schema 不完整、未知 Rule 顶层字段、scope 类型错误、非法 token、重复 Rule id、discoverable Rule 非 active、task signals 非法、单维 task tokens 超过上限、扫描不完整或重复扫描同一 Rule 时，Discovery 必须返回 `fail-closed`，不得跳过坏 Rule 后继续给出候选。
+
+reserved `README.md` 不属于 discoverable Rule，但其 common resource metadata / body lint 失败仍会使 repository lint 失败。
 
 ## 8. 可删除缓存
 
@@ -154,11 +165,11 @@ YAML 无法解析、schema 不完整、未知 Rule 顶层字段、scope 类型�
 
 Consumer ordinary runtime 使用 Consumer-local current Rules 与本地 Rule Discovery Tool。上游 `agentic-dev` 只作为显式 adoption / upgrade 来源；普通任务发现失败不能自动在线回到 upstream 补规则。
 
-Consumer adoption 必须携带当前 task-signal 三态、bounded-token contract 与 locator-only progressive-disclosure contract；否则同一组 Rule 在 Consumer 中可能出现系统性 false negative、metadata 反向探测或规则规模随目录枚举进入模型上下文。
+Consumer adoption 必须携带当前 task-signal 三态、bounded-token contract、locator-only progressive-disclosure contract 与 reserved Human README / lint 边界；否则同一组 Rule 在 Consumer 中可能出现系统性 false negative、metadata 反向探测或 human catalog 被误当 runtime index。
 
 ## 10. Ordinary Runtime Integration
 
-普通 Agent 运行时按当前责任重复执行以下最小闭环：
+普通 Agent 运行时按当前 responsibility 重复执行以下闭环：
 
 ```text
 current task / repository facts
@@ -167,7 +178,7 @@ current task / repository facts
 → locator-only candidates
 → read candidate bodies
 → semantic applicability confirmation
-→ current Skill / responsibility
+→ continue current responsibility
 ```
 
 运行边界：
@@ -177,8 +188,8 @@ current task / repository facts
 3. Rule Discovery 返回值是 ordinary runtime 获得 Rule locator 的唯一入口；不得枚举未命中 Rule 路径或完整 Rule tree；
 4. tool candidate 只是“值得读取”，不是“已经适用”；LLM 必须读取正文后确认该 Rule 对当前工作真实成立；
 5. 当前 phase、activity、technology、artifact 或 risk facts 发生足以改变候选集合的变化时，重新执行 discovery；旧 candidate set 不跨职责永久有效；
-6. Skill discovery 与 Rule discovery 分离：Agent Skills 负责选择独立执行能力，Rule Discovery 负责给该职责补充条件约束；
+6. Skill discovery 与 Rule discovery 分离：Agent Skills 负责选择独立执行能力，Rule Discovery 负责当前责任的条件性约束；Rule 不要求依附 Skill；
 7. `fail-closed` 时不得把无候选、旧候选或全量 Rules 当替代结果；先修复 signals、metadata 或扫描完整性，再继续依赖 Rule Discovery；
-8. ordinary runtime 的模型上下文只接收 Discovery 返回的 candidate locator 与最终读取的候选正文，不接收全量 locator、全量 metadata、未命中 Rules 或工具内部扫描状态。
+8. ordinary runtime 的模型上下文只接收 Discovery 返回的 candidate locator 与最终读取的候选正文，不接收全量 locator、全量 metadata、Human README inventory、未命中 Rules 或工具内部扫描状态。
 
 稳定 CLI 入口与最小规范化约定由根 `AGENTS.md` 声明；具体实现可以重构，但不得改变上述运行语义而不先修改本 Architecture。
