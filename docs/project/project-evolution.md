@@ -123,7 +123,25 @@ PR #127 以 exact candidate Head `5a2e59f5ae248fb2cf288c6521d8a9903ae8b68b` 通�
 
 这一阶段没有改变 V4 Rule Discovery 核心运行语义，而是补齐 reusable capability 与 `agentic-dev` 自身 Project Knowledge 的长期 ownership 边界。
 
-## 9. 当前演进原则
+## 9. Model Collaboration Capability & Adoption v1
+
+Issue #129 / PR #132 将历史 `experiment/codex-multi-model-collaboration`、Issue #71 Consumer model-routing Evidence，以及当前 Rule Discovery / Fresh Context / Project Capability Instance 架构重新收敛为正式、可选配的 Model Collaboration capability。
+
+这一阶段形成的长期边界包括：
+
+- `architecture:model-collaboration` 拥有 deterministic-first、能力层级、Primary responsibility、Authority-preserving handoff、single-writer、独立 review、Evidence-based escalation、requested-vs-observed runtime claim 与 single-agent fallback 等 reusable semantics；
+- `method:model-collaboration-adoption` 只负责在 collaboration semantics 已经进入 Consumer-local Authority 后，探测 runtime、选择 strategy、投射 local config / policy、建立 instance、验证并启用或 fallback；
+- `method:consumer-adoption` / `method:consumer-upgrade` 继续拥有 upstream reusable semantics 的首次接受与 baseline delta assessment，专用 collaboration Method 不得重新实现或绕过这一 Gate；
+- `Project Capability Profile` 只记录 Repository-local selector / instance，不复制 reusable capability body；`agentic-dev` 自身当前 collaboration instance 仍为 `disabled`；
+- Codex 配置与角色 profile 被保留为带核验日期的 Human Reference，不把平台专项 schema、模型名或 `.codex/` 物理结构提升为跨 Repository Authority；
+- “协作链路可以安全启用”与“协作更省、更快或应成为默认策略”被拆成 functional enablement 与 efficiency / preferred-default 两类不同 claim；效率结论必须有可比单 Agent baseline 支撑；
+- 旧实验中静态配置成功但 child collaboration smoke 失败的结果继续作为 Evidence，不能被改写为 runtime PASS；真实 child-thread、single-writer runtime behavior、observability 与 fallback 仍需每个 Consumer 在 adoption 时重新验证。
+
+本轮还沉淀了一条通用 capability 分类经验：一个自然语言需求可能同时包含 reusable capability semantics、upstream semantic acceptance、local instance establishment、Consumer-local policy 与 Human View，不能先选文档类型再强行归类。新增 Method 通过 admission gate 后还需要做 **Method composition review**，检查它的前置条件、失败返回、完成结果以及是否侵占相邻 Method 已有 Gate。
+
+PR #132 candidate exact Head `2d6b093696bbd97d5c43a265173afc9954a7008f` 通过 Rule Discovery Run #94 与独立复核（未解决 Blocking / Medium = 0 / 0），随后于 integration commit `385204c8605dd58584ec18456ab8a97d6282b515` squash merge；Post-Integration Rule Discovery Run #95 PASS，Issue #129 completed。
+
+## 10. 当前演进原则
 
 从当前阶段开始，项目演进遵守：
 
@@ -131,4 +149,6 @@ PR #127 以 exact candidate Head `5a2e59f5ae248fb2cf288c6521d8a9903ae8b68b` 通�
 - Project Knowledge 保存稳定项目定义 / 实例 / Roadmap / 里程碑，不恢复阶段文档膨胀；
 - reusable capability 继续以真实 Consumer Evidence 驱动，而不是理论扩张；
 - 历史细节需要时从 GitHub Issue / PR / Git 恢复，不复制到 ordinary Fresh Context；
-- Project Capability Profile 必须持续保持为薄的 Repository-local instance owner，不演变成新的 Runtime Catalog / Rule Index。
+- Project Capability Profile 必须持续保持为薄的 Repository-local instance owner，不演变成新的 Runtime Catalog / Rule Index；
+- 新 capability 的 semantic owner 分类应先区分 reusable semantics、semantic acceptance、local instance activation 与 ordinary use，再决定是否需要 Architecture / Method / Skill / Rule / Project / Guide；
+- 新增 specialized Method 除了通过自身 admission gate，还必须复核与相邻 Method 的 Gate ownership 和组合关系。
