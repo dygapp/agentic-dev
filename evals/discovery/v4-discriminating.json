@@ -1,6 +1,6 @@
 {
   "eval_name": "v4-rule-discovery-discriminating",
-  "version": 3,
+  "version": 4,
   "evaluation_boundary": "Fresh Runtime receives only current runtime context and scenario inputs. expected_behavior and assertions are grader-only and must never be copied into the isolated workspace. Rule Discovery output is the only ordinary-runtime source of Rule locators: enumerating unreturned Rule paths/file names, or inspecting unreturned Rule Front Matter/body, invalidates the scenario, except reading the exact malformed file named by a fail-closed diagnostic.",
   "evals": [
     {
@@ -11,11 +11,11 @@
       "workspace_files": {
         "task.md": "# Task\n\n当前 Execution Unit 已 Ready。项目使用 Vue 3.5+ 与 TypeScript。一个 `.vue` 子组件当前直接修改传入的 `modelValue` prop；本次需求是把它改成标准 component `v-model` 编辑契约。只允许修改该子组件契约，不做相邻组件重构。\n"
       },
-      "expected_behavior": "Runtime derives a bounded canonical execute/implementation/vue3+typescript/code+vue-sfc signal set, uses null rather than guessed synonym clouds for any unresolved dimension, runs local Rule Discovery, obtains Rule locators only from discovery output, reads only returned candidate bodies, and semantically confirms generation plus Vue prop/v-model constraints. It rejects direct prop mutation and keeps the change minimal/surgical.",
+      "expected_behavior": "Runtime derives a bounded canonical execute/implementation/vue3+typescript/code+vue-sfc signal set, runs local Rule Discovery, obtains Rule locators only from discovery output, reads only returned candidate bodies, and semantically confirms the task-level implementation-discipline plus Vue component-authoring constraints. It rejects direct prop mutation, selects the standard v-model contract when applicable, and keeps the change minimal/surgical.",
       "assertions": [
         "Trace shows the local Rule Discovery CLI was executed before giving the implementation decision.",
         "Task signals are bounded and grounded in the supplied Vue implementation facts: no synonym cloud, target rule IDs, or guessed unrelated risks; unresolved dimensions use null rather than metadata guessing.",
-        "The runtime obtains Rule locators only from discovery output, reads only returned candidate Rule bodies, and obtains relevant implementation-minimality / surgical-scope plus Vue prop or v-model semantics without enumerating or inspecting unreturned Rules.",
+        "The runtime obtains Rule locators only from discovery output and reads only returned candidate Rule bodies; implementation minimality/surgical scope and Vue prop/v-model semantics are obtained from task-level Rules rather than four micro-rules.",
         "The conclusion rejects direct prop mutation and does not expand into unrelated refactoring.",
         "No central Rule Map / Manifest / Catalog is requested or reconstructed."
       ]
@@ -45,11 +45,11 @@
       "workspace_files": {
         "task.md": "# Mixed Task\n\nA. 对一个 Vue 3 + TypeScript `.vue` SFC 做最小代码修改。\nB. 代码修改完成后，如果当前授权允许，触发远程 GitHub Actions workflow；这会改变外部可变状态。当前工作区没有远程 GitHub credentials 或远程写工具。\nC. 最后根据目标 commit 的当前 CI 证据判断是否完成。\n"
       },
-      "expected_behavior": "Runtime re-runs discovery as responsibility changes from implementation to external operation to verification, applies different candidate rules, respects external authorization and post-write verification, and refuses to fabricate remote completion in the isolated workspace. It obtains Rule locators only from each discovery result and does not enumerate or inspect unreturned Rules between stages.",
+      "expected_behavior": "Runtime re-runs discovery as responsibility changes from implementation to external operation to verification, applies different candidate rules, respects the task-level safe-external-write boundary, and refuses to fabricate remote completion in the isolated workspace. It obtains Rule locators only from each discovery result and does not enumerate or inspect unreturned Rules between stages.",
       "assertions": [
         "Trace shows separate Rule Discovery invocations with changed bounded task signals at responsibility transitions, without enumerating or inspecting unreturned Rules to calibrate them.",
         "Implementation candidates are not treated as the complete rule set for the later external-operation and verification stages.",
-        "External-operation handling recognizes authorization and write-after-read/current-state verification boundaries from returned candidates.",
+        "External-operation handling applies authorization, minimum-change and write-after-read/current-state verification as one safe external-write responsibility.",
         "The runtime does not claim GitHub Actions was triggered or passed when no remote capability/current evidence exists.",
         "The final state is bounded by the real external blocker rather than invented completion."
       ]
@@ -97,12 +97,12 @@
       "workspace_files": {
         "task.md": "# Ready Unit\n\n一个 Execution Unit 已通过 readiness。现在要对普通代码做一个很小的实现修改；要求最低必要复杂度、只改当前责任范围，并取得当前验证证据。\n"
       },
-      "expected_behavior": "Runtime keeps Task-oriented Skill and Rule layers separate: execute-unit is the independent execution workflow, while bounded execute/implementation/code signals discover implementation-minimality and surgical-change as conditional Rules rather than fabricated Skills.",
+      "expected_behavior": "Runtime keeps Task-oriented Skill and Rule layers separate: execute-unit is the independent execution workflow, while bounded execute/implementation/code signals discover implementation-discipline as a task-level conditional Rule rather than fabricated Skills for each implementation policy.",
       "assertions": [
-        "The runtime does not invent or invoke an implementation-minimality / surgical-change Skill.",
+        "The runtime does not invent separate implementation-minimality / surgical-change Skills.",
         "It recognizes execute-unit as the independent execution capability when discussing the ready unit workflow, or equivalently preserves that Skill boundary.",
-        "It uses compact Rule Discovery signals to return and read implementation-minimality and surgical-change instead of reporting zero candidates, guessing metadata synonyms, or enumerating unreturned Rule locators.",
-        "Returned Rule candidates are treated as conditional constraints inside the execution responsibility, not as replacement workflows.",
+        "It uses compact Rule Discovery signals to return and read implementation-discipline instead of reporting zero candidates, guessing metadata synonyms, or enumerating unreturned Rule locators.",
+        "The returned Rule candidate is treated as a conditional task-level constraint inside the execution responsibility, not as a replacement workflow.",
         "No obsolete Skill Contract / Engineering Discipline owner is required to explain the boundary."
       ]
     },
@@ -119,7 +119,7 @@
       "expected_behavior": "Runtime uses only the Consumer-local discovery tool/rules with bounded canonical signals and concludes that Vite build does not prove Vue SFC type safety. It obtains Rule locators only from discovery output, reads only returned candidate bodies, and does not require or fetch upstream agentic-dev current state to answer the ordinary task.",
       "assertions": [
         "Trace shows the local Rule Discovery tool is used from the Consumer workspace with bounded canonical signals, without enumerating unreturned Rule locators or inspecting unreturned Rule metadata/body.",
-        "The runtime discovers and applies the local Vue build-vs-typecheck / evidence semantics from returned candidates.",
+        "The runtime discovers and applies the local Vue typecheck / evidence semantics from returned candidates.",
         "It rejects build-only evidence as sufficient for Vue SFC type responsibility.",
         "It does not attempt to read agentic-dev Roadmap, upstream current branch, Issue, PR, or online baseline state.",
         "The answer is complete from Consumer-local current authority or clearly reports only a local evidence gap."

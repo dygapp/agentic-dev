@@ -6,13 +6,13 @@ status: active
 
 # Agent Skills Specification 研究摘要
 
-**研究基线：** 2026-09-13  
+**研究基线：** 2026-09-14  
 **来源性质：** 外部标准 / 规范参考  
 **规范入口：** `https://agentskills.io/specification`
 
 ## 1. 研究目的
 
-本文件记录 Agent Skills Specification 对 `agentic-dev` Skill Packaging、Discovery 与 Progressive Disclosure 的互操作参考。它不是本仓库 Method / Architecture / Skill 的规范性 Authority。
+本文件记录 Agent Skills Specification 对 `agentic-dev` Skill Packaging、Discovery 与 Progressive Disclosure 的互操作参考。它不是本仓库 Method / Architecture / Skill / Rule 的规范性 Authority。
 
 ## 2. 当前规范要点
 
@@ -40,15 +40,19 @@ status: active
 
 这些是可选资源，不是固定模板要求。
 
-## 3. Progressive Disclosure
+## 3. Progressive Disclosure 与大小参照
 
 规范的核心加载模型为：
 
-1. Runtime 先读取 Skill metadata；
-2. Skill 被选择后读取完整 `SKILL.md`；
+1. Runtime 先读取 Skill metadata；规范示意约 `~100 tokens`；
+2. Skill 被选择后读取完整 `SKILL.md` instructions；官方推荐 `< 5000 tokens`；
 3. references / scripts / assets 只在需要时加载。
 
-这与 `agentic-dev` 的渐进式披露原则相容，但外部规范只定义 Skill 包装与发现，不决定本仓 Method 或 Rule Discovery。
+规范同时建议主 `SKILL.md` 保持在 `500 lines` 以下，并把更详细的参考内容移到单独文件；reference 文件应保持聚焦，文件引用避免形成很深的链条。
+
+这说明 Progressive Disclosure 优化的是**激活前 metadata 成本 + 激活后的完整任务说明 + 按需参考资源**，而不是把一个任务说明机械拆成大量最小文件。
+
+该数值是 Agent Skills 对 `SKILL.md` 的外部推荐，不自动成为 Rule 的规范。`agentic-dev` Rule Architecture 只把 `5000 tokens / 500 lines` 作为任务级 Rule 文件的上限复核参照：Rule 通常应更小，但是否拆分仍首先由任务语义边界、共同发现 / 共同消费关系和总加载成本决定。
 
 ## 4. V4 采用方式
 
@@ -82,4 +86,4 @@ V4 Rule Discovery Tool 不扫描 Skill metadata；Skill 继续由 Agent Skills �
 
 ## 6. 结论
 
-Agent Skills Specification 为 `agentic-dev` 的 Skill 提供通用 Packaging / Discovery / Progressive Disclosure 互操作层；本仓 Method、Skill 边界和 Rule Discovery 架构仍由各自 current owner 定义。
+Agent Skills Specification 为 `agentic-dev` 的 Skill 提供通用 Packaging / Discovery / Progressive Disclosure 互操作层；其“metadata → 完整 instructions → 按需 resources”的结构与文件大小建议也为 Rule granularity 提供工程参照，但本仓 Method、Skill 边界和 Rule Discovery / Granularity 架构仍由各自 current owner 定义。
