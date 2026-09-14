@@ -18,6 +18,7 @@ class CapabilityModelContractTests(unittest.TestCase):
             "docs/methods/ai-development.md": "method:ai-development",
             "docs/methods/consumer-adoption.md": "method:consumer-adoption",
             "docs/methods/consumer-upgrade.md": "method:consumer-upgrade",
+            "docs/methods/model-collaboration-adoption.md": "method:model-collaboration-adoption",
         }
         agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
         method_architecture = (REPO_ROOT / "docs/architecture/method-architecture.md").read_text(
@@ -93,6 +94,46 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertNotIn(tool_locator, discovery_arch)
         self.assertIn("Bootstrap 不复制第二份 Tool path 或 CLI invocation", agents)
 
+    def test_model_collaboration_ownership_and_local_instance_boundary(self):
+        architecture_path = REPO_ROOT / "docs/architecture/model-collaboration-architecture.md"
+        method_path = REPO_ROOT / "docs/methods/model-collaboration-adoption.md"
+        guide_path = REPO_ROOT / "docs/guides/multi-model-collaboration.md"
+        research_path = REPO_ROOT / "docs/research/model-collaboration-capability-classification.md"
+        profile = (REPO_ROOT / "docs/project/project-capability-profile.md").read_text(
+            encoding="utf-8"
+        )
+
+        for path, resource_type in [
+            (architecture_path, "architecture"),
+            (method_path, "method"),
+            (guide_path, "guide"),
+            (research_path, "research"),
+        ]:
+            self.assertTrue(path.is_file(), str(path))
+            parsed = rd.parse_front_matter_file(path)
+            self.assertEqual(resource_type, parsed.metadata.get("type"), str(path))
+            self.assertEqual("active", parsed.metadata.get("status"), str(path))
+
+        architecture = architecture_path.read_text(encoding="utf-8")
+        method = method_path.read_text(encoding="utf-8")
+        normative = architecture + "\n" + method
+        for concrete_model in [
+            "gpt-5.6-luna",
+            "gpt-5.6-terra",
+            "gpt-5.6-sol",
+            "gpt-6-astra",
+        ]:
+            self.assertNotIn(concrete_model, normative)
+
+        self.assertIn("single-writer", architecture)
+        self.assertIn("Authority-preserving handoff", architecture)
+        self.assertIn("single-agent fallback", architecture)
+        self.assertIn("Detect Runtime Capabilities", method)
+        self.assertIn("Validate Collaboration", method)
+        self.assertIn("## 5. Model Collaboration Instance", profile)
+        self.assertIn("status：`disabled`", profile)
+        self.assertIn("persistent platform config：none", profile)
+
     def test_skill_architecture_does_not_own_current_inventory(self):
         skill_arch = (REPO_ROOT / "docs/architecture/skill-architecture.md").read_text(
             encoding="utf-8"
@@ -136,8 +177,17 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertTrue((REPO_ROOT / "skills/README.md").is_file())
 
         methods_readme = (REPO_ROOT / "docs/methods/README.md").read_text(encoding="utf-8")
+        architecture_readme = (REPO_ROOT / "docs/architecture/README.md").read_text(
+            encoding="utf-8"
+        )
+        guides_readme = (REPO_ROOT / "docs/guides/README.md").read_text(encoding="utf-8")
+        research_readme = (REPO_ROOT / "docs/research/README.md").read_text(encoding="utf-8")
         self.assertIn("Human View", methods_readme)
         self.assertIn("project-capability-profile.md", methods_readme)
+        self.assertIn("model-collaboration-adoption.md", methods_readme)
+        self.assertIn("model-collaboration-architecture.md", architecture_readme)
+        self.assertIn("multi-model-collaboration.md", guides_readme)
+        self.assertIn("model-collaboration-capability-classification.md", research_readme)
 
     def test_rule_human_inventory_matches_discoverable_rule_corpus(self):
         actual = {
