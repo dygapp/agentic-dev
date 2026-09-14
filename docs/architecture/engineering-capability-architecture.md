@@ -8,13 +8,15 @@ status: active
 
 ## 1. 目标
 
-本 Architecture 定义 `agentic-dev` 的长期能力类型、语义所有权、组合关系与 Human / Agent 双视窗。具体 Method、Skill、Rule 与运行机制可以演进，但不得通过目录位置或文档重复形成第二套隐藏 Authority。
+本 Architecture 定义 `agentic-dev` 维护的长期 capability 类型、语义所有权、组合关系与 Human / Agent 双视窗。具体 Repository 可以选择、实例化和适配这些 capability，但不得通过目录位置、Project state 或文档重复形成第二套隐藏 Authority。
 
 核心原则：
 
 > **Single Semantic Ownership, Multiple Views — 单一语义所有权，多视窗表达。**
 
 规范语义只由真实 canonical owner 持有；Guide / README 可以为人类重新组织、解释和导航这些语义，但不得成为第二套规范定义、运行时路由表或项目事实来源。
+
+`Project Knowledge` 不是第六种 reusable capability。它是 Repository-local 的项目知识层，用于保存当前项目使命、capability instance、Roadmap 与稳定演进摘要。Project / Capability 的长期边界由 `docs/architecture/project-knowledge-architecture.md` 定义。
 
 ## 2. 能力类型
 
@@ -29,13 +31,13 @@ Method 是针对一类复杂工作的**规范过程模型**。它定义：
 - 整体完成条件；
 - 过程中如何组合必要 Architecture、Skill 与 Rule。
 
-Method 是可扩展的一等能力类型，而不是 `ai-development.md` 的同义词。一个仓库可以存在多个 Method，例如 AI Development、Consumer Adoption、Consumer Upgrade；未来只有在真实证据支持时，才增加大型项目 Requirements Analysis 等新 Method。
+Method 是可扩展的一等能力类型，而不是某个具体 Method 文件的同义词。一个 Repository 可以采用多个 Method；当前到底采用哪些 Method、怎样从本地 work kind 选择它们，属于该 Repository 的 Project capability instance。
 
 Method 可以跨多个 Agent Context、多个 Artifact、多个 Skill 与人工 Gate。Method 不要求每个阶段都有独立 Skill，也不得把 repository-specific policy 复制成自身隐藏规则。
 
 ### Architecture
 
-Architecture 定义长期结构、能力边界、ownership、组合关系和运行不变量。Architecture 回答“这些能力如何组成系统、哪些语义归谁拥有”，不替代 Method 的过程生命周期，也不保存项目临时状态。
+Architecture 定义可复用的长期结构、能力边界、ownership、组合关系和运行不变量。Architecture 回答“这种能力如何组成系统、哪些语义归谁拥有”，不替代 Method 的过程生命周期，也不持有某个 Repository 当前 capability inventory、Roadmap、baseline 或历史状态。
 
 ### Skill
 
@@ -74,20 +76,21 @@ Rule 天然允许 Consumer-local specialization。通用 Skill 可以保持稳�
 
 Guide 是 **Human-facing explanatory / usage layer**。它面向人类说明项目概念、完整使用方法、adoption、upgrade、恢复、示例和导航。
 
-Guide 可以完整讲述规范模型，但不拥有 canonical Gate、Rule routing、Skill contract、Method transition 或项目 current state。ordinary Agent runtime 默认不依赖 Guide；只有任务 / Authority 明确要求阅读人类说明、维护 Guide 或执行特定人工辅助场景时才读取。
+Guide 可以完整讲述规范模型，但不拥有 canonical Gate、Rule routing、Skill contract、Method transition 或 Project current state。ordinary Agent runtime 默认不依赖 Guide；只有任务 / Authority 明确要求阅读人类说明、维护 Guide 或执行特定人工辅助场景时才读取。
 
 ### Research
 
-Research 保存非规范性的外部证据、比较、实验与技术参考。Research 可以触发候选演进，但只有结论进入真实 Method / Architecture / Skill / Rule owner 后才成为规范。
+Research 保存非规范性的外部证据、比较、实验与技术参考。Research 可以触发候选演进，但只有结论进入真实 Method / Architecture / Skill / Rule owner 后才成为 reusable capability；只有进入 Project owner 后才成为当前 Repository 的长期项目事实。
 
 ## 3. Agent View 与 Human View
 
 ### Agent View
 
-ordinary Agent 工作必须拥有不依赖 Guide 的规范入口。进入当前 responsibility 后，Architecture、Skill 与 Rule 是按责任并列选择的能力面，不是固定串行流水线：
+ordinary Agent 工作必须拥有不依赖 Guide 的规范入口。Repository-local Project Capability Profile 负责把当前 Repository 的实例选择连接到 reusable capability；进入当前 responsibility 后，Architecture、Skill 与 Rule 是按责任并列选择的能力面，不是固定串行流水线：
 
 ```text
 Repository Authority / Agent Bootstrap
+→ Project Capability Profile + current Repository facts
 → Method selection（若当前工作属于某个 Method）
 → current Method stage / direct responsibility
     ├─→ relevant Architecture context
@@ -105,7 +108,7 @@ Skill 可以在没有额外 Rule 时独立执行；Rule 也可以在没有 Skill
 ```text
 README
 → Guides / directory README
-→ 对 Method / Architecture / Skill / Rule 的解释与导航
+→ 对 Project / Method / Architecture / Skill / Rule 的解释与导航
 ```
 
 Human View 可以为了教学和理解重复表达 canonical 语义，但必须清楚指向真实 owner。重复解释允许，重复拥有规范语义禁止。
@@ -114,33 +117,45 @@ Human View 可以为了教学和理解重复表达 canonical 语义，但必须�
 
 不同能力类型不必共享一种发现机制，但每类 Agent-facing capability 必须有明确入口：
 
-- Method：必须存在稳定的 selection / discovery contract，使 Agent 能从当前 work kind 进入正确 Method；不能依赖 Human Guide 猜测；
-- Skill：使用 Agent Skills 原生 discovery，并由其 Trigger / Purpose 决定是否加载；
-- Rule：由 Rule Discovery 根据当前 task facts 返回少量 locator，再由 Agent 阅读候选正文做最终语义确认；
-- Architecture：由当前 Method / Skill / Rule contract 或 Repository Authority 按明确引用加载，不作为 ordinary runtime 全量扫描资源；
+- Method：Architecture 定义 selection contract；当前 Repository 的 selector mapping 由 local Project capability instance 持有；不能依赖 Human Guide 猜测；
+- Skill：使用 Agent Skills 原生 discovery，并由其 Trigger / Purpose 决定是否加载；当前 Skill root / discovery entry 由 Repository-local instance 声明；
+- Rule：由 Rule Discovery 根据当前 task facts 返回少量 locator，再由 Agent 阅读候选正文做最终语义确认；当前 Rule root / Tool locator 由 Repository-local instance 声明；
+- Architecture：由当前 Method / Skill / Rule contract、Project Capability Profile 或 Repository Authority 按明确引用加载，不作为 ordinary runtime 全量扫描资源；
 - Guide / Research：ordinary runtime 默认不发现，按明确的人类说明或研究任务读取。
 
-Method selection 是否需要独立工具，应由规模和 eval 决定；在 Method 数量较少时可以使用稳定、可审计的 bootstrap contract，但不得形成与 Method 本身长期漂移的手工第二套流程正文。
+Method selection 是否需要独立工具，应由规模和 eval 决定；在 Method 数量较少时可以使用稳定、可审计的 Repository-local selector instance，但不得形成与 Method 本身长期漂移的第二套流程正文。
 
 ## 5. Consumer-local specialization
 
-Consumer Repository 始终拥有自己的项目事实与 local Authority。`agentic-dev` 提供可采用的 Method / Skill / Rule / Architecture，但 adoption 不等于全量复制。
+Consumer Repository 始终拥有自己的项目事实、Project Knowledge 与 local Authority。`agentic-dev` 提供可采用的 Method / Skill / Rule / Architecture，但 adoption 不等于全量复制，更不等于传播 upstream Project state。
 
 - Method 可以 adopt / adapt，只要 Consumer 明确本地 canonical owner；
+- Architecture 可以 adopt / adapt 通用结构 contract；
 - Skill 应优先保持可复用 procedure，避免吸收 Consumer-specific policy；
 - Rule 可以根据 Consumer Authority 本地化、替代或新增；
 - Guide 可以针对 Consumer 提供本地 Human View，但不得改变 Agent canonical semantics；
+- Consumer 必须建立自己的 Project capability instance / Roadmap 等 local Project Knowledge；
 - upstream provenance 与 Consumer-local Authority 必须区分。
 
-## 6. 演进判定
+## 6. Project 与 Capability 分类
+
+当一个长期事实需要沉淀时，先问两个问题：
+
+1. 它是在定义**跨 Repository 可复用的能力语义**吗？
+2. 还是在描述**当前 Repository 自身的使命、能力实例、状态或历史**？
+
+前者进入真实 Capability owner；后者进入 Project Knowledge。具体判断见 `docs/architecture/project-knowledge-architecture.md`。
+
+## 7. 演进判定
 
 当真实 Evidence 需要长期沉淀时，先判断 semantic owner：
 
 - 改变一类复杂工作的过程模型、阶段、Gate 或完成语义 → Method；
-- 改变长期能力边界、ownership、组合关系或运行不变量 → Architecture；
+- 改变可复用的长期能力边界、ownership、组合关系或运行不变量 → Architecture；
 - 形成稳定、有界、可独立调用的执行能力 → Skill；
 - 形成按条件适用的 policy / constraint / default / invariant / completion requirement → Rule；
+- 改变当前 Repository 自身使命、核心项目需求、capability instance、Roadmap 或稳定演进摘要 → Project；
 - 只是面向人的解释、使用说明、示例或导航 → Guide；
 - 只有证据 / 探索价值 → Research。
 
-不得为了兼容历史载体保留重复 owner，也不得仅因为内容“重要”“有步骤”“很短”就决定其能力类型。
+不得为了兼容历史载体保留重复 owner，也不得仅因为内容“重要”“有步骤”“很短”或“当前 agentic-dev 正在使用”就决定其能力类型或放入 Architecture。

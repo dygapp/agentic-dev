@@ -42,31 +42,16 @@ Rule 可以约束 Skill execution，也可以独立约束 Method stage、direct 
 
 具体 Rule 语义边界见 `docs/architecture/rule-architecture.md`。
 
-## 4. 当前分类
+## 4. Skill Inventory Ownership
 
-### 核心 AI Development supporting Skills（8）
+Architecture 不持有某个 Repository 当前有哪些 Skill、Skill 总数或当前分类清单。
 
-- `clarify-intent`
-- `specify`
-- `technical-plan`
-- `slice-work`
-- `readiness-check`
-- `execute-unit`
-- `systematic-debug`
-- `converge`
+- `SKILL.md` corpus 是实际 Skill 资源；
+- Repository-local Human inventory 可以由 `skills/README.md` 等导航表达，并通过 deterministic validation 与真实 corpus 保持一致；
+- Repository 当前是否采用某类 Skill、Skill root 在哪里，属于 Project capability instance；
+- Architecture 只定义 Skill 的身份、准入、互操作和组合边界。
 
-这些 Skill 当前服务 AI Development Method，但其能力身份不等于 Method stage 本身。
-
-### Reusable supporting Skills（2）
-
-- `external-operation`：对外部可变状态执行读取、最小操作、重新读取验证和有界升级；
-- `review-change`：对当前最终变更执行 authority-aware review，输出 findings 或通过结论。
-
-### Platform-specific Skills（1）
-
-- `github-actions-verification`
-
-总数为 11。新增 supporting Skill 不意味着重新打开核心 Method 设计。
+因此新增 / 删除 / 重分类某个具体 Skill 不应为了同步 inventory 而修改本 Architecture，除非它暴露了 Skill 类型定义本身的缺陷。
 
 ## 5. Agent Skills 互操作
 
@@ -80,6 +65,8 @@ metadata:
 ```
 
 不得添加规范未定义的自定义 top-level metadata key。
+
+具体 Repository 的 Skill root / discovery entry 由其 local capability profile 或等价 Repository Authority 声明；Architecture 不固定仓库路径。
 
 ## 6. 准入门禁
 

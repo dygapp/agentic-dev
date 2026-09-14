@@ -6,108 +6,86 @@ status: active
 
 # Project Roadmap
 
-## Current Foundation
+## Current Baseline
 
-当前正式 Foundation 仍为 **V4 — 分布式规则发现与仓库基础重构**。
+当前正式集成基线为 **Capability Model v2**：
 
-`master@3098f17b5661fbd4edbbaf1080ed4b4f5759e0d8` 是当前正式 V4 baseline。V4 已完成全部 Gate，不因后续 Capability Model 演进重新打开 Closure。
+`master@e5488fd22a078ab59a427e36ef9a20af935fc63f`
 
-V4 稳定保留的核心运行约束包括：
+该基线建立在 V4 Rule Discovery Foundation 之上，并已集成：
 
-```text
-current task / repository facts
-→ bounded task signals
-→ Rule Discovery Tool
-→ scan Rule YAML Front Matter
-→ deterministic candidate filtering
-→ {id, path} locators
-→ LLM reads only candidate bodies
-→ semantic applicability confirmation
-```
+- Method / Architecture / Skill / Rule / Guide 的长期能力边界；
+- `Single Semantic Ownership, Multiple Views`；
+- Consumer Adoption / Upgrade Method；
+- Skill / Rule 正交关系与 Consumer-local Rule specialization；
+- Agent Method Selection / Skill discovery / Rule Discovery 入口；
+- Human View 与 reserved Rule README 边界。
 
-- Rule metadata 与规范正文同文件维护；
-- 不维护 Reviewed Discovery Map / Activation Manifest / Runtime Catalog / rule-index；
-- Rule Discovery `candidates[]` 是 ordinary runtime 获得 Rule locator 的唯一入口；
-- 未命中 Rule locator / metadata / body 不进入 ordinary LLM context；
-- task signals 使用 known array / known-empty `[]` / unknown `null` 三态，每个非空维度最多 6 个 canonical token；
-- Consumer ordinary runtime 默认只依赖 Consumer-local current state，不在线依赖 upstream current state。
+更早里程碑与原因见 `docs/project/project-evolution.md`；具体 capability contract 见其真实 Architecture / Method / Skill / Rule owner。
 
-## Current Evolution — Capability Model v2
+## Current Evolution
 
-当前增量演进入口为 **Issue #124 — Capability Model v2：重定义 Method / Skill / Rule / Guide 与双视窗架构**。
+当前增量演进入口：
 
-该演进来自 V4 完成后的真实可用性复核：Rule Discovery runtime 已稳定，但 Human View、Agent process entry、Method 扩展性以及 Skill / Rule 语义边界仍需长期收敛。
+**Issue #126 — Project Knowledge Model：收敛 Project / Architecture 边界与项目知识层**。
 
-本轮不推翻 V4 Rule Discovery，而是在其上建立更完整的能力模型：
-
-### Single Semantic Ownership, Multiple Views
-
-- Method / Architecture / Skill / Rule 持有 canonical normative semantics；
-- Guide / README 提供 Human View，不成为第二套 Authority；
-- ordinary Agent runtime 默认不依赖 Guide；
-- Agent 必须通过 Repository Bootstrap / Method Selection / Skill discovery / Rule Discovery 获得自己的规范入口。
-
-### Capability boundaries
-
-- **Method**：一类复杂工作的规范过程模型，可存在多个实例；
-- **Architecture**：长期结构、ownership、组合关系和运行不变量；
-- **Skill**：责任明确后的有界、稳定、可复用执行能力；
-- **Rule**：按事实条件适用的 policy / constraint / default / invariant / completion requirement，可横切 Method、Skill 与 direct work；
-- **Guide**：Human-facing explanation / usage / navigation；
-- **Research**：非规范 Evidence / Reference。
-
-Skill 与 Rule 是正交关系，不是固定 `Method → Skill → Rule` 流水线。Rule 是 Consumer-local policy specialization 的主要承载面之一。
-
-## Current Candidate Structure
-
-Issue #124 candidate 将当前长期结构收敛为：
+目标是把 Capability Model v2 中仍混杂的 Repository-instance 信息迁回 Project owner，并建立长期：
 
 ```text
-AGENTS.md                     # Agent Bootstrap / Repository Authority
-README.md                     # Human repository entry
-skills/                       # reusable Agent execution capabilities
-docs/
-  methods/                    # normative process models
-  architecture/               # capability boundaries / ownership / invariants
-  rules/                      # discoverable conditional policies
-  guides/                     # Human View
-  project/                    # current project state
-  research/                   # non-normative evidence / references
-evals/
-tools/
-  rule-discovery/
+Project Charter
+→ Project Capability Profile
+→ Project Roadmap
+→ Project Evolution
 ```
 
-当前 candidate Methods：
+同时保持：
 
-- `method:ai-development`；
-- `method:consumer-adoption`；
-- `method:consumer-upgrade`。
+> **Project 不传播，Capability 传播。**
 
-大型项目前期 Requirements Analysis 仍只是未来 Method candidate；只有在历史实践与新 Evidence 足以提炼稳定适用边界、阶段、产物、Gate 和完成语义时才正式建立。
+本轮不重新设计 V4 Rule Discovery 或 Capability Model v2，只收敛 Project Knowledge 与 reusable Architecture 的边界。
 
-## Issue #124 Implementation Gates
+## Current Gate
 
-当前实施顺序：
+Issue #126 当前处于 **implementation / candidate verification**。
 
-1. **Capability Architecture** — 定义能力类型、双视窗、single semantic ownership、Skill / Rule 正交关系；
-2. **Agent Process Entry** — 建立 Method Selection，使 Agent 不依赖 Guide 进入规范流程；
-3. **Method Restructuring** — Consumer Adoption / Upgrade 从混合 lifecycle 文档提升为正式 Method，Consumer Architecture 只保留长期不变量；
-4. **Human View** — 扩展 Guides，并为 Architecture / Methods / Rules 提供 README 导航；
-5. **Rule Infrastructure** — reserved `README.md` 退出 Rule Discovery、继续参加 repository lint；
-6. **Asset / Granularity Audit** — 复核现有 Method / Skill / Rule / Guide / Architecture 归属及 Rule 粒度；
-7. **Verification** — deterministic tests、repository lint、Rule smoke discovery、Method entry / Fresh Context 行为复核与 Human navigation review。
+当前工作分支：`refactor/project-knowledge-model`。
 
-已完成的 Gate 必须由 branch / PR current Evidence 支持；在最终集成前，本节描述的是当前 candidate，不代表 `master` 已接受这些变化。
+精确 branch Head、PR、Actions、Review 与 mergeability 必须从 GitHub 当前事实重新读取；本 Roadmap 只保存可跨 Fresh Context 恢复的稳定 current summary。
 
-## V4 Closure Evidence
+当前完成门禁：
 
-V4-00 ～ V4-09 全部 PASS。PR #123 已 squash merge，V4 initial integration commit 为 `0e7e45fa2a7aa9048d0f357b6b3be3befce921a4`；最终 Roadmap closure commit 为 `3098f17b5661fbd4edbbaf1080ed4b4f5759e0d8`。
+- Project / Architecture boundary 进入长期 Architecture；
+- Project Charter / Capability Profile / Evolution / README 建立；
+- Roadmap 瘦身；
+- Method selector instance、Skill inventory、Method-specific phase identity 回到真实 owner；
+- Consumer adoption / upgrade 明确不传播 upstream Project state；
+- deterministic boundary tests / lint / Rule Discovery regression PASS；
+- high-impact review / convergence Blocking=0、Medium=0。
 
-最终 baseline Rule Discovery Run `34769662589` SUCCESS：38 / 38 deterministic tests PASS、lint 45 Rules / 11 Skills PASS，普通与 Vue unknown-risk smoke discovery 均 PASS。
+达到门禁后只进入 `Ready for Review / Integration Decision`，不自动 merge。
 
-V4-08 的 natural Rule Evolution observation 仍是 post-adoption future observation，不因本轮能力模型演进被虚构为已验证。
+## Next Candidates
 
-## Next Evolution
+当前可见后续候选只在真实 Evidence 支持时推进：
 
-先完成 Issue #124 的能力模型与信息架构收敛，并通过独立验证证明 Agent View 与 Human View 都可恢复、Rule Discovery 没有回退为中心索引。其后继续从真实 `agentic-dev` / Consumer Evidence 演进；不因目录整齐、理论完备或历史做法自动新增 Method、Skill 或 Rule。
+- **Requirements Analysis Method**：从已验证的大项目前期需求分析实践中提炼适用范围、阶段、产物、Gate 与完成语义；当前仍只是 Method candidate；
+- **Consumer feedback evolution**：继续从 Issue #58 等长期 Consumer Evidence 判断是否需要新增 / 调整 reusable capability；
+- **Method selection scaling**：只有 Method 数量或歧义真实增长时，才评估是否需要 metadata discovery / selector tool。
+
+这些候选不因出现在 Roadmap 中自动获得 Planning / Execute Authority。
+
+## Known Observations
+
+- V4-08 的 natural Rule Evolution observation 仍属于 post-adoption future observation，不虚构为已验证；
+- Project Capability Profile 是新的 Repository-local instance owner，需要在后续真实 self-use / Consumer upgrade 中继续观察其是否保持薄、稳定且不会演变成 runtime catalog；
+- Rule / Skill Human inventory 继续由 deterministic tests 与真实 corpus 保持一致，不应迁入 Project Profile。
+
+## State Ownership
+
+- 当前 Repository live state：GitHub branch / Issue / PR / Actions；
+- 当前项目使命与核心要求：`project-charter.md`；
+- 当前 capability instance：`project-capability-profile.md`；
+- 当前 evolution / gate / next candidates：本 Roadmap；
+- 稳定历史里程碑：`project-evolution.md`。
+
+Roadmap 不保存完整 Architecture、实施日志或 Closure Evidence；这些分别回到 capability owner 与 GitHub 历史。

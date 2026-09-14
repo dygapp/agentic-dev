@@ -46,11 +46,11 @@ configured Rule root 下除保留导航文件外的 Markdown 都必须是合法 
 
 ```yaml
 ---
-id: rule:implementation-minimality
+id: rule:example-policy
 type: rule
 status: active
 scope:
-  phases: [execute]
+  phases: [example-phase]
   activities: [implementation]
   technologies: []
   artifacts: [code]
@@ -62,13 +62,15 @@ scope:
 
 Front Matter 只回答“当前任务是否值得加载这个 Rule”。required checks、正文摘要、decision logic、exception list、推荐方案和 completion condition 正文必须留在 Markdown body。
 
+示例中的 `example-phase` 只说明字段形状，不是全局 phase token。真实 `phases` value 必须来自当前 Method canonical owner 定义的稳定 phase identity。
+
 ## 4. Task Signals
 
 调用方从当前 task responsibility 和当前仓库事实形成同构五维 signals。五个字段必须全部出现，但 task-side value 是三态：
 
 ```json
 {
-  "phases": ["execute"],
+  "phases": ["example-phase"],
   "activities": ["implementation"],
   "technologies": ["vue3", "typescript"],
   "artifacts": ["code", "vue-sfc"],
@@ -86,16 +88,11 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 
 ### 4.1 Phase identity
 
-AI Development Method 当前稳定 phase token：
+Rule Discovery Architecture **不拥有任何具体 Method 的 phase token 列表**。
 
-- `clarify-intent`
-- `specification`
-- `technical-planning`
-- `slice-ready`
-- `execute`
-- `converge`
+如果当前 selected Method 定义了稳定 phase identity，调用方可以把当前 Method stage 映射到对应 token；如果没有定义，或者无法在不猜测的情况下确定当前 phase，则 `phases` 使用 `null`。
 
-其他 Method 不自动复用或猜测这些 token。如果某个新 Method 需要可发现的 Method-specific Rule，必须先由其 canonical Method / discovery contract 定义稳定 phase identity，再进入 Rule Front Matter；在此之前 phase 不确定时使用 `null`，而不是凭自然语言猜 token。
+不同 Method 不自动共享 phase token。新增 Method-specific Rule 前，应先由该 Method canonical owner 定义稳定 phase identity；Rule Discovery 不从自然语言阶段名、目录名、旧 Method 或未命中 Rule metadata 反向发明 token。
 
 ### 4.2 其他维度规范化
 
@@ -167,6 +164,8 @@ Consumer ordinary runtime 使用 Consumer-local current Rules 与本地 Rule Dis
 
 Consumer adoption 必须携带当前 task-signal 三态、bounded-token contract、locator-only progressive-disclosure contract 与 reserved Human README / lint 边界；否则同一组 Rule 在 Consumer 中可能出现系统性 false negative、metadata 反向探测或 human catalog 被误当 runtime index。
 
+具体 Consumer 的 Rule root、Tool locator、Method phase identities 与其他 implementation pointers 属于该 Consumer 的 local Project / Repository capability instance，不属于本 Architecture。
+
 ## 10. Ordinary Runtime Integration
 
 普通 Agent 运行时按当前 responsibility 重复执行以下闭环：
@@ -192,4 +191,4 @@ current task / repository facts
 7. `fail-closed` 时不得把无候选、旧候选或全量 Rules 当替代结果；先修复 signals、metadata 或扫描完整性，再继续依赖 Rule Discovery；
 8. ordinary runtime 的模型上下文只接收 Discovery 返回的 candidate locator 与最终读取的候选正文，不接收全量 locator、全量 metadata、Human README inventory、未命中 Rules 或工具内部扫描状态。
 
-稳定 CLI 入口与最小规范化约定由根 `AGENTS.md` 声明；具体实现可以重构，但不得改变上述运行语义而不先修改本 Architecture。
+Repository-local capability profile / bootstrap 发布当前 Rule root 与 Tool locator；具体实现路径可以变化，但不得改变上述运行语义而不先修改本 Architecture。

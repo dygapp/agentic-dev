@@ -10,11 +10,14 @@ status: active
 
 当前 Architecture：
 
-- [`engineering-capability-architecture.md`](engineering-capability-architecture.md) — 顶层能力类型、Single Semantic Ownership / Multiple Views、Agent/Human 双视窗与演进判定；
-- [`method-architecture.md`](method-architecture.md) — Method 的定义、selection contract 与新增门禁；
+- [`engineering-capability-architecture.md`](engineering-capability-architecture.md) — 顶层 capability 类型、Single Semantic Ownership / Multiple Views、Agent/Human 双视窗与演进判定；
+- [`project-knowledge-architecture.md`](project-knowledge-architecture.md) — Project Knowledge 与 reusable Capability 的边界、Project owner 最小职责及 Consumer projection boundary；
+- [`method-architecture.md`](method-architecture.md) — Method 的定义、通用 selection contract、phase identity ownership 与新增门禁；
 - [`consumer-architecture.md`](consumer-architecture.md) — Consumer ownership、ordinary runtime、local specialization 与 upstream decoupling；
-- [`skill-architecture.md`](skill-architecture.md) — Skill 的执行能力边界、与 Method / Rule 的关系及准入门禁；
+- [`skill-architecture.md`](skill-architecture.md) — Skill 的执行能力边界、与 Method / Rule 的关系、inventory ownership 与准入门禁；
 - [`rule-architecture.md`](rule-architecture.md) — Rule 的横切语义、粒度、Consumer-local specialization 与 human navigation 边界；
 - [`rule-discovery-architecture.md`](rule-discovery-architecture.md) — Rule Discovery 的 task signals、确定性筛选、locator-only、fail-closed 与规模约束。
 
-Agent 只在当前 Method、Skill、Rule 或 Repository Authority 明确需要时加载对应 Architecture，不因本 README 全量读取。
+Architecture 只持有可复用、可被 Consumer adopt / adapt 的结构性 contract。`agentic-dev` 当前 capability instance、Roadmap 与历史里程碑属于 `docs/project/**`，不应因为当前仓库正在使用某项 capability 就写回 Architecture。
+
+Agent 只在当前 Method、Skill、Rule、Project Profile 或 Repository Authority 明确需要时加载对应 Architecture，不因本 README 全量读取。
