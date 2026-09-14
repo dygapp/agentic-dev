@@ -4,13 +4,24 @@ type: guide
 status: active
 ---
 
-# Rule 采用与恢复导航
+# 理解 Rule Discovery
 
-本 Guide 只用于低频 adoption / upgrade / recovery 导航，不负责 ordinary runtime 规则路由。
+本文只面向人类解释 Rule 如何被发现和使用，不参与 ordinary runtime routing。
 
-- 在 `agentic-dev` 自身工作：从根 `AGENTS.md` 恢复，再按当前任务调用 `tools/rule-discovery/`；
-- 新 Consumer：先读 `docs/architecture/consumer-lifecycle.md` 与 `docs/guides/using-agentic-dev.md`；
-- Existing Consumer upgrade：先恢复 Consumer-local current state，再显式比较 upstream baseline；
-- Consumer ordinary runtime：只使用 Consumer-local Rule Discovery、Rules、Skills 与 Authority。
+## 为什么不维护中心 Rule Map
 
-Rule Discovery 的规范 contract 只在 `docs/architecture/rule-discovery-architecture.md` 维护。本 Guide 不保存 Rule routing table、keyword map、priority 或 current-state 副本。
+每条 Rule 的发现 metadata 与规范正文同文件维护。Agent 从当前任务事实提取少量 task signals，由 `tools/rule-discovery/` 扫描 Front Matter，返回少量 `{id, path}`；随后 Agent 只读取候选正文并确认真实适用性。
+
+这避免了需要人工同步的 Reviewed Discovery Map / Activation Manifest / Runtime Catalog，也避免把全量 Rule metadata 塞进模型上下文。
+
+## 人怎样浏览 Rule
+
+人类可以直接查看 `docs/rules/README.md` 的分类与 inventory。这个 README 被 Rule Discovery 明确排除，但仍参加 repository lint，因此它不会成为 runtime index。
+
+## Agent 怎样使用 Rule
+
+Agent 不从 README、目录枚举或文件名集合反推候选。ordinary runtime 只把 Rule Discovery 返回的 locator 作为 Rule 入口；task facts 实质变化时重新发现。
+
+Rule 可以约束 Method stage、Skill execution 或 direct Agent work，不存在固定 `Method → Skill → Rule` 顺序。
+
+Rule 的语义与粒度见 `docs/architecture/rule-architecture.md`；确定性发现与 fail-closed contract 见 `docs/architecture/rule-discovery-architecture.md`。
