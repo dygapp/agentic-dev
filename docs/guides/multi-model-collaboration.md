@@ -67,7 +67,7 @@ canonical Rule / Requirement
 Restore Consumer Authority
 → Detect Runtime Capabilities
 → Select Collaboration Strategy
-→ Project Collaboration Capability
+→ Local Capability Projection
 → Establish Local Collaboration Instance
 → Validate Collaboration
 → Enable / Fallback
