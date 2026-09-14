@@ -49,23 +49,25 @@ PR #127 的 integration commit 是上述 capability semantics 的正式基线。
 
 ## Current Gate
 
-Issue #129 当前处于 **candidate convergence / verification**。
+Issue #129 当前处于 **Ready for Review / Integration Decision**。
 
 当前候选分支：`feature/model-collaboration-capability-v1`；当前 PR：#132。精确 Head、Actions、Review 与 mergeability 必须从 GitHub 当前事实读取。
 
-本演进完成门禁：
+当前 candidate 已达到本演进的 capability-definition 门禁：
 
-- reusable Model Collaboration Architecture 建立，且不硬编码具体模型 / provider instance；
+- reusable Model Collaboration Architecture 已建立，且不硬编码具体模型 / provider instance；
 - Model Collaboration Adoption Method 具有独立 work kind、阶段、Gate、fallback 与 completion semantics；
 - specialized Method 只实例化已经接受的 collaboration semantics，不绕过 Consumer Adoption / Upgrade 的 upstream semantic assessment；
 - Project Capability Profile 只记录 local selector / instance，并保持 `agentic-dev` self-instance 未经 adoption 不自动启用；
 - Consumer projection 明确 local config / Rule / runtime / validation / fallback owner；
+- Codex 平台参考实现作为带核验日期的 Human Guide 存在，不成为 `agentic-dev` current `.codex/` instance 或跨平台 Authority；
+- functional enablement 与 efficiency / preferred-default claim 已明确分离；
 - 历史 smoke failure 与 Issue #71 Evidence 保持 claim 边界，不虚构 runtime 成功或高端模型独占价值；
 - 本次 semantic-owner 与 Method-composition 分类经验进入非规范 Research；
-- deterministic capability-model / Rule Discovery regression PASS；
-- independent review 未解决 Blocking / Medium = 0 / 0。
+- deterministic capability-model / Rule Discovery regression 已通过；
+- independent review 已收敛，未解决 Blocking / Medium = 0 / 0。
 
-达到以上门禁后只进入 `Ready for Review / Integration Decision`，不自动 merge。真实 multi-agent child-thread smoke 属于每个 Repository 执行 `method:model-collaboration-adoption` 时的 runtime Gate；本次 capability definition 不以无法从当前执行环境观察的 runtime 结果冒充 PASS。
+本 Gate 只表示候选已可进入人工 Integration Decision，不自动授权 merge、release、deploy 或 destructive external operation。真实 multi-agent child-thread smoke 属于每个 Repository 执行 `method:model-collaboration-adoption` 时的 runtime Gate；本次 capability definition 不以无法从当前执行环境观察的 runtime 结果冒充 PASS。
 
 ## Next Candidates
 
