@@ -138,7 +138,12 @@ Model Collaboration 不承诺减少总 token。多 Agent 工作可能增加总�
 
 ## 10. Consumer projection
 
-Consumer 可以选择不启用、部分启用或完整启用本能力。采用后，Consumer 必须拥有自己的 local instance，至少明确：
+Consumer 可以选择不启用、部分启用或完整启用本能力。**接受 reusable semantics** 与 **建立 runtime instance** 是两个不同责任：
+
+- 首次整体采用或 Existing Consumer 的 upstream semantic delta，由 Consumer Adoption / Upgrade 或目标 Repository 等价 Authority 决定是否接受 / 适配；
+- 已接受 semantics 的具体 runtime activation，由 `method:model-collaboration-adoption` 建立 local instance。
+
+启用后，Consumer local instance 至少明确：
 
 - runtime / provider 与当前能力支持；
 - capability tier → concrete model / effort mapping；
@@ -151,17 +156,19 @@ Consumer 可以选择不启用、部分启用或完整启用本能力。采用�
 
 具体 `.codex/`、其他 Agent 平台配置、模型名与并发数只属于 local instance 或 Human example，不属于本 Architecture。
 
-Consumer ordinary runtime 不得依赖在线读取 `agentic-dev` current state。upstream capability 变化只有通过显式 adoption / upgrade 决策才能改变 Consumer local collaboration instance。
+Consumer ordinary runtime 不得依赖在线读取 `agentic-dev` current state。upstream capability semantics 变化只有通过显式 Consumer Adoption / Upgrade 决策才能进入 local Authority；纯本地 runtime mapping 维护则服从目标 Repository 自己的 Authority。
 
 ## 11. Adoption 与 ordinary runtime
 
-首次或后续独立启用 Model Collaboration capability 使用 `method:model-collaboration-adoption`。该 Method 负责检测真实 runtime 能力、选择策略、建立 local owner、验证并关闭 adoption。
+`method:model-collaboration-adoption` 只在 Model Collaboration semantics 已经进入 Consumer-local Authority 后执行，负责检测真实 runtime 能力、选择策略、投射 local config / policy、建立 local instance、验证并启用或 fallback。
+
+如果当前 Repository 只有“upstream 新增了 Model Collaboration capability”这一事实，而尚未接受其 semantics，则必须先进入 `method:consumer-adoption`、`method:consumer-upgrade` 或目标 Repository 等价 semantic-acceptance 流程；不得用本 Method 绕过 baseline assessment。
 
 启用后的 ordinary software work 仍由原有 Method 控制，例如 `method:ai-development`。Model Collaboration 只是运行方式，不自动改变当前 Method stage、Gate、Requirement 或 Integration Authority。
 
 ## 12. Fallback
 
-任何 Consumer adoption 都必须定义可验证的 single-agent fallback。出现以下情况时应 fail closed 到单 Agent 或停止协作，而不是假装多模型链路有效：
+任何 Consumer runtime activation 都必须定义可验证的 single-agent fallback。出现以下情况时应 fail closed 到单 Agent 或停止协作，而不是假装多模型链路有效：
 
 - 子 Agent runtime / thread 无法建立；
 - requested capability 不可用；
