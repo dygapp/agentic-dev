@@ -35,25 +35,19 @@ Architecture、Method、Skill、Rule 各自只拥有其语义责任；Guide / RE
 1. 读取本文件；
 2. 读取 `README.md` 与 `docs/project/project-roadmap.md`；
 3. 重新读取当前默认分支、Open Issue / PR 和当前任务需要的 GitHub 状态；
-4. 判断当前 work kind，并按 **Method Selection** 选择 Method；若无已定义 Method 匹配，不强行套用；
+4. 读取 `docs/architecture/method-architecture.md` 的 **Method Selection** contract，按当前 work kind 选择 Method；若无已定义 Method 匹配，不强行套用；
 5. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；
 6. 使用 `tools/rule-discovery/` 对 `docs/rules/**` 做候选初筛，只读取返回的 Rule 正文；
 7. 需要独立执行能力时，通过 Agent Skills 原生发现选择并读取相应 `SKILL.md`；
-8. 只加载当前责任直接需要的 Architecture；Guide / Research 仅在任务明确需要人类说明或研究证据时读取。
+8. 只加载当前责任直接需要的其他 Architecture；Guide / Research 仅在任务明确需要人类说明或研究证据时读取。
 
 不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills、全部 Architecture 或完整 Research。ordinary runtime 不得通过目录遍历、Human README、IDE tree 或其他枚举机制把未命中 Rule locator / 文件名集合送入模型上下文；Rule Discovery 返回值是普通运行时获得 Rule locator 的唯一入口。
 
 ## Method Selection
 
-当前 Method 数量较少，Bootstrap 只维护稳定 `work kind → Method locator`；Method 正文拥有全部阶段、Gate、返回与完成语义。
+Method 类型、当前 `work kind → Method locator` 映射与新增 Method 门禁由 `docs/architecture/method-architecture.md` 单独拥有。本 Bootstrap 只声明 Agent 在需要 Method selection 时必须读取该 contract，不复制 selector 内容、Method stages 或 Gate。
 
-- 普通软件 / 产品变更从需求澄清到实现收敛：`docs/methods/ai-development.md`；
-- Consumer 首次显式采用 `agentic-dev`：`docs/methods/consumer-adoption.md`；
-- Existing Consumer 显式评估 / 升级 upstream baseline：`docs/methods/consumer-upgrade.md`。
-
-如果任务不属于以上 work kind，按 Repository Authority 和当前直接责任工作，不得把最相近 Method 当作默认流程。Method selection 的长期边界见 `docs/architecture/method-architecture.md`。
-
-当 Method 数量或选择歧义增长时，应先用 eval 证明需要更复杂 discovery；不得仅为形式统一复制 Rule Discovery 机制。
+如果没有 Method 匹配，继续按 Repository Authority 与当前 direct responsibility 工作；不得从 Guide、目录名或历史会话猜测流程。
 
 ## Rule Discovery
 
@@ -97,7 +91,7 @@ Skill 与 Rule 是正交关系，不是上下游流水线。具体边界见 `doc
 
 Consumer Repository 始终拥有自己的项目事实、需求、架构、代码、验证与权限。`agentic-dev` 只提供可复用能力。
 
-长期 ownership / ordinary runtime 不变量见 `docs/architecture/consumer-architecture.md`；首次 adoption 使用 `docs/methods/consumer-adoption.md`；显式 upstream baseline upgrade 使用 `docs/methods/consumer-upgrade.md`。采用完成后的 ordinary runtime 只依赖 Consumer-local current state，发现失败不能自动回 upstream 补流程或规则。
+长期 ownership / ordinary runtime 不变量见 `docs/architecture/consumer-architecture.md`；首次 adoption 与显式 upstream baseline upgrade 按 `docs/architecture/method-architecture.md` 的 Method Selection contract 进入对应 Method。采用完成后的 ordinary runtime 只依赖 Consumer-local current state，发现失败不能自动回 upstream 补流程或规则。
 
 Rule 是 Consumer-local policy specialization 的主要承载面之一；通用 Skill 不应吸收不同 Consumer 必然不同的 commit type / scope、术语、审批或局部技术 policy。
 

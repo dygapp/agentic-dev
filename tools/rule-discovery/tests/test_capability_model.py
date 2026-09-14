@@ -13,14 +13,18 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
 class CapabilityModelContractTests(unittest.TestCase):
-    def test_canonical_methods_are_parseable_and_selected_by_bootstrap(self):
+    def test_canonical_methods_are_parseable_and_owned_by_method_selector(self):
         expected = {
             "docs/methods/ai-development.md": "method:ai-development",
             "docs/methods/consumer-adoption.md": "method:consumer-adoption",
             "docs/methods/consumer-upgrade.md": "method:consumer-upgrade",
         }
         agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        method_architecture = (REPO_ROOT / "docs/architecture/method-architecture.md").read_text(
+            encoding="utf-8"
+        )
 
+        self.assertIn("docs/architecture/method-architecture.md", agents)
         for relative, method_id in expected.items():
             path = REPO_ROOT / relative
             self.assertTrue(path.is_file(), relative)
@@ -28,7 +32,9 @@ class CapabilityModelContractTests(unittest.TestCase):
             self.assertEqual(method_id, parsed.metadata.get("id"))
             self.assertEqual("method", parsed.metadata.get("type"))
             self.assertEqual("active", parsed.metadata.get("status"))
-            self.assertIn(relative, agents)
+            self.assertIn(relative, method_architecture)
+            self.assertIn(method_id, method_architecture)
+            self.assertNotIn(relative, agents)
 
     def test_retired_single_method_and_consumer_lifecycle_paths_are_absent(self):
         self.assertFalse((REPO_ROOT / "docs/method").exists())

@@ -37,21 +37,21 @@ Method 不应吸收容易因 Consumer / Repository 改变的局部 policy，也�
 
 Agent 必须能够在不读取 Human Guide 的情况下选择 Method。
 
-当前 Method 数量较少，使用 Repository Bootstrap 中的**稳定 work-kind selector**：`AGENTS.md` 只维护 `work kind → Method locator`，不复制 Method 阶段、Gate 或正文。
+当前 Method 数量较少，本 Architecture 拥有当前**稳定 work-kind selector**；根 `AGENTS.md` 只负责把 Agent 引导到本 contract，不复制 selector 映射。
 
 当前 canonical work kinds：
 
-- 普通软件 / 产品变更的需求到收敛生命周期 → `method:ai-development`；
-- Consumer 首次显式采用 `agentic-dev` 能力 → `method:consumer-adoption`；
-- Existing Consumer 显式评估并升级 upstream baseline → `method:consumer-upgrade`。
+- 普通软件 / 产品变更的需求到收敛生命周期 → `docs/methods/ai-development.md`（`method:ai-development`）；
+- Consumer 首次显式采用 `agentic-dev` 能力 → `docs/methods/consumer-adoption.md`（`method:consumer-adoption`）；
+- Existing Consumer 显式评估并升级 upstream baseline → `docs/methods/consumer-upgrade.md`（`method:consumer-upgrade`）。
 
 如果当前工作不属于任何已定义 Method，不得为了获得流程而强行套用最接近的 Method。按 Repository Authority 和当前直接责任工作；若同类复杂过程反复出现并具有长期复用价值，再以 Evidence 评估新增 Method。
 
-当 Method 数量、歧义或选择成本增长到 bootstrap selector 无法稳定维护时，应通过独立 eval 决定是否引入 Method metadata discovery / selector tool；不得预先复制 Rule Discovery 的复杂度。
+当 Method 数量、歧义或选择成本增长到这个静态 selector 无法稳定维护时，应通过独立 eval 决定是否引入 Method metadata discovery / selector tool；不得预先复制 Rule Discovery 的复杂度。
 
 ## 4. Method Selection 不是第二套 Method
 
-Bootstrap selector 只能持有：
+selector 只能持有：
 
 - work kind 的稳定身份；
 - canonical Method id / locator。
@@ -63,7 +63,7 @@ Bootstrap selector 只能持有：
 - Method 内部 Skill / Rule routing；
 - 当前项目状态。
 
-因此 Method 正文仍是过程语义的唯一 owner。
+因此具体 Method 正文仍是过程语义的唯一 owner。
 
 ## 5. Method 演进与新增门禁
 
