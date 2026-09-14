@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import sys
 import unittest
 
@@ -31,6 +32,7 @@ class CapabilityModelContractTests(unittest.TestCase):
 
     def test_retired_single_method_and_consumer_lifecycle_paths_are_absent(self):
         self.assertFalse((REPO_ROOT / "docs/method").exists())
+        self.assertFalse((REPO_ROOT / "docs/methods/principles.md").exists())
         self.assertFalse((REPO_ROOT / "docs/architecture/consumer-lifecycle.md").exists())
 
     def test_human_navigation_exists_without_becoming_method_selector(self):
@@ -42,6 +44,19 @@ class CapabilityModelContractTests(unittest.TestCase):
         methods_readme = (REPO_ROOT / "docs/methods/README.md").read_text(encoding="utf-8")
         self.assertIn("Human View", methods_readme)
         self.assertIn("Agent 的 Method 选择", methods_readme)
+
+    def test_rule_human_inventory_matches_discoverable_rule_corpus(self):
+        actual = {
+            item.locator
+            for item in rd.scan_rules(repo_root=REPO_ROOT, rule_roots=[Path("docs/rules")])
+        }
+        readme = (REPO_ROOT / "docs/rules/README.md").read_text(encoding="utf-8")
+        linked = {
+            f"docs/rules/{target}"
+            for target in re.findall(r"\]\(([^)]+\.md)\)", readme)
+            if not target.startswith("../") and not target.startswith("docs/")
+        }
+        self.assertEqual(actual, linked)
 
 
 if __name__ == "__main__":

@@ -41,10 +41,11 @@ Agent：
 ```text
 AGENTS.md
 → Repository current state
-→ Method Selection
-→ current responsibility
-→ relevant Architecture / Skill
-→ Rule Discovery
+→ Method Selection（若适用）
+→ current Method stage / direct responsibility
+    ├─→ relevant Architecture
+    ├─→ Skill discovery / invocation（如需要）
+    └─→ Rule Discovery → applicable Rules
 → execute / verify
 ```
 
@@ -74,7 +75,7 @@ Clarify Intent
 
 Integration 本身不属于通用 Method；merge、release、deploy 等仍由目标仓库策略和人工 Authority 决定。
 
-每个阶段可以使用对应 Skill，也可以在不需要独立 Skill 时由 Agent 直接按 Authority 工作。Rule 则根据当前 phase / activity / technology / artifact / risk 动态发现，并不固定挂在某个 Skill 后面。
+每个阶段可以使用对应 Skill，也可以在不需要独立 Skill 时由 Agent 直接按 Authority 工作。Rule 根据当前 phase / activity / technology / artifact / risk 独立发现，并不固定挂在某个 Skill 后面。
 
 ## 4. Rule Discovery 为什么存在
 
@@ -83,7 +84,7 @@ Integration 本身不属于通用 Method；merge、release、deploy 等仍由目
 因此 ordinary runtime 使用：
 
 ```text
-current task facts
+current task facts / responsibility
 → bounded task signals
 → Rule Discovery
 → 少量 {id, path}

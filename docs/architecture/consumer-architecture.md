@@ -19,12 +19,14 @@ Consumer adoption 与 upgrade 的过程分别由 `method:consumer-adoption` 与 
 ```text
 Consumer Repository facts
 → Consumer Agent Bootstrap / Method selection
-→ current responsibility
-→ Consumer-local Skills / Rules / Architecture
-→ Consumer-local Rule Discovery
+→ current Method stage / direct responsibility
+    ├─→ relevant Consumer-local Architecture
+    ├─→ Consumer-local Skill discovery / invocation（如需要）
+    └─→ Consumer-local Rule Discovery → applicable Rule bodies
+→ execute / verify / return
 ```
 
-ordinary runtime 默认 `upstream access = 0`。本地 Method entry、Rule discovery 或 metadata 异常必须在 Consumer-local state 内失败关闭或按 Consumer Authority 升级；不能自动访问 `agentic-dev` 在线补流程 / 规则。
+ordinary runtime 默认 `upstream access = 0`。本地 Method entry、Skill discovery、Rule discovery 或 metadata 异常必须在 Consumer-local state 内失败关闭或按 Consumer Authority 升级；不能自动访问 `agentic-dev` 在线补流程 / 规则。
 
 ## 3. Local canonical owners
 

@@ -29,7 +29,7 @@ Method 是针对一类复杂工作的**规范过程模型**。它定义：
 - 整体完成条件；
 - 过程中如何组合必要 Architecture、Skill 与 Rule。
 
-Method 是可扩展的一等能力类型，而不是 `ai-development-method.md` 的同义词。一个仓库可以存在多个 Method，例如 AI Development、Consumer Adoption、Consumer Upgrade；未来只有在真实证据支持时，才增加大型项目 Requirements Analysis 等新 Method。
+Method 是可扩展的一等能力类型，而不是 `ai-development.md` 的同义词。一个仓库可以存在多个 Method，例如 AI Development、Consumer Adoption、Consumer Upgrade；未来只有在真实证据支持时，才增加大型项目 Requirements Analysis 等新 Method。
 
 Method 可以跨多个 Agent Context、多个 Artifact、多个 Skill 与人工 Gate。Method 不要求每个阶段都有独立 Skill，也不得把 repository-specific policy 复制成自身隐藏规则。
 
@@ -84,19 +84,19 @@ Research 保存非规范性的外部证据、比较、实验与技术参考。Re
 
 ### Agent View
 
-ordinary Agent 工作必须拥有不依赖 Guide 的规范入口：
+ordinary Agent 工作必须拥有不依赖 Guide 的规范入口。进入当前 responsibility 后，Architecture、Skill 与 Rule 是按责任并列选择的能力面，不是固定串行流水线：
 
 ```text
 Repository Authority / Agent Bootstrap
 → Method selection（若当前工作属于某个 Method）
-→ current Method stage / responsibility
-→ 必要 Architecture context
-→ Skill（如责任需要独立执行能力）
-→ applicable Rules（横切发现）
+→ current Method stage / direct responsibility
+    ├─→ relevant Architecture context
+    ├─→ Skill discovery / invocation（如需要独立执行能力）
+    └─→ Rule Discovery → applicable Rule bodies
 → execute / verify / return
 ```
 
-这不是严格线性链。Architecture、Skill 与 Rule 都由当前责任选择；Rule 横切 Method stage、Skill 与 direct work。
+Skill 可以在没有额外 Rule 时独立执行；Rule 也可以在没有 Skill 时约束 direct work。只有当前 task facts 与 responsibility 决定三者是否需要加载。
 
 ### Human View
 
