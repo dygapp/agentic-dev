@@ -8,96 +8,111 @@ status: active
 
 ## 仓库职责
 
-`agentic-dev` 定义通用 AI Agent 驱动软件开发方法，并维护可复用的 Skill、Rule、架构与 Consumer adoption 能力。本文件只维护稳定的 Repository Authority、知识边界和启动约束；当前阶段与下一工作入口只由 `docs/project/project-roadmap.md` 与 GitHub 当前事实维护。
+`agentic-dev` 定义通用 AI Agent 驱动软件开发能力，并维护可复用的 Method、Skill、Rule、Architecture 与 Consumer adoption 能力。本文件只维护稳定 Repository Authority、Agent Bootstrap 和启动约束；当前阶段与下一工作入口只由 `docs/project/project-roadmap.md` 与 GitHub 当前事实维护。
 
 GitHub Repository 是本仓库唯一长期项目事实来源。会话历史、其他聊天、个人记忆、其他仓库状态和未固化推理不构成本仓库事实。
 
-## Authority
+## Authority 与 semantic ownership
 
-发生冲突时，先按语义 owner 判断，再服从以下层级：
+发生冲突时先判断真实 semantic owner，不用目录层级覆盖正确责任：
 
-1. `AGENTS.md`；
-2. `docs/method/ai-development-method.md`；
-3. `docs/method/principles.md`；
-4. `docs/architecture/engineering-capability-architecture.md`；
-5. `docs/architecture/consumer-lifecycle.md`；
-6. `docs/architecture/skill-architecture.md`；
-7. `docs/architecture/rule-discovery-architecture.md`；
-8. 当前任务适用的 `docs/rules/**` 与具体 `SKILL.md`；
-9. `docs/project/project-roadmap.md`；
-10. `docs/guides/**`；
-11. `docs/research/**`。
+1. `AGENTS.md` — Repository Authority / Agent Bootstrap；
+2. `docs/architecture/engineering-capability-architecture.md` — 能力类型、single semantic ownership 与双视窗；
+3. `docs/architecture/method-architecture.md` — Method 类型与 selection contract；
+4. 当前选定的 `docs/methods/*.md` — 当前工作过程模型；
+5. 当前责任直接需要的 Architecture；
+6. 当前责任适用的具体 `SKILL.md` 与 `docs/rules/**`；
+7. `docs/project/project-roadmap.md` — 当前项目阶段 / 下一演进；
+8. `docs/guides/**` — Human View；
+9. `docs/research/**` — 非规范 Evidence / Reference。
 
-Rule 可以约束 Skill 的阶段内执行，但不得重定义 Method / Architecture；Skill 拥有自己的 Procedure，但不得通过实现暗中修改更高层 Authority。Guide 只面向人类初始化、采用、升级和低频说明，不拥有 ordinary runtime 规则。Research 永远不是规范性 Authority。
+Architecture、Method、Skill、Rule 各自只拥有其语义责任；Guide / README 可以解释它们，但不得成为第二套规范 owner。Research 永远不是规范性 Authority。
 
-## Fresh Context
+## Fresh Context / Agent Bootstrap
 
 新的本仓库上下文按以下顺序恢复：
 
 1. 读取本文件；
 2. 读取 `README.md` 与 `docs/project/project-roadmap.md`；
 3. 重新读取当前默认分支、Open Issue / PR 和当前任务需要的 GitHub 状态；
-4. 从当前任务与仓库事实提取最少量 task signals；
-5. 使用 `tools/rule-discovery/` 对 `docs/rules/**` 的 YAML Front Matter 做候选初筛，只读取返回的候选 Rule 正文；
-6. 需要独立执行能力时，通过 Agent Skills 原生发现选择并读取相应 `SKILL.md`；
-7. 只加载当前任务直接需要的 Method / Architecture / Guide / Research。
+4. 读取 `docs/architecture/method-architecture.md` 的 **Method Selection** contract，按当前 work kind 选择 Method；若无已定义 Method 匹配，不强行套用；
+5. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；
+6. 使用 `tools/rule-discovery/` 对 `docs/rules/**` 做候选初筛，只读取返回的 Rule 正文；
+7. 需要独立执行能力时，通过 Agent Skills 原生发现选择并读取相应 `SKILL.md`；
+8. 只加载当前责任直接需要的其他 Architecture；Guide / Research 仅在任务明确需要人类说明或研究证据时读取。
 
-不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills 或完整 Research。ordinary runtime 不得通过 `rg --files`、`find`、目录遍历、IDE tree、脚本或其他方式预先枚举 `docs/rules/**` 的完整 locator / 文件名集合；Rule Discovery 的返回值是普通运行时获得 Rule locator 的唯一入口。
+不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills、全部 Architecture 或完整 Research。ordinary runtime 不得通过目录遍历、Human README、IDE tree 或其他枚举机制把未命中 Rule locator / 文件名集合送入模型上下文；Rule Discovery 返回值是普通运行时获得 Rule locator 的唯一入口。
+
+## Method Selection
+
+Method 类型、当前 `work kind → Method locator` 映射与新增 Method 门禁由 `docs/architecture/method-architecture.md` 单独拥有。本 Bootstrap 只声明 Agent 在需要 Method selection 时必须读取该 contract，不复制 selector 内容、Method stages 或 Gate。
+
+如果没有 Method 匹配，继续按 Repository Authority 与当前 direct responsibility 工作；不得从 Guide、目录名或历史会话猜测流程。
 
 ## Rule Discovery
 
 Rule metadata 与 Rule 正文必须同源、同文件维护。不得维护 Reviewed Discovery Map、Activation Manifest、Runtime Catalog、rule-index 或其他需要与规则正文同步的中心路由表。
 
-普通运行时使用以下稳定入口：
+普通运行时使用：
 
 ```bash
 python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-json '<task-signals-json>'
 ```
 
-`task-signals-json` 必须显式包含 `phases`、`activities`、`technologies`、`artifacts`、`risks` 五个维度。每个维度使用以下三态语义：
+`task-signals-json` 必须显式包含 `phases`、`activities`、`technologies`、`artifacts`、`risks` 五个维度：
 
-- 非空数组：当前事实能够安全规范化出的少量已知 token；
-- `[]`：当前事实明确没有该维度的正向 signal；
-- `null`：该维度相关事实未知，或无法在不猜测的情况下确定 canonical token；未知不得伪装成空数组，也不得通过同义词堆叠碰撞 metadata。
+- 非空数组：当前事实可安全规范化出的少量已知 token；
+- `[]`：当前事实明确没有该维度正向 signal；
+- `null`：相关事实未知或无法安全规范化，不能伪装成空数组。
 
-每个非空数组最多 6 个 lowercase kebab-case token。不得把目标 Rule 名、期望答案、Rule 文件名或会话历史写入 signals，也不得为了让候选出现而批量添加同义词、推测风险或近义技术名。
+每个非空数组最多 6 个 lowercase kebab-case token。不得把目标 Rule 名、期望答案、Rule 文件名或历史候选写入 signals，也不得使用 synonym cloud 碰撞 metadata。
 
-阶段 token 使用 Method 的稳定阶段身份：`clarify-intent`、`specification`、`technical-planning`、`slice-ready`、`execute`、`converge`。活动优先使用直接责任词，如 `implementation`、`verification`、`review`、`external-operation`、`design`。技术与工件使用当前事实的稳定机器身份；常见规范化示例：Vue 3.x → `vue3`、TypeScript → `typescript`、`.vue` SFC → `vue-sfc`、普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。这些只是 token 规范化，不构成 Rule→token 路由表。
+AI Development 当前 phase token：`clarify-intent`、`specification`、`technical-planning`、`slice-ready`、`execute`、`converge`。其他 Method 若需要 Method-specific Rule，必须先定义稳定 phase identity；未定义时使用 `null` 而不是猜测。
 
-成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选本身不等于最终适用，必须读取候选正文后做语义确认。若某个维度的 canonical token 不确定，优先用 `null` 保留未知语义，而不是读取未命中 Rule 的 Front Matter 反向推断 token。除 Discovery 返回的 `candidates[].path` 外，ordinary runtime 不得提前枚举、读取或把其他 Rule locator 送入模型上下文。
+活动优先使用直接责任词，如 `implementation`、`verification`、`review`、`external-operation`、`design`。技术与工件使用当前事实支持的稳定机器身份；例如 Vue 3.x → `vue3`、TypeScript → `typescript`、`.vue` SFC → `vue-sfc`、普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。
 
-当当前 phase、activity、technology、artifact 或 risk facts 发生会改变候选集合的实质变化时，重新执行 discovery，不把旧 candidate set 当作整个会话永久上下文。Discovery 返回 `fail-closed` 时停止依赖其结果，修复当前 signals、metadata 或扫描完整性后重试；不得降级到全量 Rule 加载、旧中心 Map 或 upstream discovery。`status=ok` 但候选为空也不得通过读取未命中 Rule metadata 进行校准；只能基于新的当前事实重新发现，或明确保留规则发现缺口。
+成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选不等于最终适用，必须读取正文后做语义确认。当前 phase / activity / technology / artifact / risk facts 实质变化时重新发现，不把旧 candidate set 当作整个会话永久上下文。
 
-Rule Discovery Tool 只返回少量 `{id, path}` locator；LLM 读取候选正文后完成最终语义适用性判断。目录路径不得成为隐藏匹配条件。schema、重复 id 或扫描完整性异常必须失败关闭。
+Discovery `fail-closed` 时先修复 signals、metadata 或扫描完整性，不降级到全量 Rule、旧中心 Map 或 upstream discovery。`status=ok` 但候选为空，也不得读取未命中 Rule metadata 反向校准。
+
+Rule root 中文件名恰为 `README.md` 的资源只作为 Human Navigation：不参与 Rule candidate scan，但仍参加 repository Markdown lint；其他 `.md` 不得借此逃逸 Rule contract。
+
+Rule 的语义、粒度与 Consumer-local specialization 见 `docs/architecture/rule-architecture.md`；发现算法、reserved README 与 fail-closed contract 见 `docs/architecture/rule-discovery-architecture.md`。
 
 ## Skill / Rule / Guide 边界
 
-- Skill：具有稳定 Trigger / Inputs / Procedure / Outputs / Exit / Escalation 的独立执行闭环；
-- Rule：执行工作时必须遵守的条件、约束、默认值、不变量或完成声明要求，但本身不是完整任务流程；
-- Guide：面向人的初始化、adoption、upgrade、恢复和低频说明。
+- **Skill**：当前责任明确后具有稳定 Trigger / Inputs / Procedure / Outputs / Exit / Escalation 的有界执行能力；
+- **Rule**：按当前事实条件性适用的 policy / constraint / default / invariant / completion requirement，可横切 Method、Skill 或 direct work；
+- **Guide**：Human-facing explanation / usage / navigation，ordinary Agent runtime 默认不依赖。
 
-具体架构见 `docs/architecture/skill-architecture.md` 与 `docs/architecture/rule-discovery-architecture.md`。
+Skill 与 Rule 是正交关系，不是上下游流水线。具体边界见 `docs/architecture/engineering-capability-architecture.md`、`skill-architecture.md` 与 `rule-architecture.md`。
 
 ## Consumer 边界
 
-Consumer Repository 始终拥有自己的项目事实、需求、架构、代码、验证与权限。`agentic-dev` 只提供可复用方法和能力。
+Consumer Repository 始终拥有自己的项目事实、需求、架构、代码、验证与权限。`agentic-dev` 只提供可复用能力。
 
-首次采用或显式升级时可以读取上游；采用完成后的 ordinary runtime 只依赖 Consumer-local current Method / Skills / Rules / Repository Authority。发现失败不能自动回到 upstream 补规则。长期生命周期见 `docs/architecture/consumer-lifecycle.md`。
+长期 ownership / ordinary runtime 不变量见 `docs/architecture/consumer-architecture.md`；首次 adoption 与显式 upstream baseline upgrade 按 `docs/architecture/method-architecture.md` 的 Method Selection contract 进入对应 Method。采用完成后的 ordinary runtime 只依赖 Consumer-local current state，发现失败不能自动回 upstream 补流程或规则。
+
+Rule 是 Consumer-local policy specialization 的主要承载面之一；通用 Skill 不应吸收不同 Consumer 必然不同的 commit type / scope、术语、审批或局部技术 policy。
 
 ## 外部操作与复核
 
-外部可变状态操作使用 `external-operation` Skill，并通过 Rule Discovery 加载当前适用的授权、写后验证、异步观察、共享资源等 operation Rules。工具可写不等于已授权；merge、release、deploy、破坏性远程操作仍服从仓库策略和人工权威。
+外部可变状态操作可使用 `external-operation` Skill，并通过 Rule Discovery 加载当前适用的授权、写后验证、异步观察、共享资源等 operation Rules。Rule 也可以在没有该 Skill 的其他 external work 中独立适用。
+
+工具可写不等于已授权；merge、release、deploy、破坏性远程操作仍服从仓库策略和人工 Authority。
 
 高影响仓库变更按 `rule:high-impact-ai-review-required` 判断是否必须执行 `review-change`。Review 通过不等于人工批准或集成授权。
 
-## 研究
+## Human View / Research
 
-`docs/research/**` 只保存外部规范、工程证据和设计参考，不参与 ordinary runtime discovery，也不自动改变 Method / Architecture / Rule / Skill。长期结论只有进入真实 current owner 后才成为规范。
+人类从 `README.md` 与 `docs/guides/**` 理解项目。Guide 可以完整解释 Method / Architecture / Skill / Rule，但不得保存 runtime routing、canonical Gate 或 current project state。
+
+`docs/research/**` 只保存外部规范、工程证据和设计参考，不参与 ordinary runtime discovery，也不自动改变规范能力。长期结论只有进入真实 current owner 后才成为规范。
 
 ## Project State
 
-`docs/project/` 只保留真正当前的 `project-roadmap.md`。临时计划、Gate 过程、资产分类、实验结果和阶段验证优先记录在 Issue #122、PR、Git commit 与 Actions，不为 V4 再建立一组过程 Markdown。
+`docs/project/` 只保留真正当前的 `project-roadmap.md`。临时计划、Gate 过程、资产分类、实验结果和阶段验证优先记录在 GitHub Issue / PR / Git / Actions，不为每次演进建立第二套 current state。
 
 ## Git 与表达
 
-Git commit、中文人类表达、精确机器标识符和正式概念身份等运行约束由 `docs/rules/repository/**` 按 task signals 发现；本文件不复制第二份规则正文。
+Git commit、中文人类表达、精确机器标识符和正式概念身份等运行约束由 `docs/rules/repository/**` 按 task signals 发现；本文件不复制第二份 Rule 正文。

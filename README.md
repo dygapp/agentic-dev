@@ -6,46 +6,69 @@ status: active
 
 # agentic-dev
 
-`agentic-dev` 是一个面向 AI Agent 驱动软件开发的方法、可组合 Skill、分布式 Rule 与 Consumer adoption 能力仓库。
+`agentic-dev` 是一个面向 AI Agent 驱动软件开发的 Method、可组合 Skill、分布式 Rule、Architecture 与 Consumer adoption 能力仓库。
 
-## 当前 Foundation
+## 两个入口
 
-V4 采用减法优先的 Foundation Rebuild：
+本仓库明确区分 **Agent View** 与 **Human View**：
 
-- Skill 只保留稳定独立执行闭环；
-- Rule 以最小 Markdown 单元存在，发现 metadata 与正文同文件维护；
-- Rule Discovery Tool 只扫描 YAML Front Matter，向 LLM 返回少量 `{id, path}` locator；
-- Guide 只承担面向人的初始化、采用、升级和低频说明；
-- `docs/project/` 只保留真正 Current Project State；
-- V1～V3 过程历史由 Git / Issue / PR 保存，不在 current tree 建兼容层。
+- **Agent View**：从根 `AGENTS.md` 启动，通过 Method Selection、Skill discovery 与 Rule Discovery 进入规范资产；ordinary runtime 默认不依赖 Guide；
+- **Human View**：从本 README 与 `docs/guides/using-agentic-dev.md` 开始，以适合人的方式理解项目、方法、流程和目录结构。
 
-当前路线与 Gate：`docs/project/project-roadmap.md`。
+两种视窗共享同一套规范模型。Method / Architecture / Skill / Rule 是 canonical semantic owners；Guide / README 只负责解释和导航，不建立第二套 Authority。
 
-## Fresh Context
+## 当前核心模型
 
-本仓库工作从 `AGENTS.md` 恢复稳定 Repository Authority，再读取 `README.md`、Project Roadmap 与 GitHub 当前事实。普通任务只提取少量 current task signals，通过本地 Rule Discovery 取得候选 locator，只读取候选正文并做最终语义确认；signals 实质变化时重新发现。精确 CLI 与 fail-closed 边界由 `AGENTS.md` 持有。
+### Method
+
+Method 是一类复杂工作的规范过程模型。当前正式 Method：
+
+- `docs/methods/ai-development.md` — 普通软件 / 产品变更从意图澄清到收敛；
+- `docs/methods/consumer-adoption.md` — Consumer 首次采用 `agentic-dev`；
+- `docs/methods/consumer-upgrade.md` — Existing Consumer 显式升级 upstream baseline。
+
+### Skill
+
+Skill 是责任明确后可独立调用的稳定、有界、可复用执行能力。当前 Skills 见 `skills/README.md`。
+
+### Rule
+
+Rule 是按当前工作事实条件性适用的 policy / constraint / default / invariant / completion requirement。Rule 不要求依附 Skill，并允许 Consumer-local specialization。
+
+普通 Agent 通过 `tools/rule-discovery/` 获取少量候选 locator；人类可通过 `docs/rules/README.md` 浏览当前 Rule 结构与 inventory。
+
+### Architecture
+
+Architecture 定义能力类型、ownership、组合关系和运行不变量。入口见 `docs/architecture/README.md`。
+
+### Guide
+
+Guide 只面向人类解释和使用。入口见 `docs/guides/README.md`。
+
+## Agent Fresh Context
+
+本仓库 Agent 工作从 `AGENTS.md` 恢复 Repository Authority、当前 Project Roadmap 和 GitHub current state，然后选择适用 Method；Rule 仍按 task signals 动态发现，Skill 通过 Agent Skills 原生机制发现。
 
 ## Consumer
 
-Consumer 拥有自己的 Repository Authority。首次 adoption / 显式 baseline upgrade 可重新进入 `agentic-dev`；采用完成后的 ordinary runtime 默认只使用 Consumer-local Method / Skills / Rules / Discovery Tool，不在线依赖 upstream。
-
-人类使用说明：`docs/guides/using-agentic-dev.md`。
+Consumer 始终拥有自己的 Repository Authority。首次 adoption / 显式 baseline upgrade 才重新进入 upstream；adoption 完成后的 ordinary runtime 只使用 Consumer-local Method / Architecture / Skills / Rules / Discovery Tool，不在线依赖 `agentic-dev` current state。
 
 ## 当前结构
 
 ```text
-AGENTS.md
-README.md
-skills/
+AGENTS.md                     # Agent Bootstrap / Repository Authority
+README.md                     # Human repository entry
+skills/                       # reusable Agent execution capabilities
 docs/
-  method/
-  architecture/
-  rules/
-  guides/
-  project/
-  research/
+  methods/                    # Agent-facing normative process models
+  architecture/               # capability boundaries / ownership / invariants
+  rules/                      # discoverable Agent-facing conditional policies
+  guides/                     # Human View / usage documentation
+  project/                    # current project state
+  research/                   # non-normative evidence / references
 evals/
-tools/        # Rule Discovery Tool
+tools/
+  rule-discovery/
 ```
 
-真正的运行时规则由 `docs/rules/**` 持有；目录分类只服务人类阅读，不参与匹配。
+当前项目阶段与下一演进只以 `docs/project/project-roadmap.md` 与 GitHub 当前事实为准。

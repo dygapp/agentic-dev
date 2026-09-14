@@ -8,15 +8,11 @@ status: active
 
 ## Current Foundation
 
-当前正式 Foundation 为 **V4 — 分布式规则发现与仓库基础重构**。
+当前正式 Foundation 仍为 **V4 — 分布式规则发现与仓库基础重构**。
 
-`master` 是唯一正式 V4 baseline。PR #123 的初始 V4 integration commit 为：
+`master@3098f17b5661fbd4edbbaf1080ed4b4f5759e0d8` 是当前正式 V4 baseline。V4 已完成全部 Gate，不因后续 Capability Model 演进重新打开 Closure。
 
-`agentic-dev@0e7e45fa2a7aa9048d0f357b6b3be3befce921a4`
-
-V4 是断代式、减法优先 Foundation Rebuild，不维护 V1～V3 current working-tree compatibility layer。V1～V4 的过程设计、分类、实验与阶段证据由 Issue、PR、Git 与 Actions 持有；本 Roadmap 只保留当前 Foundation、稳定能力边界和后续演进方向。
-
-## Current Runtime
+V4 稳定保留的核心运行约束包括：
 
 ```text
 current task / repository facts
@@ -29,54 +25,89 @@ current task / repository facts
 → semantic applicability confirmation
 ```
 
-稳定约束：
-
 - Rule metadata 与规范正文同文件维护；
 - 不维护 Reviewed Discovery Map / Activation Manifest / Runtime Catalog / rule-index；
-- Rule Discovery 返回的 `candidates[]` 是 ordinary runtime 获得 Rule locator 的唯一入口；
+- Rule Discovery `candidates[]` 是 ordinary runtime 获得 Rule locator 的唯一入口；
 - 未命中 Rule locator / metadata / body 不进入 ordinary LLM context；
 - task signals 使用 known array / known-empty `[]` / unknown `null` 三态，每个非空维度最多 6 个 canonical token；
-- Skill 只承担稳定独立执行闭环；Rule 只承担条件 / 约束 / 默认值 / 不变量 / 完成声明；Guide 只承担面向人的低频 adoption / upgrade / recovery 说明；
-- Consumer adoption 后 ordinary runtime 默认只依赖 Consumer-local Authority / Method / Skills / Rules / Rule Discovery，不在线依赖 upstream current state。
+- Consumer ordinary runtime 默认只依赖 Consumer-local current state，不在线依赖 upstream current state。
 
-## V4 Gates
+## Current Evolution — Capability Model v2
 
-- V4-00 Baseline Freeze & Rebuild Boundary — PASS
-- V4-01 Asset Inventory & Classification — PASS
-- V4-02 Front Matter & Rule Discovery Contract — PASS
-- V4-03 Information Architecture & Rule Decomposition — PASS
-- V4-04 Rule Discovery Tool & Lint — PASS
-- V4-05 Runtime Integration — PASS
-- V4-06 Generation / Verification Discriminating Evals — PASS
-- V4-07 Token Scaling Gate（20 / 100 / 500 Rules）— PASS
-- V4-08 Consumer Validation — PASS（natural Rule Evolution observation deferred）
-- V4-09 Closure & Baseline Replacement — PASS
+当前增量演进入口为 **Issue #124 — Capability Model v2：重定义 Method / Skill / Rule / Guide 与双视窗架构**。
 
-## Closure Evidence
+该演进来自 V4 完成后的真实可用性复核：Rule Discovery runtime 已稳定，但 Human View、Agent process entry、Method 扩展性以及 Skill / Rule 语义边界仍需长期收敛。
 
-V4-06 以 Fresh Runtime 证明 generation、verification、mixed responsibility、negative / ambiguity、invalid metadata、Skill / Rule boundary 与 Consumer-local ordinary runtime；最终 7 / 7 场景、35 / 35 assertions PASS。
+本轮不推翻 V4 Rule Discovery，而是在其上建立更完整的能力模型：
 
-V4-07 验证 20 / 100 / 500 Rules 下仅相同少量 candidates 进入模型上下文，支持：
+### Single Semantic Ownership, Multiple Views
+
+- Method / Architecture / Skill / Rule 持有 canonical normative semantics；
+- Guide / README 提供 Human View，不成为第二套 Authority；
+- ordinary Agent runtime 默认不依赖 Guide；
+- Agent 必须通过 Repository Bootstrap / Method Selection / Skill discovery / Rule Discovery 获得自己的规范入口。
+
+### Capability boundaries
+
+- **Method**：一类复杂工作的规范过程模型，可存在多个实例；
+- **Architecture**：长期结构、ownership、组合关系和运行不变量；
+- **Skill**：责任明确后的有界、稳定、可复用执行能力；
+- **Rule**：按事实条件适用的 policy / constraint / default / invariant / completion requirement，可横切 Method、Skill 与 direct work；
+- **Guide**：Human-facing explanation / usage / navigation；
+- **Research**：非规范 Evidence / Reference。
+
+Skill 与 Rule 是正交关系，不是固定 `Method → Skill → Rule` 流水线。Rule 是 Consumer-local policy specialization 的主要承载面之一。
+
+## Current Candidate Structure
+
+Issue #124 candidate 将当前长期结构收敛为：
 
 ```text
-Tool side: O(N metadata scan/filter)
-LLM side: O(k locator + k rule body), k << N
+AGENTS.md                     # Agent Bootstrap / Repository Authority
+README.md                     # Human repository entry
+skills/                       # reusable Agent execution capabilities
+docs/
+  methods/                    # normative process models
+  architecture/               # capability boundaries / ownership / invariants
+  rules/                      # discoverable conditional policies
+  guides/                     # Human View
+  project/                    # current project state
+  research/                   # non-normative evidence / references
+evals/
+tools/
+  rule-discovery/
 ```
 
-V4-08 已在真实 Consumer `dygapp/jilinjobs-cms` 完成显式 adoption、Consumer-local projection、ordinary generation / verification discovery、无中心同步资产和 post-adoption upstream decoupling。自然 Rule Evolution 尚未实际发生；按项目负责人明确决策，该 gap 保留为 post-adoption observation，不阻塞 V4 Closure，后续真实使用问题通过 Consumer feedback 继续演进。
+当前 candidate Methods：
 
-V4-09 已完成 current-tree closure：
+- `method:ai-development`；
+- `method:consumer-adoption`；
+- `method:consumer-upgrade`。
 
-- `docs/project/` 只保留本 Roadmap；
-- `tasks/**`、旧 discovery Map / Manifest / Catalog、旧 Technology Profile runtime owner 等前代过程或运行资产不在 current tree；
-- 被 V4 current Rule Discovery corpus 取代的旧 `evals/capability/**` 与 `evals/rule-retrieval/**` 已删除；
-- Evals current inventory / runner / guide 已收敛，并由 CI 编译 runner、执行 Rule Discovery deterministic tests / lint / smoke discovery；
-- `AGENTS.md` → `README.md` → Roadmap → GitHub current state 的 Fresh Context 路径不要求读取 V1～V3 项目过程即可工作；
-- Consumer adoption / explicit baseline upgrade 路径由 `docs/architecture/consumer-lifecycle.md` 与 current Guides 持有；
-- V4 实施历史保存在 Issue #122 / PR #123 / Git / Actions，不恢复为第二套 current state。
+大型项目前期 Requirements Analysis 仍只是未来 Method candidate；只有在历史实践与新 Evidence 足以提炼稳定适用边界、阶段、产物、Gate 和完成语义时才正式建立。
 
-PR #123 已 squash merge 到 `master@0e7e45fa2a7aa9048d0f357b6b3be3befce921a4`。对应 master push Rule Discovery Run `34769603443` SUCCESS：eval runners compile PASS、38 / 38 deterministic tests PASS、lint 45 Rules / 11 Skills PASS，普通与 Vue unknown-risk smoke discovery 均 PASS。
+## Issue #124 Implementation Gates
+
+当前实施顺序：
+
+1. **Capability Architecture** — 定义能力类型、双视窗、single semantic ownership、Skill / Rule 正交关系；
+2. **Agent Process Entry** — 建立 Method Selection，使 Agent 不依赖 Guide 进入规范流程；
+3. **Method Restructuring** — Consumer Adoption / Upgrade 从混合 lifecycle 文档提升为正式 Method，Consumer Architecture 只保留长期不变量；
+4. **Human View** — 扩展 Guides，并为 Architecture / Methods / Rules 提供 README 导航；
+5. **Rule Infrastructure** — reserved `README.md` 退出 Rule Discovery、继续参加 repository lint；
+6. **Asset / Granularity Audit** — 复核现有 Method / Skill / Rule / Guide / Architecture 归属及 Rule 粒度；
+7. **Verification** — deterministic tests、repository lint、Rule smoke discovery、Method entry / Fresh Context 行为复核与 Human navigation review。
+
+已完成的 Gate 必须由 branch / PR current Evidence 支持；在最终集成前，本节描述的是当前 candidate，不代表 `master` 已接受这些变化。
+
+## V4 Closure Evidence
+
+V4-00 ～ V4-09 全部 PASS。PR #123 已 squash merge，V4 initial integration commit 为 `0e7e45fa2a7aa9048d0f357b6b3be3befce921a4`；最终 Roadmap closure commit 为 `3098f17b5661fbd4edbbaf1080ed4b4f5759e0d8`。
+
+最终 baseline Rule Discovery Run `34769662589` SUCCESS：38 / 38 deterministic tests PASS、lint 45 Rules / 11 Skills PASS，普通与 Vue unknown-risk smoke discovery 均 PASS。
+
+V4-08 的 natural Rule Evolution observation 仍是 post-adoption future observation，不因本轮能力模型演进被虚构为已验证。
 
 ## Next Evolution
 
-V4 Foundation 已完成，不再存在等待 Consumer 的 V4 Gate。后续演进从真实项目 / Consumer 使用反馈出发，按 current Method / Architecture / Rule / Skill owner 做增量调整；自然 Rule Evolution、发现准确性、规模增长或 adoption 问题出现时，再以新的 Evidence 驱动独立变更，不回退到中心化手工同步模型。
+先完成 Issue #124 的能力模型与信息架构收敛，并通过独立验证证明 Agent View 与 Human View 都可恢复、Rule Discovery 没有回退为中心索引。其后继续从真实 `agentic-dev` / Consumer Evidence 演进；不因目录整齐、理论完备或历史做法自动新增 Method、Skill 或 Rule。
