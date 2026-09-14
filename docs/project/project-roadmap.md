@@ -38,11 +38,12 @@ PR #127 的 integration commit 是上述 capability semantics 的正式基线。
 本轮 semantic ownership：
 
 - Model Collaboration 的稳定结构、Primary responsibility、Authority-preserving handoff、single-writer、model escalation、Evidence 与 fallback → Architecture；
-- Consumer 第一次建立 / 启用 collaboration local instance 的跨上下文过程 → `method:model-collaboration-adoption`；
+- upstream reusable semantics 的首次接受 / Existing Consumer baseline delta → `method:consumer-adoption` / `method:consumer-upgrade` 或目标 Repository 等价 Authority；
+- 已接受 collaboration semantics 后，建立 / 首次启用 local runtime instance 的跨上下文过程 → `method:model-collaboration-adoption`；
 - `agentic-dev` 当前是否启用、具体 runtime / model / config locator → Project Capability Profile；
 - Consumer-specific conditional policy → Consumer-local Rule；
 - Codex 配置与使用示例 → Human Guide / local instance；
-- 历史实验与 capability 分类推理 → Research / GitHub Evidence。
+- 历史实验与 capability 分类 / Method composition 推理 → Research / GitHub Evidence。
 
 旧 `experiment/codex-multi-model-collaboration` 不直接合并；其中静态配置成功但 child collaboration smoke 失败的结果保持为历史 Evidence，不改写为 runtime PASS。
 
@@ -56,10 +57,11 @@ Issue #129 当前处于 **candidate convergence / verification**。
 
 - reusable Model Collaboration Architecture 建立，且不硬编码具体模型 / provider instance；
 - Model Collaboration Adoption Method 具有独立 work kind、阶段、Gate、fallback 与 completion semantics；
+- specialized Method 只实例化已经接受的 collaboration semantics，不绕过 Consumer Adoption / Upgrade 的 upstream semantic assessment；
 - Project Capability Profile 只记录 local selector / instance，并保持 `agentic-dev` self-instance 未经 adoption 不自动启用；
 - Consumer projection 明确 local config / Rule / runtime / validation / fallback owner；
 - 历史 smoke failure 与 Issue #71 Evidence 保持 claim 边界，不虚构 runtime 成功或高端模型独占价值；
-- 本次 semantic-owner 分类经验进入非规范 Research；
+- 本次 semantic-owner 与 Method-composition 分类经验进入非规范 Research；
 - deterministic capability-model / Rule Discovery regression PASS；
 - independent review 未解决 Blocking / Medium = 0 / 0。
 
