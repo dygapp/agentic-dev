@@ -13,7 +13,7 @@ status: active
 - [`ai-development.md`](ai-development.md) — 普通软件 / 产品变更的 Clarify Intent → Specification → Technical Planning? → Slice & Ready → Execute → Converge 生命周期；
 - [`consumer-adoption.md`](consumer-adoption.md) — Consumer 首次显式采用 `agentic-dev` reusable capability；
 - [`consumer-upgrade.md`](consumer-upgrade.md) — Existing Consumer 显式评估并升级 upstream capability baseline；
-- [`model-collaboration-adoption.md`](model-collaboration-adoption.md) — Repository 显式建立 / 首次启用 Model Collaboration local capability instance。
+- [`model-collaboration-adoption.md`](model-collaboration-adoption.md) — Repository 在相关 collaboration semantics 已进入 local Authority 后，建立 / 首次启用 Model Collaboration runtime instance。
 
 本清单只方便人理解当前 Repository 的 Method corpus，不拥有 `work kind → Method` selector；当前 selector instance 只由 Project Capability Profile 持有。
 
