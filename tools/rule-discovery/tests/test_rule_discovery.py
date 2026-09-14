@@ -80,7 +80,7 @@ class CurrentRepositoryTests(unittest.TestCase):
         )
         self.assertEqual("ok", result["status"])
         self.assertEqual(11, result["skills"])
-        self.assertGreaterEqual(result["rules"], 40)
+        self.assertEqual(27, result["rules"])
         self.assertTrue(result["fixture_markdown_excluded"])
 
     def test_generation_filters_out_data_access_without_signal(self):
@@ -88,8 +88,7 @@ class CurrentRepositoryTests(unittest.TestCase):
             signals(phases=["execute"], activities=["implementation"], artifacts=["code"])
         )
         ids = {item["id"] for item in result["candidates"]}
-        self.assertIn("rule:implementation-minimality", ids)
-        self.assertIn("rule:surgical-change", ids)
+        self.assertIn("rule:implementation-discipline", ids)
         self.assertNotIn("rule:data-access-boundedness", ids)
 
     def test_data_access_signal_adds_data_access_rule(self):
@@ -141,12 +140,12 @@ class CurrentRepositoryTests(unittest.TestCase):
             )
         )
         ids = {item["id"] for item in result["candidates"]}
-        self.assertIn("rule:implementation-minimality", ids)
-        self.assertIn("rule:surgical-change", ids)
-        self.assertIn("rule:vue-build-vs-typecheck", ids)
+        self.assertIn("rule:implementation-discipline", ids)
+        self.assertIn("rule:vue-component-authoring", ids)
+        self.assertIn("rule:vue-typecheck", ids)
         self.assertIn("rule:evidence-type-must-match-claim", ids)
 
-    def test_unknown_risk_does_not_exclude_risk_scoped_rule(self):
+    def test_unknown_risk_keeps_risk_scoped_task_rule(self):
         result = self.discover(
             signals(
                 phases=["execute"],
@@ -157,9 +156,9 @@ class CurrentRepositoryTests(unittest.TestCase):
             )
         )
         ids = {item["id"] for item in result["candidates"]}
-        self.assertIn("rule:vue-props-one-way-input", ids)
+        self.assertIn("rule:vue-template-refs", ids)
 
-    def test_known_empty_risk_excludes_risk_scoped_rule(self):
+    def test_known_empty_risk_excludes_risk_scoped_task_rule(self):
         result = self.discover(
             signals(
                 phases=["execute"],
@@ -170,7 +169,8 @@ class CurrentRepositoryTests(unittest.TestCase):
             )
         )
         ids = {item["id"] for item in result["candidates"]}
-        self.assertNotIn("rule:vue-props-one-way-input", ids)
+        self.assertNotIn("rule:vue-template-refs", ids)
+        self.assertIn("rule:vue-component-authoring", ids)
 
     def test_candidate_output_does_not_leak_metadata(self):
         result = self.discover(

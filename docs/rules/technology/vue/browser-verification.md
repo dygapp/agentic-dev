@@ -1,5 +1,5 @@
 ---
-id: rule:vue-risk-based-browser-visual-verification
+id: rule:vue-browser-verification
 type: rule
 status: active
 scope:

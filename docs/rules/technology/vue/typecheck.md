@@ -1,5 +1,5 @@
 ---
-id: rule:vue-build-vs-typecheck
+id: rule:vue-typecheck
 type: rule
 status: active
 scope:

@@ -62,6 +62,8 @@ scope:
 
 Front Matter 只回答“当前任务是否值得加载这个 Rule”。required checks、正文摘要、decision logic、exception list、推荐方案和 completion condition 正文必须留在 Markdown body。
 
+任务级 Rule 可以在正文中持有同一责任下的多个相关 policy；metadata 不需要为每个内部 policy 建第二份条件表。Rule 文件粒度由 `rule-architecture.md` 负责。
+
 示例中的 `example-phase` 只说明字段形状，不是全局 phase token。真实 `phases` value 必须来自当前 Method canonical owner 定义的稳定 phase identity。
 
 ## 4. Task Signals
@@ -130,7 +132,7 @@ Rule Discovery Architecture **不拥有任何具体 Method 的 phase token 列�
   "scanned": 100,
   "candidate_count": 2,
   "candidates": [
-    {"id": "rule:implementation-minimality", "path": "docs/rules/generation/implementation-minimality.md"}
+    {"id": "rule:implementation-discipline", "path": "docs/rules/generation/implementation-discipline.md"}
   ]
 }
 ```
@@ -142,6 +144,15 @@ Rule Discovery 返回的 `candidates[]` 是 ordinary runtime 的唯一 Rule loca
 工具内部可以扫描全部 Rule Front Matter；Human README 也可以为人展示 inventory，但这些信息不得作为 ordinary Agent runtime 的替代候选输入。
 
 如果 `status=ok` 但候选为空，调用方不得读取或枚举未命中 Rule locator / metadata 来反向校准 signals。只有当前任务 / 仓库事实发生变化时才重新构造 signals；否则保留“当前没有已发现 Rule”或上游事实缺口。
+
+渐进式披露的成本目标是：
+
+```text
+Tool side: O(N metadata scan/filter)
+LLM side: O(k locators + k Rule bodies), k << N
+```
+
+这里 `k` 不应因为把一个任务所需的一组 policy 机械拆成多个 micro-rules 而无意义膨胀。只要仍能保持可靠适用性判断，任务级 Rule 聚合可以同时减少 locator 数、文件读取次数和 LLM 语义确认开销；具体 granularity 决策仍由 `rule-architecture.md` 定义。
 
 ## 7. Fail-closed
 

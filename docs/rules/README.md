@@ -10,66 +10,67 @@ status: active
 
 运行时规则发现只读取各 Rule 自身 YAML Front Matter；本 README 不保存 phases / activities / technologies / artifacts / risks，不维护 Rule→token、keyword、priority 或 activation routing。
 
+## Rule 粒度
+
+当前 Rule 以**具体任务 / 责任级规范集合**为默认自然边界，不再把每条可独立表述的 policy 机械拆成一个文件。同一任务中通常共同发现、共同消费的相关 policy 优先聚合；只有独立 discovery 能减少无关加载或错误激活时才继续拆分。
+
+文件大小与 Progressive Disclosure 的长期标准见 `docs/architecture/rule-architecture.md`。Agent Skills 的 `<5000 tokens / <500 lines` 只作为上限复核参照，不是 Rule 的目标大小或自动拆分阈值。
+
 ## Rule 分类
 
 - `generation/` — 实现生成、变更范围与数据访问等通用生成约束；
 - `operations/` — 外部可变状态、授权、写后验证、并发与证据持久化约束；
 - `repository/` — Repository Authority、Git、表达、概念身份与 Review / Integration 约束；
-- `technology/` — 技术 / 框架特定约束，目前主要为 TypeScript / Vue；
+- `technology/` — 技术 / 框架特定约束，按技术栈继续分层；
 - `verification/` — Evidence、验证、迁移完成声明与人工复核约束。
+
+`technology/` 当前采用：
+
+```text
+technology/
+├── typescript/
+└── vue/
+```
+
+目录只服务人类维护，不参与 runtime matching；未来只有存在真实规则时才新增如 `spring/` 的技术栈目录。
 
 ## 当前 Rule inventory
 
 ### generation
 
 - [`data-access-boundedness.md`](generation/data-access-boundedness.md)
-- [`implementation-minimality.md`](generation/implementation-minimality.md)
-- [`surgical-change.md`](generation/surgical-change.md)
+- [`implementation-discipline.md`](generation/implementation-discipline.md)
 
 ### operations
 
 - [`async-operation-bounded-observation.md`](operations/async-operation-bounded-observation.md)
 - [`cross-repository-authorization.md`](operations/cross-repository-authorization.md)
 - [`external-binary-content-validation.md`](operations/external-binary-content-validation.md)
-- [`external-operation-authorization-boundary.md`](operations/external-operation-authorization-boundary.md)
-- [`minimal-external-change.md`](operations/minimal-external-change.md)
-- [`post-write-state-verification.md`](operations/post-write-state-verification.md)
+- [`safe-external-write.md`](operations/safe-external-write.md)
 - [`shared-resource-concurrency-ownership.md`](operations/shared-resource-concurrency-ownership.md)
 - [`temporary-evidence-to-persistent-input-promotion.md`](operations/temporary-evidence-to-persistent-input-promotion.md)
 
 ### repository
 
 - [`authoritative-artifact-lifecycle-review.md`](repository/authoritative-artifact-lifecycle-review.md)
-- [`exact-machine-identifiers.md`](repository/exact-machine-identifiers.md)
-- [`formal-concept-identity-safety.md`](repository/formal-concept-identity-safety.md)
-- [`git-authority-layer-ordering.md`](repository/git-authority-layer-ordering.md)
-- [`git-breaking-change-marker.md`](repository/git-breaking-change-marker.md)
-- [`git-commit-format-and-language.md`](repository/git-commit-format-and-language.md)
-- [`git-commit-single-purpose.md`](repository/git-commit-single-purpose.md)
+- [`git-commit-discipline.md`](repository/git-commit-discipline.md)
 - [`high-impact-ai-review-required.md`](repository/high-impact-ai-review-required.md)
-- [`human-facing-chinese-default.md`](repository/human-facing-chinese-default.md)
+- [`human-facing-content-integrity.md`](repository/human-facing-content-integrity.md)
 - [`integration-state-closure-review.md`](repository/integration-state-closure-review.md)
 
-### technology
+### technology / TypeScript
 
-- [`avoid-any-as-default.md`](technology/avoid-any-as-default.md)
-- [`official-vue-tsconfig-starting-point.md`](technology/official-vue-tsconfig-starting-point.md)
-- [`preserve-type-inference.md`](technology/preserve-type-inference.md)
-- [`strict-default-for-new-or-authorized-projects.md`](technology/strict-default-for-new-or-authorized-projects.md)
-- [`vue-async-watcher-cleanup.md`](technology/vue-async-watcher-cleanup.md)
-- [`vue-build-vs-typecheck.md`](technology/vue-build-vs-typecheck.md)
-- [`vue-composable-reactivity-return-shape.md`](technology/vue-composable-reactivity-return-shape.md)
-- [`vue-computed-purity.md`](technology/vue-computed-purity.md)
-- [`vue-define-model-default.md`](technology/vue-define-model-default.md)
-- [`vue-props-emits-declaration-mode.md`](technology/vue-props-emits-declaration-mode.md)
-- [`vue-props-one-way-input.md`](technology/vue-props-one-way-input.md)
-- [`vue-reactive-generic-boundary.md`](technology/vue-reactive-generic-boundary.md)
-- [`vue-risk-based-browser-visual-verification.md`](technology/vue-risk-based-browser-visual-verification.md)
-- [`vue-script-setup-default.md`](technology/vue-script-setup-default.md)
-- [`vue-template-ref-dom-timing.md`](technology/vue-template-ref-dom-timing.md)
-- [`vue-template-ref-nullability.md`](technology/vue-template-ref-nullability.md)
-- [`vue-use-template-ref-default.md`](technology/vue-use-template-ref-default.md)
-- [`vue-watcher-dependency-tracking.md`](technology/vue-watcher-dependency-tracking.md)
+- [`type-safety.md`](technology/typescript/type-safety.md)
+
+### technology / Vue
+
+- [`browser-verification.md`](technology/vue/browser-verification.md)
+- [`component-authoring.md`](technology/vue/component-authoring.md)
+- [`project-configuration.md`](technology/vue/project-configuration.md)
+- [`reactivity.md`](technology/vue/reactivity.md)
+- [`template-refs.md`](technology/vue/template-refs.md)
+- [`typecheck.md`](technology/vue/typecheck.md)
+- [`watchers.md`](technology/vue/watchers.md)
 
 ### verification
 
@@ -80,4 +81,4 @@ status: active
 - [`verification-contract-currentness.md`](verification/verification-contract-currentness.md)
 - [`visual-evidence.md`](verification/visual-evidence.md)
 
-当前共 45 条 discoverable Rule。Rule 是否拆分 / 合并以 `docs/architecture/rule-architecture.md` 的独立发现、独立适用和独立演进标准判断，不按文件长度机械处理。
+当前共 27 条 discoverable Rule。该数量不是目标 KPI；增减只按 `docs/architecture/rule-architecture.md` 的任务级语义边界、独立 discovery 价值和总加载成本判断。

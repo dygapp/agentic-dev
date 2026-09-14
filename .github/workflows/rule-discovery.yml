@@ -55,7 +55,7 @@ jobs:
           python3 tools/rule-discovery/rule_discovery.py --repo-root . discover
           --signals-json '{"phases":["execute"],"activities":["implementation"],"technologies":[],"artifacts":["code"],"risks":[]}'
 
-      - name: Smoke unknown-risk conservative discovery
+      - name: Smoke task-level Vue discovery
         shell: bash
         run: |
           python3 tools/rule-discovery/rule_discovery.py --repo-root . discover \
@@ -68,13 +68,11 @@ jobs:
           payload = json.loads(Path('/tmp/v4-generation.json').read_text(encoding='utf-8'))
           ids = {item['id'] for item in payload['candidates']}
           required = {
-              'rule:implementation-minimality',
-              'rule:surgical-change',
-              'rule:vue-props-one-way-input',
-              'rule:vue-define-model-default',
+              'rule:implementation-discipline',
+              'rule:vue-component-authoring',
           }
           missing = sorted(required - ids)
           if missing:
-              raise SystemExit(f'missing expected conservative candidates: {missing}')
+              raise SystemExit(f'missing expected task-level candidates: {missing}')
           print(json.dumps(payload, ensure_ascii=False))
           PY

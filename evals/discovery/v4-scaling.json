@@ -1,18 +1,14 @@
 {
   "eval_name": "v4-rule-discovery-token-scaling",
-  "version": 1,
-  "evaluation_boundary": "Each Fresh Runtime receives the same ordinary-runtime authority, the same task and the same four matching Rule bodies. Only the number of non-matching Rule files changes. Rule Discovery output is the only ordinary-runtime source of Rule locators; enumerating unreturned Rule paths/file names or reading unreturned Rule metadata/body invalidates the run.",
+  "version": 2,
+  "evaluation_boundary": "Each Fresh Runtime receives the same ordinary-runtime authority, the same task and the same two matching task-level Rule bodies. Only the number of non-matching Rule files changes. Rule Discovery output is the only ordinary-runtime source of Rule locators; enumerating unreturned Rule paths/file names or reading unreturned Rule metadata/body invalidates the run.",
   "target_rule_paths": [
-    "docs/rules/generation/implementation-minimality.md",
-    "docs/rules/generation/surgical-change.md",
-    "docs/rules/technology/vue-define-model-default.md",
-    "docs/rules/technology/vue-props-one-way-input.md"
+    "docs/rules/generation/implementation-discipline.md",
+    "docs/rules/technology/vue/component-authoring.md"
   ],
   "expected_candidate_ids": [
-    "rule:implementation-minimality",
-    "rule:surgical-change",
-    "rule:vue-define-model-default",
-    "rule:vue-props-one-way-input"
+    "rule:implementation-discipline",
+    "rule:vue-component-authoring"
   ],
   "common_prompt": "读取 task.md，按当前 ordinary runtime 规则发现并确认本次实现真正适用的 Rule，然后给出精确实现约束。不要修改文件。",
   "common_task": "# Scaling Task\n\n当前 Execution Unit 已 Ready。项目使用 Vue 3.5+ 与 TypeScript。一个 `.vue` 子组件当前直接修改传入的 `modelValue` prop；本次只把该契约改成标准 component `v-model`，不做相邻重构。\n",
@@ -30,14 +26,14 @@
       "rule_count": 500
     }
   ],
-  "expected_behavior": "All three runs derive the same bounded execute/implementation/vue3+typescript/code+vue-sfc signals, Rule Discovery reports scanned=N but returns exactly the same four candidate locators, runtime reads exactly those candidate bodies and no decoys, and the final semantic constraints remain equivalent. LLM-side context/token use must remain approximately invariant with N rather than growing in proportion to 20/100/500 Rule files.",
+  "expected_behavior": "All three runs derive the same bounded execute/implementation/vue3+typescript/code+vue-sfc signals, Rule Discovery reports scanned=N but returns exactly the same two task-level candidate locators, runtime reads exactly those candidate bodies and no decoys, and the final semantic constraints remain equivalent to the former four-fragment behavior. LLM-side context/token use must remain approximately invariant with N rather than growing in proportion to 20/100/500 Rule files.",
   "assertions": [
     "Each isolated workspace contains exactly its declared 20, 100 or 500 valid Rule files, while task, prompt, target Rule files, Tool and Authority are otherwise equivalent.",
     "Trace shows the same bounded canonical task signals are used across all three runs; no synonym cloud, target Rule IDs or scale-specific signal changes are introduced.",
-    "Discovery reports scanned equal to the declared N and returns exactly the same four expected candidate IDs in all three runs.",
-    "Runtime obtains Rule locators only from discovery output and reads only the four returned candidate bodies; no decoy Rule locator, metadata or body is enumerated or read.",
-    "The final semantic conclusion is equivalent across 20/100/500 and applies minimality, surgical scope, one-way prop input and standard v-model/defineModel semantics.",
+    "Discovery reports scanned equal to the declared N and returns exactly the same two expected candidate IDs in all three runs.",
+    "Runtime obtains Rule locators only from discovery output and reads only the two returned candidate bodies; no decoy Rule locator, metadata or body is enumerated or read.",
+    "The final semantic conclusion is equivalent across 20/100/500 and applies minimum-complexity / surgical-scope plus one-way prop input and standard v-model / defineModel semantics.",
     "Fresh Runtime input-token / trace-context growth is not proportional to total Rule count N; any difference is bounded by ordinary runtime variation and the constant-size scanned-count value rather than unreturned Rule metadata/locators/bodies.",
-    "The observed scaling remains consistent with Tool side O(N metadata scan/filter) and LLM side O(k locators + k bodies), with k=4 and k << N."
+    "The observed scaling remains consistent with Tool side O(N metadata scan/filter) and LLM side O(k locators + k bodies), with k=2 and k << N."
   ]
 }

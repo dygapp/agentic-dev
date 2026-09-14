@@ -21,8 +21,8 @@ class V4ScalingFixtureTests(unittest.TestCase):
     def test_scaling_levels_are_exactly_20_100_500(self):
         document = self.document()
         self.assertEqual([20, 100, 500], [case["rule_count"] for case in document["evals"]])
-        self.assertEqual(4, len(document["target_rule_paths"]))
-        self.assertEqual(4, len(document["expected_candidate_ids"]))
+        self.assertEqual(2, len(document["target_rule_paths"]))
+        self.assertEqual(2, len(document["expected_candidate_ids"]))
 
     def test_each_scale_has_exact_rule_count_and_constant_candidates(self):
         document = self.document()
@@ -36,7 +36,7 @@ class V4ScalingFixtureTests(unittest.TestCase):
 
                 preflight = runner.preflight_discovery(workspace)
                 self.assertEqual(case["rule_count"], preflight["scanned"])
-                self.assertEqual(4, preflight["candidate_count"])
+                self.assertEqual(2, preflight["candidate_count"])
                 self.assertEqual(expected_ids, sorted(preflight["candidate_ids"]))
 
     def test_scaling_runtime_does_not_receive_grader_corpus(self):
