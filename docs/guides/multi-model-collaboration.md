@@ -59,12 +59,20 @@ canonical Rule / Requirement
 
 低成本模型可以帮助“找什么、读什么、整理什么”，但后续真正依赖规范语义时仍应能读取 canonical owner。
 
-## 4. Consumer adoption
+## 4. Consumer adoption 与 runtime activation
 
-一个 Consumer 第一次建立多模型协作能力时使用 `method:model-collaboration-adoption`：
+这里需要区分两件事：
+
+1. **接受 upstream capability semantics**：首次整体采用由 `method:consumer-adoption` 负责；Existing Consumer 的新 baseline delta 由 `method:consumer-upgrade` 负责；
+2. **把已经接受的 Model Collaboration semantics 实例化为本项目 runtime capability**：由 `method:model-collaboration-adoption` 负责。
+
+因此 Existing Consumer 不能因为想启用多模型协作，就绕过 baseline upgrade 直接从最新 upstream 复制 Architecture / Method / Rule。先让 reusable semantics 进入 Consumer-local canonical owner，再进入专用 adoption Method 建立配置、local policy 与验证。
+
+`method:model-collaboration-adoption` 的生命周期为：
 
 ```text
 Restore Consumer Authority
+→ Confirm Accepted Collaboration Semantics
 → Detect Runtime Capabilities
 → Select Collaboration Strategy
 → Local Capability Projection
@@ -74,9 +82,7 @@ Restore Consumer Authority
 → Close Adoption
 ```
 
-它与 `method:consumer-adoption` 的区别：Consumer 可以早已采用 `agentic-dev`，后来再独立启用多模型协作。
-
-它与 `method:consumer-upgrade` 的区别：后者处理新的 upstream baseline semantic delta；前者处理 Repository 首次建立 / 启用 collaboration local instance。
+如果 Consumer 在同一次整体升级中刚刚接受这项新 capability，可以在 Consumer Adoption / Upgrade 完成 semantic acceptance 后连续进入本 Method；两段过程可以相邻，但 Gate 与 owner 不能合并成一份隐式流程。
 
 ## 5. Consumer 中应该固化什么
 
@@ -94,6 +100,8 @@ Restore Consumer Authority
 ```
 
 不要把 upstream Project Profile 复制到 Consumer；不要因为示例使用某个模型就把该模型写成通用规范。
+
+这里的 platform config、tier mapping 与 local Rules 是 **runtime instance projection**，不是第二次决定 upstream Architecture 是否被采用。若 projection 迫使你改变 reusable semantics，应返回 Consumer Adoption / Upgrade 或目标仓库等价 Authority。
 
 ## 6. Codex 参考映射
 
@@ -176,16 +184,18 @@ Issue #71 的 Consumer Evidence 已表明，高端模型并不天然拥有只有
 
 ## 10. 最小采用检查表
 
-采用前：
+进入专用 adoption 前：
 
 - Consumer Authority 已恢复；
-- current runtime capabilities 已探测；
-- strategy 与 capability tiers 已选定；
-- local config / Rules / profile owners 已区分；
-- single-agent fallback 已设计。
+- Model Collaboration reusable semantics 已经被 Consumer 正式接受；
+- 未决 upstream semantic delta 已经通过 Consumer Adoption / Upgrade 处理。
 
 启用前：
 
+- current runtime capabilities 已探测；
+- strategy 与 capability tiers 已选定；
+- local config / Rules / profile owners 已区分；
+- single-agent fallback 已设计；
 - static config PASS；
 - child delegation smoke PASS；
 - Authority-preserving handoff PASS；
