@@ -41,7 +41,7 @@ Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任�
 4. 若当前任务需要理解 `agentic-dev` 项目使命、目标或核心项目需求，再读取 `docs/project/project-charter.md`；
 5. 读取 `docs/architecture/method-architecture.md` 的通用 **Method Selection Contract**，再由 `project-capability-profile.md` 的 Repository-local selector instance 选择当前 Method；若无映射匹配，不强行套用；
 6. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；Method-specific phase token 只能来自当前 Method canonical owner；
-7. 使用当前 Project Capability Profile 声明的 Rule Discovery instance 做候选初筛，只读取返回的 Rule 正文；
+7. 按当前 Project Capability Profile 声明的 Rule Discovery instance 执行候选初筛，只读取返回的 Rule 正文；
 8. 需要独立执行能力时，通过当前 Repository 声明的 Skill discovery 入口选择并读取相应 `SKILL.md`；
 9. 只加载当前责任直接需要的其他 Architecture；Guide / Research / Project Evolution 仅在任务明确需要人类说明、研究证据或历史原因时读取。
 
@@ -57,13 +57,7 @@ Bootstrap 不复制 selector mapping、Method stages 或 Gate。如果没有 loc
 
 Rule metadata 与 Rule 正文必须同源、同文件维护。不得维护 Reviewed Discovery Map、Activation Manifest、Runtime Catalog、rule-index 或其他需要与规则正文同步的中心路由表。
 
-当前 Repository 的 Rule root、Tool locator 与 Human inventory 由 `docs/project/project-capability-profile.md` 声明。通用发现 contract 由 `docs/architecture/rule-discovery-architecture.md` 持有。
-
-当前 ordinary runtime CLI 入口：
-
-```bash
-python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-json '<task-signals-json>'
-```
+当前 Repository 的 Rule root、Tool locator、ordinary invocation 与 Human inventory 由 `docs/project/project-capability-profile.md` 声明；通用信号、匹配、渐进披露与 fail-closed contract 由 `docs/architecture/rule-discovery-architecture.md` 持有。Bootstrap 不复制第二份 Tool path 或 CLI invocation。
 
 `task-signals-json` 必须显式包含 `phases`、`activities`、`technologies`、`artifacts`、`risks` 五个维度：
 
@@ -117,7 +111,7 @@ Rule 是 Consumer-local policy specialization 的主要承载面之一；通用 
 
 工具可写不等于已授权；merge、release、deploy、破坏性远程操作仍服从仓库策略和人工 Authority。
 
-高影响仓库变更按 `rule:high-impact-ai-review-required` 判断是否必须执行 `review-change`。Review 通过不等于人工批准或集成授权。
+高影响仓库变更按当前 Rule Discovery 发现的 review requirement 判断是否必须执行 `review-change`。Review 通过不等于人工批准或集成授权。
 
 ## Human View / Research
 
@@ -138,4 +132,4 @@ Open PR / Issue、branch、Actions、review 与 commit 等 live state 始终重�
 
 ## Git 与表达
 
-Git commit、中文人类表达、精确机器标识符和正式概念身份等运行约束由 `docs/rules/repository/**` 按 task signals 发现；本文件不复制第二份 Rule 正文。
+Git commit、中文人类表达、精确机器标识符和正式概念身份等运行约束由当前 Rule Discovery 按 task signals 发现；本文件不复制 Rule path inventory 或第二份 Rule 正文。

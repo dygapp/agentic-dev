@@ -38,6 +38,14 @@ status: active
 - ordinary runtime 输出：少量 `{id, path}` candidate locator；
 - Rule human inventory：`docs/rules/README.md`，仅 Human View，不参与 runtime routing。
 
+当前普通运行调用：
+
+```bash
+python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-json '<task-signals-json>'
+```
+
+调用时的信号 schema、三态语义、bounded-token、matching、fail-closed 与 locator-only contract 由 Rule Discovery Architecture 持有；本 profile 只拥有当前 Tool / Rule root / invocation instance。
+
 `phases` signal 的合法 Method-specific identity 由当前选定 Method 自己定义；本 profile 不复制 phase token 列表。
 
 本文件不维护 Rule id inventory、scope metadata、候选集或 Rule → signal 映射。
