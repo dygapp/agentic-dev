@@ -27,6 +27,7 @@ V1～V3 的项目过程、实验流水和阶段状态不因曾经出现在 Resea
 - `spec-kit-analysis.md`
 - `superpowers-analysis.md`
 - `andrej-karpathy-skills-analysis.md`
+- `model-collaboration-capability-classification.md` — 从历史多模型实验与 Consumer Evidence 中总结“capability semantics / adoption process / local instance / Rule policy”分层与 semantic-owner 分类经验。
 
 ### Engineering / Technology / Platform
 

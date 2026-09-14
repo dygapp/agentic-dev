@@ -22,7 +22,8 @@ status: active
 
 - 普通软件 / 产品变更从需求澄清到实现收敛 → `docs/methods/ai-development.md`（`method:ai-development`）；
 - Consumer 首次显式采用 `agentic-dev` capability → `docs/methods/consumer-adoption.md`（`method:consumer-adoption`）；
-- Existing Consumer 显式评估 / 升级 upstream baseline → `docs/methods/consumer-upgrade.md`（`method:consumer-upgrade`）。
+- Existing Consumer 显式评估 / 升级 upstream baseline → `docs/methods/consumer-upgrade.md`（`method:consumer-upgrade`）；
+- Repository 已经接受 Model Collaboration semantics，需要建立 / 首次启用 local runtime instance → `docs/methods/model-collaboration-adoption.md`（`method:model-collaboration-adoption`）。
 
 如果当前工作不属于任何映射，不得为了获得流程而强行套用最接近的 Method；继续按 Repository Authority 与 direct responsibility 工作，并在真实 Evidence 支持时评估新增 Method。
 
@@ -59,7 +60,22 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 
 本 profile 不复制当前 Skill 名单或数量；这些可以由当前 `SKILL.md` corpus 与 Human inventory 机械验证。
 
-## 5. Architecture / Project Entry
+## 5. Model Collaboration Instance
+
+`agentic-dev` 当前提供 reusable `architecture:model-collaboration` 与 `method:model-collaboration-adoption`，但本 Repository 的 ordinary runtime **不因能力存在而默认启用多模型协作**。
+
+当前 local instance：
+
+- status：`disabled`；
+- persistent platform config：none；
+- concrete model tier mapping：none；
+- single-agent fallback：当前 ordinary runtime 本身。
+
+历史 `experiment/codex-multi-model-collaboration` 分支只作为 Research / Evidence 来源，不是本 Repository 当前 `.codex/` instance，也不通过 Project Profile 继承其模型名、并发数或 agent TOML。
+
+若未来 `agentic-dev` 自身决定启用 Model Collaboration，必须先按当前 Authority 接受相关 reusable semantics，再显式进入 `method:model-collaboration-adoption`，探测当前 runtime、建立 local config / validation Evidence，并更新本 section；不能因为 Guide 示例或历史实验存在就推断 enabled。
+
+## 6. Architecture / Project Entry
 
 Agent runtime 的稳定入口：
 
@@ -75,7 +91,7 @@ Project / Capability 边界：`docs/architecture/project-knowledge-architecture.
 
 顶层 capability model：`docs/architecture/engineering-capability-architecture.md`。
 
-## 6. Human View Instance
+## 7. Human View Instance
 
 Human entry：
 
@@ -89,13 +105,13 @@ Human entry：
 
 这些 Human View 可以解释 current instance，但不拥有 runtime selector 或 normative body。
 
-## 7. Current Project State Entry
+## 8. Current Project State Entry
 
 当前项目阶段、当前 evolution 与下一候选由 `docs/project/project-roadmap.md` 持有稳定摘要；精确 GitHub branch / Issue / PR / Actions 状态必须实时读取。
 
 稳定历史里程碑由 `docs/project/project-evolution.md` 摘要；完整实施 Evidence 留在 Git / Issue / PR / Actions。
 
-## 8. Consumer Projection Boundary
+## 9. Consumer Projection Boundary
 
 Consumer 不复制本 profile 作为自己的 runtime Authority。
 
@@ -105,6 +121,7 @@ Consumer 不复制本 profile 作为自己的 runtime Authority。
 2. 评估 Method / Architecture / Skill / Rule / Tool contract；
 3. adopt / adapt / reject；
 4. 在 Consumer 自己的 Project Authority 中建立 local Method selector、Rule Discovery locator、Skill entry 与 current baseline；
-5. 验证 ordinary runtime `upstream access = 0`。
+5. 如果接受 Model Collaboration semantics 并决定启用，则另行执行 `method:model-collaboration-adoption`，建立 Consumer-local runtime / config / tier mapping / validation / fallback instance；
+6. 验证 ordinary runtime `upstream access = 0`。
 
 因此本文件是 `agentic-dev` 的 capability **instance profile**，不是跨 Repository 的 capability package。
