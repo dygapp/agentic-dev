@@ -8,6 +8,8 @@ This tool deliberately supports only the frozen agentic-dev Front Matter subset:
 
 The subset is valid YAML, but unsupported YAML constructs fail closed instead of being
 silently interpreted. Rule normative bodies are never read for candidate matching.
+Reserved README.md files under Rule roots are human navigation resources: they are
+excluded from Rule discovery but remain subject to repository Markdown lint.
 """
 
 from __future__ import annotations
@@ -280,6 +282,10 @@ def _walk_rule_files(root: Path) -> Iterable[Path]:
             files.sort()
             current_path = Path(current)
             for filename in files:
+                # README.md is the only reserved human-navigation Markdown allowed
+                # inside Rule roots. It remains subject to repository lint below.
+                if filename == "README.md":
+                    continue
                 if filename.endswith(".md"):
                     found.append(current_path / filename)
     except OSError as exc:
