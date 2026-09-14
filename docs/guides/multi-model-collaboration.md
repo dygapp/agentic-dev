@@ -103,37 +103,23 @@ Restore Consumer Authority
 
 这里的 platform config、tier mapping 与 local Rules 是 **runtime instance projection**，不是第二次决定 upstream Architecture 是否被采用。若 projection 迫使你改变 reusable semantics，应返回 Consumer Adoption / Upgrade 或目标仓库等价 Authority。
 
-## 6. Codex 参考映射
+## 6. Codex 参考实现
 
-历史 `experiment/codex-multi-model-collaboration` 曾使用：
+历史 `experiment/codex-multi-model-collaboration` 曾使用 read-only explorer、single implementation worker、independent quality reviewer、high-impact critical reviewer 与一个保存 Goal / Authority / Decision / Final Verification 的 Primary Agent。这个职责拆分仍可作为 Codex 参考，但旧实验中的具体模型、reasoning effort、并发数和 `.codex/` 文件不是当前规范。
 
-- read-only fast explorer；
-- single implementation worker；
-- independent quality reviewer；
-- high-impact critical reviewer；
-- primary agent 保存目标、Authority、决策与最终验证责任。
+当前完整 Codex 参考配置、角色 profile 与 runtime smoke 结构见：
 
-这个角色拆分仍可作为 Codex 的参考，但旧实验中的具体模型名称、reasoning effort 与并发数只属于当时实验实例。
+[`codex-model-collaboration-reference.md`](codex-model-collaboration-reference.md)
 
-新的 Consumer 应先探测当前 Codex 实际能力，再映射：
+该 Reference 是带核验日期的 Human View：它可以展示 `.codex/config.toml`、`.codex/agents/*.toml` 的安全起点，但 Consumer 仍必须在 `method:model-collaboration-adoption` 中重新探测当前 Codex schema、模型可用性、sandbox、thread、observability 与 effective config。
+
+新的 Consumer 应把抽象能力层映射到当前真实可用模型，而不是复制历史型号：
 
 ```text
-low-cost capability      → 当前可用模型 / effort
-capable reasoning        → 当前可用模型 / effort
-high-capability reasoning→ 当前可用模型 / effort
+low-cost capability       → 当前可用模型 / effort
+capable reasoning         → 当前可用模型 / effort
+high-capability reasoning → 当前可用模型 / effort
 ```
-
-### 示例配置形态
-
-下面只展示形态，不是 normative config：
-
-```toml
-[agents]
-enabled = true
-# 具体 thread / concurrency / default model 按当前 runtime 与 Consumer policy 设置
-```
-
-子 Agent profile 应分别声明自己的只读 / 写入权限和有界职责。写入角色应保持 single-writer；explorer / reviewer 默认只读。
 
 ## 7. Runtime smoke 必须验证真实委派
 
@@ -161,6 +147,11 @@ enabled = true
 - 最终质量 / residual findings 是否不低于单 Agent baseline。
 
 一个合理的成功案例可以是“总 token 略升，但高能力模型输入大幅下降、质量不降、返工减少”。
+
+应区分两个 claim：
+
+- functional enablement：证明选定协作链路安全可用并可 fallback；
+- efficiency / preferred-default：只有可比单 Agent baseline 支持时才能声称更省、更快或更适合作为默认策略。
 
 ## 9. Escalation
 
