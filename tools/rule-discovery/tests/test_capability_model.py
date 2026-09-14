@@ -77,6 +77,22 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertIn("Project 不传播，Capability 传播", consumer_arch)
         self.assertIn("不是可传播给 Consumer 的 capability", profile)
 
+    def test_runtime_instance_locator_has_single_project_owner(self):
+        profile = (REPO_ROOT / "docs/project/project-capability-profile.md").read_text(
+            encoding="utf-8"
+        )
+        agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        discovery_arch = (
+            REPO_ROOT / "docs/architecture/rule-discovery-architecture.md"
+        ).read_text(encoding="utf-8")
+        tool_locator = "tools/rule-discovery/rule_discovery.py"
+
+        self.assertIn(tool_locator, profile)
+        self.assertIn("--signals-json '<task-signals-json>'", profile)
+        self.assertNotIn(tool_locator, agents)
+        self.assertNotIn(tool_locator, discovery_arch)
+        self.assertIn("Bootstrap 不复制第二份 Tool path 或 CLI invocation", agents)
+
     def test_skill_architecture_does_not_own_current_inventory(self):
         skill_arch = (REPO_ROOT / "docs/architecture/skill-architecture.md").read_text(
             encoding="utf-8"
