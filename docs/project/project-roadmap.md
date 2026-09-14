@@ -23,35 +23,47 @@ status: active
 - Consumer adoption / upgrade 明确只传播 / 适配 capability，不复制 upstream Project state；
 - deterministic ownership contracts，防止 runtime locator、selector、inventory 与 phase identity 重新漂回错误 owner。
 
-PR #127 的 integration commit 是上述 capability semantics 的正式基线。其后的 post-integration Project state closure 只更新 Project current-state / evolution owner，不改变该 capability baseline。
+PR #127 的 integration commit 是上述 capability semantics 的正式基线。其后的 post-integration Project state closure 只更新 Project current-state / evolution owner，不改变该 capability baseline。当前 `master` 后续已包含 Rule granularity consolidation；精确 current Head 与 live integration state 始终从 GitHub 读取。
 
 更早里程碑与原因见 `docs/project/project-evolution.md`；具体 capability contract 见其真实 Architecture / Method / Skill / Rule owner。
 
 ## Current Evolution
 
-当前没有已启动的新正式演进单元。
+当前正式演进单元为：
 
-Issue #126 — **Project Knowledge Model：收敛 Project / Architecture 边界与项目知识层** 已完成实现、验证、Integration 与 post-integration closure；其完整实施 Evidence 保留在 Issue #126、PR #127、Git 与 Actions。
+> **Issue #129 — Model Collaboration Capability & Adoption v1**
 
-下一项工作必须从当前 Repository Authority、Roadmap candidates 与真实 Evidence 重新判断，不因 Issue 编号、历史路线或候选顺序自动启动。
+目标是把历史 Codex 多模型实验与 Issue #71 Consumer Evidence 收敛为可选、可投射到 Consumer 的正式 capability，同时保持 reusable semantics 与 Repository-local runtime instance 分离。
+
+本轮 semantic ownership：
+
+- Model Collaboration 的稳定结构、Primary responsibility、Authority-preserving handoff、single-writer、model escalation、Evidence 与 fallback → Architecture；
+- Consumer 第一次建立 / 启用 collaboration local instance 的跨上下文过程 → `method:model-collaboration-adoption`；
+- `agentic-dev` 当前是否启用、具体 runtime / model / config locator → Project Capability Profile；
+- Consumer-specific conditional policy → Consumer-local Rule；
+- Codex 配置与使用示例 → Human Guide / local instance；
+- 历史实验与 capability 分类推理 → Research / GitHub Evidence。
+
+旧 `experiment/codex-multi-model-collaboration` 不直接合并；其中静态配置成功但 child collaboration smoke 失败的结果保持为历史 Evidence，不改写为 runtime PASS。
 
 ## Current Gate
 
-**Project Knowledge Model — Integrated / Closed。**
+Issue #129 当前处于 **candidate convergence / verification**。
 
-已完成：
+当前候选分支：`feature/model-collaboration-capability-v1`；当前 PR：#132。精确 Head、Actions、Review 与 mergeability 必须从 GitHub 当前事实读取。
 
-- Project / Architecture boundary 进入长期 Architecture；
-- Project Charter / Capability Profile / Evolution / README 建立；
-- Roadmap 瘦身；
-- Method selector instance、Skill inventory、Method-specific phase identity、Rule Discovery runtime locator 回到真实 owner；
-- Consumer adoption / upgrade 明确不传播 upstream Project state；
-- deterministic boundary tests / lint / Rule Discovery regression PASS；
-- high-impact review / convergence Blocking=0、Medium=0；
-- PR #127 以 exact Head `5a2e59f5ae248fb2cf288c6521d8a9903ae8b68b` squash merge；
-- actual integration commit：`10397cf00914fcfd6d71fd2ad6be6b89618dde8a`。
+本演进完成门禁：
 
-本 Gate 不授予 release、deploy、destructive remote cleanup 或下一演进的自动 Execute Authority。
+- reusable Model Collaboration Architecture 建立，且不硬编码具体模型 / provider instance；
+- Model Collaboration Adoption Method 具有独立 work kind、阶段、Gate、fallback 与 completion semantics；
+- Project Capability Profile 只记录 local selector / instance，并保持 `agentic-dev` self-instance 未经 adoption 不自动启用；
+- Consumer projection 明确 local config / Rule / runtime / validation / fallback owner；
+- 历史 smoke failure 与 Issue #71 Evidence 保持 claim 边界，不虚构 runtime 成功或高端模型独占价值；
+- 本次 semantic-owner 分类经验进入非规范 Research；
+- deterministic capability-model / Rule Discovery regression PASS；
+- independent review 未解决 Blocking / Medium = 0 / 0。
+
+达到以上门禁后只进入 `Ready for Review / Integration Decision`，不自动 merge。真实 multi-agent child-thread smoke 属于每个 Repository 执行 `method:model-collaboration-adoption` 时的 runtime Gate；本次 capability definition 不以无法从当前执行环境观察的 runtime 结果冒充 PASS。
 
 ## Next Candidates
 
@@ -66,9 +78,10 @@ Issue #126 — **Project Knowledge Model：收敛 Project / Architecture 边界�
 ## Known Observations
 
 - V4-08 的 natural Rule Evolution observation 仍属于 post-adoption future observation，不虚构为已验证；
-- Project Capability Profile 是 Repository-local instance owner，需要在后续真实 self-use / Consumer upgrade 中继续观察其是否保持薄、稳定且不会演变成 runtime catalog；
+- Project Capability Profile 是 Repository-local instance owner，需要继续观察其是否保持薄、稳定且不会演变成 runtime catalog；
 - Rule / Skill Human inventory 继续由 deterministic tests 与真实 corpus 保持一致，不应迁入 Project Profile；
-- Project Knowledge Model 的首次集成已经证明 ownership 可静态约束，但 Consumer 对这一新 Project boundary 的长期采用效果仍应由后续真实 adoption / upgrade Evidence 判断，而不是由本次 self-integration 直接泛化。
+- Model Collaboration 的成本价值不能从“使用多个模型”本身推断；后续 Consumer adoption 应分别观察 high-capability token、Primary context、total token、wall time、rework 与最终质量；
+- 当前 capability definition 不能证明任一具体 Agent 平台的 multi-agent runtime 已通过，真实支持度必须在 adoption 时重新探测。
 
 ## State Ownership
 
