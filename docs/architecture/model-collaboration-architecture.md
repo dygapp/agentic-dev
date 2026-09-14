@@ -121,7 +121,7 @@ deterministic first
 
 同理，协作线程是否真实建立必须由可观察 thread / child run / event / result 证据支持；主 Agent 声称“已委派”不能单独证明委派发生。
 
-## 9. 成本与效率目标
+## 9. 成本、启用与效率 Claim
 
 Model Collaboration 不承诺减少总 token。多 Agent 工作可能增加总输入与协调开销。
 
@@ -134,7 +134,12 @@ Model Collaboration 不承诺减少总 token。多 Agent 工作可能增加总�
 - rework / correction rounds；
 - completion quality 与 residual findings。
 
-候选采用至少要求质量不低于单 Agent 基线，并有 Evidence 表明在高能力模型预算、主上下文、返工或时间等至少一个实际目标上具有价值。不能只根据“用了更便宜模型”推断收益。
+必须区分两个 claim level：
+
+1. **functional enablement claim**：只证明选定 collaboration strategy 在当前 runtime 中真实可用、Authority / writer / Evidence 边界成立、失败可回退。达到该 claim 可以把通过验证的 strategy 标记为 enabled / conditional，但不能声称它比单 Agent 更省 token、更快或质量更高；
+2. **efficiency / preferred-default claim**：若要声称 collaboration 是成本优化或应成为默认优选策略，必须与可比较的单 Agent baseline 对照，证明质量不低于 baseline，并且在 high-capability budget、Primary context、rework、wall time 等至少一个目标上存在当前 Evidence 支持的实际改善。
+
+因此“链路能工作”与“值得默认使用”不是同一个结论。不能只根据“用了更便宜模型”或“并发更多”推断效率收益。
 
 ## 10. Consumer projection
 
