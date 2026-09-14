@@ -19,7 +19,9 @@ Method 是针对一类复杂工作的规范过程模型，不等同于某个单�
 - 整体完成条件；
 - 需要组合的 Architecture、Skill、Rule responsibility。
 
-Method 可以跨多个 Fresh Context、多个 Artifact、多个 Skill 与人工 Gate。它不要求每个阶段都存在 Skill。
+Method stage 首先表示**工作状态与当前责任**，不是必须创建一份同名 Markdown 的要求。只有当阶段信息具有跨上下文协调、权威、追溯或长期知识价值时才持久化；临时推理、探索和施工步骤可以随当前上下文结束。
+
+Method 可以跨多个 Fresh Context、多个 Artifact、多个 Skill 与人工 Gate。它不要求每个阶段都存在 Skill，也不要求每个阶段都产生独立长期文档。
 
 ## 2. Method 与其他能力
 

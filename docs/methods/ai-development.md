@@ -148,8 +148,8 @@ Rule Discovery 的规范架构见 `docs/architecture/rule-discovery-architecture
 典型长期 owner 包括：
 
 - Repository / Domain Authority；
-- Method / Principle；
-- Architecture / ADR；
+- Method / Architecture；
+- ADR；
 - Specification；
 - 必要 Technical Plan；
 - Rule；

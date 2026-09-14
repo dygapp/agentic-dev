@@ -40,6 +40,7 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertTrue((REPO_ROOT / "docs/rules/README.md").is_file())
         self.assertTrue((REPO_ROOT / "docs/guides/README.md").is_file())
         self.assertTrue((REPO_ROOT / "docs/architecture/README.md").is_file())
+        self.assertTrue((REPO_ROOT / "skills/README.md").is_file())
 
         methods_readme = (REPO_ROOT / "docs/methods/README.md").read_text(encoding="utf-8")
         self.assertIn("Human View", methods_readme)
@@ -57,6 +58,12 @@ class CapabilityModelContractTests(unittest.TestCase):
             if not target.startswith("../") and not target.startswith("docs/")
         }
         self.assertEqual(actual, linked)
+
+    def test_skill_human_inventory_matches_skill_corpus(self):
+        actual = {path.parent.name for path in (REPO_ROOT / "skills").glob("*/SKILL.md")}
+        readme = (REPO_ROOT / "skills/README.md").read_text(encoding="utf-8")
+        listed = set(re.findall(r"^- `([a-z0-9]+(?:-[a-z0-9]+)*)`$", readme, flags=re.MULTILINE))
+        self.assertEqual(actual, listed)
 
 
 if __name__ == "__main__":
