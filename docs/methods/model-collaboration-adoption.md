@@ -165,26 +165,30 @@ ordinary runtime 必须能够只依赖 Consumer Repository 恢复这项能力；
 7. **fallback**：禁用 collaboration 后普通单 Agent 路径仍可运行；
 8. **upstream decoupling**：Consumer ordinary runtime 不读取 upstream current state。
 
-如果要声称效率收益，应与相同目标和可比较上下文的单 Agent baseline 对照。质量不得低于 baseline；至少明确比较 high-capability token / context、total token、wall time、rework 与 residual findings 中实际可观察的指标。
+如果要声称 efficiency / preferred-default value，应与相同目标和可比较上下文的单 Agent baseline 对照。质量不得低于 baseline；至少明确比较 high-capability token / context、total token、wall time、rework 与 residual findings 中实际可观察的指标。
 
 一次 smoke 只能证明链路可用，不能证明长期成本收益。
 
-退出条件：启用所依赖的 runtime claims 有当前 Evidence；失败或不可验证项已经触发 fallback 或显式限制。
+退出条件：准备启用的每个 strategy / role path 所依赖的 runtime claims 都有当前 Evidence；失败或不可验证路径已经被排除、降级或进入 fallback。
 
 ## 10. Enable / Fallback
 
-只有 Validate Collaboration 通过后，才能把 Consumer local instance 标记为 enabled / conditional。
+启用状态必须精确对应已经验证的范围：
 
-启用必须保持：
+- `enabled`：所选 strategy 的所有必需 runtime / Authority / writer / Evidence 检查均通过；
+- `conditional`：只启用一个明确缩减且其自身必需检查全部通过的子策略；未验证 / 失败的 role path 必须保持 disabled，并记录触发条件与 fallback；
+- `disabled`：不存在可安全启用的 child-based strategy，继续使用单 Agent ordinary runtime。
+
+如果 delegation smoke 失败或无法确认 child thread 建立，则任何依赖 child Agent 的 path 都不能以 `conditional` 名义继续使用；只能禁用该 path 或退回已经独立验证的更小策略。
+
+无论状态如何，都必须保持：
 
 - single-agent fallback 可执行；
 - collaboration failure 不改变产品目标或 Method Gate；
 - 子 Agent 不自动获得 merge / release / deploy / destructive external-operation 权限；
 - high-capability escalation 仍由 Evidence / local policy 触发，不成为默认路径。
 
-如果关键 smoke 失败、线程不可观察或 Authority / writer ownership 无法保证，保持 disabled 或 conditional，并继续使用单 Agent ordinary runtime。不得为了完成 adoption 而把失败证据解释成成功。
-
-退出条件：启用状态与 fallback 状态准确反映真实 runtime。
+退出条件：local instance status 与真实验证范围一致，没有把部分 / 失败 Evidence 扩张成完整 collaboration claim。
 
 ## 11. Close Adoption
 
