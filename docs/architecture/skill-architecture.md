@@ -8,7 +8,7 @@ status: active
 
 ## 1. Skill 定义
 
-Skill 是拥有稳定独立执行闭环的能力：
+Skill 是在当前责任已经明确后，拥有稳定独立执行闭环的有界能力：
 
 ```text
 Trigger / Purpose
@@ -19,11 +19,32 @@ Trigger / Purpose
 → Escalation
 ```
 
-Skill 实现既定 Method，不创建隐藏生命周期，也不通过自身存在取得仓库写入、集成、发布或部署授权。
+Skill 实现或支持既定 Method responsibility，也可以被其他明确任务直接调用；它不创建隐藏生命周期，不拥有跨多个 Method stage 的项目过程，也不通过自身存在取得仓库写入、集成、发布或部署授权。
 
-## 2. 当前分类
+## 2. Skill 与 Method
 
-### 核心 Method Skills（8）
+Method 拥有一类复杂工作的过程生命周期；Skill 拥有其中某个明确责任下可复用的执行能力。
+
+判断一个候选是否应成为 Skill，不使用“它有若干步骤”作为充分条件。只有当候选存在稳定 Trigger、Inputs、可重复 Procedure、Outputs、Exit / Escalation，并能作为独立能力被调用和评估时，才 Skill 化。
+
+Method stage 不要求一一对应 Skill。某些阶段可以由 Agent 在当前 Authority 与 Rules 下直接完成；某个 Skill 也可以在多个 Method 中复用。
+
+## 3. Skill 与 Rule
+
+Skill 与 Rule 是正交关系，而不是固定 `Skill → Rule` 流水线。
+
+- Skill 回答“已经决定要做这件事，怎样稳定地完成”；
+- Rule 回答“当前条件成立时，必须 / 不得 / 默认怎样做，或完成前必须证明什么”。
+
+Rule 可以约束 Skill execution，也可以独立约束 Method stage、direct Agent work、repository operation、verification 或 completion claim。
+
+容易因 Consumer / Repository Authority 不同而变化的 policy 不应写死进通用 Skill。例如通用 Git / external-operation procedure 可以稳定复用，而不同仓库的 commit type / scope、远程操作授权或表达规范应由目标仓库 Rule / Authority 持有。
+
+具体 Rule 语义边界见 `docs/architecture/rule-architecture.md`。
+
+## 4. 当前分类
+
+### 核心 AI Development supporting Skills（8）
 
 - `clarify-intent`
 - `specify`
@@ -34,6 +55,8 @@ Skill 实现既定 Method，不创建隐藏生命周期，也不通过自身存�
 - `systematic-debug`
 - `converge`
 
+这些 Skill 当前服务 AI Development Method，但其能力身份不等于 Method stage 本身。
+
 ### Reusable supporting Skills（2）
 
 - `external-operation`：对外部可变状态执行读取、最小操作、重新读取验证和有界升级；
@@ -43,22 +66,9 @@ Skill 实现既定 Method，不创建隐藏生命周期，也不通过自身存�
 
 - `github-actions-verification`
 
-总数为 11。新增 supporting Skill 不意味着重新打开核心 Method Skill 设计。
+总数为 11。新增 supporting Skill 不意味着重新打开核心 Method 设计。
 
-## 3. Rule 边界
-
-以下内容默认不是 Skill：
-
-- 实现最小化、差异范围、数据访问有界性；
-- 证据类型、视觉证据、migration completion；
-- Git commit 约束；
-- 语言 / 术语约束；
-- 技术 API / framework 约束；
-- 外部操作过程中的单项授权或并发不变量。
-
-它们由 Rule 按任务 signals 发现，Skill 只在过程真正需要时消费候选 Rule。
-
-## 4. Agent Skills 互操作
+## 5. Agent Skills 互操作
 
 每个 `SKILL.md` 必须遵守当前 Agent Skills Specification。`name` 与 `description` 为 required top-level fields；本仓逻辑 `id/type/status` 通过官方 `metadata` string map 扩展：
 
@@ -71,6 +81,17 @@ metadata:
 
 不得添加规范未定义的自定义 top-level metadata key。
 
-## 5. 准入门禁
+## 6. 准入门禁
 
-新增 Skill 至少证明：独立 trigger、稳定输入、可重复 procedure、稳定输出、明确退出 / 升级、可组合性、单一语义 owner，以及有辨识力的行为评估。仅“重要”“可复用”“多个 Skill 都要遵守”“存在步骤”不足以升级为 Skill。
+新增 Skill 至少证明：
+
+- 独立 trigger / purpose；
+- 稳定 inputs；
+- 可重复 procedure；
+- 稳定 outputs；
+- 明确 exit / escalation；
+- 有界上下文与可组合性；
+- 单一语义 owner；
+- 有辨识力的行为评估。
+
+仅“重要”“多个阶段都会用”“存在步骤”“多个 Rule 都涉及”“希望减少 Rule 数”不足以升级为 Skill。
