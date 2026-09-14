@@ -26,8 +26,6 @@ GitHub Repository 是本仓库唯一长期项目事实来源。会话历史、�
 8. `docs/guides/**` — Human View；
 9. `docs/research/**` — 非规范 Evidence / Reference。
 
-`docs/methods/principles.md` 当前是 AI Development Method 的长期原则资产，不自动约束其他 Method；其他 Method 只在明确引用时继承其中语义。
-
 Architecture、Method、Skill、Rule 各自只拥有其语义责任；Guide / README 可以解释它们，但不得成为第二套规范 owner。Research 永远不是规范性 Authority。
 
 ## Fresh Context / Agent Bootstrap

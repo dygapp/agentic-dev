@@ -14,8 +14,6 @@ status: active
 - [`consumer-adoption.md`](consumer-adoption.md) — Consumer 首次显式采用 `agentic-dev` 能力；
 - [`consumer-upgrade.md`](consumer-upgrade.md) — Existing Consumer 显式评估并升级 upstream baseline。
 
-## 跨 Method 原则
-
-- [`principles.md`](principles.md) — 长期知识、需求 / 实现分离、context-fit、证据与持久化等顶层原则。
+当前不再保留独立 `principles.md` 复合文档。原有长期语义由真实 owner 分别承担：AI Development 的阶段 / Gate / artifact lifecycle 在 `ai-development.md`，能力边界在 Architecture，执行能力在 Skill，条件性约束在 Rule。
 
 Method 是可扩展的一等能力类型。未来只有真实 Evidence 证明存在稳定的复杂工作生命周期时才增加新 Method；例如大型项目前期 Requirements Analysis 是潜在候选，而不是当前已固化 Method。
