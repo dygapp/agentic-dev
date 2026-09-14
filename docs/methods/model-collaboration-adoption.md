@@ -8,18 +8,23 @@ status: active
 
 ## 1. 目标与适用范围
 
-本 Method 用于一个 Repository **显式建立或首次启用 Model Collaboration local capability instance**。
+本 Method 用于一个 Repository 在**已经接受 Model Collaboration reusable semantics** 后，显式建立、配置、验证并首次启用自己的 Model Collaboration local capability instance。
 
-它不替代 `method:ai-development`，也不要求 Consumer 必须首次采用整个 `agentic-dev`。一个已经长期运行的 Consumer 也可以独立进入本 Method，为当前 Repository 增加可选多模型协作能力。
+它不替代 `method:ai-development`，也不拥有 upstream capability baseline 的评估 / 接受责任：
 
-它也不同于 `method:consumer-upgrade`：如果只是因为新的 upstream baseline 改变了已经采用的协作 capability，先按 Consumer Upgrade 评估 semantic delta；如果目标是第一次建立 / 启用 collaboration instance，则使用本 Method。
+- Consumer 首次采用 `agentic-dev` 时，由 `method:consumer-adoption` 决定是否把 `architecture:model-collaboration`、本 Method 与其他相关 capability 接受 / 适配到 local Authority；
+- Existing Consumer 因新的 upstream baseline 第一次获得或改变 Model Collaboration semantics 时，由 `method:consumer-upgrade` 评估 semantic delta 并决定 retain / adopt / adapt / replace / reject；
+- 只有这些 reusable semantics 已经进入 Consumer-local canonical owner 后，才进入本 Method 建立 runtime instance。
 
-核心原则：**能力语义来自 reusable Architecture，运行实例属于 Consumer local Authority。**
+两类工作可以在同一次整体变更中连续发生，但必须保持 Gate 与 semantic owner 清楚。本 Method 不得绕过 Consumer Adoption / Upgrade，从未评估的 upstream baseline 直接复制 Architecture、Method、Rule 或配置。
+
+核心原则：**upstream semantic acceptance 与 local runtime activation 分离。** 前者由 Consumer Adoption / Upgrade 或目标 Repository 等价 Authority 负责；本 Method 只拥有后者。
 
 ## 2. 生命周期
 
 ```text
 Restore Consumer Authority
+→ Confirm Accepted Collaboration Semantics
 → Detect Runtime Capabilities
 → Select Collaboration Strategy
 → Local Capability Projection
@@ -29,24 +34,44 @@ Restore Consumer Authority
 → Close Adoption
 ```
 
-本 Method 的阶段表示 adoption 工作状态，不是普通软件开发阶段，也不自动授予产品 Execute、merge、release 或 deploy 权限。
+本 Method 的阶段表示 collaboration instance adoption 工作状态，不是普通软件开发阶段，也不自动授予产品 Execute、merge、release 或 deploy 权限。
 
 ## 3. Restore Consumer Authority
 
 先恢复目标 Repository 自身当前事实、Project Knowledge、Repository Authority、当前 Method / Architecture / Skills / Rules、现有 Agent/runtime 配置、当前工作状态与允许修改范围。
-
-如果当前 Repository 已采用 `agentic-dev`，读取其 recorded evaluated / adopted baseline 与 local adaptations；如果尚未采用，不得为了启用协作而顺带复制整个 upstream capability tree。
 
 必须确认：
 
 - 谁拥有 current Project Capability Profile 或等价 local instance Authority；
 - 是否已经存在 model / agent routing 配置；
 - 是否有共享写入、外部操作、review 或安全 policy；
-- 当前是否存在不允许被配置变更打断的 active lifecycle。
+- 当前是否存在不允许被配置变更打断的 active lifecycle；
+- 当前 local Authority 从哪里记录已接受的 Model Collaboration semantics 与 provenance。
+
+不得从 upstream Project state、Guide、历史聊天或旧实验分支推断 Consumer 已经接受这项 capability。
 
 退出条件：local canonical owners、允许变更边界与当前协作状态明确。
 
-## 4. Detect Runtime Capabilities
+## 4. Confirm Accepted Collaboration Semantics
+
+确认 Consumer-local Authority 已经拥有本次 runtime activation 所依赖的 reusable semantics，至少包括：
+
+- Model Collaboration Architecture 或经 Consumer 明确适配后的等价 canonical owner；
+- 本 Method 自身或 Consumer-local 等价 adoption process；
+- 与当前 activation 直接相关、已被 Consumer 接受的 Rule / Tool contract（如有）；
+- 可追溯的 upstream provenance 或 local-origin 说明。
+
+如果缺少这些语义，或当前只有“upstream 有一个新 capability”的事实：
+
+- 首次整体采用返回 `method:consumer-adoption`；
+- Existing Consumer 的 upstream delta 返回 `method:consumer-upgrade`；
+- 非 `agentic-dev` Consumer 使用其等价 Repository Authority 流程先完成 semantic acceptance。
+
+本阶段不得为了继续运行而临时从 upstream 文件树复制未评估语义。
+
+退出条件：runtime activation 的规范输入已经是 Consumer-local current Authority，而不是未决 upstream candidate。
+
+## 5. Detect Runtime Capabilities
 
 对实际运行平台执行当前能力探测，而不是仅根据文档或静态配置假设支持。
 
@@ -66,14 +91,14 @@ Restore Consumer Authority
 
 退出条件：当前 runtime capability matrix 有当前证据支持，unknown 项明确。
 
-## 5. Select Collaboration Strategy
+## 6. Select Collaboration Strategy
 
 依据真实平台能力、任务类型、风险和成本目标选择 local strategy。至少允许：
 
 - `disabled`：不启用协作；
 - `basic`：deterministic tooling + bounded low-cost/read-only exploration + Primary Agent；
 - `reviewed`：在 basic 之上增加独立 review；
-- Consumer 自定义 strategy：只要不违反 `architecture:model-collaboration` 的不变量。
+- Consumer 自定义 strategy：只要不违反已接受的 Model Collaboration Architecture 不变量。
 
 把抽象 capability tiers 映射到 Consumer 当前真实模型：
 
@@ -87,14 +112,13 @@ high-capability reasoning → local model / effort
 
 退出条件：strategy、tier mapping、触发条件、fallback 与预期优化目标明确。
 
-## 6. Local Capability Projection
+## 7. Local Capability Projection
 
-把已选择的 reusable capability 投射到 Consumer-local canonical owners，而不是复制 upstream Project state。
+把**已经接受的** reusable collaboration semantics 投射到 Consumer-local runtime owners，而不是在本阶段重新决定 upstream capability 是否应 adopt / adapt。
 
-逐项判断：
+根据本地策略建立或更新：
 
-- Collaboration Architecture：adopt / adapt / reject；
-- runtime configuration：建立 Consumer-local instance；
+- runtime configuration 与 agent profiles；
 - Consumer-local Rules：只为真实 conditional policy 建立或适配；
 - Repository Authority / bootstrap：只在 ordinary runtime 需要稳定入口时增加 locator；
 - Human Guide / runbook：按 Consumer 需要建立；
@@ -102,15 +126,15 @@ high-capability reasoning → local model / effort
 
 特别区分：
 
-- `single-writer`、Authority-preserving handoff 等 reusable invariant 属于 Collaboration Architecture；
+- `single-writer`、Authority-preserving handoff 等已接受 reusable invariant 属于 Collaboration Architecture canonical owner；
 - “本 Consumer 的 production external write 只能由 primary agent 执行”等局部 policy 可以成为 Consumer-local Rule；
 - `fast_explorer = <concrete-model>` 之类映射只属于 local runtime configuration / capability instance。
 
-不得把同一语义复制到 Architecture、Rule、Project Profile 和配置说明中形成多份 current owner。
+如果 projection 过程中发现必须改变已接受的 reusable semantics，而不是单纯建立 local instance，则返回拥有 semantic acceptance 的 Consumer Adoption / Upgrade / local Authority，不在本阶段静默改写 Architecture。
 
-退出条件：所有 accepted capability 都有明确 local owner，未采用内容有明确 disposition。
+退出条件：需要实例化的 local config / policy / evidence owners 明确，且没有第二套 capability semantic owner。
 
-## 7. Establish Local Collaboration Instance
+## 8. Establish Local Collaboration Instance
 
 在 Consumer Project Capability Profile 或等价 Authority 中建立薄的 collaboration instance。至少记录：
 
@@ -128,7 +152,7 @@ ordinary runtime 必须能够只依赖 Consumer Repository 恢复这项能力；
 
 退出条件：local instance 可从 Fresh Context 独立恢复。
 
-## 8. Validate Collaboration
+## 9. Validate Collaboration
 
 验证必须与实际启用的 strategy 匹配。最低验证包含：
 
@@ -147,7 +171,7 @@ ordinary runtime 必须能够只依赖 Consumer Repository 恢复这项能力；
 
 退出条件：启用所依赖的 runtime claims 有当前 Evidence；失败或不可验证项已经触发 fallback 或显式限制。
 
-## 9. Enable / Fallback
+## 10. Enable / Fallback
 
 只有 Validate Collaboration 通过后，才能把 Consumer local instance 标记为 enabled / conditional。
 
@@ -162,18 +186,20 @@ ordinary runtime 必须能够只依赖 Consumer Repository 恢复这项能力；
 
 退出条件：启用状态与 fallback 状态准确反映真实 runtime。
 
-## 10. Close Adoption
+## 11. Close Adoption
 
 记录：
 
-- exact evaluated upstream capability baseline（如适用）；
 - Consumer-local collaboration status；
+- accepted collaboration semantics 的 local provenance；
 - runtime / strategy / tier mapping 的 local owner；
-- adopted / adapted / rejected collaboration semantics；
+- 本次新增 / 调整的 Consumer-local policy；
 - 当前 validation Evidence；
 - 已知 observability limitation；
 - fallback path。
 
+本阶段不重新关闭或改变 upstream evaluated baseline；baseline adoption / upgrade closure 仍由对应 Consumer Adoption / Upgrade Method 拥有。
+
 完成条件：Consumer 可以在 Fresh Context 中仅依赖 local state 恢复协作能力，协作启用状态有当前 Evidence 支撑，不存在未声明的 upstream runtime dependency，也没有把 requested configuration 冒充 observed runtime fact。
 
-完成本 Method 不产生未来自动升级义务。upstream capability 后续变化只有通过显式 Consumer Upgrade 或新的 local adoption decision 才改变 Consumer state。
+完成本 Method 不产生未来自动升级义务。upstream capability 后续变化只有通过显式 Consumer Upgrade 或新的 local semantic decision 才能改变 Consumer accepted semantics；纯 local runtime mapping 维护则服从目标 Repository 自身 Authority。
