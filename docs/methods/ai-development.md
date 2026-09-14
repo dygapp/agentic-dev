@@ -34,6 +34,19 @@ Clarify Intent
 
 Integration 不是通用方法阶段。merge、release、deploy 与其他外部副作用由目标仓库策略和人工权威决定。
 
+### 2.1 Stable phase identities
+
+当 Rule Discovery 或其他 runtime contract 需要稳定机器身份时，本 Method 对六个阶段定义以下 canonical phase token：
+
+- Clarify Intent → `clarify-intent`；
+- Specification → `specification`；
+- Technical Planning → `technical-planning`；
+- Slice & Ready → `slice-ready`；
+- Execute → `execute`；
+- Converge → `converge`。
+
+这些 token 只属于 `method:ai-development` 的 phase identity，不是所有 Method 的全局阶段词表。其他 Method 必须由自己的 canonical owner 决定是否定义以及如何定义 phase identity。
+
 ## 3. Clarify Intent
 
 解决会实质改变 Goal、Scope、User-visible Behavior、Business Boundary、Acceptance 或重大非功能义务的歧义。
@@ -126,18 +139,20 @@ Fresh Context 是逻辑属性：当前执行者不依赖此前未持久化推理
 
 - Repository Authority；
 - 当前工作对象；
-- 直接相关 Specification / Technical / Architecture / Domain Authority；
+- 直接相关 Specification / Technical / Architecture / Domain / Project Authority；
 - Rule Discovery 返回的少量候选正文；
 - 当前需要的 Skill；
 - 相关代码、测试与当前 Evidence。
 
-不得为了“完整”预加载全量 Rules、全量 Skill、完整 Research 或历史项目记录。
+不得为了“完整”预加载全量 Rules、全量 Skill、完整 Research 或历史 Project Evolution。
 
 ## 10. Rule Discovery
 
 Rule 不是方法阶段，也不是 Skill。它是执行工作时必须遵守的条件、约束、默认值、不变量或完成声明要求。
 
 Rule Discovery 的规范架构见 `docs/architecture/rule-discovery-architecture.md`：工具只扫描 Rule 自身 Front Matter，确定性返回少量 locator；LLM 读取候选正文后做最终语义适用性确认。
+
+本 Method 的 stable phase identities 由 §2.1 持有；Rule Discovery 只能消费这些 identity，不反向拥有或定义它们。
 
 目录分类不参与匹配，不维护中心 Rule Map / Manifest / Catalog。
 
@@ -147,7 +162,7 @@ Rule Discovery 的规范架构见 `docs/architecture/rule-discovery-architecture
 
 典型长期 owner 包括：
 
-- Repository / Domain Authority；
+- Repository / Domain / Project Authority；
 - Method / Architecture；
 - ADR；
 - Specification；
@@ -155,7 +170,9 @@ Rule Discovery 的规范架构见 `docs/architecture/rule-discovery-architecture
 - Rule；
 - Skill；
 - code / tests；
-- 需要跨阶段恢复的 Project Roadmap。
+- 需要跨上下文恢复的 Project Charter / Capability Profile / Roadmap / Evolution 等项目知识。
+
+Project Knowledge 的最小职责与持久化边界由 `docs/architecture/project-knowledge-architecture.md` 定义；并非每个项目都必须使用相同物理文件名。
 
 已有长期 artifact 被新结论取代时，应更新或删除 current owner；历史由 Git / Issue / PR 保存，不通过旧 Markdown 兼容层维持。
 

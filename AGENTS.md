@@ -8,7 +8,7 @@ status: active
 
 ## 仓库职责
 
-`agentic-dev` 定义通用 AI Agent 驱动软件开发能力，并维护可复用的 Method、Skill、Rule、Architecture 与 Consumer adoption 能力。本文件只维护稳定 Repository Authority、Agent Bootstrap 和启动约束；当前阶段与下一工作入口只由 `docs/project/project-roadmap.md` 与 GitHub 当前事实维护。
+`agentic-dev` 定义通用 AI Agent 驱动软件开发能力，并维护可复用的 Method、Skill、Rule、Architecture 与 Consumer adoption 能力。本文件只维护稳定 Repository Authority、Agent Bootstrap 和启动约束；`agentic-dev` 自身的使命、capability instance、Roadmap 与演进摘要由 `docs/project/**` 的真实 Project owner 分别持有。
 
 GitHub Repository 是本仓库唯一长期项目事实来源。会话历史、其他聊天、个人记忆、其他仓库状态和未固化推理不构成本仓库事实。
 
@@ -17,43 +17,49 @@ GitHub Repository 是本仓库唯一长期项目事实来源。会话历史、�
 发生冲突时先判断真实 semantic owner，不用目录层级覆盖正确责任：
 
 1. `AGENTS.md` — Repository Authority / Agent Bootstrap；
-2. `docs/architecture/engineering-capability-architecture.md` — 能力类型、single semantic ownership 与双视窗；
-3. `docs/architecture/method-architecture.md` — Method 类型与 selection contract；
-4. 当前选定的 `docs/methods/*.md` — 当前工作过程模型；
-5. 当前责任直接需要的 Architecture；
-6. 当前责任适用的具体 `SKILL.md` 与 `docs/rules/**`；
-7. `docs/project/project-roadmap.md` — 当前项目阶段 / 下一演进；
-8. `docs/guides/**` — Human View；
-9. `docs/research/**` — 非规范 Evidence / Reference。
+2. `docs/project/project-charter.md` — `agentic-dev` 自身使命、目标、非目标与核心项目需求；
+3. `docs/architecture/engineering-capability-architecture.md` — capability 类型、single semantic ownership 与双视窗；
+4. `docs/architecture/project-knowledge-architecture.md` — Project Knowledge 与 reusable Capability 的长期边界；
+5. `docs/project/project-capability-profile.md` — 当前 Repository 的 capability instance / Method selector / runtime locator；
+6. `docs/architecture/method-architecture.md` — Method 类型与通用 selection contract；
+7. 当前选定的 `docs/methods/*.md` — 当前工作过程模型；
+8. 当前责任直接需要的其他 Architecture；
+9. 当前责任适用的具体 `SKILL.md` 与 `docs/rules/**`；
+10. `docs/project/project-roadmap.md` — 当前项目 baseline / evolution / gate / next candidates；
+11. `docs/guides/**` — Human View；
+12. `docs/research/**` — 非规范 Evidence / Reference。
 
-Architecture、Method、Skill、Rule 各自只拥有其语义责任；Guide / README 可以解释它们，但不得成为第二套规范 owner。Research 永远不是规范性 Authority。
+Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任；Project owner 只拥有当前 Repository 的使命、实例、状态和稳定演进摘要；Guide / README 可以解释它们，但不得成为第二套规范 owner。Research 永远不是规范性 Authority。
 
 ## Fresh Context / Agent Bootstrap
 
 新的本仓库上下文按以下顺序恢复：
 
 1. 读取本文件；
-2. 读取 `README.md` 与 `docs/project/project-roadmap.md`；
+2. 读取 `README.md`、`docs/project/project-roadmap.md` 与 `docs/project/project-capability-profile.md`；
 3. 重新读取当前默认分支、Open Issue / PR 和当前任务需要的 GitHub 状态；
-4. 读取 `docs/architecture/method-architecture.md` 的 **Method Selection** contract，按当前 work kind 选择 Method；若无已定义 Method 匹配，不强行套用；
-5. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；
-6. 使用 `tools/rule-discovery/` 对 `docs/rules/**` 做候选初筛，只读取返回的 Rule 正文；
-7. 需要独立执行能力时，通过 Agent Skills 原生发现选择并读取相应 `SKILL.md`；
-8. 只加载当前责任直接需要的其他 Architecture；Guide / Research 仅在任务明确需要人类说明或研究证据时读取。
+4. 若当前任务需要理解 `agentic-dev` 项目使命、目标或核心项目需求，再读取 `docs/project/project-charter.md`；
+5. 读取 `docs/architecture/method-architecture.md` 的通用 **Method Selection Contract**，再由 `project-capability-profile.md` 的 Repository-local selector instance 选择当前 Method；若无映射匹配，不强行套用；
+6. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；Method-specific phase token 只能来自当前 Method canonical owner；
+7. 使用当前 Project Capability Profile 声明的 Rule Discovery instance 做候选初筛，只读取返回的 Rule 正文；
+8. 需要独立执行能力时，通过当前 Repository 声明的 Skill discovery 入口选择并读取相应 `SKILL.md`；
+9. 只加载当前责任直接需要的其他 Architecture；Guide / Research / Project Evolution 仅在任务明确需要人类说明、研究证据或历史原因时读取。
 
-不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills、全部 Architecture 或完整 Research。ordinary runtime 不得通过目录遍历、Human README、IDE tree 或其他枚举机制把未命中 Rule locator / 文件名集合送入模型上下文；Rule Discovery 返回值是普通运行时获得 Rule locator 的唯一入口。
+不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills、全部 Architecture、完整 Research 或完整 Project Evolution。ordinary runtime 不得通过目录遍历、Human README、IDE tree 或其他枚举机制把未命中 Rule locator / 文件名集合送入模型上下文；Rule Discovery 返回值是普通运行时获得 Rule locator 的唯一入口。
 
 ## Method Selection
 
-Method 类型、当前 `work kind → Method locator` 映射与新增 Method 门禁由 `docs/architecture/method-architecture.md` 单独拥有。本 Bootstrap 只声明 Agent 在需要 Method selection 时必须读取该 contract，不复制 selector 内容、Method stages 或 Gate。
+`docs/architecture/method-architecture.md` 只定义通用 Method Selection Contract；当前 `agentic-dev` 的 `work kind → Method locator` 映射由 `docs/project/project-capability-profile.md` 单独拥有。
 
-如果没有 Method 匹配，继续按 Repository Authority 与当前 direct responsibility 工作；不得从 Guide、目录名或历史会话猜测流程。
+Bootstrap 不复制 selector mapping、Method stages 或 Gate。如果没有 local selector 匹配，继续按 Repository Authority 与当前 direct responsibility 工作；不得从 Guide、目录名或历史会话猜测流程。
 
 ## Rule Discovery
 
 Rule metadata 与 Rule 正文必须同源、同文件维护。不得维护 Reviewed Discovery Map、Activation Manifest、Runtime Catalog、rule-index 或其他需要与规则正文同步的中心路由表。
 
-普通运行时使用：
+当前 Repository 的 Rule root、Tool locator 与 Human inventory 由 `docs/project/project-capability-profile.md` 声明。通用发现 contract 由 `docs/architecture/rule-discovery-architecture.md` 持有。
+
+当前 ordinary runtime CLI 入口：
 
 ```bash
 python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-json '<task-signals-json>'
@@ -67,7 +73,7 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 
 每个非空数组最多 6 个 lowercase kebab-case token。不得把目标 Rule 名、期望答案、Rule 文件名或历史候选写入 signals，也不得使用 synonym cloud 碰撞 metadata。
 
-AI Development 当前 phase token：`clarify-intent`、`specification`、`technical-planning`、`slice-ready`、`execute`、`converge`。其他 Method 若需要 Method-specific Rule，必须先定义稳定 phase identity；未定义时使用 `null` 而不是猜测。
+`phases` token 只能来自当前 selected Method 自己定义的 stable phase identity；当前 Method 未定义或无法安全判断时使用 `null`，不得由本 Bootstrap、Rule Discovery Architecture、其他 Method 或未命中 Rule metadata 猜测。
 
 活动优先使用直接责任词，如 `implementation`、`verification`、`review`、`external-operation`、`design`。技术与工件使用当前事实支持的稳定机器身份；例如 Vue 3.x → `vue3`、TypeScript → `typescript`、`.vue` SFC → `vue-sfc`、普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。
 
@@ -87,11 +93,21 @@ Rule 的语义、粒度与 Consumer-local specialization 见 `docs/architecture/
 
 Skill 与 Rule 是正交关系，不是上下游流水线。具体边界见 `docs/architecture/engineering-capability-architecture.md`、`skill-architecture.md` 与 `rule-architecture.md`。
 
+## Project / Capability 边界
+
+`docs/project/**` 描述 `agentic-dev` 这个具体 Repository：使命、核心项目需求、当前 capability instance、Roadmap 与稳定演进摘要。
+
+`docs/architecture/**`、`docs/methods/**`、`skills/**`、`docs/rules/**` 与相应 tool contract 描述可被其他 Repository adopt / adapt 的 Capability。
+
+核心原则：**Project 不传播，Capability 传播。** 具体 contract 见 `docs/architecture/project-knowledge-architecture.md`。
+
 ## Consumer 边界
 
-Consumer Repository 始终拥有自己的项目事实、需求、架构、代码、验证与权限。`agentic-dev` 只提供可复用能力。
+Consumer Repository 始终拥有自己的项目事实、Project Knowledge、需求、架构、代码、验证与权限。`agentic-dev` 只提供可复用 capability。
 
-长期 ownership / ordinary runtime 不变量见 `docs/architecture/consumer-architecture.md`；首次 adoption 与显式 upstream baseline upgrade 按 `docs/architecture/method-architecture.md` 的 Method Selection contract 进入对应 Method。采用完成后的 ordinary runtime 只依赖 Consumer-local current state，发现失败不能自动回 upstream 补流程或规则。
+长期 ownership / ordinary runtime 不变量见 `docs/architecture/consumer-architecture.md`。首次 adoption 与显式 upstream baseline upgrade 使用对应 Method，但 upstream `Project Charter / Capability Profile / Roadmap / Evolution` 只可作为 provenance / context，不自动成为 Consumer Authority。
+
+Consumer 必须建立自己的 local Project Knowledge、Method selector、Rule Discovery instance 与 Skill entry。采用完成后的 ordinary runtime 只依赖 Consumer-local current state，发现失败不能自动回 upstream 补流程或规则。
 
 Rule 是 Consumer-local policy specialization 的主要承载面之一；通用 Skill 不应吸收不同 Consumer 必然不同的 commit type / scope、术语、审批或局部技术 policy。
 
@@ -105,13 +121,20 @@ Rule 是 Consumer-local policy specialization 的主要承载面之一；通用 
 
 ## Human View / Research
 
-人类从 `README.md` 与 `docs/guides/**` 理解项目。Guide 可以完整解释 Method / Architecture / Skill / Rule，但不得保存 runtime routing、canonical Gate 或 current project state。
+人类从 `README.md` 与 `docs/guides/**` 理解 capability，从 `docs/project/README.md` 理解 `agentic-dev` 自身 Project Knowledge。Guide / README 可以完整解释 canonical owner，但不得保存第二套 runtime routing、Gate 或 Project current state。
 
 `docs/research/**` 只保存外部规范、工程证据和设计参考，不参与 ordinary runtime discovery，也不自动改变规范能力。长期结论只有进入真实 current owner 后才成为规范。
 
-## Project State
+## Project Knowledge
 
-`docs/project/` 只保留真正当前的 `project-roadmap.md`。临时计划、Gate 过程、资产分类、实验结果和阶段验证优先记录在 GitHub Issue / PR / Git / Actions，不为每次演进建立第二套 current state。
+当前长期 Project owners：
+
+- `docs/project/project-charter.md` — 使命、目标、非目标、核心项目需求与成功判据；
+- `docs/project/project-capability-profile.md` — 当前 capability instance 与 Repository-local locator；
+- `docs/project/project-roadmap.md` — 当前 baseline / evolution / gate / next candidates；
+- `docs/project/project-evolution.md` — 稳定历史里程碑摘要。
+
+Open PR / Issue、branch、Actions、review 与 commit 等 live state 始终重新从 GitHub 读取。临时计划、Gate 流水账、实验日志和阶段验证优先记录在 Issue / PR / Git / Actions，不为每次演进建立新的 Project Markdown owner。
 
 ## Git 与表达
 

@@ -29,43 +29,66 @@ Method 可以跨多个 Fresh Context、多个 Artifact、多个 Skill 与人工 
 - Skill 为已明确的责任提供稳定有界执行能力；
 - Rule 横切约束 Method stage、Skill 或 direct work；
 - Guide 只向人解释 Method，不拥有 Method transition / Gate；
-- Repository Authority 决定当前项目允许进入哪些 Method，以及外部副作用权限。
+- Repository-local Project Authority 决定当前项目实际采用哪些 Method、如何选择，以及外部副作用权限。
 
 Method 不应吸收容易因 Consumer / Repository 改变的局部 policy，也不应复制 Skill Procedure 或 Rule body。
 
-## 3. Method Selection
+## 3. Method Selection Contract
 
-Agent 必须能够在不读取 Human Guide 的情况下选择 Method。
+Agent 必须能够在不读取 Human Guide 的情况下，从当前 Repository-local Authority 选择适用 Method。
 
-当前 Method 数量较少，本 Architecture 拥有当前**稳定 work-kind selector**；根 `AGENTS.md` 只负责把 Agent 引导到本 contract，不复制 selector 映射。
+通用 selection contract 是：
 
-当前 canonical work kinds：
+```text
+current repository facts + work kind
+→ repository-local Method selector instance
+→ canonical Method id / locator
+→ read selected Method body
+```
 
-- 普通软件 / 产品变更的需求到收敛生命周期 → `docs/methods/ai-development.md`（`method:ai-development`）；
-- Consumer 首次显式采用 `agentic-dev` 能力 → `docs/methods/consumer-adoption.md`（`method:consumer-adoption`）；
-- Existing Consumer 显式评估并升级 upstream baseline → `docs/methods/consumer-upgrade.md`（`method:consumer-upgrade`）。
+Architecture 只规定 selector **必须存在什么语义**；具体 Repository 当前的 `work kind → Method locator` 映射属于 Project capability instance，不属于 reusable Architecture。
 
-如果当前工作不属于任何已定义 Method，不得为了获得流程而强行套用最接近的 Method。按 Repository Authority 和当前直接责任工作；若同类复杂过程反复出现并具有长期复用价值，再以 Evidence 评估新增 Method。
+一个最小 selector 只持有：
 
-当 Method 数量、歧义或选择成本增长到这个静态 selector 无法稳定维护时，应通过独立 eval 决定是否引入 Method metadata discovery / selector tool；不得预先复制 Rule Discovery 的复杂度。
-
-## 4. Method Selection 不是第二套 Method
-
-selector 只能持有：
-
-- work kind 的稳定身份；
-- canonical Method id / locator。
+- 可稳定识别的 work kind；
+- canonical Method id；
+- canonical Method locator。
 
 它不得持有：
 
 - Method stages；
 - Gate / completion conditions；
 - Method 内部 Skill / Rule routing；
-- 当前项目状态。
+- 当前 Issue / PR / work state；
+- Human Guide 解释正文。
 
-因此具体 Method 正文仍是过程语义的唯一 owner。
+因此具体 Method 正文仍是过程语义的唯一 owner，Repository-local selector 只是进入该 owner 的薄实例映射。
 
-## 5. Method 演进与新增门禁
+## 4. 无匹配时的行为
+
+如果当前工作不属于任何已定义 Method：
+
+- 不得为了获得流程而强行套用最接近的 Method；
+- 按 Repository Authority 与当前 direct responsibility 工作；
+- 如果同类复杂过程反复出现并具有跨上下文长期复用价值，再以真实 Evidence 评估新增 Method。
+
+Repository-local selector 缺失、陈旧或歧义时应失败关闭到当前 Project / Repository Authority，不从 Guide、历史聊天或目录名猜测 Method。
+
+## 5. Selection 规模演进
+
+Method 数量较少时，稳定、可审计的 Repository-local静态 selector 足够。
+
+只有当 Method 数量、work-kind 歧义或 selector 维护成本真实增长，并由 eval 证明静态映射不再可靠时，才评估 Method metadata discovery / selector tool。
+
+不得仅为形式统一复制 Rule Discovery 的工具、metadata 或复杂度。
+
+## 6. Phase Identity
+
+如果 Rule Discovery 或其他 runtime contract 需要引用 Method stage，**稳定 phase identity 必须由具体 Method canonical owner 定义**。
+
+Architecture 不维护跨 Method 的固定 phase token 列表，也不假设不同 Method 共享同一阶段身份。当前 Method 没有定义稳定 phase identity 时，调用方不得从自然语言阶段名或其他 Method 猜测机器 token。
+
+## 7. Method 演进与新增门禁
 
 新增 Method 至少证明：
 
@@ -76,4 +99,4 @@ selector 只能持有：
 5. 与现有 Method 不只是命名或局部步骤差异；
 6. 有真实项目 / Consumer Evidence 支持长期复用价值。
 
-例如大型项目前期 Requirements Analysis 可以成为未来 Method 候选，但应先从已验证实践提炼其阶段、产物、Gate 与适用边界，而不是只因历史上使用过就直接固化。
+大型项目前期 Requirements Analysis 可以成为未来 Method 候选，但应先从已验证实践提炼其适用边界、阶段、产物、Gate 与完成语义，而不是只因历史上使用过就直接固化。
