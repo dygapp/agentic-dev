@@ -103,11 +103,32 @@ Issue #124 / PR #125 形成 Capability Model v2：
 
 PR #125 于 integration commit `e5488fd22a078ab59a427e36ef9a20af935fc63f` 合并，Issue #124 completed。
 
-## 8. 当前演进原则
+## 8. Project Knowledge Model — Project / Capability 分界
+
+Capability Model v2 集成后继续复核发现：部分 Architecture 仍混入 `agentic-dev` 当前 Repository instance，例如 Method selector mapping、Skill inventory/count 与 AI Development-specific phase identity；同时 `docs/project/` 只剩 Roadmap，导致项目使命、当前 capability instance 和稳定演进历史缺乏明确长期 owner。
+
+Issue #126 / PR #127 建立 Project Knowledge Model：
+
+- `docs/project/**` 只拥有当前 Repository 自身的使命、核心项目要求、capability instance、Roadmap 与稳定演进摘要；
+- `docs/architecture/**`、`docs/methods/**`、`skills/**`、`docs/rules/**` 与对应 tool contract 继续只拥有可复用 capability；
+- 正式确立 **Project 不传播，Capability 传播**；
+- Method selector instance 移入 Project Capability Profile；
+- Skill inventory/count 退出 Skill Architecture；
+- Method-specific phase identity 回归具体 Method；
+- Rule Discovery exact runtime locator 只由 Project Capability Profile 持有；
+- Consumer Adoption / Upgrade 明确不复制 upstream Project state，Consumer 必须建立自己的 local Project Knowledge / capability instance；
+- deterministic contracts 防止实例信息重新漂回 Architecture / Bootstrap。
+
+PR #127 以 exact candidate Head `5a2e59f5ae248fb2cf288c6521d8a9903ae8b68b` 通过 50 / 50 deterministic tests、Rule Discovery regression、高影响边界复核与 Convergence，并于 integration commit `10397cf00914fcfd6d71fd2ad6be6b89618dde8a` squash merge。
+
+这一阶段没有改变 V4 Rule Discovery 核心运行语义，而是补齐 reusable capability 与 `agentic-dev` 自身 Project Knowledge 的长期 ownership 边界。
+
+## 9. 当前演进原则
 
 从当前阶段开始，项目演进遵守：
 
 - 当前工作树表达当前有效 owner，不保留历史兼容层；
 - Project Knowledge 保存稳定项目定义 / 实例 / Roadmap / 里程碑，不恢复阶段文档膨胀；
 - reusable capability 继续以真实 Consumer Evidence 驱动，而不是理论扩张；
-- 历史细节需要时从 GitHub Issue / PR / Git 恢复，不复制到 ordinary Fresh Context。
+- 历史细节需要时从 GitHub Issue / PR / Git 恢复，不复制到 ordinary Fresh Context；
+- Project Capability Profile 必须持续保持为薄的 Repository-local instance owner，不演变成新的 Runtime Catalog / Rule Index。
