@@ -22,7 +22,7 @@ status: active
 Restore Consumer Authority
 → Detect Runtime Capabilities
 → Select Collaboration Strategy
-→ Project Collaboration Capability
+→ Local Capability Projection
 → Establish Local Collaboration Instance
 → Validate Collaboration
 → Enable / Fallback
@@ -87,7 +87,7 @@ high-capability reasoning → local model / effort
 
 退出条件：strategy、tier mapping、触发条件、fallback 与预期优化目标明确。
 
-## 6. Project Collaboration Capability
+## 6. Local Capability Projection
 
 把已选择的 reusable capability 投射到 Consumer-local canonical owners，而不是复制 upstream Project state。
 
