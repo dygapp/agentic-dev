@@ -98,6 +98,7 @@ class CapabilityModelContractTests(unittest.TestCase):
         architecture_path = REPO_ROOT / "docs/architecture/model-collaboration-architecture.md"
         method_path = REPO_ROOT / "docs/methods/model-collaboration-adoption.md"
         guide_path = REPO_ROOT / "docs/guides/multi-model-collaboration.md"
+        codex_reference_path = REPO_ROOT / "docs/guides/codex-model-collaboration-reference.md"
         research_path = REPO_ROOT / "docs/research/model-collaboration-capability-classification.md"
         profile = (REPO_ROOT / "docs/project/project-capability-profile.md").read_text(
             encoding="utf-8"
@@ -107,6 +108,7 @@ class CapabilityModelContractTests(unittest.TestCase):
             (architecture_path, "architecture"),
             (method_path, "method"),
             (guide_path, "guide"),
+            (codex_reference_path, "guide"),
             (research_path, "research"),
         ]:
             self.assertTrue(path.is_file(), str(path))
@@ -129,6 +131,8 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertIn("Authority-preserving handoff", architecture)
         self.assertIn("single-agent fallback", architecture)
         self.assertIn("接受 reusable semantics", architecture)
+        self.assertIn("functional enablement claim", architecture)
+        self.assertIn("efficiency / preferred-default claim", architecture)
         self.assertIn("Confirm Accepted Collaboration Semantics", method)
         self.assertIn("Detect Runtime Capabilities", method)
         self.assertIn("Local Capability Projection", method)
@@ -137,6 +141,15 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertIn("## 5. Model Collaboration Instance", profile)
         self.assertIn("status：`disabled`", profile)
         self.assertIn("persistent platform config：none", profile)
+
+        codex_reference = codex_reference_path.read_text(encoding="utf-8")
+        self.assertIn("2026-09-14", codex_reference)
+        self.assertIn(".codex/agents/", codex_reference)
+        self.assertIn("sandbox_mode = \"read-only\"", codex_reference)
+        self.assertIn("sandbox_mode = \"workspace-write\"", codex_reference)
+        self.assertIn("[agents]", codex_reference)
+        self.assertIn("enabled = false", codex_reference)
+        self.assertIn("functional enablement", codex_reference)
 
     def test_skill_architecture_does_not_own_current_inventory(self):
         skill_arch = (REPO_ROOT / "docs/architecture/skill-architecture.md").read_text(
@@ -191,6 +204,7 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertIn("model-collaboration-adoption.md", methods_readme)
         self.assertIn("model-collaboration-architecture.md", architecture_readme)
         self.assertIn("multi-model-collaboration.md", guides_readme)
+        self.assertIn("codex-model-collaboration-reference.md", guides_readme)
         self.assertIn("model-collaboration-capability-classification.md", research_readme)
 
     def test_rule_human_inventory_matches_discoverable_rule_corpus(self):
