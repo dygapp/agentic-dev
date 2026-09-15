@@ -1,0 +1,358 @@
+---
+id: method:requirement-baseline-establishment
+type: method
+status: active
+---
+
+# 需求基线建立方法
+
+## 1. 目标
+
+本方法面向普通软件 Consumer 项目的项目建立或重大需求基线重建，负责把原始、碎片化、不同可信度且可能相互冲突的 Project Inputs，收敛为一套可持续维护、具有明确 semantic ownership、可由 Fresh Context Agent 直接消费的 Requirement Baseline。
+
+它解决的是：
+
+> 后续 Feature Development 应该依赖什么长期 Requirement Authority，以及这些长期事实如何从原始材料被提取、组织、推导、确认和复核。
+
+本方法不负责具体 Feature Specification，也不负责长期 Architecture decision。完成后只声明 `Requirement Baseline Ready`；如果仍存在阻塞多个 Feature 的长期 architecture driver，由 Repository-local Method selector 决定是否进入 `method:architecture-clarification`。具体 Feature / change 再进入 `method:ai-development`。
+
+## 2. 进入条件
+
+满足以下任一情况时，可以选择本 Method：
+
+- greenfield software project / new product 尚不存在可靠 Requirement Baseline；
+- 原始需求材料已经较完整，但尚未形成稳定的 Requirement Authority、边界、索引与事实归属；
+- legacy modernization / rewrite，需要从旧系统、旧文档、现行规则和当前决策重建可信需求基线；
+- Requirement Authority 已碎片化、冲突、重复或长期 owner 不清晰；
+- 多个当前或预期 Feature 因同一组系统性 Requirement gap / conflict / ambiguity 无法可靠进入 Specification。
+
+以下情况不应机械进入完整 Method：
+
+- 单个 Feature 的局部产品意图歧义；
+- 普通 bugfix 或小范围 change；
+- 已有稳定 Requirement Baseline，只需要增量更新一个长期事实；
+- 单 Feature 的实现 HOW 或局部 Architecture choice；
+- 只是文档很多、技术复杂，但长期 Requirement Context 本身已足够稳定。
+
+## 3. 与其他 Method 的关系
+
+```text
+Raw Project Inputs
+        ↓
+Requirement Baseline Establishment
+        ↓
+Requirement Baseline Ready
+        │
+        ├─ no systemic architecture blocker
+        │       ↓
+        │   AI Development
+        │
+        └─ systemic architecture blocker
+                ↓
+        Architecture Clarification
+                ↓
+        Architecture Context Ready
+                ↓
+        AI Development
+```
+
+本 Method 是新项目进入普通 Feature Development 的上游 Project Establishment work kind，但不是每个 Feature 都要重复执行的前置步骤。
+
+Requirement Baseline 一旦有效，后续普通 Feature 直接按 Repository-local selector 进入 `method:ai-development`。只有基线本身出现系统性缺口、冲突或需要重建时，才重新进入本 Method 或返回其中拥有该责任的阶段。
+
+## 4. 生命周期
+
+```text
+Establish Sources & Authority
+→ Extract Requirement Facts
+→ Structure Requirement Authority
+→ Resolve Requirement Unknowns
+→ Review Requirement Baseline
+→ Requirement Convergence
+→ Requirement Baseline Ready
+```
+
+正式阶段六个：
+
+1. Establish Sources & Authority；
+2. Extract Requirement Facts；
+3. Structure Requirement Authority；
+4. Resolve Requirement Unknowns；
+5. Review Requirement Baseline；
+6. Requirement Convergence。
+
+### 4.1 Stable phase identities
+
+- Establish Sources & Authority → `establish-requirement-sources`；
+- Extract Requirement Facts → `extract-requirements`；
+- Structure Requirement Authority → `structure-requirements`；
+- Resolve Requirement Unknowns → `resolve-requirements`；
+- Review Requirement Baseline → `review-requirements`；
+- Requirement Convergence → `requirement-convergence`。
+
+这些 token 只属于 `method:requirement-baseline-establishment`。
+
+## 5. Establish Sources & Authority
+
+先明确当前需求建立可以使用哪些输入、它们具有何种事实地位，以及哪些现有长期 owner 可以继续使用。
+
+原始输入可以包括：
+
+- 客户 / 用户描述；
+- 访谈与会话决定；
+- 合同、招标文件、法规、制度；
+- PRD、原型、历史需求文档；
+- legacy system / historical behavior；
+- 外部接口、数据、第三方约束；
+- 当前 Repository 已有 Requirement / Domain / Architecture Authority；
+- 其他 reference / analysis material。
+
+至少区分：
+
+- current authoritative input；
+- legacy input；
+- reference input；
+- external dependency；
+- analysis material；
+- conversation / human decision；
+- unknown。
+
+不得把“材料存在”“旧系统这样做”“历史文档这样写”直接等同于当前 Requirement。
+
+不要求建立永久 source catalog。只有当前澄清、复核或跨上下文恢复确实需要的 source inventory 才暂存；其默认是 transitional artifact，不自动成为 Requirement Authority。
+
+退出条件：后续事实抽取可以明确判断来源可信度、时间边界与当前 Authority owner，不会把不同历史时期或不同证据等级平权混合。
+
+## 6. Extract Requirement Facts
+
+需求抽取优先从业务语义出发，而不是从 UI、数据库或代码结构出发。
+
+至少检查六类事实：
+
+- business object；
+- business activity / workflow；
+- business rule；
+- state / lifecycle；
+- actor / responsibility；
+- external dependency / input / output。
+
+一个高价值事实表达通常能够回答：
+
+> 谁，在什么条件下，对什么业务对象执行什么活动，受到什么规则与状态约束，最终产生什么业务结果？
+
+同时识别：
+
+- product / domain goal and boundary；
+- data semantics；
+- failure / exception behavior；
+- quality / compliance requirement；
+- acceptance intent；
+- out-of-scope boundary。
+
+页面、按钮、菜单、API shape、数据库表、类 / 包、事务 / 缓存等默认不作为需求边界来源；只有它们本身是合同、法规、外部接口或其他 authoritative constraint 时，才作为 Requirement 保留。
+
+退出条件：主要长期业务事实已经能够被识别，并可以进入 ownership / capability boundary 分析；不要求在此阶段穷举未来所有 Feature 细节。
+
+## 7. Structure Requirement Authority
+
+把已提取事实组织到明确的长期 semantic owner，而不是建立第二套持久业务模型。
+
+通用 ownership 与推荐 `docs/requirements` 信息架构由 `architecture:requirement-authority` 定义。本阶段至少完成：
+
+- project / system scope 与责任边界；
+- Requirement Capability / durable business owner 划分；
+- cross-capability Requirement 的归属；
+- non-functional Requirement 的归属；
+- Requirement Authority Index / locator；
+- transitional analysis artifact 与 durable Authority 的边界。
+
+Requirement Capability 边界优先依据：
+
+- 核心业务对象；
+- 主要业务结果；
+- 生命周期；
+- Actor / responsibility；
+- 可独立验收的长期业务责任；
+- 事实是否能够由一个 owner 合理承担。
+
+不得仅因为存在不同页面、菜单、微服务、数据库表或代码模块就建立新的 Requirement Capability。
+
+本 Method 不要求 Consumer 使用 `L1/L2/L3` 编号；也不要求一次性穷举全部未来 Scenario。目标是让主要长期事实都有 owner，后续 Feature 可以确定性地找到需求来源。
+
+退出条件：核心事实已经有唯一长期 owner，Requirement index 可以定位主要 Authority，且不存在明显重复 / 平行事实源。
+
+## 8. Resolve Requirement Unknowns
+
+### 8.1 先分类，不默认提问
+
+每个未决项至少分为：
+
+- **Confirmed**：已有 Authority 明确支持；
+- **Deterministically Derived**：可由已确认事实唯一推导；
+- **Defaultable**：可由明确 Project Requirement Default 或保守最小行为处理；
+- **Material Ambiguity**：存在多个合理业务解释；
+- **Conflict**：多个 Authority 给出相互不兼容事实；
+- **External Dependency**：依赖外部事实或材料；
+- **Design Item**：属于 Architecture / Technical Planning / Execute 的 HOW；
+- **Unsupported Assumption**：当前没有 Evidence 支持的假设。
+
+“未知”不等于“必须问人”。
+
+### 8.2 Derive → Default → Ask → Review
+
+需求讨论遵守以下顺序：
+
+1. 当前 Authority 已能回答 → 直接使用，不提问；
+2. 已确认事实可唯一推导 → 自动推导，不提问；
+3. 当前 Project 已建立明确 Requirement Default → 应用默认，不提问；
+4. 属于 Design Item → 推迟到正确责任层，不提问；
+5. 缺少 Evidence 支持额外业务机制 → 默认不新增机制；
+6. 只有真实 Material Ambiguity / Conflict 会产生实质不同产品结果，并阻塞当前 Requirement Baseline 时，才 Ask Human；
+7. 完成一个 Requirement Capability 后进行整体 Review，允许人工一次性纠错 / 补充，不用逐条人工生成全部细节。
+
+没有 Evidence 时，默认**不额外创造**审核、审批、复核、通知、整改、版本、归档、自动同步、批量能力、额外状态、额外角色或类似业务机制。若项目需要某类常规默认，应把它提升为显式 Project Requirement Default，再由后续 Capability 重用。
+
+### 8.3 Human Question Gate
+
+一个候选问题只有同时满足以下条件才升级为 Human Blocking Question：
+
+1. 当前 Authority 无法唯一回答；
+2. 不能由已确认事实唯一推导；
+3. 没有适用且已确认的 Project Requirement Default；
+4. 不是可以安全推迟的 Design Item；
+5. 存在两个或以上合理业务解释；
+6. 不同答案会实质改变 Scope、State、Permission、Data Semantics、Business Result、Compliance 或 Acceptance；
+7. 不解决会阻塞当前 Requirement Baseline。
+
+否则应推导、默认、记录为 non-blocking open item 或推迟到后续责任层。
+
+### 8.4 Conversation protocol
+
+会话只是需求获取渠道，不是长期 Authority。
+
+普通需求会话默认使用 delta-only 输出：
+
+- 不重复长篇重述已确认历史；
+- 每个问题只给出 Decision、必要 Context、Impact 与 Options / expected answer；
+- 先问上游控制性问题，再推导下游结果；
+- 不通过逐项“是否需要某机制”的否定式穷举完成需求确认；
+- Human Decision 应尽快 promote 到真实 Requirement Authority，后续会话重新从 Authority 恢复。
+
+问题数量应由真实 Blocking Ambiguity 数决定，而不是为了形成“完整讨论”凑足固定数量。连续没有真实 blocking question 时，应停止提问并继续完成当前 Capability。
+
+## 9. Clarification Depth Stop Condition
+
+当以下信息已经足以唯一决定主要业务行为与验收时，Requirement 下钻应停止：
+
+- Goal / Scope / Out of Scope；
+- 核心业务对象；
+- Actor / Responsibility；
+- 主要状态与转换；
+- 关键业务规则；
+- 数据范围 / 语义；
+- 跨 Capability 输入输出；
+- 主要失败 / exception 结果；
+- Acceptance。
+
+如果继续下钻主要产生字段、按钮、页面布局、API、数据库、事务、缓存、类 / 包或施工顺序，则默认已经进入 Design / Technical Planning / Execute 责任。
+
+如果下游结果已经由上游规则唯一决定，也必须停止逐项追问并直接记录推导结果。
+
+## 10. Review Requirement Baseline
+
+### 10.1 Capability-level Human Review
+
+每个主要 Requirement Capability 达到可读状态后，可以进行一次整体 Human Review，重点查看：
+
+- 范围是否正确；
+- AI 自动推导是否符合意图；
+- Project Default 是否被正确应用；
+- 是否遗漏真实高价值业务规则；
+- 是否错误创造额外机制；
+- remaining ambiguity 是否确实需要人工裁决。
+
+人工主要作为 Product Authority / Reviewer，而不是逐字段需求生成器。
+
+### 10.2 Independent semantic review
+
+以下任一情况成立时，在 Baseline Ready 前必须执行独立语义复核：
+
+1. 从 legacy / heterogeneous sources 重建 Requirement Baseline；
+2. Requirement Authority 发生大规模重构、批量迁移、结构化改写、摘要化或 AI 辅助语义收敛；
+3. 多个 Authority 冲突并发生长期事实合并、取舍或覆盖；
+4. 一次处理批量改变业务状态、生命周期、权限、范围、数据语义或验收不变量。
+
+Review 必须可以核对 source / decision / resulting Authority；格式、链接、lint 或“Fresh Context 可读”不能单独证明语义正确。
+
+## 11. Requirement Convergence
+
+只有同时满足以下条件，才可以声明 `Requirement Baseline Ready`：
+
+1. Project Goal / Scope / Out of Scope 明确；
+2. 产品 / 系统责任边界明确；
+3. 主要 Requirement Capability 已建立并有明确 owner；
+4. 核心业务对象、Actor、规则、状态 / lifecycle 与重要 data semantics 可定位；
+5. 同一长期事实没有已知平行 Authority；
+6. cross-capability Requirement 已正确归属；
+7. 重要可验收 NFR 已有 owner；
+8. 会阻止后续可靠 Feature Specification 的 Requirement conflict / ambiguity 已关闭；
+9. remaining open item 已明确为 external / design / non-blocking，并有 owner 或处理路径；
+10. Requirement Authority Index 可以让 Fresh Context Agent 定位最小必要需求上下文；
+11. 命中强制 independent semantic review 的场景已经 PASS；
+12. Fresh Context Agent 可以在不依赖历史聊天或临时 analysis artifact 的情况下理解一个主要 Requirement Capability 的长期事实。
+
+真正存在 blocker 时必须保持 NOT READY。
+
+## 12. Requirement Authority Artifact lifecycle
+
+Requirement Authority 的结构、README / index / fact owner 边界、推荐目录、producer / consumer / update / supersede / escalation contract 由 `architecture:requirement-authority` 统一定义。
+
+本 Method 只负责在正确阶段产生或更新这些 owner，不复制第二套信息架构正文。
+
+默认 transitional / disposable：
+
+- source inventory；
+- extraction table；
+- ambiguity candidate list；
+- comparison matrix；
+- flow / state / relationship view；
+- human review batch；
+- conversation scratchpad。
+
+只要能够从 Requirement Authority 唯一再生，就不应为了 AI 理解方便建立新的持久中间 Authority。
+
+## 13. Return contract
+
+完成后只声明：
+
+```text
+Requirement Baseline Ready
+```
+
+它不等于：
+
+```text
+Architecture complete
+Specification created
+Execution Unit created
+Execute / Integrate authority granted
+```
+
+下一步由 Repository-local Method selector 根据当前 work kind 决定：
+
+- 没有 systemic architecture blocker → 可进入具体 Feature 的 `method:ai-development`；
+- 存在多个 Feature 共同依赖、长期、高成本难逆并阻塞可靠开发的 architecture driver → 可进入 `method:architecture-clarification`；
+- 后续 Feature 发现局部 Requirement ambiguity → 返回真实 Requirement owner；
+- 后续发现系统性 Requirement Baseline gap → 返回本 Method 中拥有该责任的阶段，必要时重新选择完整 Method。
+
+## 14. Skill / Rule 边界
+
+本 Method 当前不要求新的 `requirements-analysis` 或 `requirement-elicitation` Skill。只有未来真实 Consumer 使用证明某个 procedure 在多个 Repository 中稳定、可独立调用并能显著减少重复错误时，才评估 Skill admission。
+
+同样不因为本 Method 新增就复制一组 Requirement Rules。`Derive → Default → Ask → Review`、Question Gate 与 Depth Stop 是本 Method 的过程 contract；只有未来出现能够独立于 Method 存在的 policy gap 时，才进入 Rule owner。
+
+## 15. Evidence maturity
+
+本 Method 的 v1 contract 主要来自大型真实 Consumer 项目前期需求分析的正向与负向历史 Evidence：包括能力边界重构、穷举式 L3 清单退出、持久中间业务模型退出、AI-ready 迁移中的语义漂移反例、术语 ambiguity → Human Decision → Authority Promotion 闭环，以及长期问答循环的真实摩擦。
+
+这些 Evidence 用于提炼可复用责任和 anti-pattern，不证明任何历史目录、阶段名或具体模板应被机械复制到其他 Consumer。
