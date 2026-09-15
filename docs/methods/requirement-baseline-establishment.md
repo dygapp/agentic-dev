@@ -189,12 +189,13 @@ Requirement Capability 边界优先依据：
 
 - **Confirmed**：已有 Authority 明确支持；
 - **Deterministically Derived**：可由已确认事实唯一推导；
-- **Defaultable**：可由明确 Project Requirement Default 或保守最小行为处理；
+- **Authoritative Default**：已存在于 Requirement Authority 中、具有明确适用范围的 Project Requirement Default；
+- **Provisional Minimal Default**：没有 Evidence 支持额外业务机制时，为形成可 Review 的完整 Capability 草稿而采用的最小工作假设；
 - **Material Ambiguity**：存在多个合理业务解释；
 - **Conflict**：多个 Authority 给出相互不兼容事实；
 - **External Dependency**：依赖外部事实或材料；
 - **Design Item**：属于 Architecture / Technical Planning / Execute 的 HOW；
-- **Unsupported Assumption**：当前没有 Evidence 支持的假设。
+- **Unsupported Assumption**：当前没有 Evidence 支持、也不满足最小默认边界的其他假设。
 
 “未知”不等于“必须问人”。
 
@@ -204,13 +205,17 @@ Requirement Capability 边界优先依据：
 
 1. 当前 Authority 已能回答 → 直接使用，不提问；
 2. 已确认事实可唯一推导 → 自动推导，不提问；
-3. 当前 Project 已建立明确 Requirement Default → 应用默认，不提问；
+3. 当前 Requirement Authority 已建立明确 Project Requirement Default → 按其 scope 应用，不提问；
 4. 属于 Design Item → 推迟到正确责任层，不提问；
-5. 缺少 Evidence 支持额外业务机制 → 默认不新增机制；
+5. 缺少 Evidence 支持额外业务机制 → 可以采用 Provisional Minimal Default 形成当前 Capability 草稿，不逐项提问；
 6. 只有真实 Material Ambiguity / Conflict 会产生实质不同产品结果，并阻塞当前 Requirement Baseline 时，才 Ask Human；
-7. 完成一个 Requirement Capability 后进行整体 Review，允许人工一次性纠错 / 补充，不用逐条人工生成全部细节。
+7. 完成一个 Requirement Capability 后进行整体 Review，集中确认自动推导、Authoritative Default 与 Provisional Minimal Default 的结果，允许人工一次性纠错 / 补充。
 
-没有 Evidence 时，默认**不额外创造**审核、审批、复核、通知、整改、版本、归档、自动同步、批量能力、额外状态、额外角色或类似业务机制。若项目需要某类常规默认，应把它提升为显式 Project Requirement Default，再由后续 Capability 重用。
+没有 Evidence 时，默认**不额外创造**审核、审批、复核、通知、整改、版本、归档、自动同步、批量能力、额外状态、额外角色或类似业务机制。这个“最小行为”只是减少无效询问的 drafting default，不自动等于已确认长期 Requirement。
+
+Project Requirement Default 若要跨多个 Capability 直接复用，必须先进入真实 Requirement Authority，并明确其适用范围与必要 override 条件；聊天中的口头习惯、模型常识或历史项目经验不能直接充当 Authoritative Default。
+
+Provisional Minimal Default 必须在当前 Capability Human Review 中可见。只有 Review 通过、Product / Requirement Authority 明确认可，或其结果随后被其他有效 Authority 支持后，相关长期事实才能 promote 到 durable Requirement owner；在此之前不得把 provisional default 当成已确认基线事实传播到其他 Capability。
 
 ### 8.3 Human Question Gate
 
@@ -218,13 +223,13 @@ Requirement Capability 边界优先依据：
 
 1. 当前 Authority 无法唯一回答；
 2. 不能由已确认事实唯一推导；
-3. 没有适用且已确认的 Project Requirement Default；
+3. 没有适用且已确认的 Authoritative Default；
 4. 不是可以安全推迟的 Design Item；
 5. 存在两个或以上合理业务解释；
 6. 不同答案会实质改变 Scope、State、Permission、Data Semantics、Business Result、Compliance 或 Acceptance；
 7. 不解决会阻塞当前 Requirement Baseline。
 
-否则应推导、默认、记录为 non-blocking open item 或推迟到后续责任层。
+否则应推导、应用 Authoritative Default、采用可 Review 的 Provisional Minimal Default、记录为 non-blocking open item，或推迟到后续责任层。
 
 ### 8.4 Conversation protocol
 
@@ -266,7 +271,8 @@ Requirement Capability 边界优先依据：
 
 - 范围是否正确；
 - AI 自动推导是否符合意图；
-- Project Default 是否被正确应用；
+- Authoritative Default 是否被正确应用；
+- Provisional Minimal Default 是否合理、是否应确认 / 修正 / 删除；
 - 是否遗漏真实高价值业务规则；
 - 是否错误创造额外机制；
 - remaining ambiguity 是否确实需要人工裁决。
@@ -299,7 +305,8 @@ Review 必须可以核对 source / decision / resulting Authority；格式、链
 9. remaining open item 已明确为 external / design / non-blocking，并有 owner 或处理路径；
 10. Requirement Authority Index 可以让 Fresh Context Agent 定位最小必要需求上下文；
 11. 命中强制 independent semantic review 的场景已经 PASS；
-12. Fresh Context Agent 可以在不依赖历史聊天或临时 analysis artifact 的情况下理解一个主要 Requirement Capability 的长期事实。
+12. Fresh Context Agent 可以在不依赖历史聊天或临时 analysis artifact 的情况下理解一个主要 Requirement Capability 的长期事实；
+13. 不存在仍被当成 durable Requirement 使用、但尚未经过 Capability Review / Authority promotion 的 Provisional Minimal Default。
 
 真正存在 blocker 时必须保持 NOT READY。
 
