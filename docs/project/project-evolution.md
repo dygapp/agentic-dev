@@ -148,8 +148,8 @@ Issue #133 / PR #134 补齐普通软件 Consumer 在多个 Feature 进入 Specif
 这一阶段没有把 `jilinjobs` 历史流程当作成功模板，而是将其作为带失败历史的混合 Evidence，提炼可复用机制并显式保留失败教训。长期结果包括：
 
 - 新增 `method:software-project-clarification`，生命周期为 `Establish Context → Requirement Clarification → Architecture Clarification? → Clarification Convergence`；
-- Requirement Clarification 负责从原始、Legacy、冲突或碎片化输入中提取并确认长期 Product / Domain 事实，通过 Authority promotion 回写真实 Requirement / Domain owner，而不是建立需要长期同步的派生中间层；
-- 高风险 baseline 重建、批量语义变换与多 Authority 冲突合并在 Ready claim 前必须执行 independent semantic review，避免结构化迁移或实施者自证静默创造业务事实；
+- Requirement Clarification 负责从原始、Legacy、冲突或碎片化输入中提取并确认长期 Product / Domain 事实，将确认结果提升并回写到真实 Requirement / Domain owner，而不是建立需要长期同步的派生中间层；
+- 高风险 baseline 重建、批量语义变换与多 Authority 冲突合并在 Ready 声明前必须执行 independent semantic review，避免结构化迁移或实施者自证静默创造业务事实；
 - Architecture Clarification 被限定为条件阶段：只有多个当前或预期 Feature 在可靠 Specification 前共同依赖尚未解决的长期 architecture driver 时进入；v1 只固化 bounded、conditional、anti-BDUF 的最小 contract；
 - `method:ai-development` 明确保持 Feature / change 级职责；Feature-local ambiguity、Specification、Technical Planning 与项目级 Requirement / Architecture Clarification 通过真实长期 owner 组合，不形成平行 Authority；
 - 新 Method 存在于 reusable Method corpus 不等于 `agentic-dev` 自身采用；`project-capability-profile.md` 未注册该 Method，Consumer 只有在显式 adoption / upgrade 后才建立 local selector mapping；
