@@ -160,7 +160,8 @@ local implementation evidence
 5. shared capability / contract / topology 等长期结构关系足以被后续 Fresh Context Feature Agent 定位；
 6. ADR 只记录真正需要历史理由的 decision，不把 ADR 变成全部 Architecture 文档；
 7. remaining architecture item 已明确为 non-blocking 或属于后续 evolutionary evidence；
-8. 高影响变更需要的独立 review 已完成。
+8. 高影响变更需要的独立 review 已完成；
+9. 新增或重大修改的长期 Architecture artifact 已有明确 producer、trigger、consumer、persistence、update、supersede 与 escalation boundary。
 
 真正存在 blocker 时保持 NOT READY。
 
@@ -186,12 +187,36 @@ Execute / Integrate authority granted
 
 ## 9. Artifact lifecycle
 
+### 9.1 Durable outputs
+
 默认 durable：
 
 - Architecture Context / constraints；
 - shared capability / contract boundary；
 - current durable Architecture State；
 - 条件性的 ADR。
+
+这些长期 Architecture artifact 的 producer 可以是本 Method、Feature Technical Planning 中经确认具有跨 Feature 长期价值的 architecture decision，或目标 Repository 授权的 Human / Architecture Authority。
+
+典型 trigger 包括 systemic architecture driver、多个局部实现暴露出的 shared pattern、外部技术 / 安全 / 部署约束变化，以及现有 Architecture owner 冲突或不足。
+
+主要 consumer 包括 `method:ai-development` 的 Specification / Technical Planning / Execute / Converge、后续 Architecture Clarification、verification / review 与 Human Architecture Review。
+
+长期 Architecture fact 必须持久化到 Consumer Repository 可定位的真实 Architecture owner；本 Method 不规定统一物理路径，也不把临时 option matrix / diagram 当成 durable owner。
+
+更新时先修改真实 Architecture owner，再最小传播受影响引用。Feature Technical Plan 不得静默覆盖已有长期 Architecture fact；若其决定具有长期价值，应提升回同一 owner。
+
+新的 Architecture owner / decision 取代旧 current fact 时，应更新当前引用并删除或明确废止旧 current owner；历史理由由 Git / Issue / PR 与必要 ADR 保存，不通过长期兼容文档维护两套 current Architecture。
+
+以下情况必须升级到正确 Authority，而不是在本 Method 内静默决定：
+
+- 暴露新的 Product / Requirement ambiguity 或 conflict；
+- 高影响、高成本难逆选择超出当前授权；
+- security / privacy / production / destructive external consequence 需要人工决定；
+- Architecture Evidence 不足以支持 durable decision；
+- owner 冲突或 supersede 关系无法唯一确定。
+
+### 9.2 Transitional outputs
 
 默认 transitional / disposable：
 
@@ -201,7 +226,7 @@ Execute / Integrate authority granted
 - spike / benchmark result 的解释性草稿；
 - review scratchpad。
 
-只要某个派生表达可以从长期 Architecture Authority 唯一再生，就不应为了 AI 理解方便再建立平行长期模型。
+临时产物只需要明确当前用途与退出 / 丢弃边界；只要某个派生表达可以从长期 Architecture Authority 唯一再生，就不应为了 AI 理解方便再建立平行长期模型。
 
 ## 10. Skill / Rule 边界
 
