@@ -64,7 +64,22 @@ Architecture 只规定 selector **必须存在什么语义**；具体 Repository
 
 因此具体 Method 正文仍是过程语义的唯一 owner，Repository-local selector 只是进入该 owner 的薄实例映射。
 
-## 4. 无匹配时的行为
+## 4. Method 可以形成上下游关系，但不建立 Super-Method
+
+不同 Method 可以通过 Return Contract 与下一 work kind 自然衔接，例如：
+
+```text
+Requirement Baseline Establishment
+→ Requirement Baseline Ready
+→ Architecture Clarification?（条件性）
+→ AI Development
+```
+
+这种关系不要求再建立一个只负责“串联其他 Method”的 super-method。只要每个 work kind 的进入条件、Return Contract 与 local selector 足以决定下一责任，就应保持 Method 单一职责。
+
+同样，一个上游 Method 完成后不自动授予下游 Method 的 Execute / Integrate Authority；Repository-local Authority 仍决定下一实际工作。
+
+## 5. 无匹配时的行为
 
 如果当前工作不属于任何已定义 Method：
 
@@ -74,21 +89,21 @@ Architecture 只规定 selector **必须存在什么语义**；具体 Repository
 
 Repository-local selector 缺失、陈旧或歧义时应失败关闭到当前 Project / Repository Authority，不从 Guide、历史聊天或目录名猜测 Method。
 
-## 5. Selection 规模演进
+## 6. Selection 规模演进
 
-Method 数量较少时，稳定、可审计的 Repository-local静态 selector 足够。
+Method 数量较少时，稳定、可审计的 Repository-local 静态 selector 足够。
 
 只有当 Method 数量、work-kind 歧义或 selector 维护成本真实增长，并由 eval 证明静态映射不再可靠时，才评估 Method metadata discovery / selector tool。
 
 不得仅为形式统一复制 Rule Discovery 的工具、metadata 或复杂度。
 
-## 6. Phase Identity
+## 7. Phase Identity
 
 如果 Rule Discovery 或其他 runtime contract 需要引用 Method stage，**稳定 phase identity 必须由具体 Method canonical owner 定义**。
 
 Architecture 不维护跨 Method 的固定 phase token 列表，也不假设不同 Method 共享同一阶段身份。当前 Method 没有定义稳定 phase identity 时，调用方不得从自然语言阶段名或其他 Method 猜测机器 token。
 
-## 7. Method 演进与新增门禁
+## 8. Method 演进与新增门禁
 
 新增 Method 至少证明：
 
@@ -99,4 +114,6 @@ Architecture 不维护跨 Method 的固定 phase token 列表，也不假设不�
 5. 与现有 Method 不只是命名或局部步骤差异；
 6. 有真实项目 / Consumer Evidence 支持长期复用价值。
 
-大型项目前期 Requirements Analysis 可以成为未来 Method 候选，但应先从已验证实践提炼其适用边界、阶段、产物、Gate 与完成语义，而不是只因历史上使用过就直接固化。
+`method:requirement-baseline-establishment` 的加入基于真实大型 Consumer 的多轮需求分析正向与负向历史 Evidence，并拥有独立的 source classification、fact extraction、semantic ownership、Question Gate、Human Review 与 `Requirement Baseline Ready` Gate，因此不是 `ai-development` 的局部步骤。
+
+`method:architecture-clarification` 与 Requirement Baseline work kind 分离，是因为它具有独立进入条件、低于 Requirement 的 Evidence maturity、条件性执行语义和不同 Return Contract；简单项目可以不运行该 Method。
