@@ -33,6 +33,6 @@ Raw Project Inputs
 
 这些 reusable Method 存在于本仓库 corpus，**不等于** `agentic-dev` 自身已经把它们注册到 local selector；Consumer adoption / upgrade 后应由 Consumer 自己判断 work kind、adopt / adapt / reject，并建立 local mapping。
 
-当前不再保留独立 `principles.md` 复合文档，也不保留 `method:software-project-clarification` super-method。长期语义由真实 owner 分别承担：Requirement Baseline、Architecture Clarification、AI Development 各自拥有自己的阶段 / Gate / return contract；能力边界在 Architecture，执行能力在 Skill，条件性约束在 Rule。
+当前不再保留负责串联 Requirement 与 Architecture 的项目澄清 super-method。长期语义由真实 owner 分别承担：Requirement Baseline、Architecture Clarification、AI Development 各自拥有自己的阶段 / Gate / return contract；能力边界在 Architecture，执行能力在 Skill，条件性约束在 Rule。
 
 Method 是可扩展的一等 capability 类型。未来只有真实 Evidence 证明存在稳定的复杂工作生命周期时才增加新 Method；Method 不只用于普通产品开发，也可以描述 requirement baseline establishment、architecture clarification、adoption / upgrade、capability establishment 等具有独立 work kind、阶段转换、Gate 与完成语义的复杂过程。
