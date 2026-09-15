@@ -15,11 +15,14 @@ class MethodCorpusTests(unittest.TestCase):
             (REPO_ROOT / "docs/methods/software-project-clarification.md").exists()
         )
 
-        methods_readme = self.read("docs/methods/README.md")
-        ai_development = self.read("docs/methods/ai-development.md")
-        using_guide = self.read("docs/guides/using-agentic-dev.md")
+        current_entries = [
+            self.read("docs/methods/README.md"),
+            self.read("docs/methods/ai-development.md"),
+            self.read("docs/guides/using-agentic-dev.md"),
+            self.read("docs/project/project-roadmap.md"),
+        ]
 
-        for text in (methods_readme, ai_development, using_guide):
+        for text in current_entries:
             self.assertNotIn("method:software-project-clarification", text)
             self.assertNotIn("software-project-clarification.md", text)
 
