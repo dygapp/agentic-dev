@@ -141,7 +141,26 @@ Issue #129 / PR #132 将历史 `experiment/codex-multi-model-collaboration`、Is
 
 PR #132 candidate exact Head `2d6b093696bbd97d5c43a265173afc9954a7008f` 通过 Rule Discovery Run #94 与独立复核（未解决 Blocking / Medium = 0 / 0），随后于 integration commit `385204c8605dd58584ec18456ab8a97d6282b515` squash merge；Post-Integration Rule Discovery Run #95 PASS，Issue #129 completed。
 
-## 10. 当前演进原则
+## 10. Software Project Clarification v1
+
+Issue #133 / PR #134 补齐普通软件 Consumer 在多个 Feature 进入 Specification 之前，如何建立或重建长期 Requirement / Architecture Context 的项目级澄清能力。
+
+这一阶段没有把 `jilinjobs` 历史流程当作成功模板，而是将其作为带失败历史的混合 Evidence，提炼可复用机制并显式保留失败教训。长期结果包括：
+
+- 新增 `method:software-project-clarification`，生命周期为 `Establish Context → Requirement Clarification → Architecture Clarification? → Clarification Convergence`；
+- Requirement Clarification 负责从原始、Legacy、冲突或碎片化输入中提取并确认长期 Product / Domain 事实，通过 Authority promotion 回写真实 Requirement / Domain owner，而不是建立需要长期同步的派生中间层；
+- 高风险 baseline 重建、批量语义变换与多 Authority 冲突合并在 Ready claim 前必须执行 independent semantic review，避免结构化迁移或实施者自证静默创造业务事实；
+- Architecture Clarification 被限定为条件阶段：只有多个当前或预期 Feature 在可靠 Specification 前共同依赖尚未解决的长期 architecture driver 时进入；v1 只固化 bounded、conditional、anti-BDUF 的最小 contract；
+- `method:ai-development` 明确保持 Feature / change 级职责；Feature-local ambiguity、Specification、Technical Planning 与项目级 Requirement / Architecture Clarification 通过真实长期 owner 组合，不形成平行 Authority；
+- 新 Method 存在于 reusable Method corpus 不等于 `agentic-dev` 自身采用；`project-capability-profile.md` 未注册该 Method，Consumer 只有在显式 adoption / upgrade 后才建立 local selector mapping；
+- 没有因为新增 Method 自动增加 Requirement / Architecture Skill、Clarification Rule、默认 Handoff Artifact 或固定 Consumer 文档 schema；
+- `using-agentic-dev` Human Guide 同步解释两层 Clarification、适用边界、Consumer-local adoption 与当前 Architecture Clarification Evidence maturity，但不成为第二套规范 owner。
+
+PR #134 在 Method Boundary Design、adversarial review、focused re-review、semantic consistency review、Human Guide alignment review 与语言规范检查后，于 integration commit `6fdcf628abfac3eb306fc9acfce303fd7aee245e` squash merge；Post-Integration Rule Discovery Run #106 PASS，Issue #133 completed。
+
+这一阶段进一步确认了一条长期边界：**面向 Consumer 的 reusable Method 不应因为被 `agentic-dev` 定义，就自动反向成为 `agentic-dev` 自身 capability evolution 的默认流程。**
+
+## 11. 当前演进原则
 
 从当前阶段开始，项目演进遵守：
 
@@ -151,4 +170,5 @@ PR #132 candidate exact Head `2d6b093696bbd97d5c43a265173afc9954a7008f` 通过 R
 - 历史细节需要时从 GitHub Issue / PR / Git 恢复，不复制到 ordinary Fresh Context；
 - Project Capability Profile 必须持续保持为薄的 Repository-local instance owner，不演变成新的 Runtime Catalog / Rule Index；
 - 新 capability 的 semantic owner 分类应先区分 reusable semantics、semantic acceptance、local instance activation 与 ordinary use，再决定是否需要 Architecture / Method / Skill / Rule / Project / Guide；
-- 新增 specialized Method 除了通过自身 admission gate，还必须复核与相邻 Method 的 Gate ownership 和组合关系。
+- 新增 specialized Method 除了通过自身 admission gate，还必须复核与相邻 Method 的 Gate ownership 和组合关系；
+- Consumer-oriented Method 是否适用于 `agentic-dev` 自身演进，必须由本 Repository 的真实 work kind 与 local selector 独立决定，不能从 reusable capability 的存在反推 self-adoption。
