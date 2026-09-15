@@ -10,7 +10,7 @@ status: active
 
 本方法定义与语言、框架、Issue 系统和具体 Agent 产品无关的软件开发生命周期。它只拥有“工作处于什么状态、下一职责是什么、何时可以返回或前进”的长期语义；具体工程约束由 Rule 按任务发现，具体可复用执行闭环由 Skill 实现。
 
-本方法面向**具体 Feature / change**。进入本方法的前提是：当前 Repository 已存在足以支持本次 Feature 判断 Goal、Scope、Observable Behavior 与 Acceptance 的最小 Requirement / Domain / Architecture Context。若多个当前或预期 Feature 共同依赖的 durable Requirement / Architecture Context 缺失、冲突或需要重建，不应在当前 Feature 内局部创造长期事实；目标 Repository 应返回真实长期 owner / project-level clarification responsibility。只有目标 Repository 已采用 `method:software-project-clarification` 且 local Method selector 命中该 work kind 时，才进入该 Method；否则继续服从 Consumer-local Authority 与 direct responsibility，不因 upstream capability 存在而隐式采用。
+本方法面向**具体 Feature / change**。进入本方法的前提是：当前 Repository 已存在足以支持本次 Feature 判断 Goal、Scope、Observable Behavior 与 Acceptance 的最小 Requirement / Domain / Architecture Context。若多个当前或预期 Feature 共同依赖的长期 Requirement / Architecture Context 缺失、冲突或需要重建，不应在当前 Feature 内局部创造长期事实；目标 Repository 应返回真实长期 owner 或项目级澄清责任。只有目标 Repository 已采用 `method:software-project-clarification`，且 local Method selector 命中该 work kind 时，才进入该 Method；否则继续服从 Consumer-local Authority 与 direct responsibility，不因 upstream capability 存在而隐式采用。
 
 ## 2. 生命周期
 
@@ -53,9 +53,9 @@ Integration 不是通用方法阶段。merge、release、deploy 与其他外部�
 
 解决会实质改变 Goal、Scope、User-visible Behavior、Business Boundary、Acceptance 或重大非功能义务的歧义。
 
-优先从当前 Repository / Requirement / Domain / Architecture Authority 解析；普通、低影响、可逆实现选择不升级到产品意图层。
+优先从当前 Repository / Requirement / Domain / Architecture Authority 解析；普通、低影响、可逆的实现选择不升级到产品意图层。
 
-如果当前歧义只影响本 Feature，且长期 owner 明确，则返回/更新该 owner 后恢复当前 Feature。若发现问题实际影响多个 Feature、核心 Domain object / lifecycle / terminology / product boundary，或现有长期 owner 缺失、冲突、结构性不足，则停止局部澄清并升级到 project-level clarification responsibility；不要在当前 Specification 中创建新的项目级事实。
+如果当前歧义只影响本 Feature，且长期 owner 明确，则返回并更新该 owner，解决后恢复当前 Feature。若发现问题实际影响多个 Feature、核心 Domain object / lifecycle / terminology / product boundary，或现有长期 owner 缺失、冲突、结构性不足，则停止局部澄清并升级到项目级澄清责任；不要在当前 Specification 中创建新的项目级事实。
 
 退出条件：不存在会显著改变目标、范围、产品行为或验收结果的关键未决问题，并且当前 Feature 所依赖的长期 Context 足以继续 Specification。
 
@@ -73,9 +73,9 @@ Integration 不是通用方法阶段。merge、release、deploy 与其他外部�
 - Acceptance Criteria；
 - 必要非功能约束。
 
-Specification 不默认持有实现路径、类/函数、框架构造或施工顺序，也不为了“自包含”复制完整 project-level Requirement / Domain Authority。跨多个 Feature 持续成立的长期事实由真实 Requirement / Domain owner 持有；Specification 只拥有当前 change 对这些事实的具体适用、范围、可观察行为与验收。
+Specification 不默认持有实现路径、类/函数、框架构造或施工顺序，也不为了“自包含”复制完整的 project-level Requirement / Domain Authority。跨多个 Feature 持续成立的长期事实由真实 Requirement / Domain owner 持有；Specification 只拥有当前 change 对这些事实的具体适用、范围、可观察行为与验收。
 
-当当前 Feature 确认的新业务术语、不变量或规则需要跨多个 Feature 长期维护时，形成长期 Authority Candidate，并按目标仓库权威 promotion 到真实 Requirement / Domain owner，而不是永久留在当前 Specification 中成为隐藏项目基线。
+当当前 Feature 确认的新业务术语、不变量或规则需要跨多个 Feature 长期维护时，形成长期 Authority Candidate，并按目标仓库权威提升并回写到真实 Requirement / Domain owner，而不是永久留在当前 Specification 中成为隐藏项目基线。
 
 退出条件：新的 Agent 只读取 Specification 与最小必要的 Requirement / Domain / Architecture Context，即可判断做什么、不做什么、什么算完成，并且没有高影响歧义。
 
@@ -89,7 +89,7 @@ Technical Plan 只保存跨 Execution Unit 持续有协调价值的 HOW；精确
 
 技术决定若会跨当前功能长期约束后续工作，应更新真实 Architecture Context；只有决定背景、主要权衡或替代关系具有长期价值时才形成/更新 ADR。
 
-单 Feature 的 architecture-impacting HOW 仍属于本阶段。只有当 Technical Planning 发现一个尚未解决的 durable architecture driver 已经超出当前 Feature，并且多个当前或预期 Feature 在进入可靠 Specification 前共同依赖它时，才升级到 project-level Architecture Clarification responsibility。二者必须更新同一个长期 Architecture owner，不形成平行 Authority。
+单个 Feature 中会影响 Architecture 的 HOW 仍属于本阶段。只有当 Technical Planning 发现一个尚未解决的长期 architecture driver 已经超出当前 Feature，并且多个当前或预期 Feature 在进入可靠 Specification 前共同依赖它时，才升级到项目级 Architecture Clarification 责任。二者必须更新同一个长期 Architecture owner，不形成平行 Authority。
 
 退出条件：实施前必须解决的技术不确定性已关闭，长期 Architecture / ADR 责任已进入正确 owner；或已经确认无需独立 Technical Planning。
 
@@ -131,7 +131,7 @@ Converge 必须区分：
 - Review：实现本身是否安全、合理、符合约束；
 - Convergence：整个目标是否与权威意图、长期 artifact responsibility 和当前证据一致。
 
-发现缺口时返回拥有该责任的上游层，不在 Converge 中静默重设计。局部 Feature 缺口返回当前 Feature owner；系统性 Requirement / Architecture gap 返回长期 owner 或 project-level clarification responsibility，不把 Converge 变成项目级需求/架构重建阶段。
+发现缺口时返回拥有该责任的上游层，不在 Converge 中静默重设计。局部 Feature 缺口返回当前 Feature owner；系统性 Requirement / Architecture 缺口返回长期 owner 或项目级澄清责任，不把 Converge 变成项目级需求/架构重建阶段。
 
 退出条件：不存在已知阻塞缺口，Authority、实现和当前证据一致，可报告 `Ready to Integrate`。
 
