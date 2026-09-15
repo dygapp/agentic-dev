@@ -36,6 +36,9 @@ class MethodCorpusTests(unittest.TestCase):
         self.assertIn("id: method:requirement-baseline-establishment", requirement)
         self.assertIn("Requirement Baseline Ready", requirement)
         self.assertIn("Derive → Default → Ask → Review", requirement)
+        self.assertIn("Authoritative Default", requirement)
+        self.assertIn("Provisional Minimal Default", requirement)
+        self.assertIn("不自动等于已确认长期 Requirement", requirement)
 
         self.assertIn("id: method:architecture-clarification", architecture)
         self.assertIn("Architecture Context Ready", architecture)
