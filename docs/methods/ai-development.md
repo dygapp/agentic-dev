@@ -10,7 +10,7 @@ status: active
 
 本方法定义与语言、框架、Issue 系统和具体 Agent 产品无关的软件开发生命周期。它只拥有“工作处于什么状态、下一职责是什么、何时可以返回或前进”的长期语义；具体工程约束由 Rule 按任务发现，具体可复用执行闭环由 Skill 实现。
 
-本方法面向**具体 Feature / change**。进入本方法的前提是：当前 Repository 已存在足以支持本次 Feature 判断 Goal、Scope、Observable Behavior 与 Acceptance 的最小 Requirement / Domain / Architecture Context。若多个当前或预期 Feature 共同依赖的 durable Requirement / Architecture Context 缺失、冲突或需要重建，不应在当前 Feature 内局部创造长期事实；目标 Repository 应返回真实长期 owner，并在 work kind 匹配时选择 `method:software-project-clarification`。
+本方法面向**具体 Feature / change**。进入本方法的前提是：当前 Repository 已存在足以支持本次 Feature 判断 Goal、Scope、Observable Behavior 与 Acceptance 的最小 Requirement / Domain / Architecture Context。若多个当前或预期 Feature 共同依赖的 durable Requirement / Architecture Context 缺失、冲突或需要重建，不应在当前 Feature 内局部创造长期事实；目标 Repository 应返回真实长期 owner / project-level clarification responsibility。只有目标 Repository 已采用 `method:software-project-clarification` 且 local Method selector 命中该 work kind 时，才进入该 Method；否则继续服从 Consumer-local Authority 与 direct responsibility，不因 upstream capability 存在而隐式采用。
 
 ## 2. 生命周期
 
