@@ -37,7 +37,7 @@ Rule 是 policy / constraint / default / invariant / completion requirement。�
 
 ### Architecture：这些能力长期是什么关系
 
-Architecture 定义可复用 capability 边界、ownership、组合方式和运行不变量。
+Architecture 定义可复用 capability 的边界、ownership、组合方式和运行不变量。
 
 ### Guide：给人看的解释层
 
@@ -73,13 +73,13 @@ README.md
 
 普通软件开发并不总是从“需求已经足够明确，可以直接写 Specification”开始。
 
-当多个当前或预期 Feature 共同依赖的长期 Requirement / Architecture Context 本身缺失、冲突或需要重建时，先在单个 Feature 内不断补洞，容易把项目级事实散落进局部 Specification、Technical Plan 或聊天上下文。
+当多个当前或预期 Feature 共同依赖的长期 Requirement / Architecture Context 缺失、冲突或需要重建时，如果只在单个 Feature 内不断补洞，项目级事实很容易散落到局部 Specification、Technical Plan 或聊天上下文中。
 
 `agentic-dev` 因此区分两类不同 work kind：
 
 ```text
 Software Project Clarification
-        ↓ 建立 / 重建 durable local context
+        ↓ 建立 / 重建长期本地上下文
 Clarified Project Context Ready
         ↓ Repository 再选择具体 Feature / Change
 AI Development
@@ -108,7 +108,7 @@ Clarify Intent
 - legacy modernization / rewrite，需要从旧系统、旧文档和当前决策中重建可信长期上下文；
 - Requirement Authority 已碎片化、冲突或不足，多个 Feature 无法可靠进入 Specification；
 - major domain / product boundary restructuring；
-- 多个计划 Feature 共同被同一个未解决的 durable architecture driver 阻塞。
+- 多个计划 Feature 共同被同一个尚未解决的长期 architecture driver 阻塞。
 
 以下情况通常**不需要**进入该 Method：
 
@@ -117,7 +117,7 @@ Clarify Intent
 - 只是技术复杂、文档很多，但长期上下文本身并没有缺失或冲突；
 - `agentic-dev` 自身的 Method / Skill / Rule / Architecture capability evolution。
 
-Method 存在于 upstream capability corpus 不等于 Consumer 自动采用。只有 Consumer 显式 adopt / adapt，并把相应 `work kind → Method` mapping 写入自己的 local selector 后，ordinary runtime 才能选择它。
+Method 存在于 upstream capability corpus，不等于 Consumer 自动采用。只有 Consumer 显式 adopt / adapt，并把相应 `work kind → Method` mapping 写入自己的 local selector 后，ordinary runtime 才能选择它。
 
 ## 6. Software Project Clarification 的四个阶段
 
@@ -133,9 +133,9 @@ Establish Context
 
 ### Establish Context
 
-先确定本次澄清的 scope 与证据边界：哪些是 current Authority，哪些只是 legacy、reference、analysis、conversation 或 unknown；同时确认长期 semantic owner 是否已经存在、是否冲突、是否需要重建。
+先确定本次澄清的范围与证据边界：哪些是 current Authority，哪些只是 legacy、reference、analysis、conversation 或 unknown；同时确认长期 semantic owner 是否已经存在、是否冲突、是否需要重建。
 
-目标不是建立完整 source catalog，而是避免把不同可信度、不同历史时期的材料平权混成 current truth。
+目标不是建立完整 source catalog，而是避免把不同可信度、不同历史时期的材料平权混成当前事实。
 
 ### Requirement Clarification
 
@@ -161,7 +161,7 @@ Architecture Clarification **已经作为新 Method 的 canonical 条件阶段�
 
 它只在下面这种情况进入：
 
-> 多个当前或预期 Feature / change 在进入可靠 Specification 前，共同依赖一个尚未解决的 durable architecture driver。
+> 多个当前或预期 Feature / change 在进入可靠 Specification 前，共同依赖一个尚未解决的长期 architecture driver。
 
 可能涉及：
 
@@ -170,26 +170,26 @@ Architecture Clarification **已经作为新 Method 的 canonical 条件阶段�
 - security / integration / deployment topology；
 - high-cost-to-reverse structural decision；
 - 成熟 reference implementation 能显著降低系统性探索成本；
-- 多个局部实现已经显示出 shared capability extraction 信号。
+- 多个局部实现已经显示出抽取 shared capability 的信号。
 
-它的目标是把必须提前解决的长期结构问题放入真实 Architecture owner，而不是提前完成整个系统技术设计。
+它的目标是把必须提前解决的长期结构问题放入真实 Architecture owner，而不是提前完成整个系统的技术设计。
 
 因此以下内容仍留在 Feature Technical Planning / JIT Execution：
 
-- 单 Feature 的普通 HOW；
-- 低影响、易逆局部设计；
-- 精确类 / 函数 / 文件组织；
+- 单个 Feature 的普通 HOW；
+- 低影响、易逆的局部设计；
+- 精确的类 / 函数 / 文件组织；
 - 当前 Execution Unit 的施工步骤。
 
 如果 Architecture Clarification 暴露出新的业务多解、Requirement conflict 或未定义 Product Boundary，应返回 Requirement Clarification；Architecture 不能自行创造 Product Requirement。
 
-当前 v1 对 Architecture Clarification 只固化 **bounded、conditional、anti-BDUF** 的最小 contract。它还没有像 Requirement Clarification 一样获得完整 cross-case historical evidence；后续应根据真实 Consumer positive / negative / evolutionary architecture case 继续修订。
+当前 v1 对 Architecture Clarification 只固化 **bounded、conditional、anti-BDUF** 的最小 contract。它还没有像 Requirement Clarification 一样获得完整的跨案例历史证据；后续应根据真实 Consumer 的正向、负向和演进型架构案例继续修订。
 
 ### Clarification Convergence
 
 Convergence 不是检查“文档是否都写完”，而是确认后续 Feature Development 的输入是否已经可靠。
 
-真正 blocker 仍存在时必须保持 NOT READY。只有长期 owner、关键 Requirement / Architecture 冲突、必要 semantic review 和剩余 non-blocking open item 都符合 Method Gate，才能声明：
+真正存在 blocker 时必须保持 NOT READY。只有长期 owner、关键 Requirement / Architecture 冲突、必要 semantic review 和剩余 non-blocking open item 都符合 Method Gate，才能声明：
 
 ```text
 Clarified Project Context Ready
@@ -207,15 +207,15 @@ Clarified Project Context Ready
 
 ### Feature Specification
 
-拥有当前 change 的具体 scope、observable behavior、failure behavior 与 acceptance criteria。它可以引用长期 Requirement / Domain Authority，但不应为了“自包含”复制整个项目基线。
+拥有当前 change 的具体范围、可观察行为、失败行为与验收标准。它可以引用长期 Requirement / Domain Authority，但不应为了“自包含”复制整个项目基线。
 
 ### Technical Planning / Architecture
 
 Feature-specific、可逆的实现 HOW 继续属于 Technical Planning。
 
-只有跨多个 Feature、长期持续、在可靠 Specification 前必须解决的 structural driver 才提升到 project-level Architecture Clarification；Technical Planning 与 Architecture Clarification 必须更新同一个长期 Architecture owner，不能形成平行 Authority。
+只有跨多个 Feature、长期持续、且必须在可靠 Specification 前解决的 structural driver，才提升到项目级 Architecture Clarification；Technical Planning 与 Architecture Clarification 必须更新同一个长期 Architecture owner，不能形成平行 Authority。
 
-如果 ordinary Feature flow 发现系统性长期缺口，应返回真实长期 owner / project-level clarification responsibility；只有 Consumer-local selector 已采用并匹配 `method:software-project-clarification` 时，才进入完整 Method。upstream capability 的存在本身不构成隐式 adoption。
+如果普通 Feature 流程发现系统性长期缺口，应返回真实长期 owner 或项目级澄清责任；只有 Consumer-local selector 已采用并匹配 `method:software-project-clarification` 时，才进入完整 Method。upstream capability 的存在本身不构成隐式 adoption。
 
 ## 8. 普通 Feature / Change 如何工作
 
@@ -243,9 +243,9 @@ Integration 本身不属于通用 Method；merge、release、deploy 等仍由目
 
 当前没有足够证据证明 `requirement-analysis`、`architecture-framing` 等局部 procedure 已经跨 Consumer 稳定到值得独立 Skill；也没有为了新 Method 批量创建 Clarification Rules。
 
-同样，Method 不要求一个固定的“Clarification Handoff”文档或统一目录结构。默认长期保存的是各自真实 semantic owner，例如 Requirement Authority、必要的 Domain / Terminology Authority、Architecture Context / State、条件性的 ADR；source inventory、ambiguity matrix、comparison table、flow/state view、review scratchpad 等默认是 transitional / disposable。
+同样，Method 不要求一个固定的“Clarification Handoff”文档或统一目录结构。默认长期保存的是各自真实 semantic owner，例如 Requirement Authority、必要的 Domain / Terminology Authority、Architecture Context / State、条件性的 ADR；source inventory、ambiguity matrix、comparison table、flow/state view、review scratchpad 等默认属于 transitional / disposable artifact。
 
-未来只有真实 Consumer evidence 证明某个 procedure 或 policy gap 具有独立、稳定、可复用价值时，才评估新增 Skill / Rule。
+未来只有真实 Consumer Evidence 证明某个 procedure 或 policy gap 具有独立、稳定、可复用价值时，才评估新增 Skill / Rule。
 
 ## 10. Rule Discovery 为什么存在
 
@@ -273,7 +273,7 @@ current task facts / responsibility
 1. 恢复 Consumer 自己的 Project / Repository Authority；
 2. 选择精确 upstream baseline；
 3. 判断哪些 Method / Architecture / Skill / Rule / Tool contract 需要 adopt / adapt / reject；
-4. 把接受 capability 写入 Consumer-local canonical owner；
+4. 把接受的 capability 写入 Consumer-local canonical owner；
 5. 建立 Consumer 自己的 capability profile / Method selector / Skill / Rule discovery；
 6. 验证 ordinary runtime 不在线依赖 upstream；
 7. 记录 evaluated baseline。
@@ -342,7 +342,7 @@ Consumer-local Rule 可以继续保持本地差异，例如不同仓库拥有不
 5. `docs/rules/README.md`；
 6. `skills/README.md`。
 
-如果你要理解普通软件 Consumer 的完整前置到 Feature 开发关系，继续阅读：
+如果你要理解普通软件 Consumer 从项目前置澄清到 Feature 开发的完整关系，继续阅读：
 
 1. `docs/methods/software-project-clarification.md`；
 2. `docs/methods/ai-development.md`；
