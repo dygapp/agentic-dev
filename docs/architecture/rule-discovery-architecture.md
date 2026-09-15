@@ -191,13 +191,24 @@ current task / repository facts
 → continue current responsibility
 ```
 
+### 10.1 Responsibility transition checkpoint
+
+Rule Discovery 不是一次会话级初始化动作，而是 direct responsibility 级运行时 checkpoint：
+
+- 当前 direct responsibility 建立后，在执行该责任的首个有副作用动作前必须完成一次 task-level discovery；
+- direct responsibility 发生切换，或 phase / activity / technology / artifact / risk 等关键事实实质变化时，旧 candidate set 不再作为新责任的充分依据，必须在下一次有副作用动作前重新构造 signals 并执行 discovery；
+- 为恢复事实而进行的只读读取可以先于 discovery，但不得借只读阶段形成的旧 candidate set 跨责任继续写入、合并、发布、部署或执行其他有副作用操作；
+- CI 中的 Rule Discovery lint、deterministic test 或固定 smoke scenario 只验证工具与 corpus，不携带当前 Agent 的实时 task signals，因此不能证明当前责任已经完成 task-level discovery，也不能替代 ordinary runtime invocation。
+
+该 checkpoint 只规定“何时必须重新发现”；task signals、matching、locator-only 输出与最终语义适用性仍由本 Architecture 其他章节统一定义，不建立第二套路由语义。
+
 运行边界：
 
 1. task signals 必须来自当前可观察事实，不包含目标 Rule 名、期望答案或历史候选集；
 2. unknown 使用 `null`，不得通过 synonym cloud 或未命中 Rule metadata 反向校准；
 3. Rule Discovery 返回值是 ordinary runtime 获得 Rule locator 的唯一入口；不得枚举未命中 Rule 路径或完整 Rule tree；
 4. tool candidate 只是“值得读取”，不是“已经适用”；LLM 必须读取正文后确认该 Rule 对当前工作真实成立；
-5. 当前 phase、activity、technology、artifact 或 risk facts 发生足以改变候选集合的变化时，重新执行 discovery；旧 candidate set 不跨职责永久有效；
+5. 当前 direct responsibility 或 phase / activity / technology / artifact / risk facts 发生足以改变候选集合的变化时，在继续该责任的有副作用动作前重新执行 discovery；旧 candidate set 不跨职责永久有效；
 6. Skill discovery 与 Rule discovery 分离：Agent Skills 负责选择独立执行能力，Rule Discovery 负责当前责任的条件性约束；Rule 不要求依附 Skill；
 7. `fail-closed` 时不得把无候选、旧候选或全量 Rules 当替代结果；先修复 signals、metadata 或扫描完整性，再继续依赖 Rule Discovery；
 8. ordinary runtime 的模型上下文只接收 Discovery 返回的 candidate locator 与最终读取的候选正文，不接收全量 locator、全量 metadata、Human README inventory、未命中 Rules 或工具内部扫描状态。

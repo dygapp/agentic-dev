@@ -41,7 +41,7 @@ Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任�
 4. 若当前任务需要理解 `agentic-dev` 项目使命、目标或核心项目需求，再读取 `docs/project/project-charter.md`；
 5. 读取 `docs/architecture/method-architecture.md` 的通用 **Method Selection Contract**，再由 `project-capability-profile.md` 的 Repository-local selector instance 选择当前 Method；若无映射匹配，不强行套用；
 6. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；Method-specific phase token 只能来自当前 Method canonical owner；
-7. 按当前 Project Capability Profile 声明的 Rule Discovery instance 执行候选初筛，只读取返回的 Rule 正文；
+7. 按当前 Project Capability Profile 声明的 Rule Discovery instance 执行候选初筛，只读取返回的 Rule 正文；在开始当前 direct responsibility 的首个有副作用动作前必须完成本次 task-level discovery；direct responsibility 或其关键事实实质变化后，在下一次有副作用动作前重新发现；
 8. 需要独立执行能力时，通过当前 Repository 声明的 Skill discovery 入口选择并读取相应 `SKILL.md`；
 9. 只加载当前责任直接需要的其他 Architecture；Guide / Research / Project Evolution 仅在任务明确需要人类说明、研究证据或历史原因时读取。
 
@@ -59,6 +59,8 @@ Rule metadata 与 Rule 正文必须同源、同文件维护。不得维护 Revie
 
 当前 Repository 的 Rule root、Tool locator、ordinary invocation 与 Human inventory 由 `docs/project/project-capability-profile.md` 声明；通用信号、匹配、渐进披露与 fail-closed contract 由 `docs/architecture/rule-discovery-architecture.md` 持有。Bootstrap 不复制第二份 Tool path 或 CLI invocation。
 
+GitHub Actions 中名为 `Rule Discovery` 的 workflow 只执行 repository lint、deterministic tests 与固定 smoke 场景；它不是当前 Agent 对当前 task signals 执行的 task-level discovery，其 PASS 不得替代 ordinary runtime invocation。
+
 `task-signals-json` 必须显式包含 `phases`、`activities`、`technologies`、`artifacts`、`risks` 五个维度：
 
 - 非空数组：当前事实可安全规范化出的少量已知 token；
@@ -71,7 +73,7 @@ Rule metadata 与 Rule 正文必须同源、同文件维护。不得维护 Revie
 
 活动优先使用直接责任词，如 `implementation`、`verification`、`review`、`external-operation`、`design`。技术与工件使用当前事实支持的稳定机器身份；例如 Vue 3.x → `vue3`、TypeScript → `typescript`、`.vue` SFC → `vue-sfc`、普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。
 
-成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选不等于最终适用，必须读取正文后做语义确认。当前 phase / activity / technology / artifact / risk facts 实质变化时重新发现，不把旧 candidate set 当作整个会话永久上下文。
+成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选不等于最终适用，必须读取正文后做语义确认。进入新的 direct responsibility，或当前 phase / activity / technology / artifact / risk facts 实质变化时，都必须在继续该责任的有副作用动作前重新发现；旧 candidate set 不跨职责永久有效。
 
 Discovery `fail-closed` 时先修复 signals、metadata 或扫描完整性，不降级到全量 Rule、旧中心 Map 或 upstream discovery。`status=ok` 但候选为空，也不得读取未命中 Rule metadata 反向校准。
 
