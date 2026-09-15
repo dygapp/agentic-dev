@@ -26,41 +26,63 @@ status: active
 
 ## Current Evolution
 
-当前没有已启动的新正式演进单元。
+当前正式演进单元为 Issue #133 — **Clarification Method Evolution：Requirement Clarification + Architecture Clarification**。
 
-Issue #129 — **Model Collaboration Capability & Adoption v1** 已完成实现、验证、Integration 与 post-integration closure；完整实施 Evidence 保留在 Issue #129、PR #132、Git 与 Actions。
-
-下一项工作必须从当前 Repository Authority、Roadmap candidates 与真实 Evidence 重新判断，不因 Issue 编号、历史路线或候选顺序自动启动。
-
-## Current Gate
-
-**Model Collaboration Capability & Adoption v1 — Integrated / Closed。**
+本轮面向普通软件 Consumer 补齐 Specification 之前的 project-level Clarified Context 形成机制，不把该流程 self-apply 到 `agentic-dev` capability evolution。
 
 已完成：
 
-- reusable Model Collaboration Architecture 建立，且不硬编码具体模型 / provider instance；
-- Model Collaboration Adoption Method 建立独立 work kind、阶段、Gate、fallback 与 completion semantics；
-- specialized Method 只实例化已经接受的 collaboration semantics，不绕过 Consumer Adoption / Upgrade 的 upstream semantic assessment；
-- Consumer projection 明确 local config / Rule / runtime / validation / fallback owner；
-- Codex 平台参考实现保持 Human Guide 身份，不成为 `agentic-dev` current `.codex/` instance；
-- functional enablement 与 efficiency / preferred-default claim 分离；
-- 历史 multi-agent smoke failure 与 Issue #71 Evidence 保持 claim 边界；
-- semantic-owner / Method-composition 分类经验进入非规范 Research；
-- candidate exact Head `2d6b093696bbd97d5c43a265173afc9954a7008f` 的 Rule Discovery Run #94 PASS；
-- independent review 收敛为未解决 Blocking / Medium = 0 / 0；
-- PR #132 squash merge，actual integration commit 为 `385204c8605dd58584ec18456ab8a97d6282b515`；
-- Post-Integration Rule Discovery Run #95 / Run ID `34823684351` 在 integration commit 上 PASS；
-- Issue #129 已自动 closed / completed。
+- 将 `jilinjobs` 作为带失败历史的混合证据集执行 Requirement Clarification Critical Evidence Synthesis；
+- 提炼 Authority-first、single semantic ownership、high-value ambiguity filtering、Authority promotion、independent semantic review 等正向模式；
+- 明确 exhaustive decomposition、persistent intermediate model proliferation、structure-first semantic mutation、self-review as proof 等 anti-pattern；
+- 将候选 work kind 收敛为 `method:software-project-clarification`；
+- 完成 Method Boundary Design、adversarial design review、correction 与 focused re-review；
+- Final Design Gate 收敛为 Blocking / Medium / Low = 0 / 0 / 0；
+- 开始 canonical implementation，且明确该 Consumer-oriented Method **不注册到 `agentic-dev` 当前 local Method selector**。
 
-本 Gate 不声称 `agentic-dev` 自身已启用 multi-agent runtime。真实 child-thread、requested-vs-observed runtime identity、single-writer runtime behavior、fallback 与效率收益仍属于每个 Repository 执行 `method:model-collaboration-adoption` 时的 runtime Evidence。
+完整设计与复核 Evidence 保留在 Issue #133；candidate implementation 位于对应 feature branch / PR，不由 Roadmap 复制全部正文。
 
-本 Gate 也不授予 release、deploy、destructive remote cleanup 或下一演进的自动 Execute Authority。
+## Current Gate
+
+**Software Project Clarification v1 — Canonical Implementation / Verification。**
+
+当前设计基线：
+
+```text
+Establish Context
+→ Requirement Clarification
+→ Architecture Clarification? (conditional)
+→ Clarification Convergence
+→ Clarified Project Context Ready
+```
+
+当前 Gate 约束：
+
+- Method 主要服务 ordinary software Consumer 的 project-level / major-scope clarification；
+- ordinary Feature Development 继续由 `method:ai-development` 负责；
+- true blocker 存在时不得声明 `Clarified Project Context Ready`；
+- Architecture Clarification 只在多个 Feature 进入可靠 Specification 前共同依赖 unresolved durable architecture driver 时进入，不扩张为 Big Design Up Front；
+- Project Requirement 与 Feature Specification、Architecture Clarification 与 Technical Planning 必须保持单一 semantic ownership；
+- 高风险 baseline reconstruction / semantic transformation 命中 mandatory independent semantic review trigger；
+- durable output 回到真实 Requirement / Domain / Architecture owner，不新增默认 Handoff Artifact；
+- 当前不新增 Clarification Skill，不批量新增 Clarification Rule；
+- `agentic-dev` 自身 Project Capability Profile 不 self-register 该 Consumer Method。
+
+完成本 Gate 仍需要：
+
+- candidate static / semantic consistency review；
+- 检查 Method corpus / Human inventory / existing AI Development alignment；
+- 检查 current Rule / Skill / Project ownership 是否被无意扩张；
+- PR review / repository-required verification；
+- Integration 与 post-integration closure。
+
+本 Gate 不授予 merge、release、deploy 或下一演进的自动 Execute Authority。
 
 ## Next Candidates
 
 当前可见后续候选只在真实 Evidence 支持时推进：
 
-- **Requirements Analysis Method**：从已验证的大项目前期需求分析实践中提炼适用范围、阶段、产物、Gate 与完成语义；当前仍只是 Method candidate；
+- **Architecture Clarification evidence evolution**：当前 v1 只有 bounded、conditional、anti-BDUF 的最小 contract；后续从真实 Consumer positive / negative / evolutionary architecture case 校正进入条件和责任细节；
 - **Consumer feedback evolution**：继续从 Issue #58 等长期 Consumer Evidence 判断是否需要新增 / 调整 reusable capability；
 - **Method selection scaling**：只有 Method 数量或歧义真实增长时，才评估是否需要 metadata discovery / selector tool。
 
@@ -73,7 +95,9 @@ Issue #129 — **Model Collaboration Capability & Adoption v1** 已完成实现�
 - Rule / Skill Human inventory 继续由 deterministic tests 与真实 corpus 保持一致，不应迁入 Project Profile；
 - Model Collaboration 的成本价值不能从“使用多个模型”本身推断；后续 Consumer adoption 应分别观察 high-capability token、Primary context、total token、wall time、rework 与最终质量；
 - 当前 capability integration 不能证明任一具体 Agent 平台的 multi-agent runtime 已通过，真实支持度必须在 adoption 时重新探测；
-- Model Collaboration 在真实 Consumer 中的长期 adoption / upgrade / ordinary-runtime 效果仍应由后续 Consumer Evidence 判断，而不是由本次 upstream self-integration 直接泛化。
+- Model Collaboration 在真实 Consumer 中的长期 adoption / upgrade / ordinary-runtime 效果仍应由后续 Consumer Evidence 判断，而不是由 upstream self-integration 直接泛化；
+- `software-project-clarification` 的 Requirement Clarification responsibility 有真实 Consumer 历史证据支撑；Architecture Clarification 的 Evidence maturity 较低，当前只允许按最小条件 contract 使用并持续演进；
+- reusable Method 存在于 `agentic-dev` corpus 不等于当前 Repository self-adopt；local selector 仍只描述本 Repository 实际采用的 work kind。
 
 ## State Ownership
 
