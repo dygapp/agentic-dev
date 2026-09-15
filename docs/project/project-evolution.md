@@ -160,7 +160,29 @@ PR #134 在 Method Boundary Design、adversarial review、focused re-review、se
 
 这一阶段进一步确认了一条长期边界：**面向 Consumer 的 reusable Method 不应因为被 `agentic-dev` 定义，就自动反向成为 `agentic-dev` 自身 capability evolution 的默认流程。**
 
-## 11. 当前演进原则
+## 11. Requirement Baseline Establishment & Architecture Clarification Split v1
+
+Issue #138 / PR #139 在 Software Project Clarification v1 的基础上识别出一个更具体的缺口：虽然 v1 已经拥有正确的 Authority-first 与 Clarification 原则，但仍没有完整回答一个新项目如何从 Raw Project Inputs 建立可持续使用的 `docs/requirements` Requirement Baseline。
+
+这一阶段继续使用 `jilinjobs` 的多轮需求分析历史作为混合 Evidence，而不是成功模板，并把用户实际遇到的无限问答、确定性结果被重复确认、README / index 可能职责重叠等问题提升为可复用设计输入。
+
+长期结果包括：
+
+- 将 `method:software-project-clarification` 拆分为两个独立 work kind，并删除旧 super-method，不保留 compatibility layer；
+- `method:requirement-baseline-establishment` 正式拥有 `Raw Project Inputs → Requirement Baseline Ready`，包括 source / Authority scope、Requirement fact extraction、Capability / ownership、Requirement Authority structure、Question Gate、Human Review 与 convergence；
+- Requirement 会话采用 `Derive → Default → Ask → Review`：Authority 可回答或已确认事实可唯一推导时不问；缺少 Evidence 时不通过审核 / 通知 / 版本 / 归档 / 同步等否定式穷举让人工逐项证明不存在的功能；真正 material blocking ambiguity / conflict 才升级 Human Authority；
+- Capability 完成后优先整体 Human Review，而不是把人工变成逐字段 Requirement Generator；Clarification Depth Stop 阻止 Requirement 问题下钻到字段、按钮、API、数据库、缓存、类 / package 等普通 Design 层；
+- 新增 `architecture:requirement-authority`，把 Requirement Human Navigation、Requirement Authority Index 与 Requirement Fact Authority 明确拆开；推荐 `docs/requirements/{README,index,overview,business,aspects,non-functional,analysis}` 作为 Human IA，但不硬编码为跨 Consumer runtime schema；
+- 横向 Aspect 只有在跨多个 Capability、具有独立业务 / Acceptance 意义且不能合理归属单一 owner 时才建立；`analysis/` 默认非 Authority，派生视图可再生时不形成第二套长期同步对象；
+- `method:architecture-clarification` 成为独立、条件性 Method；简单项目或已有充分 Architecture Context 的项目可以在 `Requirement Baseline Ready` 后直接进入 `method:ai-development`；
+- `method:ai-development` 分别把系统性 Requirement Baseline gap 与 systemic Architecture gap 返回各自长期 owner / Method，不再依赖模糊的“项目级澄清”责任；
+- 当前没有因为新增 Method 自动创建 Requirement / Architecture Skill；是否 Skill 化继续等待真实 Consumer 中稳定、可独立调用、能显著减少重复错误的 procedure Evidence。
+
+Issue #138 保存设计 Evidence 与边界决定，PR #139 是本次 capability 集成载体；精确 integration commit 与 Actions / Review Evidence 继续由 GitHub 历史保存，Project Evolution 不复制瞬时执行状态。
+
+这一阶段进一步确认：**对于 AI 驱动的新软件项目，Requirement Baseline Establishment 是 Feature Development 的上游 Project Establishment work kind；Architecture Clarification 是条件性的独立 work kind，而不是新项目必须机械执行的固定阶段。**
+
+## 12. 当前演进原则
 
 从当前阶段开始，项目演进遵守：
 
@@ -171,4 +193,6 @@ PR #134 在 Method Boundary Design、adversarial review、focused re-review、se
 - Project Capability Profile 必须持续保持为薄的 Repository-local instance owner，不演变成新的 Runtime Catalog / Rule Index；
 - 新 capability 的 semantic owner 分类应先区分 reusable semantics、semantic acceptance、local instance activation 与 ordinary use，再决定是否需要 Architecture / Method / Skill / Rule / Project / Guide；
 - 新增 specialized Method 除了通过自身 admission gate，还必须复核与相邻 Method 的 Gate ownership 和组合关系；
-- Consumer-oriented Method 是否适用于 `agentic-dev` 自身演进，必须由本 Repository 的真实 work kind 与 local selector 独立决定，不能从 reusable capability 的存在反推 self-adoption。
+- 多个 Method 可以通过 Return Contract 与 Repository-local selector 形成上下游关系，但不为串联过程额外建立 super-method；
+- Consumer-oriented Method 是否适用于 `agentic-dev` 自身演进，必须由本 Repository 的真实 work kind 与 local selector 独立决定，不能从 reusable capability 的存在反推 self-adoption；
+- 对新项目需求建立，问题数量不是成熟度指标；AI 应优先提取、推导、应用已确认默认并形成可 Review 的 Requirement Capability，只把真实需要 Authority 的决定升级给人。
