@@ -8,17 +8,17 @@ status: active
 
 ## 1. 目标
 
-本方法面向普通软件 Consumer 项目的项目级或重大范围前置澄清，用于在多个当前或预期 Feature 无法安全进入 Specification 时，建立或重建可持续消费的 Requirement / Architecture Context。
+本方法面向普通软件 Consumer 项目的项目级或重大范围前置澄清，用于在多个当前或预期 Feature 无法安全进入 Specification 时，建立或重建可持续使用的 Requirement / Architecture Context。
 
 它不替代 `method:ai-development`。本方法解决“后续多个 Feature 可以依赖什么长期上下文”；`method:ai-development` 继续解决“当前具体 Feature / change 做什么、如何规划并完成”。
 
-本方法也不因为存在于 `agentic-dev` 就自动适用于 `agentic-dev` 自身 capability evolution；是否采用始终由目标 Repository 的 local Method selector 决定。
+本方法也不因为存在于 `agentic-dev` 就自动适用于 `agentic-dev` 自身的 capability evolution；是否采用始终由目标 Repository 的 local Method selector 决定。
 
 ## 2. 进入条件
 
 最小进入判据：
 
-> ordinary Feature Development 无法安全继续，因为多个当前或预期 Feature 共同依赖的 durable Requirement / Architecture Context 缺失、冲突或需要重建。
+> 普通 Feature Development 无法安全继续，因为多个当前或预期 Feature 共同依赖的长期 Requirement / Architecture Context 缺失、冲突或需要重建。
 
 常见场景包括：
 
@@ -26,7 +26,7 @@ status: active
 - legacy modernization / rewrite；
 - Requirement Authority 已碎片化、冲突或不足；
 - major domain / product boundary restructuring；
-- 多个计划 Feature 共同被同一个尚未解决的 durable architecture driver 阻塞。
+- 多个计划 Feature 共同被同一个尚未解决的长期 architecture driver 阻塞。
 
 不得仅因为项目较大、技术复杂、文档很多，或单个 Feature 存在局部不确定性而进入本方法。
 
@@ -60,17 +60,17 @@ Establish Context
 
 ## 4. Establish Context
 
-先明确本次 clarification 的 project / product scope 与证据边界：
+先明确本次澄清的项目 / 产品范围与证据边界：
 
 - 识别当前可作为 Requirement / Domain / Architecture Authority 的来源；
 - 区分 current、legacy、reference、analysis、conversation 与 unknown；
 - 确认现有 semantic owner 是否存在、是否冲突、是否足以承担长期责任；
 - 明确哪些信息只能作为 Evidence，不能自动提升为 Authority；
-- 冻结当前分析范围，避免历史材料和平级材料污染 current truth。
+- 冻结当前分析范围，避免历史材料和平级材料污染当前事实。
 
 不要求建立完整 source catalog。只有具有当前澄清价值或跨上下文协调价值的 source inventory 才需要暂存。
 
-退出条件：当前 evidence / authority scope 足以支持 Requirement Clarification，且不存在会让后续事实抽取失去来源边界的未决问题。
+退出条件：当前 Evidence / Authority 范围足以支持 Requirement Clarification，且不存在会让后续事实抽取失去来源边界的未决问题。
 
 ## 5. Requirement Clarification
 
@@ -116,15 +116,15 @@ extract requirement facts
 
 ### 5.2 Authority promotion
 
-确认的长期事实必须进入真实 Consumer-local Requirement / Domain owner；聊天、分析报告、候选清单、比较表和派生视图不自动成为长期 Authority。
+确认的长期事实必须进入真实的 Consumer-local Requirement / Domain owner；聊天、分析报告、候选清单、比较表和派生视图不自动成为长期 Authority。
 
 若有效 owner 不存在、冲突或结构性不足，本阶段负责建立或重建可被 Repository Authority 明确定位的 semantic owner；不要求统一目录、文件名或 schema。
 
 ### 5.3 与 Feature Specification 的边界
 
-Project-level Requirement Authority 拥有跨多个 Feature 持续成立的事实与约束；Feature Specification 只拥有当前 change 的 concrete scope、observable behavior、failure behavior 与 acceptance criteria。
+Project-level Requirement Authority 拥有跨多个 Feature 持续成立的事实与约束；Feature Specification 只拥有当前 change 的具体范围、可观察行为、失败行为与验收标准。
 
-Specification 应引用长期 Requirement / Domain Authority，而不是为了“自包含”复制整个项目 Requirement Baseline。Feature 中确认的新事实如果具有长期跨 Feature 价值，应 promotion 回真实长期 owner。
+Specification 应引用长期 Requirement / Domain Authority，而不是为了“自包含”复制整个项目 Requirement Baseline。Feature 中确认的新事实如果具有长期、跨 Feature 的价值，应提升并回写到真实长期 owner。
 
 ## 6. Architecture Clarification
 
@@ -132,7 +132,7 @@ Specification 应引用长期 Requirement / Domain Authority，而不是为了�
 
 核心进入条件：
 
-> 多个当前或预期 Feature / change 在进入可靠 Specification 前，共同依赖一个尚未解决的 durable architecture driver。
+> 多个当前或预期 Feature / change 在进入可靠 Specification 前，共同依赖一个尚未解决的长期 architecture driver。
 
 可能的 architecture driver 包括：
 
@@ -147,46 +147,46 @@ Specification 应引用长期 Requirement / Domain Authority，而不是为了�
 
 - Architecture Context / constraints；
 - architectural capability boundaries；
-- current durable Architecture State；
+- 长期 Architecture State；
 - ADR（仅当背景、替代关系与主要权衡具有长期历史价值时）。
 
-局部、低风险、可逆、single-feature HOW 留给 `method:ai-development` 的 Technical Planning / JIT Execution。
+局部、低风险、可逆、只影响单个 Feature 的 HOW 留给 `method:ai-development` 的 Technical Planning / JIT Execution。
 
 Architecture Clarification 与 Feature Technical Planning 必须共享同一个长期 Architecture owner，不形成平行 Authority。
 
-若 Architecture work 暴露出新的业务多解、Requirement conflict 或未定义 Product Boundary，必须返回 Requirement Clarification；Architecture 不自行创造 Product Requirement。
+若 Architecture Clarification 过程中暴露出新的业务多解、Requirement conflict 或未定义 Product Boundary，必须返回 Requirement Clarification；Architecture 不自行创造 Product Requirement。
 
 ## 7. Clarification Convergence
 
-Convergence 验证的是后续 Feature Development 输入是否可靠，不是文档是否“写完”。
+Convergence 验证的是后续 Feature Development 的输入是否可靠，而不是文档是否“写完”。
 
 只有同时满足以下条件，才可以声明 `Clarified Project Context Ready`：
 
-1. 多 Feature 依赖的主要 product / domain boundary 有明确 Consumer-local owner；
-2. durable Requirement conflict / ambiguity 已关闭；仍会阻止后续可靠 Specification 的问题一律视为 blocker；
-3. confirmed long-lived facts 已进入真实 Requirement / Domain Authority；
+1. 多个 Feature 依赖的主要 product / domain boundary 有明确的 Consumer-local owner；
+2. 长期 Requirement conflict / ambiguity 已关闭；仍会阻止后续可靠 Specification 的问题一律视为 blocker；
+3. 已确认的长期事实已进入真实 Requirement / Domain Authority；
 4. 普通 design choice 没有被静默提升为 Requirement；
-5. 必须在多 Feature Specification 前解决的 architecture drivers 已进入同一长期 Architecture owner；
+5. 必须在多个 Feature 进入 Specification 前解决的 architecture driver 已进入同一长期 Architecture owner；
 6. 普通 Feature-specific HOW 没有被提前吸入 Architecture Clarification；
 7. 缺失、冲突或不足的 semantic owner 已建立或重建；
-8. mandatory independent semantic review trigger 命中时，review 已通过；
+8. 命中强制独立语义复核条件时，review 已通过；
 9. 剩余 open item 均明确为 non-blocking，且有 owner；
-10. Fresh Context Feature Agent 可以从 Consumer-local Authority 恢复当前 Feature 所需的最小 Requirement / Architecture context。
+10. Fresh Context Feature Agent 可以从 Consumer-local Authority 恢复当前 Feature 所需的最小 Requirement / Architecture Context。
 
-真正 blocker 存在时必须保持 NOT READY。
+真正存在 blocker 时必须保持 NOT READY。
 
 ## 8. Independent semantic review
 
-以下任一情况成立时，在 Ready claim 前必须执行 independent semantic review：
+以下任一情况成立时，在声明 Ready 前必须执行 independent semantic review：
 
 1. 从 legacy / heterogeneous sources 重建新的 Requirement Baseline；
-2. Existing Requirement Authority 发生大规模重构、批量迁移、结构化改写、摘要化或 AI-assisted semantic consolidation；
-3. 多个 Authority source 存在冲突，clarification 对长期事实进行了实质合并、取舍或覆盖；
-4. 一次 clarification 批量改变长期业务状态、生命周期、权限、业务范围、数据语义或验收不变量。
+2. 现有 Requirement Authority 发生大规模重构、批量迁移、结构化改写、摘要化或 AI 辅助语义收敛；
+3. 多个 Authority 来源存在冲突，澄清过程对长期事实进行了实质合并、取舍或覆盖；
+4. 一次澄清批量改变长期业务状态、生命周期、权限、业务范围、数据语义或验收不变量。
 
 Review 必须能够核对 source / decision / resulting Authority，不能只检查格式、lint、链接或最终文档可读性。
 
-若是小规模 greenfield clarification，长期事实直接来自明确 authoritative decision，且不存在上述高风险 transformation / conflict，则是否增加 independent Reviewer 由 Consumer Repository policy、风险等级或 Human Authority 决定。
+若是小规模 greenfield clarification，长期事实直接来自明确的 authoritative decision，且不存在上述高风险变换或冲突，则是否增加 independent Reviewer 由 Consumer Repository policy、风险等级或 Human Authority 决定。
 
 ## 9. Artifact lifecycle
 
@@ -196,7 +196,7 @@ Review 必须能够核对 source / decision / resulting Authority，不能只检
 - Domain / Terminology Authority（确有跨 Feature 长期价值时）；
 - Architecture Context / State；
 - ADR（条件性）；
-- tracked non-blocking open item / external dependency 的明确 owner。
+- 已跟踪的 non-blocking open item / external dependency 及其明确 owner。
 
 默认 transitional / disposable：
 
@@ -230,11 +230,11 @@ Execute / Integrate authority granted
 
 普通 Feature Development 中发现上游缺口时：
 
-- local requirement ambiguity，且有效 owner 明确 → return / update current Requirement owner，解决后恢复当前 Feature；
-- systemic requirement gap 影响多个 Feature / core domain semantics → 升级到 project-level Requirement Clarification responsibility；
-- local technical uncertainty → Technical Planning / JIT Execution；
-- durable architecture gap 跨多个 Feature 且阻塞可靠 Specification → Architecture Clarification responsibility；
-- owner 缺失、冲突或不足 → 由 project-level clarification 建立或重建 owner。
+- 只影响当前 Feature 的 Requirement ambiguity，且有效 owner 明确 → 返回并更新当前 Requirement owner，解决后恢复当前 Feature；
+- systemic Requirement gap 影响多个 Feature / core domain semantics → 升级到项目级 Requirement Clarification 责任；
+- 局部技术不确定性 → Technical Planning / JIT Execution；
+- 长期 Architecture gap 跨多个 Feature 且阻塞可靠 Specification → 升级到 Architecture Clarification 责任；
+- owner 缺失、冲突或不足 → 由项目级澄清负责建立或重建 owner。
 
 只有问题本身再次形成独立复杂 work kind 时，才重新选择完整 `method:software-project-clarification`；不机械重跑整个 Method。
 
@@ -242,10 +242,10 @@ Execute / Integrate authority granted
 
 本 Method 不要求每个阶段都存在独立 Skill。当前没有证据支持为了阶段命名预建 `requirement-analysis`、`architecture-framing` 等 Skill；只有未来真实 Consumer 工作证明某个 procedure 在多个 Repository 中稳定、可独立调用并能减少重复错误时，才评估 Skill admission。
 
-同样不因为新增本 Method 就批量创建 Clarification Rules。真实独立 policy gap 才进入 Rule owner。
+同样不因为新增本 Method 就批量创建 Clarification Rules。只有真实存在独立 policy gap 时，才进入 Rule owner。
 
 ## 12. Evidence maturity
 
 Requirement Clarification 的 v1 contract 来自真实 Consumer 项目的正向与负向历史证据；其方法目标不是复制历史流程，而是保留能够解释输入、责任、Authority promotion、Gate 与失败机制的可复用部分。
 
-Architecture Clarification 当前 Evidence 较弱，因此 v1 只固化 bounded、conditional、anti-BDUF 的最小 contract。后续真实 Consumer case 可以继续修订其进入条件与责任细节，但不能因此把它扩张为默认完整 upfront architecture。
+Architecture Clarification 当前 Evidence 较弱，因此 v1 只固化 bounded、conditional、anti-BDUF 的最小 contract。后续真实 Consumer 案例可以继续修订其进入条件与责任细节，但不能因此把它扩张为默认的完整 upfront architecture。
