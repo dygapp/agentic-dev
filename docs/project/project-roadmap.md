@@ -19,7 +19,7 @@ Integration provenance：Issue #138 / PR #139；精确 integration commit、merg
 - 固化 `Derive → Default → Ask → Review`：能由 Authority / 已确认事实唯一推导的结论不重复提问，没有 Evidence 支持的额外业务机制默认不创建，只有真实 material blocking ambiguity / conflict 才升级 Human Authority；
 - 新增 reusable `architecture:requirement-authority`，定义 Requirement semantic ownership、推荐 `docs/requirements` Human IA、README / index / fact owner 边界、Aspect admission、Fresh Context consumption 与 artifact lifecycle；
 - 新增独立、条件性的 `method:architecture-clarification`，只处理多个 Feature 共同依赖、长期、高成本难逆并阻塞可靠 Specification / Planning 的 systemic architecture driver；
-- 删除 `method:software-project-clarification` super-method，不保留 compatibility layer；Method 之间通过 Return Contract 与 Repository-local selector 组合，不再建立只负责串联其他 Method 的上层流程；
+- 退休此前负责同时承载 Requirement 与 Architecture 的组合式项目澄清 super-method，不保留 compatibility layer；Method 之间通过 Return Contract 与 Repository-local selector 组合，不再建立只负责串联其他 Method 的上层流程；
 - `method:ai-development` 继续只负责具体 Feature / change；系统性 Requirement Baseline gap 与 systemic Architecture gap 分别返回各自长期 owner / Method；
 - Human Guide 新增 `establishing-requirement-baseline.md`，说明 Delta Conversation、Question Gate、Project Requirement Default、Capability Review 与 Clarification Depth Stop；
 - `jilinjobs` 继续只作为带失败历史的混合 Evidence：吸收 Authority-first、single semantic ownership、确定性推导、高价值问题、独立语义复核等机制，不机械传播其 L1/L2/L3 编号、项目特定目录、历史 Task 流程或已经退出的持久 Business Model 中间层；
