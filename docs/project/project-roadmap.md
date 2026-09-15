@@ -28,17 +28,17 @@ status: active
 
 当前正式演进单元为 Issue #133 — **Clarification Method Evolution：Requirement Clarification + Architecture Clarification**。
 
-本轮面向普通软件 Consumer 补齐 Specification 之前的 project-level Clarified Context 形成机制，不把该流程 self-apply 到 `agentic-dev` capability evolution。
+本轮面向普通软件 Consumer 补齐 Specification 之前的项目级 Clarified Context 形成机制，不把该流程默认套用到 `agentic-dev` 自身的 capability evolution。
 
 已完成：
 
-- 将 `jilinjobs` 作为带失败历史的混合证据集执行 Requirement Clarification Critical Evidence Synthesis；
+- 将 `jilinjobs` 作为带失败历史的混合证据集，执行 Requirement Clarification Critical Evidence Synthesis；
 - 提炼 Authority-first、single semantic ownership、high-value ambiguity filtering、Authority promotion、independent semantic review 等正向模式；
 - 明确 exhaustive decomposition、persistent intermediate model proliferation、structure-first semantic mutation、self-review as proof 等 anti-pattern；
 - 将候选 work kind 收敛为 `method:software-project-clarification`；
-- 完成 Method Boundary Design、adversarial design review、correction 与 focused re-review；
+- 完成 Method Boundary Design、adversarial design review、修订与 focused re-review；
 - Final Design Gate 收敛为 Blocking / Medium / Low = 0 / 0 / 0；
-- 开始 canonical implementation，且明确该 Consumer-oriented Method **不注册到 `agentic-dev` 当前 local Method selector**。
+- 开始 canonical implementation，并明确该 Consumer-oriented Method **不注册到 `agentic-dev` 当前 local Method selector**。
 
 完整设计与复核 Evidence 保留在 Issue #133；candidate implementation 位于对应 feature branch / PR，不由 Roadmap 复制全部正文。
 
@@ -58,15 +58,15 @@ Establish Context
 
 当前 Gate 约束：
 
-- Method 主要服务 ordinary software Consumer 的 project-level / major-scope clarification；
+- Method 主要服务普通软件 Consumer 的 project-level / major-scope clarification；
 - ordinary Feature Development 继续由 `method:ai-development` 负责；
-- true blocker 存在时不得声明 `Clarified Project Context Ready`；
-- Architecture Clarification 只在多个 Feature 进入可靠 Specification 前共同依赖 unresolved durable architecture driver 时进入，不扩张为 Big Design Up Front；
+- 真正存在 blocker 时不得声明 `Clarified Project Context Ready`；
+- Architecture Clarification 只在多个 Feature 进入可靠 Specification 前，共同依赖尚未解决的长期 architecture driver 时进入，不扩张为 Big Design Up Front；
 - Project Requirement 与 Feature Specification、Architecture Clarification 与 Technical Planning 必须保持单一 semantic ownership；
-- 高风险 baseline reconstruction / semantic transformation 命中 mandatory independent semantic review trigger；
-- durable output 回到真实 Requirement / Domain / Architecture owner，不新增默认 Handoff Artifact；
+- 高风险 baseline 重建或语义变换命中强制 independent semantic review 条件；
+- 长期输出回到真实 Requirement / Domain / Architecture owner，不新增默认 Handoff Artifact；
 - 当前不新增 Clarification Skill，不批量新增 Clarification Rule；
-- `agentic-dev` 自身 Project Capability Profile 不 self-register 该 Consumer Method。
+- `agentic-dev` 自身 Project Capability Profile 不自动注册该 Consumer Method。
 
 完成本 Gate 仍需要：
 
@@ -82,7 +82,7 @@ Establish Context
 
 当前可见后续候选只在真实 Evidence 支持时推进：
 
-- **Architecture Clarification evidence evolution**：当前 v1 只有 bounded、conditional、anti-BDUF 的最小 contract；后续从真实 Consumer positive / negative / evolutionary architecture case 校正进入条件和责任细节；
+- **Architecture Clarification evidence evolution**：当前 v1 只有 bounded、conditional、anti-BDUF 的最小 contract；后续从真实 Consumer 的正向、负向和演进型架构案例中校正进入条件与责任细节；
 - **Consumer feedback evolution**：继续从 Issue #58 等长期 Consumer Evidence 判断是否需要新增 / 调整 reusable capability；
 - **Method selection scaling**：只有 Method 数量或歧义真实增长时，才评估是否需要 metadata discovery / selector tool。
 
@@ -96,8 +96,8 @@ Establish Context
 - Model Collaboration 的成本价值不能从“使用多个模型”本身推断；后续 Consumer adoption 应分别观察 high-capability token、Primary context、total token、wall time、rework 与最终质量；
 - 当前 capability integration 不能证明任一具体 Agent 平台的 multi-agent runtime 已通过，真实支持度必须在 adoption 时重新探测；
 - Model Collaboration 在真实 Consumer 中的长期 adoption / upgrade / ordinary-runtime 效果仍应由后续 Consumer Evidence 判断，而不是由 upstream self-integration 直接泛化；
-- `software-project-clarification` 的 Requirement Clarification responsibility 有真实 Consumer 历史证据支撑；Architecture Clarification 的 Evidence maturity 较低，当前只允许按最小条件 contract 使用并持续演进；
-- reusable Method 存在于 `agentic-dev` corpus 不等于当前 Repository self-adopt；local selector 仍只描述本 Repository 实际采用的 work kind。
+- `software-project-clarification` 的 Requirement Clarification 责任有真实 Consumer 历史证据支撑；Architecture Clarification 的 Evidence maturity 较低，当前只允许按最小条件 contract 使用并持续演进；
+- reusable Method 存在于 `agentic-dev` corpus 不等于当前 Repository 已自行采用；local selector 仍只描述本 Repository 实际采用的 work kind。
 
 ## State Ownership
 
