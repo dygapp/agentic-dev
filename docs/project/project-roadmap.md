@@ -8,75 +8,42 @@ status: active
 
 ## Current Baseline
 
-当前正式 capability integration baseline 为 **Model Collaboration Capability & Adoption v1**：
+当前正式 capability integration baseline 为 **Software Project Clarification v1**：
 
-`integration@385204c8605dd58584ec18456ab8a97d6282b515`
+`integration@6fdcf628abfac3eb306fc9acfce303fd7aee245e`
 
-该 baseline 建立在 V4 Rule Discovery、Capability Model v2、Project Knowledge Model 与 Rule granularity consolidation 之上，并正式加入：
+该 baseline 建立在 V4 Rule Discovery、Capability Model v2、Project Knowledge Model、Rule granularity consolidation 与 Model Collaboration Capability & Adoption v1 之上，并正式加入：
 
-- reusable `architecture:model-collaboration`，定义 deterministic-first、能力层级、Primary responsibility、Authority-preserving handoff、single-writer、Evidence-based escalation、fallback 与 runtime claim 边界；
-- `method:model-collaboration-adoption`，负责在 collaboration semantics 已进入 Consumer-local Authority 后建立、验证并首次启用 local runtime instance；
-- `method:consumer-adoption` / `method:consumer-upgrade` 继续拥有 upstream reusable semantics 的首次接受与 baseline delta assessment，专用 collaboration Method 不得绕过；
-- Project Capability Profile 中新增 Model Collaboration selector / instance owner，并保持 `agentic-dev` 当前 self-instance 为 `disabled`；
-- Human Guide 与带核验日期的 Codex reference profile，不把平台专项配置提升为跨 Repository Authority；
-- functional enablement 与 efficiency / preferred-default claim 明确分离；
-- capability classification / Method composition 分析经验进入非规范 Research。
+- reusable `method:software-project-clarification`，用于普通软件 Consumer 在多个 Feature 共同依赖的长期 Requirement / Architecture Context 缺失、冲突或需要重建时，执行项目级或重大范围前置澄清；
+- `Establish Context → Requirement Clarification → Architecture Clarification? → Clarification Convergence` 四阶段生命周期，以及 fail-closed 的 `Clarified Project Context Ready` 完成语义；
+- Requirement Clarification 基于真实 Consumer 正向与负向历史 Evidence，强调 Authority-first、single semantic ownership、高价值歧义筛选、长期事实回写与高风险语义变换的独立复核；
+- Architecture Clarification 仅固化 bounded、conditional、anti-BDUF 的最小 contract，用于多个 Feature 在可靠 Specification 前共同依赖的长期 architecture driver，不替代 Feature Technical Planning；
+- `method:ai-development` 保持 Feature / change 级职责，系统性 Requirement / Architecture gap 返回长期 owner 或项目级澄清责任，不在 Feature Specification / Technical Planning 中局部创造项目级事实；
+- 新 Method 不自动注册到 `agentic-dev` 自身 local Method selector，也没有同步新增 Clarification Skill、Rule、默认 Handoff Artifact 或固定 Consumer schema；
+- `docs/guides/using-agentic-dev.md` 已对齐两层 Clarification、Method selection、Consumer-local adoption 与 Requirement / Architecture / Technical Planning 边界；
+- PR #134 在语义一致性、Human Guide 对齐和语言规范复核后 squash merge；Post-Integration Rule Discovery Run #106 PASS。
 
 更早里程碑与原因见 `docs/project/project-evolution.md`；具体 capability contract 见其真实 Architecture / Method / Skill / Rule owner。
 
 ## Current Evolution
 
-当前正式演进单元为 Issue #133 — **Clarification Method Evolution：Requirement Clarification + Architecture Clarification**。
+当前没有获得 Planning / Execute Authority 的正式演进单元。
 
-本轮面向普通软件 Consumer 补齐 Specification 之前的项目级 Clarified Context 形成机制，不把该流程默认套用到 `agentic-dev` 自身的 capability evolution。
+Issue #133 — **Clarification Method Evolution：Requirement Clarification + Architecture Clarification** 已完成：
 
-已完成：
+- Issue #133 已关闭；
+- PR #134 已以 integration commit `6fdcf628abfac3eb306fc9acfce303fd7aee245e` squash merge；
+- `master` 已指向该 integration commit；
+- Post-Integration Rule Discovery Run #106 completed / success；
+- 稳定方法结论已进入 Method / Guide owner，本 Roadmap 只保留当前 baseline、候选方向与必要观察。
 
-- 将 `jilinjobs` 作为带失败历史的混合证据集，执行 Requirement Clarification Critical Evidence Synthesis；
-- 提炼 Authority-first、single semantic ownership、high-value ambiguity filtering、Authority promotion、independent semantic review 等正向模式；
-- 明确 exhaustive decomposition、persistent intermediate model proliferation、structure-first semantic mutation、self-review as proof 等 anti-pattern；
-- 将候选 work kind 收敛为 `method:software-project-clarification`；
-- 完成 Method Boundary Design、adversarial design review、修订与 focused re-review；
-- Final Design Gate 收敛为 Blocking / Medium / Low = 0 / 0 / 0；
-- 开始 canonical implementation，并明确该 Consumer-oriented Method **不注册到 `agentic-dev` 当前 local Method selector**。
-
-完整设计与复核 Evidence 保留在 Issue #133；candidate implementation 位于对应 feature branch / PR，不由 Roadmap 复制全部正文。
+完整设计、Critical Evidence Synthesis、adversarial review、语言规范复核与集成证据继续由 Issue #133、PR #134、Git 和 Actions 保存，不复制为新的 Project 阶段文档。
 
 ## Current Gate
 
-**Software Project Clarification v1 — Canonical Implementation / Verification。**
+**NONE — 当前没有 active Planning / Execute Gate。**
 
-当前设计基线：
-
-```text
-Establish Context
-→ Requirement Clarification
-→ Architecture Clarification? (conditional)
-→ Clarification Convergence
-→ Clarified Project Context Ready
-```
-
-当前 Gate 约束：
-
-- Method 主要服务普通软件 Consumer 的 project-level / major-scope clarification；
-- ordinary Feature Development 继续由 `method:ai-development` 负责；
-- 真正存在 blocker 时不得声明 `Clarified Project Context Ready`；
-- Architecture Clarification 只在多个 Feature 进入可靠 Specification 前，共同依赖尚未解决的长期 architecture driver 时进入，不扩张为 Big Design Up Front；
-- Project Requirement 与 Feature Specification、Architecture Clarification 与 Technical Planning 必须保持单一 semantic ownership；
-- 高风险 baseline 重建或语义变换命中强制 independent semantic review 条件；
-- 长期输出回到真实 Requirement / Domain / Architecture owner，不新增默认 Handoff Artifact；
-- 当前不新增 Clarification Skill，不批量新增 Clarification Rule；
-- `agentic-dev` 自身 Project Capability Profile 不自动注册该 Consumer Method。
-
-完成本 Gate 仍需要：
-
-- candidate static / semantic consistency review；
-- 检查 Method corpus / Human inventory / existing AI Development alignment；
-- 检查 current Rule / Skill / Project ownership 是否被无意扩张；
-- PR review / repository-required verification；
-- Integration 与 post-integration closure。
-
-本 Gate 不授予 merge、release、deploy 或下一演进的自动 Execute Authority。
+当前 Repository 可以从已集成 baseline 恢复 ordinary project state；任何下一演进都必须由新的真实 Evidence、明确问题或人工 Authority 建立独立工作入口，不能因为下列候选存在而自动开始。
 
 ## Next Candidates
 
