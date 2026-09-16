@@ -62,7 +62,7 @@ class DiscoveryCliTests(unittest.TestCase):
         self.assertEqual(0, completed.returncode, completed.stderr)
         payload = json.loads(completed.stdout)
         self.assertEqual("ok", payload["status"])
-        self.assertEqual(11, payload["skills"])
+        self.assertEqual(12, payload["skills"])
         self.assertEqual(27, payload["rules"])
 
 

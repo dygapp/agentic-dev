@@ -90,6 +90,10 @@ Specification 不默认持有实现路径、类/函数、框架构造或施工�
 
 当当前 Feature 确认的新业务术语、不变量或规则需要跨多个 Feature 长期维护时，形成长期 Authority Candidate，并按目标仓库权威提升并回写到真实 Requirement / Domain owner，而不是永久留在当前 Specification 中成为隐藏项目基线。
 
+当 Specification 新增或实质改变用户可见行为、主要业务流程、失败语义、验收结果，或者同一 Requirement 可以形成多个合理的可观察行为时，应根据 Consumer 当前权威判断是否进入人工评审。Consumer 已采用 `architecture:human-review` 与 `skill:human-review` 时，可以调用该 Skill 生成结构化 Markdown 评审草稿，并把语义反馈回写当前 Specification 或正确的上游 owner。
+
+普通、直接、无歧义地投影既有 Requirement 的 Specification 不要求固定人工审批。`skill:human-review` 的存在本身也不改变本阶段的进入或退出条件。
+
 退出条件：新的 Agent 只读取 Specification 与最小必要的 Requirement / Domain / Architecture Context，即可判断做什么、不做什么、什么算完成，并且没有高影响歧义。
 
 对应 Skill：`specify`。
@@ -103,6 +107,10 @@ Technical Plan 只保存跨 Execution Unit 持续有协调价值的 HOW；精确
 技术决定若会跨当前功能长期约束后续工作，应更新真实 Architecture Context；只有决定背景、主要权衡或替代关系具有长期价值时才形成 / 更新 ADR。
 
 单个 Feature 中会影响 Architecture 的 HOW 仍属于本阶段。只有当 Technical Planning 发现一个尚未解决的长期 architecture driver 已经超出当前 Feature，并且多个当前或预期 Feature 在进入可靠 Specification / Planning 前共同依赖它时，才升级到 `method:architecture-clarification` 所拥有的 work kind。二者必须更新同一个长期 Architecture owner，不形成平行 Authority。
+
+当 Technical Planning 涉及不可逆或高风险数据迁移、对外或跨团队共享接口的重大改变、生产部署 / 回滚 / 安全边界的重大影响，或会改变已经承诺的稳定兼容边界时，应按 Consumer 当前 Authority 升级人工决定或人工评审。已采用 `skill:human-review` 的 Consumer 可以用它准备结构化 Markdown 评审草稿；人工确认形成的长期架构事实仍必须回写真实 Architecture owner，Feature Technical Plan 不获得平行长期所有权。
+
+普通局部、易逆且不改变外部承诺的实现 HOW 继续由 AI 自主处理，不因为存在人工评审能力而自动增加人工门禁。
 
 退出条件：实施前必须解决的技术不确定性已关闭，长期 Architecture / ADR 责任已进入正确 owner；或已经确认无需独立 Technical Planning。
 
@@ -199,7 +207,7 @@ Rule Discovery 的规范架构见 `docs/architecture/rule-discovery-architecture
 - code / tests；
 - 需要跨上下文恢复的 Project Charter / Capability Profile / Roadmap / Evolution 等项目知识。
 
-Requirement Authority 的通用 ownership / index / Human navigation contract 见 `architecture:requirement-authority`。Project Knowledge 的最小职责与持久化边界由 `docs/architecture/project-knowledge-architecture.md` 定义；并非每个项目都必须使用相同物理文件名。
+Requirement Authority 的通用 ownership / index / Human navigation contract 见 `architecture:requirement-authority`。跨需求、功能规格、架构与技术方案通用的人工评审草稿、派生视图、反馈分类与显式交付边界由 `architecture:human-review` 定义。Project Knowledge 的最小职责与持久化边界由 `docs/architecture/project-knowledge-architecture.md` 定义；并非每个项目都必须使用相同物理文件名。
 
 已有长期 artifact 被新结论取代时，应更新或删除 current owner；历史由 Git / Issue / PR 保存，不通过旧 Markdown 兼容层维持。
 
@@ -216,5 +224,9 @@ Agent 默认自主处理局部、低影响、可逆且不改变外部可观察�
 - 安全、隐私或不可逆数据风险；
 - 超出授权的共享 / 生产 / 外部副作用；
 - merge、release、deploy 或 destructive remote operation 被仓库策略保留给人工。
+
+人工升级负责判断“什么必须由人决定”；人工评审负责在需要时把当前权威内容整理成便于判断的结构化材料，并把人工反馈正确回写。两者不是新的 Method 阶段，也不要求每次人工升级都生成正式评审包。
+
+Consumer 已采用 `skill:human-review` 时，可以在当前责任需要人工集中确认或人工明确要求评审材料时调用。默认只生成结构化 Markdown 评审草稿；最终 DOCX、HTML 等交付格式只有在明确请求后才进入后续交付处理。
 
 核心原则：人工负责不可逆的意图与授权决策；AI 负责授权范围内可逆的执行判断。
