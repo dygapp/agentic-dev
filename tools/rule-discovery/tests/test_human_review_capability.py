@@ -68,6 +68,24 @@ class HumanReviewCapabilityTests(unittest.TestCase):
         self.assertNotIn("Human Review →", ai_development)
         self.assertNotIn("Human Review →", architecture)
 
+    def test_authority_writeback_is_required_for_review_completion(self):
+        architecture = self.read("docs/architecture/human-review-architecture.md")
+        skill = self.read("skills/human-review/SKILL.md")
+        eval_text = self.read("evals/behavior/human-review.json")
+
+        self.assertIn("待权威回写 / 未完成", architecture)
+        self.assertIn("不得把“已经列出待执行回写动作”解释为“评审完成”", architecture)
+        self.assertIn("重新读取并确认真实 owner 已持久化该决定", architecture)
+        self.assertIn("待权威回写 / 评审未完成", skill)
+        self.assertIn("缺少写权限时允许当前执行返回，但不得声称人工评审已经完成", skill)
+        self.assertIn("后续执行必须先完成并重新读取验证权威回写", skill)
+
+        self.assertIn('"id": "B-HR-04"', eval_text)
+        self.assertIn("明确本次人工评审当前是否已经完成", eval_text)
+        self.assertIn("待权威回写 / 评审未完成", eval_text)
+        self.assertIn("不把列出待执行回写动作等同于人工评审完成", eval_text)
+        self.assertIn("实际回写并重新读取验证 Architecture 后才可判定评审完成", eval_text)
+
     def test_explicit_delivery_contract_is_bounded(self):
         architecture = self.read("docs/architecture/human-review-architecture.md")
         skill = self.read("skills/human-review/SKILL.md")
@@ -85,6 +103,7 @@ class HumanReviewCapabilityTests(unittest.TestCase):
         self.assertIn("生成 DOCX 正式文档", skill)
         self.assertIn("只有真实生成并实际完成相应验证后", skill)
         self.assertIn("不为每种格式建立独立 Skill", skill)
+        self.assertIn("正式 DOCX 只能使用已经实际回写并重新读取确认的收敛内容", skill)
 
     def test_behavior_eval_exists_and_covers_discriminating_cases(self):
         eval_path = REPO_ROOT / "evals/behavior/human-review.json"
@@ -108,6 +127,7 @@ class HumanReviewCapabilityTests(unittest.TestCase):
         self.assertIn("delivery_target = docx", text)
         self.assertIn("eastAsia", text)
         self.assertIn("WPS / Word", text)
+        self.assertIn("待权威回写 / 评审未完成", text)
 
 
 if __name__ == "__main__":
