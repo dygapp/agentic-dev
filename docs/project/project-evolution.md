@@ -182,7 +182,25 @@ Issue #138 保存设计 Evidence 与边界决定，PR #139 是本次 capability 
 
 这一阶段进一步确认：**对于 AI 驱动的新软件项目，Requirement Baseline Establishment 是 Feature Development 的上游 Project Establishment work kind；Architecture Clarification 是条件性的独立 work kind，而不是新项目必须机械执行的固定阶段。**
 
-## 12. 当前演进原则
+## 12. Review Governance vNext — Failure-driven Authority-chain Review
+
+Issue #140 的 Consumer Validation 与 `dygapp/jilinjobs-cms#155` G1～G7 提供了新的跨层 Review Evidence：Requirement / Documentation Authority 的 Authority-first、single semantic ownership 与 source-role separation 能支持大型 Consumer 的文档重建，但各层分别自洽并不能保证整条 Authority chain 已经可再生、可替换或保持 Current。
+
+Consumer G1～G6 记录 25 个 primary Failure Evidence，G0 记录 7 个 supplemental governance / adoption Evidence。G5 在此前多个 Gate 已分别通过后仍发现 Requirement / Domain → Specification observable projection、Interface semantics、Historical Migration Specification orphan 与 responsibility split 等跨层缺口；G6 又发现 canonical migration workspace 把 mutable implementation inventory 混入 Current recovery surface。修复后，独立 Fresh Context 的 R1～R6 达到 PASS；其中 Backend / Public Renderer substitution 只属于 design / contract completeness dry-run，不是替代实现已经构建运行的证据。
+
+Issue #141 / PR #142 将这些 Failure Evidence 转化为最小 upstream capability evolution：
+
+- 不新增新的 Review Method 或 artifact-specific Review Skill，而是在现有 `skill:review-change` 内增加有边界的 Authority-chain semantic review；
+- 高影响 Authority work 显式挑战 Current owner transition、single semantic ownership、downstream observable projection、declared replaceability seam、Authority / implementation / verification conflict classification 与 source role / evidence promotion boundary；
+- 对 bulk Authority restructure、replaceability、major Specification / Interface convergence、heterogeneous reconstruction 与 high-impact semantic migration 增加 bounded code-holdout / regenerability challenge，普通 PR 不自动执行 full regenerability；
+- C1 不建立平行 micro-rule，而是扩展既有 `rule:authoritative-artifact-lifecycle-review`，把 owner replace / retire / archive 或 lifecycle closure 后的 locator、selector、verification consumer 与 durable current-state wording 纳入 transition completeness；
+- Historical / archive / provenance 中明确的非 Current retired reference 被保留为合法 Evidence，避免把全仓旧字符串扫描错误包装成 hard invariant；
+- C2 / C3 / C4 / C5 / C7 首先进入 Review procedure；C6 “verification should validate invariants, not mutable inventories” 保持 Held，等待更多跨 Consumer / technology Evidence；
+- deterministic tooling 只保留 targeted retired reference、dead locator、selector / link integrity 等候选方向，不恢复中央 owner registry、retired-owner catalog 或其他需要与 Authority corpus 同步的 runtime index。
+
+这一阶段进一步确认：**Review Governance 的成熟方向不是不断增加细碎 Rules，而是用少量强 invariant、结构化 semantic review procedure 与 Evidence-supported deterministic checks组合；真实 Consumer failure 决定 Promotion / Hold / Reject，而不是从理论完整性反推 capability。**
+
+## 13. 当前演进原则
 
 从当前阶段开始，项目演进遵守：
 

@@ -1,0 +1,53 @@
+{
+  "skill_name": "review-change",
+  "evals": [
+    {
+      "id": "B-RV-01",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 review-change。当前 PR 已把 canonical `method:legacy-flow` 替换为 `method:requirements` 与 `method:architecture`，新的 selector 已更新；但一个 deterministic test 仍断言旧 path 存在，Roadmap 仍写 legacy-flow 是当前 active 流程。另有 `docs/archive/legacy-flow.md` 在 Historical Evidence 章节引用旧 id 解释 supersede lineage。请独立复核这个变更。",
+      "expected_behavior": "识别 test 与 Roadmap 是未完成的 Current-owner transition consumer，形成 actionable findings；同时把 archive 中明确的 Historical/provenance 引用视为合法，不因出现旧 id 机械报错。",
+      "assertions": [
+        "指出 deterministic test 仍绑定 retired owner/path，是 Current verification consumer 漂移",
+        "指出 Roadmap 仍把 retired owner 表达为 active current state，是 durable currentness defect",
+        "不把明确位于 archive/Historical Evidence 的 lineage 引用判为 stale Current dependency",
+        "要求基于 currentness/consumer role 判断，而不是全仓库旧字符串 blacklist",
+        "不建议恢复已退休 method 只为让旧测试通过"
+      ]
+    },
+    {
+      "id": "B-RV-02",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 review-change。Current Architecture 明确规定 Core service 不拥有 HTTP transport responsibility，Technical Contract 也把 multipart adaptation 放在 delivery layer；当前代码却让 Core service 直接依赖 HTTP Multipart 类型，旧测试同时断言这个具体类型。PR 作者建议因为‘代码已经这样运行’而修改 Architecture 允许 Core 依赖 HTTP。请复核。",
+      "expected_behavior": "先分类 Authority、implementation、verification 的 currentness 与 owner：在给定事实下应把代码视为 implementation defect，并把旧测试至少标记为可能 stale verification；不能因为实现存在就自动改写有效 Architecture。",
+      "assertions": [
+        "先做 implementation defect / stale Authority / stale verification conflict classification",
+        "依据给定 Current Architecture 与 Technical Contract 判断实现发生 responsibility drift",
+        "不把代码当前存在作为自动修改 Architecture 的充分依据",
+        "检查旧测试是否在固化失效 implementation contract",
+        "修复范围保持在真实 defect owner，不顺手重写无关 Product truth"
+      ]
+    },
+    {
+      "id": "B-RV-03",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 review-change。Architecture 声明 Backend implementation 可替换；本 PR 大规模收敛了 Requirement/Specification/Architecture 文档并声称现在可以把 Java Backend 换成 Node.js。Current docs 能说明 endpoint family，但稳定 wire field/nullability、受控 error semantics 与 Backend/Renderer responsibility split 仍只能从 Java Controller/DTO 源码得到。请复核，不要求真的实现 Node.js。",
+      "expected_behavior": "因明确 replaceability claim 命中 Authority-chain semantic review，形成 implementation-independent seam 缺口 finding，并使用 bounded code-holdout / technology-substitution challenge；不把普通 PR 都升级为完整再生实验，也不直接从 Java 源码复制 contract 当作已存在 Authority。",
+      "assertions": [
+        "识别明确 replaceability claim，进入 Authority-chain semantic review",
+        "指出 stable wire/error/responsibility seam 不能只能从被替换 Java implementation 恢复",
+        "使用 bounded code-holdout 或 substitution dry-run 挑战 contract completeness",
+        "不把当前 Java DTO/Controller 自动 promotion 成 Product Requirement",
+        "不要求与该 seam 无关的普通 PR 执行 full regenerability"
+      ]
+    },
+    {
+      "id": "B-RV-04",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 review-change。Domain Requirement 已接受 Article 的 publish / withdraw lifecycle，并明确 withdraw 后不得出现在 Public discovery；一次 Specification fold 把旧规格归档后，新 Current Specification 只保留 create/edit/read，没有 publish/withdraw 的 Observable、Failure 或 Acceptance。Requirement 本身仍完整。请复核。",
+      "expected_behavior": "识别 Requirement/Domain → Specification 的 downstream observable projection 缺口与 orphan capability；修复应补回合适的 Current Specification projection，而不是把 Domain Requirement 复制成第二事实源或因为旧规格已归档就否定该能力。",
+      "assertions": [
+        "指出 accepted publish/withdraw semantics 没有 Current Observable/Failure/Acceptance projection",
+        "把问题分类为 downstream projection completeness / orphan capability",
+        "保留 Domain Requirement 作为 lifecycle semantic owner",
+        "建议在合适的 Current Specification 中恢复 observable projection而非复制 Domain truth",
+        "不把 archive 文档重新提升为 Current owner"
+      ]
+    }
+  ]
+}
