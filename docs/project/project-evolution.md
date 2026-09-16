@@ -193,14 +193,35 @@ Issue #141 / PR #142 将这些 Failure Evidence 转化为最小 upstream capabil
 - 不新增新的 Review Method 或 artifact-specific Review Skill，而是在现有 `skill:review-change` 内增加有边界的 Authority-chain semantic review；
 - 高影响 Authority work 显式挑战 Current owner transition、single semantic ownership、downstream observable projection、declared replaceability seam、Authority / implementation / verification conflict classification 与 source role / evidence promotion boundary；
 - 对 bulk Authority restructure、replaceability、major Specification / Interface convergence、heterogeneous reconstruction 与 high-impact semantic migration 增加 bounded code-holdout / regenerability challenge，普通 PR 不自动执行 full regenerability；
-- C1 不建立平行 micro-rule，而是扩展既有 `rule:authoritative-artifact-lifecycle-review`，把 owner replace / retire / archive 或 lifecycle closure 后的 locator、selector、verification consumer 与 durable current-state wording 纳入 transition completeness；
+- C1 不建立平行 micro-rule，而是扩展既有 `rule:authoritative-artifact-lifecycle-review`，把 owner replace / retire / archive 或 lifecycle closure 后的 locator、selector、verification consumer 与 durable current-state wording纳入 transition completeness；
 - Historical / archive / provenance 中明确的非 Current retired reference 被保留为合法 Evidence，避免把全仓旧字符串扫描错误包装成 hard invariant；
 - C2 / C3 / C4 / C5 / C7 首先进入 Review procedure；C6 “verification should validate invariants, not mutable inventories” 保持 Held，等待更多跨 Consumer / technology Evidence；
 - deterministic tooling 只保留 targeted retired reference、dead locator、selector / link integrity 等候选方向，不恢复中央 owner registry、retired-owner catalog 或其他需要与 Authority corpus 同步的 runtime index。
 
 这一阶段进一步确认：**Review Governance 的成熟方向不是不断增加细碎 Rules，而是用少量强 invariant、结构化 semantic review procedure 与 Evidence-supported deterministic checks组合；真实 Consumer failure 决定 Promotion / Hold / Reject，而不是从理论完整性反推 capability。**
 
-## 13. 当前演进原则
+## 13. Human Review Capability v1 — Authority-preserving Human Confirmation
+
+Issue #144 / PR #145 在 Requirement Baseline、Feature Specification、Architecture Clarification 与 Technical Planning 之间补齐一个横向 Human Review capability，而没有新增强制 Human Review Method 或持久业务建模层。
+
+这一阶段形成的长期边界包括：
+
+- `architecture:human-review` 拥有 Review Draft、临时派生视图、反馈分类、Authority 回写、完成条件与显式交付投影的长期契约；
+- `skill:human-review` 只负责执行该契约，不取得 Product / Requirement / Specification / Architecture / Technical 事实所有权；
+- 默认评审介质是结构化 Markdown Review Draft；流程图、泳道图、状态图、关系图、矩阵、架构图等只在明显提升人工理解时按需生成，并保持可删除、可再生、非 Authority；
+- Human feedback 区分展示反馈、语义修正、新增长期决定与未决问题；durable semantic change 必须进入真正 owner，完成真实写入、重新读取和 Review Draft 再生成后才能声明评审完成；
+- 缺少写权限时允许返回待回写动作，但状态必须保持“待权威回写 / 评审未完成”，不能把“人工已经决定”误写成“Current Authority 已更新”；
+- `delivery_target = none` 是默认；HTML / DOCX 只有显式请求时生成，交付投影不得反向拥有或修改业务语义；
+- Human Review 按风险触发，普通局部、可逆、低风险工作不增加固定人工审批；
+- `human-review` 与 `review-change` 明确分离：前者帮助人理解和确认 Consumer 项目语义，后者独立检查 Repository change；二者均不自动授予 merge / release / deploy。
+
+Gate E 在真实 `jilinjobs-cms` Authority 上验证了 Requirement / Specification / Architecture review、跨模块生命周期视图、HTML / DOCX 显式投影和真实 Human confirmation；本次真实反馈为“确认，无语义修改”，因此没有把未实际发生的 durable semantic correction → true-owner writeback 正向分支夸大为已验证 runtime Evidence。
+
+Issue #143 Candidate A 随后补齐 `docs/guides/human-review.md` Human View，使人类可以理解和使用该 capability，同时继续保持 Guide 不参与 ordinary Agent runtime、不复制 Architecture / Skill / Method 规范语义。
+
+这一阶段进一步确认：**人工评审的价值来自让人能够理解、纠偏并把长期决定返回唯一 Authority，而不是增加一份需要长期同步的评审文档或把每个阶段变成人工审批。**
+
+## 14. 当前演进原则
 
 从当前阶段开始，项目演进遵守：
 
@@ -213,4 +234,5 @@ Issue #141 / PR #142 将这些 Failure Evidence 转化为最小 upstream capabil
 - 新增 specialized Method 除了通过自身 admission gate，还必须复核与相邻 Method 的 Gate ownership 和组合关系；
 - 多个 Method 可以通过 Return Contract 与 Repository-local selector 形成上下游关系，但不为串联过程额外建立 super-method；
 - Consumer-oriented Method 是否适用于 `agentic-dev` 自身演进，必须由本 Repository 的真实 work kind 与 local selector 独立决定，不能从 reusable capability 的存在反推 self-adoption；
-- 对新项目需求建立，问题数量不是成熟度指标；AI 应优先提取、推导、应用已确认默认并形成可 Review 的 Requirement Capability，只把真实需要 Authority 的决定升级给人。
+- 对新项目需求建立，问题数量不是成熟度指标；AI 应优先提取、推导、应用已确认默认并形成可 Review 的 Requirement Capability，只把真实需要 Authority 的决定升级给人；
+- 面向人的 Guide 可以完整解释 current capability，但必须始终保持为 Human View，不成为 Agent runtime selector、第二套 Gate 或规范正文 owner。
