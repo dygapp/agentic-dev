@@ -147,6 +147,10 @@ local implementation evidence
 
 则停止在 Architecture 层自行选择，返回真实 Requirement owner。Architecture 不通过“技术上更合理”来创造 Product Requirement。
 
+当保留下来的 architecture driver 涉及多个合理且后果显著不同的长期方案、高成本难逆、安全 / 隐私 / 核心数据 / 集成 / 部署边界，或当前授权不足以作出长期决定时，应升级人工权威。Consumer 已采用 `architecture:human-review` 与 `skill:human-review` 时，可以调用该 Skill 生成结构化 Markdown 评审草稿，帮助人工比较当前已确认事实、方案差异、长期后果和待决问题。
+
+人工评审只辅助架构决定，不成为新的 Architecture owner。人工确认形成的长期结构事实必须回写真实 Architecture owner；展示性反馈只修改评审投影。普通、局部、易逆的实现细节不因为存在人工评审能力而自动升级。
+
 退出条件：阻塞性的长期 architecture driver 已进入真实 Architecture owner；普通 Feature-specific HOW 没有被提前吸收。
 
 ## 7. Architecture Convergence
@@ -161,7 +165,8 @@ local implementation evidence
 6. ADR 只记录真正需要历史理由的 decision，不把 ADR 变成全部 Architecture 文档；
 7. remaining architecture item 已明确为 non-blocking 或属于后续 evolutionary evidence；
 8. 高影响变更需要的独立 review 已完成；
-9. 新增或重大修改的长期 Architecture artifact 已有明确 producer、trigger、consumer、persistence、update、supersede 与 escalation boundary。
+9. 新增或重大修改的长期 Architecture artifact 已有明确 producer、trigger、consumer、persistence、update、supersede 与 escalation boundary；
+10. 需要人工裁决的长期架构决定已经完成，或明确保持 unresolved，没有只停留在人工评审草稿中。
 
 真正存在 blocker 时保持 NOT READY。
 
@@ -224,13 +229,16 @@ Execute / Integrate authority granted
 - option comparison；
 - exploratory diagram；
 - spike / benchmark result 的解释性草稿；
-- review scratchpad。
+- review scratchpad；
+- 结构化 Markdown 人工评审草稿及其临时派生视图。
 
-临时产物只需要明确当前用途与退出 / 丢弃边界；只要某个派生表达可以从长期 Architecture Authority 唯一再生，就不应为了 AI 理解方便再建立平行长期模型。
+临时产物只需要明确当前用途与退出 / 丢弃边界；只要某个派生表达可以从长期 Architecture Authority 唯一再生，就不应为了 AI 理解方便再建立平行长期模型。跨需求、功能规格、架构与技术方案通用的人工评审生命周期由 `architecture:human-review` 持有。
 
 ## 10. Skill / Rule 边界
 
-本 Method 当前不要求新的 `architecture-framing` Skill。只有未来真实 Consumer Evidence 证明某个 procedure 在多个 Repository 中稳定、可独立调用并能减少重复错误时，才评估 Skill admission。
+本 Method 当前不要求新的 architecture-specific framing / review Skill。`skill:human-review` 是可以被需求、功能规格、架构和技术规划共同复用的横向人工评审能力；Consumer 采用后，本 Method 可以在真正需要人工集中判断时调用，但该 Skill 不拥有 Architecture Clarification lifecycle，也不替代 Architecture owner。
+
+只有未来真实 Consumer Evidence 证明其他 architecture-specific procedure 在多个 Repository 中稳定、可独立调用并能减少重复错误时，才另行评估 Skill admission。
 
 同样不因为 Method 独立出来就批量新增 Architecture Rules。现有高影响 review、Authority lifecycle、verification 等横切 policy 继续按 Rule Discovery 条件性适用。
 
