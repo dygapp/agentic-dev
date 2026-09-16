@@ -84,7 +84,7 @@ class HumanReviewCapabilityTests(unittest.TestCase):
         self.assertIn("生成 HTML 交互评审视图", skill)
         self.assertIn("生成 DOCX 正式文档", skill)
         self.assertIn("只有真实生成并实际完成相应验证后", skill)
-        self.assertIn("不为每种文件格式建立独立 Skill", skill)
+        self.assertIn("不为每种格式建立独立 Skill", skill)
 
     def test_behavior_eval_exists_and_covers_discriminating_cases(self):
         eval_path = REPO_ROOT / "evals/behavior/human-review.json"
