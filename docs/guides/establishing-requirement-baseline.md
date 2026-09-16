@@ -137,22 +137,23 @@ docs/requirements/
 Current Requirement / Domain Authority
 → 找出跨 Capability 的同义词 / 近义词 / 英文译法 / legacy-external mapping
 → 可唯一推导的直接确定
-→ 真实 terminology ambiguity 才交给人工
+→ 区分 material ambiguity 与 non-blocking naming coordination
+→ 必要的人工决定进入 Capability Review / Question Gate
 → 把确认结果写回唯一 terminology owner
 → 后续 Requirement / Specification / Design / code / test 按需消费
 ```
 
-例如项目确认中文概念“就业方案”的 canonical English business root 是 `employment-scheme`：
+例如项目确认中文概念“服务请求”的 canonical English business term 是 `service request`：
 
-- Requirement、Specification、business-oriented filename、domain type 应尽量复用这个业务词根；
-- Java / Kotlin 最终使用 `EmploymentScheme` 还是其他技术表达，由对应语言 / 框架命名规范决定；
-- 外部接口如果固定叫 `employmentPlan`，可以继续保留这个 external name，但应把它视为外部映射，而不是反向在项目内部再建立一套 `employment-plan` 术语。
+- Requirement、Specification、business-oriented filename、domain type 应复用同一业务语义；
+- Java / Kotlin 是否形成 `ServiceRequest`、package / filename 如何组织，由对应语言 / 框架命名规范决定；
+- 外部接口如果固定叫 `ticket`，可以继续保留这个 external name，但应把它视为外部映射，而不是反向在项目内部再建立第二套 canonical domain term。
 
 术语候选表只是分析材料。人工确认后必须写回真实 terminology owner；候选表、Issue、聊天或 Review Draft 不能长期和正式术语并列维护。
 
-如果当前 Requirement Authority 已经能够唯一决定某个术语，不要再次逐条问人。只有不同答案会改变业务含义、跨 Capability 识别、中英文 semantic mapping、legacy / external mapping、Acceptance 或后续业务命名时，才值得进入人工确认。
+如果当前 Requirement Authority 已经能够唯一决定业务含义，不要再次逐条问人。只有不同答案会改变业务含义、责任、数据语义、Acceptance 等产品语义，并且阻塞 Requirement Baseline 时，terminology ambiguity 才进入 Blocking Question Gate。若业务语义已经确定，只剩 canonical 中文 / 英文命名、alias mapping 或跨 Capability 命名统一，可以作为 non-blocking terminology decision 在 Capability Review 中集中确认，不把 naming coordination 伪装成产品 blocker。
 
-项目也不必固定使用 `terminology.md`。可以放在 `overview/`、现有 Domain glossary 或其他等价位置，只要 Requirement Authority Index / locator 能找到唯一 owner。
+项目也不必固定使用 `terminology.md`。可以放在 `overview/`、现有 Domain glossary 或其他等价位置，只要它仍是唯一 current terminology owner，并且 Requirement Authority Index / locator 能按需找到它。
 
 ## 4. 如果客户已经提供了很详细的需求材料
 
@@ -406,7 +407,7 @@ docs/requirements/business/employment-scheme.md
 
 然后 AI 把决定 promote 到 Requirement Authority，再继续下一个 Capability。
 
-如果当前项目存在 terminology candidate，可以把真正有歧义的少量术语与 Capability Review 一起确认；不要额外安排一次“把全术语表逐条审批”的固定会议。
+如果当前项目存在 terminology candidate，可以把真正需要人工决定的少量术语与 Capability Review 一起确认；其中 non-blocking naming coordination 不升级为 Blocking Question，也不要额外安排一次“把全术语表逐条审批”的固定会议。
 
 ## 13. 人工在这个流程中的主要角色
 
@@ -419,7 +420,7 @@ docs/requirements/business/employment-scheme.md
 - 对 Capability 整体结果做 Review；
 - 发现 AI 推导错误时纠偏；
 - 对项目级 Default Policy 做确认；
-- 对真正影响跨 Capability 语义的 terminology ambiguity 做确认；
+- 对真正影响跨 Capability 语义的 terminology ambiguity 或 naming coordination 做确认；
 - 对高风险 Requirement Baseline 变换进行独立语义 Review。
 
 AI 负责：
