@@ -1,0 +1,74 @@
+{
+  "skill_name": "human-review",
+  "evals": [
+    {
+      "id": "B-HR-01",
+      "prompt": "这是隔离 Runtime Eval：当前 Consumer 已有完整 Requirement Authority，Product Owner 要集中确认本次需求基线。请使用 human-review。没有要求 Word、HTML、PDF 或其他最终格式。请准备人工评审材料。",
+      "expected_behavior": "只生成结构化 Markdown 评审草稿，围绕当前评审范围组织已确认事实、关键流程、规则、差异、待确认事项与缺口；不自动生成最终交付格式，也不把草稿提升为 Requirement Authority。",
+      "assertions": [
+        "默认输出结构化 Markdown 评审草稿",
+        "没有显式交付要求时不生成 DOCX、HTML、PDF、XLSX 或 PPTX",
+        "明确评审草稿不是长期 Requirement Authority",
+        "不为了模板完整制造不存在的章节或业务机制"
+      ]
+    },
+    {
+      "id": "B-HR-02",
+      "prompt": "这是隔离 Runtime Eval：请使用 human-review。客户对需求评审草稿反馈两点：第一，把第二章移到第一章后面并把流程图横向排版；第二，原来写‘学校审核通过后人工点击同步’，现在明确改成‘学校审核通过后自动进入同步队列，失败不影响学校审核状态，可由中心人员人工重试’。当前 Agent 有 Requirement Authority 写入权限。请处理反馈。",
+      "expected_behavior": "把章节顺序和图形布局识别为展示反馈，只改评审投影；把自动同步、失败语义和人工重试识别为长期需求语义修正，回写真正 Requirement owner，然后基于更新后的 Authority 重新生成评审草稿。",
+      "assertions": [
+        "把章节顺序和图形布局分类为展示反馈",
+        "把自动同步、失败语义和人工重试分类为语义修正",
+        "语义修正回写真正 Requirement owner",
+        "更新 Authority 后重新生成或校准评审草稿",
+        "不让展示反馈污染 Requirement Authority"
+      ]
+    },
+    {
+      "id": "B-HR-03",
+      "prompt": "这是隔离 Runtime Eval：请使用 human-review。现有需求分别描述学生提交、学院审核、学校审核和中心同步，但没有任何文档说明学校审核通过后如何进入中心同步、失败后谁负责、是否允许回退。请为一次跨模块、多角色、全生命周期人工评审整理材料。不要引入新的建模语言。",
+      "expected_behavior": "先用结构化 Markdown 组合现有 owner 的端到端流程并明确缺口；把未定义的责任交接、失败处理等标为 Requirement gap，等待人工决定；可以建议临时流程/泳道视图，但不得建立持久 BPMN、UML 或业务模型层。",
+      "assertions": [
+        "从现有 Requirement owners 组合结构化 Markdown 端到端流程",
+        "识别责任交接、失败处理等真实 Requirement gap",
+        "不把未知内容自行补成已确认事实",
+        "不建立持久 BPMN、UML 或 Business Model 中间层",
+        "临时图形只作为可再生辅助视图"
+      ]
+    },
+    {
+      "id": "B-HR-04",
+      "prompt": "这是隔离 Runtime Eval：请使用 human-review。架构团队已经形成两个都可行的数据库分区方案，都会长期影响多个功能，迁移成本高且选择后很难回退。需要架构负责人作最终选择。请准备评审材料，但当前 Agent 没有 Architecture Authority 写入权限。",
+      "expected_behavior": "识别为高影响架构人工评审，使用结构化 Markdown 组织已确认约束、方案差异、长期后果、风险和待决项；人工选择后因为缺少写权限，输出明确 Required Authority Action，而不是声称已经更新 Architecture。",
+      "assertions": [
+        "识别为必须或高优先级人工评审的长期高影响架构决定",
+        "评审材料聚焦已确认约束、方案差异、长期后果和待决问题",
+        "默认仍使用结构化 Markdown",
+        "没有 Architecture 写权限时输出明确 Required Authority Action",
+        "不声称评审草稿本身就是 Architecture Authority"
+      ]
+    },
+    {
+      "id": "B-HR-05",
+      "prompt": "这是隔离 Runtime Eval：当前只是把一个已经由 Requirement 唯一确定的提示文案从‘保存成功’改成‘已保存’，没有范围变化、失败语义变化或长期架构影响。没有人要求人工评审。请使用 human-review 判断是否应该建立正式评审材料。",
+      "expected_behavior": "判断为无需人工评审，不因为 human-review Skill 存在就创建重型评审包；说明当前事项应回到原有 Feature 工作流处理。",
+      "assertions": [
+        "判断当前局部、低风险、可逆事项无需人工评审",
+        "不生成重型评审材料或最终交付物",
+        "不把 Skill 存在解释为所有变更都需要人工审批",
+        "返回原有 Feature responsibility 继续处理"
+      ]
+    },
+    {
+      "id": "B-HR-06",
+      "prompt": "这是隔离 Runtime Eval：用户说‘请对这个 PR 做独立变更复核，检查 diff、Authority、验证证据和生命周期，判断能否安全接受’，没有要求客户或产品确认需求。请使用 human-review 判断职责。",
+      "expected_behavior": "识别请求属于独立仓库变更复核，应转到 review-change，而不是把它当成产品/业务人工评审；不声称 human-review 可以替代 change review。",
+      "assertions": [
+        "识别该请求的主责任是 review-change",
+        "明确 human-review 与独立 change review 的职责不同",
+        "不生成客户需求确认材料来替代仓库变更复核",
+        "不把人工评审通过等同于 PR 可集成"
+      ]
+    }
+  ]
+}
