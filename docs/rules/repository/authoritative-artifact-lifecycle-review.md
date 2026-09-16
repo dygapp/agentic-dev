@@ -3,7 +3,7 @@ id: rule:authoritative-artifact-lifecycle-review
 type: rule
 status: active
 scope:
-  phases: [converge]
+  phases: []
   activities: [review]
   technologies: []
   artifacts: [authority]

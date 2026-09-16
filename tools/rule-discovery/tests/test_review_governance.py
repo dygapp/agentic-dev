@@ -13,12 +13,12 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
 class ReviewGovernanceContractTests(unittest.TestCase):
-    def test_current_owner_transition_rule_is_discoverable_for_authority_lifecycle_review(self):
+    def test_current_owner_transition_rule_is_phase_agnostic_and_discoverable(self):
         result = rd.discover(
             repo_root=REPO_ROOT,
             rule_roots=[Path("docs/rules")],
             signals={
-                "phases": None,
+                "phases": ["execute"],
                 "activities": ["review", "documentation"],
                 "technologies": [],
                 "artifacts": ["authority", "skill", "rule", "repository-governance"],
@@ -36,6 +36,10 @@ class ReviewGovernanceContractTests(unittest.TestCase):
         lifecycle_rule = (
             REPO_ROOT / "docs/rules/repository/authoritative-artifact-lifecycle-review.md"
         ).read_text(encoding="utf-8")
+        rule_ids = {
+            item.id
+            for item in rd.scan_rules(repo_root=REPO_ROOT, rule_roots=[Path("docs/rules")])
+        }
 
         self.assertIn("## Authority-chain semantic review", skill)
         self.assertIn("Current owner transition", skill)
@@ -50,7 +54,7 @@ class ReviewGovernanceContractTests(unittest.TestCase):
         self.assertIn("## Current owner transition completeness", lifecycle_rule)
         self.assertIn("Historical、archive、migration provenance", lifecycle_rule)
         self.assertIn("出现旧标识本身不构成 stale Current dependency", lifecycle_rule)
-        self.assertNotIn("rule:current-owner-transition-completeness", lifecycle_rule)
+        self.assertNotIn("rule:current-owner-transition-completeness", rule_ids)
 
     def test_review_change_behavior_eval_covers_failure_driven_semantics(self):
         path = REPO_ROOT / "evals/behavior/review-change.json"
