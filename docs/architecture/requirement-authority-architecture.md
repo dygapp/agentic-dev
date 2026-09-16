@@ -160,14 +160,14 @@ Project Terminology Authority 只拥有跨 Capability 长期稳定的：
 
 ```text
 Terminology Authority = 选择哪个业务概念 / business semantic root
-Technical convention   = 该词根怎样按语言 / 框架形成 identifier
+Technical convention   = 该业务词怎样按语言 / 框架形成 identifier
 ```
 
-例如项目内部 canonical semantic root 为 `employment-scheme` 时，Requirement、Specification、business-oriented filename、domain type 可以复用该业务词根；Kotlin / Java 中是否形成 `EmploymentScheme`、package / filename 如何组织仍由技术命名规范决定。外部 contract 若固定使用 `employmentPlan`，可以保留该 external name 及其 source role，但不能反向制造第二套内部 canonical domain term。
+例如项目内部确认某个“服务请求”概念的 canonical English business term 为 `service request`，Requirement、Specification、business-oriented filename、domain type 应复用同一业务语义；Java / Kotlin 是否形成 `ServiceRequest`、package / filename 如何组织仍由技术命名规范决定。外部 contract 若固定使用 `ticket`，可以保留该 external name 及其 source role，但不能反向制造第二套内部 canonical domain term。
 
 术语候选优先从 current Requirement / Domain Authority 提取。分析阶段可以暂存 synonym / translation / legacy mapping candidate，但候选清单、Issue、聊天或 Review Draft 默认都是 non-Authority；确认后的 durable terminology 必须写回唯一 terminology owner，随后候选资产退出 Current consumption。
 
-术语确认遵守现有 Requirement Question Gate：Current Authority 已能唯一决定时直接使用；只有不同答案会实质改变 business meaning、canonical identity、中英文 semantic mapping、legacy / external mapping、cross-capability naming 或 Acceptance / responsibility interpretation 时，才升级 Human Authority。
+术语决定分两类处理：如果不同答案会实质改变 business meaning、scope、responsibility、data semantics、Acceptance 或其他产品语义，则按现有 Requirement Question Gate 判断是否成为 Human Blocking Question；如果业务语义已经确定，只剩 canonical Chinese / English naming、alias mapping 或 cross-capability naming coordination，则记录为 non-blocking terminology decision，可在 Capability-level Review 中集中确认，不扩大 Blocking Question Gate。拼写风格、identifier casing、类名后缀和 package layout 等纯技术表达继续由 Technical / Code convention owner 处理。
 
 Canonical terminology 变化时不得 blind global search-replace。应先更新 true owner，再区分 current internal canonical reference、external preserved name、legacy source name 与 historical provenance，只迁移真正属于 Current internal semantics 的引用。
 
