@@ -79,7 +79,7 @@ class CurrentRepositoryTests(unittest.TestCase):
             rule_roots=[Path("docs/rules")],
         )
         self.assertEqual("ok", result["status"])
-        self.assertEqual(11, result["skills"])
+        self.assertEqual(12, result["skills"])
         self.assertEqual(27, result["rules"])
         self.assertTrue(result["fixture_markdown_excluded"])
 
