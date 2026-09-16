@@ -109,7 +109,7 @@ Capability Model v2 集成后继续复核发现：部分 Architecture 仍混入 
 
 Issue #126 / PR #127 建立 Project Knowledge Model：
 
-- `docs/project/**` 只拥有当前 Repository 自身的使命、核心项目要求、capability instance、Roadmap 与稳定演进摘要；
+- `docs/project/**` 只拥有当前 Repository 自身的使命、核心项目需求、capability instance、Roadmap 与稳定演进摘要；
 - `docs/architecture/**`、`docs/methods/**`、`skills/**`、`docs/rules/**` 与对应 tool contract 继续只拥有可复用 capability；
 - 正式确立 **Project 不传播，Capability 传播**；
 - Method selector instance 移入 Project Capability Profile；
@@ -193,7 +193,7 @@ Issue #141 / PR #142 将这些 Failure Evidence 转化为最小 upstream capabil
 - 不新增新的 Review Method 或 artifact-specific Review Skill，而是在现有 `skill:review-change` 内增加有边界的 Authority-chain semantic review；
 - 高影响 Authority work 显式挑战 Current owner transition、single semantic ownership、downstream observable projection、declared replaceability seam、Authority / implementation / verification conflict classification 与 source role / evidence promotion boundary；
 - 对 bulk Authority restructure、replaceability、major Specification / Interface convergence、heterogeneous reconstruction 与 high-impact semantic migration 增加 bounded code-holdout / regenerability challenge，普通 PR 不自动执行 full regenerability；
-- C1 不建立平行 micro-rule，而是扩展既有 `rule:authoritative-artifact-lifecycle-review`，把 owner replace / retire / archive 或 lifecycle closure 后的 locator、selector、verification consumer 与 durable current-state wording纳入 transition completeness；
+- C1 不建立平行 micro-rule，而是扩展既有 `rule:authoritative-artifact-lifecycle-review`，把 owner replace / retire / archive 或 lifecycle closure 后的 locator、selector、verification consumer 与 durable current-state wording 纳入 transition completeness；
 - Historical / archive / provenance 中明确的非 Current retired reference 被保留为合法 Evidence，避免把全仓旧字符串扫描错误包装成 hard invariant；
 - C2 / C3 / C4 / C5 / C7 首先进入 Review procedure；C6 “verification should validate invariants, not mutable inventories” 保持 Held，等待更多跨 Consumer / technology Evidence；
 - deterministic tooling 只保留 targeted retired reference、dead locator、selector / link integrity 等候选方向，不恢复中央 owner registry、retired-owner catalog 或其他需要与 Authority corpus 同步的 runtime index。
