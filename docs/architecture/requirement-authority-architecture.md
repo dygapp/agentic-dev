@@ -131,6 +131,46 @@ owner docs = Requirement 事实是什么
 
 这里的“系统边界”描述产品责任：系统负责什么、不负责什么、与哪些外部主体交换什么；它不等于内部模块划分、部署拓扑或 component architecture。
 
+### 5.1 Project Terminology Authority
+
+项目级术语治理是 Requirement Authority 内的**可选横向 semantic owner**，不是每个 Consumer 必须建立的 glossary，也不要求固定物理路径。
+
+只有出现真实跨 Capability / Feature 的 terminology need 时才建立或扩展，例如：
+
+- 同一长期业务概念存在多个中文名称并可能造成业务理解偏差；
+- 同一业务概念存在多个英文 business term，可能形成并行领域命名；
+- current / legacy / external 名称需要稳定映射；
+- 术语差异会影响 actor、state、data semantics、fact ownership、cross-capability interaction 或 Acceptance；
+- 多个 Specification、Design、Interface、Test 或带业务语义的代码对象需要共享同一 semantic root。
+
+单一 Capability 内已经由真实 Requirement owner 清楚定义、且不会向外形成 naming drift 的局部词，不机械提升为项目级术语。
+
+Project Terminology Authority 只拥有跨 Capability 长期稳定的：
+
+- canonical Chinese business term；
+- 确有英文命名需要时的 canonical English business semantic root；
+- 最小 definition / distinction boundary；
+- historical / external / alias mapping 及其 source role；
+- applicability / scope；
+- 必要的真实 Requirement owner reference。
+
+它不拥有 Capability 内完整业务规则、状态机、权限或 Acceptance，也不拥有字段字典、API 字典、数据库字典、language/framework code style、package layout 或 identifier casing。
+
+原则：
+
+```text
+Terminology Authority = 选择哪个业务概念 / business semantic root
+Technical convention   = 该词根怎样按语言 / 框架形成 identifier
+```
+
+例如项目内部 canonical semantic root 为 `employment-scheme` 时，Requirement、Specification、business-oriented filename、domain type 可以复用该业务词根；Kotlin / Java 中是否形成 `EmploymentScheme`、package / filename 如何组织仍由技术命名规范决定。外部 contract 若固定使用 `employmentPlan`，可以保留该 external name 及其 source role，但不能反向制造第二套内部 canonical domain term。
+
+术语候选优先从 current Requirement / Domain Authority 提取。分析阶段可以暂存 synonym / translation / legacy mapping candidate，但候选清单、Issue、聊天或 Review Draft 默认都是 non-Authority；确认后的 durable terminology 必须写回唯一 terminology owner，随后候选资产退出 Current consumption。
+
+术语确认遵守现有 Requirement Question Gate：Current Authority 已能唯一决定时直接使用；只有不同答案会实质改变 business meaning、canonical identity、中英文 semantic mapping、legacy / external mapping、cross-capability naming 或 Acceptance / responsibility interpretation 时，才升级 Human Authority。
+
+Canonical terminology 变化时不得 blind global search-replace。应先更新 true owner，再区分 current internal canonical reference、external preserved name、legacy source name 与 historical provenance，只迁移真正属于 Current internal semantics 的引用。
+
 ## 6. `business/` responsibility
 
 `business/` 是主要纵向 Requirement Fact Authority。
@@ -198,6 +238,7 @@ owner docs = Requirement 事实是什么
 - source inventory；
 - extraction table；
 - ambiguity / conflict candidate；
+- terminology candidate inventory；
 - comparison matrix；
 - flow / state / relationship view；
 - migration analysis；
@@ -238,11 +279,11 @@ Consumer 可以根据项目需要使用 Domain / Capability / Scenario 等层级
 - Scenario / Feature 只在当前业务理解、验收或后续开发需要时向下展开；
 - 不把全量未来 Scenario 穷举当成 Requirement Baseline Ready 的必要条件。
 
-主要长期事实都有 owner、主要边界清晰、后续 Feature 能确定性找到 Requirement，比“列出了多少 L3”更重要。
+主要长期事实都有 owner、主要边界清晰、后续 Feature 能确定性地找到 Requirement，比“列出了多少 L3”更重要。
 
 ## 12. Fresh Context consumption
 
-普通 Fresh Context Feature Agent 不应默认扫描整个 `docs/requirements`。
+普通 Fresh Context Feature Agent 不应默认扫描整个 `docs/requirements`，也不应因为项目存在 terminology owner 就预加载整份 glossary。
 
 推荐消费路径：
 
@@ -251,8 +292,11 @@ Repository Authority
 → Requirement Authority Index
 → current Feature / Capability owner
 → explicitly related overview / aspect / NFR owner
+→ related Project Terminology Authority（仅当前任务涉及 business naming / mapping 时）
 → Specification / Technical Plan
 ```
+
+典型 terminology 按需读取 trigger 包括：新增或修改跨 Capability business object / actor / state / activity；Specification 引入长期新业务术语；Technical Plan / code generation 创建带业务语义的 module、file、class、event、interface-model 名称；出现两个以上疑似同义 / 近义 business terms；legacy / external schema 需要映射当前内部语义。
 
 `README.md` 主要供人理解，不作为 Agent runtime 的 Requirement locator。`analysis/` 也不进入 ordinary runtime，除非当前任务明确需要原始 Evidence、历史原因或尚未 promote 的分析材料。
 
@@ -273,7 +317,7 @@ Repository Authority
 - 新项目建立 Requirement Baseline；
 - Requirement fact 被确认或变更；
 - 长期 owner 缺失、冲突或拆分 / 合并；
-- Feature 中发现具有跨 Feature 长期价值的新业务事实；
+- Feature 中发现具有跨 Feature 长期价值的新业务事实或 terminology；
 - External / policy change 改变长期 Requirement。
 
 ### 13.3 Consumer
@@ -290,6 +334,8 @@ Repository Authority
 ### 13.4 Persistence
 
 长期 Requirement Fact 必须保存在 Consumer Repository Authority 可定位的 durable owner 中。默认推荐 `docs/requirements/**`，但 Consumer 可以使用等价结构。
+
+Project Terminology Authority 若被采用，也必须是 Requirement Authority Index 或等价 locator 可发现的 durable owner；本 Architecture 不要求固定 `terminology.md` 文件名或目录。
 
 ### 13.5 Update
 
@@ -315,7 +361,7 @@ Requirement Authority 持有跨多个 Feature 长期持续成立的事实；Feat
 
 Specification 不应为了自包含复制完整 Requirement Baseline。
 
-Feature 中确认的新术语、不变量、规则或 data semantics 如果具有长期跨 Feature 价值，应提升到真实 Requirement owner，再由 Specification 引用。
+Feature 中确认的新术语、不变量、规则或 data semantics 如果具有长期跨 Feature 价值，应提升到真实 Requirement owner；如果其核心问题是跨 Capability canonical business naming，则进入已建立的 Project Terminology Authority，再由 Specification 引用。
 
 ## 15. 与 Architecture 的边界
 
