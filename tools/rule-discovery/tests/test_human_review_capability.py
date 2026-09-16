@@ -1,0 +1,83 @@
+from __future__ import annotations
+
+from pathlib import Path
+import sys
+import unittest
+
+TOOL_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(TOOL_DIR))
+import rule_discovery as rd  # noqa: E402
+
+REPO_ROOT = Path(__file__).resolve().parents[3]
+
+
+class HumanReviewCapabilityTests(unittest.TestCase):
+    def read(self, relative: str) -> str:
+        return (REPO_ROOT / relative).read_text(encoding="utf-8")
+
+    def test_human_review_architecture_is_canonical_and_consumer_bounded(self):
+        path = REPO_ROOT / "docs/architecture/human-review-architecture.md"
+        self.assertTrue(path.is_file())
+        parsed = rd.parse_front_matter_file(path)
+        self.assertEqual("architecture:human-review", parsed.metadata.get("id"))
+        self.assertEqual("architecture", parsed.metadata.get("type"))
+        self.assertEqual("active", parsed.metadata.get("status"))
+
+        text = path.read_text(encoding="utf-8")
+        self.assertIn("只面向 **Consumer 软件项目的软件开发过程**", self.read("docs/project/project-roadmap.md") if False else "")
+        self.assertIn("不用于规范 `agentic-dev` 自身", text)
+        self.assertIn("结构化 Markdown 评审草稿", text)
+        self.assertIn("delivery_target = none", text)
+        self.assertIn("不得因为需要端到端理解就建立新的持久业务模型层", text)
+        self.assertIn("人工评审与 `skill:review-change` 不是同一责任", text)
+
+    def test_human_review_skill_contract_and_navigation(self):
+        path = REPO_ROOT / "skills/human-review/SKILL.md"
+        self.assertTrue(path.is_file())
+        parsed = rd.parse_front_matter_file(path)
+        self.assertEqual("human-review", parsed.metadata.get("name"))
+        self.assertEqual("skill:human-review", parsed.metadata["metadata"].get("agentic-dev-id"))
+        self.assertEqual("skill", parsed.metadata["metadata"].get("agentic-dev-type"))
+        self.assertEqual("active", parsed.metadata["metadata"].get("agentic-dev-status"))
+
+        text = path.read_text(encoding="utf-8")
+        for heading in ["## Trigger", "## Inputs", "## Procedure", "## Outputs", "## Exit Conditions", "## Escalation"]:
+            self.assertIn(heading, text)
+        self.assertIn("delivery_target = none", text)
+        self.assertIn("不建立持久 BPMN、UML 或业务模型中间层", text)
+        self.assertIn("当前请求实际是独立仓库变更复核", text)
+
+        skills_readme = self.read("skills/README.md")
+        architecture_readme = self.read("docs/architecture/README.md")
+        self.assertIn("`human-review`", skills_readme)
+        self.assertIn("human-review-architecture.md", architecture_readme)
+
+    def test_methods_integrate_human_review_without_new_stage(self):
+        requirement = self.read("docs/methods/requirement-baseline-establishment.md")
+        ai_development = self.read("docs/methods/ai-development.md")
+        architecture = self.read("docs/methods/architecture-clarification.md")
+
+        for text in [requirement, ai_development, architecture]:
+            self.assertIn("architecture:human-review", text)
+            self.assertIn("skill:human-review", text)
+
+        self.assertIn("Consumer 未采用 `skill:human-review` 时", requirement)
+        self.assertIn("不要求固定人工审批", ai_development)
+        self.assertIn("不因为存在人工评审能力而自动升级", architecture)
+
+        self.assertNotIn("Human Review →", ai_development)
+        self.assertNotIn("Human Review →", architecture)
+
+    def test_behavior_eval_exists_and_covers_discriminating_cases(self):
+        eval_path = REPO_ROOT / "evals/behavior/human-review.json"
+        self.assertTrue(eval_path.is_file())
+        text = eval_path.read_text(encoding="utf-8")
+        for case_id in ["B-HR-01", "B-HR-02", "B-HR-03", "B-HR-04", "B-HR-05", "B-HR-06"]:
+            self.assertIn(case_id, text)
+        self.assertIn("结构化 Markdown", text)
+        self.assertIn("review-change", text)
+        self.assertIn("不建立持久 BPMN", text)
+
+
+if __name__ == "__main__":
+    unittest.main()
