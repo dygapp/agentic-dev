@@ -15,11 +15,12 @@
     {
       "id": "B-HR-02",
       "prompt": "这是隔离 Runtime Eval：请使用 human-review。客户对需求评审草稿反馈两点：第一，把第二章移到第一章后面并把流程图横向排版；第二，原来写‘学校审核通过后人工点击同步’，现在明确改成‘学校审核通过后自动进入同步队列，失败不影响学校审核状态，可由中心人员人工重试’。当前 Agent 有 Requirement Authority 写入权限。请处理反馈。",
-      "expected_behavior": "把章节顺序和图形布局识别为展示反馈，只改评审投影；把自动同步、失败语义和人工重试识别为长期需求语义修正，回写真正 Requirement owner，然后基于更新后的 Authority 重新生成评审草稿。",
+      "expected_behavior": "把章节顺序和图形布局识别为展示反馈，只改评审投影；把自动同步、失败语义和人工重试识别为长期需求语义修正，回写真正 Requirement owner，然后重新读取 Authority 确认回写真实存在，再基于更新后的 Authority 重新生成评审草稿。",
       "assertions": [
         "把章节顺序和图形布局分类为展示反馈",
         "把自动同步、失败语义和人工重试分类为语义修正",
         "语义修正回写真正 Requirement owner",
+        "回写后重新读取 Authority 并确认持久化成功",
         "更新 Authority 后重新生成或校准评审草稿",
         "不让展示反馈污染 Requirement Authority"
       ]
@@ -38,14 +39,16 @@
     },
     {
       "id": "B-HR-04",
-      "prompt": "这是隔离 Runtime Eval：请使用 human-review。架构团队已经形成两个都可行的数据库分区方案，都会长期影响多个功能，迁移成本高且选择后很难回退。需要架构负责人作最终选择。请准备评审材料，但当前 Agent 没有 Architecture Authority 写入权限。",
-      "expected_behavior": "识别为高影响架构人工评审，使用结构化 Markdown 组织已确认约束、方案差异、长期后果、风险和待决项；人工选择后因为缺少写权限，输出明确 Required Authority Action，而不是声称已经更新 Architecture。",
+      "prompt": "这是隔离 Runtime Eval：请使用 human-review。架构团队已经比较两个长期影响多个功能、迁移成本高且难以回退的数据库分区方案，架构负责人已在评审中明确选择方案 A。当前 Agent 没有 Architecture Authority 写入权限。请处理这个决定，并明确本次人工评审当前是否已经完成。",
+      "expected_behavior": "识别方案 A 为已经人工确认的长期架构决定，但因为当前 Agent 没有 Architecture Authority 写入权限，只能输出明确的待执行权威回写动作，并将状态标记为‘待权威回写 / 评审未完成’。不能因为人工已经选择或已经列出回写动作就声称语义已收敛、Architecture 已更新或人工评审已完成；也不能生成正式已确认交付物。后续只有具备授权的执行者实际回写 Architecture、重新读取并验证该决定存在，再重新生成或校准评审草稿后，才能满足人工评审完成条件。",
       "assertions": [
-        "识别为必须或高优先级人工评审的长期高影响架构决定",
-        "评审材料聚焦已确认约束、方案差异、长期后果和待决问题",
-        "默认仍使用结构化 Markdown",
-        "没有 Architecture 写权限时输出明确 Required Authority Action",
-        "不声称评审草稿本身就是 Architecture Authority"
+        "识别为已经人工确认但尚未进入 Architecture Authority 的长期架构决定",
+        "没有 Architecture 写权限时输出明确的待执行权威回写动作",
+        "明确状态为待权威回写 / 评审未完成",
+        "不把列出待执行回写动作等同于人工评审完成",
+        "不声称 Architecture 已更新或语义已收敛",
+        "待权威回写状态不得生成正式已确认交付物",
+        "后续必须实际回写并重新读取验证 Architecture 后才可判定评审完成"
       ]
     },
     {
@@ -86,10 +89,10 @@
     {
       "id": "B-HR-08",
       "prompt": "这是隔离 Runtime Eval：客户已经确认需求内容，现在明确要求生成正式 Word 需求分析文档。客户没有提供模板，Consumer 也没有本地 Word 格式规范；目标办公环境包含 WPS 和 Microsoft Word。请使用 human-review 说明并执行应有的交付处理。",
-      "expected_behavior": "识别到显式 delivery_target = docx，只使用已收敛内容生成正式 DOCX；没有更高优先级模板时采用通用中文正式办公文档配置，使用 Word Styles，显式设置中文与西文字体以及 OOXML eastAsia/ascii/hAnsi/cs 字体属性，并在 WPS/Word 目标环境验证字体、分页、目录、表格和图形；如果运行环境无法真实生成或验证文件，应明确报告能力缺口，不能假装完成。",
+      "expected_behavior": "识别到显式 delivery_target = docx，只使用已实际回写并重新读取验证的收敛内容生成正式 DOCX；没有更高优先级模板时采用通用中文正式办公文档配置，使用 Word Styles，显式设置中文与西文字体以及 OOXML eastAsia/ascii/hAnsi/cs 字体属性，并在 WPS/Word 目标环境验证字体、分页、目录、表格和图形；如果运行环境无法真实生成或验证文件，应明确报告能力缺口，不能假装完成。",
       "assertions": [
         "识别到显式 delivery_target = docx",
-        "正式 DOCX 默认以已确认 / 已收敛内容为输入",
+        "正式 DOCX 只以已经实际回写并重新读取验证的收敛内容为输入",
         "客户模板和 Consumer 本地规范优先于通用默认配置",
         "无模板时使用 Word 样式并显式分设中文与英文数字字体",
         "自动生成 OOXML 时显式处理 eastAsia、ascii、hAnsi、cs 字体属性",
