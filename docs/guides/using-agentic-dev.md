@@ -444,3 +444,27 @@ Existing Consumer 如果已经用自己的方式建立稳定 Requirement / Archi
 6. 目标 Consumer 自己的 Project Capability Profile / Method selector 与 Requirement / Architecture Authority。
 
 如果你只是使用已有稳定 Consumer 做普通开发，不需要每次重新阅读 upstream Guide 或重跑 Requirement Baseline Method；Consumer-local Repository Authority 应已经提供 Agent 所需入口。
+
+## 20. Human Review 是怎样的横向能力
+
+Human Review 不是新的开发阶段，也不是 Requirement、Specification、Architecture、Technical Planning 各自增加一个固定人工审批 Gate。
+
+它在真实需要人工理解、确认或纠偏时，把当前 Authority 组织成结构化 Markdown Review Draft；人工反馈如果改变长期语义，必须回写真正 owner，并在重新读取 Authority 后重新生成评审投影。
+
+默认路径是：
+
+```text
+Current Authority
+→ structured Markdown Review Draft
+→ Human Review
+→ feedback classification
+→ durable semantic change 回写真正 owner
+→ reread Authority
+→ regenerate Review Draft
+```
+
+流程图、状态图、矩阵等只是按需临时视图；HTML / DOCX 只有显式要求时才生成。普通局部、低风险、可逆且 Authority 已能唯一决定的工作不增加固定 Human Review 负担。
+
+`human-review` 与 `review-change` 责任不同：前者帮助产品、业务、架构或工程责任人理解和确认 Consumer 项目语义；后者独立复核 Repository change 是否符合当前 Authority、范围、规则与 Evidence。任一 Review PASS 都不自动等于 merge / release / deploy 授权。
+
+完整的人类操作说明见 [`human-review.md`](human-review.md)；规范契约见 `docs/architecture/human-review-architecture.md` 与 `skills/human-review/SKILL.md`。
