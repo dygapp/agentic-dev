@@ -279,6 +279,12 @@ Provisional Minimal Default 必须在当前 Capability Human Review 中可见。
 
 人工主要作为 Product Authority / Reviewer，而不是逐字段需求生成器。
 
+如果 Consumer 已采用 `architecture:human-review` 与 `skill:human-review`，本阶段可以调用该 Skill 生成结构化 Markdown 评审草稿、分类人工反馈并完成语义回写。没有显式交付格式要求时，不因为进行 Capability-level Human Review 自动生成 DOCX、HTML 或其他最终交付物。
+
+人工评审产生的展示性修改只作用于评审投影；会改变长期需求语义的反馈必须回写真实 Requirement owner。若当前执行者没有对应写入授权，应明确输出 Required Authority Action，而不是让决定停留在评审草稿或会话中。
+
+Consumer 未采用 `skill:human-review` 时，本 Method 的 Capability-level Human Review 责任仍然成立；Skill 是可复用执行能力，不是本阶段存在的前提。
+
 ### 10.2 Independent semantic review
 
 以下任一情况成立时，在 Baseline Ready 前必须执行独立语义复核：
@@ -326,7 +332,7 @@ Requirement Authority 的结构、README / index / fact owner 边界、推荐目
 - human review batch；
 - conversation scratchpad。
 
-只要能够从 Requirement Authority 唯一再生，就不应为了 AI 理解方便建立新的持久中间 Authority。
+只要能够从 Requirement Authority 唯一再生，就不应为了 AI 理解方便建立新的持久中间 Authority。跨需求、功能规格、架构与技术方案通用的人工评审草稿、派生视图与反馈回写边界由 `architecture:human-review` 持有。
 
 ## 13. Return contract
 
@@ -355,6 +361,8 @@ Execute / Integrate authority granted
 ## 14. Skill / Rule 边界
 
 本 Method 当前不要求新的 `requirements-analysis` 或 `requirement-elicitation` Skill。只有未来真实 Consumer 使用证明某个 procedure 在多个 Repository 中稳定、可独立调用并能显著减少重复错误时，才评估 Skill admission。
+
+`skill:human-review` 是跨需求、功能规格、架构与技术方案复用的人工评审 supporting capability，不拥有需求抽取、需求分析或 Requirement Baseline lifecycle，因此不改变上述 `requirements-analysis` / `requirement-elicitation` Skill 准入结论。
 
 同样不因为本 Method 新增就复制一组 Requirement Rules。`Derive → Default → Ask → Review`、Question Gate 与 Depth Stop 是本 Method 的过程 contract；只有未来出现能够独立于 Method 存在的 policy gap 时，才进入 Rule owner。
 
