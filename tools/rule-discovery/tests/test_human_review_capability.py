@@ -68,15 +68,46 @@ class HumanReviewCapabilityTests(unittest.TestCase):
         self.assertNotIn("Human Review →", ai_development)
         self.assertNotIn("Human Review →", architecture)
 
+    def test_explicit_delivery_contract_is_bounded(self):
+        architecture = self.read("docs/architecture/human-review-architecture.md")
+        skill = self.read("skills/human-review/SKILL.md")
+
+        self.assertIn("`delivery_target = html`", architecture)
+        self.assertIn("`delivery_target = docx`", architecture)
+        self.assertIn("静态、轻量、无需后端服务", architecture)
+        self.assertIn("客户、合同、法规明确提供的正式模板或格式要求", architecture)
+        for font_key in ["`eastAsia`", "`ascii`", "`hAnsi`", "`cs`"]:
+            self.assertIn(font_key, architecture)
+        self.assertIn("WPS / Word", architecture)
+        self.assertIn("无法实际生成或验证目标文件时", architecture)
+
+        self.assertIn("生成 HTML 交互评审视图", skill)
+        self.assertIn("生成 DOCX 正式文档", skill)
+        self.assertIn("只有真实生成并实际完成相应验证后", skill)
+        self.assertIn("不为每种格式建立独立 Skill", skill)
+
     def test_behavior_eval_exists_and_covers_discriminating_cases(self):
         eval_path = REPO_ROOT / "evals/behavior/human-review.json"
         self.assertTrue(eval_path.is_file())
         text = eval_path.read_text(encoding="utf-8")
-        for case_id in ["B-HR-01", "B-HR-02", "B-HR-03", "B-HR-04", "B-HR-05", "B-HR-06"]:
+        for case_id in [
+            "B-HR-01",
+            "B-HR-02",
+            "B-HR-03",
+            "B-HR-04",
+            "B-HR-05",
+            "B-HR-06",
+            "B-HR-07",
+            "B-HR-08",
+        ]:
             self.assertIn(case_id, text)
         self.assertIn("结构化 Markdown", text)
         self.assertIn("review-change", text)
         self.assertIn("不建立持久 BPMN", text)
+        self.assertIn("delivery_target = html", text)
+        self.assertIn("delivery_target = docx", text)
+        self.assertIn("eastAsia", text)
+        self.assertIn("WPS / Word", text)
 
 
 if __name__ == "__main__":
