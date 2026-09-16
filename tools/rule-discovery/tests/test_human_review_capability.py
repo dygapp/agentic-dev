@@ -24,7 +24,7 @@ class HumanReviewCapabilityTests(unittest.TestCase):
         self.assertEqual("active", parsed.metadata.get("status"))
 
         text = path.read_text(encoding="utf-8")
-        self.assertIn("只面向 **Consumer 软件项目的软件开发过程**", self.read("docs/project/project-roadmap.md") if False else "")
+        self.assertIn("本架构定义普通 Consumer 软件项目中", text)
         self.assertIn("不用于规范 `agentic-dev` 自身", text)
         self.assertIn("结构化 Markdown 评审草稿", text)
         self.assertIn("delivery_target = none", text)
