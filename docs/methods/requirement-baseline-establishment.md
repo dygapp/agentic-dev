@@ -81,6 +81,8 @@ Establish Sources & Authority
 5. Review Requirement Baseline；
 6. Requirement Convergence。
 
+Project Terminology Governance 不增加新的 Method 阶段。Consumer 确有跨 Capability terminology need 时，只把 terminology responsibility 嵌入上述六阶段；没有真实需要时不建立 glossary 或额外流程。
+
 ### 4.1 Stable phase identities
 
 - Establish Sources & Authority → `establish-requirement-sources`；
@@ -119,6 +121,8 @@ Establish Sources & Authority
 
 不得把“材料存在”“旧系统这样做”“历史文档这样写”直接等同于当前 Requirement。
 
+如果项目已有 terminology / domain glossary / naming owner，本阶段同时确认它是否属于 Current Requirement Authority，以及 legacy / external 名称是否只是 source terminology。外部协议、政策原文或历史 schema 中的名称可以保留原样，但不能因为来源存在就自动成为内部 canonical terminology。
+
 不要求建立永久 source catalog。只有当前澄清、复核或跨上下文恢复确实需要的 source inventory 才暂存；其默认是 transitional artifact，不自动成为 Requirement Authority。
 
 退出条件：后续事实抽取可以明确判断来源可信度、时间边界与当前 Authority owner，不会把不同历史时期或不同证据等级平权混合。
@@ -149,7 +153,9 @@ Establish Sources & Authority
 - acceptance intent；
 - out-of-scope boundary。
 
-页面、按钮、菜单、API shape、数据库表、类 / 包、事务 / 缓存等默认不作为需求边界来源；只有它们本身是合同、法规、外部接口或其他 authoritative constraint 时，才作为 Requirement 保留。
+当同一长期业务概念跨多个 Capability / source 出现时，同时识别 terminology candidate，例如：并行中文称谓、多个英文业务词、current / legacy / external 名称映射，以及可能影响角色、状态、数据语义或下游业务命名的近义词。候选只进入临时 analysis workspace，不在抽取阶段直接建立 canonical term。
+
+页面、按钮、菜单、API shape、数据库表、类 / 包、事务 / 缓存等默认不作为需求边界来源；只有它们本身是合同、法规、外部接口或其他 authoritative constraint 时，才作为 Requirement 保留。代码 identifier 的大小写、后缀、package layout 等技术命名也不是 terminology candidate，除非其背后暴露了尚未解决的业务语义歧义。
 
 退出条件：主要长期业务事实已经能够被识别，并可以进入 ownership / capability boundary 分析；不要求在此阶段穷举未来所有 Feature 细节。
 
@@ -165,6 +171,8 @@ Establish Sources & Authority
 - non-functional Requirement 的归属；
 - Requirement Authority Index / locator；
 - transitional analysis artifact 与 durable Authority 的边界。
+
+如果 terminology candidate 只在单一 Capability 内使用且真实 owner 已清晰，继续由该 Capability owner 持有；只有术语跨多个 Capability / Feature 长期成立、存在 canonical naming / alias mapping 需要且独立 owner 能减少语义漂移时，才建立或复用 Project Terminology Authority。物理路径不由本 Method 固定，但必须能由 Requirement Authority Index 或等价 locator 找到。
 
 Requirement Capability 边界优先依据：
 
@@ -196,6 +204,8 @@ Requirement Capability 边界优先依据：
 - **External Dependency**：依赖外部事实或材料；
 - **Design Item**：属于 Architecture / Technical Planning / Execute 的 HOW；
 - **Unsupported Assumption**：当前没有 Evidence 支持、也不满足最小默认边界的其他假设。
+
+Terminology candidate 在本阶段还应能区分：existing canonical terminology、deterministically derived terminology、material terminology ambiguity、Capability-local term、technical naming item 与 external / legacy source name。只有前述分类不足以安全决定 canonical business meaning 时，才升级人工。
 
 “未知”不等于“必须问人”。
 
@@ -229,6 +239,8 @@ Provisional Minimal Default 必须在当前 Capability Human Review 中可见。
 6. 不同答案会实质改变 Scope、State、Permission、Data Semantics、Business Result、Compliance 或 Acceptance；
 7. 不解决会阻塞当前 Requirement Baseline。
 
+Terminology 只在不同答案会实质改变 business meaning / scope、canonical identity、中英文 semantic mapping、legacy / external / current mapping、cross-capability naming 或 Acceptance / responsibility interpretation 时升级人工。拼写风格、大小写、类名后缀、package layout 等继续属于 Technical / Code convention，不进入 Product terminology 决策。
+
 否则应推导、应用 Authoritative Default、采用可 Review 的 Provisional Minimal Default、记录为 non-blocking open item，或推迟到后续责任层。
 
 ### 8.4 Conversation protocol
@@ -261,6 +273,8 @@ Provisional Minimal Default 必须在当前 Capability Human Review 中可见。
 
 如果继续下钻主要产生字段、按钮、页面布局、API、数据库、事务、缓存、类 / 包或施工顺序，则默认已经进入 Design / Technical Planning / Execute 责任。
 
+如果继续讨论 terminology 主要只剩 identifier casing、package / filename style、DTO / Entity suffix 等技术表达，也应停止 Requirement 下钻并交给对应 Technical / Code convention owner。
+
 如果下游结果已经由上游规则唯一决定，也必须停止逐项追问并直接记录推导结果。
 
 ## 10. Review Requirement Baseline
@@ -276,6 +290,8 @@ Provisional Minimal Default 必须在当前 Capability Human Review 中可见。
 - 是否遗漏真实高价值业务规则；
 - 是否错误创造额外机制；
 - remaining ambiguity 是否确实需要人工裁决。
+
+如果当前 Baseline 使用 Project Terminology Authority，Review 还应集中检查真正影响跨 Capability 理解与 downstream semantic naming 的 terminology ambiguity，不要求人工逐条确认已经由 Current Authority 唯一决定的术语。确认结果必须写回真实 terminology owner，而不是只修改候选表或 Review Draft。
 
 人工主要作为 Product Authority / Reviewer，而不是逐字段需求生成器。
 
@@ -312,7 +328,8 @@ Review 必须可以核对 source / decision / resulting Authority；格式、链
 10. Requirement Authority Index 可以让 Fresh Context Agent 定位最小必要需求上下文；
 11. 命中强制 independent semantic review 的场景已经 PASS；
 12. Fresh Context Agent 可以在不依赖历史聊天或临时 analysis artifact 的情况下理解一个主要 Requirement Capability 的长期事实；
-13. 不存在仍被当成 durable Requirement 使用、但尚未经过 Capability Review / Authority promotion 的 Provisional Minimal Default。
+13. 不存在仍被当成 durable Requirement 使用、但尚未经过 Capability Review / Authority promotion 的 Provisional Minimal Default；
+14. 如果建立了 Project Terminology Authority，durable canonical terminology 已实际写回并重新读取确认，temporary candidate inventory 不再承担 Current Authority，locator 可以让相关下游任务按需发现它。
 
 真正存在 blocker 时必须保持 NOT READY。
 
@@ -327,6 +344,7 @@ Requirement Authority 的结构、README / index / fact owner 边界、推荐目
 - source inventory；
 - extraction table；
 - ambiguity candidate list；
+- terminology candidate inventory；
 - comparison matrix；
 - flow / state / relationship view；
 - human review batch；
@@ -360,14 +378,16 @@ Execute / Integrate authority granted
 
 ## 14. Skill / Rule 边界
 
-本 Method 当前不要求新的 `requirements-analysis` 或 `requirement-elicitation` Skill。只有未来真实 Consumer 使用证明某个 procedure 在多个 Repository 中稳定、可独立调用并能显著减少重复错误时，才评估 Skill admission。
+本 Method 当前不要求新的 `requirements-analysis`、`requirement-elicitation` 或 terminology Skill。只有未来真实 Consumer 使用证明某个 procedure 在多个 Repository 中稳定、可独立调用并能显著减少重复错误时，才评估 Skill admission。
 
-`skill:human-review` 是跨需求、功能规格、架构与技术方案复用的人工评审 supporting capability，不拥有需求抽取、需求分析或 Requirement Baseline lifecycle，因此不改变上述 `requirements-analysis` / `requirement-elicitation` Skill 准入结论。
+`skill:human-review` 是跨需求、功能规格、架构与技术方案复用的人工评审 supporting capability，不拥有需求抽取、需求分析、terminology ownership 或 Requirement Baseline lifecycle，因此不改变上述 Skill 准入结论。
 
-同样不因为本 Method 新增就复制一组 Requirement Rules。`Derive → Default → Ask → Review`、Question Gate 与 Depth Stop 是本 Method 的过程 contract；只有未来出现能够独立于 Method 存在的 policy gap 时，才进入 Rule owner。
+同样不因为本 Method 增加 terminology responsibility 就复制一组 Requirement / Terminology Rules。`Derive → Default → Ask → Review`、Question Gate、Depth Stop 与 terminology admission 都属于本 Method / Requirement Authority 的过程与 ownership contract；只有未来出现能够独立于 Method 存在的 policy gap 时，才进入 Rule owner。
 
 ## 15. Evidence maturity
 
 本 Method 的 v1 contract 主要来自大型真实 Consumer 项目前期需求分析的正向与负向历史 Evidence：包括能力边界重构、穷举式 L3 清单退出、持久中间业务模型退出、AI-ready 迁移中的语义漂移反例、术语 ambiguity → Human Decision → Authority Promotion 闭环，以及长期问答循环的真实摩擦。
+
+Project Terminology Governance 的当前增量同样主要来自该历史 Consumer corpus，并由现有 Requirement Authority / Question Gate / Human Review 语义共同约束。它建立的是有条件的 terminology owner 与 lifecycle，不证明固定 glossary 路径、完整术语表模板或历史编号体系应传播到其他 Consumer。
 
 这些 Evidence 用于提炼可复用责任和 anti-pattern，不证明任何历史目录、阶段名或具体模板应被机械复制到其他 Consumer。
