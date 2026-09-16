@@ -82,24 +82,17 @@ AI 已经可以形成完整候选，但集中人工审阅能显著降低误解�
 
 Review Draft 是一个临时投影。
 
-例如 Requirement Authority 中分别记录了学生、学校、中心三个角色的职责，评审时可以把它们组合成一份完整流程：
+例如不同 Requirement owners 分别记录了发起方、业务处理方和后续服务的职责，评审时可以把它们组合成一份完整流程：
 
 ```text
-学生提交
-→ 学校处理
-→ 中心后续业务
+发起方提交
+→ 业务处理方处理
+→ 后续服务继续生命周期
 ```
 
 如果所有环节都能由当前 Requirement owners 唯一恢复，这份流程只是为了帮助人理解，不需要再建立一套“业务模型 Authority”。
 
-如果组合时暴露了真实缺口，例如：
-
-- 谁负责触发下一步；
-- 某状态何时结束；
-- 失败后由谁处理；
-- 跨模块交接条件是什么；
-
-这些问题应返回真正的 Requirement owner 处理，而不是只在 Review Draft 或流程图里补一句说明。
+如果组合时暴露了真实缺口，例如谁负责触发下一步、某状态何时结束、失败后由谁处理、跨模块交接条件是什么，这些问题应返回真正的 Requirement owner 处理，而不是只在 Review Draft 或流程图里补一句说明。
 
 ## 5. 流程图、状态图和架构图什么时候生成
 
@@ -128,31 +121,23 @@ Review Draft 是一个临时投影。
 
 ### 展示反馈
 
-例如：
-
-- 调整章节顺序；
-- 修改措辞；
-- 表格更容易读；
-- 图形布局需要优化；
-- HTML 展开方式需要调整。
-
-这类反馈只修改评审投影，不修改产品 / 架构 Authority。
+例如调整章节顺序、修改措辞、优化表格和图形布局、改变 HTML 展开方式。这类反馈只修改评审投影，不修改产品或架构 Authority。
 
 ### 语义修正
 
-例如：
+例如人工明确指出：
 
-> “学校审核通过后仍允许学生修改。”
+> “业务处理完成后仍允许发起方修改当前对象。”
 
 如果当前 Requirement 写的是“不允许修改”，这不是 Review Draft 的文字问题，而是 Requirement fact 被人工修正。应更新真正的 Requirement owner。
 
 ### 新增长期决定
 
-例如当前 Authority 从未定义某个长期规则，人工评审时明确决定：
+如果当前 Authority 从未定义某个长期规则，而人工明确决定：
 
-> “所有学校统一采用这一失败处理规则。”
+> “所有适用业务单元统一采用这一失败处理规则。”
 
-如果它会长期约束后续开发与 Acceptance，就必须进入适当的 Requirement / Specification / Architecture / Technical owner，而不是只停留在评审会议或聊天记录里。
+只要它会长期约束后续开发与 Acceptance，就必须进入适当的 Requirement / Specification / Architecture / Technical owner，而不是只停留在评审会议或聊天记录里。
 
 ### 未决问题
 
@@ -197,14 +182,7 @@ delivery_target = none
 
 ### HTML
 
-适合交互式人工审核，例如：
-
-- 章节导航；
-- 展开 / 收起；
-- 只看待确认项；
-- 按角色或状态做有限筛选；
-- 显示流程图、状态图或架构图；
-- 突出差异、风险和决策项。
+适合交互式人工审核，例如章节导航、展开 / 收起、只看待确认项、有限筛选、临时流程 / 状态 / 架构视图以及差异、风险和决策项突出展示。
 
 默认应是静态、轻量、容易归档和重新生成的评审视图，不需要为了展示再做一套后台系统。
 
@@ -234,12 +212,7 @@ delivery_target = none
 
 这些条件满足后，Human Review 才算完成。
 
-Human Review 完成仍然不代表：
-
-- PR 已通过独立变更复核；
-- 可以 merge；
-- 可以 release / deploy；
-- 已获得任何外部高影响操作授权。
+Human Review 完成仍然不代表 PR 已通过独立变更复核，也不代表可以 merge、release、deploy 或执行其他高影响外部操作。
 
 ## 10. Human Review 与 `review-change` 不是一件事
 
@@ -249,13 +222,6 @@ Human Review 完成仍然不代表：
 
 服务对象是产品、业务、架构或工程责任人，帮助他们理解和确认 Consumer 软件项目中的需求、行为、架构与技术方案。
 
-关注：
-
-- 人是否理解当前内容；
-- 真实产品 / 架构意图是否正确；
-- 是否存在缺口、歧义或需要人工决定的问题；
-- 人工决定是否已经回写真正 Authority。
-
 ### `review-change`
 
 服务对象是 Repository change，独立检查一个变更是否符合当前 Authority、范围、规则、Evidence 和 artifact lifecycle。
@@ -264,22 +230,16 @@ Human Review PASS 不能替代 `review-change`；`review-change` PASS 也不能�
 
 ## 11. 一个典型使用流程
 
-例如一个项目完成了新的 Requirement Capability，希望客户整体确认：
+例如一个项目完成了新的 Requirement Capability，希望人工整体确认：
 
 ```text
 1. AI 从当前 Requirement Authority 生成 Markdown Review Draft
 2. 按需要生成一个跨角色流程图
-3. 客户提出：
-   - 两处措辞调整
-   - 一个业务规则修正
-   - 一个暂不决定的问题
-4. AI 分类：
-   - 措辞 → 展示反馈
-   - 业务规则 → 语义修正，回写 Requirement owner
-   - 暂不决定 → unresolved
+3. 人工提出：两处展示调整、一个业务规则修正、一个暂不决定的问题
+4. AI 分类：展示调整 → projection；业务规则 → 回写 Requirement owner；暂不决定 → unresolved
 5. 回写后重新读取 Requirement owner
 6. 重新生成 Review Draft
-7. 客户确认内容
+7. 人工确认内容
 8. 如果明确要求正式 Word 文档，再生成并验证 DOCX
 ```
 
