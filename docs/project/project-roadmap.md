@@ -8,32 +8,30 @@ status: active
 
 ## Current Baseline
 
-当前正式 capability baseline 为 **Requirement Baseline Establishment & Architecture Clarification Split v1**。
+当前正式 capability baseline 为 **Review Governance vNext — Authority-chain Semantic Review & Current-owner Lifecycle**。
 
-Integration provenance：Issue #138 / PR #139；精确 integration commit、merge 时间与 Actions 结果由 Git / GitHub 当前事实持有，不在 Roadmap 复制瞬时状态。
+Integration provenance：Issue #141 / PR #142；精确 integration commit、merge 时间与 Actions 结果由 Git / GitHub 当前事实持有，不在 Roadmap 复制瞬时状态。
 
-该 baseline 建立在 Software Project Clarification v1、V4 Rule Discovery、Capability Model v2、Project Knowledge Model、Rule granularity consolidation、Model Collaboration Capability & Adoption v1 与 Rule Discovery runtime activation hardening 之上，并完成以下收敛：
+该 baseline 建立在 Requirement Baseline Establishment & Architecture Clarification Split v1、V4 Rule Discovery、Capability Model v2、Project Knowledge Model、Rule granularity consolidation、Model Collaboration Capability & Adoption v1 与 Rule Discovery runtime activation hardening 之上，并完成以下收敛：
 
-- 新增 reusable `method:requirement-baseline-establishment`，把新项目 / 基线重建从 Raw Project Inputs 收敛到 `Requirement Baseline Ready`；
-- Requirement 主路径正式定义为 `Establish Sources & Authority → Extract Requirement Facts → Structure Requirement Authority → Resolve Requirement Unknowns → Review Requirement Baseline → Requirement Convergence`；
-- 固化 `Derive → Default → Ask → Review`：能由 Authority / 已确认事实唯一推导的结论不重复提问，没有 Evidence 支持的额外业务机制默认不创建，只有真实 material blocking ambiguity / conflict 才升级 Human Authority；
-- 新增 reusable `architecture:requirement-authority`，定义 Requirement semantic ownership、推荐 `docs/requirements` Human IA、README / index / fact owner 边界、Aspect admission、Fresh Context consumption 与 artifact lifecycle；
-- 新增独立、条件性的 `method:architecture-clarification`，只处理多个 Feature 共同依赖、长期、高成本难逆并阻塞可靠 Specification / Planning 的 systemic architecture driver；
-- 退休此前负责同时承载 Requirement 与 Architecture 的组合式项目澄清 super-method，不保留 compatibility layer；Method 之间通过 Return Contract 与 Repository-local selector 组合，不再建立只负责串联其他 Method 的上层流程；
-- `method:ai-development` 继续只负责具体 Feature / change；系统性 Requirement Baseline gap 与 systemic Architecture gap 分别返回各自长期 owner / Method；
-- Human Guide 新增 `establishing-requirement-baseline.md`，说明 Delta Conversation、Question Gate、Project Requirement Default、Capability Review 与 Clarification Depth Stop；
-- `jilinjobs` 继续只作为带失败历史的混合 Evidence：吸收 Authority-first、single semantic ownership、确定性推导、高价值问题、独立语义复核等机制，不机械传播其 L1/L2/L3 编号、项目特定目录、历史 Task 流程或已经退出的持久 Business Model 中间层；
-- 当前仍没有因为新增 Method 而建立 `requirements-analysis`、`requirement-elicitation` 或 `architecture-framing` Skill；Skill admission 继续要求新的跨 Consumer 真实 Evidence。
+- `skill:review-change` 在原有 authority consistency、semantic regression、scope、evidence 与 artifact lifecycle 基础上增加有边界的 **Authority-chain semantic review**；
+- 高影响 Authority restructuring 明确挑战 Current owner transition、single semantic ownership、Requirement / Domain → Observable Specification projection、declared replaceability seam、Authority / implementation / verification conflict classification 与 source role / evidence promotion boundary；
+- bounded code-holdout / regenerability 只在 bulk Authority restructure、canonical owner migration、major Specification / Interface convergence、declared replaceability、heterogeneous reconstruction 或 high-impact semantic migration 等场景触发，不把普通 PR 自动升级为 full regenerability；
+- `rule:authoritative-artifact-lifecycle-review` 扩展 Current-owner transition completeness：owner replace / retire / archive 或 lifecycle closure 后，Current locator、selector、verification consumer 与 durable current-state wording 必须同步迁移；
+- Historical / archive / provenance 对 retired id/path 的明确非 Current 引用继续合法，旧字符串存在本身不是 stale dependency；deterministic targeted scan 只能辅助 semantic review，不建立中央 retired-owner catalog；
+- C2 / C3 / C4 / C5 / C7 进入现有 Review procedure；C1 通过扩展既有 lifecycle Rule 而不是新增平行 Rule；C6 继续 HOLD，等待更多跨 Consumer / technology Evidence；
+- 新增 `review-change` behavior eval 与 deterministic regression，用 Consumer failure-derived scenarios 锁定 currentness、conflict classification、replaceability seam 与 downstream projection semantics；
+- 本轮没有新增 artifact-specific Review Skill、Review Method、中央 review catalog / owner registry，也没有把 Consumer-specific facts 上游化。
 
-更早里程碑与原因见 `docs/project/project-evolution.md`；具体 capability contract 见真实 Method / Architecture / Skill / Rule owner。
+上一正式 Requirement baseline 的稳定语义继续由现有 Method / Architecture / Guide owner 持有；更早里程碑与原因见 `docs/project/project-evolution.md`。
 
 ## Current Evolution
 
 当前没有获得 Planning / Execute Authority 的正式演进单元。
 
-Issue #138 — **Requirement Baseline Establishment：新项目需求基线与 Architecture Clarification 拆分** 已作为本 baseline 的设计与实施 provenance；稳定语义已经进入 Method / Architecture / Guide owner。本 Roadmap 不复制 Issue / PR 的完整分析、review 和 Actions Evidence。
+Issue #141 — **Review Governance vNext：Authority-chain Semantic Review 与 Current-owner Lifecycle** 已作为本 baseline 的设计、Evidence disposition 与实施 provenance；稳定语义已进入 `review-change`、现有 lifecycle Rule 与 regression owners。本 Roadmap 不复制 Issue / PR 的完整 C1～C7 分析、Independent Review 或 Actions Evidence。
 
-如果需要恢复 Issue #138 的设计理由，应读取 Issue #138 / PR #139，而不是在 Roadmap 建立第二份设计历史。
+如果需要恢复 Consumer Failure Evidence、Rejected / Held candidates 或 promotion rationale，应读取 Issue #141、PR #142 与其引用的 Issue #140 / Consumer Evidence，而不是在 Roadmap 建立第二份 Review design history。
 
 ## Current Gate
 
@@ -45,7 +43,10 @@ Issue #138 — **Requirement Baseline Establishment：新项目需求基线与 A
 
 当前可见后续候选只在真实 Evidence 支持时推进：
 
-- **Requirement Baseline Consumer validation**：在真实新项目 / 新的重大需求重建场景中观察 `Raw Inputs → docs/requirements → Requirement Baseline Ready → first Feature` 是否能够稳定工作，重点观察 Question Gate、Project Default、Capability Review、Fresh Context consumption 与 Requirement Authority Index；
+- **Review Governance cross-Consumer validation**：观察 Authority-chain semantic review 在其他 Consumer / technology / repository structure 中是否稳定减少 stale owner、orphan projection、replaceability seam 与 source-promotion defect，同时关注 false-positive 与普通 PR 过度触发；
+- **C6 verification invariant / tooling evolution**：继续收集“verification 应验证 invariant 而不是 mutable implementation inventory”的跨案例 Evidence，再决定 Rule admission、tooling-only 或继续 Hold；不得只凭 `jilinjobs-cms` 单一主要样本晋升 universal Rule；
+- **Current-owner deterministic tooling**：只有 targeted retired id/path、dead locator、selector/link integrity 检查在多个真实 migration 中证明价值且不需要中央同步 inventory 时，才评估正式 tooling；
+- **Requirement Baseline Consumer validation**：继续在真实新项目 / 新的重大需求重建场景中观察 `Raw Inputs → docs/requirements → Requirement Baseline Ready → first Feature`，重点关注 Question Gate、Project Default、Capability Review、Fresh Context consumption 与 Requirement Authority Index；
 - **Architecture Clarification evidence evolution**：当前 v1 仍只有 bounded、conditional、anti-BDUF 的较低成熟度 contract；后续从真实 Consumer 的正向、负向和 Evolutionary Architecture case 中校正进入条件与责任细节；
 - **Requirement execution capability / Skill admission**：只有真实 Consumer 证明 requirement extraction、elicitation 或 baseline review procedure 稳定、重复、可独立调用并能显著减少错误时，才评估新 Skill；
 - **Consumer feedback evolution**：继续从 Issue #58 等长期 Consumer Evidence 判断是否需要新增 / 调整 reusable capability；
@@ -55,11 +56,15 @@ Issue #138 — **Requirement Baseline Establishment：新项目需求基线与 A
 
 ## Known Observations
 
-- Requirement Baseline Establishment v1 的核心 Requirement 方法责任有真实大型 Consumer 的正向与负向历史 Evidence 支撑，但新的 default IA 与 Conversation Protocol 仍需要下一轮真实 Consumer adoption / project establishment 验证；
+- `jilinjobs-cms#155` 证明 Requirement Baseline / Documentation Authority 的 Authority-first、single semantic ownership 与 source-role separation 能支撑大型 Consumer 重建，但也证明局部文档自洽不足以替代跨层 projection、currentness、replaceability 与 regenerability challenge；
+- G6 R4 / R5 只提供 replacement design / contract completeness dry-run Evidence，不证明 Node.js Backend 或 HTML-first Renderer 已经构建运行；该 Evidence 边界必须继续保持；
+- Current-owner transition 同时包含 deterministic 与 semantic 两部分：dead locator / targeted retired reference 可自动化，Historical/provenance 引用角色与 Roadmap active-state wording仍需 semantic review；
+- C6 当前保持 Held；未来不得因为其表述直觉上合理而绕过 cross-case Evidence；
+- Requirement Baseline Establishment v1 的核心 Requirement 方法责任有真实大型 Consumer 的正向与负向 Evidence 支撑，但新的 default IA 与 Conversation Protocol 仍需要更多真实 Consumer adoption / project establishment 验证；
 - Architecture Clarification 的 Evidence maturity 低于 Requirement Baseline Establishment，当前只允许按最小条件 contract 使用并持续演进；
 - `Requirement Baseline Ready` 不等于 Architecture complete、Specification created、Execution Unit created 或 Execute / Integrate authority granted；
 - 推荐 `docs/requirements` 目录是 Human IA / default projection，不是硬编码 runtime schema；Consumer 可以调整物理路径，但不能破坏 semantic ownership；
-- Requirement Human Navigation、Requirement Authority Index 与 Requirement Fact Authority 必须保持不同 owner，避免 README / index /正文三份 inventory 与事实重复维护；
+- Requirement Human Navigation、Requirement Authority Index 与 Requirement Fact Authority 必须保持不同 owner，避免 README / index / 正文三份 inventory 与事实重复维护；
 - 问题数量不是 Requirement maturity 指标；连续没有真实 Blocking Ambiguity 时，应停止提问并完成当前 Capability / Review；
 - reusable Method 存在于 `agentic-dev` corpus 不等于当前 Repository 已自行采用；local selector 仍只描述本 Repository 实际采用的 work kind；
 - Project Capability Profile 是 Repository-local instance owner，需要继续保持薄、稳定且不演变成 runtime catalog；
