@@ -113,7 +113,47 @@ docs/requirements/
 
 ### analysis
 
-临时工作区。source inventory、比较表、歧义清单、状态图、关系图、会话草稿等默认不是长期 Authority。
+临时工作区。source inventory、比较表、歧义清单、terminology candidate、状态图、关系图、会话草稿等默认不是长期 Authority。
+
+### 3.1 项目级术语治理不是必选词典
+
+如果项目中同一个长期业务概念跨多个 Capability / Feature 使用，并且已经出现多个中文称谓、多个英文业务词、legacy / external / current 名称映射，才需要考虑建立独立的 **Project Terminology Authority**。
+
+它解决的是：
+
+> 项目内部到底把这个业务概念叫什么，以及多个下游工件应该共享哪个 business semantic root？
+
+它不是“把所有名词都收进词典”。以下内容通常不需要进入项目级术语 owner：
+
+- 只在单个 Capability 内使用、且语义已经由该 owner 清楚定义的局部词；
+- Java / Kotlin 类名大小写、后缀、package layout；
+- 数据库字段清单；
+- API 参数字典；
+- DTO / Entity / Service 等技术命名风格。
+
+一个典型过程是：
+
+```text
+Current Requirement / Domain Authority
+→ 找出跨 Capability 的同义词 / 近义词 / 英文译法 / legacy-external mapping
+→ 可唯一推导的直接确定
+→ 区分 material ambiguity 与 non-blocking naming coordination
+→ 必要的人工决定进入 Capability Review / Question Gate
+→ 把确认结果写回唯一 terminology owner
+→ 后续 Requirement / Specification / Design / code / test 按需消费
+```
+
+例如项目确认中文概念“服务请求”的 canonical English business term 是 `service request`：
+
+- Requirement、Specification、business-oriented filename、domain type 应复用同一业务语义；
+- Java / Kotlin 是否形成 `ServiceRequest`、package / filename 如何组织，由对应语言 / 框架命名规范决定；
+- 外部接口如果固定叫 `ticket`，可以继续保留这个 external name，但应把它视为外部映射，而不是反向在项目内部再建立第二套 canonical domain term。
+
+术语候选表只是分析材料。人工确认后必须写回真实 terminology owner；候选表、Issue、聊天或 Review Draft 不能长期和正式术语并列维护。
+
+如果当前 Requirement Authority 已经能够唯一决定业务含义，不要再次逐条问人。只有不同答案会改变业务含义、责任、数据语义、Acceptance 等产品语义，并且阻塞 Requirement Baseline 时，terminology ambiguity 才进入 Blocking Question Gate。若业务语义已经确定，只剩 canonical 中文 / 英文命名、alias mapping 或跨 Capability 命名统一，可以作为 non-blocking terminology decision 在 Capability Review 中集中确认，不把 naming coordination 伪装成产品 blocker。
+
+项目也不必固定使用 `terminology.md`。可以放在 `overview/`、现有 Domain glossary 或其他等价位置，只要它仍是唯一 current terminology owner，并且 Requirement Authority Index / locator 能按需找到它。
 
 ## 4. 如果客户已经提供了很详细的需求材料
 
@@ -330,6 +370,8 @@ API
 
 通常应该停止 Requirement 下钻，把问题留给 Specification / Technical Planning / Execute。
 
+术语也是一样：如果争议已经只剩大小写、类名后缀、package / filename style 等技术形式，就不再属于 Requirement terminology discussion。
+
 ## 12. 用 Capability Review 代替逐条确认
 
 完成一个 Requirement Capability 后，推荐给人工一个短 Review 摘要，而不是再次逐条问答：
@@ -365,6 +407,8 @@ docs/requirements/business/employment-scheme.md
 
 然后 AI 把决定 promote 到 Requirement Authority，再继续下一个 Capability。
 
+如果当前项目存在 terminology candidate，可以把真正需要人工决定的少量术语与 Capability Review 一起确认；其中 non-blocking naming coordination 不升级为 Blocking Question，也不要额外安排一次“把全术语表逐条审批”的固定会议。
+
 ## 13. 人工在这个流程中的主要角色
 
 人工不是逐字段 Requirement Generator。
@@ -376,6 +420,7 @@ docs/requirements/business/employment-scheme.md
 - 对 Capability 整体结果做 Review；
 - 发现 AI 推导错误时纠偏；
 - 对项目级 Default Policy 做确认；
+- 对真正影响跨 Capability 语义的 terminology ambiguity 或 naming coordination 做确认；
 - 对高风险 Requirement Baseline 变换进行独立语义 Review。
 
 AI 负责：
@@ -385,6 +430,7 @@ AI 负责：
 - 自动推导；
 - 应用已确认默认；
 - 发现冲突 / 歧义；
+- 识别跨 Capability terminology candidate；
 - 组织 Requirement Authority；
 - 控制问题下钻尺度；
 - 只把真正需要 Authority 的决定交给人。
@@ -399,6 +445,7 @@ AI 负责：
 - 主要业务边界明确；
 - Requirement Authority Index 可以定位需求；
 - 真实高影响歧义已关闭；
+- 如果项目采用 Project Terminology Authority，已确认术语已经真实写回且可以按需定位，不再依赖候选表或聊天；
 - Fresh Context Agent 不依赖历史聊天也可以理解主要 Capability；
 - 仍未确定的问题已经正确分类为 external / design / non-blocking。
 
