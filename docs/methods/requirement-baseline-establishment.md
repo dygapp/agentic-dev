@@ -121,7 +121,7 @@ Project Terminology Governance 不增加新的 Method 阶段。Consumer 确有�
 
 不得把“材料存在”“旧系统这样做”“历史文档这样写”直接等同于当前 Requirement。
 
-如果项目已有 terminology / domain glossary / naming owner，本阶段同时确认它是否属于 Current Requirement Authority，以及 legacy / external 名称是否只是 source terminology。外部协议、政策原文或历史 schema 中的名称可以保留原样，但不能因为来源存在就自动成为内部 canonical terminology。
+如果项目已有 terminology / domain glossary / naming owner，本阶段确认它是否已经承担唯一 current terminology ownership、其 source role 是否清楚，以及 Requirement Authority Index 或等价 locator 是否可以定位。不要为了目录归属或历史命名把既有唯一 owner 强制迁移成新的 Requirement artifact，也不要再建立第二 owner。外部协议、政策原文或历史 schema 中的名称可以保留原样，但不能因为来源存在就自动成为内部 canonical terminology。
 
 不要求建立永久 source catalog。只有当前澄清、复核或跨上下文恢复确实需要的 source inventory 才暂存；其默认是 transitional artifact，不自动成为 Requirement Authority。
 
@@ -205,7 +205,7 @@ Requirement Capability 边界优先依据：
 - **Design Item**：属于 Architecture / Technical Planning / Execute 的 HOW；
 - **Unsupported Assumption**：当前没有 Evidence 支持、也不满足最小默认边界的其他假设。
 
-Terminology candidate 在本阶段还应能区分：existing canonical terminology、deterministically derived terminology、material terminology ambiguity、Capability-local term、technical naming item 与 external / legacy source name。只有前述分类不足以安全决定 canonical business meaning 时，才升级人工。
+Terminology candidate 在本阶段还应能区分：existing canonical terminology、deterministically derived terminology、material terminology ambiguity、Capability-local term、technical naming item 与 external / legacy source name。只有前述分类不足以安全决定 canonical business meaning 时，才可能升级为 Human Blocking Question；若业务含义已经确定，只剩 canonical naming / alias mapping / cross-capability naming coordination，则记录为 non-blocking terminology decision，留到 Capability-level Review 集中确认。
 
 “未知”不等于“必须问人”。
 
@@ -239,7 +239,7 @@ Provisional Minimal Default 必须在当前 Capability Human Review 中可见。
 6. 不同答案会实质改变 Scope、State、Permission、Data Semantics、Business Result、Compliance 或 Acceptance；
 7. 不解决会阻塞当前 Requirement Baseline。
 
-Terminology 只在不同答案会实质改变 business meaning / scope、canonical identity、中英文 semantic mapping、legacy / external / current mapping、cross-capability naming 或 Acceptance / responsibility interpretation 时升级人工。拼写风格、大小写、类名后缀、package layout 等继续属于 Technical / Code convention，不进入 Product terminology 决策。
+Terminology 不绕过这七项条件。只有 terminology ambiguity 同时会实质改变 business meaning / scope、responsibility、data semantics、Acceptance 或其他产品语义，并且阻塞当前 Requirement Baseline 时，才升级为 Human Blocking Question。业务语义已经确定但仍需统一 canonical Chinese / English naming、alias mapping 或 cross-capability naming 的情况，记录为 non-blocking terminology decision，在 Capability-level Review 集中确认；拼写风格、大小写、类名后缀、package layout 等继续属于 Technical / Code convention。
 
 否则应推导、应用 Authoritative Default、采用可 Review 的 Provisional Minimal Default、记录为 non-blocking open item，或推迟到后续责任层。
 
@@ -291,7 +291,7 @@ Terminology 只在不同答案会实质改变 business meaning / scope、canonic
 - 是否错误创造额外机制；
 - remaining ambiguity 是否确实需要人工裁决。
 
-如果当前 Baseline 使用 Project Terminology Authority，Review 还应集中检查真正影响跨 Capability 理解与 downstream semantic naming 的 terminology ambiguity，不要求人工逐条确认已经由 Current Authority 唯一决定的术语。确认结果必须写回真实 terminology owner，而不是只修改候选表或 Review Draft。
+如果当前 Baseline 使用 Project Terminology Authority，Review 还应集中检查少量真正需要人工的 terminology decision：影响业务含义 / 责任 / Acceptance 的 material ambiguity 应在进入 Review 前按 Question Gate 正确处理；业务语义已经确定但仍需统一 canonical naming / alias mapping / cross-capability naming coordination 的 non-blocking decision 可以在本次 Review 集中确认。已经由 Current Authority 唯一决定的术语不逐条重复确认。确认结果必须写回真实 terminology owner，而不是只修改候选表或 Review Draft。
 
 人工主要作为 Product Authority / Reviewer，而不是逐字段需求生成器。
 
