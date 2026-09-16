@@ -17,15 +17,15 @@ Integration provenance：Review Governance 来自 Issue #141 / PR #142；Human R
 - `skill:review-change` 在原有 authority consistency、semantic regression、scope、evidence 与 artifact lifecycle 基础上增加有边界的 **Authority-chain semantic review**；
 - 高影响 Authority restructuring 明确挑战 Current owner transition、single semantic ownership、Requirement / Domain → Observable Specification projection、declared replaceability seam、Authority / implementation / verification conflict classification 与 source role / evidence promotion boundary；
 - bounded code-holdout / regenerability 只在 bulk Authority restructure、canonical owner migration、major Specification / Interface convergence、declared replaceability、heterogeneous reconstruction 或 high-impact semantic migration 等场景触发，不把普通 PR 自动升级为 full regenerability；
-- `rule:authoritative-artifact-lifecycle-review` 扩展 Current-owner transition completeness：owner replace / retire / archive 或 lifecycle closure 后，Current locator、selector、verification consumer 与 durable current-state wording必须同步迁移；
+- `rule:authoritative-artifact-lifecycle-review` 扩展 Current-owner transition completeness：owner replace / retire / archive 或 lifecycle closure 后，Current locator、selector、verification consumer 与 durable current-state wording 必须同步迁移；
 - Historical / archive / provenance 对 retired id/path 的明确非 Current 引用继续合法，旧字符串存在本身不是 stale dependency；deterministic targeted scan 只能辅助 semantic review，不建立中央 retired-owner catalog；
 - C2 / C3 / C4 / C5 / C7 进入现有 Review procedure；C1 通过扩展既有 lifecycle Rule 而不是新增平行 Rule；C6 继续 HOLD，等待更多跨 Consumer / technology Evidence；
 - 新增 `review-change` behavior eval 与 deterministic regression，用 Consumer failure-derived scenarios 锁定 currentness、conflict classification、replaceability seam 与 downstream projection semantics；
-- `architecture:human-review` 与 `skill:human-review` 建立 Consumer 软件项目的人工作品评审能力：默认以结构化 Markdown Review Draft 作为非 Authority 的评审介质，按需生成临时视图，人工语义决定必须回写真正 owner；
+- `architecture:human-review` 与 `skill:human-review` 建立 Consumer 软件项目的人工评审能力：默认以结构化 Markdown Review Draft 作为非 Authority 的评审介质，按需生成临时视图，人工语义决定必须回写真正 owner；
 - Human Review 按风险触发，不成为每个 Method stage 的固定审批；普通局部、低风险、可逆且 Authority 可唯一决定的工作不增加固定 Human Review 开销；
 - HTML / DOCX 只在显式交付请求时作为可再生 projection 生成，不取得 Requirement / Specification / Architecture / Technical Authority；
 - `human-review` 与 `review-change` 保持不同责任：前者帮助人理解和确认 Consumer 项目语义，后者独立复核 Repository change；任一 PASS 都不自动授予 merge / release / deploy 权限；
-- 本轮没有新增 Human Review Method、持久 BPMN / Business Model 中间层、artifact-specific Review Skill 或中央 review catalog / owner registry，也没有把 Consumer-specific facts 上游化。
+- Human Review v1 未新增 Human Review Method、持久 BPMN / Business Model 中间层、artifact-specific Review Skill 或中央 review catalog / owner registry，也没有把 Consumer-specific facts 上游化。
 
 稳定演进里程碑与原因见 `docs/project/project-evolution.md`。
 
