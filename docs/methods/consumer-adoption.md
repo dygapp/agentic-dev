@@ -46,13 +46,15 @@ upstream Project Knowledge 可以帮助理解该 baseline 的目的和实例化�
 
 ## 5. Capability Assessment
 
-逐类判断 Method / Architecture / Skill / Rule / 必要 Tool contract：
+逐类判断 Method / Architecture / Skill / Rule / 必要 Tool / runtime contract：
 
 - adopt：可直接接受语义；
 - adapt：接受目标能力但需 Consumer-local 适配；
 - reject：当前 Consumer 不采用。
 
 Guide 只作为人类解释材料。upstream Project Knowledge 只作为 provenance / context。二者都不自动进入 Agent ordinary runtime。
+
+如果目标 Architecture 定义 Agent-facing runtime / execution routing，Assessment 必须同时识别其 Consumer-local semantic owner、Bootstrap locator、execution-surface instance 与验证要求；不能只复制 Human Guide 或 upstream Project Profile 就声明 adopt。
 
 不得为了省事全量复制 upstream 文档树或把 upstream Project capability profile 当作 Consumer selector / runtime catalog。
 
@@ -65,7 +67,8 @@ Guide 只作为人类解释材料。upstream Project Knowledge 只作为 provena
 - Method / Architecture 必须与 Consumer 自身流程和结构一致；
 - Skill 尽量保持稳定 procedure；
 - Rule 可根据 Consumer Authority 本地化、替代或新增；
-- Tool contract 可以按 Consumer 环境实现本地 instance；
+- Tool / runtime contract 可以按 Consumer 环境实现本地 instance；
+- Agent-facing runtime / execution-routing capability 若被接受，必须在 Consumer-local canonical owner 中保留其 mode identity、routing / transition、explicit override 与 fail-closed 语义，或以等价且可审计的 local adaptation明确替代；
 - Rule metadata 与 body 保持同源；
 - upstream provenance 不替代 local Authority。
 
@@ -81,12 +84,15 @@ Consumer 必须建立自己的 Repository-local capability instance，而不是�
 - 当前采用 Method 的 selector / entry；
 - Skill discovery entry；
 - Rule root / Rule Discovery Tool locator；
+- 已采用 Agent-facing runtime / execution-routing capability 的 canonical locator、eligible execution surfaces、availability verification 与 explicit override 行为（如适用）；
 - Consumer-local Project / Roadmap / current work owner；
 - 必要 Human View / recovery entry。
 
+runtime instance 只记录 Consumer 实际采用的 surface 与 locator，不复制 upstream Project Profile。某个 runtime 是否在当前会话真实可用仍需按 local capability contract动态验证；不能因为 profile 写了某个 surface 就假定它始终 available。
+
 物理文件名和目录可由 Consumer 自己决定，只要 semantic owner 清楚。
 
-ordinary runtime 不得要求在线读取 upstream current state，也不得在本地 discovery failure 时自动回退 upstream。
+ordinary runtime 不得要求在线读取 upstream current state，也不得在本地 discovery / runtime locator failure 时自动回退 upstream。
 
 退出条件：Consumer 可仅依赖 local Project / capability state 恢复并执行普通工作。
 
@@ -102,6 +108,15 @@ ordinary runtime 不得要求在线读取 upstream current state，也不得在�
 - upstream Project state 未成为 local current Authority；
 - adoption 引入的关键行为与 completion claim。
 
+如果采用了 Agent-facing runtime / execution-routing capability，还必须使用 Fresh Runtime Evidence 验证：
+
+- ordinary Agent 能从 Consumer `AGENTS.md` / Project capability instance 到达 local canonical runtime owner，而不读取 upstream Guide；
+- default routing 根据 current responsibility 与实际 runtime availability工作；
+- Human explicit mode override 只改变 execution topology，不跳过 Repository governance；
+- override 指向 unavailable / incompatible runtime 时按 local contract fail closed，不静默降级；
+- broken local runtime locator 时不通过 memory / upstream 补定义；
+- ordinary runtime `upstream access = 0`。
+
 验证范围按实际 adopted capabilities 决定，不要求无差别执行全部 upstream eval。
 
 ## 9. Close Evaluated Baseline
@@ -110,4 +125,4 @@ ordinary runtime 不得要求在线读取 upstream current state，也不得在�
 
 完成 adoption 不产生未来自动升级义务。后续 upstream 变化只有显式进入 `method:consumer-upgrade` 才能改变 Consumer local state。
 
-完成条件：Consumer ordinary runtime 可独立运行，local Project / capability instance 可恢复，provenance 可追溯，且没有未声明的 upstream runtime dependency。
+完成条件：Consumer ordinary runtime 可独立运行，local Project / capability instance 可恢复，provenance 可追溯，且没有未声明的 upstream runtime dependency。若本次采用 Agent-facing runtime / execution-routing capability，则其 local canonical owner、Bootstrap locator、runtime instance 与 Fresh Runtime Evidence 必须全部成立；缺一项都不能宣称 adoption 完成。
