@@ -36,16 +36,38 @@ status: active
 - Architecture contract：`docs/architecture/rule-discovery-architecture.md`；
 - Rule root：`docs/rules/`；
 - Tool：`tools/rule-discovery/rule_discovery.py`；
+- cloud transport：`.github/workflows/rule-discovery.yml`；
 - ordinary runtime 输出：少量 `{id, path}` candidate locator；
 - Rule human inventory：`docs/rules/README.md`，仅 Human View，不参与 runtime routing。
 
-当前普通运行调用：
+当前本地 checkout 调用：
 
 ```bash
 python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-json '<task-signals-json>'
 ```
 
-调用时的信号 schema、三态语义、bounded-token、matching、fail-closed 与 locator-only contract 由 Rule Discovery Architecture 持有；本 profile 只拥有当前 Tool / Rule root / invocation instance。
+当前云端 task-level invocation 有两个 transport，二者都必须携带 exact 40-character commit SHA，并在该 SHA checkout 后调用同一 Tool：
+
+1. GitHub Actions `workflow_dispatch`：输入 `target_sha` 与 `signals_json`；
+2. 当前 Agent / connector 无 workflow dispatch 写能力时，可在 GitHub Issue / PR 中由 `OWNER` / `MEMBER` / `COLLABORATOR` 发送：
+
+```text
+/rule-discovery <40-char-commit-sha> <task-signals-json>
+```
+
+云端 invocation 将：
+
+- checkout 请求中的 exact SHA；
+- 验证实际 `HEAD` 与请求 SHA 一致；
+- 执行该 SHA 自身的 `tools/rule-discovery/rule_discovery.py`；
+- 将 signals、requested / actual SHA 与 discovery JSON 输出到 Actions log，并上传 `task-rule-discovery-<run-id>` artifact；
+- 在 signals、SHA 或 discovery contract 无效时 fail closed。
+
+`pull_request` / `push(master)` 触发的同名 workflow 仍只承担 repository lint、deterministic tests 与固定 smoke；不能拿其 PASS 替代当前 task signals 的 task-level invocation。
+
+调用 Rule Discovery transport 本身是 preflight compute，不授予任何后续 Repository / Issue / PR / workflow / deployment 副作用权限。
+
+调用时的信号 schema、三态语义、bounded-token、matching、fail-closed 与 locator-only contract 由 Rule Discovery Architecture 持有；本 profile 只拥有当前 Tool / Rule root / local + cloud invocation instance。
 
 `phases` signal 的合法 Method-specific identity 由当前选定 Method 自己定义；本 profile 不复制 phase token 列表。
 
