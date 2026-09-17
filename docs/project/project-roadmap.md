@@ -8,9 +8,9 @@ status: active
 
 ## Current Baseline
 
-当前正式 capability baseline 以 **Review Governance vNext — Authority-chain Semantic Review & Current-owner Lifecycle** 为治理基础，并进一步集成 **Human Review Capability v1**、**Project Terminology Governance**、**Data Migration Governance** 与外部操作 / 人工介入治理增强。
+当前正式 capability baseline 以 **Review Governance vNext — Authority-chain Semantic Review & Current-owner Lifecycle** 为治理基础，并进一步集成 **Human Review Capability v1**、**Project Terminology Governance**、**Data Migration Governance**、**GitHub Agent Workflow Human View** 与外部操作 / 人工介入治理增强。
 
-Integration provenance：Review Governance 来自 Issue #141 / PR #142；Human Review Capability v1 来自 Issue #144 / PR #145；Project Terminology Governance 来自 Issue #147 / PR #148；Data Migration Governance 来自 Issue #149 / PR #150；人工介入必要性治理来自 Issue #154 / PR #156。精确 integration commit、merge 时间与 Actions 结果由 Git / GitHub 当前事实持有，不在 Roadmap 复制瞬时状态。
+Integration provenance：Review Governance 来自 Issue #141 / PR #142；Human Review Capability v1 来自 Issue #144 / PR #145；Project Terminology Governance 来自 Issue #147 / PR #148；Data Migration Governance 来自 Issue #149 / PR #150；人工介入必要性治理来自 Issue #154 / PR #156；GitHub Agent Workflow Human Guide 与 external-write identity / idempotency 增强来自 Issue #157 / PR #158。精确 integration commit、merge 时间与 Actions 结果由 Git / GitHub 当前事实持有，不在 Roadmap 复制瞬时状态。
 
 当前 baseline 建立在 Requirement Baseline Establishment & Architecture Clarification Split v1、V4 Rule Discovery、Capability Model v2、Project Knowledge Model、Rule granularity consolidation、Model Collaboration Capability & Adoption v1 与 Rule Discovery runtime activation hardening 之上，并完成以下收敛：
 
@@ -41,17 +41,17 @@ Integration provenance：Review Governance 来自 Issue #141 / PR #142；Human R
 
 Issue #143 — **Human-facing Guides 与 `jilinjobs` historical experience mining umbrella** 已完成主动 systematic mining：三轮历史扫描完成 retained / project-specific / failed-or-retired / uncertain 分类，高置信真实缺口中的 Project Terminology Governance 与 Data Migration Governance 已分别通过独立 bounded promotion lifecycle 集成。后续历史材料只按新的明确 Evidence 触发，不再把 Candidate B 维持为持续研究流。
 
-Candidate A 已完成 Human Review Guide 与 Feature Development Guide；Specification / Architecture / Technical Planning 等主题不机械拆成独立 Guide，其他 platform / operations Human View 继续按真实使用缺口逐个建立 bounded unit。
+Candidate A 已完成 Human Review Guide、Feature Development Guide 与 GitHub Agent Workflow Guide；Specification / Architecture / Technical Planning 等主题不机械拆成独立 Guide，其他 platform / operations Human View 继续按真实使用缺口逐个建立 bounded unit。
 
-Issue #157 — **GitHub Agent Workflow** 当前作为 active bounded evolution 继续推进，负责 GitHub-hosted Repository 下 Local / Cloud Repository Runtime、GitHub-native Connector / API、GitHub Actions、responsibility transition、side-effect boundary 与 Human escalation 的人类操作说明，并只对 Gate A 已证明的最小 normative gap 修改既有 owner。Roadmap 只保存其稳定 evolution / Gate 摘要；exact PR Head、Review、Actions 与其他瞬时 locator 继续由 GitHub current state 持有。
+Issue #157 / PR #158 — **GitHub Agent Workflow** 已完成 semantic gap review、Human Guide、最小 runtime governance 增强、Independent Semantic Review 与真实 Consumer read-only applicability validation，并已集成到当前 baseline；不再作为 active bounded evolution。后续只按新的真实 platform / operations Evidence 继续演进，不从本次完成态自动启动新的 Method / Architecture / Skill / Consumer upgrade。
 
 Issue #71 的 Consumer model-routing / blind independent review Evidence 已由 Issue #129 的 Model Collaboration Capability & Adoption v1 正式消费并关闭；历史证据继续由 GitHub 保留，不再作为独立待执行候选。
 
 ## Current Gate
 
-**ACTIVE — Issue #157 GitHub Agent Workflow / Gate E Independent Semantic Review。**
+**NONE — 当前没有 active bounded evolution / Gate。**
 
-Roadmap 持有当前 bounded evolution 的稳定 Gate 摘要；Gate E 的 exact PR Head、Review finding / 状态、Actions run、commit 与后续修复 locator 继续以 GitHub current state 为准，并在 Fresh Context 中重新读取。Gate E 完整闭环前不进入 Gate F Consumer Validation。
+Roadmap 继续持有当前 evolution / Gate / next candidates 的稳定摘要；新的 bounded work 必须由新的明确 Evidence、Human Authority 或当前 Repository 事实重新激活，不能从已完成的 Issue #157 / PR #158 或下方候选列表自动继承 Execute / Integrate Authority。精确 PR、Review、Actions、commit 等 live state 继续以 GitHub current state 为准。
 
 ## Next Candidates
 
