@@ -10,7 +10,7 @@ status: active
 
 本文件记录 **`agentic-dev` 当前 Repository 如何实例化通用 Capability contract**。
 
-它是 Repository-local Project Authority，不是可传播给 Consumer 的 capability，也不是 Rule / Skill / Method 的第二份正文。Consumer adoption / upgrade 只能把本文件作为 provenance / implementation context，并必须建立自己的 local capability profile 或等价 Authority。
+它是 Repository-local Project Authority，不是可传播给 Consumer 的 capability，也不是 Rule / Skill / Method / Architecture 的第二份正文。Consumer adoption / upgrade 只能把本文件作为 provenance / implementation context，并必须建立自己的 local capability profile 或等价 Authority。
 
 当前 capability model 的已集成基础来自 PR #125 / integration commit `e5488fd22a078ab59a427e36ef9a20af935fc63f`。精确 current `master`、Open PR / Issue 与 Actions 状态仍从 GitHub 当前事实读取，不由本文件固定。
 
@@ -82,7 +82,37 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 
 本 profile 不复制当前 Skill 名单或数量；这些可以由当前 `SKILL.md` corpus 与 Human inventory 机械验证。
 
-## 5. Model Collaboration Instance
+## 5. GitHub Agent Runtime Instance
+
+`agentic-dev` 是 GitHub-hosted Repository，并已采用 `docs/architecture/github-agent-runtime-architecture.md`（`architecture:github-agent-runtime`）作为 ordinary Agent execution-routing 的 reusable contract。
+
+本 Repository 的 local instance：
+
+- status：`enabled`；
+- canonical runtime contract：`docs/architecture/github-agent-runtime-architecture.md`；
+- formal mode vocabulary：`A — Local Repository Task`、`B — Cloud Repository Task`、`C — Remote Repository Coordination`；
+- Local Repository Runtime：当前会话中已经存在、已授权且实际可用于本 Repository 的 checkout / worktree；
+- Cloud Repository Runtime：当前会话中已授权、能够实际建立 / 绑定本 Repository checkout，并提供当前责任所需 filesystem / shell / `git` / build / test / repository scripts 的云端 runtime；
+- GitHub-native coordination：当前已授权的 GitHub Connector / API 或等价 control-plane capability；
+- auxiliary verification / execution：当前 Repository GitHub Actions workflows，在当前 Authority / Rules允许时使用。
+
+本 profile **不保存某次会话当前 A / B / C 状态，也不假定某个 runtime 永远可用**。每次责任开始、责任实质变化或 Human explicit mode override 时，都按 canonical Architecture 和当前实际 runtime availability重新选择 / 验证。
+
+默认 routing 使用 canonical Architecture 的 `Existing Repository Runtime First` 语义；Human 可以显式 override execution topology。Forced B 可以覆盖默认 A，但当前没有真实可用 Cloud Repository Runtime 时必须 fail closed，不静默降级到 A / C。
+
+ordinary runtime 的稳定恢复链：
+
+```text
+AGENTS.md
+→ Project Capability Profile
+→ architecture:github-agent-runtime
+→ current responsibility + actual runtime availability
+→ A / B / C selection or explicit override
+```
+
+Human View：`docs/guides/github-agent-workflow.md`。该 Guide 只解释本 instance 与 canonical Architecture，不参与 ordinary Agent runtime，也不能在 canonical locator 缺失时作为 fallback。
+
+## 6. Model Collaboration Instance
 
 `agentic-dev` 当前提供 reusable `architecture:model-collaboration` 与 `method:model-collaboration-adoption`，但本 Repository 的 ordinary runtime **不因能力存在而默认启用多模型协作**。
 
@@ -97,13 +127,14 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 
 若未来 `agentic-dev` 自身决定启用 Model Collaboration，必须先按当前 Authority 接受相关 reusable semantics，再显式进入 `method:model-collaboration-adoption`，探测当前 runtime、建立 local config / validation Evidence，并更新本 section；不能因为 Guide 示例或历史实验存在就推断 enabled。
 
-## 6. Architecture / Project Entry
+## 7. Architecture / Project Entry
 
 Agent runtime 的稳定入口：
 
 ```text
 AGENTS.md
 → Project Roadmap + Project Capability Profile + GitHub current facts
+→ declared runtime capability（如适用）
 → Method Selection contract + local selector instance（如需要）
 → current Method / direct responsibility
 → relevant Architecture / Skill / Rules
@@ -113,12 +144,13 @@ Project / Capability 边界：`docs/architecture/project-knowledge-architecture.
 
 顶层 capability model：`docs/architecture/engineering-capability-architecture.md`。
 
-## 7. Human View Instance
+## 8. Human View Instance
 
 Human entry：
 
 - repository overview：`README.md`；
 - usage guide：`docs/guides/using-agentic-dev.md`；
+- GitHub Agent workflow：`docs/guides/github-agent-workflow.md`；
 - Project navigation：`docs/project/README.md`；
 - Architecture navigation：`docs/architecture/README.md`；
 - Method navigation：`docs/methods/README.md`；
@@ -127,23 +159,24 @@ Human entry：
 
 这些 Human View 可以解释 current instance，但不拥有 runtime selector 或 normative body。
 
-## 8. Current Project State Entry
+## 9. Current Project State Entry
 
 当前项目阶段、当前 evolution 与下一候选由 `docs/project/project-roadmap.md` 持有稳定摘要；精确 GitHub branch / Issue / PR / Actions 状态必须实时读取。
 
 稳定历史里程碑由 `docs/project/project-evolution.md` 摘要；完整实施 Evidence 留在 Git / Issue / PR / Actions。
 
-## 9. Consumer Projection Boundary
+## 10. Consumer Projection Boundary
 
 Consumer 不复制本 profile 作为自己的 runtime Authority。
 
 显式 adoption / upgrade 时：
 
 1. 选择 exact upstream baseline；
-2. 评估 Method / Architecture / Skill / Rule / Tool contract；
+2. 评估 Method / Architecture / Skill / Rule / Tool / runtime contract；
 3. adopt / adapt / reject；
 4. 在 Consumer 自己的 Project Authority 中建立 local Method selector、Rule Discovery locator、Skill entry 与 current baseline；
-5. 如果接受 Model Collaboration semantics 并决定启用，则另行执行 `method:model-collaboration-adoption`，建立 Consumer-local runtime / config / tier mapping / validation / fallback instance；
-6. 验证 ordinary runtime `upstream access = 0`。
+5. 如果接受 `architecture:github-agent-runtime`，则建立 Consumer-local canonical owner / locator 与自己的 Local / Cloud / GitHub-native / Actions runtime instance，并取得 Fresh Runtime routing / explicit override / fail-closed Evidence；
+6. 如果接受 Model Collaboration semantics 并决定启用，则另行执行 `method:model-collaboration-adoption`，建立 Consumer-local runtime / config / tier mapping / validation / fallback instance；
+7. 验证 ordinary runtime `upstream access = 0`。
 
 因此本文件是 `agentic-dev` 的 capability **instance profile**，不是跨 Repository 的 capability package。
