@@ -58,7 +58,7 @@ class RuntimeActivationRegressionTests(unittest.TestCase):
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn("task-rule-discovery-result.json", workflow)
         self.assertIn("/rule-discovery <40-char-sha> <signals-json>", profile)
-        self.assertIn("OWNER / MEMBER / COLLABORATOR", profile)
+        self.assertIn("`OWNER` / `MEMBER` / `COLLABORATOR`", profile)
 
 
 if __name__ == "__main__":
