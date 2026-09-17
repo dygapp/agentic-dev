@@ -19,7 +19,7 @@ status: active
 ## Rule 分类
 
 - `generation/` — 实现生成、变更范围与数据访问等通用生成约束；
-- `operations/` — 外部可变状态、授权、写后验证、并发与证据持久化约束；
+- `operations/` — 外部可变状态、授权、写后验证、并发、人工升级必要性与证据持久化约束；
 - `repository/` — Repository Authority、Git、表达、概念身份与 Review / Integration 约束；
 - `technology/` — 技术 / 框架特定约束，按技术栈继续分层；
 - `verification/` — Evidence、验证、迁移完成声明与人工复核约束。
@@ -46,6 +46,7 @@ technology/
 - [`async-operation-bounded-observation.md`](operations/async-operation-bounded-observation.md)
 - [`cross-repository-authorization.md`](operations/cross-repository-authorization.md)
 - [`external-binary-content-validation.md`](operations/external-binary-content-validation.md)
+- [`human-intervention-necessity.md`](operations/human-intervention-necessity.md)
 - [`safe-external-write.md`](operations/safe-external-write.md)
 - [`shared-resource-concurrency-ownership.md`](operations/shared-resource-concurrency-ownership.md)
 - [`temporary-evidence-to-persistent-input-promotion.md`](operations/temporary-evidence-to-persistent-input-promotion.md)
@@ -81,4 +82,4 @@ technology/
 - [`verification-contract-currentness.md`](verification/verification-contract-currentness.md)
 - [`visual-evidence.md`](verification/visual-evidence.md)
 
-当前共 27 条 discoverable Rule。该数量不是目标 KPI；增减只按 `docs/architecture/rule-architecture.md` 的任务级语义边界、独立 discovery 价值和总加载成本判断。
+当前共 28 条 discoverable Rule。该数量不是目标 KPI；增减只按 `docs/architecture/rule-architecture.md` 的任务级语义边界、独立 discovery 价值和总加载成本判断。

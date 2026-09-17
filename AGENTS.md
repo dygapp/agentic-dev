@@ -78,6 +78,8 @@ GitHub Actions 中名为 `Rule Discovery` 的 workflow 有两种职责，必须�
 
 活动优先使用直接责任词，如 `implementation`、`verification`、`review`、`external-operation`、`design`。技术与工件使用当前事实支持的稳定机器身份；例如 Vue 3.x → `vue3`、TypeScript → `typescript`、`.vue` SFC → `vue-sfc`、普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。
 
+准备请求人工执行动作、提供输入、作出决定或充当系统 / 工具之间的中转时，视为新的 human escalation responsibility checkpoint。**发出人工请求前**，`activities` 至少包含 `human-escalation`，`risks` 至少包含 `human-intervention`，并重新执行 Rule Discovery；Bootstrap 只拥有这次 signal transition，不复制“是否确需人工、怎样缩减人工动作”的 Rule 正文。
+
 成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选不等于最终适用，必须读取正文后做语义确认。进入新的 direct responsibility，或当前 phase / activity / technology / artifact / risk facts 实质变化时，都必须在继续该责任的有副作用动作前重新发现；旧 candidate set 不跨职责永久有效。
 
 Discovery `fail-closed` 时先修复 signals、metadata 或扫描完整性，不降级到全量 Rule、旧中心 Map 或 upstream discovery。`status=ok` 但候选为空，也不得读取未命中 Rule metadata 反向校准。
