@@ -82,7 +82,22 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 
 本 profile 不复制当前 Skill 名单或数量；这些可以由当前 `SKILL.md` corpus 与 Human inventory 机械验证。
 
-## 5. GitHub Agent Runtime Instance
+## 5. Model Collaboration Instance
+
+`agentic-dev` 当前提供 reusable `architecture:model-collaboration` 与 `method:model-collaboration-adoption`，但本 Repository 的 ordinary runtime **不因能力存在而默认启用多模型协作**。
+
+当前 local instance：
+
+- status：`disabled`；
+- persistent platform config：none；
+- concrete model tier mapping：none；
+- single-agent fallback：当前 ordinary runtime 本身。
+
+历史 `experiment/codex-multi-model-collaboration` 分支只作为 Research / Evidence 来源，不是本 Repository 当前 `.codex/` instance，也不通过 Project Profile 继承其模型名、并发数或 agent TOML。
+
+若未来 `agentic-dev` 自身决定启用 Model Collaboration，必须先按当前 Authority 接受相关 reusable semantics，再显式进入 `method:model-collaboration-adoption`，探测当前 runtime、建立 local config / validation Evidence，并更新本 section；不能因为 Guide 示例或历史实验存在就推断 enabled。
+
+## 6. GitHub Agent Runtime Instance
 
 `agentic-dev` 是 GitHub-hosted Repository，并已采用 `docs/architecture/github-agent-runtime-architecture.md`（`architecture:github-agent-runtime`）作为 ordinary Agent execution-routing 的 reusable contract。
 
@@ -111,21 +126,6 @@ AGENTS.md
 ```
 
 Human View：`docs/guides/github-agent-workflow.md`。该 Guide 只解释本 instance 与 canonical Architecture，不参与 ordinary Agent runtime，也不能在 canonical locator 缺失时作为 fallback。
-
-## 6. Model Collaboration Instance
-
-`agentic-dev` 当前提供 reusable `architecture:model-collaboration` 与 `method:model-collaboration-adoption`，但本 Repository 的 ordinary runtime **不因能力存在而默认启用多模型协作**。
-
-当前 local instance：
-
-- status：`disabled`；
-- persistent platform config：none；
-- concrete model tier mapping：none；
-- single-agent fallback：当前 ordinary runtime 本身。
-
-历史 `experiment/codex-multi-model-collaboration` 分支只作为 Research / Evidence 来源，不是本 Repository 当前 `.codex/` instance，也不通过 Project Profile 继承其模型名、并发数或 agent TOML。
-
-若未来 `agentic-dev` 自身决定启用 Model Collaboration，必须先按当前 Authority 接受相关 reusable semantics，再显式进入 `method:model-collaboration-adoption`，探测当前 runtime、建立 local config / validation Evidence，并更新本 section；不能因为 Guide 示例或历史实验存在就推断 enabled。
 
 ## 7. Architecture / Project Entry
 
