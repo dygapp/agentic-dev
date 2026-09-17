@@ -80,7 +80,7 @@ class CurrentRepositoryTests(unittest.TestCase):
         )
         self.assertEqual("ok", result["status"])
         self.assertEqual(12, result["skills"])
-        self.assertEqual(27, result["rules"])
+        self.assertEqual(28, result["rules"])
         self.assertTrue(result["fixture_markdown_excluded"])
 
     def test_generation_filters_out_data_access_without_signal(self):
