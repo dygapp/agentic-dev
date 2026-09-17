@@ -43,15 +43,15 @@ Issue #143 — **Human-facing Guides 与 `jilinjobs` historical experience minin
 
 Candidate A 已完成 Human Review Guide 与 Feature Development Guide；Specification / Architecture / Technical Planning 等主题不机械拆成独立 Guide，其他 platform / operations Human View 继续按真实使用缺口逐个建立 bounded unit。
 
-Issue #157 — **GitHub Agent Workflow** 已从上述 evidence-triggered Human View candidate 中独立出来，负责 GitHub-hosted Repository 下 Local / Cloud Repository Runtime、GitHub-native Connector / API、GitHub Actions、responsibility transition、side-effect boundary 与 Human escalation 的人类操作说明，并只对 Gate A 已证明的最小 normative gap 修改既有 owner。其 exact Gate、PR、Review 与 Actions 状态由 GitHub current state 持有，不在 Roadmap 复制瞬时 locator。
+Issue #157 — **GitHub Agent Workflow** 当前作为 active bounded evolution 继续推进，负责 GitHub-hosted Repository 下 Local / Cloud Repository Runtime、GitHub-native Connector / API、GitHub Actions、responsibility transition、side-effect boundary 与 Human escalation 的人类操作说明，并只对 Gate A 已证明的最小 normative gap 修改既有 owner。Roadmap 只保存其稳定 evolution / Gate 摘要；exact PR Head、Review、Actions 与其他瞬时 locator 继续由 GitHub current state 持有。
 
 Issue #71 的 Consumer model-routing / blind independent review Evidence 已由 Issue #129 的 Model Collaboration Capability & Adoption v1 正式消费并关闭；历史证据继续由 GitHub 保留，不再作为独立待执行候选。
 
 ## Current Gate
 
-**NONE — 当前没有需要由 Roadmap 持有的 project-wide Gate。**
+**ACTIVE — Issue #157 GitHub Agent Workflow / Gate E Independent Semantic Review。**
 
-独立 bounded evolution unit 的精确生命周期继续由对应 GitHub Issue / PR / Actions 持有；它们不会仅因为处于 ACTIVE 状态就自动改写为 project-wide Gate，也不会从 Roadmap 获得额外 Consumer modification、Method modification、merge、release 或 deploy authority。
+Roadmap 持有当前 bounded evolution 的稳定 Gate 摘要；Gate E 的 exact PR Head、Review finding / 状态、Actions run、commit 与后续修复 locator 继续以 GitHub current state 为准，并在 Fresh Context 中重新读取。Gate E 完整闭环前不进入 Gate F Consumer Validation。
 
 ## Next Candidates
 
@@ -97,8 +97,8 @@ Issue #71 的 Consumer model-routing / blind independent review Evidence 已由 
 - 当前 Repository live state：GitHub branch / Issue / PR / Actions；
 - 当前项目使命与核心要求：`project-charter.md`；
 - 当前 capability instance：`project-capability-profile.md`；
-- 当前 evolution / project-wide gate / next candidates：本 Roadmap；
-- bounded unit 的 exact Gate / PR / Review / Actions：对应 GitHub current state；
+- 当前 evolution / gate / next candidates：本 Roadmap；
+- 当前 bounded unit 的 exact PR / Review / Actions / commit 等 live state：对应 GitHub current state；
 - 稳定历史里程碑：`project-evolution.md`。
 
 Roadmap 不保存完整 Architecture、实施日志、完整 Review 或 Closure Evidence；这些分别回到 capability owner 与 GitHub 历史。
