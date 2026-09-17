@@ -41,6 +41,7 @@ V1～V3 的项目过程、实验流水和阶段状态不因曾经出现在 Resea
 
 ### Rule Discovery / Knowledge Activation
 
+- `rule-value-and-technical-knowledge-analysis.md` — 区分技术知识、项目决策与完成约束，以 Vue 和其他规则为样本评估增量价值、资料替代边界、漂移风险与消融评估方法；处置建议不改变现有规范。
 - `knowledge-activation-and-code-intelligence-analysis.md`
 - `knowledge-activation-evidence-appendix.md`
 - `llm-wiki-rule-governance-fit-analysis.md`
