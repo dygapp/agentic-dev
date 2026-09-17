@@ -6,275 +6,210 @@ status: active
 
 # GitHub Agent 工作指南
 
-本 Guide 面向使用 GitHub 托管 Repository 的项目参与者，解释 ChatGPT / Codex / Codex CLI、GitHub Connector 与 GitHub Actions 如何协同工作。
+本 Guide 面向使用 GitHub 托管 Repository 的项目参与者，解释 ChatGPT / Codex / Codex CLI、Repository Runtime、GitHub Connector 与 GitHub Actions 如何协同工作。
 
 它只承担 **Human View**。Repository Authority、Method、Architecture、Skill、Rule 与 Tool contract 仍由各自 canonical owner 定义；ordinary Agent runtime 不依赖本 Guide。若本 Guide 与目标 Repository 的 `AGENTS.md` 或 canonical capability 冲突，以后者为准。
 
-## 1. 先从责任而不是工具开始
+## 1. 三层模型
 
-GitHub 场景中常见四类 execution surface：
-
-- **Local Repository Runtime**：已有本地 checkout / project directory，可直接使用 filesystem、shell、`git`、build、test 与 repository scripts；
-- **Cloud Repository Runtime**：当前没有合适的本地 worktree，但任务确实需要真实 filesystem / shell / `git` / build / test / repository scripts；
-- **GitHub-native capability / Connector**：读取和操作 Issue、PR、Review、Actions、remote metadata，以及在权限和任务边界允许时完成有界 GitHub API 操作；
-- **GitHub Actions**：提供 CI、deterministic verification、runtime eval、artifact、Review / Demo Environment、deployment workflow 等异步 execution / verification surface。
-
-选择 surface 的原则不是 Cloud First，也不是 Connector First，而是：
-
-> 使用当前已授权、能够直接完成责任且结果可验证的最合适 execution surface。
-
-一个 surface 缺少某项能力，不等于必须让人工执行。只有当前已授权自动化路径都不能安全、等价地完成责任时，才进入 Human escalation。
-
-## 2. 三种责任模式
-
-下面的 A / B / C 是帮助人理解 execution topology 的**工作模式**，不是 Method lifecycle，也不会替代目标 Repository 的开发方法。
-
-### A — Local Repository Task
-
-适用于已经存在可用 local checkout / project directory 的情况。
-
-典型责任：
-
-- 编辑 Repository 文件；
-- `git` branch / diff / commit；
-- build / test；
-- repository scripts；
-- 需要真实 worktree 的 verification。
-
-此时不应为了形式统一再建立 Cloud checkout。GitHub Connector 仍可并行承担 Issue / PR / Review / Actions 等 GitHub-native control-plane 操作。
-
-### B — Cloud Repository Task
-
-适用于当前没有可用 local Repository Runtime，而任务又确实依赖 worktree / shell / `git` / build / test / repository scripts 的情况。
-
-建立 Cloud Repository Runtime 后，应从目标 Repository 的当前真实 baseline 开始，重新读取 `AGENTS.md`，恢复 Repository Authority、current responsibility 与 Rule Discovery，再执行 Repository mutation。
-
-Cloud Runtime 不因为存在就自动获得更高 Authority，也不能跳过 Consumer-local Method / Rule / Skill。
-
-### C — Remote Repository Coordination
-
-适用于主要责任是 GitHub-native 分析与协调，且不需要真实 worktree 的情况，例如：
-
-- 读取 Repository 文件、commit、branch、Issue、PR、Review、Actions；
-- 分析、讨论、独立 Review；
-- 写入 Issue Evidence / Handoff / Current State；
-- 触发或观察已经授权的 GitHub-native workflow。
-
-C 默认不承担需要 worktree 语义的 Repository implementation。若一个有界 GitHub API mutation 不需要 shell / build / repository scripts，且目标 Repository Authority、Rule Discovery 与写入权限均允许，可以直接使用 GitHub-native capability完成；这不等于把 C 扩张成通用 Repository Runtime。
-
-## 3. 模式转换
-
-A / B / C 可以在同一会话中转换，真正需要重新检查的是**direct responsibility**。
-
-典型 C → A / B：
+GitHub 场景采用 `Repository Authority / execution transport / verification` 三层模型，并把三类责任分开：
 
 ```text
-Remote analysis / coordination
-        ↓
-需要 worktree / shell / build / repository scripts
-        ↓
-已有适用 Local Repository Runtime？
-        ├─ YES → A
-        └─ NO  → B
+Repository Authority / Rule Discovery
+→ 决定按什么约束工作
+
+execution transport
+→ 决定当前通过什么可用 surface 执行动作
+
+verification
+→ 决定是否可以声明 completion / PASS / Ready to Integrate
 ```
 
-进入新的 Repository Task responsibility 时，不继承“聊天里已经讨论过”的隐式执行上下文。至少重新完成：
+execution transport 不拥有 Method、Rule 或 Authority 语义。Connector 可写、Actions 可运行、当前存在 shell，都只说明某条执行路径可能可用，不说明任务已获授权，也不说明验证义务已经满足。
 
-1. 确认目标 Repository；
-2. 恢复当前真实 baseline；
-3. 从该 Repository 的 `AGENTS.md` 开始 Bootstrap；
-4. 识别新的 direct responsibility；
-5. 按当前事实重新执行 Rule Discovery；
-6. 重新核验之前形成的 candidate plan 是否仍与当前 Authority 一致；
-7. 再产生 side effect。
+## 2. 最薄 Project Instruction
 
-完成 Repository Task 后，可以自然返回 C 继续 PR / Actions / Issue coordination。
-
-## 4. Side-effect Boundary
-
-首次 side effect 与 responsibility 实质变化都应视为 runtime checkpoint。
-
-常见 side effect 包括：
-
-- 修改 Repository 文件；
-- commit / push；
-- 创建或更新 Issue / PR / Review comment；
-- workflow trigger；
-- deployment / environment mutation；
-- 其他外部可变状态写入。
-
-准备写入时，不只确认“工具能不能做”，还要确认当前 Authority 是否允许，并按当前责任重新发现适用 Rule。
-
-`rule:safe-external-write` 负责外部写的授权、最小变更、对象复用 / 幂等检查与写后重新读取；`rule:human-intervention-necessity` 负责发出人工请求前验证其不可替代性。Guide 不复制这两条 Rule 的完整规范正文。
-
-## 5. GitHub Connector 的定位
-
-GitHub Connector 适合处理 GitHub collaboration / control plane：
-
-- Issue；
-- PR；
-- Review；
-- Actions；
-- branch / commit / remote metadata；
-- GitHub API 能直接表达的有界操作。
-
-使用原则：
-
-- 先读取 current object，再写入；
-- 创建具有持续身份的对象前，先检查是否已有同目标对象可继续复用；
-- API 返回成功后重新读取真实状态；
-- Connector 缺少某个接口时，继续检查 local/cloud runtime、standard GitHub API、Actions 或其他已授权路径，而不是立即要求人工充当桥梁；
-- 如果任务依赖真实 worktree 语义，不用远程 API 模拟 build/test/git-worktree 行为。
-
-## 6. GitHub Actions 的定位
-
-GitHub Actions 是辅助 execution / verification surface，不是第四种 Session Mode。
-
-常见用途：
-
-- CI；
-- deterministic verification；
-- runtime eval；
-- artifact transport；
-- task-level Rule Discovery transport；
-- Review / Demo Environment；
-- deployment workflow。
-
-Actions run 应绑定可复核的 commit / branch / PR baseline。异步执行只在所需 job 对目标 baseline 到达可观察终态后才能作为完成证据。
-
-触发 workflow 本身是 external side effect，同样需要 Authority 与适用 Rule；“workflow 已启动”不等于目标 claim 已成立。
-
-## 7. Issue、PR 与 Review
-
-### Issue
-
-Issue 适合承载：
-
-- bounded work entry；
-- Evidence；
-- Handoff；
-- Current State / Coordination；
-- Gate / blocker 的 GitHub-native live state。
-
-Issue 不因为记录了讨论结论就自动成为 Requirement / Method / Architecture / Rule 等长期 semantic owner。Durable semantics 必须回写真正 canonical owner。
-
-### Pull Request
-
-创建 PR 前先检查同 branch / 同 bounded change 是否已有 open PR。若已经存在，优先继续更新同一 PR，而不是重复创建。
-
-PR 应保持单一逻辑目的，changed files 与当前 bounded responsibility 一致；Review / CI / Evidence 应绑定当前 exact Head，而不是沿用已被新提交取代的旧结果。
-
-### Review
-
-独立 Review 应以当前候选和当前 Authority 为输入，不把作者解释、旧 PASS 或聊天中的隐式意图当作替代证据。Review 发现 durable semantic defect 时，修复应回到真实 owner；评论本身不成为第二 Authority。
-
-## 8. Review / Demo Environment
-
-Review Environment 是 verification / human-review execution surface，不是产品 Authority。
-
-若环境是 singleton、固定域名或共享 endpoint，应显式考虑：
-
-- 当前 owner / lease；
-- stale run；
-- 自动验证与人工长时评审的不同生命周期；
-- cleanup；
-- exact-head currentness。
-
-具体 concurrency / timeout / deployment policy 由 Consumer-local workflow 与相关 Rule / Skill 决定，本 Guide 不规定统一实现。
-
-## 9. 避免不必要的 Human escalation
-
-只有出现以下类型的真实 blocker 时才需要人工介入：
-
-- Authority 明确保留给人的决定或操作；
-- 缺少不可替代的 credential / permission / secret；
-- 存在多个 material choices 且 current Authority 无法唯一决定；
-- 需要现实世界动作，而当前工具不能执行；
-- 所有已授权自动化路径都无法安全完成。
-
-不应仅因为当前首选 Connector 没有某个按钮，就要求人工复制粘贴命令、下载再上传文件、或在两个可访问系统之间做机械中转。
-
-## 10. ChatGPT Project Instruction 模板
-
-Project Instruction 应保持薄，只声明会话级稳定约束，不复制 Repository Authority 或 Method 正文。例如：
+ChatGPT Project Instruction 只保存会话级、Repository 外无法恢复的稳定入口。例如：
 
 ```text
-目标仓库：<owner/repo>。
+目标仓库：<owner/repository>。
 GitHub Repository 是唯一项目事实来源。
 开始后先从目标仓库 AGENTS.md 恢复 Repository Authority、Development Method 与当前工作规则。
 需要 Repository mutation 时，优先使用当前可用 Repository Runtime；GitHub-native 协调使用已授权 Connector / Actions。
 不要把其他聊天、个人记忆或本提示中的仓库状态当作当前事实。
 ```
 
-如果 Consumer 有额外的跨仓库边界、生产权限或人工审批约束，只补充这些**会话外无法从 Repository 恢复的特殊约束**。
+不要把 Method、Rule body、Skill procedure、Roadmap 快照、workflow catalog 或旧 SHA 复制进 Project Instruction。Consumer 有额外生产权限、跨仓库边界或人工审批约束时，只补充 Repository 无法持有的特殊限制。
 
-## 11. Fresh Context Prompt 模板
+## 3. Fresh Chat Bootstrap
 
-新会话提示词同样保持简洁：
-
-```text
-这是一个 Fresh Context。
-
-目标仓库：
-<owner/repo>
-
-GitHub Repository 是唯一项目事实来源。
-
-开始后先读取 AGENTS.md，并按其中的 Repository Authority、Development Method、Rule Discovery 与当前工作入口恢复上下文。
-
-本轮目标：
-<bounded goal / issue / PR>
-
-特殊约束：
-<only constraints that cannot be recovered from the repository>
-```
-
-不要把 Repository Authority、完整开发步骤、Rule body、Skill procedure、Roadmap 快照和旧 SHA 大量复制进提示词。定位 SHA 可以作为 locator，但开始后必须重新核验 current state。
-
-## 12. Consumer 应用
-
-Consumer 采用 `agentic-dev` 后，Local / Cloud / Connector / Actions 只是不同 execution topology；它们都消费同一套 Consumer-local Repository Authority、Method、Rules、Skills 与 Project Knowledge。
-
-典型实例可以是：
+Fresh Chat 的入口同样保持简洁：Fresh Context、目标 Repository、事实源、bounded goal 和必要特殊约束。Agent 随后从 Repository 恢复真实运行语义：
 
 ```text
-Local repository work: Codex CLI + local checkout
-Remote repository task: available cloud repository runtime
-GitHub collaboration: GitHub-native connector / API
-Verification: local tools + GitHub Actions
+current Repository AGENTS.md
+→ Project Capability Profile + GitHub current facts
+→ Method Selection 或 direct responsibility
+→ task signals
+→ task-level Rule Discovery
+→ applicable Rules / Skills / Architecture
+→ execute
+→ required verification
+→ completion decision
 ```
 
-这只是平台实例，不是所有 Consumer 的强制配置。Consumer ordinary runtime 继续只依赖自己的 local capability instance，不在线读取 `agentic-dev` 来补规则或流程。
+定位用的 branch、PR、Issue 或 SHA 必须重新核验。历史聊天、memory、Guide 和模型常识都不能代替当前 Bootstrap；即使最终答案碰巧正确，没有实际走过 Authority / Rule Discovery 链仍不构成合格执行。
 
-## 13. 常见错误
+## 4. execution transport 的选择
 
-- 已经有 local checkout，却为了形式统一重新建立 cloud checkout；
-- 没有 worktree 需求，却把所有 GitHub-native coordination 强行升级成 Repository Task；
-- 需要 build/test 时只靠远程文件 API 修改后直接声明完成；
-- 从 C 转入 Repository mutation 后继续沿用旧 Rule candidates；
-- Connector 缺少单一接口就直接请求人工执行；
-- 重试时不检查已有 Issue / PR，创建重复对象；
-- workflow 已启动就声明验证通过；
-- 把 Issue / Review comment 中的长期语义当成 canonical Authority；
-- 把 GitHub-specific 实例写成所有 Git Repository 的 universal contract；
-- 在 Fresh Context Prompt 中复制整套 Method / Rule / Repository 状态，制造新的同步面。
+选择 transport 时先看当前责任和实际能力，不给整个会话贴固定模式标签。
 
-## 14. 选择路径的简化判断
+- 已有绑定目标 Repository 和目标 baseline 的 worktree、filesystem、shell、Python、git、build 或 test 能力时，直接使用现有 Repository Runtime；
+- GitHub Issue、PR、Review、branch、commit、Actions 等 coordination 使用已授权 GitHub Connector / API；
+- 当前 Agent 没有 worktree，而 Repository 声明了自动化远程路径时，可以让 GitHub Actions 在 exact SHA / exact PR Head 上执行 Repository 自己的 Tool、script、build 或 test；
+- 一个 surface 做不到时，继续检查 Repository 已声明且已授权的其他自动化路径；只有适用路径都不可用时才进入 Human escalation。
 
-```text
-只需 GitHub-native read / coordination？
-  → C
+当前 Agent 没有 checkout 不能成为跳过 Rule Discovery、跳过 verification 或默认要求用户在本地代跑命令的理由。反过来，已有 Repository Runtime 时也不应为了形式统一强制绕行 Actions。
 
-需要 Repository mutation，但不依赖 worktree / build / test，且 GitHub API 可安全、完整表达？
-  → 使用已授权 GitHub-native capability，并服从 external-write / Rule Discovery
+## 5. Existing Repository Runtime first
 
-需要 filesystem / shell / git worktree / build / test / repository scripts？
-  → 已有 local runtime：A
-  → 否则建立可用 cloud runtime：B
+可用 Repository Runtime 能直接提供真实 worktree 语义：
 
-当前自动化 surface 受限？
-  → 先检查其他已授权等价路径
-  → 仍不可替代时才 Human escalation
+- 编辑多个关联文件；
+- 查看完整 diff；
+- 运行 Repository scripts、lint、tests 与 build；
+- 使用 git 建立 commit；
+- 在本地重现失败并验证修复。
+
+使用前仍需确认 worktree 实际属于目标 Repository、baseline 正确、工作区变化可识别。现有 runtime 不因“本地”而获得额外 Authority，也不能绕过 side-effect 前的 task-level Rule Discovery。
+
+## 6. GitHub Connector 是 control plane
+
+GitHub Connector / API 适合承担：
+
+- 读取 current branch、commit、Issue、PR、Review 与 workflow 状态；
+- 创建或更新 Authority 允许的有界 GitHub 对象；
+- 触发 Repository 已声明的 workflow；
+- 读取 run、job、step、logs、artifact 与 terminal result；
+- 在 GitHub-native mutation 足以完整表达改动时建立 branch、commit 与 PR。
+
+写入前先读取 live object 并检查可复用 identity，避免重复 Issue、PR、branch 或 run。API 返回成功后重新读取事实来源。Connector 的某个 wrapper 缺少按钮时，应检查 standard GitHub API、Repository Runtime 或 Actions 等适用路径，不能立即把机械中转交给人。
+
+## 7. GitHub Actions 是 repository compute plane
+
+GitHub Actions 可以为没有本地 checkout 的 Agent 提供 Repository-native deterministic compute。典型 workflow 以明确输入绑定 subject：
+
+```yaml
+- uses: actions/checkout@v4
+  with:
+    ref: ${{ inputs.target_sha }}
+    fetch-depth: 1
+
+- name: Verify exact subject
+  run: |
+    test "$(git rev-parse HEAD)" = "${{ inputs.target_sha }}"
+    python3 path/to/repository_tool.py
+    ./path/to/repository_verification
 ```
 
-重点不是给每个会话贴固定标签，而是在每次 responsibility / side-effect 边界上重新选择正确 execution surface，并继续服从同一个 Repository Authority。
+关键要求是：
+
+- 输入使用 exact 40-character commit SHA 或可解析的 exact PR Head；
+- `actions/checkout` 后验证 actual `HEAD` 与 requested subject；
+- 执行该 checkout 自己的 canonical Tool / tests / scripts；
+- 输出 invocation、输入、requested / actual subject、result 与 terminal state；
+- 需要跨 surface 恢复结果时上传 artifact，并保留 logs；
+- invalid input、checkout drift、Tool failure、缺失 artifact 或不可恢复 result 均 fail closed。
+
+Actions 是执行和证据生成 surface，不是新的 Authority 层，也不是整场会话的身份。
+
+## 8. task-level Rule Discovery 不等于 smoke CI
+
+同名 workflow 可以有不同责任，必须看实际输入与执行链：
+
+- PR / push smoke CI 通常只验证 Rule corpus、Tool 与固定场景是否健康；
+- task-level Rule Discovery 必须携带当前 responsibility 的 bounded task signals，在明确 Repository baseline 上调用该 baseline 自己的 canonical Tool，并返回 locator-only result。
+
+因此 smoke CI PASS 不能证明当前 Agent 已完成 task-level discovery。当前 Agent 取得 candidates 后仍需读取候选 Rule 正文并确认真实适用性；空 candidates 也不能触发全量 Rule 枚举或从 Guide 反向猜测 locator。
+
+如果 canonical locator 或所有 declared transports 已破坏，应 fail closed。Guide 中恰好写着正确答案不能成为 runtime fallback。
+
+## 9. GitHub-native mutation
+
+当 Repository Authority 允许、当前任务能够由 GitHub Contents / Git Data / Issue / PR API 完整表达，且不需要模拟未执行的 worktree 行为时，GitHub-native implementation 是合法路径。例如：
+
+- 更新一个有明确 current blob SHA 的文本文件；
+- 由多个 blob / tree 建立单一目的 commit；
+- 推进已存在 branch 并创建或更新 Draft PR；
+- 在 Issue / PR 回写 Evidence。
+
+这类 mutation 仍受同样治理约束：首次 side effect 前完成当前责任的 Rule Discovery，写入时绑定 expected current state，写后重新读取 branch / commit / PR，并按当前 Authority 执行 verification。不能因为 API 已提交文件就宣称 build、test 或 runtime behavior 已通过。
+
+## 10. Verification closure
+
+verification obligation 来自当前 Method、Rule、acceptance 与目标 Repository，不来自 transport 偏好。完成声明至少回答：
+
+- 验证的 exact subject 是什么；
+- required checks 实际执行了什么；
+- 执行是否到达可观察 terminal state；
+- logs / artifact / report 是否可恢复；
+- 当前 Evidence 是否支持所声称的 completion、PASS 或 Ready to Integrate。
+
+`workflow started` 不等于 PASS；workflow request accepted 也不等于目标 job 成功。`ancestor Evidence` 不自动支持 current Head：验证后 Head drift 时，受影响 claim 必须在新 exact Head 重新取得 Evidence，或满足 Repository 明确允许的严格 claim-level reuse contract。
+
+## 11. Governance checkpoints
+
+### Discussion → Mutation
+
+讨论或设计即使已经形成完整方案，第一次 Repository / Issue / PR / workflow / deploy side effect 前，仍需依据当前 exact baseline、direct responsibility 与 task signals 完成 Rule Discovery。聊天中的方案不获得自动执行权限。
+
+### responsibility transition
+
+activity、technology、artifact、risk 或 Method responsibility 实质变化后，旧 candidate set 不自动跨责任有效。下一次 side effect 前重新发现，并重新核验当前 branch / PR / Head 等 live facts。
+
+### Repository switch
+
+同一 Chat 切换到另一个 Repository 时，从新 Repository 的 `AGENTS.md` 重新 Bootstrap。原 Repository 的 Profile、Rule candidates、permissions、branch 与 Evidence 不得被带入新 Repository。
+
+## 12. Consumer-local adoption / upgrade
+
+Consumer ordinary runtime 默认 `upstream access = 0`。首次 adoption 不能只复制 Method、Architecture、Rule、Tool source 或 locator；对于依赖 Tool、compute 或 external integration 的 accepted capability，还要在 Consumer-local Authority 建立：
+
+- obligation 与 canonical locator；
+- direct execution path；
+- automated alternate path；
+- result / Evidence recovery；
+- fail-closed behavior；
+- Fresh Runtime validation。
+
+upstream delta 改变 Tool contract、runtime assumption、Rule Discovery、verification behavior 或 executable path requirement 时，upgrade 必须刷新受影响的 local executable instance，并为改变后的 ordinary runtime behavior 重新取得 Current Evidence。具体 transport 可以不同于 `agentic-dev`，但不能在线依赖 upstream Guide 或 Profile 补流程。
+
+## 13. Human escalation last
+
+以下情况才可能形成真实人工 blocker：
+
+- Authority 明确保留给人的决定或操作；
+- 缺少不可替代的 credential、permission 或 secret；
+- 多个高影响选择无法从 current Authority 唯一解析；
+- 需要现实世界动作，而当前系统不能执行；
+- 所有 Repository 已声明且适用的自动化路径都无法安全完成。
+
+准备请求人工前，应按目标 Repository 的 Rule Discovery 重新进入 human escalation responsibility。不要仅因当前首选 surface 缺少一个能力，就要求用户复制命令、代跑 discovery、下载再上传 artifact，或在两个 Agent 都可访问的系统间人工搬运信息。
+
+## 14. 历史失败模式与替代路径
+
+| 失败模式 | 正确替代路径 |
+|---|---|
+| 依赖旧聊天、memory 或提示中的 SHA | 从 current `AGENTS.md` 与 GitHub live state Bootstrap |
+| 当前 Agent 无 checkout，因此跳过 Rule Discovery | 使用 Repository-local declared exact-baseline transport；都不可用才 fail closed |
+| 有 local runtime 仍强制远程绕行 | 直接运行 canonical Tool / verification，并用 Connector 处理 coordination |
+| PR / push smoke 绿色，视为当前任务 discovery 完成 | 以当前 task signals 执行 task-level discovery |
+| writable Connector 直接改文件 | 先完成 Authority / Rule Discovery，再做 bounded mutation 与写后核验 |
+| workflow 已触发就报告 PASS | 等待目标 subject 的 jobs 到达 terminal state并恢复 logs / artifact |
+| 使用旧 Head 的成功结果支持新 Head | 对受影响 claim 重新取得 exact-head Current Evidence |
+| canonical locator 已坏但从 Guide 猜出答案 | fail closed 并修复 canonical owner / local instance |
+| Consumer 在线读取 upstream 补运行路径 | 在 adoption / upgrade 中建立或刷新 Consumer-local executable instance |
+| Connector 单一接口不足便请求人工 | 先检查 API、Repository Runtime、Actions 与其他已声明自动化路径 |
+
+## 15. 独立 AI Reviewer 的边界
+
+Repository 未来可以单独评估在 Actions 中调用独立 LLM reviewer，但这会引入模型选择、credential、费用、输入边界、可重复性与输出治理问题。它不是当前 GitHub bootstrap、Rule Discovery 或 deterministic verification 的 required capability，也不能替代 Repository 已有的 Chat / Fresh Context / Human semantic review flow。

@@ -84,6 +84,16 @@ Consumer 必须建立自己的 Repository-local capability instance，而不是�
 - Consumer-local Project / Roadmap / current work owner；
 - 必要 Human View / recovery entry。
 
+对于依赖 Tool、compute 或 external integration 的 accepted capability，还必须建立 Consumer-local executable instance，至少明确：
+
+- 当前 obligation 与 canonical locator；
+- Consumer 可用时的 direct execution path；
+- direct path 不可用时的 automated alternate path；
+- execution result / logs / artifact / terminal state 等 Evidence recovery；
+- 所有 declared path 不可用、baseline 不一致或结果不可恢复时的 fail-closed behavior。
+
+只复制 Method、Architecture、Rule、Tool source 或 Tool locator，而没有建立上述可执行闭环，不满足本阶段退出条件。具体 transport 由 Consumer 环境决定，不要求采用 upstream 的平台实例。
+
 物理文件名和目录可由 Consumer 自己决定，只要 semantic owner 清楚。
 
 ordinary runtime 不得要求在线读取 upstream current state，也不得在本地 discovery failure 时自动回退 upstream。
@@ -101,6 +111,8 @@ ordinary runtime 不得要求在线读取 upstream current state，也不得在�
 - Consumer-local specialization 未被 upstream 覆盖；
 - upstream Project state 未成为 local current Authority；
 - adoption 引入的关键行为与 completion claim。
+- 依赖 Tool / compute / external integration 的 capability 能从 Consumer-local Authority 恢复 direct path、automated alternate path、result recovery 与 fail-closed behavior；
+- Fresh Runtime 在不读取 upstream、Human Guide、历史聊天或 memory 的条件下实际完成上述恢复，并对目标 subject 取得 required Current Evidence。
 
 验证范围按实际 adopted capabilities 决定，不要求无差别执行全部 upstream eval。
 
@@ -110,4 +122,4 @@ ordinary runtime 不得要求在线读取 upstream current state，也不得在�
 
 完成 adoption 不产生未来自动升级义务。后续 upstream 变化只有显式进入 `method:consumer-upgrade` 才能改变 Consumer local state。
 
-完成条件：Consumer ordinary runtime 可独立运行，local Project / capability instance 可恢复，provenance 可追溯，且没有未声明的 upstream runtime dependency。
+完成条件：Consumer ordinary runtime 可独立运行，local Project / capability instance 及其必要 executable path 可恢复，provenance 可追溯，Fresh Runtime Evidence 支持 adoption completion claim，且没有未声明的 upstream runtime dependency。

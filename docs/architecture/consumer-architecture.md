@@ -35,6 +35,10 @@ Consumer Repository facts
 
 ordinary runtime 默认 `upstream access = 0`。本地 Project capability profile、Method entry、Skill discovery、Rule discovery 或 metadata 异常必须在 Consumer-local state 内失败关闭或按 Consumer Authority 升级；不能自动访问 `agentic-dev` 在线补流程 / 规则。
 
+如果 adopted capability 依赖 Tool、compute 或 external integration，Consumer ordinary runtime 还必须能只从 Consumer-local Agent-consumable Authority 恢复 obligation、canonical locator、可执行路径、result / Evidence recovery 与 fail-closed behavior。只复制 Method / Architecture / Rule / Tool source 或 locator，而没有可恢复的 executable path，不构成完成采用。
+
+该 invariant 不规定具体平台或 transport。直接执行与自动化 alternate path 的实现由 Consumer-local capability instance 持有；Fresh Consumer Agent 不得依赖 upstream、Human Guide、历史聊天或模型记忆补齐。
+
 ## 3. Consumer-local Project Knowledge
 
 Consumer 必须拥有自己的 Project Knowledge 或等价 Repository Authority，用来表达：
@@ -42,6 +46,7 @@ Consumer 必须拥有自己的 Project Knowledge 或等价 Repository Authority�
 - Consumer 自身产品 / 项目使命、需求和非目标；
 - Consumer 当前采用哪些 Method / Architecture / Skill / Rule / Tool contract；
 - local Method selector、Rule root / Discovery Tool locator、Skill entry 等 capability instance；
+- 已采用且依赖 Tool / compute / external integration 的 executable path、自动化 alternate path、结果恢复与 fail-closed instance；
 - Consumer 自己的 Roadmap / current work / integration state；
 - 对理解当前 Consumer 仍有价值的本地演进摘要。
 
@@ -88,6 +93,8 @@ Consumer ordinary runtime 不依赖：
 - 必要 Tool / runtime contract。
 
 Consumer 对每项能力执行 adopt / adapt / replace / reject，并把接受结果写入 Consumer-local canonical owner。
+
+accepted capability 依赖 Tool、compute 或 external integration 时，projection 必须同时建立 Consumer-local executable instance；上游的可执行路径只可作为 adoption / upgrade 输入，不能成为 Consumer ordinary runtime 的在线 fallback。
 
 upstream Project Knowledge 只可帮助回答“这个能力为什么在 upstream 存在、当前 upstream 如何实例化”，不能替代 Consumer 自己的 local decision。
 
