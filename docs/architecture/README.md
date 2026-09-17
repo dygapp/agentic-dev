@@ -14,6 +14,7 @@ status: active
 - [`project-knowledge-architecture.md`](project-knowledge-architecture.md) — Project Knowledge 与 reusable Capability 的边界、Project owner 最小职责及 Consumer projection boundary；
 - [`method-architecture.md`](method-architecture.md) — Method 的定义、通用 selection contract、phase identity ownership 与新增门禁；
 - [`requirement-authority-architecture.md`](requirement-authority-architecture.md) — Consumer Requirement Authority 的 semantic ownership、推荐 `docs/requirements` 信息架构、README / index / fact owner 边界、Aspect 准入、Fresh Context consumption 与 artifact lifecycle；
+- [`data-migration-architecture.md`](data-migration-architecture.md) — legacy / historical / business data migration 的 source role、semantic preservation、异常治理、identity / replay boundary 与 reconciliation / completion contract；
 - [`human-review-architecture.md`](human-review-architecture.md) — Consumer 软件项目的人工评审草稿、派生视图、反馈分类、语义回写与显式交付边界；
 - [`consumer-architecture.md`](consumer-architecture.md) — Consumer ownership、ordinary runtime、local specialization 与 upstream decoupling；
 - [`model-collaboration-architecture.md`](model-collaboration-architecture.md) — 多模型协作的 capability tiers、Primary responsibility、Authority-preserving handoff、single-writer、evidence-based escalation、Consumer projection 与 fallback；
