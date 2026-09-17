@@ -31,7 +31,8 @@ class RuntimeActivationRegressionTests(unittest.TestCase):
     def test_bootstrap_requires_task_level_discovery_before_side_effects(self):
         agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
         self.assertIn("首个有副作用动作前必须完成本次 task-level discovery", agents)
-        self.assertIn("其 PASS 不得替代 ordinary runtime invocation", agents)
+        self.assertIn("这些 PASS **不能替代** 当前 task signals 的 task-level discovery", agents)
+        self.assertIn("preflight infrastructure invocation", agents)
 
     def test_architecture_distinguishes_ci_from_runtime_discovery(self):
         architecture = (
@@ -39,6 +40,25 @@ class RuntimeActivationRegressionTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("### 10.1 Responsibility transition checkpoint", architecture)
         self.assertIn("不能替代 ordinary runtime invocation", architecture)
+
+    def test_cloud_task_discovery_preserves_exact_sha_and_machine_readable_evidence(self):
+        workflow = (REPO_ROOT / ".github/workflows/rule-discovery.yml").read_text(
+            encoding="utf-8"
+        )
+        profile = (REPO_ROOT / "docs/project/project-capability-profile.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("issue_comment:", workflow)
+        self.assertIn("target_sha:", workflow)
+        self.assertIn("signals_json:", workflow)
+        self.assertIn("git rev-parse HEAD", workflow)
+        self.assertIn("checked-out SHA does not match requested SHA", workflow)
+        self.assertIn("actions/upload-artifact@v4", workflow)
+        self.assertIn("task-rule-discovery-result.json", workflow)
+        self.assertIn("/rule-discovery <40-char-sha> <signals-json>", profile)
+        self.assertIn("OWNER / MEMBER / COLLABORATOR", profile)
 
 
 if __name__ == "__main__":
