@@ -24,35 +24,52 @@ Data Migration 的通用责任链是：
 
 ```text
 Current Requirement / Domain Authority
-        ↓ migration intent / scope / acceptance
+        ↓ durable business semantics / constraints
+Current Feature Specification
+        ↓ migration goal / scope / observable acceptance
 Legacy / Historical / External Source Evidence
         ↓ acquisition / extraction
 Migration Mapping / Canonical Input（按需）
         ↓ controlled transform / import
 Current Target State
-        ↓ reconciliation / observable use / acceptance
+        ↓ reconciliation / observable use / acceptance evidence
 Migration Evidence
 ```
 
 这条链中的每一层职责不同：
 
-- Requirement / Domain Authority 决定当前项目为什么迁、迁什么、必须保留什么业务语义、哪些历史行为不能被重新激活，以及什么业务结果算完成；
+- Requirement / Domain Authority 持有跨 Feature 持续成立的业务对象、历史语义、retired behavior boundary、长期兼容义务与不可越界约束；
+- Current Feature Specification 持有本次 migration change 的 Goal、In Scope / Out of Scope、Observable Behavior 与 Acceptance，并引用而不是复制长期 Requirement / Domain facts；
 - Source Evidence 提供历史事实、原始值和 provenance，但不自动成为 Current Requirement；
 - Mapping / Canonical Input 只负责受控转换、稳定重放或核验所需的 migration representation，不获得 Product / Requirement Authority；
 - Target State 是当前系统可消费的数据状态，不等于旧系统的完整复制；
-- Migration Evidence 证明本次迁移是否满足当前 acceptance，不反向创造业务规则。
+- Migration Evidence 证明本次迁移是否满足当前 Specification / Acceptance，不反向创造业务规则。
 
-## 3. Requirement / Domain owns migration intent
+## 3. Current Authority owns migration semantics
 
-Current Requirement / Domain Authority 至少拥有：
+Data Migration 必须区分**长期业务语义**与**当前 change contract**。
+
+### 3.1 Requirement / Domain responsibility
+
+Current Requirement / Domain Authority 持有会跨多个 Feature 持续成立的：
+
+- business object / identity / lifecycle semantics；
+- 必须保留的 historical semantics；
+- 允许 / 禁止的 merge、normalization、repair 或 exclusion boundary（当其具有长期业务含义时）；
+- retired behavior 是否允许进入 Current system；
+- 其他长期 Product / Domain constraint。
+
+### 3.2 Feature Specification responsibility
+
+当前 migration change 的 Specification 持有：
 
 - migration goal；
-- in-scope / out-of-scope business object；
-- source / time range / business range；
-- 必须保留的 historical semantics；
-- 允许 / 禁止的 merge、normalization、repair 或 exclusion boundary；
-- retired behavior 是否允许进入 Current system；
-- target-side observable acceptance。
+- in-scope / out-of-scope source、time range 与 business range；
+- 本次 change 的 observable behavior；
+- 本次迁移的 Acceptance Criteria；
+- 对长期 Requirement / Domain facts 的具体适用关系。
+
+如果某个 scope、source mapping 或 acceptance fact 被证明会跨多个后续 Feature 持续成立，则应按目标 Repository Authority promote 到真正长期 owner；不能因为 migration 一次需要就默认把全部 Feature-local fact 提升成 Requirement / Domain baseline。
 
 Migration implementation 不得仅因为：
 
@@ -61,9 +78,9 @@ Migration implementation 不得仅因为：
 - 技术上可以转换；
 - 某条历史数据“看起来应该这样解释”；
 
-就反向发明 Current Requirement。
+就反向发明 Current Requirement 或绕过当前 Specification。
 
-如果 migration analysis 暴露新的长期业务决定，应回到真实 Requirement / Domain owner，而不是永久留在脚本、mapping table、Issue 或 migration report 中。
+如果 migration analysis 暴露新的长期业务决定，应回到真实 Requirement / Domain owner；如果只影响当前 change 的 Scope / Observable Behavior / Acceptance，则更新当前 Specification，而不是永久留在脚本、mapping table、Issue 或 migration report 中。
 
 ## 4. Source role 与 provenance
 
@@ -72,7 +89,8 @@ Legacy database、历史文件、旧接口、旧代码、旧字典和外部数�
 至少区分：
 
 ```text
-Current Authority
+Current Requirement / Domain Authority
+Current Feature Specification
 Legacy / Historical Evidence
 External Source Evidence
 Migration Analysis / Mapping
@@ -145,7 +163,7 @@ Duplicate 也不是纯技术概念：
 - 同一人员可以有多条合法历史业务记录；
 - 字段相同不必然代表同一业务事实；
 - 来源冲突不等于某一来源可自动丢弃；
-- merge / dedupe / source priority 必须由 source semantics、Current Requirement 或明确 technical contract 支持。
+- merge / dedupe / source priority 必须由 source semantics、Current Requirement / Specification 或明确 technical contract 支持。
 
 ## 8. Acquisition 与 stable import 分离
 
@@ -225,12 +243,12 @@ Agent 可以自主处理：
 
 - 多个合理 mapping 会形成不同业务事实；
 - merge / dedupe / source priority 会不可逆丢失信息；
-- repair / exclusion 会改变 Current Requirement 或 Acceptance；
+- repair / exclusion 会改变 Current Requirement、当前 Specification 或 Acceptance；
 - 历史事实与 Current Domain interpretation 冲突；
 - 异常处置需要决定“哪一个来源才代表真实业务事实”；
 - 迁移会恢复、覆盖或改变用户可观察业务行为。
 
-长期业务决定写回 Requirement / Domain owner；技术执行选择留在 Technical Plan / implementation；尚未解决的 source anomaly 保持 exception，不用默认实现掩盖。
+跨 Feature 的长期业务决定写回 Requirement / Domain owner；只影响本次 change 的 Goal / Scope / Observable Behavior / Acceptance 写回当前 Specification；技术执行选择留在 Technical Plan / implementation；尚未解决的 source anomaly 保持 exception，不用默认实现掩盖。
 
 ## 12. 与 AI Development 的组合
 
@@ -248,12 +266,12 @@ Specification
 
 其中：
 
-- Specification 明确本次 migration 对当前 Requirement 的适用范围与 Acceptance；
+- Specification 明确本次 migration 对长期 Requirement / Domain facts 的适用范围、Observable Behavior 与 Acceptance；
 - Technical Planning 应加载本 Architecture，决定 source / target、mapping、identity、replay、exception、reconciliation 与 rollout HOW；
 - Execute 按 Execution Unit 和适用 Rules 实施；
 - Converge 必须验证 migration Evidence 与当前 Authority / Acceptance 一致，而不是只验证脚本执行成功。
 
-如果 migration 暴露跨多个 Feature 持续成立的长期 Architecture driver，应回写真实 Architecture owner；如果暴露长期 Requirement / Domain 事实缺口，应回到真实 Requirement owner。
+如果 migration 暴露跨多个 Feature 持续成立的长期 Architecture driver，应回写真实 Architecture owner；如果暴露长期 Requirement / Domain 事实缺口，应回到真实 Requirement owner；如果只暴露当前 change 的 Scope / Observable / Acceptance 缺口，则回到当前 Specification。
 
 ## 13. 与其他 capability 的边界
 
@@ -290,7 +308,7 @@ schema / initialization migration 与 legacy / historical business data migratio
 
 原则：
 
-- durable semantic decision 进入真实 Requirement / Domain / Architecture / Technical owner；
+- durable semantic decision 进入真实 Requirement / Domain / Architecture / Specification / Technical owner；
 - canonical input 只在重放 / provenance / audit 有长期价值时保留；
 - 临时 mapping scratchpad、一次性分析表和执行流水账完成使命后退出 Current consumption；
 - Git / Issue / PR 保留历史，不通过第二套 Markdown Authority 复制执行过程。
@@ -299,13 +317,14 @@ schema / initialization migration 与 legacy / historical business data migratio
 
 Consumer 采用本 Architecture 后，应保持以下不变量：
 
-1. Source evidence 不自动升级为 Current Requirement；
+1. Source evidence 不自动升级为 Current Requirement 或 Feature Specification；
 2. 会改变业务含义的 mapping 必须有 Current Authority；
-3. 无法解释 / 映射 / 关联的数据不得静默 repair 或 discard；
-4. duplicate / merge / source priority 必须基于真实 semantics；
-5. acquisition 与 stable import 可以分离，Legacy Source 不因迁移而自动成为长期 Runtime dependency；
-6. replay / idempotency / one-shot boundary 必须显式；
-7. Completion 必须包含与 Acceptance 匹配的 reconciliation / observable evidence；
-8. historical data migration 不自动恢复 retired workflow 或把 historical state 解释成 Current state；
-9. schema migration completion evidence 不替代 business data migration evidence；
-10. migration artifact 不形成第二套 Product / Requirement Authority。
+3. Feature-local migration scope / observable acceptance 不因一次 migration 自动提升为长期 Requirement；
+4. 无法解释 / 映射 / 关联的数据不得静默 repair 或 discard；
+5. duplicate / merge / source priority 必须基于真实 semantics；
+6. acquisition 与 stable import 可以分离，Legacy Source 不因迁移而自动成为长期 Runtime dependency；
+7. replay / idempotency / one-shot boundary 必须显式；
+8. Completion 必须包含与 Acceptance 匹配的 reconciliation / observable evidence；
+9. historical data migration 不自动恢复 retired workflow 或把 historical state 解释成 Current state；
+10. schema migration completion evidence 不替代 business data migration evidence；
+11. migration artifact 不形成第二套 Product / Requirement / Specification Authority。
