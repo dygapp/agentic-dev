@@ -326,6 +326,8 @@ Clarify Intent
 
 Integration 本身不属于通用 Method；merge、release、deploy 等仍由目标仓库策略和人工 Authority 决定。
 
+如果要按人类操作视角理解从 Clarify Intent、Specification、可选 Technical Planning、Execution Unit 切分、Readiness、Execute 到 Converge 的完整使用路径，见 [`feature-development.md`](feature-development.md)。
+
 ## 13. 当前为什么没有新增 Requirement / Architecture Skill
 
 Method 已经有真实 work kind、阶段与 Gate Evidence，但并不意味着每个阶段都值得立即形成 Skill。
