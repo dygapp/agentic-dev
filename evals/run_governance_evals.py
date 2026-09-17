@@ -24,6 +24,7 @@ GOVERNANCE_FILES = [
     EVALS / "governance" / "formal-concept-semantic-safety.json",
     EVALS / "governance" / "method-object-semantic-safety.json",
     EVALS / "governance" / "stacked-pr-integration-topology.json",
+    EVALS / "governance" / "github-agent-runtime-routing.json",
 ]
 
 
