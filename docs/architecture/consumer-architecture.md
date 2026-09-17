@@ -25,7 +25,9 @@ upstream `Project Charter / Capability Profile / Roadmap / Evolution` 可以作�
 ```text
 Consumer Repository facts
 → Consumer-local Project Knowledge / capability instance
-→ Consumer Agent Bootstrap / Method selection
+→ Consumer Agent Bootstrap
+→ adopted Agent-facing runtime / execution-routing capability（如有）
+→ Method selection
 → current Method stage / direct responsibility
     ├─→ relevant Consumer-local Architecture
     ├─→ Consumer-local Skill discovery / invocation（如需要）
@@ -33,15 +35,16 @@ Consumer Repository facts
 → execute / verify / return
 ```
 
-ordinary runtime 默认 `upstream access = 0`。本地 Project capability profile、Method entry、Skill discovery、Rule discovery 或 metadata 异常必须在 Consumer-local state 内失败关闭或按 Consumer Authority 升级；不能自动访问 `agentic-dev` 在线补流程 / 规则。
+ordinary runtime 默认 `upstream access = 0`。本地 Project capability profile、Method entry、Skill discovery、Rule discovery、runtime / execution-routing locator 或 metadata 异常必须在 Consumer-local state 内失败关闭或按 Consumer Authority 升级；不能自动访问 `agentic-dev` 在线补流程、规则或 runtime routing 定义。
 
 ## 3. Consumer-local Project Knowledge
 
 Consumer 必须拥有自己的 Project Knowledge 或等价 Repository Authority，用来表达：
 
 - Consumer 自身产品 / 项目使命、需求和非目标；
-- Consumer 当前采用哪些 Method / Architecture / Skill / Rule / Tool contract；
+- Consumer 当前采用哪些 Method / Architecture / Skill / Rule / Tool / runtime contract；
 - local Method selector、Rule root / Discovery Tool locator、Skill entry 等 capability instance；
+- 已采用 Agent-facing runtime capability 的 local canonical locator、eligible execution surfaces 与 local instance（如适用）；
 - Consumer 自己的 Roadmap / current work / integration state；
 - 对理解当前 Consumer 仍有价值的本地演进摘要。
 
@@ -53,6 +56,7 @@ Consumer 可以改变路径、命名、工具集成、Method adaptation 与局�
 
 - 项目事实仍由 Consumer Authority 拥有；
 - local Project / Method / Architecture / Skill / Rule 的 semantic owner 明确；
+- adopted runtime / execution-routing capability 的 canonical semantics 与 local instance 分离，不让 Guide 或 upstream Project Profile成为 runtime fallback；
 - Rule metadata 与 Rule body 同源维护；
 - 没有中心化人工同步 Rule routing map；
 - Rule Discovery output 保持少量 locator，而不是全量 metadata；
@@ -73,6 +77,7 @@ Consumer ordinary runtime 不依赖：
 - upstream Open Issue / PR；
 - upstream Rule tree；
 - upstream Guide；
+- upstream runtime / execution-routing instance；
 - “latest baseline” 在线解析。
 
 只有显式 adoption / upgrade Method 或明确 research / comparison task 可以重新进入 upstream，并在完成后再次关闭 runtime dependency。
@@ -88,6 +93,8 @@ Consumer ordinary runtime 不依赖：
 - 必要 Tool / runtime contract。
 
 Consumer 对每项能力执行 adopt / adapt / replace / reject，并把接受结果写入 Consumer-local canonical owner。
+
+若接受的 capability 定义 Agent-facing runtime / execution routing，Consumer 还必须建立从自己的 Bootstrap / Project capability instance 到 local canonical owner 的稳定 locator，并声明自己的 execution-surface instance。只有 local owner、locator、runtime instance 与相应 Fresh Runtime Evidence 都成立，才能认为该 runtime capability 已在 Consumer 中完成投影。
 
 upstream Project Knowledge 只可帮助回答“这个能力为什么在 upstream 存在、当前 upstream 如何实例化”，不能替代 Consumer 自己的 local decision。
 
