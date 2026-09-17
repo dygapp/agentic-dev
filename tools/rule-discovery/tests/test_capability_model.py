@@ -96,6 +96,49 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertIn("workflow_dispatch", profile)
         self.assertIn("issue_comment", profile)
 
+    def test_github_agent_runtime_ownership_and_consumer_projection(self):
+        architecture_path = REPO_ROOT / "docs/architecture/github-agent-runtime-architecture.md"
+        guide_path = REPO_ROOT / "docs/guides/github-agent-workflow.md"
+        profile = (REPO_ROOT / "docs/project/project-capability-profile.md").read_text(
+            encoding="utf-8"
+        )
+        agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        consumer_arch = (REPO_ROOT / "docs/architecture/consumer-architecture.md").read_text(
+            encoding="utf-8"
+        )
+        adoption = (REPO_ROOT / "docs/methods/consumer-adoption.md").read_text(encoding="utf-8")
+        upgrade = (REPO_ROOT / "docs/methods/consumer-upgrade.md").read_text(encoding="utf-8")
+
+        for path, resource_type in [
+            (architecture_path, "architecture"),
+            (guide_path, "guide"),
+        ]:
+            self.assertTrue(path.is_file(), str(path))
+            parsed = rd.parse_front_matter_file(path)
+            self.assertEqual(resource_type, parsed.metadata.get("type"), str(path))
+            self.assertEqual("active", parsed.metadata.get("status"), str(path))
+
+        architecture_locator = "docs/architecture/github-agent-runtime-architecture.md"
+        architecture = architecture_path.read_text(encoding="utf-8")
+        guide = guide_path.read_text(encoding="utf-8")
+
+        self.assertIn(architecture_locator, profile)
+        self.assertNotIn(architecture_locator, agents)
+        self.assertIn("Runtime Capability Entry", agents)
+        for mode in [
+            "A — Local Repository Task",
+            "B — Cloud Repository Task",
+            "C — Remote Repository Coordination",
+        ]:
+            self.assertIn(mode, architecture)
+        self.assertIn("Human explicit mode override", architecture)
+        self.assertIn("fail closed", architecture)
+        self.assertIn("ordinary Agent runtime 不依赖本 Guide", guide)
+        self.assertIn("本轮强制使用 B — Cloud Repository Task", guide)
+        self.assertIn("upstream access = 0", consumer_arch)
+        self.assertIn("Fresh Runtime Evidence", adoption)
+        self.assertIn("Fresh Runtime Evidence", upgrade)
+
     def test_model_collaboration_ownership_and_local_instance_boundary(self):
         architecture_path = REPO_ROOT / "docs/architecture/model-collaboration-architecture.md"
         method_path = REPO_ROOT / "docs/methods/model-collaboration-adoption.md"
