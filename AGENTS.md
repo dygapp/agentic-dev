@@ -38,14 +38,23 @@ Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任�
 1. 读取本文件；
 2. 读取 `README.md`、`docs/project/project-roadmap.md` 与 `docs/project/project-capability-profile.md`；
 3. 重新读取当前默认分支、Open Issue / PR 和当前任务需要的 GitHub 状态；
-4. 若当前任务需要理解 `agentic-dev` 项目使命、目标或核心项目需求，再读取 `docs/project/project-charter.md`；
-5. 读取 `docs/architecture/method-architecture.md` 的通用 **Method Selection Contract**，再由 `project-capability-profile.md` 的 Repository-local selector instance 选择当前 Method；若无映射匹配，不强行套用；
-6. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；Method-specific phase token 只能来自当前 Method canonical owner；
-7. 按当前 Project Capability Profile 声明的 Rule Discovery instance 执行候选初筛，只读取返回的 Rule 正文；在开始当前 direct responsibility 的首个有副作用动作前必须完成本次 task-level discovery；direct responsibility 或其关键事实实质变化后，在下一次有副作用动作前重新发现；
-8. 需要独立执行能力时，通过当前 Repository 声明的 Skill discovery 入口选择并读取相应 `SKILL.md`；
-9. 只加载当前责任直接需要的其他 Architecture；Guide / Research / Project Evolution 仅在任务明确需要人类说明、研究证据或历史原因时读取。
+4. 如果 Project Capability Profile 声明当前 Repository 已采用 Agent-facing runtime / execution-routing capability，在选择或显式强制 execution surface 前读取其 canonical Architecture locator；locator 缺失、不可读取或 local instance 不完整时 fail closed，不从 Guide、历史会话、个人记忆或 upstream 补定义；
+5. 若当前任务需要理解 `agentic-dev` 项目使命、目标或核心项目需求，再读取 `docs/project/project-charter.md`；
+6. 读取 `docs/architecture/method-architecture.md` 的通用 **Method Selection Contract**，再由 `project-capability-profile.md` 的 Repository-local selector instance 选择当前 Method；若无映射匹配，不强行套用；
+7. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；Method-specific phase token 只能来自当前 Method canonical owner；
+8. 按当前 Project Capability Profile 声明的 Rule Discovery instance 执行候选初筛，只读取返回的 Rule 正文；在开始当前 direct responsibility 的首个有副作用动作前必须完成本次 task-level discovery；direct responsibility 或其关键事实实质变化后，在下一次有副作用动作前重新发现；
+9. 需要独立执行能力时，通过当前 Repository 声明的 Skill discovery 入口选择并读取相应 `SKILL.md`；
+10. 只加载当前责任直接需要的其他 Architecture；Guide / Research / Project Evolution 仅在任务明确需要人类说明、研究证据或历史原因时读取。
 
 不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills、全部 Architecture、完整 Research 或完整 Project Evolution。ordinary runtime 不得通过目录遍历、Human README、IDE tree 或其他枚举机制把未命中 Rule locator / 文件名集合送入模型上下文；Rule Discovery 返回值是普通运行时获得 Rule locator 的唯一入口。
+
+切换目标 Repository 时，新 Repository 必须从自己的 `AGENTS.md` 重新 Bootstrap；前一个 Repository 的 Project capability instance、runtime mode、Rule candidates 或 live state 不自动继承。
+
+## Runtime Capability Entry
+
+`AGENTS.md` 不拥有 A / B / C 或其他 execution-routing 正文。当前 Repository 是否采用 runtime capability、其 canonical locator 与 local instance 由 `docs/project/project-capability-profile.md` 持有；长期 routing semantics 由对应 Architecture 持有。
+
+当当前责任、目标 Repository 或 Human explicit execution-mode request 实质变化时，先按当前 Profile 与 canonical runtime contract重新判断 execution surface，再继续当前责任。若当前 Repository 声明采用的 runtime capability 无法从 local Authority 恢复，则 fail closed；Human Guide 不能作为 ordinary runtime fallback。
 
 ## Method Selection
 
@@ -110,7 +119,7 @@ Consumer Repository 始终拥有自己的项目事实、Project Knowledge、需�
 
 长期 ownership / ordinary runtime 不变量见 `docs/architecture/consumer-architecture.md`。首次 adoption 与显式 upstream baseline upgrade 使用对应 Method，但 upstream `Project Charter / Capability Profile / Roadmap / Evolution` 只可作为 provenance / context，不自动成为 Consumer Authority。
 
-Consumer 必须建立自己的 local Project Knowledge、Method selector、Rule Discovery instance 与 Skill entry。采用完成后的 ordinary runtime 只依赖 Consumer-local current state，发现失败不能自动回 upstream 补流程或规则。
+Consumer 必须建立自己的 local Project Knowledge、Method selector、Rule Discovery instance、Skill entry，以及其已采用 Agent-facing runtime capability 的 local canonical locator / instance。采用完成后的 ordinary runtime 只依赖 Consumer-local current state，发现或 runtime locator 失败不能自动回 upstream 补流程、规则或 execution-routing 定义。
 
 Rule 是 Consumer-local policy specialization 的主要承载面之一；通用 Skill 不应吸收不同 Consumer 必然不同的 commit type / scope、术语、审批或局部技术 policy。
 
