@@ -57,9 +57,14 @@ Bootstrap 不复制 selector mapping、Method stages 或 Gate。如果没有 loc
 
 Rule metadata 与 Rule 正文必须同源、同文件维护。不得维护 Reviewed Discovery Map、Activation Manifest、Runtime Catalog、rule-index 或其他需要与规则正文同步的中心路由表。
 
-当前 Repository 的 Rule root、Tool locator、ordinary invocation 与 Human inventory 由 `docs/project/project-capability-profile.md` 声明；通用信号、匹配、渐进披露与 fail-closed contract 由 `docs/architecture/rule-discovery-architecture.md` 持有。Bootstrap 不复制第二份 Tool path 或 CLI invocation。
+当前 Repository 的 Rule root、Tool locator、ordinary invocation 与 Human inventory 由 `docs/project/project-capability-profile.md` 声明；通用信号、匹配、渐进披露与 fail-closed contract 由 `docs/architecture/rule-discovery-architecture.md` 持有。Bootstrap 不复制第二份 Tool path 或完整 invocation contract。
 
-GitHub Actions 中名为 `Rule Discovery` 的 workflow 只执行 repository lint、deterministic tests 与固定 smoke 场景；它不是当前 Agent 对当前 task signals 执行的 task-level discovery，其 PASS 不得替代 ordinary runtime invocation。
+GitHub Actions 中名为 `Rule Discovery` 的 workflow 有两种职责，必须区分：
+
+- `pull_request` / `push(master)` 继续只执行 repository lint、deterministic tests 与固定 smoke 场景；这些 PASS **不能替代** 当前 task signals 的 task-level discovery；
+- 参数化 task-level invocation 会 checkout 请求中的 exact commit SHA，并调用该 SHA 自身的 Rule Discovery Tool；当前 Repository 的具体云端入口与请求格式由 Project Capability Profile 持有。
+
+调用 Rule Discovery 本身属于 **preflight infrastructure invocation**：它只计算候选、不得修改项目语义或授予后续动作权限，因此不要求先递归执行另一轮 Rule Discovery。得到候选后，任何真正的 Repository / Issue / PR / workflow / deploy / external state 副作用仍必须遵守当前责任的 discovery 结果与其他 Authority。
 
 `task-signals-json` 必须显式包含 `phases`、`activities`、`technologies`、`artifacts`、`risks` 五个维度：
 
