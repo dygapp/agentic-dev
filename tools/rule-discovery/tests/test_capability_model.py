@@ -92,7 +92,9 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertIn("--signals-json '<task-signals-json>'", profile)
         self.assertNotIn(tool_locator, agents)
         self.assertNotIn(tool_locator, discovery_arch)
-        self.assertIn("Bootstrap 不复制第二份 Tool path 或 CLI invocation", agents)
+        self.assertIn("Bootstrap 不复制第二份 Tool path 或完整 invocation contract", agents)
+        self.assertIn("workflow_dispatch", profile)
+        self.assertIn("issue_comment", profile)
 
     def test_model_collaboration_ownership_and_local_instance_boundary(self):
         architecture_path = REPO_ROOT / "docs/architecture/model-collaboration-architecture.md"
