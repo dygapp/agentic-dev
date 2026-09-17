@@ -49,10 +49,10 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 当前云端 task-level invocation 有两个 transport，二者都必须携带 exact 40-character commit SHA，并在该 SHA checkout 后调用同一 Tool：
 
 1. GitHub Actions `workflow_dispatch`：输入 `target_sha` 与 `signals_json`；
-2. 当前 Agent / connector 无 workflow dispatch 写能力时，可在 GitHub Issue / PR 中由 `OWNER` / `MEMBER` / `COLLABORATOR` 发送：
+2. 当前 Agent / connector 无 workflow dispatch 写能力时，可使用 GitHub Actions `issue_comment` bridge，在 GitHub Issue / PR 中由 `OWNER` / `MEMBER` / `COLLABORATOR` 发送：
 
 ```text
-/rule-discovery <40-char-commit-sha> <task-signals-json>
+/rule-discovery <40-char-sha> <signals-json>
 ```
 
 云端 invocation 将：
