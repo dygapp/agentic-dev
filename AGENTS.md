@@ -132,7 +132,7 @@ Rule 是 Consumer-local policy specialization 的主要承载面之一；通用 
 
 当前长期 Project owners：
 
-- `docs/project/project-charter.md` — 使命、目标、非目标与核心项目需求与成功判据；
+- `docs/project/project-charter.md` — 使命、目标、非目标、核心项目需求与成功判据；
 - `docs/project/project-capability-profile.md` — 当前 capability instance 与 Repository-local locator；
 - `docs/project/project-roadmap.md` — 当前 baseline / evolution / gate / next candidates；
 - `docs/project/project-evolution.md` — 稳定历史里程碑摘要。
