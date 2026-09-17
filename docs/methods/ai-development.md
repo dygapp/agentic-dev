@@ -108,6 +108,8 @@ Technical Plan 只保存跨 Execution Unit 持续有协调价值的 HOW；精确
 
 单个 Feature 中会影响 Architecture 的 HOW 仍属于本阶段。只有当 Technical Planning 发现一个尚未解决的长期 architecture driver 已经超出当前 Feature，并且多个当前或预期 Feature 在进入可靠 Specification / Planning 前共同依赖它时，才升级到 `method:architecture-clarification` 所拥有的 work kind。二者必须更新同一个长期 Architecture owner，不形成平行 Authority。
 
+当当前 change 涉及 legacy / historical / business data migration，且 Consumer 已采用 `architecture:data-migration` 或等价 local Architecture 时，Technical Planning 应按该 Architecture 解析 source role、semantic preservation、identity / duplicate、replay / idempotency、exception disposition 与 reconciliation responsibility；不得把 legacy source 或 migration mapping 反向当成新的 Requirement Authority。数据库 schema / initialization migration 仍由对应 Technical / Rule contract 处理，不因为名称中同样包含 migration 就自动进入该 Architecture。
+
 当 Technical Planning 涉及不可逆或高风险数据迁移、对外或跨团队共享接口的重大改变、生产部署 / 回滚 / 安全边界的重大影响，或会改变已经承诺的稳定兼容边界时，应按 Consumer 当前 Authority 升级人工决定或人工评审。已采用 `skill:human-review` 的 Consumer 可以用它准备结构化 Markdown 评审草稿；人工确认形成的长期架构事实仍必须回写真实 Architecture owner，Feature Technical Plan 不获得平行长期所有权。
 
 普通局部、易逆且不改变外部承诺的实现 HOW 继续由 AI 自主处理，不因为存在人工评审能力而自动增加人工门禁。
@@ -157,6 +159,8 @@ Converge 必须区分：
 - 局部 Feature 缺口 → 当前 Feature owner；
 - 系统性 Requirement Baseline gap → Requirement owner / `method:requirement-baseline-establishment`；
 - systemic architecture gap → Architecture owner / `method:architecture-clarification`。
+
+对于采用 `architecture:data-migration` 或等价 local Architecture 的 legacy / historical / business data migration，Converge 还必须确认 completion evidence 与当前 Acceptance 对齐，至少不会以“脚本执行成功”替代必要的 source / scope coverage、semantic check、exception / conflict disposition、provenance 或 target-side observable verification；具体证据组合仍由当前风险和 Consumer Authority 决定。
 
 不把 Converge 变成项目级需求或架构重建阶段。
 
