@@ -31,17 +31,7 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parents[1]
 EVALS = ROOT / "evals"
 ACTIVATION_FILE = EVALS / "activation" / "core-first-pass.json"
-BEHAVIOR_FILES = [
-    EVALS / "behavior" / "clarify-intent.json",
-    EVALS / "behavior" / "specify.json",
-    EVALS / "behavior" / "technical-plan.json",
-    EVALS / "behavior" / "slice-work.json",
-    EVALS / "behavior" / "readiness-check.json",
-    EVALS / "behavior" / "execute-unit.json",
-    EVALS / "behavior" / "systematic-debug.json",
-    EVALS / "behavior" / "converge.json",
-    EVALS / "behavior" / "github-actions-verification.json",
-]
+BEHAVIOR_FILES = sorted((EVALS / "behavior").glob("*.json"))
 DISCOVERY_FILE = EVALS / "discovery" / "v4-discriminating.json"
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
@@ -300,6 +290,20 @@ def discovery_cases() -> list[dict]:
     return document["evals"]
 
 
+def scenario_ids_for_mode(args: argparse.Namespace) -> set[str]:
+    activation_ids = {case["id"] for case in activation_cases()}
+    behavior_ids = {case["id"] for _, case in behavior_cases()}
+    discovery_ids = {case["id"] for case in discovery_cases()}
+
+    if args.activation:
+        return activation_ids
+    if args.behavior:
+        return behavior_ids
+    if args.discovery:
+        return discovery_ids
+    return activation_ids | behavior_ids
+
+
 def run_activation(codex_bin: str, selected: set[str] | None) -> int:
     failures = 0
 
@@ -435,13 +439,19 @@ def main() -> int:
     args = parse_args()
     selected = set(args.scenario) or None
 
-    known = {case["id"] for case in activation_cases()}
-    known.update(case["id"] for _, case in behavior_cases())
-    known.update(case["id"] for case in discovery_cases())
+    available = scenario_ids_for_mode(args)
+    if not available:
+        print("No scenarios are available for the selected mode.", file=sys.stderr)
+        return 2
+
     if selected:
-        unknown = selected - known
-        if unknown:
-            print(f"Unknown scenario id(s): {', '.join(sorted(unknown))}", file=sys.stderr)
+        unavailable = selected - available
+        if unavailable:
+            print(
+                "Scenario id(s) not available in the selected mode: "
+                + ", ".join(sorted(unavailable)),
+                file=sys.stderr,
+            )
             return 2
 
     RUN_CONTEXT["source_commit"] = current_source_commit()

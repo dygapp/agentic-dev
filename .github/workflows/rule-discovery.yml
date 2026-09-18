@@ -57,6 +57,24 @@ jobs:
       - name: Compile eval runners
         run: python3 -m py_compile evals/run_codex_evals.py evals/run_governance_evals.py evals/run_v4_scaling.py
 
+      - name: Smoke eval runner entrypoints
+        shell: bash
+        run: |
+          python3 evals/run_codex_evals.py --help >/dev/null
+          python3 evals/run_governance_evals.py --help >/dev/null
+
+          set +e
+          python3 evals/run_codex_evals.py --behavior \
+            --scenario D-V4-GEN-01 --codex-bin false \
+            >/tmp/eval-mode-mismatch.txt 2>&1
+          status=$?
+          set -e
+          if [[ "$status" -ne 2 ]]; then
+            cat /tmp/eval-mode-mismatch.txt
+            echo "expected mode/scenario mismatch to exit 2, got $status"
+            exit 1
+          fi
+
       - name: Run deterministic tests
         run: python3 -m unittest discover -s tools/rule-discovery/tests -v
 
