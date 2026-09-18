@@ -110,6 +110,6 @@ Discovery 场景还必须检查 JSONL trace：
 - 是否出现全量 Rule scan / upstream fallback；
 - 是否读取**未由当前 discover result 返回**的 Rule Front Matter / body 来反向校准 token。
 
-最后一项属于协议违规：即使最终答案正确、后续 discovery 命中正确 Rule，也不能把该场景评为 干净通过。唯一允许在候选之外读取 Rule 文件的例外，是 fail-closed diagnostic 精确指出 malformed resource，需要核对该诊断文件本身。
+最后一项属于协议违规：即使最终答案正确、后续 discovery 命中正确 Rule，也不能把该场景判定为完全通过。唯一允许在候选之外读取 Rule 文件的例外，是 fail-closed diagnostic 精确指出 malformed resource，需要核对该诊断文件本身。
 
 没有运行轨迹时不能仅凭最终回答风格推断 Skill 或 Rule 被激活；Skill / Rule / Discovery contract 改变后不得沿用受影响的历史运行结果。
