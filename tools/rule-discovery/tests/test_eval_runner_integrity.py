@@ -51,6 +51,22 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
 
         self.assertTrue(callable(governance_runner.main))
 
+    def test_governance_context_paths_resolve_current_repository_files(self):
+        referenced: set[str] = set()
+        for path in governance_runner.GOVERNANCE_FILES:
+            document = json.loads(path.read_text(encoding="utf-8"))
+            for relative in document["context_paths"]:
+                referenced.add(relative)
+                self.assertTrue(
+                    (REPO_ROOT / relative).exists(),
+                    f"{path.name}: missing context path {relative}",
+                )
+
+        self.assertNotIn("docs/guides/terminology-guidelines.md", referenced)
+        self.assertNotIn("docs/architecture/technology-profile-contract.md", referenced)
+        self.assertNotIn("docs/architecture/skill-contracts.md", referenced)
+        self.assertNotIn("docs/method/ai-development-method.md", referenced)
+
     def test_mode_mismatch_fails_before_codex_invocation(self):
         completed = self.run_python(
             EVALS_DIR / "run_codex_evals.py",
