@@ -9,18 +9,18 @@ metadata:
 
 # converge
 
-## Purpose
+## 目的
 
 在功能/变更范围内对 Authority、当前实现和当前证据做最终收敛，判断是否达到 `Ready to Integrate`，而不是执行集成。
 
-## Inputs
+## 输入
 
 - Current Specification / Domain / Architecture Authority；
 - Relevant Execution Units and implementation；
 - Current verification evidence；
 - 当前任务适用的 Rule candidates。
 
-## Procedure
+## 流程
 
 1. 重新读取最终 Authority 与当前实现，不把单个 Unit 的完成自动等同于整体完成。
 2. 通过 Rule Discovery 加载 completion、verification、repository、technology 等适用 Rules。
@@ -29,15 +29,15 @@ metadata:
 5. 缺口按责任层返回 Clarify / Specify / Technical Plan / Slice / Execute / Debug，而不是在 Converge 中静默重设计。
 6. 只有不存在已知阻塞缺口且证据匹配目标状态时返回 READY。
 
-## Outputs
+## 输出
 
 - `READY TO INTEGRATE`；或
 - Evidence-backed convergence gaps 与责任层。
 
-## Exit Conditions
+## 退出条件
 
 Authority、实现与当前证据一致，且没有已知阻塞缺口。
 
-## Escalation
+## 升级
 
 集成、merge、release、deploy 以及必须由人工承担的高影响决定保持在仓库/人工 Authority。READY 不是集成授权。

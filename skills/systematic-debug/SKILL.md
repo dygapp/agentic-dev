@@ -9,18 +9,18 @@ metadata:
 
 # systematic-debug
 
-## Purpose
+## 目的
 
 对已观察到的 defect / unexpected failure 建立可证伪根因，再做最小修复和回归验证；不把猜测当根因。
 
-## Inputs
+## 输入
 
 - Observable failure / defect；
 - Expected behavior Authority；
 - Relevant code/runtime state；
 - 当前任务适用的 Rule candidates。
 
-## Procedure
+## 流程
 
 1. 稳定复现问题，并记录 actual behavior 与最小触发条件。
 2. 从权威来源确认 expected behavior；若产品行为本身未定义，返回 Clarify/Specify，而不是自行定义。
@@ -30,17 +30,17 @@ metadata:
 6. 实施针对根因的最低必要修复。
 7. 运行回归与必要邻接验证，确认原 failure 消失且没有已知相关回归。
 
-## Outputs
+## 输出
 
 - Reproduction / expected-vs-actual；
 - Evidence-backed root cause；
 - Minimal fix；
 - Regression evidence / unresolved blocker。
 
-## Exit Conditions
+## 退出条件
 
 根因有证据支持，修复与根因一致，当前回归证据支持预期行为；或已明确应返回上游 Authority。
 
-## Escalation
+## 升级
 
 预期行为冲突、需要改变产品意图/重大架构、不可逆数据风险或权限不足时升级。

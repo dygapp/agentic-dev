@@ -9,11 +9,11 @@ metadata:
 
 # Review Change
 
-## Purpose
+## 目的
 
 基于当前 Repository Authority 与最终变更状态进行独立复核，发现会阻止安全接受的语义、范围、授权、生命周期或证据问题。
 
-## Inputs
+## 输入
 
 - 当前目标基线与拟接受变更；
 - 当前 Repository Authority；
@@ -21,7 +21,7 @@ metadata:
 - 当前验证证据；
 - 适用 Rule candidates。
 
-## Procedure
+## 流程
 
 1. 重新读取当前 Authority 和最终变更，不依赖作者说明或旧 Review 结论。
 2. 明确本次 review claim：要判断的是哪些变更是否可安全接受，而不是重新设计目标。
@@ -33,7 +33,7 @@ metadata:
 8. 修复发生后重新读取最终变更，并只复用能够证明仍不受影响的旧结论。
 9. 没有未解决的阻塞或中等级 finding 时，可报告 review 通过。
 
-## Authority-chain semantic review
+## 权威链语义复核
 
 ### 触发边界
 
@@ -48,7 +48,7 @@ metadata:
 
 普通代码修复、局部文案修改或没有跨层 Authority 影响的常规 PR 不因为本模式存在而自动执行 full regenerability。
 
-### Semantic questions
+### 语义问题
 
 1. **Current owner transition**：canonical owner 或 lifecycle 改变后，Current locator、selector、verification consumer 与 durable current-state wording 是否都已迁移；historical / archive / provenance 引用是否被明确限制在非 Current 角色，而不是 ordinary runtime dependency。
 2. **Single semantic owner + bounded projection**：重复表达是合法 locator / summary / observable projection，还是 competing Current truth；每层是否只拥有自己的 semantic responsibility。
@@ -57,7 +57,7 @@ metadata:
 5. **Conflict classification**：Authority、implementation 与 verification 冲突时，先基于 owner / currentness / provenance 判断是 implementation defect、stale Authority 还是 stale verification contract；不得因为“代码当前如此”自动覆盖 Product / Architecture truth。
 6. **Source role / promotion boundary**：用于当前 claim 的 source 是 canonical Authority、bounded canonical data、implementation evidence、historical evidence、Human decision 还是 unresolved material；Evidence 不得越权 promotion 成更高层 truth。
 
-### Bounded regenerability challenge
+### 有界可再生性挑战
 
 当变更涉及大规模 Authority restructuring、明确 replaceability、major Specification / Interface convergence、heterogeneous reconstruction 或 high-impact semantic migration 时，追加反事实挑战：
 
@@ -66,17 +66,17 @@ metadata:
 
 该 challenge 可以是针对受影响 capability / seam 的 bounded dry-run，不要求每个高影响 Review 都重建完整系统；implementation 可以在设计冻结后作为 comparison / oracle 使用，但不能反向成为缺失 Authority 的默认答案。
 
-## Outputs
+## 输出
 
 - findings（严重程度、位置 / 事实、影响、建议修复边界）；或
 - bounded pass conclusion；
 - 未完成验证 / 人工决策等剩余边界。
 
-## Exit Conditions
+## 退出条件
 
 已检查的范围不存在未解决的阻塞或中等级 finding，或已经准确列出必须返回上游 / 人工处理的 blocker。
 
-## Escalation
+## 升级
 
 - Repository Authority 自身冲突；
 - 需要改变产品 / 方法 / 架构目标而不是修复当前变更；

@@ -9,18 +9,18 @@ metadata:
 
 # execute-unit
 
-## Purpose
+## 目的
 
 在 Fresh Context 中只实现一个 Ready Execution Unit，并取得与该 Unit Completion Conditions 匹配的当前验证证据。
 
-## Inputs
+## 输入
 
 - One Ready Execution Unit；
 - Direct Specification / Technical / Architecture Authority；
 - 当前代码与测试状态；
 - 当前任务适用的 Rule candidates。
 
-## Procedure
+## 流程
 
 1. 重新读取 Unit、直接 Authority 与当前仓库事实，确认没有使 readiness 失效的 drift。
 2. 从当前任务/代码事实提取 task signals，通过 Rule Discovery 加载 generation、verification、technology 等适用 Rules。
@@ -30,16 +30,16 @@ metadata:
 6. 运行与 Completion Conditions 对应的当前验证，并只基于当前证据声明结果。
 7. 停在 Unit 完成边界，不自动合并、发布、部署或启动下一 Unit。
 
-## Outputs
+## 输出
 
 - Unit implementation；
 - Current verification evidence；
 - Completion result / blocker。
 
-## Exit Conditions
+## 退出条件
 
 当前证据支持全部 Unit Completion Conditions，或已准确识别无法在本 Unit 内关闭的 blocker。
 
-## Escalation
+## 升级
 
 上游 Authority 缺口、未授权产品/架构改变、不可逆外部操作或权限阻塞按责任层升级。
