@@ -35,7 +35,7 @@ High-capability second opinion（只在触发条件成立时）
 
 Primary Agent 始终保留 Goal、Authority、委派边界与最终 completion claim。子 Agent 返回的是证据、观察或有界工作结果，不自动成为最终事实。
 
-## 3. 不要让低成本模型成为 Authority proxy
+## 3. 不要让低成本模型成为 Authority 代理
 
 推荐 handoff：
 
@@ -59,7 +59,7 @@ canonical Rule / Requirement
 
 低成本模型可以帮助“找什么、读什么、整理什么”，但后续真正依赖规范语义时仍应能读取 canonical owner。
 
-## 4. Consumer adoption 与 runtime activation
+## 4. Consumer 采用与运行时启用
 
 这里需要区分两件事：
 
@@ -121,7 +121,7 @@ capable reasoning         → 当前可用模型 / effort
 high-capability reasoning → 当前可用模型 / effort
 ```
 
-## 7. Runtime smoke 必须验证真实委派
+## 7. 运行时冒烟验证必须验证真实委派
 
 旧实验曾发生：静态配置解析成功，但真实轨迹出现 `collab spawn failed: no thread with id`；主线程最终回答仍声称委派成功。
 
@@ -153,7 +153,7 @@ high-capability reasoning → 当前可用模型 / effort
 - functional enablement：证明选定协作链路安全可用并可 fallback；
 - efficiency / preferred-default：只有可比单 Agent baseline 支持时才能声称更省、更快或更适合作为默认策略。
 
-## 9. Escalation
+## 9. 升级
 
 默认：
 
@@ -187,12 +187,12 @@ Issue #71 的 Consumer Evidence 已表明，高端模型并不天然拥有只有
 - strategy 与 capability tiers 已选定；
 - local config / Rules / profile owners 已区分；
 - single-agent fallback 已设计；
-- static config PASS；
-- child delegation smoke PASS；
-- Authority-preserving handoff PASS；
-- single-writer boundary PASS（如启用写入）；
+- 静态配置通过；
+- 子模型委派冒烟验证通过；
+- 保持 Authority 的交接验证通过；
+- 单写入者边界验证通过（如启用写入）；
 - requested / observed model claim 边界明确；
-- fallback PASS；
+- 回退验证通过；
 - ordinary runtime upstream access = 0。
 
 如果这些条件不能成立，不要为了追求“多模型协作”而强行启用。

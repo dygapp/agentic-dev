@@ -8,7 +8,7 @@ status: active
 
 本文是面向人的总览指南。它帮助你理解 `agentic-dev` 如何组织 AI 开发工作，但不参与 ordinary Agent runtime，也不替代 Project / Method / Architecture / Skill / Rule 的正式定义。
 
-## 1. 先区分 Project Knowledge 与 reusable Capability
+## 1. 先区分 Project Knowledge 与可复用 Capability
 
 `agentic-dev` 同时维护两类长期知识：
 
@@ -21,7 +21,7 @@ status: active
 
 Project Knowledge 的入口见 `docs/project/README.md`；边界定义见 `docs/architecture/project-knowledge-architecture.md`。
 
-## 2. 五类核心 capability
+## 2. 五类核心能力
 
 ### Method：一类复杂工作怎样从开始走到完成
 
@@ -380,7 +380,7 @@ upstream Project Charter / Capability Profile / Roadmap / Evolution 只用于 pr
 
 正式过程由 `docs/methods/consumer-adoption.md` 定义；人类操作说明见 `adopting-agentic-dev.md`。
 
-## 16. Existing Consumer 升级
+## 16. 现有 Consumer 升级
 
 升级不是“同步最新版”。正确思路是：
 
@@ -467,6 +467,6 @@ Current Authority
 
 流程图、状态图、矩阵等只是按需临时视图；HTML / DOCX 只有显式要求时才生成。普通局部、低风险、可逆且 Authority 已能唯一决定的工作不增加固定 Human Review 负担。
 
-`human-review` 与 `review-change` 责任不同：前者帮助产品、业务、架构或工程责任人理解和确认 Consumer 项目语义；后者独立复核 Repository change 是否符合当前 Authority、范围、规则与 Evidence。任一 Review PASS 都不自动等于 merge / release / deploy 授权。
+`human-review` 与 `review-change` 责任不同：前者帮助产品、业务、架构或工程责任人理解和确认 Consumer 项目语义；后者独立复核 Repository change 是否符合当前 Authority、范围、规则与 Evidence。任一 Review 通过都不自动等于 merge / release / deploy 授权。
 
 完整的人类操作说明见 [`human-review.md`](human-review.md)；规范契约见 `docs/architecture/human-review-architecture.md` 与 `skills/human-review/SKILL.md`。

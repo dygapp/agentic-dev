@@ -176,7 +176,7 @@ Current Requirement / Domain Authority
 
 “Requirement Baseline Establishment”不等于“Requirement Interview”。
 
-## 5. 会话式需求获取：默认使用 Delta Conversation
+## 5. 会话式需求获取：默认使用增量会话
 
 AI 内部可以做完整分析，但普通交互默认只向人工输出当前需要处理的增量。
 
@@ -217,7 +217,7 @@ AI 内部可以做完整分析，但普通交互默认只向人工输出当前�
 
 不要重新打印整份历史确认结果。
 
-## 6. AI 提问前先执行 Question Gate
+## 6. AI 提问前先执行问题门禁
 
 候选问题依次判断：
 
@@ -271,7 +271,7 @@ AI 内部可以做完整分析，但普通交互默认只向人工输出当前�
 
 这类重复提问是需求分析无法收敛的主要原因之一。
 
-## 8. 没有 Evidence 时，不要穷举不存在的机制
+## 8. 没有证据时，不要穷举不存在的机制
 
 不要这样完成需求确认：
 
@@ -372,7 +372,7 @@ API
 
 术语也是一样：如果争议已经只剩大小写、类名后缀、package / filename style 等技术形式，就不再属于 Requirement terminology discussion。
 
-## 12. 用 Capability Review 代替逐条确认
+## 12. 用能力级复核代替逐条确认
 
 完成一个 Requirement Capability 后，推荐给人工一个短 Review 摘要，而不是再次逐条问答：
 

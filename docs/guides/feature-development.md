@@ -263,7 +263,7 @@ systemic architecture gap
 
 规范责任见 `method:ai-development` 与 `skill:converge`。
 
-## 10. Human Review 与 independent review 放在哪里
+## 10. Human Review 与独立复核放在哪里
 
 Human Review 不是普通 Feature lifecycle 的固定新阶段。
 
@@ -373,9 +373,9 @@ Feature Development Method 在 `Ready to Integrate` 边界停止。
 11. Ready to Integrate 后停止，等待 Repository / Human integration authority
 ```
 
-如果流程需要大量人工持续记忆、同一事实出现在多套文档中、每个阶段都产生固定新 Artifact，或任何 PASS 都自动触发后续副作用，通常意味着责任边界已经开始漂移。
+如果流程需要大量人工持续记忆、同一事实出现在多套文档中、每个阶段都产生固定新 Artifact，或任何“通过”状态都自动触发后续副作用，通常意味着责任边界已经开始漂移。
 
-## 14. Canonical owners 与推荐阅读
+## 14. 规范性归属与推荐阅读
 
 本文只做组合 Human View。需要核对规范语义时，应回到 canonical owner：
 

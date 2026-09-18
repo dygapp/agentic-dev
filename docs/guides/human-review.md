@@ -226,7 +226,7 @@ Human Review 完成仍然不代表 PR 已通过独立变更复核，也不代表
 
 服务对象是 Repository change，独立检查一个变更是否符合当前 Authority、范围、规则、Evidence 和 artifact lifecycle。
 
-Human Review PASS 不能替代 `review-change`；`review-change` PASS 也不能代替客户、产品或架构责任人的人工确认。
+Human Review 通过不能替代 `review-change`；`review-change` 通过也不能代替客户、产品或架构责任人的人工确认。
 
 ## 11. 一个典型使用流程
 

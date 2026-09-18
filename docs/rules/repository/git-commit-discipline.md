@@ -32,7 +32,7 @@ scope:
 
 如果多个层级属于同一个不可分逻辑变化，可以同提交，但 diff 与提交说明必须保持清楚的权威责任链。
 
-## Breaking 标记
+## 不兼容变更标记
 
 已经公开稳定的 Skill contract、CLI、Rule / Rule Discovery contract 或其他外部 capability 发生不兼容变化时，提交信息必须使用 Conventional Commits 的显式 breaking 标记，例如 `refactor(rules)!: ...`；需要时使用 `BREAKING CHANGE:` 正文说明。
 

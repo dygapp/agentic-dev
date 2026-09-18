@@ -6,7 +6,7 @@ status: active
 
 # 人类使用指南
 
-`docs/guides/` 只承担 **Human View**：帮助人理解、采用和维护 `agentic-dev`。ordinary Agent runtime 默认不依赖这里的文档；正式 Method、Rule、Skill contract 与 Architecture 以各自 canonical owner 为准。
+`docs/guides/` 只承担 **Human View**：帮助人理解、采用和维护 `agentic-dev`。普通 Agent 运行时默认不依赖这里的文档；正式 Method、Rule、Skill contract 与 Architecture 以各自规范性归属为准。
 
 推荐阅读：
 
@@ -19,8 +19,8 @@ status: active
 7. [`adopting-agentic-dev.md`](adopting-agentic-dev.md) — 人类视角的 Consumer 首次采用指南；
 8. [`upgrading-agentic-dev.md`](upgrading-agentic-dev.md) — 人类视角的 Existing Consumer 升级指南；
 9. [`multi-model-collaboration.md`](multi-model-collaboration.md) — 理解 Model Collaboration capability、Consumer adoption、路由与验证边界；
-10. [`codex-model-collaboration-reference.md`](codex-model-collaboration-reference.md) — Codex 平台的非规范参考配置、角色 profile 与 runtime smoke 检查结构；
+10. [`codex-model-collaboration-reference.md`](codex-model-collaboration-reference.md) — Codex 平台的非规范参考配置、角色配置与运行时冒烟检查结构；
 11. [`rule-activation-guide.md`](rule-activation-guide.md) — 理解 Rule Discovery 如何工作；
 12. [`consumer-local-rule-activation.md`](consumer-local-rule-activation.md) — 理解 Rule 如何在 Consumer 本地化。
 
-Guide 可以完整解释规范流程，但不重新定义 Gate、routing 或 policy。若 Guide 与 canonical owner 冲突，以 Method / Architecture / Skill / Rule 为准并修正 Guide。
+Guide 可以完整解释规范流程，但不重新定义 Gate、路由或规范策略。若 Guide 与规范性归属冲突，以 Method / Architecture / Skill / Rule 为准并修正 Guide。

@@ -16,7 +16,7 @@ scope:
 
 如果这些责任存在会导致后续 Agent 无法可靠识别当前有效事实的缺口，不能仅因为文档已存在就声明完成。临时产物只需要明确退出或丢弃边界，不为形式完整制造长期 lifecycle。
 
-## Current owner transition completeness
+## 当前归属转换完整性
 
 当 Current canonical owner 被 replace / retire / archive，或其 lifecycle 从 active 转为 completed 时，在声明 transition 完成前必须同步复核所有仍承担 Current 语义的 consumer：
 

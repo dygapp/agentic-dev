@@ -4,7 +4,7 @@ type: guide
 status: active
 ---
 
-# Codex Model Collaboration Reference Profile
+# Codex 模型协作参考配置
 
 本文件是 **Human-facing、非规范、平台专项参考实现**。Model Collaboration 的 canonical semantics 由 `docs/architecture/model-collaboration-architecture.md` 与 `docs/methods/model-collaboration-adoption.md` 持有；本文件不拥有新的 Method Gate、Rule policy 或 `agentic-dev` 当前 runtime instance。
 
@@ -184,7 +184,7 @@ Primary Agent 可以由当前用户会话 / Codex 主线程承担，不要求额
 6. 只根据当前可验证事实形成 completion claim；
 7. 在 child runtime 失败时执行 single-agent fallback，而不是假装 delegation 成功。
 
-## 9. Runtime Detection 与 Smoke
+## 9. 运行时探测与冒烟验证
 
 采用时至少执行与当前平台匹配的检查，并记录**实际命令与 effective config evidence**。不要把这里的示例命令视为永久接口。
 
@@ -198,9 +198,9 @@ Smoke 必须证明：
 - 如果实际模型身份不可观察，明确记录 `not observable`；
 - child failure 能触发 fallback，Primary 不会仅凭最终文本把失败记录成成功。
 
-历史实验已经证明：config parse PASS、主进程 exit code `0` 和主 Agent 自述“委派成功”三者都不能替代真实 child evidence。
+历史实验已经证明：配置解析通过、主进程 exit code `0` 和主 Agent 自述“委派成功”三者都不能替代真实 child evidence。
 
-## 10. Writer 与 Review 定向验证
+## 10. 写入与复核定向验证
 
 如果启用 `implementation_worker`：
 
@@ -213,9 +213,9 @@ Smoke 必须证明：
 
 - reviewer input 不应把实施者完成结论作为既定事实；
 - reviewer 应读取 canonical Authority 与 candidate；
-- review PASS 不自动产生 Integration Authority。
+- 复核通过不自动产生 Integration Authority。
 
-## 11. Functional Enablement 与效率验证
+## 11. 功能启用与效率验证
 
 第一次 smoke 的目标是 **functional enablement**：证明 collaboration chain 可以安全运行。
 
@@ -240,7 +240,7 @@ Smoke 必须证明：
 
 ## 12. 维护规则
 
-出现以下变化时，Consumer 应重新执行 runtime detection 或相关 smoke，而不是沿用历史 PASS：
+出现以下变化时，Consumer 应重新执行运行时探测或相关冒烟验证，而不是沿用历史通过结果：
 
 - Codex CLI / Agent runtime 大版本变化；
 - custom-agent TOML schema 变化；

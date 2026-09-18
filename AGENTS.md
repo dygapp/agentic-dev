@@ -12,7 +12,7 @@ status: active
 
 GitHub Repository 是本仓库唯一长期项目事实来源。会话历史、其他聊天、个人记忆、其他仓库状态和未固化推理不构成本仓库事实。
 
-## Authority 与 semantic ownership
+## 权威与语义归属
 
 发生冲突时先判断真实 semantic owner，不用目录层级覆盖正确责任：
 
@@ -31,7 +31,7 @@ GitHub Repository 是本仓库唯一长期项目事实来源。会话历史、�
 
 Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任；Project owner 只拥有当前 Repository 的使命、实例、状态和稳定演进摘要；Guide / README 可以解释它们，但不得成为第二套规范 owner。Research 永远不是规范性 Authority。
 
-## Fresh Context / Agent Bootstrap
+## Fresh Context / Agent 启动
 
 新的本仓库上下文按以下顺序恢复：
 
@@ -47,7 +47,7 @@ Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任�
 
 不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills、全部 Architecture、完整 Research 或完整 Project Evolution。ordinary runtime 不得通过目录遍历、Human README、IDE tree 或其他枚举机制把未命中 Rule locator / 文件名集合送入模型上下文；Rule Discovery 返回值是普通运行时获得 Rule locator 的唯一入口。
 
-## Method Selection
+## Method 选择
 
 `docs/architecture/method-architecture.md` 只定义通用 Method Selection Contract；当前 `agentic-dev` 的 `work kind → Method locator` 映射由 `docs/project/project-capability-profile.md` 单独拥有。
 
@@ -61,7 +61,7 @@ Rule metadata 与 Rule 正文必须同源、同文件维护。不得维护 Revie
 
 GitHub Actions 中名为 `Rule Discovery` 的 workflow 有两种职责，必须区分：
 
-- `pull_request` / `push(master)` 继续只执行 repository lint、deterministic tests 与固定 smoke 场景；这些 PASS **不能替代** 当前 task signals 的 task-level discovery；
+- `pull_request` / `push(master)` 继续只执行 repository lint、deterministic tests 与固定 smoke 场景；这些通过结果 **不能替代** 当前 task signals 的 task-level discovery；
 - 参数化 task-level invocation 会 checkout 请求中的 exact commit SHA，并调用该 SHA 自身的 Rule Discovery Tool；当前 Repository 的具体云端入口与请求格式由 Project Capability Profile 持有。
 
 调用 Rule Discovery 本身属于 **preflight infrastructure invocation**：它只计算候选、不得修改项目语义或授予后续动作权限，因此不要求先递归执行另一轮 Rule Discovery。得到候选后，任何真正的 Repository / Issue / PR / workflow / deploy / external state 副作用仍必须遵守当前责任的 discovery 结果与其他 Authority。

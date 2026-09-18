@@ -18,7 +18,7 @@ status: active
 - 对需要人工判断的 assertion 逐项评分；
 - Skill / Rule / Discovery contract 发生实质变化后，对受影响行为重新取得 current evidence。
 
-## 2. Current inventory
+## 2. 当前清单
 
 ### V4 Rule Discovery
 
@@ -49,7 +49,7 @@ Runtime workspace 只得到当前 runtime entry、Rule Discovery Tool、current 
 
 `fixtures/execute-unit-basic/` 是行为评估输入。Fixture 属于测试数据，不是 current repository Authority；不得为了 current-resource 文档治理机械改写其语义。
 
-## 3. V4 evidence state
+## 3. V4 证据状态
 
 - V4-04 deterministic Rule Discovery contract：PASS；由普通自动化测试与 lint 持有；
 - V4-06 Discriminating Evals：PASS；7 / 7 Fresh Runtime 场景与 35 / 35 assertions 通过；

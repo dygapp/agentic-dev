@@ -4,7 +4,7 @@ type: guide
 status: active
 ---
 
-# Rules 目录导航
+# Rule 目录导航
 
 本 README 只用于**人类导航**，不是 runtime Rule index。Rule Discovery 会明确跳过名为 `README.md` 的导航文件，但 repository lint 仍会校验本文件 Front Matter 与资源 ID。
 
@@ -25,7 +25,7 @@ status: active
 
 当前 upstream corpus 不维护具体语言 / 框架 / 组件库的通用技术知识 Rule family。Consumer 如有稳定、项目特定的技术 policy，仍可按自己的 Authority 建立 local technology Rules；目录只服务人类维护，不参与 runtime matching。
 
-## 当前 Rule inventory
+## 当前 Rule 清单
 
 ### generation
 
