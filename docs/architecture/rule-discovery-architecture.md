@@ -213,4 +213,20 @@ Rule Discovery 不是一次会话级初始化动作，而是 direct responsibili
 7. `fail-closed` 时不得把无候选、旧候选或全量 Rules 当替代结果；先修复 signals、metadata 或扫描完整性，再继续依赖 Rule Discovery；
 8. ordinary runtime 的模型上下文只接收 Discovery 返回的 candidate locator 与最终读取的候选正文，不接收全量 locator、全量 metadata、Human README inventory、未命中 Rules 或工具内部扫描状态。
 
+### 10.2 Out-of-process execution contract
+
+canonical Rule Discovery Tool 不要求与当前 Agent 位于同一 execution environment。Repository-local capability instance 可以同时声明 direct execution transport 与 out-of-process compute transport；transport 只负责执行同一个 Tool，不取得 Method、Rule、Authority 或后续动作授权。
+
+当前 Agent 缺少 worktree、shell、Python 或其他直接执行能力，不能成为跳过 task-level discovery、复用旧 candidate set 或改由 Human Guide / memory 推断规则的理由。使用 out-of-process transport 时必须：
+
+1. 绑定一个明确、可复核的 Repository baseline；
+2. 取得并验证实际执行 baseline 与请求 baseline 一致；
+3. 执行该实际 baseline 自己声明的 canonical Tool，而不是 transport 环境中的替代实现；
+4. 保持本 Architecture 的 task-signal、fail-closed 与 locator-only result contract；
+5. 产生可审计的 invocation、signals、requested / actual baseline、result 与执行终态 Evidence，使当前 Agent 能恢复结果并确认其对应 subject。
+
+transport 启动或请求被接受不等于 discovery 成功。只有目标 subject 的执行到达可观察终态、baseline 一致且 result 满足本 Architecture，才形成可消费的 discovery Evidence。
+
+当前 Agent 应按 Repository-local capability instance 使用适用的已声明自动化 transport。所有 declared transports 都不可用、无法验证 baseline 或无法恢复结果时，Rule Discovery 必须 fail closed；不得把人工本地执行当作未检查其他声明路径时的默认 fallback。
+
 Repository-local capability profile / bootstrap 发布当前 Rule root 与 Tool locator；具体实现路径可以变化，但不得改变上述运行语义而不先修改本 Architecture。

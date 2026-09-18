@@ -77,6 +77,8 @@ upstream Project Profile 中出现的新 Method mapping、路径或工具 locato
 
 如果 accepted delta 改变了 Consumer 的 Method selection、Skill discovery、Rule root / Discovery Tool、Human / Agent entry 或其他 local instance pointer，更新 Consumer-local Project Capability Profile 或等价 Repository Authority。
 
+如果 accepted delta 改变 Tool contract、runtime assumption、Rule Discovery contract、verification behavior 或 executable path requirement，还必须重新评估并刷新受影响的 Consumer-local executable instance，包括 obligation、canonical locator、direct execution path、automated alternate path、result / Evidence recovery 与 fail-closed behavior。不得只更新上游 provenance 或 Tool source 而保留已经失真的运行路径。
+
 不得把 upstream `project-capability-profile.md` 直接复制成 Consumer profile；本地 profile 只记录 Consumer 实际接受并运行的 capability instance。
 
 如果 accepted delta 不影响 local instance，则不为“同步最新”机械修改 Project profile。
@@ -93,6 +95,10 @@ upstream Project Profile 中出现的新 Method mapping、路径或工具 locato
 - Consumer-local policy；
 - local capability profile / runtime entry；
 - ordinary runtime upstream decoupling；
+- 受影响 capability 的 direct execution path 与 automated alternate path；
+- result / Evidence recovery、exact subject 与 terminal state；
+- 所有 declared path 不可用或 locator 破坏时的 fail-closed behavior；
+- Fresh Runtime 仅依赖 Consumer-local Authority 恢复受影响路径的行为；
 - 受影响产品 / 工程行为。
 
 不因 baseline upgrade 自动运行所有历史 eval，但不得用旧 Evidence 支撑已发生语义变化的新 claim。

@@ -63,6 +63,25 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 - 将 signals、requested / actual SHA 与 discovery JSON 输出到 Actions log，并上传 `task-rule-discovery-<run-id>` artifact；
 - 在 signals、SHA 或 discovery contract 无效时 fail closed。
 
+### 3.1 Rule Discovery transport selection
+
+本仓库按当前实际可用能力选择 transport：
+
+1. 当前 Repository Runtime 能在目标 baseline 直接执行 canonical Tool 时，优先使用本地调用；
+2. 当前 Agent 不能直接执行 Tool 时，自动使用上方已声明的 GitHub Actions exact-SHA transport；当前 Agent 没有 checkout、shell 或 Python 不能成为跳过 discovery 或直接要求人工本地运行的理由；
+3. transport 返回后核验 requested SHA、actual SHA、signals、locator-only result 与 workflow 终态，再把 candidate locator 交给当前 Agent；
+4. 两类 declared transport 均不可用或 Evidence 无法恢复时 fail closed，不从 Guide、memory、旧 candidate set 或人工猜测补齐。
+
+该 selection 只实例化 `agentic-dev` 当前 transport，不建立 session mode，也不改变 Rule Discovery Architecture 的平台无关 contract。
+
+### 3.2 Repository-native deterministic compute / verification instance
+
+本仓库需要执行 repository scripts、lint、tests、build 或其他 deterministic verification 时，已有可用 Repository Runtime 就直接在目标 subject 上执行；当前 Agent 没有适用 Repository Runtime 时，可以使用 Repository 已声明的 GitHub Actions workflow，在 exact commit / PR Head checkout 后执行该 subject 自己的 canonical command。
+
+GitHub Connector / API 主要承担 workflow 触发、branch / PR 协调与结果读取；GitHub Actions 提供 repository-native compute。当前 Agent 必须从 run status、job / step、logs 与必要 artifact 恢复结果。workflow started 或请求被接受不构成 PASS，ancestor commit 的成功也不自动支持 current Head claim。
+
+本节只声明 local + Actions 的最薄 instance 与证据恢复边界，不维护 workflow catalog；具体 verification obligation 仍由当前 Method、Rule、acceptance 与 repository scripts 决定。
+
 `pull_request` / `push(master)` 触发的同名 workflow 仍只承担 repository lint、deterministic tests 与固定 smoke；不能拿其 PASS 替代当前 task signals 的 task-level invocation。
 
 调用 Rule Discovery transport 本身是 preflight compute，不授予任何后续 Repository / Issue / PR / workflow / deployment 副作用权限。
