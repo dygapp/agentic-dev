@@ -8,9 +8,9 @@ status: active
 
 ## Current Baseline
 
-当前正式 capability baseline 以 **Review Governance vNext — Authority-chain Semantic Review & Current-owner Lifecycle** 为治理基础，并进一步集成 **Human Review Capability v1**、**Project Terminology Governance**、**Data Migration Governance**、**GitHub Agent Workflow Human View** 与外部操作 / 人工介入治理增强。
+当前正式 capability baseline 以 **Review Governance vNext — Authority-chain Semantic Review & Current-owner Lifecycle** 为治理基础，并进一步集成 **Human Review Capability v1**、**Project Terminology Governance**、**Data Migration Governance**、**GitHub Agent Workflow Human View**、**Chat Repository Bootstrap / execution transport closure**、外部操作 / 人工介入治理增强，以及 **Core Boundary Cleanup**。
 
-Integration provenance：Review Governance 来自 Issue #141 / PR #142；Human Review Capability v1 来自 Issue #144 / PR #145；Project Terminology Governance 来自 Issue #147 / PR #148；Data Migration Governance 来自 Issue #149 / PR #150；人工介入必要性治理来自 Issue #154 / PR #156；GitHub Agent Workflow Human Guide 与 external-write identity / idempotency 增强来自 Issue #157 / PR #158。精确 integration commit、merge 时间与 Actions 结果由 Git / GitHub 当前事实持有，不在 Roadmap 复制瞬时状态。
+Integration provenance：Review Governance 来自 Issue #141 / PR #142；Human Review Capability v1 来自 Issue #144 / PR #145；Project Terminology Governance 来自 Issue #147 / PR #148；Data Migration Governance 来自 Issue #149 / PR #150；人工介入必要性治理来自 Issue #154 / PR #156；GitHub Agent Workflow Human Guide 与 external-write identity / idempotency 增强来自 Issue #157 / PR #158；Chat Repository Bootstrap / execution transport closure 来自 Issue #162 / PR #163；Core Boundary Cleanup 来自 Issue #164 / PR #165 的 R1。精确 integration commit、merge 时间与 Actions 结果由 Git / GitHub 当前事实持有，不在 Roadmap 复制瞬时状态。
 
 当前 baseline 建立在 Requirement Baseline Establishment & Architecture Clarification Split v1、V4 Rule Discovery、Capability Model v2、Project Knowledge Model、Rule granularity consolidation、Model Collaboration Capability & Adoption v1 与 Rule Discovery runtime activation hardening 之上，并完成以下收敛：
 
@@ -39,6 +39,8 @@ Integration provenance：Review Governance 来自 Issue #141 / PR #142；Human R
 
 ## Current Evolution
 
+Issue #164 — **核心边界收敛与验证可信度整改** 是当前 bounded evolution。R1 Core Boundary Cleanup 已集成；R2A Current-State & Eval Entry Reliability 随当前 baseline 收敛 runner entry / scenario selection 与 Roadmap currentness。下一实际 bounded gate 是 R2B Discovery / Evidence Contract Reliability；其后才进入 R3 Bootstrap Cost Reduction 与 R4 Independent / Consumer applicability validation。各 Unit 的精确 PR / Review / Actions / commit live state 继续由 GitHub 持有。
+
 Issue #143 — **Human-facing Guides 与 `jilinjobs` historical experience mining umbrella** 已完成主动 systematic mining：三轮历史扫描完成 retained / project-specific / failed-or-retired / uncertain 分类，高置信真实缺口中的 Project Terminology Governance 与 Data Migration Governance 已分别通过独立 bounded promotion lifecycle 集成。后续历史材料只按新的明确 Evidence 触发，不再把 Candidate B 维持为持续研究流。
 
 Candidate A 已完成 Human Review Guide、Feature Development Guide 与 GitHub Agent Workflow Guide；Specification / Architecture / Technical Planning 等主题不机械拆成独立 Guide，其他 platform / operations Human View 继续按真实使用缺口逐个建立 bounded unit。
@@ -49,9 +51,9 @@ Issue #71 的 Consumer model-routing / blind independent review Evidence 已由 
 
 ## Current Gate
 
-**NONE — 当前没有 active bounded evolution / Gate。**
+**Issue #164 — R2B Discovery / Evidence Contract Reliability。**
 
-Roadmap 继续持有当前 evolution / Gate / next candidates 的稳定摘要；新的 bounded work 必须由新的明确 Evidence、Human Authority 或当前 Repository 事实重新激活，不能从已完成的 Issue #157 / PR #158 或下方候选列表自动继承 Execute / Integrate Authority。精确 PR、Review、Actions、commit 等 live state 继续以 GitHub current state 为准。
+R1 与 R2A 已进入当前 baseline；下一 bounded unit 只处理 isolated discovery fixture dependency closure、cross-Method evidence applicability 与 symlink scan completeness。R3 Bootstrap Cost Reduction 必须等 R2B 语义与验证链稳定后再开始；R4 继续作为最终独立 / Consumer applicability validation。精确 PR、Review、Actions、commit 等 live state 继续以 GitHub current state 为准。
 
 ## Next Candidates
 
@@ -82,7 +84,7 @@ Roadmap 继续持有当前 evolution / Gate / next candidates 的稳定摘要；
 - Human Review Capability v1 已通过 bounded independent semantic review 与真实 Consumer validation，但真实 Consumer 样本中的人工反馈为“无语义修改”，因此没有把未实际发生的正向 Authority writeback 分支夸大为已验证 runtime Evidence；
 - Project Terminology Governance 的首轮 promotion Evidence 主要来自历史 Consumer corpus 与 current Requirement semantics 对照；当前只证明其职责边界足以进入 baseline，不证明所有 Consumer 都需要独立 terminology owner，也不证明 terminology Skill / Rule 已达到 admission；
 - Data Migration Governance 的首轮 promotion Evidence 证明稳定 invariant 与 owner boundary 具有跨场景复用价值，但不意味着所有 migration 都需要 canonical dataset、独立 Method / Skill 或统一文件结构；
-- GitHub Agent Workflow 的 A / B / C 只用于解释 execution topology / responsibility mode，不构成新的 Method lifecycle；具体平台能力、授权和 runtime availability 必须由当前环境重新验证；
+- GitHub Agent Workflow 当前不再使用 A / B / C 作为 Current routing model；当前语义明确分离 Repository Authority / Rule Discovery、execution transport 与 verification。具体平台能力、授权和 runtime availability 仍必须由当前环境重新验证，transport 本身不取得 Method / Rule / completion Authority；
 - `Requirement Baseline Ready` 不等于 Architecture complete、Specification created、Execution Unit created 或 Execute / Integrate authority granted；
 - 推荐 `docs/requirements` 目录是 Human IA / default projection，不是硬编码 runtime schema；Consumer 可以调整物理路径，但不能破坏 semantic ownership；
 - Requirement Human Navigation、Requirement Authority Index、Requirement Fact Authority 与可选 Project Terminology Authority 必须保持清晰 ownership，避免 README / index / glossary / Capability 正文形成平行 Current truth；

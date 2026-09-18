@@ -14,7 +14,7 @@ from typing import Iterable
 from run_codex_evals import (
     EVALS,
     check_codex,
-    copy_capability_context,
+    copy_repo_path,
     run_codex,
 )
 
@@ -83,7 +83,8 @@ def main() -> int:
             prefix=f"agentic-dev-governance-{scenario_id}-"
         ) as temp_dir:
             cwd = Path(temp_dir)
-            copy_capability_context(cwd, context_paths)
+            for relative in context_paths:
+                copy_repo_path(cwd, relative)
 
             context_list = "\n".join(f"- {path}" for path in context_paths)
             prompt = (
