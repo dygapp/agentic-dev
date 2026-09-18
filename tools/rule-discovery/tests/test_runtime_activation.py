@@ -41,6 +41,19 @@ class RuntimeActivationRegressionTests(unittest.TestCase):
         self.assertIn("### 10.1 Responsibility transition checkpoint", architecture)
         self.assertIn("不能替代 ordinary runtime invocation", architecture)
 
+    def test_pr_and_push_verification_use_exact_subject_identity(self):
+        workflow = (REPO_ROOT / ".github/workflows/rule-discovery.yml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("Checkout exact verification subject", workflow)
+        self.assertIn("Verify exact verification subject", workflow)
+        self.assertIn("github.event.pull_request.head.sha", workflow)
+        self.assertIn("github.sha", workflow)
+        self.assertIn("EXPECTED_SHA", workflow)
+        self.assertIn("git rev-parse HEAD", workflow)
+        self.assertIn("checked-out SHA does not match verification subject", workflow)
+
     def test_cloud_task_discovery_preserves_exact_sha_and_machine_readable_evidence(self):
         workflow = (REPO_ROOT / ".github/workflows/rule-discovery.yml").read_text(
             encoding="utf-8"
