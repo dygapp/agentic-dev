@@ -18,9 +18,9 @@ RESULTS = ROOT / "evals" / "results" / "scaling"
 CANONICAL_SIGNALS = {
     "phases": ["execute"],
     "activities": ["implementation"],
-    "technologies": ["vue3", "typescript"],
-    "artifacts": ["code", "vue-sfc"],
-    "risks": None,
+    "technologies": [],
+    "artifacts": ["code", "data-access"],
+    "risks": [],
 }
 
 
