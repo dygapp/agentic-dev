@@ -40,10 +40,11 @@ Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任�
 3. 重新读取当前默认分支、Open Issue / PR 和当前任务需要的 GitHub 状态；
 4. 若当前任务需要理解 `agentic-dev` 项目使命、目标或核心项目需求，再读取 `docs/project/project-charter.md`；
 5. 直接使用 `project-capability-profile.md` 的 Repository-local selector instance 选择并读取当前 Method；只有当前任务修改 / 复核 Method 类型、selection contract、selector scaling 或 no-match 语义时，才按需读取 `docs/architecture/method-architecture.md`；若无映射匹配，不强行套用；
-6. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；Method-specific phase token 只能来自当前 Method canonical owner；
-7. 按当前 Project Capability Profile 声明的 Rule Discovery instance 执行候选初筛，只读取返回的 Rule 正文；在开始当前 direct responsibility 的首个有副作用动作前必须完成本次 task-level discovery；direct responsibility 或其关键事实实质变化后，在下一次有副作用动作前重新发现；
-8. 需要独立执行能力时，通过当前 Repository 声明的 Skill discovery 入口选择并读取相应 `SKILL.md`；
-9. 只加载当前责任直接需要的其他 Architecture；Guide / Research / Project Evolution 仅在任务明确需要人类说明、研究证据或历史原因时读取。
+6. 在首次向人工输出包含项目事实、状态判断、方案、复核结论或其他实质内容前，建立一次 `communication` responsibility checkpoint。若当前 task-level discovery 已经在该首次输出前覆盖 `communication` + `human-facing-content`，不重复调用；否则从已读取事实构造最小 task signals：`activities` 至少包含 `communication`、`artifacts` 至少包含 `human-facing-content`，其余维度按当前事实使用已知数组 / `[]` / `null`，执行 Rule Discovery 并读取候选正文后再输出。只表示“正在恢复 / 正在读取”的短进度消息可以先于该 checkpoint，但不得提前承载项目事实、状态判断或结论。Bootstrap 不在这里写死任何语言 Rule id / path；
+7. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；Method-specific phase token 只能来自当前 Method canonical owner；
+8. 按当前 Project Capability Profile 声明的 Rule Discovery instance 执行候选初筛，只读取返回的 Rule 正文；在开始当前 direct responsibility 的首个受 Rule 约束的实质动作前必须完成本次 task-level discovery，有副作用动作始终包含在内；direct responsibility 或其关键事实实质变化后，在下一次受 Rule 约束的实质动作前重新发现；
+9. 需要独立执行能力时，通过当前 Repository 声明的 Skill discovery 入口选择并读取相应 `SKILL.md`；
+10. 只加载当前责任直接需要的其他 Architecture；Guide / Research / Project Evolution 仅在任务明确需要人类说明、研究证据或历史原因时读取。
 
 不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills、全部 Architecture、完整 Research 或完整 Project Evolution。ordinary runtime 不得通过目录遍历、Human README、IDE tree 或其他枚举机制把未命中 Rule locator / 文件名集合送入模型上下文；Rule Discovery 返回值是普通运行时获得 Rule locator 的唯一入口。
 
@@ -80,7 +81,7 @@ GitHub Actions 中名为 `Rule Discovery` 的 workflow 有两种职责，必须�
 
 准备请求人工执行动作、提供输入、作出决定或充当系统 / 工具之间的中转时，视为新的 human escalation responsibility checkpoint。**发出人工请求前**，`activities` 至少包含 `human-escalation`，`risks` 至少包含 `human-intervention`，并重新执行 Rule Discovery；Bootstrap 只拥有这次 signal transition，不复制“是否确需人工、怎样缩减人工动作”的 Rule 正文。
 
-成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选不等于最终适用，必须读取正文后做语义确认。进入新的 direct responsibility，或当前 phase / activity / technology / artifact / risk facts 实质变化时，都必须在继续该责任的有副作用动作前重新发现；旧 candidate set 不跨职责永久有效。
+成功结果只把 `candidates[].path` 作为待读取 Rule locator；候选不等于最终适用，必须读取正文后做语义确认。进入新的 direct responsibility，或当前 phase / activity / technology / artifact / risk facts 实质变化时，都必须在继续该责任的下一次受 Rule 约束的实质动作前重新发现；有副作用动作始终包含在内，旧 candidate set 不跨职责永久有效。
 
 Discovery `fail-closed` 时先修复 signals、metadata 或扫描完整性，不降级到全量 Rule、旧中心 Map 或 upstream discovery。`status=ok` 但候选为空，也不得读取未命中 Rule metadata 反向校准。
 
