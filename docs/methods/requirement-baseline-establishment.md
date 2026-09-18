@@ -83,7 +83,7 @@ Establish Sources & Authority
 
 Project Terminology Governance 不增加新的 Method 阶段。Consumer 确有跨 Capability terminology need 时，只把 terminology responsibility 嵌入上述六阶段；没有真实需要时不建立 glossary 或额外流程。
 
-### 4.1 Stable phase identities
+### 4.1 稳定阶段身份
 
 - Establish Sources & Authority → `establish-requirement-sources`；
 - Extract Requirement Facts → `extract-requirements`；
@@ -243,7 +243,7 @@ Terminology 不绕过这七项条件。只有 terminology ambiguity 同时会实
 
 否则应推导、应用 Authoritative Default、采用可 Review 的 Provisional Minimal Default、记录为 non-blocking open item，或推迟到后续责任层。
 
-### 8.4 Conversation protocol
+### 8.4 会话协议
 
 会话只是需求获取渠道，不是长期 Authority。
 
@@ -257,7 +257,7 @@ Terminology 不绕过这七项条件。只有 terminology ambiguity 同时会实
 
 问题数量应由真实 Blocking Ambiguity 数决定，而不是为了形成“完整讨论”凑足固定数量。连续没有真实 blocking question 时，应停止提问并继续完成当前 Capability。
 
-## 9. Clarification Depth Stop Condition
+## 9. 澄清深度停止条件
 
 当以下信息已经足以唯一决定主要业务行为与验收时，Requirement 下钻应停止：
 
@@ -279,7 +279,7 @@ Terminology 不绕过这七项条件。只有 terminology ambiguity 同时会实
 
 ## 10. Review Requirement Baseline
 
-### 10.1 Capability-level Human Review
+### 10.1 能力级 Human Review
 
 每个主要 Requirement Capability 达到可读状态后，可以进行一次整体 Human Review，重点查看：
 
@@ -301,7 +301,7 @@ Terminology 不绕过这七项条件。只有 terminology ambiguity 同时会实
 
 Consumer 未采用 `skill:human-review` 时，本 Method 的 Capability-level Human Review 责任仍然成立；Skill 是可复用执行能力，不是本阶段存在的前提。
 
-### 10.2 Independent semantic review
+### 10.2 独立语义复核
 
 以下任一情况成立时，在 Baseline Ready 前必须执行独立语义复核：
 
@@ -333,7 +333,7 @@ Review 必须可以核对 source / decision / resulting Authority；格式、链
 
 真正存在 blocker 时必须保持 NOT READY。
 
-## 12. Requirement Authority Artifact lifecycle
+## 12. Requirement Authority 产物生命周期
 
 Requirement Authority 的结构、README / index / fact owner 边界、推荐目录、producer / consumer / update / supersede / escalation contract 由 `architecture:requirement-authority` 统一定义。
 
@@ -352,7 +352,7 @@ Requirement Authority 的结构、README / index / fact owner 边界、推荐目
 
 只要能够从 Requirement Authority 唯一再生，就不应为了 AI 理解方便建立新的持久中间 Authority。跨需求、功能规格、架构与技术方案通用的人工评审草稿、派生视图与反馈回写边界由 `architecture:human-review` 持有。
 
-## 13. Return contract
+## 13. 返回契约
 
 完成后只声明：
 
@@ -384,7 +384,7 @@ Execute / Integrate authority granted
 
 同样不因为本 Method 增加 terminology responsibility 就复制一组 Requirement / Terminology Rules。`Derive → Default → Ask → Review`、Question Gate、Depth Stop 与 terminology admission 都属于本 Method / Requirement Authority 的过程与 ownership contract；只有未来出现能够独立于 Method 存在的 policy gap 时，才进入 Rule owner。
 
-## 15. Evidence maturity
+## 15. 证据成熟度
 
 本 Method 的 v1 contract 主要来自大型真实 Consumer 项目前期需求分析的正向与负向历史 Evidence：包括能力边界重构、穷举式 L3 清单退出、持久中间业务模型退出、AI-ready 迁移中的语义漂移反例、术语 ambiguity → Human Decision → Authority Promotion 闭环，以及长期问答循环的真实摩擦。
 

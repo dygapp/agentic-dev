@@ -94,7 +94,7 @@ Roadmap 是可恢复的稳定摘要，不代替 GitHub 当前事实。精确 bra
 
 Project Evolution 不重新保存每个 Gate、commit 或实验流水账。
 
-## 6. Project Capability Profile 不是 Runtime Catalog
+## 6. Project Capability Profile 不是运行时目录
 
 Project Capability Profile 可以持有少量**Repository-local capability instance pointers**，但不得退化为中央 catalog：
 
@@ -107,7 +107,7 @@ Project Capability Profile 可以持有少量**Repository-local capability insta
 
 Rule Discovery、Agent Skills discovery 和具体 Method 正文继续由其真实 owner 工作。
 
-## 7. Consumer 边界
+## 7. 使用方边界
 
 Consumer adoption / upgrade 的传播对象是 Capability，而不是 upstream Project state：
 
@@ -129,7 +129,7 @@ Consumer-local Project Knowledge 可以使用不同路径和组织形式，但�
 
 upstream Project Charter、Roadmap、Capability Profile 或 Evolution 不因 baseline adoption 自动成为 Consumer Authority。
 
-## 8. Current state 与 Evidence
+## 8. 当前状态与证据
 
 Project Knowledge 只保存值得跨上下文长期恢复的稳定摘要。以下内容默认不进入长期 Project 文档：
 

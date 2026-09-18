@@ -4,7 +4,7 @@ type: architecture
 status: active
 ---
 
-# Data Migration Governance 架构
+# 数据迁移治理架构
 
 ## 1. 目标
 
@@ -45,11 +45,11 @@ Migration Evidence
 - Target State 是当前系统可消费的数据状态，不等于旧系统的完整复制；
 - Migration Evidence 证明本次迁移是否满足当前 Specification / Acceptance，不反向创造业务规则。
 
-## 3. Current Authority owns migration semantics
+## 3. 当前权威拥有迁移语义
 
 Data Migration 必须区分**长期业务语义**与**当前 change contract**。
 
-### 3.1 Requirement / Domain responsibility
+### 3.1 Requirement / Domain 责任
 
 Current Requirement / Domain Authority 持有会跨多个 Feature 持续成立的：
 
@@ -59,7 +59,7 @@ Current Requirement / Domain Authority 持有会跨多个 Feature 持续成立�
 - retired behavior 是否允许进入 Current system；
 - 其他长期 Product / Domain constraint。
 
-### 3.2 Feature Specification responsibility
+### 3.2 Feature Specification 责任
 
 当前 migration change 的 Specification 持有：
 
@@ -82,7 +82,7 @@ Migration implementation 不得仅因为：
 
 如果 migration analysis 暴露新的长期业务决定，应回到真实 Requirement / Domain owner；如果只影响当前 change 的 Scope / Observable Behavior / Acceptance，则更新当前 Specification，而不是永久留在脚本、mapping table、Issue 或 migration report 中。
 
-## 4. Source role 与 provenance
+## 4. 来源角色与出处
 
 Legacy database、历史文件、旧接口、旧代码、旧字典和外部数据可以是 migration source evidence，但它们的存在不等于当前业务事实。
 
@@ -108,7 +108,7 @@ Source provenance 应足以回答：
 
 具体 provenance schema、字段、文件格式和存储方式由 Consumer-local design 决定。
 
-## 5. Semantic preservation before normalization
+## 5. 规范化前保持语义
 
 历史或遗留数据进入 Current system 时，默认先保护真实语义，再决定是否归一化。
 
@@ -123,7 +123,7 @@ Source provenance 应足以回答：
 
 能够 deterministic 且保持业务含义的格式转换、编码转换、规范化可以由 design / implementation 处理；会改变业务含义的 mapping 必须有 Current Authority 支撑。
 
-## 6. No silent repair / no silent discard
+## 6. 不静默修复，也不静默丢弃
 
 无法解释、无法映射、无法关联、重复、冲突、无效代码、资源缺失或其他异常必须获得显式 disposition。
 
@@ -143,7 +143,7 @@ Source provenance 应足以回答：
 - 因关联失败直接删除可识别历史事实；
 - 把未处理异常从完成证据中隐藏。
 
-## 7. Identity 与 duplicate semantics
+## 7. 身份与重复项语义
 
 Data Migration 必须建立足以支持导入、核验和必要重放的 source / target identity 关系。
 
@@ -165,7 +165,7 @@ Duplicate 也不是纯技术概念：
 - 来源冲突不等于某一来源可自动丢弃；
 - merge / dedupe / source priority 必须由 source semantics、Current Requirement / Specification 或明确 technical contract 支持。
 
-## 8. Acquisition 与 stable import 分离
+## 8. 数据获取与稳定导入分离
 
 从 Legacy / External Source 取得数据是 **acquisition responsibility**；把已经确定 source role 与 mapping 的数据写入 Current system 是 **import responsibility**。
 
@@ -183,11 +183,11 @@ Canonical Migration Input 是 migration artifact，不是第二套 Requirement /
 
 如果项目不需要独立 canonical input，也必须保持 source role、mapping 与 acceptance 可解释；不能因为直接从 source import 就把旧系统变成长期 Runtime dependency。
 
-## 9. Replay / idempotency boundary
+## 9. 重放与幂等边界
 
 Migration 是否允许重跑、resume、partial retry 或 one-shot，必须显式决定。
 
-### 可重放 migration
+### 可重放迁移
 
 至少明确：
 
@@ -198,7 +198,7 @@ Migration 是否允许重跑、resume、partial retry 或 one-shot，必须显�
 - side-effect boundary；
 - exception retry boundary。
 
-### One-shot migration
+### 一次性迁移
 
 至少明确：
 
@@ -210,7 +210,7 @@ Migration 是否允许重跑、resume、partial retry 或 one-shot，必须显�
 
 不得在未声明时默认“脚本天然幂等”或“失败后重新跑一次即可”。
 
-## 10. Reconciliation 与 Completion
+## 10. 对账与完成
 
 Migration completion 不是“脚本返回 0”或“目标表已有数据”。
 
@@ -231,7 +231,7 @@ Migration completion 不是“脚本返回 0”或“目标表已有数据”。
 
 数据库 schema / initialization 的完成证据仍由相应 Rule / Technical contract 持有；schema migration PASS 不能单独证明 business data migration complete。
 
-## 11. Human decision boundary
+## 11. 人工决策边界
 
 Agent 可以自主处理：
 
@@ -273,7 +273,7 @@ Specification
 
 如果 migration 暴露跨多个 Feature 持续成立的长期 Architecture driver，应回写真实 Architecture owner；如果暴露长期 Requirement / Domain 事实缺口，应回到真实 Requirement owner；如果只暴露当前 change 的 Scope / Observable / Acceptance 缺口，则回到当前 Specification。
 
-## 13. 与其他 capability 的边界
+## 13. 与其他能力的边界
 
 ### Requirement Authority
 
@@ -287,11 +287,11 @@ Specification
 
 `skill:review-change` 可以对 high-impact semantic migration 执行 Authority-chain semantic review；它审查 repository change，不拥有 migration semantics。
 
-### Database migration verification
+### 数据库迁移验证
 
 schema / initialization migration 与 legacy / historical business data migration 是不同责任。数据库 migration Rule 可以独立验证 Fresh Database / migration chain / startup，不自动覆盖本 Architecture 的 source semantics、exception 或 reconciliation。
 
-## 14. Artifact lifecycle
+## 14. 产物生命周期
 
 典型 migration artifact 包括：
 

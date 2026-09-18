@@ -42,7 +42,7 @@ Clarify Intent
 
 Integration 不是通用方法阶段。merge 是否发生继续由目标仓库策略和人工权威决定；release、deployment、production operations、incident response 与 service retirement 属于 Consumer-local lifecycle，不作为本 Method 为了“完整”而补建的后续阶段。
 
-### 2.1 Stable phase identities
+### 2.1 稳定阶段身份
 
 当 Rule Discovery 或其他 runtime contract 需要稳定机器身份时，本 Method 对六个阶段定义以下 canonical phase token：
 
@@ -194,7 +194,7 @@ Rule Discovery 的规范架构见 `docs/architecture/rule-discovery-architecture
 
 目录分类不参与匹配，不维护中心 Rule Map / Manifest / Catalog。
 
-## 11. Artifact lifecycle
+## 11. 产物生命周期
 
 长期知识只进入真实 semantic owner；会话推理、临时探索、JIT 施工计划和阶段流水账默认不持久化。
 
@@ -215,7 +215,7 @@ Requirement Authority 的通用 ownership / index / Human navigation contract �
 
 已有长期 artifact 被新结论取代时，应更新或删除 current owner；历史由 Git / Issue / PR 保存，不通过旧 Markdown 兼容层维持。
 
-## 12. Human escalation
+## 12. 人工升级
 
 Agent 默认自主处理局部、低影响、可逆且不改变外部可观察产品行为的执行判断。
 

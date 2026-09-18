@@ -14,7 +14,7 @@ status: active
 
 当前 capability model 的已集成基础来自 PR #125 / integration commit `e5488fd22a078ab59a427e36ef9a20af935fc63f`。精确 current `master`、Open PR / Issue 与 Actions 状态仍从 GitHub 当前事实读取，不由本文件固定。
 
-## 2. Method Selection Instance
+## 2. Method Selection 实例
 
 通用 Method selection contract 由 `docs/architecture/method-architecture.md` 定义；本文件只拥有当前 Repository 的 `work kind → Method locator` 实例。ordinary Bootstrap 直接消费本实例完成选择；只有 Method selection contract / scaling / no-match 语义本身进入当前责任时，才按需读取 Method Architecture。
 
@@ -29,7 +29,7 @@ status: active
 
 本映射只保存 work kind 与 Method locator / id，不复制 Method stages、Gate、completion 或内部 Skill / Rule routing。
 
-## 3. Rule Discovery Instance
+## 3. Rule Discovery 实例
 
 当前 Repository 的 Rule Discovery 实例：
 
@@ -63,7 +63,7 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 - 将 signals、requested / actual SHA 与 discovery JSON 输出到 Actions log，并上传 `task-rule-discovery-<run-id>` artifact；
 - 在 signals、SHA 或 discovery contract 无效时 fail closed。
 
-### 3.1 Rule Discovery transport selection
+### 3.1 Rule Discovery 传输方式选择
 
 本仓库按当前实际可用能力选择 transport：
 
@@ -74,7 +74,7 @@ python3 tools/rule-discovery/rule_discovery.py --repo-root . discover --signals-
 
 该 selection 只实例化 `agentic-dev` 当前 transport，不建立 session mode，也不改变 Rule Discovery Architecture 的平台无关 contract。
 
-### 3.2 Repository-native deterministic compute / verification instance
+### 3.2 仓库原生确定性计算 / 验证实例
 
 本仓库需要执行 repository scripts、lint、tests、build 或其他 deterministic verification 时，已有可用 Repository Runtime 就直接在目标 subject 上执行；当前 Agent 没有适用 Repository Runtime 时，可以使用 Repository 已声明的 GitHub Actions workflow，在 exact commit / PR Head checkout 后执行该 subject 自己的 canonical command。
 
@@ -92,7 +92,7 @@ GitHub Connector / API 主要承担 workflow 触发、branch / PR 协调与结�
 
 本文件不维护 Rule id inventory、scope metadata、候选集或 Rule → signal 映射。
 
-## 4. Skill Discovery Instance
+## 4. Skill Discovery 实例
 
 当前 Repository 的 Skill root 为 `skills/`，ordinary Agent 使用 Agent Skills 原生 discovery，根据 Skill `name` / `description` 与当前责任按需加载 `SKILL.md`。
 
@@ -101,7 +101,7 @@ GitHub Connector / API 主要承担 workflow 触发、branch / PR 协调与结�
 
 本 profile 不复制当前 Skill 名单或数量；这些可以由当前 `SKILL.md` corpus 与 Human inventory 机械验证。
 
-## 5. Model Collaboration Instance
+## 5. Model Collaboration 实例
 
 `agentic-dev` 当前提供 reusable `architecture:model-collaboration` 与 `method:model-collaboration-adoption`，但本 Repository 的 ordinary runtime **不因能力存在而默认启用多模型协作**。
 
@@ -116,7 +116,7 @@ GitHub Connector / API 主要承担 workflow 触发、branch / PR 协调与结�
 
 若未来 `agentic-dev` 自身决定启用 Model Collaboration，必须先按当前 Authority 接受相关 reusable semantics，再显式进入 `method:model-collaboration-adoption`，探测当前 runtime、建立 local config / validation Evidence，并更新本 section；不能因为 Guide 示例或历史实验存在就推断 enabled。
 
-## 6. Architecture / Project Entry
+## 6. Architecture / Project 入口
 
 Agent runtime 的稳定入口：
 
@@ -133,7 +133,7 @@ Project / Capability 边界：`docs/architecture/project-knowledge-architecture.
 
 顶层 capability model：`docs/architecture/engineering-capability-architecture.md`。
 
-## 7. Human View Instance
+## 7. Human View 实例
 
 Human entry：
 
@@ -147,13 +147,13 @@ Human entry：
 
 这些 Human View 可以解释 current instance，但不拥有 runtime selector 或 normative body。
 
-## 8. Current Project State Entry
+## 8. 当前项目状态入口
 
 当前项目阶段、当前 evolution 与下一候选由 `docs/project/project-roadmap.md` 持有稳定摘要；精确 GitHub branch / Issue / PR / Actions 状态必须实时读取。
 
 稳定历史里程碑由 `docs/project/project-evolution.md` 摘要；完整实施 Evidence 留在 Git / Issue / PR / Actions。
 
-## 9. Consumer Projection Boundary
+## 9. Consumer 投影边界
 
 Consumer 不复制本 profile 作为自己的 runtime Authority。
 

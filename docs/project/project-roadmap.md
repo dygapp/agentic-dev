@@ -4,9 +4,9 @@ type: project
 status: active
 ---
 
-# Project Roadmap
+# 项目路线图
 
-## Current Baseline
+## 当前基线
 
 `agentic-dev` 当前 baseline 聚焦 **AI Agent 从需求 / 架构澄清到代码、验证、收敛与 Ready to Integrate** 的可复用软件开发能力。
 
@@ -21,7 +21,7 @@ status: active
 
 稳定演进里程碑与历史原因由 `docs/project/project-evolution.md` 持有；精确 branch / Issue / PR / Actions / commit 状态始终从 GitHub 当前事实读取。
 
-## Current Evolution
+## 当前演进
 
 Issue #164 — **核心边界收敛与验证可信度整改** 已完成 R1～R4 并进入稳定 baseline：
 
@@ -35,13 +35,13 @@ Issue #164 — **核心边界收敛与验证可信度整改** 已完成 R1～R4 
 
 稳定演进原因与历史摘要见 Project Evolution；精确 PR / Review / Actions / commit Evidence 继续由 GitHub 历史持有。
 
-## Current Gate
+## 当前门禁
 
-**NONE — 当前没有 active bounded evolution。**
+**当前没有活动中的有界演进。**
 
 新的演进只在 `Next Candidates` 中某个候选获得新的真实 Evidence 与明确 Planning / Execute Authority 后启动。
 
-## Next Candidates
+## 后续候选
 
 Issue #164 之外的后续演进只由新的真实 Evidence 重新激活。当前候选主题压缩为：
 
@@ -53,15 +53,15 @@ Issue #164 之外的后续演进只由新的真实 Evidence 重新激活。当�
 
 这些候选不因出现在 Roadmap 中自动获得 Planning / Execute Authority，也不得为了“能力完整”预建新 Method、Skill、technology Rule family、中央 registry 或 post-integration operations lifecycle。
 
-## Known Constraints
+## 已知约束
 
 - Architecture Clarification 的 Evidence maturity 仍低于 Requirement Baseline Establishment，应保持 conditional / anti-BDUF；
-- C6 verification invariant 继续 HOLD，直到出现足够跨案例 Evidence；
+- C6 verification invariant 继续暂缓，直到出现足够跨案例 Evidence；
 - reusable capability 存在不等于本 Repository 或 Consumer 已采用，local selector / runtime instance 仍决定实际启用状态；
 - Project Capability Profile 必须保持 Repository-local、薄且稳定，不演变成 Rule / Skill inventory 或 runtime catalog；
 - Human Guide、Research、Project Evolution 不进入 ordinary Agent 固定 Bootstrap；只有当前责任明确需要时才加载。
 
-## State Ownership
+## 状态归属
 
 - Repository live state：GitHub；
 - 项目使命 / 核心要求：`project-charter.md`；

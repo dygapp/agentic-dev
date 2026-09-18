@@ -48,7 +48,7 @@ Skill 拥有稳定、有界、可复用的执行 Procedure；Rule 拥有条件�
 
 一个内容不应仅因为“有若干步骤”就自动 Skill 化，也不应为了减少 Rule 文件数量把多个不相关 policy 合并成大 Skill。
 
-## 4. Rule granularity
+## 4. Rule 粒度
 
 ### 4.1 任务级自然边界
 
@@ -78,7 +78,7 @@ Rule 的默认自然边界是**一个可独立发现的具体任务或责任所�
 
 如果多个候选 Rule scope 基本相同、运行时通常共同激活、共同消费且总是围绕同一任务目的，默认评估合并。反之，即使正文很短，只要拥有真实的独立 discovery 价值，也可以保持独立。
 
-### 4.2 文件大小与 Progressive Disclosure
+### 4.2 文件大小与渐进披露
 
 Rule 被 Discovery 选中后，模型会读取完整 Rule 正文。因此文件大小应从“单次任务的总发现 + 加载成本”判断，不以“越小越好”为目标。
 
@@ -107,7 +107,7 @@ Rule 比完整 Skill Procedure 更简单，因此本仓把上述 `5000 tokens / 
 
 `agentic-dev` 自身不为 Vue、TypeScript、Spring 或其他具体技术栈预建 / 维护 Rule family。不得为了目录整齐预建空技术栈，也不得把目录路径当作隐藏 routing signal。
 
-## 6. Consumer-local specialization
+## 6. Consumer 本地特化
 
 Rule 是 Consumer-local specialization 的主要承载面之一。
 
@@ -121,7 +121,7 @@ Rule 是 Consumer-local specialization 的主要承载面之一。
 
 Consumer adoption / upgrade 可以 adopt、adapt、replace、reject upstream Rule；upstream Rule id、metadata 或正文不会因为 provenance 自动成为 Consumer Authority。Consumer-local Rule 仍应保持 metadata 与规范正文同源维护。
 
-## 7. Discovery metadata 与正文
+## 7. 发现元数据与正文
 
 Rule Front Matter 只负责可确定性筛选的 discovery metadata；Rule body 持有最终规范语义。
 
@@ -129,7 +129,7 @@ metadata 不能成为正文摘要、decision logic 或 exception catalog。目�
 
 任务级聚合不要求 metadata 精确编码正文中的每个条件分支。metadata 只需要回答“当前任务是否值得加载这一组规范”，更细的适用性继续由读取正文后的语义确认完成。
 
-## 8. Human navigation
+## 8. 人类导航
 
 `docs/rules/README.md` 或分类 README 可以存在，用于人类说明目录结构、Rule 类别和当前 inventory，但它们：
 
