@@ -73,13 +73,13 @@ class DiscoveryCorpusTests(unittest.TestCase):
             runner.populate_discovery_context(workspace, case)
 
             self.assertTrue((workspace / "AGENTS.md").is_file())
-            self.assertTrue((workspace / "README.md").is_file())
+            self.assertFalse((workspace / "README.md").exists())
             self.assertTrue((workspace / "docs/project/project-roadmap.md").is_file())
             self.assertTrue(
                 (workspace / "docs/project/project-capability-profile.md").is_file()
             )
-            self.assertTrue(
-                (workspace / "docs/architecture/method-architecture.md").is_file()
+            self.assertFalse(
+                (workspace / "docs/architecture/method-architecture.md").exists()
             )
             self.assertTrue((workspace / case["selected_method"]).is_file())
             self.assertFalse(

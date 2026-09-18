@@ -36,10 +36,10 @@ Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任�
 新的本仓库上下文按以下顺序恢复：
 
 1. 读取本文件；
-2. 读取 `README.md`、`docs/project/project-roadmap.md` 与 `docs/project/project-capability-profile.md`；
+2. 读取 `docs/project/project-roadmap.md` 与 `docs/project/project-capability-profile.md`；`README.md` 属于 Human View，不作为 ordinary Agent 的固定启动输入；
 3. 重新读取当前默认分支、Open Issue / PR 和当前任务需要的 GitHub 状态；
 4. 若当前任务需要理解 `agentic-dev` 项目使命、目标或核心项目需求，再读取 `docs/project/project-charter.md`；
-5. 读取 `docs/architecture/method-architecture.md` 的通用 **Method Selection Contract**，再由 `project-capability-profile.md` 的 Repository-local selector instance 选择当前 Method；若无映射匹配，不强行套用；
+5. 直接使用 `project-capability-profile.md` 的 Repository-local selector instance 选择并读取当前 Method；只有当前任务修改 / 复核 Method 类型、selection contract、selector scaling 或 no-match 语义时，才按需读取 `docs/architecture/method-architecture.md`；若无映射匹配，不强行套用；
 6. 从当前 Method stage / direct responsibility 与仓库事实提取最少量 task signals；Method-specific phase token 只能来自当前 Method canonical owner；
 7. 按当前 Project Capability Profile 声明的 Rule Discovery instance 执行候选初筛，只读取返回的 Rule 正文；在开始当前 direct responsibility 的首个有副作用动作前必须完成本次 task-level discovery；direct responsibility 或其关键事实实质变化后，在下一次有副作用动作前重新发现；
 8. 需要独立执行能力时，通过当前 Repository 声明的 Skill discovery 入口选择并读取相应 `SKILL.md`；
@@ -51,7 +51,7 @@ Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任�
 
 `docs/architecture/method-architecture.md` 只定义通用 Method Selection Contract；当前 `agentic-dev` 的 `work kind → Method locator` 映射由 `docs/project/project-capability-profile.md` 单独拥有。
 
-Bootstrap 不复制 selector mapping、Method stages 或 Gate。如果没有 local selector 匹配，继续按 Repository Authority 与当前 direct responsibility 工作；不得从 Guide、目录名或历史会话猜测流程。
+ordinary Bootstrap 直接消费 Project Capability Profile 的 local selector，不固定预读 Method Architecture。只有 selection contract 本身进入当前责任、selector 无法解释当前 work kind，或需要评估 selector scaling / no-match 行为时，才加载 Method Architecture。Bootstrap 不复制 selector mapping、Method stages 或 Gate；如果没有 local selector 匹配，继续按 Repository Authority 与当前 direct responsibility 工作，不得从 Guide、目录名或历史会话猜测流程。
 
 ## Rule Discovery
 

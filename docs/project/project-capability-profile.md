@@ -16,7 +16,7 @@ status: active
 
 ## 2. Method Selection Instance
 
-通用 Method selection contract 由 `docs/architecture/method-architecture.md` 定义；本文件只拥有当前 Repository 的 `work kind → Method locator` 实例。
+通用 Method selection contract 由 `docs/architecture/method-architecture.md` 定义；本文件只拥有当前 Repository 的 `work kind → Method locator` 实例。ordinary Bootstrap 直接消费本实例完成选择；只有 Method selection contract / scaling / no-match 语义本身进入当前责任时，才按需读取 Method Architecture。
 
 当前映射：
 
@@ -123,9 +123,10 @@ Agent runtime 的稳定入口：
 ```text
 AGENTS.md
 → Project Roadmap + Project Capability Profile + GitHub current facts
-→ Method Selection contract + local selector instance（如需要）
-→ current Method / direct responsibility
+→ local selector instance → selected Method / direct responsibility
 → relevant Architecture / Skill / Rules
+
+Method Architecture 只在 selection contract / scaling / no-match 语义本身需要处理时按需加载；Human README 不属于 ordinary Agent 固定入口。
 ```
 
 Project / Capability 边界：`docs/architecture/project-knowledge-architecture.md`。
