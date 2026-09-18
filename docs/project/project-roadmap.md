@@ -39,7 +39,7 @@ Integration provenance：Review Governance 来自 Issue #141 / PR #142；Human R
 
 ## Current Evolution
 
-Issue #164 — **核心边界收敛与验证可信度整改** 是当前 bounded evolution。R1 Core Boundary Cleanup 已集成；R2A Current-State & Eval Entry Reliability 随当前 baseline 收敛 runner entry / scenario selection 与 Roadmap currentness。下一实际 bounded gate 是 R2B Discovery / Evidence Contract Reliability；其后才进入 R3 Bootstrap Cost Reduction 与 R4 Independent / Consumer applicability validation。各 Unit 的精确 PR / Review / Actions / commit live state 继续由 GitHub 持有。
+Issue #164 — **核心边界收敛与验证可信度整改** 是当前 bounded evolution。R1 Core Boundary Cleanup、R2A Current-State & Eval Entry Reliability 与 R2B Discovery / Evidence Contract Reliability 已进入当前 baseline。下一实际 bounded gate 是 R3 Bootstrap Cost Reduction；其后进入 R4 Independent / Consumer applicability validation。各 Unit 的精确 PR / Review / Actions / commit live state 继续由 GitHub 持有。
 
 Issue #143 — **Human-facing Guides 与 `jilinjobs` historical experience mining umbrella** 已完成主动 systematic mining：三轮历史扫描完成 retained / project-specific / failed-or-retired / uncertain 分类，高置信真实缺口中的 Project Terminology Governance 与 Data Migration Governance 已分别通过独立 bounded promotion lifecycle 集成。后续历史材料只按新的明确 Evidence 触发，不再把 Candidate B 维持为持续研究流。
 
@@ -51,9 +51,9 @@ Issue #71 的 Consumer model-routing / blind independent review Evidence 已由 
 
 ## Current Gate
 
-**Issue #164 — R2B Discovery / Evidence Contract Reliability。**
+**Issue #164 — R3 Bootstrap Cost Reduction。**
 
-R1 与 R2A 已进入当前 baseline；下一 bounded unit 只处理 isolated discovery fixture dependency closure、cross-Method evidence applicability 与 symlink scan completeness。R3 Bootstrap Cost Reduction 必须等 R2B 语义与验证链稳定后再开始；R4 继续作为最终独立 / Consumer applicability validation。精确 PR、Review、Actions、commit 等 live state 继续以 GitHub current state 为准。
+R1、R2A 与 R2B 已进入当前 baseline；下一 bounded unit 只优化固定 Fresh Context 成本，不再同时改动 Rule corpus / Method lifecycle / discovery semantics。R4 继续作为最终 independent / Consumer applicability validation。精确 PR、Review、Actions、commit 等 live state 继续以 GitHub current state 为准。
 
 ## Next Candidates
 

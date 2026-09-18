@@ -33,6 +33,13 @@ EVALS = ROOT / "evals"
 ACTIVATION_FILE = EVALS / "activation" / "core-first-pass.json"
 BEHAVIOR_FILES = sorted((EVALS / "behavior").glob("*.json"))
 DISCOVERY_FILE = EVALS / "discovery" / "v4-discriminating.json"
+AGENTIC_DEV_DISCOVERY_BOOTSTRAP_PATHS = (
+    "AGENTS.md",
+    "README.md",
+    "docs/project/project-roadmap.md",
+    "docs/project/project-capability-profile.md",
+    "docs/architecture/method-architecture.md",
+)
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
@@ -99,12 +106,14 @@ def populate_discovery_context(workspace: Path, case: dict) -> None:
     context_mode = case.get("context_mode", "agentic-dev")
 
     if context_mode == "agentic-dev":
-        for relative in (
-            "AGENTS.md",
-            "README.md",
-            "docs/project/project-roadmap.md",
-        ):
+        selected_method = case.get("selected_method")
+        if not isinstance(selected_method, str) or not selected_method.strip():
+            raise RuntimeError(
+                f"Discovery scenario {case['id']} must declare selected_method"
+            )
+        for relative in AGENTIC_DEV_DISCOVERY_BOOTSTRAP_PATHS:
             copy_repo_path(workspace, relative)
+        copy_repo_path(workspace, selected_method)
     elif context_mode == "consumer-local":
         # Consumer-local AGENTS/README are scenario inputs. Do not copy upstream project state.
         pass

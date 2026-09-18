@@ -43,7 +43,7 @@ python3 evals/run_codex_evals.py --discovery
 python3 evals/run_codex_evals.py --discovery --scenario D-V4-GEN-01
 ```
 
-`--discovery` 每个场景只复制当前 runtime entry、Rule Discovery Tool、current Rules、current Skills 与场景输入；corpus、expected behavior、assertions 和历史结果不进入 workspace。
+`--discovery` 的 agentic-dev 场景复制当前 Bootstrap 的最小依赖闭包：`AGENTS.md`、Human README、Project Roadmap、Project Capability Profile、Method Architecture 与该场景已选择的 Method，再加 Rule Discovery Tool、current Rules、current Skills 与场景输入；不会为了自包含复制全量 Methods / Architecture。Consumer-local 场景仍只使用它自己的 local Authority。corpus、expected behavior、assertions 和历史结果不进入 workspace。
 
 V4 已删除 monolithic Technology Profile runtime owner；旧 `--capability` / Profile eval 入口不属于 current baseline。技术行为通过 current technology Rules 与 V4 discovery corpus 验证。
 

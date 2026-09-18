@@ -57,6 +57,68 @@ class DiscoveryCliTests(unittest.TestCase):
         self.assertEqual([], payload["candidates"])
         self.assertTrue(payload["diagnostics"])
 
+    def test_symlink_directory_in_rule_root_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            rule_root = root / "docs/rules"
+            rule_root.mkdir(parents=True)
+            target = root / "linked-rule-source"
+            target.mkdir()
+            (target / "a.md").write_text(
+                """---
+id: rule:linked
+type: rule
+status: active
+scope:
+  phases: [execute]
+  activities: [implementation]
+  technologies: []
+  artifacts: [code]
+  risks: []
+---
+# Linked Rule
+
+Body.
+""",
+                encoding="utf-8",
+            )
+            link = rule_root / "linked"
+            try:
+                link.symlink_to(target, target_is_directory=True)
+            except OSError as exc:
+                self.skipTest(f"symlink unavailable: {exc}")
+
+            signals = json.dumps(
+                {
+                    "phases": ["execute"],
+                    "activities": ["implementation"],
+                    "technologies": [],
+                    "artifacts": ["code"],
+                    "risks": [],
+                }
+            )
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(TOOL),
+                    "--repo-root",
+                    str(root),
+                    "discover",
+                    "--signals-json",
+                    signals,
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(2, completed.returncode, completed.stderr)
+            payload = json.loads(completed.stdout)
+            self.assertEqual("fail-closed", payload["status"])
+            self.assertEqual([], payload["candidates"])
+            self.assertTrue(
+                any("symlink directories" in item for item in payload["diagnostics"])
+            )
+
     def test_lint_cli_succeeds_on_current_repository(self):
         completed = self.run_tool("lint")
         self.assertEqual(0, completed.returncode, completed.stderr)

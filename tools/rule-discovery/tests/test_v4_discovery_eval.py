@@ -47,6 +47,19 @@ class DiscoveryCorpusTests(unittest.TestCase):
         )
         self.assertEqual(7, len(cases))
 
+    def test_agentic_dev_cases_declare_selected_method_dependency(self):
+        agentic_cases = [
+            case
+            for case in self.cases()
+            if case.get("context_mode", "agentic-dev") == "agentic-dev"
+        ]
+        self.assertTrue(agentic_cases)
+        for case in agentic_cases:
+            with self.subTest(case=case["id"]):
+                self.assertEqual(
+                    "docs/methods/ai-development.md", case.get("selected_method")
+                )
+
     def test_generation_fixture_exposes_generic_data_access_fact(self):
         task = self.case("D-V4-GEN-01")["workspace_files"]["task.md"]
         self.assertIn("持续增长", task)
@@ -62,6 +75,16 @@ class DiscoveryCorpusTests(unittest.TestCase):
             self.assertTrue((workspace / "AGENTS.md").is_file())
             self.assertTrue((workspace / "README.md").is_file())
             self.assertTrue((workspace / "docs/project/project-roadmap.md").is_file())
+            self.assertTrue(
+                (workspace / "docs/project/project-capability-profile.md").is_file()
+            )
+            self.assertTrue(
+                (workspace / "docs/architecture/method-architecture.md").is_file()
+            )
+            self.assertTrue((workspace / case["selected_method"]).is_file())
+            self.assertFalse(
+                (workspace / "docs/methods/consumer-adoption.md").exists()
+            )
             self.assertTrue((workspace / "docs/rules").is_dir())
             self.assertTrue((workspace / "tools/rule-discovery/rule_discovery.py").is_file())
             self.assertTrue((workspace / ".agents/skills/execute-unit/SKILL.md").is_file())

@@ -115,6 +115,24 @@ class CurrentRepositoryTests(unittest.TestCase):
         self.assertIn("rule:evidence-type-must-match-claim", ids)
         self.assertNotIn("rule:visual-evidence", ids)
 
+    def test_completion_evidence_rule_is_cross_method_phase_agnostic(self):
+        phases = [
+            "requirement-convergence",
+            "architecture-convergence",
+            "converge",
+        ]
+        for phase in phases:
+            with self.subTest(phase=phase):
+                result = self.discover(
+                    signals(
+                        phases=[phase],
+                        activities=["verification"],
+                        artifacts=[],
+                    )
+                )
+                ids = {item["id"] for item in result["candidates"]}
+                self.assertIn("rule:evidence-type-must-match-claim", ids)
+
     def test_visual_verification_excludes_database_migration_rule(self):
         result = self.discover(
             signals(
