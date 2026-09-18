@@ -11,7 +11,7 @@
     "rule:data-access-boundedness"
   ],
   "common_prompt": "读取 task.md，按当前 ordinary runtime 规则发现并确认本次实现真正适用的 Rule，然后给出精确实现约束。不要修改文件。",
-  "common_task": "# Scaling Task\\n\\n当前 Execution Unit 已 Ready。一个持续增长的历史记录集合目前通过无界全量查询读取；本次只把该访问改为满足当前消费者范围的有界读取，并保持其他行为不变。\\n",
+  "common_task": "# Scaling Task\n\n当前 Execution Unit 已 Ready。一个持续增长的历史记录集合目前通过无界全量查询读取；本次只把该访问改为满足当前消费者范围的有界读取，并保持其他行为不变。\n",
   "evals": [
     {
       "id": "S-V4-020",
