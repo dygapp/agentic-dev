@@ -28,11 +28,33 @@ class RuntimeActivationRegressionTests(unittest.TestCase):
         ids = {item["id"] for item in result["candidates"]}
         self.assertIn("rule:integration-state-closure-review", ids)
 
-    def test_bootstrap_requires_task_level_discovery_before_side_effects(self):
+    def test_bootstrap_requires_task_level_discovery_before_rule_governed_actions(self):
         agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
-        self.assertIn("首个有副作用动作前必须完成本次 task-level discovery", agents)
+        self.assertIn("首个受 Rule 约束的实质动作前必须完成本次 task-level discovery", agents)
         self.assertIn("这些通过结果 **不能替代** 当前 task signals 的 task-level discovery", agents)
         self.assertIn("preflight infrastructure invocation", agents)
+
+    def test_initial_human_communication_discovers_language_rule_without_method_phase(self):
+        result = rd.discover(
+            repo_root=REPO_ROOT,
+            rule_roots=[Path("docs/rules")],
+            signals={
+                "phases": None,
+                "activities": ["communication"],
+                "technologies": [],
+                "artifacts": ["human-facing-content"],
+                "risks": [],
+            },
+        )
+        ids = {item["id"] for item in result["candidates"]}
+        self.assertIn("rule:human-facing-content-integrity", ids)
+
+    def test_bootstrap_requires_communication_discovery_before_substantive_output(self):
+        agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        self.assertIn("首次向人工输出包含项目事实", agents)
+        self.assertIn("`communication` responsibility checkpoint", agents)
+        self.assertIn("`human-facing-content`", agents)
+        self.assertNotIn("rule:human-facing-content-integrity", agents)
 
     def test_architecture_distinguishes_ci_from_runtime_discovery(self):
         architecture = (
@@ -40,6 +62,7 @@ class RuntimeActivationRegressionTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("### 10.1 责任转换检查点", architecture)
         self.assertIn("不能替代 ordinary runtime invocation", architecture)
+        self.assertIn("不得把“只读任务”理解成可以绕过输出类 Rule", architecture)
 
     def test_pr_and_push_verification_use_exact_subject_identity(self):
         workflow = (REPO_ROOT / ".github/workflows/rule-discovery.yml").read_text(

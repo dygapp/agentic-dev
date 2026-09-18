@@ -4,6 +4,21 @@
   "evaluation_boundary": "Fresh Runtime receives only current runtime context and scenario inputs. expected_behavior and assertions are grader-only and must never be copied into the isolated workspace. Rule Discovery output is the only ordinary-runtime source of Rule locators: enumerating unreturned Rule paths/file names, or inspecting unreturned Rule Front Matter/body, invalidates the scenario, except reading the exact malformed file named by a fail-closed diagnostic.",
   "evals": [
     {
+      "id": "D-V4-COMM-01",
+      "category": "communication-bootstrap",
+      "context_mode": "agentic-dev",
+      "prompt": "按当前仓库 ordinary runtime 恢复项目上下文，并向人工给出一段简短的当前状态说明。不要修改文件，不要为了回答固定读取 Human Guide。",
+      "workspace_files": {},
+      "expected_behavior": "Fresh Runtime 在形成第一段包含项目事实或状态判断的实质输出前，先把 communication / human-facing-content 建立为当前责任，使用 null phase 与最小 task signals 执行本地 Rule Discovery，只从返回结果取得 Rule locator，读取面向人的内容完整性 Rule 后再输出；回复主体使用自然中文，同时允许 PASS / PENDING / BLOCKED 等稳定状态值和精确机器标识保持原样。",
+      "assertions": [
+        "Trace 显示在第一段包含项目事实、状态判断或结论的实质性人工输出之前执行了本地 Rule Discovery；纯读取或无实质判断的短进度提示不算违规。",
+        "首次 communication discovery 使用由当前事实支持的最小 signals：phase 未由 Method 猜测时保持 null，activities 包含 communication，artifacts 包含 human-facing-content；不堆同义词、不写目标 Rule id。",
+        "Runtime 只从 discovery 返回值取得 Rule locator，并读取返回的面向人内容完整性 Rule；没有固定加载 Human Guide，也没有枚举未命中 Rules。",
+        "最终状态说明以自然中文表达动作、判断和结论，不因为 Roadmap / Profile 中存在大量英文正式概念而恢复中英文混写。",
+        "精确路径、id、SHA 或 PASS / PENDING / BLOCKED 等稳定状态值在确有识别需要时可以保持原样，不为了纯中文制造第二套状态表示。"
+      ]
+    },
+    {
       "id": "D-V4-GEN-01",
       "category": "generation-discovery",
       "context_mode": "agentic-dev",

@@ -35,6 +35,7 @@ class DiscoveryCorpusTests(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(
             {
+                "communication-bootstrap",
                 "generation-discovery",
                 "verification-discovery",
                 "mixed-responsibility",
@@ -45,13 +46,17 @@ class DiscoveryCorpusTests(unittest.TestCase):
             },
             {case["category"] for case in cases},
         )
-        self.assertEqual(7, len(cases))
+        self.assertEqual(8, len(cases))
 
-    def test_agentic_dev_cases_declare_selected_method_dependency(self):
+    def test_agentic_dev_cases_only_declare_method_when_scenario_has_selected_one(self):
+        communication = self.case("D-V4-COMM-01")
+        self.assertNotIn("selected_method", communication)
+
         agentic_cases = [
             case
             for case in self.cases()
             if case.get("context_mode", "agentic-dev") == "agentic-dev"
+            and case["id"] != "D-V4-COMM-01"
         ]
         self.assertTrue(agentic_cases)
         for case in agentic_cases:
@@ -59,6 +64,20 @@ class DiscoveryCorpusTests(unittest.TestCase):
                 self.assertEqual(
                     "docs/methods/ai-development.md", case.get("selected_method")
                 )
+
+    def test_communication_bootstrap_workspace_does_not_fake_selected_method(self):
+        case = self.case("D-V4-COMM-01")
+        with tempfile.TemporaryDirectory() as temp_dir:
+            workspace = Path(temp_dir)
+            runner.populate_discovery_context(workspace, case)
+            self.assertTrue((workspace / "AGENTS.md").is_file())
+            self.assertTrue((workspace / "docs/project/project-roadmap.md").is_file())
+            self.assertTrue(
+                (workspace / "docs/project/project-capability-profile.md").is_file()
+            )
+            self.assertFalse((workspace / "docs/methods/ai-development.md").exists())
+            self.assertTrue((workspace / "docs/rules").is_dir())
+            self.assertFalse((workspace / "docs/guides").exists())
 
     def test_generation_fixture_exposes_generic_data_access_fact(self):
         task = self.case("D-V4-GEN-01")["workspace_files"]["task.md"]
