@@ -247,7 +247,8 @@ Issue #143 Candidate A 随后补齐 `docs/guides/human-review.md` Human View，�
 - Issue #164 R1 / PR #165 将 AI Development 核心边界明确收敛到 `Ready to Integrate`，退出 upstream Vue / TypeScript technology Rule family，同时保留 Consumer-local technology specialization；
 - Issue #164 R2A / PR #166 修复 eval runner entry、behavior corpus registration、mode / scenario zero-execution success 与 Roadmap current-state drift；
 - Issue #164 R2B / PR #167 修复 isolated discovery Bootstrap dependency closure、cross-Method completion-evidence applicability、Rule-root symlink incomplete scan，并把 PR / push deterministic verification 改为 exact-subject identity verification；
-- Issue #164 R3 将 ordinary Agent 固定 Bootstrap 从 5 个固定文件收敛为 3 个：`AGENTS.md`、Project Roadmap、Project Capability Profile；Human README 与 Method Architecture 退出固定预读，按当前责任加载。Roadmap 同时退出已完成能力的长篇历史复述，把稳定演进说明归还本文件。
+- Issue #164 R3 将 ordinary Agent 固定 Bootstrap 从 5 个固定文件收敛为 3 个：`AGENTS.md`、Project Roadmap、Project Capability Profile；Human README 与 Method Architecture 退出固定预读，按当前责任加载。Roadmap 同时退出已完成能力的长篇历史复述，把稳定演进说明归还本文件；
+- Issue #164 R4 对 R1～R3 integrated baseline 执行独立最终语义复核，并从真实 Consumer `dygapp/jilinjobs-cms` 自身 Repository Authority 做 read-only applicability / upgrade-impact validation；最终 Blocking / Medium / Low = 0 / 0 / 0，Consumer compatibility PASS，当前 upstream upgrade 归类为 optional，本轮没有执行 Consumer mutation。
 
-这一阶段继续遵守“减法优先”：没有新增 Method、Skill、technology Rule family、central registry 或 release / deploy / production-operations lifecycle。
+Issue #164 因此完成最终闭环。该轮继续遵守“减法优先”：没有新增 Method、Skill、technology Rule family、central registry 或 release / deploy / production-operations lifecycle。
 
