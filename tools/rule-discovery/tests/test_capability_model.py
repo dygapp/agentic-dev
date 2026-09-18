@@ -222,12 +222,8 @@ class CapabilityModelContractTests(unittest.TestCase):
         }
         self.assertEqual(actual, linked)
 
-    def test_technology_rules_use_stack_subdirectories(self):
-        technology = REPO_ROOT / "docs/rules/technology"
-        self.assertTrue((technology / "typescript").is_dir())
-        self.assertTrue((technology / "vue").is_dir())
-        flat_markdown = [path for path in technology.glob("*.md") if path.name != "README.md"]
-        self.assertEqual([], flat_markdown)
+    def test_upstream_rule_corpus_has_no_technology_knowledge_directory(self):
+        self.assertFalse((REPO_ROOT / "docs/rules/technology").exists())
 
     def test_skill_human_inventory_matches_skill_corpus(self):
         actual = {path.parent.name for path in (REPO_ROOT / "skills").glob("*/SKILL.md")}

@@ -95,24 +95,17 @@ Rule 比完整 Skill Procedure 更简单，因此本仓把上述 `5000 tokens / 
 
 ### 4.3 典型任务级分组
 
-例如 Vue 组件实现可以由一条 component-authoring Rule 同时持有 `<script setup>`、props 单向输入、props/emits contract 与标准 component `v-model` 的相关约束，因为这些 policy 通常围绕同一组件 authoring 任务共同消费。
+例如 `safe-external-write` 可以在同一个外部写责任中共同持有授权确认、最小变更、已有对象复用 / 幂等与写后重新读取，因为这些 policy 通常围绕同一次外部 mutation 共同消费。
 
-而 Vue 类型检查与浏览器 / 视觉验证仍可以独立，因为它们属于不同 verification responsibility，并具有独立发现价值。
+而数据库迁移完成证据与通用 completion evidence 可以保持不同 Rule：前者只在特定 artifact responsibility 下有额外完成义务，后者横切更广的 verification claim，独立 discovery 能减少无关加载。
 
 ## 5. Rule 目录与人类信息架构
 
 目录只服务维护和人类导航，不参与 runtime matching。Rule Discovery 必须继续只根据每个 Rule 自己的 Front Matter 做候选过滤。
 
-允许按稳定的人类维护维度建立子目录。例如 technology rules 可以按技术栈组织：
+允许按稳定的人类维护维度建立子目录。Consumer 如果确实拥有 local technology Rules，可以按自己的技术栈组织，例如 `docs/rules/technology/<stack>/`；这只是 Consumer-local Human IA，不形成 upstream 必备分类。
 
-```text
-docs/rules/technology/
-  typescript/
-  vue/
-  spring/        # 仅在真实 Spring Rule 存在时建立
-```
-
-不得为了目录整齐预建空技术栈，也不得把目录路径当作隐藏 routing signal。
+`agentic-dev` 自身不为 Vue、TypeScript、Spring 或其他具体技术栈预建 / 维护 Rule family。不得为了目录整齐预建空技术栈，也不得把目录路径当作隐藏 routing signal。
 
 ## 6. Consumer-local specialization
 

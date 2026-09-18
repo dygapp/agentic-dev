@@ -8,6 +8,8 @@ status: active
 
 `agentic-dev` 是一个面向 AI Agent 驱动软件开发的 Method、可组合 Skill、分布式 Rule、Architecture 与 Consumer adoption 能力仓库。
 
+核心边界是从需求分析、条件性架构澄清到 Feature / change 的代码实现、验证、收敛与 `Ready to Integrate`。具体语言 / 框架 / 组件库的通用技术知识，以及 merge 之后的 release、deployment、production operations，由 Consumer-local Authority、实际技术栈和相应工具承担，不作为本仓库需要补齐的中央知识库或通用生命周期。
+
 ## 两个入口，一套 canonical knowledge
 
 本仓库明确区分 **Agent View** 与 **Human View**：

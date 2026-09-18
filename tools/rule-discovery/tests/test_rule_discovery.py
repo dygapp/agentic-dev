@@ -80,7 +80,7 @@ class CurrentRepositoryTests(unittest.TestCase):
         )
         self.assertEqual("ok", result["status"])
         self.assertEqual(12, result["skills"])
-        self.assertEqual(28, result["rules"])
+        self.assertEqual(20, result["rules"])
         self.assertTrue(result["fixture_markdown_excluded"])
 
     def test_generation_filters_out_data_access_without_signal(self):
@@ -129,48 +129,77 @@ class CurrentRepositoryTests(unittest.TestCase):
         self.assertIn("rule:evidence-type-must-match-claim", ids)
         self.assertNotIn("rule:database-migration-completion-evidence", ids)
 
-    def test_mixed_vue_typecheck_returns_specific_and_general_rules(self):
-        result = self.discover(
-            signals(
-                phases=["execute"],
-                activities=["implementation", "verification"],
-                technologies=["vue3", "typescript"],
-                artifacts=["code", "vue-sfc"],
-                risks=["type-safety"],
-            )
-        )
-        ids = {item["id"] for item in result["candidates"]}
-        self.assertIn("rule:implementation-discipline", ids)
-        self.assertIn("rule:vue-component-authoring", ids)
-        self.assertIn("rule:vue-typecheck", ids)
-        self.assertIn("rule:evidence-type-must-match-claim", ids)
-
-    def test_unknown_risk_keeps_risk_scoped_task_rule(self):
+    def test_multi_rule_implementation_returns_generic_rules(self):
         result = self.discover(
             signals(
                 phases=["execute"],
                 activities=["implementation"],
-                technologies=["vue3"],
-                artifacts=["vue-sfc"],
-                risks=None,
-            )
-        )
-        ids = {item["id"] for item in result["candidates"]}
-        self.assertIn("rule:vue-template-refs", ids)
-
-    def test_known_empty_risk_excludes_risk_scoped_task_rule(self):
-        result = self.discover(
-            signals(
-                phases=["execute"],
-                activities=["implementation"],
-                technologies=["vue3"],
-                artifacts=["vue-sfc"],
+                technologies=[],
+                artifacts=["code", "data-access"],
                 risks=[],
             )
         )
         ids = {item["id"] for item in result["candidates"]}
-        self.assertNotIn("rule:vue-template-refs", ids)
-        self.assertIn("rule:vue-component-authoring", ids)
+        self.assertIn("rule:implementation-discipline", ids)
+        self.assertIn("rule:data-access-boundedness", ids)
+
+    def test_unknown_risk_keeps_risk_scoped_rule(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            (root / "docs/rules/test").mkdir(parents=True)
+            (root / "docs/rules/test/risk.md").write_text(
+                rule_text(
+                    "rule:risk-sensitive",
+                    phases=("execute",),
+                    activities=("implementation",),
+                    technologies=(),
+                    artifacts=("code",),
+                    risks=("lifecycle-risk",),
+                ),
+                encoding="utf-8",
+            )
+            result = rd.discover(
+                repo_root=root,
+                rule_roots=[Path("docs/rules")],
+                signals=signals(
+                    phases=["execute"],
+                    activities=["implementation"],
+                    technologies=[],
+                    artifacts=["code"],
+                    risks=None,
+                ),
+            )
+            ids = {item["id"] for item in result["candidates"]}
+            self.assertIn("rule:risk-sensitive", ids)
+
+    def test_known_empty_risk_excludes_risk_scoped_rule(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            (root / "docs/rules/test").mkdir(parents=True)
+            (root / "docs/rules/test/risk.md").write_text(
+                rule_text(
+                    "rule:risk-sensitive",
+                    phases=("execute",),
+                    activities=("implementation",),
+                    technologies=(),
+                    artifacts=("code",),
+                    risks=("lifecycle-risk",),
+                ),
+                encoding="utf-8",
+            )
+            result = rd.discover(
+                repo_root=root,
+                rule_roots=[Path("docs/rules")],
+                signals=signals(
+                    phases=["execute"],
+                    activities=["implementation"],
+                    technologies=[],
+                    artifacts=["code"],
+                    risks=[],
+                ),
+            )
+            ids = {item["id"] for item in result["candidates"]}
+            self.assertNotIn("rule:risk-sensitive", ids)
 
     def test_candidate_output_does_not_leak_metadata(self):
         result = self.discover(

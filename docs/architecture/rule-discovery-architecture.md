@@ -74,8 +74,8 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 {
   "phases": ["example-phase"],
   "activities": ["implementation"],
-  "technologies": ["vue3", "typescript"],
-  "artifacts": ["code", "vue-sfc"],
+  "technologies": [],
+  "artifacts": ["code"],
   "risks": null
 }
 ```
@@ -100,7 +100,7 @@ Rule Discovery Architecture **不拥有任何具体 Method 的 phase token 列�
 
 `activities` 优先使用直接责任类别，例如 `implementation`、`verification`、`review`、`external-operation`、`design`。不得把同一责任扩写成多个近义活动。
 
-`technologies`、`artifacts`、`risks` 只使用当前任务或仓库事实可以直接支持的稳定机器身份。常见规范化例子包括：Vue 3.x → `vue3`、TypeScript → `typescript`、`.vue` SFC → `vue-sfc`、普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。
+`technologies`、`artifacts`、`risks` 只使用当前任务或 Repository 事实可以直接支持的稳定机器身份。具体语言 / 框架 token 由目标 Repository 的 code、dependency、configuration 与 local Rule corpus 决定；本 Architecture 不维护跨项目技术词表。跨项目较稳定的工件 / 平台身份可包括普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。
 
 这些规范化约定只定义 task facts 如何变成机器 token，不记录任何 Rule→token 对应关系，也不替代每个 Rule 自己的 Front Matter。
 
