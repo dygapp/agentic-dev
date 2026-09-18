@@ -47,11 +47,11 @@ class DiscoveryCorpusTests(unittest.TestCase):
         )
         self.assertEqual(7, len(cases))
 
-    def test_generation_fixture_exposes_real_vue_sfc_fact(self):
+    def test_generation_fixture_exposes_generic_data_access_fact(self):
         task = self.case("D-V4-GEN-01")["workspace_files"]["task.md"]
-        self.assertIn("`.vue`", task)
-        self.assertIn("Vue 3.5+", task)
-        self.assertIn("modelValue", task)
+        self.assertIn("持续增长", task)
+        self.assertIn("无界全量查询", task)
+        self.assertIn("有界读取", task)
 
     def test_agentic_dev_workspace_contains_runtime_not_grader_material(self):
         case = self.case("D-V4-GEN-01")
@@ -82,6 +82,7 @@ class DiscoveryCorpusTests(unittest.TestCase):
             self.assertIn("Rule locator 的唯一入口", agents)
             self.assertIn("不得用 `rg --files`", agents)
             self.assertTrue((workspace / "docs/rules").is_dir())
+            self.assertTrue((workspace / "docs/rules/technology/vue/typecheck.md").is_file())
             self.assertTrue((workspace / "tools/rule-discovery/rule_discovery.py").is_file())
             self.assertFalse((workspace / "docs/project/project-roadmap.md").exists())
             self.assertFalse((workspace / "evals/discovery/v4-discriminating.json").exists())

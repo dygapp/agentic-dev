@@ -10,6 +10,8 @@ status: active
 
 `agentic-dev` 的使命是形成一套**可由 AI Agent 实际执行、可由真实软件项目选择性采用、并能在 Consumer-local 环境持续演进**的软件开发能力体系。
 
+当前核心开发责任覆盖从需求分析、条件性架构澄清，到具体 Feature / change 的 Specification、Technical Planning、工作切分、代码实现、验证与收敛，并在 `Ready to Integrate` 边界结束。merge、release、deployment、production operations、incident response 与 service retirement 默认由 Consumer-local Authority 和实际技术架构承担；只有未来真实跨 Consumer Evidence 证明存在稳定 reusable capability 时，才单独评估 admission。
+
 项目不追求把所有开发知识集中进一个超大 Prompt、超级 Skill 或中央运行控制器，而是把长期语义放到正确 owner，并通过可恢复的 Repository Authority、Method、Skill、Rule、Architecture 与渐进式发现机制支撑 Fresh Context 工作。
 
 ## 2. 要解决的核心问题
@@ -81,6 +83,8 @@ Agent 与人类可以通过不同入口使用同一套 canonical knowledge；Hum
 `agentic-dev` 不以以下目标为默认方向：
 
 - 成为产品需求、领域模型或业务事实的中央仓库；
+- 成为 Vue、TypeScript、Spring、组件库、数据库产品或其他具体技术栈的通用知识库；技术事实优先由当前 Consumer 的 code / dependency / configuration、版本匹配资料和工具验证承担，稳定项目选择由 Consumer-local Authority 持有；
+- 为了形式上的“全生命周期”预建 release、deployment、production operations、incident response 或 service retirement Method / Skill；
 - 让 Consumer 日常联网读取 upstream 最新状态；
 - 建立需要人工同步的中央 Rule Map / Runtime Catalog；
 - 用一个 Super Skill / Runtime Controller 接管完整开发生命周期；

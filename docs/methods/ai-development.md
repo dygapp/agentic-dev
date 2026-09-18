@@ -8,7 +8,7 @@ status: active
 
 ## 1. 目标
 
-本方法定义与语言、框架、Issue 系统和具体 Agent 产品无关的软件开发生命周期。它只拥有“工作处于什么状态、下一职责是什么、何时可以返回或前进”的长期语义；具体工程约束由 Rule 按任务发现，具体可复用执行闭环由 Skill 实现。
+本方法定义与语言、框架、Issue 系统和具体 Agent 产品无关的 **Feature / change 从意图澄清到 `Ready to Integrate` 的 AI 驱动开发生命周期**。它只拥有“工作处于什么状态、下一职责是什么、何时可以返回或前进”的长期语义；具体工程约束由 Rule 按任务发现，具体可复用执行闭环由 Skill 实现。
 
 本方法面向**具体 Feature / change**。进入本方法的前提是：当前 Repository 已存在足以支持本次 Feature 判断 Goal、Scope、Observable Behavior 与 Acceptance 的 Requirement Baseline，以及当前 Feature 真正需要的最小 Architecture Context。
 
@@ -40,7 +40,7 @@ Clarify Intent
 5. Execute；
 6. Converge。
 
-Integration 不是通用方法阶段。merge、release、deploy 与其他外部副作用由目标仓库策略和人工权威决定。
+Integration 不是通用方法阶段。merge 是否发生继续由目标仓库策略和人工权威决定；release、deployment、production operations、incident response 与 service retirement 属于 Consumer-local lifecycle，不作为本 Method 为了“完整”而补建的后续阶段。
 
 ### 2.1 Stable phase identities
 

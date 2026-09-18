@@ -21,18 +21,9 @@ status: active
 - `generation/` — 实现生成、变更范围与数据访问等通用生成约束；
 - `operations/` — 外部可变状态、授权、写后验证、并发、人工升级必要性与证据持久化约束；
 - `repository/` — Repository Authority、Git、表达、概念身份与 Review / Integration 约束；
-- `technology/` — 技术 / 框架特定约束，按技术栈继续分层；
 - `verification/` — Evidence、验证、迁移完成声明与人工复核约束。
 
-`technology/` 当前采用：
-
-```text
-technology/
-├── typescript/
-└── vue/
-```
-
-目录只服务人类维护，不参与 runtime matching；未来只有存在真实规则时才新增如 `spring/` 的技术栈目录。
+当前 upstream corpus 不维护具体语言 / 框架 / 组件库的通用技术知识 Rule family。Consumer 如有稳定、项目特定的技术 policy，仍可按自己的 Authority 建立 local technology Rules；目录只服务人类维护，不参与 runtime matching。
 
 ## 当前 Rule inventory
 
@@ -59,19 +50,6 @@ technology/
 - [`human-facing-content-integrity.md`](repository/human-facing-content-integrity.md)
 - [`integration-state-closure-review.md`](repository/integration-state-closure-review.md)
 
-### technology / TypeScript
-
-- [`type-safety.md`](technology/typescript/type-safety.md)
-
-### technology / Vue
-
-- [`browser-verification.md`](technology/vue/browser-verification.md)
-- [`component-authoring.md`](technology/vue/component-authoring.md)
-- [`project-configuration.md`](technology/vue/project-configuration.md)
-- [`reactivity.md`](technology/vue/reactivity.md)
-- [`template-refs.md`](technology/vue/template-refs.md)
-- [`typecheck.md`](technology/vue/typecheck.md)
-- [`watchers.md`](technology/vue/watchers.md)
 
 ### verification
 
@@ -82,4 +60,4 @@ technology/
 - [`verification-contract-currentness.md`](verification/verification-contract-currentness.md)
 - [`visual-evidence.md`](verification/visual-evidence.md)
 
-当前共 28 条 discoverable Rule。该数量不是目标 KPI；增减只按 `docs/architecture/rule-architecture.md` 的任务级语义边界、独立 discovery 价值和总加载成本判断。
+当前共 20 条 discoverable Rule。该数量不是目标 KPI；增减只按 `docs/architecture/rule-architecture.md` 的任务级语义边界、独立 discovery 价值和总加载成本判断。

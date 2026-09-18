@@ -76,7 +76,7 @@ GitHub Actions 中名为 `Rule Discovery` 的 workflow 有两种职责，必须�
 
 `phases` token 只能来自当前 selected Method 自己定义的 stable phase identity；当前 Method 未定义或无法安全判断时使用 `null`，不得由本 Bootstrap、Rule Discovery Architecture、其他 Method 或未命中 Rule metadata 猜测。
 
-活动优先使用直接责任词，如 `implementation`、`verification`、`review`、`external-operation`、`design`。技术与工件使用当前事实支持的稳定机器身份；例如 Vue 3.x → `vue3`、TypeScript → `typescript`、`.vue` SFC → `vue-sfc`、普通源代码 → `code`、数据库 schema migration → `database-migration`、GitHub Actions → `github-actions`、workflow run → `workflow-run`。
+活动优先使用直接责任词，如 `implementation`、`verification`、`review`、`external-operation`、`design`。技术与工件使用当前 Repository 事实支持的稳定机器身份；具体技术 token 由目标 Repository 的代码、依赖、配置和 local Rule corpus 决定，本 Bootstrap 不维护跨项目技术词表。通用工件可使用 `code`、`database-migration`、`workflow-run` 等稳定身份；平台事实如 GitHub Actions 可使用 `github-actions`。
 
 准备请求人工执行动作、提供输入、作出决定或充当系统 / 工具之间的中转时，视为新的 human escalation responsibility checkpoint。**发出人工请求前**，`activities` 至少包含 `human-escalation`，`risks` 至少包含 `human-intervention`，并重新执行 Rule Discovery；Bootstrap 只拥有这次 signal transition，不复制“是否确需人工、怎样缩减人工动作”的 Rule 正文。
 
