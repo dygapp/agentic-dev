@@ -82,7 +82,7 @@ ordinary development Method
 
 多个 Method 可以在同一次整体变更中连续组合，但各自的 Gate 和 completion claim 必须保持可辨认，不能为了流程顺滑合并成隐式双 Authority。
 
-## 5. 最终 semantic-owner 拆分
+## 5. 最终语义归属拆分
 
 最终不是在 Method 与 Architecture 之间二选一，而是把不同问题交给不同 owner：
 
@@ -131,7 +131,7 @@ ordinary development Method
 
 如果现有 Method 已经拥有 semantic acceptance，新的 specialized Method 应把它作为前置 Gate，而不是重新实现一套 adopt / adapt / reject。
 
-### 6.4 寻找相邻已存在 capability 作为语义对照
+### 6.4 寻找相邻已存在能力作为语义对照
 
 不是机械模仿文件结构，而是比较：
 
@@ -143,7 +143,7 @@ ordinary development Method
 
 本次 `consumer-adoption` 是比 `ai-development` 更有解释力的相邻 Method；`consumer-upgrade` 则帮助发现了不能绕过 upstream delta assessment 的边界。
 
-### 6.5 用 Method admission gate 复核
+### 6.5 用 Method 准入门禁复核
 
 候选 Method 至少要证明：
 
@@ -162,7 +162,7 @@ ordinary development Method
 
 先确定 semantic owner，再决定物理文件放在哪里。
 
-### 6.7 把 Evidence 与规范结论分开
+### 6.7 把证据与规范结论分开
 
 历史实验失败仍然有价值：它证明静态 parse PASS 不等于 child runtime 成功，并形成了 future validation requirement。
 
@@ -195,7 +195,7 @@ Axis B — repository state transition
 
 Axis A 可能落到 Architecture / Skill / Rule；Axis B 的不同状态转换也可能分别属于 generic Adoption / Upgrade 与 specialized activation Method。不能因为都发生在“采用过程中”就让一个 Method 吞掉全部责任。
 
-## 8. 当前 Evidence 限制
+## 8. 当前证据限制
 
 本次分类已经有历史实验与 Consumer Evidence 支撑，但当前平台 multi-agent runtime 的真实可靠性仍需由采用时的 runtime detection / smoke 重新证明。
 

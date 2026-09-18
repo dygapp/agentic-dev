@@ -13,7 +13,7 @@ status: active
 
 Surgical Change 不等于“diff 越小越好”。目标是在完成当前工作行为、验证和必要工程责任时，使最终变更仍是一个可解释、可复核、可验证的逻辑变化，同时排除与当前责任无关的 drive-by change。
 
-## 2. 外部 Evidence
+## 2. 外部证据
 
 研究基线引用：
 
@@ -31,7 +31,7 @@ Surgical Change 不等于“diff 越小越好”。目标是在完成当前工�
 - 小型机会式 / preparatory refactoring 在直接服务当前任务、具有行为保持证据且不形成 rabbit hole 时可以合理存在；
 - 大型无关重构、格式化或机械清理应与当前功能 / bug fix 分离，以保持可复核性。
 
-## 3. Diff reason chain
+## 3. 差异责任链
 
 最终 diff 中每个变更区域至少应能解释为以下一类：
 

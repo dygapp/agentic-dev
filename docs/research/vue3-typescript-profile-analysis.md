@@ -55,7 +55,7 @@ status: active
 - SFC 类型责任需要 Consumer 当前 Vue-aware type-check 机制的真实执行证据。
 - TypeScript / Vue Language Tools 的 semver 看起来兼容不能替代当前工具实际运行；历史上 TypeScript 7 迁移已经出现过真实兼容缺口。
 
-## 4. Verification responsibilities
+## 4. 验证责任
 
 不同 change type 需要不同证据：
 
@@ -64,9 +64,9 @@ status: active
 - watcher/lifecycle/async side effect：除静态检查外，验证触发时机、stale work、cleanup、mount/unmount 等真实行为。
 - DOM/template ref/user interaction：根据风险增加 runtime/browser evidence；存在 visual-fidelity claim 时需要视觉证据。
 - tsconfig/module/build integration：实际 type-check + build，必要时运行时加载证据；不得用默认值猜 Consumer 的显式配置。
-- tooling compatibility failure：属于 verification gap，不得用 build PASS 代替必需的 type-check。
+- tooling compatibility failure：属于验证缺口，不得用构建通过代替必需的 type-check。
 
-## 5. Consumer override boundary
+## 5. Consumer 覆盖边界
 
 实际裁决顺序保持：
 
