@@ -100,8 +100,8 @@ class BootstrapCostReductionTests(unittest.TestCase):
 
     def test_agents_declares_human_and_method_architecture_as_on_demand(self):
         agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
-        bootstrap = agents.split("## Fresh Context / Agent Bootstrap", 1)[1].split(
-            "## Method Selection", 1
+        bootstrap = agents.split("## Fresh Context / Agent 启动", 1)[1].split(
+            "## Method 选择", 1
         )[0]
 
         self.assertIn("`README.md` 属于 Human View", bootstrap)

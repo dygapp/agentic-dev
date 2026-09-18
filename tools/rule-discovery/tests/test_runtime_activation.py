@@ -31,14 +31,14 @@ class RuntimeActivationRegressionTests(unittest.TestCase):
     def test_bootstrap_requires_task_level_discovery_before_side_effects(self):
         agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
         self.assertIn("首个有副作用动作前必须完成本次 task-level discovery", agents)
-        self.assertIn("这些 PASS **不能替代** 当前 task signals 的 task-level discovery", agents)
+        self.assertIn("这些通过结果 **不能替代** 当前 task signals 的 task-level discovery", agents)
         self.assertIn("preflight infrastructure invocation", agents)
 
     def test_architecture_distinguishes_ci_from_runtime_discovery(self):
         architecture = (
             REPO_ROOT / "docs/architecture/rule-discovery-architecture.md"
         ).read_text(encoding="utf-8")
-        self.assertIn("### 10.1 Responsibility transition checkpoint", architecture)
+        self.assertIn("### 10.1 责任转换检查点", architecture)
         self.assertIn("不能替代 ordinary runtime invocation", architecture)
 
     def test_pr_and_push_verification_use_exact_subject_identity(self):

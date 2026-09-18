@@ -130,7 +130,7 @@ class CapabilityModelContractTests(unittest.TestCase):
             self.assertNotIn(concrete_model, normative)
 
         self.assertIn("single-writer", architecture)
-        self.assertIn("Authority-preserving handoff", architecture)
+        self.assertIn("保持权威的交接", architecture)
         self.assertIn("single-agent fallback", architecture)
         self.assertIn("接受 reusable semantics", architecture)
         self.assertIn("functional enablement claim", architecture)
@@ -140,7 +140,7 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertIn("Local Capability Projection", method)
         self.assertIn("Validate Collaboration", method)
         self.assertIn("不得绕过 Consumer Adoption / Upgrade", method)
-        self.assertIn("## 5. Model Collaboration Instance", profile)
+        self.assertIn("## 5. Model Collaboration 实例", profile)
         self.assertIn("status：`disabled`", profile)
         self.assertIn("persistent platform config：none", profile)
 
@@ -160,7 +160,7 @@ class CapabilityModelContractTests(unittest.TestCase):
         self.assertNotIn("## 4. 当前分类", skill_arch)
         self.assertNotIn("总数为 11", skill_arch)
         self.assertNotIn("核心 AI Development supporting Skills（8）", skill_arch)
-        self.assertIn("Skill Inventory Ownership", skill_arch)
+        self.assertIn("Skill 清单归属", skill_arch)
 
     def test_ai_development_method_owns_phase_identities(self):
         expected_tokens = {
@@ -176,7 +176,7 @@ class CapabilityModelContractTests(unittest.TestCase):
             REPO_ROOT / "docs/architecture/rule-discovery-architecture.md"
         ).read_text(encoding="utf-8")
 
-        self.assertIn("Stable phase identities", ai_method)
+        self.assertIn("稳定阶段身份", ai_method)
         for token in expected_tokens:
             self.assertIn(f"`{token}`", ai_method)
             self.assertNotIn(f"`{token}`", discovery_arch)

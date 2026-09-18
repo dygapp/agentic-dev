@@ -14,7 +14,7 @@ class RepositoryBootstrapClosureTests(unittest.TestCase):
     def test_rule_discovery_supports_out_of_process_compute_without_platform_ownership(self):
         architecture = self.read("docs/architecture/rule-discovery-architecture.md")
 
-        self.assertIn("Out-of-process execution contract", architecture)
+        self.assertIn("进程外执行契约", architecture)
         self.assertIn("不要求与当前 Agent 位于同一 execution environment", architecture)
         self.assertIn("缺少 worktree、shell、Python", architecture)
         self.assertIn("requested / actual baseline", architecture)
@@ -28,11 +28,11 @@ class RepositoryBootstrapClosureTests(unittest.TestCase):
     def test_agentic_dev_profile_owns_transport_selection_and_verification_instance(self):
         profile = self.read("docs/project/project-capability-profile.md")
 
-        self.assertIn("Rule Discovery transport selection", profile)
+        self.assertIn("Rule Discovery 传输方式选择", profile)
         self.assertIn("优先使用本地调用", profile)
         self.assertIn("GitHub Actions exact-SHA transport", profile)
-        self.assertIn("Repository-native deterministic compute / verification instance", profile)
-        self.assertIn("workflow started 或请求被接受不构成 PASS", profile)
+        self.assertIn("仓库原生确定性计算 / 验证实例", profile)
+        self.assertIn("不构成验证通过", profile)
         self.assertIn("不维护 workflow catalog", profile)
 
     def test_consumer_contract_requires_a_local_executable_instance(self):
@@ -57,9 +57,9 @@ class RepositoryBootstrapClosureTests(unittest.TestCase):
 
         self.assertIn("Repository Authority / execution transport / verification", guide)
         self.assertIn("actions/checkout", guide)
-        self.assertIn("workflow started", guide)
+        self.assertIn("工作流已启动", guide)
         self.assertIn("ancestor Evidence", guide)
-        self.assertIn("Discussion → Mutation", guide)
+        self.assertIn("讨论 → 修改", guide)
         self.assertNotIn("A / B / C", guide)
         self.assertNotIn("Forced B", guide)
         self.assertNotIn("Cloud Repository Runtime", guide)

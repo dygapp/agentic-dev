@@ -53,10 +53,10 @@ class MethodCorpusTests(unittest.TestCase):
         )
         guide = self.read("docs/guides/establishing-requirement-baseline.md")
 
-        self.assertIn("`README.md` — Human Navigation / Usage Guide", requirement_architecture)
+        self.assertIn("`README.md` — 人类导航 / 使用指南", requirement_architecture)
         self.assertIn("`index.md` — Requirement Authority Index", requirement_architecture)
         self.assertIn("`analysis/` 默认是非 Authority workspace", requirement_architecture)
-        self.assertIn("Question Gate", guide)
+        self.assertIn("问题门禁", guide)
         self.assertIn("不存在的可能功能是无限集合", guide)
 
     def test_ai_development_routes_systemic_gaps_to_correct_method(self):
