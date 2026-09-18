@@ -35,10 +35,8 @@ BEHAVIOR_FILES = sorted((EVALS / "behavior").glob("*.json"))
 DISCOVERY_FILE = EVALS / "discovery" / "v4-discriminating.json"
 AGENTIC_DEV_DISCOVERY_BOOTSTRAP_PATHS = (
     "AGENTS.md",
-    "README.md",
     "docs/project/project-roadmap.md",
     "docs/project/project-capability-profile.md",
-    "docs/architecture/method-architecture.md",
 )
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"

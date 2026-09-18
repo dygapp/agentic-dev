@@ -236,3 +236,18 @@ Issue #143 Candidate A 随后补齐 `docs/guides/human-review.md` Human View，�
 - Consumer-oriented Method 是否适用于 `agentic-dev` 自身演进，必须由本 Repository 的真实 work kind 与 local selector 独立决定，不能从 reusable capability 的存在反推 self-adoption；
 - 对新项目需求建立，问题数量不是成熟度指标；AI 应优先提取、推导、应用已确认默认并形成可 Review 的 Requirement Capability，只把真实需要 Authority 的决定升级给人；
 - 面向人的 Guide 可以完整解释 current capability，但必须始终保持为 Human View，不成为 Agent runtime selector、第二套 Gate 或规范正文 owner。
+
+## 15. Runtime closure、核心边界与验证可信度收敛
+
+2026 年 9 月的连续演进进一步把 current runtime 与项目边界从历史探索状态收敛为可恢复、可验证的正式能力：
+
+- Issue #143 的 systematic historical mining 完成后，Project Terminology Governance 与 Data Migration Governance 进入正确 canonical owners；历史材料退出持续主动扫描，不再作为普通 runtime 输入；
+- Issue #157 / PR #158 建立 GitHub Agent Workflow Human View，并增强 external-write identity / idempotency 与人工介入必要性治理；
+- Issue #162 / PR #163 建立 Chat Repository Bootstrap / execution transport closure，把旧 A / B / C execution-topology 假设替换为 Repository Authority / Rule Discovery、execution transport、verification 三层分离；
+- Issue #164 R1 / PR #165 将 AI Development 核心边界明确收敛到 `Ready to Integrate`，退出 upstream Vue / TypeScript technology Rule family，同时保留 Consumer-local technology specialization；
+- Issue #164 R2A / PR #166 修复 eval runner entry、behavior corpus registration、mode / scenario zero-execution success 与 Roadmap current-state drift；
+- Issue #164 R2B / PR #167 修复 isolated discovery Bootstrap dependency closure、cross-Method completion-evidence applicability、Rule-root symlink incomplete scan，并把 PR / push deterministic verification 改为 exact-subject identity verification；
+- Issue #164 R3 将 ordinary Agent 固定 Bootstrap 从 5 个固定文件收敛为 3 个：`AGENTS.md`、Project Roadmap、Project Capability Profile；Human README 与 Method Architecture 退出固定预读，按当前责任加载。Roadmap 同时退出已完成能力的长篇历史复述，把稳定演进说明归还本文件。
+
+这一阶段继续遵守“减法优先”：没有新增 Method、Skill、technology Rule family、central registry 或 release / deploy / production-operations lifecycle。
+
