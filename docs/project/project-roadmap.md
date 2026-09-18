@@ -17,35 +17,29 @@ status: active
 - Review Governance、Human Review、Project Terminology 与 Data Migration governance；
 - GitHub / Chat runtime 的 Repository Authority、Rule Discovery、execution transport、deterministic verification 与 human-escalation closure；
 - upstream 不维护具体语言 / framework 技术知识 Rule family；technology specialization 由 Consumer-local Authority 持有；
-- R2A / R2B 已修复 eval entry、current-state drift、isolated discovery dependency closure、cross-Method evidence applicability、symlink scan completeness 与 exact-subject CI identity。
+- Issue #164 已完成 R1～R4：核心边界、评估入口、Rule Discovery / Evidence contract、Bootstrap 成本与真实 Consumer applicability 均已完成收敛和独立验证。
 
 稳定演进里程碑与历史原因由 `docs/project/project-evolution.md` 持有；精确 branch / Issue / PR / Actions / commit 状态始终从 GitHub 当前事实读取。
 
 ## Current Evolution
 
-Issue #164 — **核心边界收敛与验证可信度整改** 是当前 bounded evolution。
-
-已进入当前 baseline：
+Issue #164 — **核心边界收敛与验证可信度整改** 已完成 R1～R4 并进入稳定 baseline：
 
 - R1 — Core Boundary Cleanup；
 - R2A — Current-State & Eval Entry Reliability；
 - R2B — Discovery / Evidence Contract Reliability；
-- R3 — Bootstrap Cost Reduction。
+- R3 — Bootstrap Cost Reduction；
+- R4 — Independent & Consumer Applicability Validation。
 
-R3 将 ordinary Agent 固定 Bootstrap 从“AGENTS + README + Roadmap + Profile + Method Architecture”收敛为“AGENTS + Roadmap + Profile”，再读取当前 selected Method；Human README 与 Method Architecture 改为按责任加载。历史 / 已完成能力说明继续归入 Project Evolution，而不是长期占用每个 Fresh Context。
+本轮最终确认 AI Development 核心边界止于 `Ready to Integrate`，upstream 不维护具体技术知识 Rule family；验证入口、Rule Discovery / Evidence contract 与 exact-subject CI 已收敛；ordinary Agent 固定 Bootstrap 已减为 `AGENTS + Roadmap + Project Capability Profile` 后按 selector 读取 selected Method；真实 Consumer `dygapp/jilinjobs-cms` read-only applicability 结果为兼容，当前 upgrade 为 optional，且本轮未执行 Consumer mutation。
+
+稳定演进原因与历史摘要见 Project Evolution；精确 PR / Review / Actions / commit Evidence 继续由 GitHub 历史持有。
 
 ## Current Gate
 
-**Issue #164 — R4 Independent & Consumer Applicability Validation。**
+**NONE — 当前没有 active bounded evolution。**
 
-下一步只执行：
-
-1. 对 R1～R3 当前集成 baseline 做独立语义复核；
-2. 对真实 Consumer `dygapp/jilinjobs-cms` 做 read-only applicability / upgrade-impact analysis；
-3. 不在本仓库会话修改 Consumer；
-4. 如 Consumer 需要 mutation，进入 Consumer 自己的 Repository Authority 与 adoption / upgrade lifecycle。
-
-R4 完成后再决定 Issue #164 是否满足 Final Closure。
+新的演进只在 `Next Candidates` 中某个候选获得新的真实 Evidence 与明确 Planning / Execute Authority 后启动。
 
 ## Next Candidates
 
