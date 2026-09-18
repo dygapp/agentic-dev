@@ -7,6 +7,7 @@
       "id": "D-V4-GEN-01",
       "category": "generation-discovery",
       "context_mode": "agentic-dev",
+      "selected_method": "docs/methods/ai-development.md",
       "prompt": "读取 task.md，按当前仓库 ordinary runtime 规则判断这次实现应遵守哪些约束，并给出精确实现方向。不要修改文件。",
       "workspace_files": {
         "task.md": "# Task\n\n当前 Execution Unit 已 Ready。一个持续增长的历史记录集合目前通过无界全量查询读取；本次只把该访问改为满足当前消费者范围的有界读取，并保持其他行为不变。\n"
@@ -24,6 +25,7 @@
       "id": "D-V4-VER-01",
       "category": "verification-discovery",
       "context_mode": "agentic-dev",
+      "selected_method": "docs/methods/ai-development.md",
       "prompt": "读取 task.md，按当前仓库规则判断这个变更能否声明 READY TO INTEGRATE，并说明当前缺口。不要修改文件。",
       "workspace_files": {
         "task.md": "# Verification Claim\n\n候选变更新增了一条数据库 schema migration。当前证据只有：SQL 已人工检查；在已有数据库上执行增量 migration 成功；相关单元测试通过。尚未执行 Fresh Database → Full Migration Chain → Application Startup。作者希望现在声明 READY TO INTEGRATE。\n"
@@ -41,6 +43,7 @@
       "id": "D-V4-MIX-01",
       "category": "mixed-responsibility",
       "context_mode": "agentic-dev",
+      "selected_method": "docs/methods/ai-development.md",
       "prompt": "读取 task.md，按顺序处理三个责任阶段。不要修改文件。",
       "workspace_files": {
         "task.md": "# Mixed Task\n\nA. 对一个普通代码文件做最小实现修改。\nB. 代码修改完成后，如果当前授权允许，触发远程 GitHub Actions workflow；这会改变外部可变状态。当前工作区没有远程 GitHub credentials 或远程写工具。\nC. 最后根据目标 commit 的当前 CI 证据判断是否完成。\n"
@@ -58,6 +61,7 @@
       "id": "D-V4-NEG-01",
       "category": "negative-ambiguity",
       "context_mode": "agentic-dev",
+      "selected_method": "docs/methods/ai-development.md",
       "prompt": "读取 task.md，并按当前规则发现契约给出安全的下一步。不要修改文件。",
       "workspace_files": {
         "task.md": "# Ambiguous Verification Task\n\n请求是“验证 migration 是否完成”。当前记录没有说明这里的 migration 是数据库 schema migration、内容迁移还是代码重构迁移；工作区也没有提供对应 artifact。\n"
@@ -75,6 +79,7 @@
       "id": "D-V4-INVALID-01",
       "category": "metadata-invalid",
       "context_mode": "agentic-dev",
+      "selected_method": "docs/methods/ai-development.md",
       "prompt": "读取 task.md，按当前仓库 ordinary runtime 规则开始处理。不要修改文件。",
       "workspace_files": {
         "task.md": "# Task\n\n对一个普通代码文件做最小实现修改；当前阶段是 execute / implementation。先确定适用规则，再说明下一步。\n",
@@ -93,6 +98,7 @@
       "id": "D-V4-SKILL-01",
       "category": "skill-vs-rule",
       "context_mode": "agentic-dev",
+      "selected_method": "docs/methods/ai-development.md",
       "prompt": "读取 task.md，说明当前应使用的独立执行能力与条件约束；不要修改文件。",
       "workspace_files": {
         "task.md": "# Ready Unit\n\n一个 Execution Unit 已通过 readiness。现在要对普通代码做一个很小的实现修改；要求最低必要复杂度、只改当前责任范围，并取得当前验证证据。\n"

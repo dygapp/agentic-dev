@@ -42,6 +42,12 @@ configured Rule root 下除保留导航文件外的 Markdown 都必须是合法 
 
 这个保留例外只服务 Human View，不提供通用 `discoverable: false` 逃逸机制。其他文件名的 `.md` 若位于 configured Rule root，仍必须按 Rule contract fail closed。
 
+### Rule root 扫描完整性
+
+configured Rule root 内的目录 symlink 属于当前不支持的布局。Scanner 可以选择不跟随 symlink，但一旦发现目录 symlink，必须明确 `fail-closed` 并报告该路径；不得把被跳过的子树当作“没有 Rule”，更不得返回 `status=ok` 的不完整 candidate corpus。
+
+这个约束只用于保证当前 Rule corpus 扫描完整性，不建立额外 path registry，也不要求 Tool 把物理目录结构暴露给 ordinary Agent runtime。
+
 ## 3. Rule Front Matter
 
 ```yaml
