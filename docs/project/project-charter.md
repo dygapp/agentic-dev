@@ -4,7 +4,7 @@ type: project
 status: active
 ---
 
-# Project Charter
+# 项目章程
 
 ## 1. 项目使命
 
@@ -39,27 +39,27 @@ AI Agent 驱动开发长期面临几个相互关联的问题：
 
 ## 4. 核心目标
 
-### G1 — Repository-recoverable development
+### G1 — 可从 Repository 恢复的开发
 
 项目事实、长期方法和执行约束必须能够从当前 Repository / GitHub Authority 恢复，而不是依赖此前会话。
 
-### G2 — Reusable capability with local ownership
+### G2 — 具备本地归属的可复用能力
 
 可复用 Method / Architecture / Skill / Rule 可以被 Consumer adopt / adapt，但 adoption 完成后必须拥有 Consumer-local canonical owner。
 
-### G3 — Bounded Agent context
+### G3 — 有界的 Agent 上下文
 
 普通运行只加载当前责任需要的最小 Authority、Method、Skill、Rule 和代码 / Evidence；规则总量增长不能要求模型线性读取全量规则元数据或正文。
 
-### G4 — Clear semantic ownership
+### G4 — 清晰的语义归属
 
 复杂过程、结构边界、执行 Procedure、条件性 policy、人类解释、项目自身状态分别由适合的 owner 持有，不通过兼容或目录习惯维持重复 Authority。
 
-### G5 — Human and Agent usability
+### G5 — 人与 Agent 均可用
 
 Agent 与人类可以通过不同入口使用同一套 canonical knowledge；Human View 可以完整解释，但不得成为第二套 runtime Authority。
 
-### G6 — Evidence-driven evolution
+### G6 — 证据驱动演进
 
 新 Method、Skill、Rule 或更复杂发现机制必须由真实项目 / Consumer Evidence 证明长期价值，而不是为了理论完整性预建。
 

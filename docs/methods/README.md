@@ -4,11 +4,11 @@ type: guide
 status: active
 ---
 
-# Methods 目录导航
+# Method 目录导航
 
 本 README 是 Human View。通用 Method selection contract 由 `docs/architecture/method-architecture.md` 定义；`agentic-dev` 当前 `work kind → Method locator` 实例由 `docs/project/project-capability-profile.md` 持有。Agent 不依赖本目录索引进行 Method routing。
 
-## 当前 Method Human Inventory
+## 当前 Method 人类清单
 
 - [`requirement-baseline-establishment.md`](requirement-baseline-establishment.md) — 当普通软件 Consumer 尚无可靠 Requirement Baseline，或现有基线碎片化、冲突、需要重建时，从 Raw Project Inputs 建立 / 重建长期 Requirement Authority，并以 `Requirement Baseline Ready` 收敛；
 - [`architecture-clarification.md`](architecture-clarification.md) — 当多个当前或预期 Feature 共同依赖一个长期、高成本难逆、会阻塞可靠 Specification / Planning 的 systemic architecture driver 时，条件性澄清并更新长期 Architecture owner；

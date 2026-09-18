@@ -33,7 +33,7 @@ Method 可以跨多个 Fresh Context、多个 Artifact、多个 Skill 与人工 
 
 Method 不应吸收容易因 Consumer / Repository 改变的局部 policy，也不应复制 Skill Procedure 或 Rule body。
 
-## 3. Method Selection Contract
+## 3. Method 选择契约
 
 Agent 必须能够在不读取 Human Guide 的情况下，从当前 Repository-local Authority 选择适用 Method。
 
@@ -89,7 +89,7 @@ Requirement Baseline Establishment
 
 Repository-local selector 缺失、陈旧或歧义时应失败关闭到当前 Project / Repository Authority，不从 Guide、历史聊天或目录名猜测 Method。
 
-## 6. Selection 规模演进
+## 6. 选择机制规模演进
 
 Method 数量较少时，稳定、可审计的 Repository-local 静态 selector 足够。
 
@@ -97,7 +97,7 @@ Method 数量较少时，稳定、可审计的 Repository-local 静态 selector 
 
 不得仅为形式统一复制 Rule Discovery 的工具、metadata 或复杂度。
 
-## 7. Phase Identity
+## 7. 阶段身份
 
 如果 Rule Discovery 或其他 runtime contract 需要引用 Method stage，**稳定 phase identity 必须由具体 Method canonical owner 定义**。
 

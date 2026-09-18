@@ -68,7 +68,7 @@ LLM reads candidate bodies
 
 因此旧 v1 `source_pointer` / `activation_summary` / `required_checks`、v2 Manifest / Catalog 等都不是 V4 runtime schema。
 
-## 5. Fail-closed 的 V4 继承
+## 5. V4 的失败关闭继承
 
 V4 保留并强化早期安全原则：
 
@@ -78,7 +78,7 @@ V4 保留并强化早期安全原则：
 
 但 V4 不再需要用额外 source pointer 证明 Rule metadata 与 body 的 currentness，因为两者位于同一文件；这正是取消中心映射后的重要简化。
 
-## 6. Token scaling 边界
+## 6. Token 扩展边界
 
 早期实验关注稀疏检索相对完整文档加载的行为和成本差异。V4 把该问题变成可直接验收的不变量：
 
@@ -91,7 +91,7 @@ k << N
 
 V4-07 必须在 20 / 100 / 500 Rules 下对同一任务实测，不能用历史 v1 A/B 或本 Research 代替。
 
-## 7. 当前 owner
+## 7. 当前归属
 
 当前规范性 Rule Discovery contract 只由：
 

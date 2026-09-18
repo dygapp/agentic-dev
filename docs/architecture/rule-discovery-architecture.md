@@ -27,11 +27,11 @@ Rule 的规范定义、Skill / Rule 边界、granularity 与 Consumer-local spec
 
 ## 2. 发现资源边界
 
-### Discoverable Rule
+### 可发现 Rule
 
 configured Rule root 下除保留导航文件外的 Markdown 都必须是合法 discoverable Rule。Rule 必须 `type: rule`、`status: active`，并满足本 Architecture 的 Front Matter contract；坏文件不能被静默跳过。
 
-### Reserved Human README
+### 保留的人类 README
 
 文件名**恰为 `README.md`** 的 Markdown 是 Rule root 内唯一允许退出 Rule scan 的 Human Navigation 资源：
 
@@ -72,7 +72,7 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 
 示例中的 `example-phase` 只说明字段形状，不是全局 phase token。真实 `phases` value 必须来自当前 Method canonical owner 定义的稳定 phase identity。
 
-## 4. Task Signals
+## 4. 任务信号
 
 调用方从当前 task responsibility 和当前仓库事实形成同构五维 signals。五个字段必须全部出现，但 task-side value 是三态：
 
@@ -94,7 +94,7 @@ Front Matter 只回答“当前任务是否值得加载这个 Rule”。required
 
 每个非空 task-signal 数组最多 6 个 token。禁止通过大量同义词、近义阶段名、推测风险或候选 Rule 术语做碰撞式检索；超过上限必须 fail closed。
 
-### 4.1 Phase identity
+### 4.1 阶段身份
 
 Rule Discovery Architecture **不拥有任何具体 Method 的 phase token 列表**。
 
@@ -160,7 +160,7 @@ LLM side: O(k locators + k Rule bodies), k << N
 
 这里 `k` 不应因为把一个任务所需的一组 policy 机械拆成多个 micro-rules 而无意义膨胀。只要仍能保持可靠适用性判断，任务级 Rule 聚合可以同时减少 locator 数、文件读取次数和 LLM 语义确认开销；具体 granularity 决策仍由 `rule-architecture.md` 定义。
 
-## 7. Fail-closed
+## 7. 失败关闭
 
 YAML 无法解析、schema 不完整、未知 Rule 顶层字段、scope 类型错误、非法 token、重复 Rule id、discoverable Rule 非 active、task signals 非法、单维 task tokens 超过上限、扫描不完整或重复扫描同一 Rule 时，Discovery 必须返回 `fail-closed`，不得跳过坏 Rule 后继续给出候选。
 
@@ -175,7 +175,7 @@ reserved `README.md` 不属于 discoverable Rule，但其 common resource metada
 - 不作为普通 LLM prompt context；
 - 删除后不影响从真实 Rule 文件恢复。
 
-## 9. Consumer 边界
+## 9. 使用方边界
 
 Consumer ordinary runtime 使用 Consumer-local current Rules 与本地 Rule Discovery Tool。上游 `agentic-dev` 只作为显式 adoption / upgrade 来源；普通任务发现失败不能自动在线回到 upstream 补规则。
 
@@ -183,7 +183,7 @@ Consumer adoption 必须携带当前 task-signal 三态、bounded-token contract
 
 具体 Consumer 的 Rule root、Tool locator、Method phase identities 与其他 implementation pointers 属于该 Consumer 的 local Project / Repository capability instance，不属于本 Architecture。
 
-## 10. Ordinary Runtime Integration
+## 10. 普通运行时集成
 
 普通 Agent 运行时按当前 responsibility 重复执行以下闭环：
 
@@ -197,13 +197,14 @@ current task / repository facts
 → continue current responsibility
 ```
 
-### 10.1 Responsibility transition checkpoint
+### 10.1 责任转换检查点
 
 Rule Discovery 不是一次会话级初始化动作，而是 direct responsibility 级运行时 checkpoint：
 
-- 当前 direct responsibility 建立后，在执行该责任的首个有副作用动作前必须完成一次 task-level discovery；
-- direct responsibility 发生切换，或 phase / activity / technology / artifact / risk 等关键事实实质变化时，旧 candidate set 不再作为新责任的充分依据，必须在下一次有副作用动作前重新构造 signals 并执行 discovery；
-- 为恢复事实而进行的只读读取可以先于 discovery，但不得借只读阶段形成的旧 candidate set 跨责任继续写入、合并、发布、部署或执行其他有副作用操作；
+- 当前 direct responsibility 建立后，在执行该责任的首个受 Rule 约束的实质动作前必须完成一次 task-level discovery；任何 Repository / Issue / PR / workflow / deploy 等有副作用动作始终属于该范围；
+- 如果当前 direct responsibility 本身是向人工输出项目事实、状态判断、方案、复核结论或其他受 Rule 约束的实质内容，该输出即使不改变外部状态，也属于必须在 discovery 之后发生的实际动作；不得把“只读任务”理解成可以绕过输出类 Rule；
+- direct responsibility 发生切换，或 phase / activity / technology / artifact / risk 等关键事实实质变化时，旧 candidate set 不再作为新责任的充分依据，必须在下一次受 Rule 约束的实质动作前重新构造 signals 并执行 discovery；
+- 为恢复事实而进行的只读读取，以及不承载项目事实、判断或结论的短进度提示，可以先于 discovery；但不得借此提前形成最终状态说明、Review verdict、方案或人工请求，也不得借旧 candidate set 跨责任继续受 Rule 约束的动作；
 - CI 中的 Rule Discovery lint、deterministic test 或固定 smoke scenario 只验证工具与 corpus，不携带当前 Agent 的实时 task signals，因此不能证明当前责任已经完成 task-level discovery，也不能替代 ordinary runtime invocation。
 
 该 checkpoint 只规定“何时必须重新发现”；task signals、matching、locator-only 输出与最终语义适用性仍由本 Architecture 其他章节统一定义，不建立第二套路由语义。
@@ -214,12 +215,12 @@ Rule Discovery 不是一次会话级初始化动作，而是 direct responsibili
 2. unknown 使用 `null`，不得通过 synonym cloud 或未命中 Rule metadata 反向校准；
 3. Rule Discovery 返回值是 ordinary runtime 获得 Rule locator 的唯一入口；不得枚举未命中 Rule 路径或完整 Rule tree；
 4. tool candidate 只是“值得读取”，不是“已经适用”；LLM 必须读取正文后确认该 Rule 对当前工作真实成立；
-5. 当前 direct responsibility 或 phase / activity / technology / artifact / risk facts 发生足以改变候选集合的变化时，在继续该责任的有副作用动作前重新执行 discovery；旧 candidate set 不跨职责永久有效；
+5. 当前 direct responsibility 或 phase / activity / technology / artifact / risk facts 发生足以改变候选集合的变化时，在继续该责任的下一次受 Rule 约束的实质动作前重新执行 discovery；有副作用动作始终包含在内，旧 candidate set 不跨职责永久有效；
 6. Skill discovery 与 Rule discovery 分离：Agent Skills 负责选择独立执行能力，Rule Discovery 负责当前责任的条件性约束；Rule 不要求依附 Skill；
 7. `fail-closed` 时不得把无候选、旧候选或全量 Rules 当替代结果；先修复 signals、metadata 或扫描完整性，再继续依赖 Rule Discovery；
 8. ordinary runtime 的模型上下文只接收 Discovery 返回的 candidate locator 与最终读取的候选正文，不接收全量 locator、全量 metadata、Human README inventory、未命中 Rules 或工具内部扫描状态。
 
-### 10.2 Out-of-process execution contract
+### 10.2 进程外执行契约
 
 canonical Rule Discovery Tool 不要求与当前 Agent 位于同一 execution environment。Repository-local capability instance 可以同时声明 direct execution transport 与 out-of-process compute transport；transport 只负责执行同一个 Tool，不取得 Method、Rule、Authority 或后续动作授权。
 

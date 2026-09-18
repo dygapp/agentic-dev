@@ -6,7 +6,7 @@ status: active
 
 # Consumer 架构
 
-## 1. Consumer ownership
+## 1. Consumer 归属
 
 Consumer Repository 始终拥有自己的项目事实、Project Knowledge、需求、Method、Architecture、代码、验证与集成策略。`agentic-dev` 只提供可采用的通用 capability；upstream 状态不会自动成为 Consumer current state。
 
@@ -18,7 +18,7 @@ Consumer adoption 与 upgrade 的过程分别由对应 Method 持有，本 Archi
 
 upstream `Project Charter / Capability Profile / Roadmap / Evolution` 可以作为 provenance、背景或比较上下文读取，但不属于 adopt / adapt 的 reusable capability 集合，也不会自动成为 Consumer-local Project Authority。
 
-## 2. Ordinary runtime
+## 2. 普通运行时
 
 采用完成后：
 
@@ -39,7 +39,7 @@ ordinary runtime 默认 `upstream access = 0`。本地 Project capability profil
 
 该 invariant 不规定具体平台或 transport。直接执行与自动化 alternate path 的实现由 Consumer-local capability instance 持有；Fresh Consumer Agent 不得依赖 upstream、Human Guide、历史聊天或模型记忆补齐。
 
-## 3. Consumer-local Project Knowledge
+## 3. Consumer 本地 Project Knowledge
 
 Consumer 必须拥有自己的 Project Knowledge 或等价 Repository Authority，用来表达：
 
@@ -52,7 +52,7 @@ Consumer 必须拥有自己的 Project Knowledge 或等价 Repository Authority�
 
 这些信息不得通过复制 upstream Project docs 来建立。upstream baseline 只提供 provenance，Consumer-local owner 才定义当前状态。
 
-## 4. Local canonical owners
+## 4. 本地规范性归属
 
 Consumer 可以改变路径、命名、工具集成、Method adaptation 与局部 Rule policy，只要：
 
@@ -63,13 +63,13 @@ Consumer 可以改变路径、命名、工具集成、Method adaptation 与局�
 - Rule Discovery output 保持少量 locator，而不是全量 metadata；
 - upstream provenance 与 local Authority 不混为一谈。
 
-## 5. Consumer-local Rule specialization
+## 5. Consumer 本地 Rule 特化
 
 不同 Consumer 可以针对同一通用执行能力定义不同 local Rule。例如 Git commit type / scope、术语、审批、迁移、验证或技术 policy 可以由各 Consumer Repository Authority 分别持有。
 
 因此通用 Skill 不应为了统一所有 Consumer 而吸收这些 local policy。upstream Rule 也不是 Consumer Rule 的永久主副本；Consumer 在 adoption / upgrade 中裁决 adopt / adapt / replace / reject。
 
-## 6. Upstream decoupling
+## 6. 上游解耦
 
 Consumer ordinary runtime 不依赖：
 
@@ -82,7 +82,7 @@ Consumer ordinary runtime 不依赖：
 
 只有显式 adoption / upgrade Method 或明确 research / comparison task 可以重新进入 upstream，并在完成后再次关闭 runtime dependency。
 
-## 7. Capability projection
+## 7. 能力投影
 
 显式 adoption / upgrade 时，可传播的对象是经过裁决的 capability：
 
@@ -98,7 +98,7 @@ accepted capability 依赖 Tool、compute 或 external integration 时，project
 
 upstream Project Knowledge 只可帮助回答“这个能力为什么在 upstream 存在、当前 upstream 如何实例化”，不能替代 Consumer 自己的 local decision。
 
-## 8. Feedback
+## 8. 反馈
 
 Consumer Evidence 可以通过 Issue / Comment 等方式反馈给 `agentic-dev`，但只成为 research / evolution candidate。是否改变 upstream Project Charter、Method、Architecture、Skill、Rule 或 Tool contract，必须在 `agentic-dev` 自己的 Repository Authority 下重新裁决。
 

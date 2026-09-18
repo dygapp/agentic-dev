@@ -27,7 +27,7 @@ verification
 
 execution transport 不拥有 Method、Rule 或 Authority 语义。Connector 可写、Actions 可运行、当前存在 shell，都只说明某条执行路径可能可用，不说明任务已获授权，也不说明验证义务已经满足。
 
-## 2. 最薄 Project Instruction
+## 2. 最薄项目指令
 
 ChatGPT Project Instruction 只保存会话级、Repository 外无法恢复的稳定入口。例如：
 
@@ -41,7 +41,7 @@ GitHub Repository 是唯一项目事实来源。
 
 不要把 Method、Rule body、Skill procedure、Roadmap 快照、workflow catalog 或旧 SHA 复制进 Project Instruction。Consumer 有额外生产权限、跨仓库边界或人工审批约束时，只补充 Repository 无法持有的特殊限制。
 
-## 3. Fresh Chat Bootstrap
+## 3. 新会话启动
 
 Fresh Chat 的入口同样保持简洁：Fresh Context、目标 Repository、事实源、bounded goal 和必要特殊约束。Agent 随后从 Repository 恢复真实运行语义：
 
@@ -59,7 +59,7 @@ current Repository AGENTS.md
 
 定位用的 branch、PR、Issue 或 SHA 必须重新核验。历史聊天、memory、Guide 和模型常识都不能代替当前 Bootstrap；即使最终答案碰巧正确，没有实际走过 Authority / Rule Discovery 链仍不构成合格执行。
 
-## 4. execution transport 的选择
+## 4. 执行传输方式的选择
 
 选择 transport 时先看当前责任和实际能力，不给整个会话贴固定模式标签。
 
@@ -70,7 +70,7 @@ current Repository AGENTS.md
 
 当前 Agent 没有 checkout 不能成为跳过 Rule Discovery、跳过 verification 或默认要求用户在本地代跑命令的理由。反过来，已有 Repository Runtime 时也不应为了形式统一强制绕行 Actions。
 
-## 5. Existing Repository Runtime first
+## 5. 优先使用现有 Repository Runtime
 
 可用 Repository Runtime 能直接提供真实 worktree 语义：
 
@@ -82,7 +82,7 @@ current Repository AGENTS.md
 
 使用前仍需确认 worktree 实际属于目标 Repository、baseline 正确、工作区变化可识别。现有 runtime 不因“本地”而获得额外 Authority，也不能绕过 side-effect 前的 task-level Rule Discovery。
 
-## 6. GitHub Connector 是 control plane
+## 6. GitHub Connector 是控制面
 
 GitHub Connector / API 适合承担：
 
@@ -94,7 +94,7 @@ GitHub Connector / API 适合承担：
 
 写入前先读取 live object 并检查可复用 identity，避免重复 Issue、PR、branch 或 run。API 返回成功后重新读取事实来源。Connector 的某个 wrapper 缺少按钮时，应检查 standard GitHub API、Repository Runtime 或 Actions 等适用路径，不能立即把机械中转交给人。
 
-## 7. GitHub Actions 是 repository compute plane
+## 7. GitHub Actions 是仓库计算面
 
 GitHub Actions 可以为没有本地 checkout 的 Agent 提供 Repository-native deterministic compute。典型 workflow 以明确输入绑定 subject：
 
@@ -122,18 +122,18 @@ GitHub Actions 可以为没有本地 checkout 的 Agent 提供 Repository-native
 
 Actions 是执行和证据生成 surface，不是新的 Authority 层，也不是整场会话的身份。
 
-## 8. task-level Rule Discovery 不等于 smoke CI
+## 8. 任务级 Rule Discovery 不等于冒烟 CI
 
 同名 workflow 可以有不同责任，必须看实际输入与执行链：
 
 - PR / push smoke CI 通常只验证 Rule corpus、Tool 与固定场景是否健康；
 - task-level Rule Discovery 必须携带当前 responsibility 的 bounded task signals，在明确 Repository baseline 上调用该 baseline 自己的 canonical Tool，并返回 locator-only result。
 
-因此 smoke CI PASS 不能证明当前 Agent 已完成 task-level discovery。当前 Agent 取得 candidates 后仍需读取候选 Rule 正文并确认真实适用性；空 candidates 也不能触发全量 Rule 枚举或从 Guide 反向猜测 locator。
+因此冒烟 CI 通过不能证明当前 Agent 已完成任务级 discovery。当前 Agent 取得 candidates 后仍需读取候选 Rule 正文并确认真实适用性；空 candidates 也不能触发全量 Rule 枚举或从 Guide 反向猜测 locator。
 
 如果 canonical locator 或所有 declared transports 已破坏，应 fail closed。Guide 中恰好写着正确答案不能成为 runtime fallback。
 
-## 9. GitHub-native mutation
+## 9. GitHub 原生变更
 
 当 Repository Authority 允许、当前任务能够由 GitHub Contents / Git Data / Issue / PR API 完整表达，且不需要模拟未执行的 worktree 行为时，GitHub-native implementation 是合法路径。例如：
 
@@ -144,7 +144,7 @@ Actions 是执行和证据生成 surface，不是新的 Authority 层，也不�
 
 这类 mutation 仍受同样治理约束：首次 side effect 前完成当前责任的 Rule Discovery，写入时绑定 expected current state，写后重新读取 branch / commit / PR，并按当前 Authority 执行 verification。不能因为 API 已提交文件就宣称 build、test 或 runtime behavior 已通过。
 
-## 10. Verification closure
+## 10. 验证闭环
 
 verification obligation 来自当前 Method、Rule、acceptance 与目标 Repository，不来自 transport 偏好。完成声明至少回答：
 
@@ -152,17 +152,17 @@ verification obligation 来自当前 Method、Rule、acceptance 与目标 Reposi
 - required checks 实际执行了什么；
 - 执行是否到达可观察 terminal state；
 - logs / artifact / report 是否可恢复；
-- 当前 Evidence 是否支持所声称的 completion、PASS 或 Ready to Integrate。
+- 当前 Evidence 是否支持所声称的完成、通过或 Ready to Integrate。
 
-`workflow started` 不等于 PASS；workflow request accepted 也不等于目标 job 成功。`ancestor Evidence` 不自动支持 current Head：验证后 Head drift 时，受影响 claim 必须在新 exact Head 重新取得 Evidence，或满足 Repository 明确允许的严格 claim-level reuse contract。
+工作流已启动不等于验证通过；工作流请求被接受也不等于目标 job 成功。`ancestor Evidence` 不自动支持 current Head：验证后 Head drift 时，受影响 claim 必须在新 exact Head 重新取得 Evidence，或满足 Repository 明确允许的严格 claim-level reuse contract。
 
-## 11. Governance checkpoints
+## 11. 治理检查点
 
-### Discussion → Mutation
+### 讨论 → 修改
 
 讨论或设计即使已经形成完整方案，第一次 Repository / Issue / PR / workflow / deploy side effect 前，仍需依据当前 exact baseline、direct responsibility 与 task signals 完成 Rule Discovery。聊天中的方案不获得自动执行权限。
 
-### responsibility transition
+### 责任转换
 
 activity、technology、artifact、risk 或 Method responsibility 实质变化后，旧 candidate set 不自动跨责任有效。下一次 side effect 前重新发现，并重新核验当前 branch / PR / Head 等 live facts。
 
@@ -183,7 +183,7 @@ Consumer ordinary runtime 默认 `upstream access = 0`。首次 adoption 不能�
 
 upstream delta 改变 Tool contract、runtime assumption、Rule Discovery、verification behavior 或 executable path requirement 时，upgrade 必须刷新受影响的 local executable instance，并为改变后的 ordinary runtime behavior 重新取得 Current Evidence。具体 transport 可以不同于 `agentic-dev`，但不能在线依赖 upstream Guide 或 Profile 补流程。
 
-## 13. Human escalation last
+## 13. 最后才考虑人工升级
 
 以下情况才可能形成真实人工 blocker：
 
@@ -204,12 +204,12 @@ upstream delta 改变 Tool contract、runtime assumption、Rule Discovery、veri
 | 有 local runtime 仍强制远程绕行 | 直接运行 canonical Tool / verification，并用 Connector 处理 coordination |
 | PR / push smoke 绿色，视为当前任务 discovery 完成 | 以当前 task signals 执行 task-level discovery |
 | writable Connector 直接改文件 | 先完成 Authority / Rule Discovery，再做 bounded mutation 与写后核验 |
-| workflow 已触发就报告 PASS | 等待目标 subject 的 jobs 到达 terminal state并恢复 logs / artifact |
+| workflow 已触发就报告通过 | 等待目标 subject 的 jobs 到达终态并恢复 logs / artifact |
 | 使用旧 Head 的成功结果支持新 Head | 对受影响 claim 重新取得 exact-head Current Evidence |
 | canonical locator 已坏但从 Guide 猜出答案 | fail closed 并修复 canonical owner / local instance |
 | Consumer 在线读取 upstream 补运行路径 | 在 adoption / upgrade 中建立或刷新 Consumer-local executable instance |
 | Connector 单一接口不足便请求人工 | 先检查 API、Repository Runtime、Actions 与其他已声明自动化路径 |
 
-## 15. 独立 AI Reviewer 的边界
+## 15. 独立 AI 复核者的边界
 
 Repository 未来可以单独评估在 Actions 中调用独立 LLM reviewer，但这会引入模型选择、credential、费用、输入边界、可重复性与输出治理问题。它不是当前 GitHub bootstrap、Rule Discovery 或 deterministic verification 的 required capability，也不能替代 Repository 已有的 Chat / Fresh Context / Human semantic review flow。

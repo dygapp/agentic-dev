@@ -4,7 +4,7 @@ type: research
 status: active
 ---
 
-# Data Access Scope & Boundedness Control Research
+# 数据访问范围与有界控制研究
 
 **研究日期：** 2026-09-03  
 **性质：** 非规范性 Research
@@ -13,7 +13,7 @@ status: active
 
 集合 / 列表 / 快照的数据访问不应从“要不要分页”开始，而应先判断真实 Consumer Scope、集合成员资格、增长性质和生命周期，再选择 filtering、ordering、window / pagination、representation 与 verification。
 
-## 2. Consumer Evidence
+## 2. Consumer 证据
 
 Issue #33 的实际案例支持以下结论：
 
@@ -23,7 +23,7 @@ Issue #33 的实际案例支持以下结论：
 - 持续增长的业务集合需要有界读取与稳定 continuation 语义；
 - Presentation N 不等于 Retrieval Scope N。
 
-## 3. 外部 Evidence
+## 3. 外部证据
 
 研究基线引用：
 
@@ -40,7 +40,7 @@ Issue #33 的实际案例支持以下结论：
 - large / growing collection 与稳定 bounded snapshot 应使用不同策略；
 - list/detail representation 可以因消费责任不同而分层，但不要求机械建立额外 DTO / projection。
 
-## 4. Judgment Model
+## 4. 判断模型
 
 设计或修改集合数据访问时按需判断：
 

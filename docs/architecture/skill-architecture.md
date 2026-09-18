@@ -42,7 +42,7 @@ Rule 可以约束 Skill execution，也可以独立约束 Method stage、direct 
 
 具体 Rule 语义边界见 `docs/architecture/rule-architecture.md`。
 
-## 4. Skill Inventory Ownership
+## 4. Skill 清单归属
 
 Architecture 不持有某个 Repository 当前有哪些 Skill、Skill 总数或当前分类清单。
 

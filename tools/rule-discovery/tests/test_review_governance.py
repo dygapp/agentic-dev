@@ -41,17 +41,17 @@ class ReviewGovernanceContractTests(unittest.TestCase):
             for item in rd.scan_rules(repo_root=REPO_ROOT, rule_roots=[Path("docs/rules")])
         }
 
-        self.assertIn("## Authority-chain semantic review", skill)
+        self.assertIn("## 权威链语义复核", skill)
         self.assertIn("Current owner transition", skill)
         self.assertIn("Downstream observable projection", skill)
         self.assertIn("Replaceability seam", skill)
         self.assertIn("Conflict classification", skill)
         self.assertIn("Source role / promotion boundary", skill)
-        self.assertIn("## Bounded regenerability challenge", skill)
+        self.assertIn("## 有界可再生性挑战", skill)
         self.assertIn("普通代码修复", skill)
         self.assertIn("不因为本模式存在而自动执行 full regenerability", skill)
 
-        self.assertIn("## Current owner transition completeness", lifecycle_rule)
+        self.assertIn("## 当前归属转换完整性", lifecycle_rule)
         self.assertIn("Historical、archive、migration provenance", lifecycle_rule)
         self.assertIn("出现旧标识本身不构成 stale Current dependency", lifecycle_rule)
         self.assertNotIn("rule:current-owner-transition-completeness", rule_ids)

@@ -2,8 +2,8 @@
   "governance_name": "agentic-dev 依赖 PR 集成拓扑安全",
   "context_paths": [
     "AGENTS.md",
-    "docs/guides/external-operation-guidelines.md",
-    "docs/method/ai-development-method.md",
+    "docs/rules/operations/safe-external-write.md",
+    "docs/rules/verification/evidence-type-must-match-claim.md",
     "docs/research/github-stacked-pr-squash-topology.md"
   ],
   "evals": [

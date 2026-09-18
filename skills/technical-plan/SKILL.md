@@ -9,18 +9,18 @@ metadata:
 
 # technical-plan
 
-## Purpose
+## 目的
 
 只解决实施前必须稳定、且跨一个以上执行单元持续有价值的 HOW；局部可逆施工细节留给 JIT Execution Plan。
 
-## Inputs
+## 输入
 
 - Ready Specification；
 - 当前 Architecture / ADR / code state；
 - 技术约束；
 - 当前任务适用的 Rule candidates。
 
-## Procedure
+## 流程
 
 1. 确认 Technical Planning 是否真的需要；若 Specification 可直接安全映射到已有模式，则返回无需独立 Technical Plan。
 2. 读取相关架构、公共契约和代码事实，并通过 Rule Discovery 加载适用 Rules。
@@ -29,16 +29,16 @@ metadata:
 5. 只有决定背景、主要权衡或替代关系具有长期价值时才形成/更新 ADR；普通局部选择不创建 ADR。
 6. 清除仍会阻塞安全实施的技术不确定性。
 
-## Outputs
+## 输出
 
 - Technical Plan（必要时）；
 - Architecture / ADR updates（条件性）；
 - Remaining technical blockers。
 
-## Exit Conditions
+## 退出条件
 
 实施前必须解决的技术不确定性已关闭，长期架构责任已进入正确 owner；或已明确本工作无需独立 Technical Plan。
 
-## Escalation
+## 升级
 
 重大架构方向、高影响难逆权衡、Authority 冲突或超出授权的共享契约改变需要升级。Skill 不创建 Execute Authority。

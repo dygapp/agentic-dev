@@ -18,11 +18,11 @@ status: active
 - 临时分析资产不会逐渐变成隐藏的第二套需求事实源；
 - Requirement Baseline 可以被后续 `method:ai-development` 稳定消费。
 
-## 2. Semantic ownership
+## 2. 语义归属
 
 一个 Consumer 至少需要区分以下责任：
 
-### Requirement Human Navigation
+### Requirement 人类导航
 
 回答：
 
@@ -73,7 +73,7 @@ docs/requirements/
 
 ## 4. `README.md` 与 `index.md` 的边界
 
-### 4.1 `README.md` — Human Navigation / Usage Guide
+### 4.1 `README.md` — 人类导航 / 使用指南
 
 `README.md` 只负责：
 
@@ -116,7 +116,7 @@ index.md  = 当前 Requirement Authority 在哪里
 owner docs = Requirement 事实是什么
 ```
 
-## 5. `overview/` responsibility
+## 5. `overview/` 职责
 
 `overview/` 用于项目级、跨多个 Capability 持续成立的 Requirement Context，例如：
 
@@ -171,7 +171,7 @@ Technical convention   = 该业务词怎样按语言 / 框架形成 identifier
 
 Canonical terminology 变化时不得 blind global search-replace。应先更新 true owner，再区分 current internal canonical reference、external preserved name、legacy source name 与 historical provenance，只迁移真正属于 Current internal semantics 的引用。
 
-## 6. `business/` responsibility
+## 6. `business/` 职责
 
 `business/` 是主要纵向 Requirement Fact Authority。
 
@@ -203,7 +203,7 @@ Canonical terminology 变化时不得 blind global search-replace。应先更新
 
 这是一组 semantic responsibilities，不要求所有 Consumer 使用完全相同章节模板。
 
-## 7. `aspects/` admission
+## 7. `aspects/` 准入
 
 横向 Requirement owner 不是“无法分类内容”的收容目录。
 
@@ -216,7 +216,7 @@ Canonical terminology 变化时不得 blind global search-replace。应先更新
 
 如果一个横向事实本质上可以由某个 Capability、project overview 或 NFR owner 清晰承担，就不应为了对称性再创建 aspect。
 
-## 8. `non-functional/` responsibility
+## 8. `non-functional/` 职责
 
 这里持有真正可验收、跨实现方案持续成立的系统性质，例如：
 
@@ -231,7 +231,7 @@ Canonical terminology 变化时不得 blind global search-replace。应先更新
 
 框架选择、缓存策略、数据库索引、线程模型等普通实现 HOW 不因为与性能或可靠性有关就自动成为 NFR Requirement。
 
-## 9. `analysis/` responsibility
+## 9. `analysis/` 职责
 
 `analysis/` 默认是非 Authority workspace，可用于：
 
@@ -254,7 +254,7 @@ Canonical terminology 变化时不得 blind global search-replace。应先更新
 
 只要派生表达能够从当前 Requirement Authority 唯一再生，就不应默认成为长期同步对象。
 
-## 10. Requirement Fact ownership
+## 10. Requirement Fact 归属
 
 长期事实只进入一个真实 owner。
 
@@ -281,7 +281,7 @@ Consumer 可以根据项目需要使用 Domain / Capability / Scenario 等层级
 
 主要长期事实都有 owner、主要边界清晰、后续 Feature 能确定性地找到 Requirement，比“列出了多少 L3”更重要。
 
-## 12. Fresh Context consumption
+## 12. Fresh Context 消费方式
 
 普通 Fresh Context Feature Agent 不应默认扫描整个 `docs/requirements`，也不应因为项目存在 terminology owner 就预加载整份 glossary。
 
@@ -300,9 +300,9 @@ Repository Authority
 
 `README.md` 主要供人理解，不作为 Agent runtime 的 Requirement locator。`analysis/` 也不进入 ordinary runtime，除非当前任务明确需要原始 Evidence、历史原因或尚未 promote 的分析材料。
 
-## 13. Artifact lifecycle
+## 13. 产物生命周期
 
-### 13.1 Producer
+### 13.1 生产者
 
 主要 producer：
 
@@ -310,7 +310,7 @@ Repository Authority
 - 后续 Feature / Clarification 中经 Repository Authority 确认需要提升的长期 Requirement fact；
 - Human / Product Authority 的长期决定。
 
-### 13.2 Trigger
+### 13.2 触发条件
 
 典型 trigger：
 
@@ -320,7 +320,7 @@ Repository Authority
 - Feature 中发现具有跨 Feature 长期价值的新业务事实或 terminology；
 - External / policy change 改变长期 Requirement。
 
-### 13.3 Consumer
+### 13.3 使用方
 
 主要 consumer：
 
@@ -331,21 +331,21 @@ Repository Authority
 - verification / review；
 - Human Product / Requirement Review。
 
-### 13.4 Persistence
+### 13.4 持久化
 
 长期 Requirement Fact 必须保存在 Consumer Repository Authority 可定位的 durable owner 中。默认推荐 `docs/requirements/**`，但 Consumer 可以使用等价结构。
 
 Project Terminology Authority 若被采用，也必须是 Requirement Authority Index 或等价 locator 可发现的 durable owner；本 Architecture 不要求固定 `terminology.md` 文件名或目录。
 
-### 13.5 Update
+### 13.5 更新
 
 修改事实时优先更新真实 owner，再最小传播 locator / relation / affected reference。不得在下游 Specification、Technical Plan 或聊天中静默覆盖上游 Requirement。
 
-### 13.6 Supersede
+### 13.6 替代
 
 新 owner 替代旧 owner 时，应更新当前 index / references，并删除或明确废止旧 current Authority；历史由 Git / Issue / PR 保留，不通过长期兼容文档维持两套事实。
 
-### 13.7 Escalation
+### 13.7 升级
 
 发现以下情况时返回拥有该责任的 Requirement Method / Human Authority：
 

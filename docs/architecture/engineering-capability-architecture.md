@@ -113,7 +113,7 @@ README
 
 Human View 可以为了教学和理解重复表达 canonical 语义，但必须清楚指向真实 owner。重复解释允许，重复拥有规范语义禁止。
 
-## 4. Discovery / Selection 责任
+## 4. 发现与选择责任
 
 不同能力类型不必共享一种发现机制，但每类 Agent-facing capability 必须有明确入口：
 
@@ -125,7 +125,7 @@ Human View 可以为了教学和理解重复表达 canonical 语义，但必须�
 
 Method selection 是否需要独立工具，应由规模和 eval 决定；在 Method 数量较少时可以使用稳定、可审计的 Repository-local selector instance，但不得形成与 Method 本身长期漂移的第二套流程正文。
 
-## 5. Consumer-local specialization
+## 5. Consumer 本地特化
 
 Consumer Repository 始终拥有自己的项目事实、Project Knowledge 与 local Authority。`agentic-dev` 提供可采用的 Method / Skill / Rule / Architecture，但 adoption 不等于全量复制，更不等于传播 upstream Project state。
 

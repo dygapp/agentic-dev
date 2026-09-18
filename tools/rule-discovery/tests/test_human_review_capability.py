@@ -41,7 +41,7 @@ class HumanReviewCapabilityTests(unittest.TestCase):
         self.assertEqual("active", parsed.metadata["metadata"].get("agentic-dev-status"))
 
         text = path.read_text(encoding="utf-8")
-        for heading in ["## Trigger", "## Inputs", "## Procedure", "## Outputs", "## Exit Conditions", "## Escalation"]:
+        for heading in ["## 触发条件", "## 输入", "## 流程", "## 输出", "## 退出条件", "## 升级"]:
             self.assertIn(heading, text)
         self.assertIn("delivery_target = none", text)
         self.assertIn("不建立持久 BPMN、UML 或业务模型中间层", text)

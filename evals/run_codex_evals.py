@@ -105,13 +105,14 @@ def populate_discovery_context(workspace: Path, case: dict) -> None:
 
     if context_mode == "agentic-dev":
         selected_method = case.get("selected_method")
-        if not isinstance(selected_method, str) or not selected_method.strip():
-            raise RuntimeError(
-                f"Discovery scenario {case['id']} must declare selected_method"
-            )
         for relative in AGENTIC_DEV_DISCOVERY_BOOTSTRAP_PATHS:
             copy_repo_path(workspace, relative)
-        copy_repo_path(workspace, selected_method)
+        if selected_method is not None:
+            if not isinstance(selected_method, str) or not selected_method.strip():
+                raise RuntimeError(
+                    f"Discovery scenario {case['id']} has invalid selected_method"
+                )
+            copy_repo_path(workspace, selected_method)
     elif context_mode == "consumer-local":
         # Consumer-local AGENTS/README are scenario inputs. Do not copy upstream project state.
         pass

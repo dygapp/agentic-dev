@@ -14,7 +14,7 @@ Corpus：
 
 `v4-discriminating.json`
 
-覆盖 generation、verification、mixed responsibility、negative / ambiguity、invalid metadata fail-closed、Skill vs Rule 与 Consumer-local ordinary runtime。
+覆盖 Fresh Context 首次 communication 输出激活、generation、verification、mixed responsibility、negative / ambiguity、invalid metadata fail-closed、Skill vs Rule 与 Consumer-local ordinary runtime。
 
 运行：
 

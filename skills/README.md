@@ -4,13 +4,13 @@ type: guide
 status: active
 ---
 
-# Skills 目录导航
+# Skill 目录导航
 
 本 README 是 Human View，用于快速了解当前可复用 Skill。ordinary Agent runtime 通过 Agent Skills 原生 discovery 按 Trigger / Purpose 选择 Skill，不把本清单作为 Skill selector。
 
 当前仓库维护 12 个 Skill：
 
-## AI Development supporting Skills（8）
+## AI Development 支撑 Skill（8）
 
 - `clarify-intent`
 - `specify`
@@ -23,13 +23,13 @@ status: active
 
 这些 Skill 当前服务 AI Development Method，但 Skill 身份不等于 Method stage；某个 Method stage 也不要求一定存在对应 Skill。
 
-## Reusable supporting Skills（3）
+## 可复用支撑 Skill（3）
 
 - `external-operation`
 - `human-review`
 - `review-change`
 
-## Platform-specific Skill（1）
+## 平台专项 Skill（1）
 
 - `github-actions-verification`
 

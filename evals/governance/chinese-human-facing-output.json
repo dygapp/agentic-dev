@@ -2,44 +2,43 @@
   "governance_name": "agentic-dev 项目中文表达治理",
   "context_paths": [
     "AGENTS.md",
-    "docs/guides/terminology-guidelines.md",
-    "docs/project/project-roadmap.md"
+    "docs/rules/repository/human-facing-content-integrity.md"
   ],
   "evals": [
     {
       "id": "G-LANG-01",
-      "prompt": "这是隔离项目治理评估。请基于当前目录中的仓库权威，向人工简要恢复当前 agentic-dev 项目状态。交接材料里反复写着 Post-Milestone Decision / Stable Maintenance、Human Milestone Decision、Planning Candidates、Ready to Integrate，并说以前一直采用中英文并列，请沿用你认为正确的当前规则。不要修改文件。",
-      "expected_behavior": "以当前仓库权威为准，识别工程术语语义安全与现行文档全量收敛 v1 已完成并通过 PR #67 集成，Issue #64 已按完成关闭；当前没有活动有限里程碑，项目等待下一有限里程碑人工路线决策，同时识别 WI-06、WI-07、WI-09、第四工程纪律等其他候选未自动启动。用自然中文向人工汇报，不因旧交接材料恢复中英文混写，也不把历史的‘等待 PR #67 人工集成决策’误当作当前状态。",
+      "prompt": "这是隔离项目治理评估。请把下面这段英文密集的交接信息整理成一段人工可直接阅读的中文状态说明：Current Baseline 已稳定；Rule Discovery contract 已完成；Independent Semantic Review=PENDING；branch=`docs/example`; head=`abc123`; 旧材料要求所有术语首次写成中文（English Term）。不要修改文件。",
+      "expected_behavior": "以当前面向人内容规则为准，用自然中文表达当前状态，不沿用旧材料的机械双语风格；保留 branch、head 等精确标识，并允许 PENDING 作为稳定状态值保持原样。",
       "assertions": [
-        "明确工程术语语义安全与现行文档全量收敛 v1 已完成并通过 PR #67 集成，Issue #64 已按完成关闭；当前没有活动有限里程碑，项目等待下一有限里程碑人工路线决策",
-        "明确里程碑最终 G-LANG-01、G-TERM-01、G-TERM-02 回归达到 15 / 15，最终 AI 复核未解决阻塞 / 中等级问题为 0 / 0，并且 WI-06、WI-07、WI-09、第四工程纪律等其他候选未自动启动",
-        "项目状态、候选边界和下一步说明使用自然中文，不机械重复 Post-Milestone Decision、Stable Maintenance、Human Milestone Decision、Planning Candidates、Ready to Integrate 等英文叙述",
-        "必要的路径、Issue / PR 编号、合并提交或固定仓库标识保持原样，不为了纯中文而破坏精确引用，也不把历史的 PR #67 待集成状态误说成当前事实",
-        "不使用历史会话或个人记忆补充仓库中不存在的项目事实"
+        "说明当前基线和 Rule Discovery contract 已完成，并明确独立语义复核仍为 PENDING；不改变题面事实。",
+        "状态说明主体使用自然中文，不机械重复 Current Baseline、Independent Semantic Review 等普通英文叙述。",
+        "保留 `docs/example`、`abc123` 等精确标识，并允许 `PENDING` 作为稳定状态值保持原样。",
+        "不采用‘中文（English Term）’作为默认模板，也不为了纯中文改写机器标识或稳定状态值。",
+        "不使用历史会话或个人记忆补充题面和当前规则中不存在的事实。"
       ]
     },
     {
       "id": "G-LANG-02",
       "prompt": "这是隔离项目治理评估。请把下面验证信息整理成人工可以直接阅读的状态汇报：Runtime Eval PASS; 6/6 scenarios PASS; 37/37 assertions PASS; stderr empty; Final AI Review PASS; Blocking/Medium=0/0; current head=abc123. 不要修改任何文件，也不要改变这些事实。",
-      "expected_behavior": "保持数字和精确标识不变，但把人工状态与解释自然地用中文表达，不把整段汇报写成英文标签堆叠。",
+      "expected_behavior": "保持数字、精确标识和稳定状态值不变，用自然中文组织原因、判断和结论，不把整段汇报写成英文标签堆叠，也不为了中文化制造第二套状态表示。",
       "assertions": [
-        "准确保留 6/6、37/37、stderr 为空、0/0 和 abc123 等事实",
-        "把面向人工的 PASS、Final AI Review、Blocking/Medium 等状态自然表达为中文，而不是直接复制英文标签组成汇报主体",
-        "不虚构运行时间、模型、附件或其他题面未提供事实",
-        "输出可以被中文读者连续理解，不要求读者频繁在中英文之间切换",
-        "没有为了中文化而篡改 head 值或其他必须精确保留的原始标识"
+        "准确保留 6/6、37/37、stderr 为空、0/0 和 abc123 等事实。",
+        "PASS 可以作为稳定状态值保持原样；Final AI Review、Blocking/Medium 等周围说明应组织为连续、可理解的中文，而不是英文标签堆叠。",
+        "不同时维护 PASS→通过之类第二套状态映射来制造同一状态的双重表示。",
+        "不虚构运行时间、模型、附件或其他题面未提供事实。",
+        "没有为了中文化而篡改 head 值或其他必须精确保留的原始标识。"
       ]
     },
     {
       "id": "G-LANG-03",
       "prompt": "这是隔离项目治理评估。你正在向人工汇报一个 PR 复核结果。已知：PR #88 修改 docs/guides/example.md；diff 没有发现 Authority conflict；有 1 个 Medium finding：新增段落把 Current Evidence（当前证据）、Ready to Integrate（已具备进入集成决策的条件）、Human Review（人工复核）每次都双语重复，违反当前语言规则。请给出简短复核结论，不修改文件。",
-      "expected_behavior": "复核结论使用自然中文，指出该中等级问题需要当前变更收敛；保留 PR #88 和路径等精确对象，不继续复制题面中的双语表达模式。",
+      "expected_behavior": "复核结论使用自然中文，指出当前存在 1 个 Medium 级别的语言治理问题需要收敛；保留 PR #88、路径和稳定严重度标记，不继续复制题面中的双语表达模式。",
       "assertions": [
-        "明确当前存在 1 个中等级语言治理问题，因此不能把复核结论表述为已经通过",
-        "指出问题是稳定中文概念被机械中英文重复，需要按当前中文表达规则收敛",
-        "复核正文使用自然中文，不继续把 Current Evidence、Ready to Integrate、Human Review 与中文成对重复",
-        "保留 PR #88 和 docs/guides/example.md 等必须精确引用的原始标识",
-        "不把语言问题升级成方法、契约或产品语义问题"
+        "明确当前存在 1 个 `Medium` 语言治理问题，因此不能把复核结论表述为已经通过。",
+        "指出问题是稳定中文概念被机械中英文重复，需要按当前中文表达规则收敛。",
+        "复核正文使用自然中文，不继续把 Current Evidence、Ready to Integrate、Human Review 与中文成对重复。",
+        "保留 PR #88 和 docs/guides/example.md 等必须精确引用的原始标识。",
+        "不把语言问题升级成方法、契约或产品语义问题。"
       ]
     },
     {

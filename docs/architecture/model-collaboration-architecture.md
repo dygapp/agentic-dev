@@ -4,7 +4,7 @@ type: architecture
 status: active
 ---
 
-# Model Collaboration Architecture
+# 模型协作架构
 
 ## 1. 目标与边界
 
@@ -34,7 +34,7 @@ Tier 3 — high-capability reasoning
 
 能由 deterministic tooling 可靠完成的工作不得为了“使用多模型”而升级为 LLM 工作。高能力模型也不得仅因为身份更强而默认接管普通任务。
 
-## 3. Primary responsibility
+## 3. 主要责任
 
 每次协作必须存在一个明确的 **Primary Agent / current responsibility owner**。它保留：
 
@@ -47,7 +47,7 @@ Tier 3 — high-capability reasoning
 
 子 Agent 的成功返回、退出码 `0`、自述“已完成”或 requested model 配置都不能替代 Primary Agent 对最终事实和 Evidence 的重新核验。
 
-## 4. Authority-preserving handoff
+## 4. 保持权威的交接
 
 低成本 Agent 可以作为 **context / evidence worker**，但不得成为 Authority proxy。
 
@@ -64,7 +64,7 @@ Tier 3 — high-capability reasoning
 
 跨 Agent 传递的 observation 与 normative source 必须可区分，避免把探索者推断升级成事实。
 
-## 5. Delegation boundaries
+## 5. 委派边界
 
 协作默认遵守：
 
@@ -91,7 +91,7 @@ current task facts
 
 不得让低成本模型通过枚举全量 Rule tree 取代 Rule Discovery，也不得让其摘要成为唯一 Rule 输入。低成本 Agent 可以帮助从当前仓库事实整理 task facts，但 signals 与候选仍必须遵守 `architecture:rule-discovery` 的 contract。
 
-## 7. Model routing 与 escalation
+## 7. 模型路由与升级
 
 Reusable capability 只定义能力层级，不硬编码模型型号。
 
@@ -113,7 +113,7 @@ deterministic first
 
 不得把模型等级本身当作结论权威。高能力模型的长期使用价值应由增量发现、决策质量、返工下降或其他当前 Evidence 证明。
 
-## 8. Evidence 与模型身份
+## 8. 证据与模型身份
 
 配置中的 model / reasoning effort 只表示 **requested runtime target**。只有运行轨迹或平台证据能够独立确认时，才能声明 observed / actual runtime model。
 
@@ -121,7 +121,7 @@ deterministic first
 
 同理，协作线程是否真实建立必须由可观察 thread / child run / event / result 证据支持；主 Agent 声称“已委派”不能单独证明委派发生。
 
-## 9. 成本、启用与效率 Claim
+## 9. 成本、启用与效率声明
 
 Model Collaboration 不承诺减少总 token。多 Agent 工作可能增加总输入与协调开销。
 
@@ -141,7 +141,7 @@ Model Collaboration 不承诺减少总 token。多 Agent 工作可能增加总�
 
 因此“链路能工作”与“值得默认使用”不是同一个结论。不能只根据“用了更便宜模型”或“并发更多”推断效率收益。
 
-## 10. Consumer projection
+## 10. Consumer 投影
 
 Consumer 可以选择不启用、部分启用或完整启用本能力。**接受 reusable semantics** 与 **建立 runtime instance** 是两个不同责任：
 
@@ -163,7 +163,7 @@ Consumer 可以选择不启用、部分启用或完整启用本能力。**接受
 
 Consumer ordinary runtime 不得依赖在线读取 `agentic-dev` current state。upstream capability semantics 变化只有通过显式 Consumer Adoption / Upgrade 决策才能进入 local Authority；纯本地 runtime mapping 维护则服从目标 Repository 自己的 Authority。
 
-## 11. Adoption 与 ordinary runtime
+## 11. 采用与普通运行时
 
 `method:model-collaboration-adoption` 只在 Model Collaboration semantics 已经进入 Consumer-local Authority 后执行，负责检测真实 runtime 能力、选择策略、投射 local config / policy、建立 local instance、验证并启用或 fallback。
 
@@ -171,7 +171,7 @@ Consumer ordinary runtime 不得依赖在线读取 `agentic-dev` current state�
 
 启用后的 ordinary software work 仍由原有 Method 控制，例如 `method:ai-development`。Model Collaboration 只是运行方式，不自动改变当前 Method stage、Gate、Requirement 或 Integration Authority。
 
-## 12. Fallback
+## 12. 回退
 
 任何 Consumer runtime activation 都必须定义可验证的 single-agent fallback。出现以下情况时应 fail closed 到单 Agent 或停止协作，而不是假装多模型链路有效：
 

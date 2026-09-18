@@ -9,18 +9,18 @@ metadata:
 
 # slice-work
 
-## Purpose
+## 目的
 
 把当前 Ready Specification 与必要 Technical Plan 切成新上下文可以独立理解、实现和验证的 Execution Units。
 
-## Inputs
+## 输入
 
 - Ready Specification；
 - Optional Technical Plan / Architecture decisions；
 - 当前仓库结构与已知依赖；
 - 当前任务适用的 Rule candidates。
 
-## Procedure
+## 流程
 
 1. 提取必须实现的可观察行为与验收责任。
 2. 通过 Rule Discovery 加载切分相关 Rules。
@@ -29,15 +29,15 @@ metadata:
 5. 检查 context-fit：新的 Agent 应能在一个上下文完成理解、实现、验证。
 6. 明确依赖顺序，但不得把未来 Unit 的 Execute Authority 提前授予当前 Unit。
 
-## Outputs
+## 输出
 
 - Ordered Execution Units；
 - Explicit dependencies / blockers。
 
-## Exit Conditions
+## 退出条件
 
 每个 Unit 边界可独立执行、可验证、可追溯且 context-fit；不存在隐含的跨 Unit 完成责任。
 
-## Escalation
+## 升级
 
 切分暴露未解决的产品歧义、长期技术决定或无法安全拆分的共享高影响变更时，返回相应上游阶段。Skill 不执行 Unit。

@@ -74,7 +74,7 @@ Establish Architecture Drivers
 2. Clarify Architecture；
 3. Architecture Convergence。
 
-### 4.1 Stable phase identities
+### 4.1 稳定阶段身份
 
 - Establish Architecture Drivers → `establish-architecture-drivers`；
 - Clarify Architecture → `clarify-architecture`；
@@ -170,7 +170,7 @@ local implementation evidence
 
 真正存在 blocker 时保持 NOT READY。
 
-## 8. Return contract
+## 8. 返回契约
 
 完成后只声明：
 
@@ -190,9 +190,9 @@ Execute / Integrate authority granted
 
 后续具体 Feature / change 仍必须重新按 Consumer-local selector 进入 `method:ai-development` 或其他适用 Method。
 
-## 9. Artifact lifecycle
+## 9. 产物生命周期
 
-### 9.1 Durable outputs
+### 9.1 持久化输出
 
 默认 durable：
 
@@ -221,7 +221,7 @@ Execute / Integrate authority granted
 - Architecture Evidence 不足以支持 durable decision；
 - owner 冲突或 supersede 关系无法唯一确定。
 
-### 9.2 Transitional outputs
+### 9.2 过渡输出
 
 默认 transitional / disposable：
 
@@ -242,7 +242,7 @@ Execute / Integrate authority granted
 
 同样不因为 Method 独立出来就批量新增 Architecture Rules。现有高影响 review、Authority lifecycle、verification 等横切 policy 继续按 Rule Discovery 条件性适用。
 
-## 11. Evidence maturity
+## 11. 证据成熟度
 
 Architecture Clarification 当前 Evidence maturity 低于 Requirement Baseline Establishment。v1 只固化已经有稳定理由的 bounded、conditional、anti-BDUF contract。
 
