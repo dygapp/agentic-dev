@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "method:ai-development;rule:human-intervention-necessity"
 ---
 
 # clarify-intent
@@ -20,12 +21,12 @@ metadata:
 - Requested Outcome；
 - Current Repository / Product / Domain Authority；
 - Relevant System Context；
-- 当前任务适用的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 从当前 Authority 与请求中恢复 Goal、Known Scope、已确认决定和直接相关事实；Conversation History 不单独构成 Authority。
-2. 通过 Rule Discovery 加载当前 intent / repository / risk 事实真正适用的 Rules。
+2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 3. 只保留会实质改变 Goal、Scope、用户可见行为、业务边界、Acceptance 或重大非功能义务的歧义；普通低影响、可逆实现选择留给后续阶段。
 4. 先用现有 Authority 解决问题；只有当前 Authority 无法裁决且不同合理答案会产生实质不同产品结果时，才形成最小 Human Blocking Question。
 5. 收敛 Confirmed Intent，并标记可能具有跨功能长期价值的 Domain Authority Candidate；本 Skill 不自行把候选提升为长期权威。
