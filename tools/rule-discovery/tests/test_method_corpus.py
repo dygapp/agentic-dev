@@ -64,7 +64,7 @@ class MethodCorpusTests(unittest.TestCase):
 
         self.assertIn("method:requirement-baseline-establishment", ai_development)
         self.assertIn("method:architecture-clarification", ai_development)
-        self.assertIn("upstream capability 存在本身不构成 Consumer 的隐式 adoption", ai_development)
+        self.assertIn("只有已安装 Release 与 Consumer-local Authority 才定义 Consumer 当前可用能力", ai_development)
 
 
 if __name__ == "__main__":
