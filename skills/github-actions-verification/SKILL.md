@@ -8,6 +8,7 @@ metadata:
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
   agentic-dev-release-inputs: "rule:async-operation-bounded-observation;rule:human-intervention-necessity;rule:safe-external-write;rule:shared-resource-concurrency-ownership;rule:temporary-evidence-to-persistent-input-promotion;rule:evidence-claim-reuse-across-commits;rule:evidence-type-must-match-claim;rule:human-review-baseline-isolation;rule:verification-contract-currentness"
+  agentic-dev-runtime-execution: "external"
 ---
 
 # github-actions-verification
@@ -33,6 +34,13 @@ metadata:
 5. 配置合理 timeout、cancellation、失败诊断与关键日志/证据保留。
 6. 触发后按精确 commit 读取 run/job/step 终态；异步状态按有界观察处理。
 7. 只在所需 jobs 对目标 commit 完成且证据可观察时报告通过。
+
+## 可执行路径合同
+
+- `direct-path`：使用当前 Runtime 已授权的 GitHub connector / API / CLI / Actions capability，对目标 exact commit 的 workflow 执行或读取真实 run 状态。
+- `automated-alternate`：direct path 不可用时，只允许使用 Consumer Repository 已声明的等价 GitHub Actions transport、connector 或受控 API 路径；替代路径必须维持相同授权边界和 Evidence 可恢复性。
+- `evidence-recovery`：恢复并核对 exact commit、event、run、job、step、必要 logs / artifacts 与终态 conclusion；触发成功不能替代这些当前证据。
+- `fail-closed`：无法绑定目标 commit、无法恢复 run / job 终态、缺少执行或读取权限，或所有声明路径都不可用时，不报告 Verification PASS，并返回真实 blocker / 未验证边界。
 
 ## 输出
 
