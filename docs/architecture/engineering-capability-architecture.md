@@ -9,7 +9,7 @@ distribution: source-only
 
 ## 1. 目标
 
-本 Architecture 定义 `agentic-dev` 维护的长期 capability 类型、语义所有权、组合关系与 Human / Agent 双视窗。具体 Repository 可以选择、实例化和适配这些 capability，但不得通过目录位置、Project state 或文档重复形成第二套隐藏 Authority。
+本 Architecture 定义 `agentic-dev` **Source / Authoring Model** 中的长期 capability 类型、语义所有权、组合关系与 Human / Agent 双视窗。这里的 capability type 回答“源码语义由谁拥有”，不等于“普通软件 Consumer 最终安装什么目录或文件”。Consumer-facing Distribution Model 通过显式分类、构建与发布把 Source semantics 投影为版本化 Agent Skills，不得把 Source type / path 机械复制成 Consumer runtime namespace。
 
 核心原则：
 
@@ -83,7 +83,39 @@ Guide 可以完整讲述规范模型，但不拥有 canonical Gate、Rule routin
 
 Research 保存非规范性的外部证据、比较、实验与技术参考。Research 可以触发候选演进，但只有结论进入真实 Method / Architecture / Skill / Rule owner 后才成为 reusable capability；只有进入 Project owner 后才成为当前 Repository 的长期项目事实。
 
-## 3. Agent View 与 Human View
+## 3. Source Model 与 Distribution Model
+
+Capability type 与 Distribution disposition 是两套正交分类。
+
+### Source / Authoring Model
+
+Source owner 继续按长期语义责任划分为 Method、Architecture、Skill、Rule 等。一个 Source owner 是否独立存在，取决于 single semantic ownership、演进责任与 provider runtime，而不是它是否会以同名文件发布给 Consumer。
+
+### Distribution Model
+
+Gate B 建立的 distribution metadata 只回答该 Source asset 如何参与发布：
+
+- `source-only`：只服务 `agentic-dev` 项目、自身 runtime、研究、验证或维护，不进入 Consumer Release；
+- `release-input`：其语义会进入 Release，但需要 build transformation / composition，不能按 Source path 原样投影；
+- `release-direct`：自身已经是可直接进入 Release 的运行资产；
+- `retired`：退出 Current model。
+
+首版普通软件 Consumer 以 **Skill package** 为主要 Distribution Unit。一个发布 Skill 可以按 Agent Skills Specification 使用 `SKILL.md`、`references/`、`scripts/`、`assets/` 承载被编译后的必要运行语义。
+
+这不改变 Source canonical ownership：
+
+```text
+Method / Architecture / Rule / Tool source owner
+→ release-input
+→ deterministic build / transformation
+→ one or more Skill packages
+```
+
+发布 projection 只是 distribution result，不取得被编译 Source semantics 的 canonical authoring ownership；后续 Source 变更仍回到真实 Source owner。
+
+`release-direct` Skill 也不因此取得完整软件开发生命周期。Skill 仍保持有界 Trigger / Purpose / Procedure / Exit；复杂 lifecycle 可以由多个可组合 Skill 与按需 references 共同支撑，不能为了获得简单目录退化成单一超级 Skill。
+
+## 4. Agent View 与 Human View
 
 ### Agent View
 
@@ -114,7 +146,7 @@ README
 
 Human View 可以为了教学和理解重复表达 canonical 语义，但必须清楚指向真实 owner。重复解释允许，重复拥有规范语义禁止。
 
-## 4. 发现与选择责任
+## 5. 发现与选择责任
 
 不同能力类型不必共享一种发现机制，但每类 Agent-facing capability 必须有明确入口：
 
@@ -126,19 +158,19 @@ Human View 可以为了教学和理解重复表达 canonical 语义，但必须�
 
 Method selection 是否需要独立工具，应由规模和 eval 决定；在 Method 数量较少时可以使用稳定、可审计的 Repository-local selector instance，但不得形成与 Method 本身长期漂移的第二套流程正文。
 
-## 5. Consumer 本地特化
+## 6. Consumer 本地特化
 
-Consumer Repository 始终拥有自己的项目事实、Project Knowledge 与 local Authority。`agentic-dev` 提供可采用的 Method / Skill / Rule / Architecture，但 adoption 不等于全量复制，更不等于传播 upstream Project state。
+Consumer Repository 始终拥有自己的项目事实、Project Knowledge 与 local Authority。普通软件 Consumer **安装版本化 Release**，而不是按 upstream Source type 逐类复制 Method / Architecture / Rule / Tool。
 
-- Method 可以 adopt / adapt，只要 Consumer 明确本地 canonical owner；
-- Architecture 可以 adopt / adapt 通用结构 contract；
-- Skill 应优先保持可复用 procedure，避免吸收 Consumer-specific policy；
-- Rule 可以根据 Consumer Authority 本地化、替代或新增；
-- Guide 可以针对 Consumer 提供本地 Human View，但不得改变 Agent canonical semantics；
-- Consumer 必须建立自己的 Project capability instance / Roadmap 等 local Project Knowledge；
+- 通用 Source Method / Architecture / Rule 可以作为 `release-input` 被编译进一个或多个 Skill package；
+- 发布 Skill 应保持有界 procedure，并通过 references / scripts / assets 按需承载复杂 supporting content；
+- Consumer-specific 产品事实、Requirement、System Architecture、技术 policy、授权、术语、当前状态与其他本地治理继续由 Consumer Repository Authority 持有；
+- 某项通用 Rule 语义若进入 Release，只能以适合发布 Skill 的运行约束被投影；Consumer-local Rule / policy 不因上游发布而失去本地 owner；
+- Guide 默认是 provider Human View，不作为 Release object；
+- Consumer 必须拥有自己的 Project Knowledge / Roadmap / current work，不复制 upstream Project state；
 - upstream provenance 与 Consumer-local Authority 必须区分。
 
-## 6. Project 与 Capability 分类
+## 7. Project 与 Capability 分类
 
 当一个长期事实需要沉淀时，先问两个问题：
 
@@ -147,7 +179,7 @@ Consumer Repository 始终拥有自己的项目事实、Project Knowledge 与 lo
 
 前者进入真实 Capability owner；后者进入 Project Knowledge。具体判断见 `docs/architecture/project-knowledge-architecture.md`。
 
-## 7. 演进判定
+## 8. 演进判定
 
 当真实 Evidence 需要长期沉淀时，先判断 semantic owner：
 
