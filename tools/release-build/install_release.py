@@ -48,25 +48,52 @@ def _target_relative(package_relative: str) -> Path | None:
     return Path(package_relative[len(prefix):])
 
 
+def _release_owned_target_integrity(
+    manifest: dict[str, object],
+) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for package_relative, digest in _integrity_map(manifest).items():
+        relative = _target_relative(package_relative)
+        if relative is None:
+            continue
+        relative_text = relative.as_posix()
+        if (
+            relative_text == ".agents/README.md"
+            or relative_text == ".agents/release/skill-index.json"
+            or relative_text.startswith(".agents/skills/")
+        ):
+            result[relative_text] = digest
+    return result
+
+
 def _verify_existing_release_owned_state(
     target: Path,
     old_manifest: dict[str, object],
 ) -> None:
-    for package_relative, digest in _integrity_map(old_manifest).items():
-        relative = _target_relative(package_relative)
-        if relative is None:
-            continue
-        if not (
-            relative.as_posix() == ".agents/README.md"
-            or relative.as_posix() == ".agents/release/skill-index.json"
-            or relative.as_posix().startswith(".agents/skills/")
-        ):
-            continue
+    expected = _release_owned_target_integrity(old_manifest)
+    for relative_text, digest in expected.items():
+        relative = Path(relative_text)
         current = target / relative
         if not current.is_file():
             raise ValueError(f"installed release-owned file is missing: {relative}")
         if _sha256(current) != digest:
             raise ValueError(f"installed release-owned file was locally modified: {relative}")
+
+    for skill in _skill_names(old_manifest):
+        prefix = f".agents/skills/{skill}/"
+        expected_files = {
+            relative for relative in expected if relative.startswith(prefix)
+        }
+        skill_root = target / ".agents/skills" / skill
+        actual_files = {
+            path.relative_to(target).as_posix()
+            for path in skill_root.rglob("*")
+            if path.is_file()
+        } if skill_root.is_dir() else set()
+        if actual_files != expected_files:
+            raise ValueError(
+                f"installed release-owned Skill file set was locally modified: {skill}"
+            )
 
 
 def _skill_names(manifest: dict[str, object]) -> set[str]:
@@ -116,6 +143,35 @@ def _check_first_install_conflicts(target: Path, manifest: dict[str, object]) ->
             raise ValueError(f"existing local asset conflicts with release-owned path: {relative}")
 
 
+def _preflight_release_payload(
+    payload: Path,
+    manifest: dict[str, object],
+) -> None:
+    for skill in _skill_names(manifest):
+        source = payload / "skills" / skill
+        if not source.is_dir():
+            raise ValueError(f"release payload missing Skill directory: {skill}")
+    for relative in (
+        Path("README.md"),
+        Path("release/skill-index.json"),
+    ):
+        if not (payload / relative).is_file():
+            raise ValueError(f"release payload missing required asset: {relative}")
+
+
+def _check_upgrade_conflicts(
+    target: Path,
+    old_manifest: dict[str, object],
+    manifest: dict[str, object],
+) -> None:
+    old_skills = _skill_names(old_manifest)
+    for skill in sorted(_skill_names(manifest) - old_skills):
+        if (target / ".agents/skills" / skill).exists():
+            raise ValueError(
+                f"existing local Skill conflicts with newly introduced release Skill: {skill}"
+            )
+
+
 def install(package_root: Path, target: Path, dry_run: bool = False) -> dict[str, object]:
     package_root = package_root.resolve()
     target = target.resolve()
@@ -125,6 +181,7 @@ def install(package_root: Path, target: Path, dry_run: bool = False) -> dict[str
     payload = package_root / "repository/.agents"
     if not payload.is_dir():
         raise ValueError("release package has no repository/.agents payload")
+    _preflight_release_payload(payload, manifest)
 
     old_manifest_path = target / ".agents/release/manifest.json"
     old_manifest = _load_manifest(old_manifest_path) if old_manifest_path.is_file() else None
@@ -133,6 +190,7 @@ def install(package_root: Path, target: Path, dry_run: bool = False) -> dict[str
         _check_first_install_conflicts(target, manifest)
     else:
         _verify_existing_release_owned_state(target, old_manifest)
+        _check_upgrade_conflicts(target, old_manifest, manifest)
 
     agents_path = target / "AGENTS.md"
     existing_agents = agents_path.read_text(encoding="utf-8") if agents_path.exists() else ""
@@ -161,8 +219,6 @@ def install(package_root: Path, target: Path, dry_run: bool = False) -> dict[str
 
     for skill in sorted(_skill_names(manifest)):
         source = payload / "skills" / skill
-        if not source.is_dir():
-            raise ValueError(f"release payload missing Skill directory: {skill}")
         destination = skills_root / skill
         if destination.exists():
             raise ValueError(f"unowned local Skill conflicts during install: {skill}")
