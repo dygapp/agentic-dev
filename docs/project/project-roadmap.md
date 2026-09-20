@@ -59,19 +59,22 @@ Gate A～G 在 `agentic-dev` 内连续推进。重构期间不把真实 Consumer
 
 ## 当前门禁
 
-**当前 Gate：Gate A — Specification & Acceptance Freeze。**
+**当前 Gate：Gate B — Repository-wide Asset / Distribution Evidence & Classification。**
 
-Gate A 只负责：
+Gate A 已通过 PR #173 集成到 `master@50caf6ae58085873ed3b96fca279f77bc69d8910`，冻结 `DR-AC-01`～`DR-AC-39`。
 
-- 固化 Issue #172；
-- 固化 `distribution-rebuild-specification.md`；
-- 冻结 `DR-AC-01`～`DR-AC-39`；
-- 完成高影响独立 `review-change`；
-- 在通过复核并获得集成授权后，把规范纳入 `master`。
+Gate B 只负责：
 
-Gate A 不实施 Source / Distribution 重构，不提前修改真实 Consumer。
+- 重新验证 Source / Distribution 分离的实施依据；
+- 扫描 Current tree；
+- 建立同源 distribution metadata / inheritance contract；
+- 对 Current semantic / release owners 完成 distribution disposition；
+- 建立 deterministic distribution audit；
+- 满足 `DR-AC-09`、`DR-AC-10`、`DR-AC-11`、`DR-AC-36`。
 
-Gate A 完成后，下一自然 Gate 是 Gate B；后续 Gate 不因出现在本文中自动跳过当前门禁。
+Gate B 不实施 Gate C 的 Source / Distribution Architecture 重写，不构建最终 Release，不修改真实 Consumer。
+
+Gate B 的完整计划、执行记录与 Evidence timeline 继续由 Issue #172 / 对应 PR 持有；本 Roadmap 只记录当前 Gate。
 
 ## 后续候选
 
