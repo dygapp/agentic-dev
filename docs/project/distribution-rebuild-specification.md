@@ -327,7 +327,18 @@ Gate B 在全仓分类前，必须完成一次 Distribution Evidence Review，�
 
 不再用“文件位于 reusable 目录”隐式推断 distribution status。
 
-### 5.4 分类应同源、可机械读取
+### 5.4 首版逻辑发布目标
+
+Gate B 使用两个稳定的 logical release target，用于说明一个 release asset 最终服务哪类发布责任；它们不是物理目录，也不提前冻结 Gate D 的 Skill bundle 划分。
+
+- `software-development`：面向普通软件 Consumer 的日常开发能力，包括需求、架构澄清、实现、验证、复核、人工协作、外部操作等可复用软件开发语义；
+- `consumer-installation`：面向 Consumer 首次安装、升级、Bootstrap integration、版本迁移等发布安装责任，不属于普通产品开发生命周期。
+
+`release-input` 与 `release-direct` 必须声明上述合法 target 之一；`source-only` 与 `retired` 不得声明 release target。
+
+如果未来需要新的逻辑发布目标，必须先由当前 Distribution / Release Authority 增加稳定语义，再由 audit / build tooling 消费；不得先在工具中增加隐藏枚举。
+
+### 5.5 分类应同源、可机械读取
 
 对已经使用 YAML Front Matter 的 Markdown owner，应在文件自身增加 distribution metadata，而不是维护长期手工中央表。
 
@@ -337,7 +348,7 @@ Skill 内部的 `references/**`、`scripts/**`、`assets/**` 默认继承所属 
 
 其他独立文本 / script owner 可以使用其原生 header comment 或等价机器可读 metadata。不得为了“每个文件都打标签”给普通 fixture、生成物或 Skill 内部附件制造重复 metadata。
 
-### 5.5 不建立第二套手工 Registry
+### 5.6 不建立第二套手工 Registry
 
 可以通过脚本从同源 metadata 生成：
 
