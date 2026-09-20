@@ -2,6 +2,8 @@
 id: architecture:human-review
 type: architecture
 status: active
+distribution: release-input
+release-target: software-development
 ---
 
 # 人工评审架构

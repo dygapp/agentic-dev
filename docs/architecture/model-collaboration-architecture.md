@@ -2,6 +2,8 @@
 id: architecture:model-collaboration
 type: architecture
 status: active
+distribution: release-input
+release-target: software-development
 ---
 
 # 模型协作架构

@@ -2,6 +2,7 @@
 id: architecture:method
 type: architecture
 status: active
+distribution: source-only
 ---
 
 # Method 架构

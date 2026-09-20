@@ -2,6 +2,8 @@
 id: architecture:requirement-authority
 type: architecture
 status: active
+distribution: release-input
+release-target: software-development
 ---
 
 # Requirement Authority 架构

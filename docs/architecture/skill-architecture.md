@@ -2,6 +2,7 @@
 id: architecture:skill
 type: architecture
 status: active
+distribution: source-only
 ---
 
 # Skill 架构

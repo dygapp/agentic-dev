@@ -2,6 +2,8 @@
 id: architecture:data-migration
 type: architecture
 status: active
+distribution: release-input
+release-target: software-development
 ---
 
 # 数据迁移治理架构

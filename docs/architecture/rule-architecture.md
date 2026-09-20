@@ -2,6 +2,7 @@
 id: architecture:rule
 type: architecture
 status: active
+distribution: source-only
 ---
 
 # Rule 架构

@@ -2,6 +2,7 @@
 id: guide:architecture-navigation
 type: guide
 status: active
+distribution: source-only
 ---
 
 # Architecture 目录导航

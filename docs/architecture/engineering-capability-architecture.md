@@ -2,6 +2,7 @@
 id: architecture:engineering-capability
 type: architecture
 status: active
+distribution: source-only
 ---
 
 # 工程能力架构

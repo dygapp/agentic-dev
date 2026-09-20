@@ -2,6 +2,7 @@
 id: architecture:rule-discovery
 type: architecture
 status: active
+distribution: source-only
 ---
 
 # 规则发现架构
