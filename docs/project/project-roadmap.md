@@ -47,7 +47,7 @@ Issue #172 只承担实施协调、Gate 与 Evidence timeline，不作为第二�
 本轮实施固定按以下 Gate 推进：
 
 1. Gate A — Specification & Acceptance Freeze
-2. Gate B — Repository-wide Asset / Distribution Classification
+2. Gate B — Repository-wide Asset / Distribution Evidence & Classification
 3. Gate C — Source / Distribution Model Rebuild
 4. Gate D — Skill Packaging & Release Build
 5. Gate E — Automated Runtime Acceptance
@@ -65,7 +65,7 @@ Gate A 只负责：
 
 - 固化 Issue #172；
 - 固化 `distribution-rebuild-specification.md`；
-- 冻结 `DR-AC-01`～`DR-AC-36`；
+- 冻结 `DR-AC-01`～`DR-AC-39`；
 - 完成高影响独立 `review-change`；
 - 在通过复核并获得集成授权后，把规范纳入 `master`。
 
@@ -97,7 +97,7 @@ Gate A 完成后，下一自然 Gate 是 Gate B；后续 Gate 不因出现在本
 - C6 verification invariant 继续暂缓，直到出现足够跨案例 Evidence；
 - Human Guide、Research、Project Evolution 不进入 ordinary Agent 固定 Bootstrap；只有当前责任明确需要时才加载；
 - 每个 Issue #172 实现 PR 必须显式声明 Covered Acceptance IDs、Not Covered IDs 与 Current Evidence；
-- 实施不得以便利性静默缩减 `DR-AC-01`～`DR-AC-36`。
+- 实施不得以便利性静默缩减 `DR-AC-01`～`DR-AC-39`。
 
 ## 状态归属
 
