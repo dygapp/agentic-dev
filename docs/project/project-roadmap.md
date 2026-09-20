@@ -60,22 +60,29 @@ Gate A～G 在 `agentic-dev` 内连续推进。重构期间不把真实 Consumer
 
 ## 当前门禁
 
-**当前 Gate：Gate B — Repository-wide Asset / Distribution Evidence & Classification。**
+**当前 Gate：Gate C — Source / Distribution Model Rebuild。**
 
-Gate A 已通过 PR #173 集成到 `master@50caf6ae58085873ed3b96fca279f77bc69d8910`，冻结 `DR-AC-01`～`DR-AC-39`。
+Gate A 已通过 PR #173 集成并冻结 `DR-AC-01`～`DR-AC-39`。
 
-Gate B 只负责：
+Gate B 已完成：
 
-- 重新验证 Source / Distribution 分离的实施依据；
-- 扫描 Current tree；
-- 建立同源 distribution metadata / inheritance contract；
-- 对 Current semantic / release owners 完成 distribution disposition；
-- 建立 deterministic distribution audit；
-- 满足 `DR-AC-09`、`DR-AC-10`、`DR-AC-11`、`DR-AC-36`。
+- Distribution Evidence Review；
+- Current tree 全仓发布分类；
+- 同源 distribution metadata / inheritance contract；
+- deterministic distribution audit；
+- `DR-AC-09`、`DR-AC-10`、`DR-AC-11`、`DR-AC-36` 的 Gate B Evidence。
 
-Gate B 不实施 Gate C 的 Source / Distribution Architecture 重写，不构建最终 Release，不修改真实 Consumer。
+Gate B 的完整执行记录、独立复核与 Actions Evidence 由 PR #174 / Issue #172 / GitHub Actions 持有，本 Roadmap 不复制其流水账。
 
-Gate B 的完整计划、执行记录与 Evidence timeline 继续由 Issue #172 / 对应 PR 持有；本 Roadmap 只记录当前 Gate。
+Gate C 只负责：
+
+- 重构 Source / Distribution 的长期 Architecture / ownership model；
+- 明确哪些 Method / Rule / Architecture 继续属于 provider authoring，哪些语义只作为 release input；
+- 将 Consumer adoption / upgrade 的长期语义改为面向 versioned release install / update；
+- 清除“upstream capability type → Consumer 同名 capability type”的默认 projection 假设；
+- 满足 `DR-AC-01`～`DR-AC-08` 与 `DR-AC-20`。
+
+Gate C 不构建最终 Release，不执行真实 Consumer migration / validation；后续 Gate 不因出现在本文中自动跳过当前门禁。
 
 ## 后续候选
 
