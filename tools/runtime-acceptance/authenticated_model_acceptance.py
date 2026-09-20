@@ -10,6 +10,7 @@ import json
 import os
 import subprocess
 import sys
+import zipfile
 from pathlib import Path
 from typing import Any
 
@@ -179,8 +180,17 @@ def _collect_mode_evidence(
         run_path = root / f"{scenario}.run.json"
         grade_path = root / f"{scenario}.grade.json"
         jsonl_path = root / f"{scenario}.jsonl"
+        stderr_path = root / f"{scenario}.stderr.txt"
         grader_path = root / f"{scenario}.grader.jsonl"
-        for path in (run_path, grade_path, jsonl_path, grader_path):
+        grader_stderr_path = root / f"{scenario}.grader.stderr.txt"
+        for path in (
+            run_path,
+            grade_path,
+            jsonl_path,
+            stderr_path,
+            grader_path,
+            grader_stderr_path,
+        ):
             if not path.is_file():
                 raise AuthenticatedRuntimeError(
                     f"missing {mode} evidence file for {scenario}: {path}"
@@ -240,9 +250,56 @@ def _collect_mode_evidence(
     }
 
 
+def _write_evidence_bundle(
+    bundle_path: Path,
+    report_path: Path,
+    payload: dict[str, Any],
+) -> str:
+    evidence_paths = {
+        item["path"]
+        for group_name in ("activation", "behavior")
+        for item in payload[group_name]["evidence_files"]
+    }
+    bundle_path = bundle_path.resolve()
+    bundle_path.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(
+        bundle_path,
+        mode="w",
+        compression=zipfile.ZIP_DEFLATED,
+        compresslevel=9,
+    ) as zf:
+        report_info = zipfile.ZipInfo(
+            "authenticated-model-runtime.json",
+            date_time=(1980, 1, 1, 0, 0, 0),
+        )
+        report_info.compress_type = zipfile.ZIP_DEFLATED
+        report_info.external_attr = (0o100644 << 16)
+        zf.writestr(report_info, report_path.read_bytes())
+
+        for relative in sorted(evidence_paths):
+            source = (REPO_ROOT / relative).resolve()
+            if REPO_ROOT not in source.parents:
+                raise AuthenticatedRuntimeError(
+                    f"evidence path escapes repository root: {relative}"
+                )
+            if not source.is_file():
+                raise AuthenticatedRuntimeError(
+                    f"evidence file disappeared before bundling: {relative}"
+                )
+            info = zipfile.ZipInfo(
+                relative,
+                date_time=(1980, 1, 1, 0, 0, 0),
+            )
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = (0o100644 << 16)
+            zf.writestr(info, source.read_bytes())
+    return _sha256(bundle_path)
+
+
 def run_authenticated_acceptance(
     codex_bin: str,
     report_path: Path,
+    bundle_path: Path,
 ) -> dict[str, Any]:
     _require_clean_checkout(REPO_ROOT)
     source_sha = _git_head(REPO_ROOT)
@@ -289,7 +346,13 @@ def run_authenticated_acceptance(
         json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    return payload
+    bundle_sha256 = _write_evidence_bundle(bundle_path, report_path, payload)
+    return {
+        **payload,
+        "report_path": str(report_path),
+        "evidence_bundle": str(bundle_path.resolve()),
+        "evidence_bundle_sha256": bundle_sha256,
+    }
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -298,6 +361,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--report",
         default=str(RESULTS / "authenticated-model-runtime.json"),
+    )
+    parser.add_argument(
+        "--bundle",
+        default=str(RESULTS / "authenticated-model-runtime-evidence.zip"),
     )
     return parser.parse_args(argv)
 
@@ -308,6 +375,7 @@ def main(argv: list[str] | None = None) -> int:
         payload = run_authenticated_acceptance(
             args.codex_bin,
             Path(args.report),
+            Path(args.bundle),
         )
     except (
         AuthenticatedRuntimeError,
