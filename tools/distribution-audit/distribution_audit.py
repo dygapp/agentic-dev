@@ -84,6 +84,7 @@ def _markdown_assets(repo_root: Path) -> Iterable[Asset]:
     candidates.extend(sorted((repo_root / "docs").rglob("*.md")))
     candidates.extend(sorted((repo_root / "evals").glob("*.md")))
     candidates.extend(sorted((repo_root / "evals").glob("*/README.md")))
+    candidates.append(repo_root / "skills" / "README.md")
 
     seen: set[Path] = set()
     for path in candidates:
@@ -172,13 +173,25 @@ def collect_assets(repo_root: Path) -> list[Asset]:
     return sorted(assets, key=lambda asset: asset.path)
 
 
+def _is_generated_runtime_file(relative: Path) -> bool:
+    if "__pycache__" in relative.parts:
+        return True
+    if relative.suffix in {".pyc", ".pyo"}:
+        return True
+    if any(part in {".pytest_cache", ".mypy_cache", ".ruff_cache"} for part in relative.parts):
+        return True
+    if relative.parts[:2] in {("evals", "results"), ("evals", "workspace")}:
+        return True
+    return False
+
+
 def _repository_files(repo_root: Path) -> list[str]:
     result: list[str] = []
     for path in sorted(repo_root.rglob("*")):
         if not path.is_file():
             continue
         relative = path.relative_to(repo_root)
-        if ".git" in relative.parts:
+        if ".git" in relative.parts or _is_generated_runtime_file(relative):
             continue
         result.append(relative.as_posix())
     return result
