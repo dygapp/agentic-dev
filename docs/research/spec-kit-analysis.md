@@ -2,6 +2,7 @@
 id: research:spec-kit
 type: research
 status: active
+distribution: source-only
 ---
 
 # 研究总结 — github/spec-kit

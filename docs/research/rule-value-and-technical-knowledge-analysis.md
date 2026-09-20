@@ -2,6 +2,7 @@
 id: research:rule-value-and-technical-knowledge
 type: research
 status: active
+distribution: source-only
 ---
 
 # 技术规则的必要性与增量价值分析

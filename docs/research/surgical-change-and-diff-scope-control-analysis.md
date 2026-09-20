@@ -2,6 +2,7 @@
 id: research:surgical-change
 type: research
 status: active
+distribution: source-only
 ---
 
 # 精准修改与差异范围控制研究

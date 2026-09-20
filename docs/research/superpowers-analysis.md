@@ -2,6 +2,7 @@
 id: research:superpowers
 type: research
 status: active
+distribution: source-only
 ---
 
 # 研究总结 — obra/superpowers
