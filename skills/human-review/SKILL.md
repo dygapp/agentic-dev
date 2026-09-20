@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "architecture:human-review;rule:human-intervention-necessity;rule:evidence-type-must-match-claim;rule:human-review-baseline-isolation;rule:visual-evidence"
 ---
 
 # 人工评审
