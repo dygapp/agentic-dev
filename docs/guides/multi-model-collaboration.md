@@ -2,6 +2,7 @@
 id: guide:multi-model-collaboration
 type: guide
 status: active
+distribution: source-only
 ---
 
 # 多模型协作使用指南

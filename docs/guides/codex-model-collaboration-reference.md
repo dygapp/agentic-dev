@@ -2,6 +2,7 @@
 id: guide:codex-model-collaboration-reference
 type: guide
 status: active
+distribution: source-only
 ---
 
 # Codex 模型协作参考配置

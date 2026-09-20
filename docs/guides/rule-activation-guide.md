@@ -2,6 +2,7 @@
 id: guide:rule-adoption-navigation
 type: guide
 status: active
+distribution: source-only
 ---
 
 # 理解 Rule Discovery

@@ -2,6 +2,7 @@
 id: guide:establishing-requirement-baseline
 type: guide
 status: active
+distribution: source-only
 ---
 
 # 建立项目 Requirement Baseline

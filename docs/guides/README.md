@@ -2,6 +2,7 @@
 id: guide:guides-navigation
 type: guide
 status: active
+distribution: source-only
 ---
 
 # 人类使用指南

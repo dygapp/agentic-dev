@@ -2,6 +2,7 @@
 id: guide:adopting-agentic-dev
 type: guide
 status: active
+distribution: source-only
 ---
 
 # 首次采用 agentic-dev

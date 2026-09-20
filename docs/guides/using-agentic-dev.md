@@ -2,6 +2,7 @@
 id: guide:using-agentic-dev
 type: guide
 status: active
+distribution: source-only
 ---
 
 # 使用 agentic-dev
