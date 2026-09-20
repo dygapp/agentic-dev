@@ -74,9 +74,38 @@ class CapabilityModelContractTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("Project 不传播，Capability 传播", project_arch)
-        self.assertIn("Project 不传播，Capability 传播", consumer_arch)
-        self.assertIn("不是可传播给 Consumer 的 capability", profile)
+        self.assertIn("Project 不传播；Source capability semantics 通过 Distribution Build 发布", project_arch)
+        self.assertIn("Source type / path 不直接传播", project_arch)
+        self.assertIn("Consumer 安装 Release", consumer_arch)
+        self.assertIn("不是 Consumer Release", profile)
+
+    def test_consumer_distribution_contract_is_release_based(self):
+        engineering = (
+            REPO_ROOT / "docs/architecture/engineering-capability-architecture.md"
+        ).read_text(encoding="utf-8")
+        consumer = (REPO_ROOT / "docs/architecture/consumer-architecture.md").read_text(
+            encoding="utf-8"
+        )
+        adoption = (REPO_ROOT / "docs/methods/consumer-adoption.md").read_text(
+            encoding="utf-8"
+        )
+        upgrade = (REPO_ROOT / "docs/methods/consumer-upgrade.md").read_text(
+            encoding="utf-8"
+        )
+        agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
+
+        self.assertIn("Source Model 与 Distribution Model", engineering)
+        self.assertIn("Skill package", engineering)
+        self.assertIn(".agents/skills/**", consumer)
+        self.assertIn("根 `AGENTS.md` 始终由 Consumer 拥有", consumer)
+        self.assertIn("默认**不要求**创建", consumer)
+        self.assertIn(".agents/rules/", consumer)
+        self.assertIn("不默认安装 upstream Rule tree", consumer)
+        self.assertIn("exact versioned release", adoption)
+        self.assertIn("current installed release", upgrade)
+        self.assertIn("不比较 Consumer tree 与 upstream Source tree", upgrade)
+        self.assertIn("普通软件 Consumer 通过版本化 Release", agents)
+        self.assertIn("upstream access = 0", agents)
 
     def test_runtime_instance_locator_has_single_project_owner(self):
         profile = (REPO_ROOT / "docs/project/project-capability-profile.md").read_text(
