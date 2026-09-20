@@ -126,5 +126,37 @@
     "should_trigger_target": false,
     "expected_primary_skill": "systematic-debug",
     "reason": "当前首先需要 Unexpected Failure root-cause investigation；这是 converge 的近似负例。"
+  },
+  {
+    "id": "A-RB-01",
+    "target_skill": "establish-requirement-baseline",
+    "query": "这是一个新软件项目，现有资料来自合同、会议纪要、旧系统截图和几份互相冲突的需求草稿，目前还没有可靠的长期需求权威。先不要进入具体 Feature 开发，请把这些输入收敛成 Fresh Context Agent 可以持续使用的 Requirement Baseline。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "establish-requirement-baseline",
+    "reason": "目标是项目级 Requirement Baseline 建立，而不是单个 Feature 的意图澄清或 Specification。"
+  },
+  {
+    "id": "A-AR-01",
+    "target_skill": "clarify-architecture",
+    "query": "三个即将开发的功能都依赖同一个跨模块身份边界，目前没有稳定的责任划分；这个决定一旦进入实现后返工成本很高，而且不先解决就无法可靠做各自的技术方案。请先处理这个系统性长期结构问题。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "clarify-architecture",
+    "reason": "存在跨多个 Feature、长期、高返工成本并阻塞后续规划的系统性 architecture driver。"
+  },
+  {
+    "id": "A-MC-01",
+    "target_skill": "activate-model-collaboration",
+    "query": "当前仓库已经安装的 agentic-dev Release 包含模型协作能力。现在需要在不改变产品开发流程的前提下，探测实际运行平台是否支持子 Agent、独立 review 和 single-writer，并只启用已经验证的本地协作策略。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "activate-model-collaboration",
+    "reason": "目标是在 installed Release 已提供 capability 后建立并验证 Consumer-local collaboration instance。"
+  },
+  {
+    "id": "A-EO-01",
+    "target_skill": "external-operation",
+    "query": "当前任务已授权触发仓库的验证 workflow。请先读取当前 run 状态，执行最小必要触发，然后持续读取到终态或明确 blocker，并只根据重新读取的远程状态汇报结果。",
+    "should_trigger_target": true,
+    "expected_primary_skill": "external-operation",
+    "reason": "任务需要对外部可变状态执行授权写入并完成写后重新读取与有界观察。"
   }
 ]
