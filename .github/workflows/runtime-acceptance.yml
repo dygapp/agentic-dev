@@ -133,6 +133,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import json
+          import os
           from pathlib import Path
 
           summary = json.loads(
@@ -142,7 +143,7 @@ jobs:
           )
           if summary.get("status") != "PASS":
               raise SystemExit("semantic grading did not PASS")
-          Path("$RUNNER_TEMP/model-runtime-status.json").write_text(
+          Path(os.environ["RUNNER_TEMP"], "model-runtime-status.json").write_text(
               json.dumps(
                   {
                       "status": "PASS",
