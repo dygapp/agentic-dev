@@ -25,6 +25,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import zipfile
 from pathlib import Path
 from typing import Iterable
 
@@ -42,6 +43,7 @@ AGENTIC_DEV_DISCOVERY_BOOTSTRAP_PATHS = (
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
+RELEASE_BUILDER = ROOT / "tools" / "release-build" / "release_build.py"
 RUN_CONTEXT = {
     "source_commit": None,
     "codex_version": None,
@@ -89,6 +91,112 @@ def populate_isolated_skill_copies(workspace: Path) -> None:
 
     for skill_dir in iter_skill_dirs():
         shutil.copytree(skill_dir, skill_root / skill_dir.name)
+
+
+def _safe_extract_release(archive: Path, destination: Path) -> None:
+    destination = destination.resolve()
+    destination.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(archive, "r") as zf:
+        for info in zf.infolist():
+            target = (destination / info.filename).resolve()
+            if target != destination and destination not in target.parents:
+                raise RuntimeError(f"Release archive path escapes extraction root: {info.filename}")
+        zf.extractall(destination)
+
+
+def build_release_package(source_commit: str):
+    """Build one exact-source Release package outside the repository for runtime evals."""
+    temp_context = tempfile.TemporaryDirectory(prefix="agentic-dev-eval-release-")
+    temp_root = Path(temp_context.name)
+    output_dir = temp_root / "output"
+    release_version = f"0.0.0-eval.{source_commit[:12]}"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RELEASE_BUILDER),
+            "build",
+            "--repo-root",
+            str(ROOT),
+            "--output-dir",
+            str(output_dir),
+            "--source-sha",
+            source_commit,
+            "--release-version",
+            release_version,
+            "--evidence-locator",
+            "codex-runtime-eval:exact-subject",
+        ],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        temp_context.cleanup()
+        raise RuntimeError(
+            "Release build failed for runtime eval "
+            f"({completed.returncode}): {completed.stdout}\n{completed.stderr}"
+        )
+    try:
+        result = json.loads(completed.stdout)
+    except json.JSONDecodeError as exc:
+        temp_context.cleanup()
+        raise RuntimeError(
+            f"Release builder did not emit JSON: {completed.stdout}"
+        ) from exc
+
+    archive = output_dir / result["archive"]
+    package_root = temp_root / "package"
+    _safe_extract_release(archive, package_root)
+    return temp_context, package_root, result
+
+
+def install_release_runtime(workspace: Path, package_root: Path) -> None:
+    """Install the built Release into an isolated Consumer-like eval workspace."""
+    if not (workspace / ".git").exists():
+        completed = subprocess.run(
+            ["git", "init", "-q"],
+            cwd=workspace,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=False,
+        )
+        if completed.returncode != 0:
+            raise RuntimeError(
+                f"Cannot initialize eval Consumer repository: {completed.stderr}"
+            )
+
+    agents = workspace / "AGENTS.md"
+    if not agents.exists():
+        agents.write_text(
+            "# Consumer Repository Authority\n\n"
+            "The current workspace and prompt are the complete Consumer context. "
+            "Do not access upstream agentic-dev Source state.\n",
+            encoding="utf-8",
+        )
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(package_root / "install.py"),
+            "--target",
+            str(workspace),
+        ],
+        cwd=workspace,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError(
+            "Release install failed for runtime eval "
+            f"({completed.returncode}): {completed.stdout}\n{completed.stderr}"
+        )
+    if not (workspace / ".agents/release/manifest.json").is_file():
+        raise RuntimeError("Release install did not create installed manifest")
 
 
 def materialize_workspace_files(workspace: Path, files: dict[str, str]) -> None:
@@ -313,7 +421,11 @@ def scenario_ids_for_mode(args: argparse.Namespace) -> set[str]:
     return activation_ids | behavior_ids
 
 
-def run_activation(codex_bin: str, selected: set[str] | None) -> int:
+def run_activation(
+    codex_bin: str,
+    selected: set[str] | None,
+    release_package: Path | None = None,
+) -> int:
     failures = 0
 
     for case in activation_cases():
@@ -325,7 +437,10 @@ def run_activation(codex_bin: str, selected: set[str] | None) -> int:
             prefix=f"agentic-dev-activation-{scenario_id}-"
         ) as temp_dir:
             cwd = Path(temp_dir)
-            populate_isolated_skill_copies(cwd)
+            if release_package is None:
+                populate_isolated_skill_copies(cwd)
+            else:
+                install_release_runtime(cwd, release_package)
             failures += run_codex(
                 codex_bin=codex_bin,
                 scenario_id=scenario_id,
@@ -338,7 +453,11 @@ def run_activation(codex_bin: str, selected: set[str] | None) -> int:
     return failures
 
 
-def run_behavior(codex_bin: str, selected: set[str] | None) -> int:
+def run_behavior(
+    codex_bin: str,
+    selected: set[str] | None,
+    release_package: Path | None = None,
+) -> int:
     failures = 0
 
     for skill_name, case in behavior_cases():
@@ -350,7 +469,6 @@ def run_behavior(codex_bin: str, selected: set[str] | None) -> int:
             prefix=f"agentic-dev-behavior-{scenario_id}-"
         ) as temp_dir:
             cwd = Path(temp_dir)
-            populate_isolated_skill_copies(cwd)
 
             workspace_write = False
             prompt = f"${skill_name} {case['prompt']}"
@@ -362,6 +480,11 @@ def run_behavior(codex_bin: str, selected: set[str] | None) -> int:
                     "$execute-unit 读取当前目录的 AGENTS.md 和 unit.md，只实现 "
                     "greeting-01，并按仓库规则验证；完成后记录当前证据并停止。"
                 )
+
+            if release_package is None:
+                populate_isolated_skill_copies(cwd)
+            else:
+                install_release_runtime(cwd, release_package)
 
             failed = run_codex(
                 codex_bin=codex_bin,
@@ -437,6 +560,11 @@ def parse_args() -> argparse.Namespace:
         help="run only the given scenario id; repeat for multiple ids",
     )
     parser.add_argument(
+        "--release-runtime",
+        action="store_true",
+        help="build and install the exact-source Release before activation/behavior scenarios",
+    )
+    parser.add_argument(
         "--codex-bin",
         default=os.environ.get("CODEX_BIN", "codex"),
         help="Codex CLI executable (default: CODEX_BIN or codex)",
@@ -463,21 +591,41 @@ def main() -> int:
             )
             return 2
 
+    if args.release_runtime and args.discovery:
+        print("--release-runtime is not valid with --discovery", file=sys.stderr)
+        return 2
+
     RUN_CONTEXT["source_commit"] = current_source_commit()
     RUN_CONTEXT["codex_version"] = check_codex(args.codex_bin)
     print(f"Source commit: {RUN_CONTEXT['source_commit']}")
 
     RESULTS.mkdir(parents=True, exist_ok=True)
 
-    if args.activation:
-        failures = run_activation(args.codex_bin, selected)
-    elif args.behavior:
-        failures = run_behavior(args.codex_bin, selected)
-    elif args.discovery:
-        failures = run_discovery(args.codex_bin, selected)
-    else:
-        failures = run_activation(args.codex_bin, selected)
-        failures += run_behavior(args.codex_bin, selected)
+    release_context = None
+    release_package = None
+    try:
+        if args.release_runtime:
+            release_context, release_package, release_result = build_release_package(
+                RUN_CONTEXT["source_commit"]
+            )
+            print(
+                "Release runtime: "
+                f"{release_result['release_id']} "
+                f"archive_sha256={release_result['archive_sha256']}"
+            )
+
+        if args.activation:
+            failures = run_activation(args.codex_bin, selected, release_package)
+        elif args.behavior:
+            failures = run_behavior(args.codex_bin, selected, release_package)
+        elif args.discovery:
+            failures = run_discovery(args.codex_bin, selected)
+        else:
+            failures = run_activation(args.codex_bin, selected, release_package)
+            failures += run_behavior(args.codex_bin, selected, release_package)
+    finally:
+        if release_context is not None:
+            release_context.cleanup()
 
     if failures:
         print(f"Codex process failures: {failures}", file=sys.stderr)
