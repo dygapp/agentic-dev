@@ -93,6 +93,21 @@ GitHub Connector / API 主要承担 workflow 触发、branch / PR 协调与结�
 
 本文件不维护 Rule id inventory、scope metadata、候选集或 Rule → signal 映射。
 
+### 3.3 Release Build 实例
+
+当前 Repository 的版本化 Skill Release 构建实例：
+
+- Architecture contract：`docs/architecture/release-architecture.md`；
+- deterministic builder：`tools/release-build/release_build.py`；
+- installer source：`tools/release-build/install_release.py`；
+- cloud build / evidence transport：`.github/workflows/release-build.yml`；
+- release identity 输入：exact source SHA + explicit release version；
+- build evidence：exact-subject GitHub Actions run + uploaded release artifact。
+
+Builder 从 Current Source asset 的 distribution metadata 与各 `SKILL.md` 自有 composition metadata 机械恢复发布内容，生成 manifest、Skill index、checksums 与 install artifact。
+
+本节只拥有 `agentic-dev` 当前 Release Build locator / transport instance，不复制 Skill inventory、Skill → Source composition、manifest 内容或 Release Architecture 正文。精确 candidate id、archive checksum、workflow run 与 artifact id 始终从当前 build Evidence 恢复。
+
 ## 4. Skill Discovery 实例
 
 当前 Repository 的 Skill root 为 `skills/`，ordinary Agent 使用 Agent Skills 原生 discovery，根据 Skill `name` / `description` 与当前责任按需加载 `SKILL.md`。

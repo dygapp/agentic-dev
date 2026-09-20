@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "rule:async-operation-bounded-observation;rule:human-intervention-necessity;rule:safe-external-write;rule:shared-resource-concurrency-ownership;rule:temporary-evidence-to-persistent-input-promotion;rule:evidence-claim-reuse-across-commits;rule:evidence-type-must-match-claim;rule:human-review-baseline-isolation;rule:verification-contract-currentness"
 ---
 
 # github-actions-verification
@@ -21,13 +22,13 @@ metadata:
 - Required verification claims；
 - Existing workflows / branch / PR topology；
 - Runtime、artifact 与成本约束；
-- 当前任务适用的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 读取 Consumer 当前 workflow、触发拓扑和权限，不从 `agentic-dev` 推断项目事实。
 2. 明确哪些 claim 必须由 Actions 证明，以及对应 branch/PR/commit baseline。
-3. 通过 Rule Discovery 加载 verification / operations / repository / technology 相关 Rules。
+3. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 4. 设计最小分层验证：优先复用缓存、预构建运行环境与已生成 artifact，但不得牺牲可追溯性。
 5. 配置合理 timeout、cancellation、失败诊断与关键日志/证据保留。
 6. 触发后按精确 commit 读取 run/job/step 终态；异步状态按有界观察处理。

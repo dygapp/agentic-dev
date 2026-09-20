@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "method:ai-development;architecture:requirement-authority;rule:human-intervention-necessity;rule:authoritative-artifact-lifecycle-review"
 ---
 
 # specify
@@ -20,12 +21,12 @@ metadata:
 - Clarified Intent；
 - 当前 Repository / Domain Authority；
 - Existing Specification（增量修改时）；
-- 当前任务适用的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 读取当前权威和已有 Specification，确认目标、范围与现有行为。
-2. 通过 Rule Discovery 加载当前规格工作真正适用的 Rules。
+2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 3. 写明 Goal、In/Out of Scope、Observable Behavior、Business Rules、Boundary/Failure Behavior、Acceptance Criteria 与必要非功能义务。
 4. 把 HOW、文件路径、类/函数、框架细节等实现选择留给 Technical Planning / Execute，除非它们本身是外部强制约束。
 5. 对跨功能长期业务术语、不变量或规则形成 Domain Authority Candidate；只有当前仓库授权允许时才更新长期 Authority。

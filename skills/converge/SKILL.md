@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "method:ai-development;architecture:data-migration;rule:human-intervention-necessity;rule:temporary-evidence-to-persistent-input-promotion;rule:authoritative-artifact-lifecycle-review;rule:high-impact-ai-review-required;rule:integration-state-closure-review;rule:database-migration-completion-evidence;rule:evidence-claim-reuse-across-commits;rule:evidence-type-must-match-claim;rule:verification-contract-currentness;rule:visual-evidence"
 ---
 
 # converge
@@ -20,12 +21,12 @@ metadata:
 - Current Specification / Domain / Architecture Authority；
 - Relevant Execution Units and implementation；
 - Current verification evidence；
-- 当前任务适用的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 重新读取最终 Authority 与当前实现，不把单个 Unit 的完成自动等同于整体完成。
-2. 通过 Rule Discovery 加载 completion、verification、repository、technology 等适用 Rules。
+2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 3. 对每项可观察行为、边界、非功能义务和长期 artifact responsibility 建立当前证据对应关系。
 4. 检查跨 Unit 接缝、遗漏、未关闭 finding、base drift 与当前状态文档一致性。
 5. 缺口按责任层返回 Clarify / Specify / Technical Plan / Slice / Execute / Debug，而不是在 Converge 中静默重设计。

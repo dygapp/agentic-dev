@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "method:ai-development;architecture:data-migration;rule:data-access-boundedness;rule:implementation-discipline;rule:external-binary-content-validation;rule:human-intervention-necessity;rule:database-migration-completion-evidence;rule:evidence-type-must-match-claim;rule:verification-contract-currentness;rule:visual-evidence"
 ---
 
 # execute-unit
@@ -20,12 +21,12 @@ metadata:
 - One Ready Execution Unit；
 - Direct Specification / Technical / Architecture Authority；
 - 当前代码与测试状态；
-- 当前任务适用的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 重新读取 Unit、直接 Authority 与当前仓库事实，确认没有使 readiness 失效的 drift。
-2. 从当前任务/代码事实提取 task signals，通过 Rule Discovery 加载 generation、verification、technology 等适用 Rules。
+2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 3. 形成临时 JIT Execution Plan，只包含本 Unit 的精确施工与验证步骤。
 4. 按当前仓库既有模式实施最低必要变更；不顺带处理其他 Unit。
 5. 对预期 TDD 失败按计划推进；意外失败调用/转入 `systematic-debug`，不得猜测绕过。

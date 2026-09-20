@@ -60,33 +60,35 @@ Gate A～G 在 `agentic-dev` 内连续推进。重构期间不把真实 Consumer
 
 ## 当前门禁
 
-**当前 Gate：Gate D — Skill Packaging & Release Build。**
+**当前 Gate：Gate E — Automated Runtime Acceptance。**
 
-Gate A 已冻结 `DR-AC-01`～`DR-AC-39`；Gate B 已完成 Distribution Evidence Review、全仓发布分类与 deterministic distribution audit。
+Gate A 已冻结 `DR-AC-01`～`DR-AC-39`；Gate B 已完成 Distribution Evidence Review 与全仓发布分类；Gate C 已完成 Source / Distribution Model Rebuild。
 
-Gate C 已完成 Source / Distribution Model Rebuild：
+Gate D 已完成 Skill Packaging & Release Build：
 
-- Source / Authoring Model 与 Consumer Distribution / Runtime Model 已在 Current Architecture 中分离；
-- Method / Architecture / Rule 继续作为 provider-side Source canonical owner，但不再默认投影成 Consumer 同名 runtime asset；
-- Skill 明确成为首版主要 Distribution Unit，并允许通过 `references/`、`scripts/`、`assets/` 承载构建后的 supporting semantics；
-- Consumer 首次安装 / 后续升级已改为 versioned Release install / update；
-- Consumer 根 `AGENTS.md` 保持 Consumer-owned，repository-local 默认目标以 `.agents/README.md + .agents/skills/**` 为核心；
-- 普通 Consumer runtime / update 保持 `upstream access = 0`，不把 upstream Rule tree / Rule Discovery / Source tree 恢复成默认依赖；
-- Model Collaboration 等可选能力改为 installed Release 提供 capability 后再建立 local runtime instance。
+- 首版 Release 使用 15 个有界 Skill，不引入接管完整开发生命周期的超级 Skill；
+- 现有 Source `release-input` 通过各 Skill 自有 composition metadata 机械投影到 `references/release-inputs/**`，不建立手工中央 Registry；
+- `consumer-installation` Source semantics 进入 release-level installation references，不进入 Consumer ordinary `.agents/**` runtime；
+- deterministic builder 从 exact source SHA、release version 与 Current classified source 生成 artifact；
+- manifest 可恢复 release identity、exact source SHA、Skill inventory、compatibility declaration、verification Evidence locator 与 SHA-256 integrity；
+- repository-local payload 以 `.agents/README.md + .agents/release/** + .agents/skills/**` 为核心；
+- installer 只维护 Consumer-owned `AGENTS.md` 中一个 bounded marker block，并只替换已声明的 Release-owned assets；
+- 同输入 byte-identical build、archive verify、结构性 fixture install 与 idempotency 已进入 repository-native deterministic verification。
 
-Gate C 的完整 diff、Actions、Review 与 Integration Evidence 由 PR #175 / Issue #172 / GitHub Actions 持有，本 Roadmap 不复制流水账或精确 merge SHA。
+Gate D 的完整 diff、candidate artifact、checksums、Actions、Review 与 Integration Evidence 由 PR #176 / Issue #172 / GitHub Actions 持有，本 Roadmap 不复制精确 artifact id、checksum 或 merge SHA。
 
-Gate D 只负责：
+Gate E 只负责 Automated Runtime Acceptance：
 
-- 设计首版 release skill set；
-- 将必要 Source semantics 编译 / 包装进 Skill；
-- 引入实际需要的 `references/`、`scripts/`、`assets/`；
-- 建立 deterministic release builder；
-- 生成 repository-local install artifact；
-- 建立 release identity、provenance、integrity / checksum 与必要 migration metadata；
-- 满足 `DR-AC-12`～`DR-AC-19`。
+- 验证 Agent Skills 格式 / metadata 与 generated locator consistency；
+- 在 isolated Consumer-like fixture 中安装 Release；
+- 取得 Codex 对 `.agents/skills/**` 的真实 native discovery / activation / representative behavior Evidence；
+- 验证 ChatGPT + GitHub Connector compatibility path 中能够自动取得的部分，不假设其原生扫描行为与 Codex 相同；
+- 对依赖 script / external execution 的 Skill 验证 direct path、automated alternate、Evidence recovery 与 fail-closed；
+- 验证 upstream dependency negative control；
+- 验证 Progressive Disclosure，不让 Bootstrap 重新全量加载 Skill references / Rule semantics；
+- 满足 `DR-AC-21`～`DR-AC-30` 中当前 Gate 应取得的 Evidence。
 
-Gate D 不执行真实 Consumer migration / validation；后续 Gate 不因出现在本文中自动跳过当前门禁。
+Gate E 不修改真实 Consumer；后续 Gate 不因出现在本文中自动跳过当前门禁。
 
 ## 后续候选
 

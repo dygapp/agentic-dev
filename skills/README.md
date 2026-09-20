@@ -9,7 +9,15 @@ distribution: source-only
 
 本 README 是 Human View，用于快速了解当前可复用 Skill。ordinary Agent runtime 通过 Agent Skills 原生 discovery 按 Trigger / Purpose 选择 Skill，不把本清单作为 Skill selector。
 
-当前仓库维护 12 个 Skill：
+当前仓库维护 15 个 Skill：
+
+## 项目建立 / 系统性能力 Skill（3）
+
+- `establish-requirement-baseline`
+- `clarify-architecture`
+- `activate-model-collaboration`
+
+这些 Skill 分别承接已有 Method 中具有独立触发与完成边界、但原 12 个执行 Skill 无法安全承载的长期工作责任；它们不接管完整软件开发生命周期。
 
 ## AI Development 支撑 Skill（8）
 

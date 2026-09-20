@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "rule:async-operation-bounded-observation;rule:cross-repository-authorization;rule:external-binary-content-validation;rule:human-intervention-necessity;rule:safe-external-write;rule:shared-resource-concurrency-ownership;rule:temporary-evidence-to-persistent-input-promotion"
 ---
 
 # External Operation
@@ -21,12 +22,12 @@ metadata:
 - 当前 Repository / Human Authority；
 - 可用工具与认证边界；
 - 当前外部状态；
-- 与操作相关的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 重新读取目标外部对象的当前事实，确认请求目标、作用域和授权。
-2. 提取当前 operation signals，并读取 Rule Discovery 返回的适用 operation Rules。
+2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 3. 选择满足目标的最小必要、优先可逆操作；不顺带修改无关状态。
 4. 执行写操作。
 5. 重新读取事实来源验证目标状态，而不是只检查写 API 的成功响应。

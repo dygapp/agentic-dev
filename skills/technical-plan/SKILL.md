@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "method:ai-development;architecture:data-migration;rule:data-access-boundedness;rule:human-intervention-necessity;rule:authoritative-artifact-lifecycle-review"
 ---
 
 # technical-plan
@@ -20,12 +21,12 @@ metadata:
 - Ready Specification；
 - 当前 Architecture / ADR / code state；
 - 技术约束；
-- 当前任务适用的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 确认 Technical Planning 是否真的需要；若 Specification 可直接安全映射到已有模式，则返回无需独立 Technical Plan。
-2. 读取相关架构、公共契约和代码事实，并通过 Rule Discovery 加载适用 Rules。
+2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 3. 只收敛跨执行单元需要共享的组件边界、数据/契约、集成、迁移、部署、测试策略与关键风险。
 4. 判断是否改变长期 Architecture Context；需要跨功能持续约束时更新真实架构 owner。
 5. 只有决定背景、主要权衡或替代关系具有长期价值时才形成/更新 ADR；普通局部选择不创建 ADR。

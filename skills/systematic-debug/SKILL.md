@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "method:ai-development;rule:implementation-discipline;rule:human-intervention-necessity;rule:evidence-type-must-match-claim;rule:verification-contract-currentness"
 ---
 
 # systematic-debug
@@ -20,13 +21,13 @@ metadata:
 - Observable failure / defect；
 - Expected behavior Authority；
 - Relevant code/runtime state；
-- 当前任务适用的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 稳定复现问题，并记录 actual behavior 与最小触发条件。
 2. 从权威来源确认 expected behavior；若产品行为本身未定义，返回 Clarify/Specify，而不是自行定义。
-3. 通过 Rule Discovery 加载与当前 failure、technology、artifact、risk 相关的 Rules。
+3. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 4. 收集能区分原因的证据，形成有限、可证伪的 root-cause hypotheses。
 5. 逐一验证假设，直到证据支持根因；不得同时做多项无关“可能修复”。
 6. 实施针对根因的最低必要修复。
