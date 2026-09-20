@@ -24,7 +24,9 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Sequence
 
 SCOPE_KEYS = ("phases", "activities", "technologies", "artifacts", "risks")
-RULE_REQUIRED_KEYS = {"id", "type", "status", "scope"}\nRULE_NONDISCOVERY_KEYS = {"distribution", "release-target"}\nRULE_KEYS = RULE_REQUIRED_KEYS | RULE_NONDISCOVERY_KEYS
+RULE_REQUIRED_KEYS = {"id", "type", "status", "scope"}
+RULE_NONDISCOVERY_KEYS = {"distribution", "release-target"}
+RULE_KEYS = RULE_REQUIRED_KEYS | RULE_NONDISCOVERY_KEYS
 COMMON_TYPES = {
     "method",
     "architecture",
