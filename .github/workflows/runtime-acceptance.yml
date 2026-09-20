@@ -33,7 +33,7 @@ permissions:
 jobs:
   runtime-acceptance:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
     steps:
       - name: Checkout exact runtime subject
         uses: actions/checkout@v4
@@ -76,190 +76,46 @@ jobs:
         run: |
           python3 tools/runtime-acceptance/runtime_acceptance.py accept             --repo-root .             --work-dir "$RUNNER_TEMP/runtime-acceptance"             --source-sha "$SOURCE_SHA"             --codex-bin codex             --expected-codex-version 0.155.0             --report "$RUNNER_TEMP/runtime-acceptance-report.json"
 
-      - name: Probe model runtime credential
-        id: model-credential
+      - name: Record authenticated model runtime requirement
         shell: bash
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          if [[ -n "$OPENAI_API_KEY" ]]; then
-            echo "available=true" >> "$GITHUB_OUTPUT"
-            echo "model_runtime_credential_available=true"
-          else
-            echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "model_runtime_credential_available=false"
-          fi
-
-      - name: Record model runtime credential state
-        shell: bash
-        env:
-          AVAILABLE: ${{ steps.model-credential.outputs.available }}
-        run: |
-          if [[ "$AVAILABLE" == "true" ]]; then
-            printf '{"status":"PENDING","reason":"credential available; model runtime not yet completed"}\n'               > "$RUNNER_TEMP/model-runtime-status.json"
-          else
-            printf '{"status":"BLOCKED_CREDENTIAL","reason":"OPENAI_API_KEY repository secret is not configured"}\n'               > "$RUNNER_TEMP/model-runtime-status.json"
-          fi
-
-      - name: Run release-installed Codex activation
-        if: steps.model-credential.outputs.available == 'true'
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: >-
-          python3 evals/run_codex_evals.py --activation --release-runtime
-          --scenario A-CI-01
-          --scenario A-RC-01
-          --scenario A-EU-01
-          --scenario A-CG-01
-          --scenario A-RB-01
-          --scenario A-AR-01
-          --scenario A-MC-01
-          --scenario A-EO-01
-          --codex-bin codex
-
-      - name: Grade release-installed Codex activation
-        if: steps.model-credential.outputs.available == 'true'
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: >-
-          python3 evals/run_codex_grader.py --activation
-          --scenario A-CI-01
-          --scenario A-RC-01
-          --scenario A-EU-01
-          --scenario A-CG-01
-          --scenario A-RB-01
-          --scenario A-AR-01
-          --scenario A-MC-01
-          --scenario A-EO-01
-          --codex-bin codex
-
-      - name: Run release-installed representative Codex behavior
-        if: steps.model-credential.outputs.available == 'true'
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: >-
-          python3 evals/run_codex_evals.py --behavior --release-runtime
-          --scenario B-RB-01
-          --scenario B-AR-01
-          --scenario B-MC-01
-          --scenario B-EO-01
-          --scenario B-GA-01
-          --scenario B-EU-01
-          --codex-bin codex
-
-      - name: Grade representative Codex behavior
-        if: steps.model-credential.outputs.available == 'true'
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: >-
-          python3 evals/run_codex_grader.py --behavior
-          --scenario B-RB-01
-          --scenario B-AR-01
-          --scenario B-MC-01
-          --scenario B-EO-01
-          --scenario B-GA-01
-          --scenario B-EU-01
-          --codex-bin codex
-
-      - name: Record model runtime PASS
-        if: steps.model-credential.outputs.available == 'true' && success()
-        shell: bash
+          SOURCE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
         run: |
           python3 - <<'PY'
           import json
           import os
           from pathlib import Path
 
-          activation = json.loads(
-              Path("evals/results/activation/runtime-acceptance.summary.json").read_text(
-                  encoding="utf-8"
-              )
-          )
-          behavior = json.loads(
-              Path("evals/results/behavior/runtime-acceptance.summary.json").read_text(
-                  encoding="utf-8"
-              )
-          )
-          if activation.get("status") != "PASS" or behavior.get("status") != "PASS":
-              raise SystemExit("activation / behavior semantic grading did not PASS")
-          Path(os.environ["RUNNER_TEMP"], "model-runtime-status.json").write_text(
-              json.dumps(
-                  {
-                      "status": "PASS",
-                      "activation": activation,
-                      "behavior": behavior,
-                      "scenario_count": (
-                          activation["scenario_count"] + behavior["scenario_count"]
-                      ),
-                      "passed": activation["passed"] + behavior["passed"],
-                      "failed": activation["failed"] + behavior["failed"],
-                  },
-                  ensure_ascii=False,
-                  indent=2,
-              ) + "\n",
+          payload = {
+              "status": "PENDING_AUTHENTICATED_CODEX_RUNTIME",
+              "source_sha": os.environ["SOURCE_SHA"],
+              "reason": (
+                  "Real model activation / representative behavior must run in an "
+                  "authenticated Codex Runtime. GitHub-hosted deterministic acceptance "
+                  "does not impersonate or replace that evidence."
+              ),
+              "entrypoint": "python3 tools/runtime-acceptance/authenticated_model_acceptance.py",
+              "authentication_contract": (
+                  "reuse the runtime's current Codex authentication; do not require "
+                  "OPENAI_API_KEY and do not copy local auth storage into GitHub Secrets"
+              ),
+          }
+          Path(
+              os.environ["RUNNER_TEMP"],
+              "authenticated-model-runtime-requirement.json",
+          ).write_text(
+              json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
               encoding="utf-8",
           )
+          print(json.dumps(payload, ensure_ascii=False))
           PY
-
-      - name: Upload model runtime evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: model-runtime-acceptance-${{ github.run_id }}
-          if-no-files-found: warn
-          path: |
-            ${{ runner.temp }}/model-runtime-status.json
-            evals/results/activation/A-CI-01.*
-            evals/results/activation/A-RC-01.*
-            evals/results/activation/A-EU-01.*
-            evals/results/activation/A-CG-01.*
-            evals/results/activation/A-RB-01.*
-            evals/results/activation/A-AR-01.*
-            evals/results/activation/A-MC-01.*
-            evals/results/activation/A-EO-01.*
-            evals/results/activation/runtime-acceptance.summary.json
-            evals/results/behavior/B-RB-01.*
-            evals/results/behavior/B-AR-01.*
-            evals/results/behavior/B-MC-01.*
-            evals/results/behavior/B-EO-01.*
-            evals/results/behavior/B-GA-01.*
-            evals/results/behavior/B-EU-01.*
-            evals/results/behavior/runtime-acceptance.summary.json
 
       - name: Upload runtime acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: runtime-acceptance-${{ github.run_id }}
-          if-no-files-found: warn
+          if-no-files-found: error
           path: |
             ${{ runner.temp }}/runtime-acceptance-report.json
-
-
-      - name: Enforce complete model runtime acceptance
-        if: always()
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-
-          status_path = Path(os.environ["RUNNER_TEMP"], "model-runtime-status.json")
-          if not status_path.is_file():
-              raise SystemExit(
-                  "Gate E model runtime status is missing; inspect the earlier failing step."
-              )
-
-          status = json.loads(status_path.read_text(encoding="utf-8"))
-          if status.get("status") != "PASS":
-              raise SystemExit(
-                  "Gate E model runtime acceptance is not complete: "
-                  + json.dumps(status, ensure_ascii=False)
-              )
-
-          print(
-              "Gate E model runtime acceptance PASS: "
-              + json.dumps(status, ensure_ascii=False)
-          )
-          PY
+            ${{ runner.temp }}/authenticated-model-runtime-requirement.json
