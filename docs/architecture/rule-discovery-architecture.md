@@ -176,13 +176,15 @@ reserved `README.md` 不属于 discoverable Rule，但其 common resource metada
 - 不作为普通 LLM prompt context；
 - 删除后不影响从真实 Rule 文件恢复。
 
-## 9. 使用方边界
+## 9. 使用方与发布边界
 
-Consumer ordinary runtime 使用 Consumer-local current Rules 与本地 Rule Discovery Tool。上游 `agentic-dev` 只作为显式 adoption / upgrade 来源；普通任务发现失败不能自动在线回到 upstream 补规则。
+本 Architecture 首先拥有 `agentic-dev` **Source / provider runtime** 的 Rule Discovery contract。它继续支撑本仓库自己的条件性 policy 激活和治理验证。
 
-Consumer adoption 必须携带当前 task-signal 三态、bounded-token contract、locator-only progressive-disclosure contract 与 reserved Human README / lint 边界；否则同一组 Rule 在 Consumer 中可能出现系统性 false negative、metadata 反向探测或 human catalog 被误当 runtime index。
+首版普通软件 Consumer Release **不默认安装 upstream Rule tree、Rule Discovery Tool 或 Rule metadata contract**。通用 Rule 的必要运行语义由 Distribution Build 投影进相关 Skill package；Consumer-local policy 继续由 Consumer 自己的 Repository Authority 持有。
 
-具体 Consumer 的 Rule root、Tool locator、Method phase identities 与其他 implementation pointers 属于该 Consumer 的 local Project / Repository capability instance，不属于本 Architecture。
+因此普通 Consumer runtime 不得因为某个发布 Skill 缺少信息而在线回到 `agentic-dev` Rule Discovery。Release / Skill 自己必须携带完成其通用责任所需的 instructions / references；本地缺口只能在 Consumer-local Authority 内 fail closed 或升级。
+
+未来如果跨 Consumer Evidence 证明独立 Rule Discovery 本身需要成为某类 Release capability，必须作为新的显式 Distribution decision 进入 Architecture / Acceptance，而不能沿用旧“Capability 传播”假设自动复制本 Tool / corpus。
 
 ## 10. 普通运行时集成
 
