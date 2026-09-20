@@ -2,6 +2,8 @@
 id: method:ai-development
 type: method
 status: active
+distribution: release-input
+release-target: software-development
 ---
 
 # AI Agent 驱动软件开发方法

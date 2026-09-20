@@ -2,6 +2,8 @@
 id: method:requirement-baseline-establishment
 type: method
 status: active
+distribution: release-input
+release-target: software-development
 ---
 
 # 需求基线建立方法

@@ -2,6 +2,8 @@
 id: method:consumer-upgrade
 type: method
 status: active
+distribution: release-input
+release-target: consumer-installation
 ---
 
 # Consumer Upgrade Method

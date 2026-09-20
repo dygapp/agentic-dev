@@ -2,6 +2,8 @@
 id: method:consumer-adoption
 type: method
 status: active
+distribution: release-input
+release-target: consumer-installation
 ---
 
 # Consumer Adoption Method
