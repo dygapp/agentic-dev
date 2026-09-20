@@ -120,9 +120,32 @@ Rule 是 Consumer-local specialization 的主要承载面之一。
 
 可以由各自 Consumer / Repository Rule 根据本地 Authority 独立定义。
 
-Consumer adoption / upgrade 可以 adopt、adapt、replace、reject upstream Rule；upstream Rule id、metadata 或正文不会因为 provenance 自动成为 Consumer Authority。Consumer-local Rule 仍应保持 metadata 与规范正文同源维护。
+普通软件 Consumer 不再默认逐文件 adopt / adapt upstream Rule。上游通用 Rule 如果标记为 `release-input`，其 Consumer runtime 所需约束应经过 Distribution Build 投影到相关 Skill 的 instructions / references，或在确有必要时形成其他显式 Release owner。
 
-## 7. 发现元数据与正文
+Consumer-local Rule / policy 仍由 Consumer Repository Authority 自己持有。upstream Rule id、metadata 或正文不会因为进入 Release provenance 就成为 Consumer Authority，也不得把 Consumer-specific 授权、术语、技术专项 policy 静默编译进通用 Skill。
+
+## 7. Rule 的 Source / Distribution 边界
+
+Rule 是 `agentic-dev` Source / provider runtime 的条件性规范 owner。Rule Discovery 继续服务本仓自身运行与治理，但**Rule 文件不是首版普通软件 Consumer 的默认发布单元**。
+
+当 Rule 为 `release-input`：
+
+```text
+Rule canonical body
+→ Distribution Build
+→ matching Skill instructions / references
+```
+
+Build 必须保留真正与发布 Skill 运行有关的约束，同时避免：
+
+- 把 Rule discovery metadata 当作 Consumer runtime taxonomy；
+- 复制 upstream Rule tree 到 Consumer；
+- 把多个 Consumer 必然不同的 local policy 固化进通用 Skill；
+- 形成需要与 Source Rule 手工同步的第二套 Rule catalog。
+
+Rule Source body 仍是 provider authoring semantics 的唯一 owner；发布 projection 由 deterministic build 从 Current Source 生成。
+
+## 8. 发现元数据与正文
 
 Rule Front Matter 只负责可确定性筛选的 discovery metadata；Rule body 持有最终规范语义。
 
@@ -130,7 +153,7 @@ metadata 不能成为正文摘要、decision logic 或 exception catalog。目�
 
 任务级聚合不要求 metadata 精确编码正文中的每个条件分支。metadata 只需要回答“当前任务是否值得加载这一组规范”，更细的适用性继续由读取正文后的语义确认完成。
 
-## 8. 人类导航
+## 9. 人类导航
 
 `docs/rules/README.md` 或分类 README 可以存在，用于人类说明目录结构、Rule 类别和当前 inventory，但它们：
 
@@ -142,7 +165,7 @@ metadata 不能成为正文摘要、decision logic 或 exception catalog。目�
 
 如果 inventory 可以由 Rule 文件机械得到，应优先自动生成或验证，避免人工维护第二份规范事实。
 
-## 9. Rule 演进判断
+## 10. Rule 演进判断
 
 新增、拆分、合并或修改 Rule 时，至少回答：
 
