@@ -32,7 +32,7 @@ Raw Project Inputs
 
 新项目通常需要先建立 Requirement Baseline，但 Architecture Clarification 不是所有项目的必经步骤；已有稳定 Requirement / Architecture Context 的普通 Feature 也不重复执行项目建立流程。
 
-这些 reusable Method 存在于本仓库 corpus，**不等于** `agentic-dev` 自身已经把它们注册到 local selector；Consumer adoption / upgrade 后应由 Consumer 自己判断 work kind、adopt / adapt / reject，并建立 local mapping。
+这些 reusable Method 存在于本仓库 corpus，**不等于** `agentic-dev` 自身已经把它们注册到 local selector；Consumer Release 安装 / 升级 后应由 Consumer 自己判断 work kind、adopt / adapt / reject，并建立 local mapping。
 
 当前不再保留负责串联 Requirement 与 Architecture 的项目澄清 super-method。长期语义由真实 owner 分别承担：Requirement Baseline、Architecture Clarification、AI Development 各自拥有自己的阶段 / Gate / return contract；能力边界在 Architecture，执行能力在 Skill，条件性约束在 Rule。
 
