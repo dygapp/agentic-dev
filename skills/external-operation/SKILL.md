@@ -8,6 +8,7 @@ metadata:
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
   agentic-dev-release-inputs: "rule:async-operation-bounded-observation;rule:cross-repository-authorization;rule:external-binary-content-validation;rule:human-intervention-necessity;rule:safe-external-write;rule:shared-resource-concurrency-ownership;rule:temporary-evidence-to-persistent-input-promotion"
+  agentic-dev-runtime-execution: "external"
 ---
 
 # External Operation
@@ -33,6 +34,13 @@ metadata:
 5. 重新读取事实来源验证目标状态，而不是只检查写 API 的成功响应。
 6. 对异步操作在授权范围内执行有界观察、诊断和必要重试；达到终态、真实阻塞或观察上限后停止。
 7. 只汇报当前证据能够支持的结果；未验证状态必须明确保留为未验证。
+
+## 可执行路径合同
+
+- `direct-path`：优先使用当前 Runtime 已授权、且能够在操作后重新读取目标真实状态的 connector / API / external tool；工具存在本身不授予权限。
+- `automated-alternate`：direct path 不可用时，只能使用 Consumer Repository 已声明、已授权且同样能够恢复当前 Evidence 的自动化路径，例如仓库 workflow、受控 API transport 或等价 external tool；不得临时回 upstream 补工具。
+- `evidence-recovery`：保存或恢复目标对象 identity、必要 run / job / step / log / artifact 等当前证据，并以重新读取后的真实状态支持 completion claim。
+- `fail-closed`：不存在授权执行路径、缺少 credential / capability、无法恢复目标 identity，或不能重新读取足以支持声明的当前证据时，停止并保留为 blocker / 未验证状态，不报告成功。
 
 ## 输出
 
