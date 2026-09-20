@@ -12,6 +12,7 @@ EVALS_DIR = REPO_ROOT / "evals"
 sys.path.insert(0, str(EVALS_DIR))
 
 import run_codex_evals as runner  # noqa: E402
+import run_codex_grader as grader  # noqa: E402
 import run_governance_evals as governance_runner  # noqa: E402
 
 
@@ -39,10 +40,15 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         self.assertEqual(len(actual_ids), len(set(actual_ids)))
         self.assertIn("B-RV-01", actual_ids)
         self.assertIn("B-HR-01", actual_ids)
+        self.assertIn("B-RB-01", actual_ids)
+        self.assertIn("B-AR-01", actual_ids)
+        self.assertIn("B-MC-01", actual_ids)
+        self.assertIn("B-EO-01", actual_ids)
 
     def test_runner_help_entrypoints_import_cleanly(self):
         for script in (
             EVALS_DIR / "run_codex_evals.py",
+            EVALS_DIR / "run_codex_grader.py",
             EVALS_DIR / "run_governance_evals.py",
         ):
             with self.subTest(script=script.name):
@@ -50,6 +56,81 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                 self.assertEqual(0, completed.returncode, completed.stderr)
 
         self.assertTrue(callable(governance_runner.main))
+
+    def test_activation_corpus_covers_new_release_skills(self):
+        ids = {case["id"] for case in runner.activation_cases()}
+        self.assertTrue({"A-RB-01", "A-AR-01", "A-MC-01", "A-EO-01"} <= ids)
+
+    def test_grader_extracts_completed_agent_message(self):
+        jsonl = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "type": "item.completed",
+                        "item": {"type": "agent_message", "text": "first"},
+                    }
+                ),
+                json.dumps(
+                    {
+                        "type": "item.completed",
+                        "item": {"type": "agent_message", "text": "final"},
+                    }
+                ),
+                json.dumps({"type": "turn.completed"}),
+            ]
+        )
+        self.assertEqual("final", grader.extract_last_agent_message(jsonl))
+
+    def test_grader_requires_turn_completion_and_agent_message(self):
+        with self.assertRaises(grader.GradeError):
+            grader.extract_last_agent_message(
+                json.dumps(
+                    {
+                        "type": "item.completed",
+                        "item": {"type": "agent_message", "text": "partial"},
+                    }
+                )
+            )
+        with self.assertRaises(grader.GradeError):
+            grader.extract_last_agent_message(json.dumps({"type": "turn.completed"}))
+
+    def test_grader_verdict_must_match_all_assertions(self):
+        scenario = {
+            "id": "B-TEST-01",
+            "assertions": ["one", "two"],
+        }
+        passing = {
+            "scenario_id": "B-TEST-01",
+            "verdict": "PASS",
+            "assertions": [
+                {"index": 1, "passed": True, "evidence": "e1"},
+                {"index": 2, "passed": True, "evidence": "e2"},
+            ],
+        }
+        self.assertTrue(grader.validate_grade(scenario, passing))
+
+        inconsistent = {
+            "scenario_id": "B-TEST-01",
+            "verdict": "PASS",
+            "assertions": [
+                {"index": 1, "passed": True, "evidence": "e1"},
+                {"index": 2, "passed": False, "evidence": "gap"},
+            ],
+        }
+        with self.assertRaises(grader.GradeError):
+            grader.validate_grade(scenario, inconsistent)
+
+    def test_release_runtime_is_not_valid_for_provider_discovery_mode(self):
+        completed = self.run_python(
+            EVALS_DIR / "run_codex_evals.py",
+            "--discovery",
+            "--release-runtime",
+            "--codex-bin",
+            "false",
+        )
+        self.assertEqual(2, completed.returncode)
+        self.assertIn("--release-runtime is not valid with --discovery", completed.stderr)
+        self.assertNotIn("Codex CLI version check failed", completed.stderr)
 
     def test_governance_context_paths_resolve_current_repository_files(self):
         referenced: set[str] = set()
