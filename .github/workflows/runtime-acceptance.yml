@@ -234,3 +234,32 @@ jobs:
           if-no-files-found: warn
           path: |
             ${{ runner.temp }}/runtime-acceptance-report.json
+
+
+      - name: Enforce complete model runtime acceptance
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          status_path = Path(os.environ["RUNNER_TEMP"], "model-runtime-status.json")
+          if not status_path.is_file():
+              raise SystemExit(
+                  "Gate E model runtime status is missing; inspect the earlier failing step."
+              )
+
+          status = json.loads(status_path.read_text(encoding="utf-8"))
+          if status.get("status") != "PASS":
+              raise SystemExit(
+                  "Gate E model runtime acceptance is not complete: "
+                  + json.dumps(status, ensure_ascii=False)
+              )
+
+          print(
+              "Gate E model runtime acceptance PASS: "
+              + json.dumps(status, ensure_ascii=False)
+          )
+          PY
