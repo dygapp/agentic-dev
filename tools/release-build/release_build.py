@@ -166,15 +166,19 @@ def _verify_source_sha(repo_root: Path, source_sha: str) -> None:
     if not SHA_RE.fullmatch(source_sha):
         raise ValueError("source SHA must be an exact lowercase 40-character commit id")
     git_dir = repo_root / ".git"
-    if git_dir.exists():
+    if not git_dir.exists():
+        raise ValueError("release build requires a Git checkout to verify exact source SHA")
+    try:
         actual = subprocess.run(
             ["git", "-C", str(repo_root), "rev-parse", "HEAD"],
             check=True,
             capture_output=True,
             text=True,
         ).stdout.strip()
-        if actual != source_sha:
-            raise ValueError(f"source SHA mismatch: expected {source_sha}, actual {actual}")
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise ValueError("cannot verify exact source SHA from Git HEAD") from exc
+    if actual != source_sha:
+        raise ValueError(f"source SHA mismatch: expected {source_sha}, actual {actual}")
 
 
 def _run_distribution_audit(repo_root: Path) -> None:
