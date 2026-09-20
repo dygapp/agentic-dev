@@ -33,7 +33,7 @@ permissions:
 jobs:
   runtime-acceptance:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 45
     steps:
       - name: Checkout exact runtime subject
         uses: actions/checkout@v4
@@ -101,6 +101,38 @@ jobs:
             printf '{"status":"BLOCKED_CREDENTIAL","reason":"OPENAI_API_KEY repository secret is not configured"}\n'               > "$RUNNER_TEMP/model-runtime-status.json"
           fi
 
+      - name: Run release-installed Codex activation
+        if: steps.model-credential.outputs.available == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: >-
+          python3 evals/run_codex_evals.py --activation --release-runtime
+          --scenario A-CI-01
+          --scenario A-RC-01
+          --scenario A-EU-01
+          --scenario A-CG-01
+          --scenario A-RB-01
+          --scenario A-AR-01
+          --scenario A-MC-01
+          --scenario A-EO-01
+          --codex-bin codex
+
+      - name: Grade release-installed Codex activation
+        if: steps.model-credential.outputs.available == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: >-
+          python3 evals/run_codex_grader.py --activation
+          --scenario A-CI-01
+          --scenario A-RC-01
+          --scenario A-EU-01
+          --scenario A-CG-01
+          --scenario A-RB-01
+          --scenario A-AR-01
+          --scenario A-MC-01
+          --scenario A-EO-01
+          --codex-bin codex
+
       - name: Run release-installed representative Codex behavior
         if: steps.model-credential.outputs.available == 'true'
         env:
@@ -138,21 +170,29 @@ jobs:
           import os
           from pathlib import Path
 
-          summary = json.loads(
+          activation = json.loads(
+              Path("evals/results/activation/runtime-acceptance.summary.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          behavior = json.loads(
               Path("evals/results/behavior/runtime-acceptance.summary.json").read_text(
                   encoding="utf-8"
               )
           )
-          if summary.get("status") != "PASS":
-              raise SystemExit("semantic grading did not PASS")
+          if activation.get("status") != "PASS" or behavior.get("status") != "PASS":
+              raise SystemExit("activation / behavior semantic grading did not PASS")
           Path(os.environ["RUNNER_TEMP"], "model-runtime-status.json").write_text(
               json.dumps(
                   {
                       "status": "PASS",
-                      "scenario_count": summary["scenario_count"],
-                      "passed": summary["passed"],
-                      "failed": summary["failed"],
-                      "scenarios": summary["scenarios"],
+                      "activation": activation,
+                      "behavior": behavior,
+                      "scenario_count": (
+                          activation["scenario_count"] + behavior["scenario_count"]
+                      ),
+                      "passed": activation["passed"] + behavior["passed"],
+                      "failed": activation["failed"] + behavior["failed"],
                   },
                   ensure_ascii=False,
                   indent=2,
@@ -169,6 +209,15 @@ jobs:
           if-no-files-found: warn
           path: |
             ${{ runner.temp }}/model-runtime-status.json
+            evals/results/activation/A-CI-01.*
+            evals/results/activation/A-RC-01.*
+            evals/results/activation/A-EU-01.*
+            evals/results/activation/A-CG-01.*
+            evals/results/activation/A-RB-01.*
+            evals/results/activation/A-AR-01.*
+            evals/results/activation/A-MC-01.*
+            evals/results/activation/A-EO-01.*
+            evals/results/activation/runtime-acceptance.summary.json
             evals/results/behavior/B-RB-01.*
             evals/results/behavior/B-AR-01.*
             evals/results/behavior/B-MC-01.*
