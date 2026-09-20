@@ -2,6 +2,8 @@
 id: rule:human-intervention-necessity
 type: rule
 status: active
+distribution: release-input
+release-target: software-development
 scope:
   phases: []
   activities: [human-escalation]

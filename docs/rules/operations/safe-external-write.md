@@ -2,6 +2,8 @@
 id: rule:safe-external-write
 type: rule
 status: active
+distribution: release-input
+release-target: software-development
 scope:
   phases: []
   activities: [external-operation]
