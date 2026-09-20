@@ -41,6 +41,13 @@ FORBIDDEN_SKILL_SOURCE_PATHS = (
     "tools/rule-discovery/",
 )
 INDEX_SKILL_KEYS = {"id", "name", "description", "path"}
+EXECUTION_KINDS = {"external", "script"}
+EXECUTION_CONTRACT_TOKENS = (
+    "`direct-path`",
+    "`automated-alternate`",
+    "`evidence-recovery`",
+    "`fail-closed`",
+)
 
 
 class RuntimeAcceptanceError(RuntimeError):
@@ -100,6 +107,24 @@ def _scalar(frontmatter: str, key: str) -> str | None:
     if len(value) >= 2 and value[0] == value[-1] and value[0] in {"\"", "'"}:
         value = value[1:-1]
     return value
+
+
+def _metadata_scalar(frontmatter: str, key: str) -> str | None:
+    in_metadata = False
+    for line in frontmatter.splitlines():
+        if line.strip() == "metadata:" and not line.startswith((" ", "\t")):
+            in_metadata = True
+            continue
+        if in_metadata and line and not line.startswith((" ", "\t")):
+            break
+        if in_metadata:
+            match = re.match(rf"^\s+{re.escape(key)}:\s*(.+?)\s*$", line)
+            if match:
+                value = match.group(1).strip()
+                if len(value) >= 2 and value[0] == value[-1] and value[0] in {"\"", "'"}:
+                    value = value[1:-1]
+                return value
+    return None
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -241,6 +266,7 @@ def verify_installed_fixture(consumer: Path) -> dict[str, Any]:
         )
 
     installed_paths: list[str] = []
+    execution_contracts: list[dict[str, str]] = []
     for name in sorted(manifest_by_name):
         manifest_item = manifest_by_name[name]
         index_item = index_by_name[name]
@@ -271,6 +297,36 @@ def verify_installed_fixture(consumer: Path) -> dict[str, Any]:
                 raise RuntimeAcceptanceError(
                     f"installed Skill {name} depends on provider Source path: {forbidden}"
                 )
+
+        skill_dir = skill_path.parent
+        has_scripts = (skill_dir / "scripts").is_dir() and any(
+            path.is_file() for path in (skill_dir / "scripts").rglob("*")
+        )
+        execution_kind = _metadata_scalar(
+            frontmatter, "agentic-dev-runtime-execution"
+        )
+        if has_scripts and execution_kind not in EXECUTION_KINDS:
+            raise RuntimeAcceptanceError(
+                f"installed Skill {name} contains scripts without runtime execution contract"
+            )
+        if execution_kind is not None:
+            if execution_kind not in EXECUTION_KINDS:
+                raise RuntimeAcceptanceError(
+                    f"installed Skill {name} has unsupported runtime execution kind: "
+                    f"{execution_kind}"
+                )
+            missing_tokens = [
+                token for token in EXECUTION_CONTRACT_TOKENS if token not in text
+            ]
+            if missing_tokens:
+                raise RuntimeAcceptanceError(
+                    f"installed Skill {name} has incomplete runtime execution contract: "
+                    f"{missing_tokens}"
+                )
+            execution_contracts.append(
+                {"name": name, "kind": execution_kind}
+            )
+
         installed_paths.append(relative)
 
     for namespace in FORBIDDEN_RUNTIME_NAMESPACES:
@@ -331,6 +387,7 @@ def verify_installed_fixture(consumer: Path) -> dict[str, Any]:
         "skill_count": len(manifest_by_name),
         "skills": sorted(manifest_by_name),
         "skill_paths": installed_paths,
+        "execution_contracts": execution_contracts,
         "chatgpt_compatibility_path": [
             "AGENTS.md",
             ".agents/release/skill-index.json",
