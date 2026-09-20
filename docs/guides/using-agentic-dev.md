@@ -9,18 +9,19 @@ distribution: source-only
 
 本文是面向人的总览指南。它帮助你理解 `agentic-dev` 如何组织 AI 开发工作，但不参与 ordinary Agent runtime，也不替代 Project / Method / Architecture / Skill / Rule 的正式定义。
 
-## 1. 先区分 Project Knowledge 与可复用 Capability
+## 1. 先区分 Project Knowledge、Source Model 与 Distribution Model
 
-`agentic-dev` 同时维护两类长期知识：
+`agentic-dev` 同时维护三种不同责任：
 
-- **Project Knowledge**：只描述 `agentic-dev` 自身——为什么存在、当前采用哪些 capability、当前走到哪里以及为什么演进成今天这样；
-- **Reusable Capability**：Method / Architecture / Skill / Rule / Tool contract，可以在显式 adoption / upgrade 中被 Consumer adopt / adapt / reject。
+- **Project Knowledge**：只描述 `agentic-dev` 自身——为什么存在、当前怎样运行、走到哪里以及为什么演进成今天这样；
+- **Source / Authoring Model**：Method / Architecture / Skill / Rule / Tool 等 canonical owner，用于开发和治理长期能力语义；
+- **Distribution Model**：把经过分类的 Source semantics 构建成版本化 Agent Skills Release，交给普通软件 Consumer 安装。
 
 核心原则：
 
-> **Project 不传播，Capability 传播。**
+> **Project 不传播；Source capability semantics 通过 Distribution Build 发布；Source type / path 不直接传播。**
 
-Project Knowledge 的入口见 `docs/project/README.md`；边界定义见 `docs/architecture/project-knowledge-architecture.md`。
+普通软件 Consumer 不需要复制本仓 Source tree；首版 repository-local 发布物以 `.agents/skills/**` 为主要运行单元。Project Knowledge 的入口见 `docs/project/README.md`；边界定义见 `docs/architecture/project-knowledge-architecture.md` 与 `consumer-architecture.md`。
 
 ## 2. 五类核心能力
 
@@ -363,39 +364,41 @@ current task facts / responsibility
 
 人可以通过 `docs/rules/README.md` 浏览当前所有 Rule；Agent 不使用这个 README 进行 runtime routing。
 
-## 15. Consumer 首次采用
+## 15. Consumer 首次安装
 
-首次采用不是复制整个仓库。大致过程是：
+首次安装不是复制整个仓库，也不是逐类采用 Method / Architecture / Rule。
+
+大致过程是：
 
 1. 恢复 Consumer 自己的 Project / Repository Authority；
-2. 选择精确 upstream baseline；
-3. 判断哪些 Method / Architecture / Skill / Rule / Tool contract 需要 adopt / adapt / reject；
-4. 把接受的 capability 写入 Consumer-local canonical owner；
-5. 建立 Consumer 自己的 capability profile / Method selector / Skill / Rule discovery；
-6. 验证 ordinary runtime 不在线依赖 upstream；
-7. 记录 evaluated baseline。
-
-对于 Requirement Baseline Establishment / Architecture Clarification，Consumer 应根据自己的真实 work kind 决定是否注册 local selector mapping；不能因为 upstream inventory 出现 Method 就自动改变 ordinary Feature runtime。
-
-upstream Project Charter / Capability Profile / Roadmap / Evolution 只用于 provenance / understanding，不复制为 Consumer Project state。
+2. 选择精确 versioned Release；
+3. 核对 Release integrity、compatibility、Skill inventory 与 migration information；
+4. 把 Release-owned Skills 安装到 repository-local target；
+5. 只对 Consumer-owned `AGENTS.md` 建立最薄 Skill / compatibility locator；
+6. 保留 Consumer 自己的 Requirement、Architecture、technology policy、authorization 与 current work；
+7. 验证 ordinary runtime `upstream access = 0`；
+8. 记录 installed release。
 
 正式过程由 `docs/methods/consumer-adoption.md` 定义；人类操作说明见 `adopting-agentic-dev.md`。
 
 ## 16. 现有 Consumer 升级
 
-升级不是“同步最新版”。正确思路是：
+升级不是“同步最新版 Source”。
+
+正确思路是：
 
 ```text
-当前 Consumer Project + capability state
-→ 选择精确 upstream candidate
-→ 比较 reusable capability semantic delta
-→ retain / adopt / adapt / replace / reject
-→ 必要时更新 Consumer-local capability profile
+current installed release
++ Consumer-local retained obligations
++ candidate release
+→ evaluate release / migration delta
+→ bounded update
+→ reconcile local obligations
 → targeted revalidation
-→ 记录新的 evaluated baseline
+→ record installed release
 ```
 
-Existing Consumer 如果已经用自己的方式建立稳定 Requirement / Architecture Authority，可以保留或 adapt；不需要因为 upstream 新增 Project Establishment Method 就机械重建需求基线。
+Existing Consumer 已经拥有的 Requirement / Architecture / technology policy / authorization 不会因为 candidate Release 变化而自动被覆盖。升级只修改 Release-owned assets 与明确需要调整的 bounded bootstrap integration。
 
 正式过程由 `docs/methods/consumer-upgrade.md` 定义；人类说明见 `upgrading-agentic-dev.md`。
 

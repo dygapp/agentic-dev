@@ -7,7 +7,7 @@ distribution: source-only
 
 # agentic-dev
 
-`agentic-dev` 是一个面向 AI Agent 驱动软件开发的 Method、可组合 Skill、分布式 Rule、Architecture 与 Consumer adoption 能力仓库。
+`agentic-dev` 是一个用于**开发、验证、构建并发布 Software Development Agent Skills** 的源码仓库。内部仍维护 Method、Architecture、Rule、Skill、Tool、Eval、Research 等 authoring / governance 资产，但普通软件 Consumer 只安装经过构建和验证的版本化 Release。
 
 核心边界是从需求分析、条件性架构澄清到 Feature / change 的代码实现、验证、收敛与 `Ready to Integrate`。具体语言 / 框架 / 组件库的通用技术知识，以及 merge 之后的 release、deployment、production operations，由 Consumer-local Authority、实际技术栈和相应工具承担，不作为本仓库需要补齐的中央知识库或通用生命周期。
 
@@ -24,10 +24,10 @@ distribution: source-only
 
 当前信息架构遵守：
 
-> **Project 不传播，Capability 传播。**
+> **Project 不传播；Source capability semantics 通过 Distribution Build 发布；Source type / path 不直接传播。**
 
 - `docs/project/**` 回答“`agentic-dev` 这个项目是什么、当前怎样实例化能力、走到哪里、为什么演进成今天这样”；
-- `docs/architecture/**`、`docs/methods/**`、`skills/**`、`docs/rules/**` 与相应 tool contract 回答“哪些工程能力可以被其他 Repository adopt / adapt”。
+- `docs/architecture/**`、`docs/methods/**`、`skills/**`、`docs/rules/**` 与相应 tool contract 是 `agentic-dev` 的 Source / Authoring Model；Distribution Build 决定哪些语义进入版本化 Skill Release。
 
 Project Knowledge 的边界见 `docs/architecture/project-knowledge-architecture.md`，当前 Project owners 见 `docs/project/README.md`。
 
@@ -76,9 +76,19 @@ Repository Authority
 
 ## Consumer
 
-Consumer 始终拥有自己的 Repository Authority 与 Project Knowledge。显式 adoption / baseline upgrade 可以读取 upstream Project Knowledge 作为 provenance / context，但真正传播的是可复用 Capability：Method / Architecture / Skill / Rule / Tool contract。
+普通软件 Consumer 始终拥有自己的 Repository Authority、Requirement、System Architecture、technology policy、权限和当前项目状态。
 
-采用完成后，Consumer 必须形成自己的 local capability instance、Method selector、Skill / Rule discovery 与 Roadmap；ordinary runtime 不在线依赖 `agentic-dev` current state。
+首次安装 / 后续升级以**版本化 Release**为输入，而不是直接比较 upstream Source tree。首版 repository-local 目标以：
+
+```text
+Consumer-owned AGENTS.md
++ .agents/README.md
++ .agents/skills/**
+```
+
+为核心。
+
+Consumer 不默认创建 `.agents/methods`、`.agents/architecture`、`.agents/rules`、`.agents/tools` 或 `.agents/evals`。普通 runtime 与升级流程都不在线依赖 `agentic-dev` Source current state。
 
 ## 当前结构
 

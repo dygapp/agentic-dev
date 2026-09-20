@@ -60,30 +60,28 @@ canonical Rule / Requirement
 
 低成本模型可以帮助“找什么、读什么、整理什么”，但后续真正依赖规范语义时仍应能读取 canonical owner。
 
-## 4. Consumer 采用与运行时启用
+## 4. Consumer Release 与运行时启用
 
 这里需要区分两件事：
 
-1. **接受 upstream capability semantics**：首次整体采用由 `method:consumer-adoption` 负责；Existing Consumer 的新 baseline delta 由 `method:consumer-upgrade` 负责；
-2. **把已经接受的 Model Collaboration semantics 实例化为本项目 runtime capability**：由 `method:model-collaboration-adoption` 负责。
+1. **获得 collaboration capability**：首次整体安装由 `method:consumer-adoption` 负责；Existing Consumer 通过 `method:consumer-upgrade` 更新到包含相关能力的 candidate Release；
+2. **把 installed collaboration capability 实例化为本项目 runtime**：由 `method:model-collaboration-adoption` 负责。
 
-因此 Existing Consumer 不能因为想启用多模型协作，就绕过 baseline upgrade 直接从最新 upstream 复制 Architecture / Method / Rule。先让 reusable semantics 进入 Consumer-local canonical owner，再进入专用 adoption Method 建立配置、local policy 与验证。
+因此 Consumer 不能因为想启用多模型协作，就在线读取最新 upstream Source Architecture / Method / Rule 临时补能力。先确保当前 installed release 已包含 collaboration capability，再进入专用 Method 建立 local config、policy 与验证。
 
 `method:model-collaboration-adoption` 的生命周期为：
 
 ```text
 Restore Consumer Authority
-→ Confirm Accepted Collaboration Semantics
+→ Confirm Installed Collaboration Capability
 → Detect Runtime Capabilities
 → Select Collaboration Strategy
-→ Local Capability Projection
+→ Plan Local Runtime Integration
 → Establish Local Collaboration Instance
 → Validate Collaboration
 → Enable / Fallback
 → Close Adoption
 ```
-
-如果 Consumer 在同一次整体升级中刚刚接受这项新 capability，可以在 Consumer Adoption / Upgrade 完成 semantic acceptance 后连续进入本 Method；两段过程可以相邻，但 Gate 与 owner 不能合并成一份隐式流程。
 
 ## 5. Consumer 中应该固化什么
 
@@ -174,19 +172,20 @@ deterministic first
 
 Issue #71 的 Consumer Evidence 已表明，高端模型并不天然拥有只有它才能发现的 blocking issue，因此模型身份本身不能成为升级理由。
 
-## 10. 最小采用检查表
+## 10. 最小启用检查表
 
-进入专用 adoption 前：
+进入专用 activation Method 前：
 
 - Consumer Authority 已恢复；
-- Model Collaboration reusable semantics 已经被 Consumer 正式接受；
-- 未决 upstream semantic delta 已经通过 Consumer Adoption / Upgrade 处理。
+- 当前 installed release 已包含 collaboration capability；
+- 如果当前 Release 不包含，需要先执行 Consumer Adoption / Upgrade；
+- 没有通过 upstream Source tree 临时补齐 capability。
 
 启用前：
 
 - current runtime capabilities 已探测；
 - strategy 与 capability tiers 已选定；
-- local config / Rules / profile owners 已区分；
+- local config / policy / evidence owners 已区分；
 - single-agent fallback 已设计；
 - 静态配置通过；
 - 子模型委派冒烟验证通过；
@@ -194,6 +193,6 @@ Issue #71 的 Consumer Evidence 已表明，高端模型并不天然拥有只有
 - 单写入者边界验证通过（如启用写入）；
 - requested / observed model claim 边界明确；
 - 回退验证通过；
-- ordinary runtime upstream access = 0。
+- ordinary runtime `upstream access = 0`。
 
 如果这些条件不能成立，不要为了追求“多模型协作”而强行启用。

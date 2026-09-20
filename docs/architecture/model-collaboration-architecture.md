@@ -10,7 +10,7 @@ release-target: software-development
 
 ## 1. 目标与边界
 
-本 Architecture 定义可被不同 Repository adopt / adapt 的 **Model Collaboration capability**：在不改变当前 Method 责任、Repository Authority 与 semantic ownership 的前提下，把确定性工具、不同能力层级的模型与独立 Agent 组合为可选运行能力。
+本 Architecture 是 `agentic-dev` Source / Authoring Model 中的 **Model Collaboration capability** canonical owner：在不改变当前 Method 责任、Repository Authority 与 semantic ownership 的前提下，把确定性工具、不同能力层级的模型与独立 Agent 组合为可选运行能力。其 Consumer runtime 所需语义通过 Distribution Build 进入版本化 Release，而不是要求 Consumer 复制本 Architecture。
 
 Model Collaboration 不是 `method:ai-development` 的替代品，也不自动增加新的产品开发阶段。普通软件开发仍由当前选定 Method 决定生命周期；本能力只回答“同一责任可以怎样在多个工具 / Agent / Model 之间分配，同时保持 Authority、Evidence 与最终责任不漂移”。
 
@@ -79,19 +79,13 @@ Tier 3 — high-capability reasoning
 
 并行化只适用于真正独立的只读探索、分类、测试观察或复核。共享写入、共享外部资源和顺序依赖任务不得为了吞吐量而并行。
 
-## 6. Rule Discovery 与模型协作
+## 6. 条件性 policy 与模型协作
 
-Rule Discovery 保持独立确定性能力：
+`agentic-dev` 自身 provider runtime 继续通过 Rule Discovery 激活本仓条件性 policy；模型协作不得绕过当前 Repository 的 policy / authorization。
 
-```text
-current task facts
-→ deterministic Rule Discovery
-→ small locator set
-→ current reasoning Agent reads candidate bodies
-→ semantic applicability confirmation
-```
+但普通软件 Consumer Release 不默认安装 upstream Rule Discovery。发布到 Consumer 的 collaboration Skill 必须携带其通用 procedure / invariant 所需的 instructions / references，同时把 repository-specific authorization、technology policy、writer ownership 和 escalation 继续交给 Consumer-local Authority。
 
-不得让低成本模型通过枚举全量 Rule tree 取代 Rule Discovery，也不得让其摘要成为唯一 Rule 输入。低成本 Agent 可以帮助从当前仓库事实整理 task facts，但 signals 与候选仍必须遵守 `architecture:rule-discovery` 的 contract。
+不得让低成本模型通过枚举任意 Rule tree、Guide 或历史聊天取得隐式权限，也不得把 exploration summary 当成 Repository Authority。
 
 ## 7. 模型路由与升级
 
@@ -143,12 +137,14 @@ Model Collaboration 不承诺减少总 token。多 Agent 工作可能增加总�
 
 因此“链路能工作”与“值得默认使用”不是同一个结论。不能只根据“用了更便宜模型”或“并发更多”推断效率收益。
 
-## 10. Consumer 投影
+## 10. Consumer Release 与本地实例
 
-Consumer 可以选择不启用、部分启用或完整启用本能力。**接受 reusable semantics** 与 **建立 runtime instance** 是两个不同责任：
+普通软件 Consumer 可以选择不启用、部分启用或完整启用本能力。
 
-- 首次整体采用或 Existing Consumer 的 upstream semantic delta，由 Consumer Adoption / Upgrade 或目标 Repository 等价 Authority 决定是否接受 / 适配；
-- 已接受 semantics 的具体 runtime activation，由 `method:model-collaboration-adoption` 建立 local instance。
+两类责任明确分离：
+
+1. **Release installation / update**：由 `method:consumer-adoption` / `method:consumer-upgrade` 确保当前 installed release 已包含 collaboration capability；
+2. **local runtime activation**：由 `method:model-collaboration-adoption` 在 installed release 基础上探测 runtime、选择策略、建立 local instance 并验证。
 
 启用后，Consumer local instance 至少明确：
 
@@ -157,21 +153,25 @@ Consumer 可以选择不启用、部分启用或完整启用本能力。**接受
 - Primary Agent 与 delegation policy；
 - writer ownership 与并发边界；
 - local config locator；
-- Consumer-local collaboration Rules（如有）；
+- Consumer-local collaboration policy；
 - validation evidence locator；
 - single-agent fallback / disable path。
 
 具体 `.codex/`、其他 Agent 平台配置、模型名与并发数只属于 local instance 或 Human example，不属于本 Architecture。
 
-Consumer ordinary runtime 不得依赖在线读取 `agentic-dev` current state。upstream capability semantics 变化只有通过显式 Consumer Adoption / Upgrade 决策才能进入 local Authority；纯本地 runtime mapping 维护则服从目标 Repository 自己的 Authority。
+Consumer ordinary runtime 不得依赖在线读取 `agentic-dev` current Source state。通用 collaboration semantics 的变化只有通过新的 versioned Release 才能进入 Consumer；纯本地 runtime mapping 维护服从目标 Repository 自己的 Authority。
 
-## 11. 采用与普通运行时
+## 11. 安装与普通运行时
 
-`method:model-collaboration-adoption` 只在 Model Collaboration semantics 已经进入 Consumer-local Authority 后执行，负责检测真实 runtime 能力、选择策略、投射 local config / policy、建立 local instance、验证并启用或 fallback。
+`method:model-collaboration-adoption` 只在当前 installed release 已经提供 collaboration capability 后执行。
 
-如果当前 Repository 只有“upstream 新增了 Model Collaboration capability”这一事实，而尚未接受其 semantics，则必须先进入 `method:consumer-adoption`、`method:consumer-upgrade` 或目标 Repository 等价 semantic-acceptance 流程；不得用本 Method 绕过 baseline assessment。
+如果 Consumer 当前 Release 不包含所需 capability：
 
-启用后的 ordinary software work 仍由原有 Method 控制，例如 `method:ai-development`。Model Collaboration 只是运行方式，不自动改变当前 Method stage、Gate、Requirement 或 Integration Authority。
+- 首次获得能力 → `method:consumer-adoption` 安装合适 Release；
+- Existing Consumer → `method:consumer-upgrade` 更新到 candidate Release；
+- 不得通过读取 upstream Source Architecture / Method / Rule 临时补齐。
+
+启用后的 ordinary software work 仍由原有软件开发 Method / installed Skills 控制。Model Collaboration 只是运行方式，不自动改变产品目标、Requirement、当前 work kind、Integration Authority 或外部操作权限。
 
 ## 12. 回退
 

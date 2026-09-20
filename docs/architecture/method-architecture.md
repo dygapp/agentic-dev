@@ -104,7 +104,30 @@ Method 数量较少时，稳定、可审计的 Repository-local 静态 selector 
 
 Architecture 不维护跨 Method 的固定 phase token 列表，也不假设不同 Method 共享同一阶段身份。当前 Method 没有定义稳定 phase identity 时，调用方不得从自然语言阶段名或其他 Method 猜测机器 token。
 
-## 8. Method 演进与新增门禁
+## 8. Method 的发布边界
+
+Method 是 Source / Authoring Model 的一等过程 owner，但**不是首版 Consumer Release 的默认一级运行资产**。
+
+当一个 Method 标记为 `release-input` 时，表示其 Consumer runtime 所需语义需要进入 Distribution Build。Build 可以把：
+
+- 进入条件；
+- 关键责任转换；
+- Gate / completion；
+- Return Contract；
+- 对 Skill / reference 的组合要求；
+
+转换为一个或多个发布 Skill 的 `SKILL.md` / `references/**`，而不要求 Consumer 复制 `docs/methods/**`。
+
+这种 transformation 不改变 Method 的 Source canonical ownership，也不能把整个复杂 lifecycle 偷换成一个无边界超级 Skill。发布层必须保持：
+
+- Skill activation 有界；
+- 跨 Skill 的 lifecycle 关系仍可恢复；
+- Consumer-local Authority 决定当前实际工作；
+- Consumer 不需要在线读取 upstream Method source。
+
+`agentic-dev` 自身继续可以直接使用 Source Method 作为 provider runtime，因为 Source Model 与 Consumer Distribution Model 是两套维度。
+
+## 9. Method 演进与新增门禁
 
 新增 Method 至少证明：
 

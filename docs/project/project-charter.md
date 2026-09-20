@@ -9,7 +9,7 @@ distribution: source-only
 
 ## 1. 项目使命
 
-`agentic-dev` 的使命是形成一套**可由 AI Agent 实际执行、可由真实软件项目选择性采用、并能在 Consumer-local 环境持续演进**的软件开发能力体系。
+`agentic-dev` 的使命是作为一个**开发、验证、构建并发布 Software Development Agent Skills 的源码项目**，把经过证据验证的软件开发能力交付给普通软件 Consumer，同时保持 Consumer-local Repository Authority 与可持续演进。
 
 当前核心开发责任覆盖从需求分析、条件性架构澄清，到具体 Feature / change 的 Specification、Technical Planning、工作切分、代码实现、验证与收敛，并在 `Ready to Integrate` 边界结束。merge、release、deployment、production operations、incident response 与 service retirement 默认由 Consumer-local Authority 和实际技术架构承担；只有未来真实跨 Consumer Evidence 证明存在稳定 reusable capability 时，才单独评估 admission。
 
@@ -26,15 +26,15 @@ AI Agent 驱动开发长期面临几个相互关联的问题：
 - 人类需要完整可理解的说明，而 Agent 又需要更薄、更确定的运行入口；
 - 演进结论如果只存在于会话或阶段文档中，会导致“讨论很多、current owner 很少”。
 
-`agentic-dev` 通过 capability ownership、Consumer-local adoption、渐进式披露、Evidence-driven evolution 等机制解决这些问题。
+`agentic-dev` 通过 Source semantic ownership、Distribution classification / build、版本化 Skill Release、Consumer-local Authority、渐进式披露与 Evidence-driven evolution 解决这些问题。
 
 ## 3. 目标使用方
 
 主要使用方包括：
 
 - 使用 AI Agent 进行需求、设计、开发、验证和仓库维护的软件项目；
-- 希望把稳定开发方法、执行能力和工程规则固化进 Repository Authority 的团队；
-- 已存在并持续演进、需要显式 baseline adoption / upgrade 而不是日常依赖上游的 Consumer Repository。
+- 希望安装版本化 Agent Skills，同时保留自身 Product / Requirement / Architecture / technology policy 的团队；
+- 已存在并持续演进、需要显式 Release install / update 而不是日常依赖 upstream Source Repository 的 Consumer Repository。
 
 项目自身也是其能力的 self-consumer，用于验证 Fresh Context、Rule Discovery、Skill / Rule / Method 边界和 Repository governance。
 
@@ -44,9 +44,9 @@ AI Agent 驱动开发长期面临几个相互关联的问题：
 
 项目事实、长期方法和执行约束必须能够从当前 Repository / GitHub Authority 恢复，而不是依赖此前会话。
 
-### G2 — 具备本地归属的可复用能力
+### G2 — Source / Distribution 分离的可复用能力
 
-可复用 Method / Architecture / Skill / Rule 可以被 Consumer adopt / adapt，但 adoption 完成后必须拥有 Consumer-local canonical owner。
+Method / Architecture / Rule / Skill 等可以继续作为 provider-side Source canonical owner；普通软件 Consumer 通过版本化 Release 获得经过构建的 Agent Skills，不要求复制 upstream Source type / path。Consumer-local Product / Requirement / Architecture / policy 始终由 Consumer 自己拥有。
 
 ### G3 — 有界的 Agent 上下文
 
@@ -70,7 +70,7 @@ Agent 与人类可以通过不同入口使用同一套 canonical knowledge；Hum
 
 1. **Repository Authority**：GitHub Repository 是长期项目事实来源；Fresh Context 可以从当前仓库恢复必要事实。
 2. **Consumer ownership**：Consumer 项目事实、产品 Authority、集成权限与 local adaptation 始终由 Consumer 自身拥有。
-3. **Local ordinary runtime**：完成 adoption / upgrade 后，Consumer ordinary runtime 不依赖在线读取 `agentic-dev` current state。
+3. **Release-bounded runtime**：完成安装 / 升级后，Consumer ordinary runtime 与后续 update 不依赖在线读取 `agentic-dev` Source current state，而以 installed / candidate versioned Release 为边界。
 4. **Progressive disclosure**：普通 Agent 不默认加载完整 Rule / Skill / Research / Project history。
 5. **Fail-closed discovery**：发现输入、metadata、扫描完整性或 Authority 不可靠时，不通过猜测、旧缓存或全量加载制造“成功”。
 6. **Single semantic ownership**：同一规范语义只存在一个 canonical owner；允许多视窗解释，不允许多 Authority。
@@ -98,7 +98,7 @@ Agent 与人类可以通过不同入口使用同一套 canonical knowledge；Hum
 项目长期成功应能由真实使用证明：
 
 - Fresh Context 可以在有限输入下恢复正确当前责任；
-- Consumer 能选择性采用能力并长期保持 local Authority；
+- Consumer 能通过版本化 Release 安装 / 升级 Skills，并长期保持 local Authority；
 - Rule / Skill / Method 数量增长时普通上下文仍保持有界；
 - 项目演进不会持续产生重复 owner 或人工同步索引；
 - Human View 足够完整可理解，Agent View 足够薄且可执行；

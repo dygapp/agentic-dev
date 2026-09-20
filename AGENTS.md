@@ -9,7 +9,7 @@ distribution: source-only
 
 ## 仓库职责
 
-`agentic-dev` 定义通用 AI Agent 驱动软件开发能力，并维护可复用的 Method、Skill、Rule、Architecture 与 Consumer adoption 能力。本文件只维护稳定 Repository Authority、Agent Bootstrap 和启动约束；`agentic-dev` 自身的使命、capability instance、Roadmap 与演进摘要由 `docs/project/**` 的真实 Project owner 分别持有。
+`agentic-dev` 是开发、验证、构建并发布 Software Development Agent Skills 的源码项目。内部继续维护 Method、Skill、Rule、Architecture 等 Source canonical owner，以及本仓自身 runtime / governance；普通软件 Consumer 通过版本化 Release 使用发布能力，不复制本仓 Source tree。本文件只维护稳定 Repository Authority、Agent Bootstrap 和启动约束；项目使命、capability instance、Roadmap 与演进摘要由 `docs/project/**` 的真实 Project owner 分别持有。
 
 GitHub Repository 是本仓库唯一长期项目事实来源。会话历史、其他聊天、个人记忆、其他仓库状态和未固化推理不构成本仓库事实。
 
@@ -98,23 +98,40 @@ Rule 的语义、粒度与 Consumer-local specialization 见 `docs/architecture/
 
 Skill 与 Rule 是正交关系，不是上下游流水线。具体边界见 `docs/architecture/engineering-capability-architecture.md`、`skill-architecture.md` 与 `rule-architecture.md`。
 
-## Project / Capability 边界
+## Project / Source / Distribution 边界
 
 `docs/project/**` 描述 `agentic-dev` 这个具体 Repository：使命、核心项目需求、当前 capability instance、Roadmap 与稳定演进摘要。
 
-`docs/architecture/**`、`docs/methods/**`、`skills/**`、`docs/rules/**` 与相应 tool contract 描述可被其他 Repository adopt / adapt 的 Capability。
+`docs/architecture/**`、`docs/methods/**`、`skills/**`、`docs/rules/**` 与相应 tool contract 是本仓 **Source / Authoring Model**。它们拥有长期能力语义，不因为是一等 Source owner 就自动成为 Consumer 同名 runtime asset。
 
-核心原则：**Project 不传播，Capability 传播。** 具体 contract 见 `docs/architecture/project-knowledge-architecture.md`。
+当前核心原则：
+
+> **Project 不传播；Source capability semantics 通过 Distribution Build 发布；Source type / path 不直接传播。**
+
+distribution metadata 只决定 Source asset 是 `source-only`、`release-input`、`release-direct` 或 `retired`；它不改变 semantic ownership。具体 contract 见 `docs/architecture/engineering-capability-architecture.md` 与 `docs/architecture/project-knowledge-architecture.md`。
 
 ## Consumer 边界
 
-Consumer Repository 始终拥有自己的项目事实、Project Knowledge、需求、架构、代码、验证与权限。`agentic-dev` 只提供可复用 capability。
+普通软件 Consumer 始终拥有自己的项目事实、Project Knowledge、Requirement、System Architecture、代码、验证、权限、technology policy 与当前状态。
 
-长期 ownership / ordinary runtime 不变量见 `docs/architecture/consumer-architecture.md`。首次 adoption 与显式 upstream baseline upgrade 使用对应 Method，但 upstream `Project Charter / Capability Profile / Roadmap / Evolution` 只可作为 provenance / context，不自动成为 Consumer Authority。
+首次安装与后续升级使用版本化 Release，而不是 upstream Source baseline：
 
-Consumer 必须建立自己的 local Project Knowledge、Method selector、Rule Discovery instance 与 Skill entry。采用完成后的 ordinary runtime 只依赖 Consumer-local current state，发现失败不能自动回 upstream 补流程或规则。
+```text
+Consumer Authority
++ exact versioned release
+→ bounded install / update
+→ Consumer-owned AGENTS.md
++ .agents/README.md
++ .agents/skills/**
+```
 
-Rule 是 Consumer-local policy specialization 的主要承载面之一；通用 Skill 不应吸收不同 Consumer 必然不同的 commit type / scope、术语、审批或局部技术 policy。
+默认不要求 Consumer 建立 `.agents/methods`、`.agents/architecture`、`.agents/rules`、`.agents/contracts`、`.agents/tools` 或 `.agents/evals`。
+
+根 `AGENTS.md` 始终 Consumer-owned；Release 只能建立最薄 Skill / compatibility locator，不得整文件覆盖 Consumer Authority。
+
+普通 Consumer runtime 与后续 upgrade 默认 `upstream access = 0`。发现失败、执行路径缺失或 compatibility gap 必须在 Consumer-local state 内 fail closed / escalation，不能自动在线回 `agentic-dev` Source Repository 补 Method、Rule、Tool 或“latest baseline”。
+
+`agentic-dev` 自身继续使用本文件、Project Capability Profile、Source Method、Rule Discovery 与 Source Skill root 运行；这属于 provider self-runtime，不等于 Consumer Distribution contract。
 
 ## 外部操作与复核
 

@@ -10,98 +10,147 @@ release-target: consumer-installation
 
 ## 1. Consumer 归属
 
-Consumer Repository 始终拥有自己的项目事实、Project Knowledge、需求、Method、Architecture、代码、验证与集成策略。`agentic-dev` 只提供可采用的通用 capability；upstream 状态不会自动成为 Consumer current state。
-
-Consumer adoption 与 upgrade 的过程分别由对应 Method 持有，本 Architecture 只定义长期 ownership、projection boundary 与 ordinary runtime 不变量。
+普通软件 Consumer Repository 始终拥有自己的项目事实、Project Knowledge、Requirement、System Architecture、代码、验证、权限、技术专项 policy 与当前工作状态。`agentic-dev` 提供的是**版本化 Software Development Agent Skills Release**，不是要求 Consumer 复制 upstream Source / Authoring Model。
 
 核心边界：
 
-> **Project 不传播，Capability 传播。**
+> **Source semantics 可以进入发布物；Source type / path 不直接传播。Consumer 安装 Release，同时保留自己的 Repository Authority。**
 
-upstream `Project Charter / Capability Profile / Roadmap / Evolution` 可以作为 provenance、背景或比较上下文读取，但不属于 adopt / adapt 的 reusable capability 集合，也不会自动成为 Consumer-local Project Authority。
+因此：
 
-## 2. 普通运行时
+- upstream Method / Architecture / Rule / Tool 可以继续作为 `agentic-dev` Source canonical owner；
+- 它们如果参与 Consumer runtime，先经过 Distribution Build 转换 / 组合进一个或多个 Skill package；
+- Consumer 不因为 upstream 存在 Method / Architecture / Rule，就自动建立同名一级 runtime namespace；
+- upstream Project Charter / Capability Profile / Roadmap / Evolution 永远不是 Consumer release object。
 
-采用完成后：
+首次安装与后续升级过程分别由对应 Method 持有；本 Architecture 只定义长期 ownership、installation boundary 与 ordinary runtime 不变量。
+
+## 2. repository-local 默认安装形态
+
+首版 repository-local target 以以下最小结构为核心；其中主要运行路径明确为 `.agents/skills/**`：
 
 ```text
-Consumer Repository facts
-→ Consumer-local Project Knowledge / capability instance
-→ Consumer Agent Bootstrap / Method selection
-→ current Method stage / direct responsibility
-    ├─→ relevant Consumer-local Architecture
-    ├─→ Consumer-local Skill discovery / invocation（如需要）
-    └─→ Consumer-local Rule Discovery → applicable Rule bodies
+AGENTS.md                  # Consumer-owned Repository Bootstrap / Authority
+
+.agents/
+  README.md                # Human View
+  skills/
+    <skill>/
+      SKILL.md
+      references/          # optional
+      scripts/             # optional
+      assets/              # optional
+```
+
+默认**不要求**创建：
+
+```text
+.agents/methods/
+.agents/architecture/
+.agents/rules/
+.agents/contracts/
+.agents/tools/
+.agents/evals/
+```
+
+如果未来 Evidence 证明某种额外 repository-local runtime owner 不可替代，应先修改对应 Architecture / Release contract，而不是因为 upstream Source tree 存在同名目录就自动投影。
+
+平台要求固定位置的 adapter 继续使用平台原生路径，例如 `.github/workflows/**`；目录统一不能覆盖平台 contract。
+
+## 3. Consumer-owned Bootstrap
+
+根 `AGENTS.md` 始终由 Consumer 拥有。
+
+Release 安装 / 更新只允许建立或更新一个**薄的 Skill runtime entry / compatibility locator**，不得：
+
+- 用 upstream / generated `AGENTS.md` 整文件覆盖 Consumer Authority；
+- 删除 Consumer 已有 Product / Project / authorization / technology policy；
+- 把 provider Project state 写成 Consumer current state；
+- 把全部 Skill / reference / Rule 正文塞进 Bootstrap。
+
+安装 / 更新必须具有 bounded / idempotent integration behavior：重复执行时能够识别已有 integration，只修改当前 Release contract 真正负责的片段。
+
+## 4. 普通运行时
+
+安装完成后：
+
+```text
+Consumer Repository Authority / current facts
+→ Consumer-owned Bootstrap
+→ repository-local Skill discovery
+→ matching SKILL.md
+→ references / scripts / assets（按需）
 → execute / verify / return
 ```
 
-ordinary runtime 默认 `upstream access = 0`。本地 Project capability profile、Method entry、Skill discovery、Rule discovery 或 metadata 异常必须在 Consumer-local state 内失败关闭或按 Consumer Authority 升级；不能自动访问 `agentic-dev` 在线补流程 / 规则。
+ordinary runtime 默认 **`upstream access = 0`**。
 
-如果 adopted capability 依赖 Tool、compute 或 external integration，Consumer ordinary runtime 还必须能只从 Consumer-local Agent-consumable Authority 恢复 obligation、canonical locator、可执行路径、result / Evidence recovery 与 fail-closed behavior。只复制 Method / Architecture / Rule / Tool source 或 locator，而没有可恢复的 executable path，不构成完成采用。
+本地 discovery、Skill resource、execution path 或 metadata 异常必须在 Consumer-local state 内 fail closed 或按 Consumer Authority 升级；不得自动访问 `agentic-dev` Source Repository 补流程、规则或“latest baseline”。
 
-该 invariant 不规定具体平台或 transport。直接执行与自动化 alternate path 的实现由 Consumer-local capability instance 持有；Fresh Consumer Agent 不得依赖 upstream、Human Guide、历史聊天或模型记忆补齐。
+新的 Distribution Model 不要求普通 Consumer 运行 `agentic-dev` 自身 Rule Discovery。Consumer 如果有本地条件性 policy，可以继续由自身 Repository Authority 选择合适的承载机制；首版通用 Release 不默认安装 upstream Rule tree / Rule Discovery tool。
 
-## 3. Consumer 本地 Project Knowledge
+## 5. Consumer-local Project Knowledge 与 policy
 
-Consumer 必须拥有自己的 Project Knowledge 或等价 Repository Authority，用来表达：
+Consumer 自己持有：
 
-- Consumer 自身产品 / 项目使命、需求和非目标；
-- Consumer 当前采用哪些 Method / Architecture / Skill / Rule / Tool contract；
-- local Method selector、Rule root / Discovery Tool locator、Skill entry 等 capability instance；
-- 已采用且依赖 Tool / compute / external integration 的 executable path、自动化 alternate path、结果恢复与 fail-closed instance；
-- Consumer 自己的 Roadmap / current work / integration state；
-- 对理解当前 Consumer 仍有价值的本地演进摘要。
+- 产品 / 项目使命与非目标；
+- Requirement / Domain facts；
+- System / Application / Data / Interface Architecture；
+- 技术栈专项规则；
+- repository / Git / external-operation authorization；
+- 术语、审批、迁移、环境与组织约束；
+- Roadmap / current work / integration state；
+- 对当前 Consumer 仍有长期价值的演进摘要。
 
-这些信息不得通过复制 upstream Project docs 来建立。upstream baseline 只提供 provenance，Consumer-local owner 才定义当前状态。
+这些内容默认留在 Consumer 自己的 `docs/**`、`AGENTS.md` 或其他真实 Repository Authority 中，而不是被迁入 `.agents/**` 只因为 Agent 会读取它们。
 
-## 4. 本地规范性归属
+Consumer-local policy 可以约束通用发布 Skill；通用 Skill 不得为了统一所有 Consumer 而吸收必然因 Repository Authority 不同而变化的本地 policy。
 
-Consumer 可以改变路径、命名、工具集成、Method adaptation 与局部 Rule policy，只要：
+## 6. 可执行能力闭环
 
-- 项目事实仍由 Consumer Authority 拥有；
-- local Project / Method / Architecture / Skill / Rule 的 semantic owner 明确；
-- Rule metadata 与 Rule body 同源维护；
-- 没有中心化人工同步 Rule routing map；
-- Rule Discovery output 保持少量 locator，而不是全量 metadata；
-- upstream provenance 与 local Authority 不混为一谈。
+发布 Skill 如果依赖 Tool、compute 或 external integration，安装结果必须建立可恢复的 **Consumer-local executable instance**，至少能确定：
 
-## 5. Consumer 本地 Rule 特化
+- 当前 obligation；
+- canonical locator；
+- direct execution path；
+- direct path 不可用时的 automated alternate path；
+- result / Evidence recovery；
+- 所有 declared path 不可用、subject 不一致或结果不可恢复时的 fail-closed behavior。
 
-不同 Consumer 可以针对同一通用执行能力定义不同 local Rule。例如 Git commit type / scope、术语、审批、迁移、验证或技术 policy 可以由各 Consumer Repository Authority 分别持有。
+`scripts/**` 可以随 Skill 发布，但“脚本文件存在”不等于当前 Runtime 能执行。Runtime compatibility 与 alternate path 必须由 Release contract / Skill metadata / supporting reference 清楚表达并可验证。
 
-因此通用 Skill 不应为了统一所有 Consumer 而吸收这些 local policy。upstream Rule 也不是 Consumer Rule 的永久主副本；Consumer 在 adoption / upgrade 中裁决 adopt / adapt / replace / reject。
+Fresh Runtime 必须能仅依赖 Consumer Repository 恢复这些路径；不得通过 upstream Source、Human Guide、历史聊天或模型记忆补齐。
 
-## 6. 上游解耦
+## 7. 安装 / 升级与上游解耦
 
-Consumer ordinary runtime 不依赖：
+首次安装输入是：
 
-- upstream current branch；
+```text
+Consumer Authority
++ exact versioned release
++ release compatibility / migration metadata
+```
+
+后续升级输入是：
+
+```text
+current installed release
++ Consumer-local retained obligations
++ candidate release
+```
+
+两者都不得把以下对象重新变成普通输入：
+
+- upstream current branch / Source tree；
+- upstream Method / Architecture / Rule corpus；
 - upstream Project Charter / Capability Profile / Roadmap / Evolution；
 - upstream Open Issue / PR；
-- upstream Rule tree；
-- upstream Guide；
 - “latest baseline” 在线解析。
 
-只有显式 adoption / upgrade Method 或明确 research / comparison task 可以重新进入 upstream，并在完成后再次关闭 runtime dependency。
+Release provenance 可以记录 source SHA、version、Skill identities 与 migration information，但 provenance 不取得 Consumer current Authority。
 
-## 7. 能力投影
+## 8. Consumer Evidence 反馈
 
-显式 adoption / upgrade 时，可传播的对象是经过裁决的 capability：
+Consumer Evidence 可以通过 Issue / Comment 等方式反馈给 `agentic-dev`，但只成为 research / evolution candidate。是否改变 upstream Project Charter、Architecture、Method、Skill、Rule、Build 或 Release contract，必须在 `agentic-dev` 自己的 Repository Authority 下重新裁决。
 
-- Method；
-- Architecture；
-- Skill；
-- Rule；
-- 必要 Tool / runtime contract。
-
-Consumer 对每项能力执行 adopt / adapt / replace / reject，并把接受结果写入 Consumer-local canonical owner。
-
-accepted capability 依赖 Tool、compute 或 external integration 时，projection 必须同时建立 Consumer-local executable instance；上游的可执行路径只可作为 adoption / upgrade 输入，不能成为 Consumer ordinary runtime 的在线 fallback。
-
-upstream Project Knowledge 只可帮助回答“这个能力为什么在 upstream 存在、当前 upstream 如何实例化”，不能替代 Consumer 自己的 local decision。
-
-## 8. 反馈
-
-Consumer Evidence 可以通过 Issue / Comment 等方式反馈给 `agentic-dev`，但只成为 research / evolution candidate。是否改变 upstream Project Charter、Method、Architecture、Skill、Rule 或 Tool contract，必须在 `agentic-dev` 自己的 Repository Authority 下重新裁决。
-
-Consumer-local 成功、目录结构或 Project Profile 不因反馈自动泛化成所有 Consumer 的 reusable requirement。
+Consumer-local 成功、目录结构或 policy 不因反馈自动泛化为所有 Consumer 的 reusable requirement。

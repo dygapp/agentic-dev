@@ -10,118 +10,167 @@ release-target: consumer-installation
 
 ## 1. 目标与适用范围
 
-本 Method 用于一个 Consumer Repository **首次显式采用** `agentic-dev` 的可复用 capability。
+本 Method 用于一个**普通软件 Consumer Repository 首次安装** `agentic-dev` 的版本化 Software Development Agent Skills Release。
 
-它不用于 ordinary runtime，也不意味着把 upstream 仓库完整复制进 Consumer。Consumer 始终拥有自己的 Repository Authority、Project Knowledge、项目事实和最终 local canonical owners。
+它是 provider-side installation process owner，不属于 Consumer ordinary runtime，也不要求 Consumer 理解或复制 `agentic-dev` 的 Source / Authoring Model。
 
-核心边界：**Project 不传播，Capability 传播。** upstream Project Charter / Capability Profile / Roadmap / Evolution 只可作为 provenance / understanding context；它们不是 adoption object。
+核心边界：
+
+> **Consumer 安装 Release，不采用 upstream Source tree。**
+
+Consumer 始终拥有自己的 Repository Authority、Project Knowledge、Requirement、System Architecture、技术 policy、权限和当前工作状态。
 
 ## 2. 生命周期
 
 ```text
 Restore Consumer Authority
-→ Select Evaluated Upstream Baseline
-→ Capability Assessment
-→ Local Adoption / Adaptation
-→ Establish Local Project & Runtime Instance
-→ Validate Adoption
-→ Close Evaluated Baseline
+→ Select Exact Release
+→ Check Release Contract & Compatibility
+→ Build Bounded Installation Plan
+→ Install Skill Release
+→ Integrate Consumer-owned Bootstrap
+→ Validate Installation
+→ Record Installed Release
 ```
 
 ## 3. Restore Consumer Authority
 
-先恢复 Consumer 自身当前事实、Project Knowledge、Authority、现有 Method / Architecture / Skill / Rule、当前工作状态和允许修改范围。
+先恢复 Consumer 自身：
 
-不得把 `agentic-dev` README、Project Charter、Capability Profile、Roadmap、Issue、PR 或历史会话当成 Consumer 当前项目事实。
+- 根 `AGENTS.md` / Repository Authority；
+- 产品、Requirement、System Architecture 与项目文档；
+- 当前 `.agents/**` / installed Skills（如存在）；
+- Consumer-local technology / authorization / terminology policy；
+- 当前工作与允许修改范围。
 
-退出条件：Consumer 当前 canonical owners 与允许 adoption 的边界已明确。
+不得把 `agentic-dev` Source Repository、README、Project Charter、Roadmap、Issue、PR 或历史会话当成 Consumer 当前事实。
 
-## 4. Select Evaluated Upstream Baseline
+退出条件：Consumer-owned Authority、已有 Agent assets 与允许安装边界已明确。
 
-选择一个精确、可追溯的 upstream baseline，并只读取 adoption 所需 reusable capability、其直接 Architecture 与必要 provenance / Evidence。
+## 4. Select Exact Release
 
-baseline 必须可被记录和复核；不得使用“latest”作为最终 provenance。
+选择一个精确、可追溯的版本化 Release，而不是 upstream source baseline。
 
-upstream Project Knowledge 可以帮助理解该 baseline 的目的和实例化方式，但不得因为被读取就进入 Consumer Authority。
+至少恢复：
 
-退出条件：目标 upstream baseline 与待评估 capability 集合明确。
+- release identity / version；
+- exact source SHA provenance；
+- included Skill identities；
+- integrity / checksum；
+- runtime compatibility；
+- installation / migration metadata；
+- verification evidence locator。
 
-## 5. Capability Assessment
+不得使用“latest”作为最终 installed provenance。
 
-逐类判断 Method / Architecture / Skill / Rule / 必要 Tool contract：
+退出条件：candidate Release 身份完整、内容和来源可复核。
 
-- adopt：可直接接受语义；
-- adapt：接受目标能力但需 Consumer-local 适配；
-- reject：当前 Consumer 不采用。
+## 5. Check Release Contract & Compatibility
 
-Guide 只作为人类解释材料。upstream Project Knowledge 只作为 provenance / context。二者都不自动进入 Agent ordinary runtime。
+只评估**发布物合同**与目标 Consumer 环境，不重新逐类评估 upstream Method / Architecture / Rule source。
 
-不得为了省事全量复制 upstream 文档树或把 upstream Project capability profile 当作 Consumer selector / runtime catalog。
+至少确认：
 
-退出条件：每个目标 capability 都有明确 disposition 与 local owner 计划。
+- 目标 Agent Runtime 是否能发现发布 Skills；
+- 需要的 `scripts/**` / external execution 是否有 direct path；
+- direct path 不可用时是否存在 automated alternate path；
+- Consumer 是否已有同名 / 冲突 Skill；
+- 根 `AGENTS.md` 的 bounded bootstrap integration point；
+- Consumer-local policy / docs 是否需要保留；
+- candidate Release 是否声明 breaking / migration requirements。
 
-## 6. Local Adoption / Adaptation
+如果 Release contract 不完整、integrity 无法验证或 Runtime 不兼容，必须 fail closed。
 
-将接受的 capability 写入 Consumer-local canonical owner。
+退出条件：形成明确的 install / no-install 决定。
 
-- Method / Architecture 必须与 Consumer 自身流程和结构一致；
-- Skill 尽量保持稳定 procedure；
-- Rule 可根据 Consumer Authority 本地化、替代或新增；
-- Tool contract 可以按 Consumer 环境实现本地 instance；
-- Rule metadata 与 body 保持同源；
-- upstream provenance 不替代 local Authority。
+## 6. Build Bounded Installation Plan
 
-退出条件：接受能力已在 Consumer 中拥有明确、可恢复的 local owner。
+安装计划只描述 Consumer-local 变化，例如：
 
-## 7. Establish Local Project & Runtime Instance
+- 哪些 Skill package 写入 `.agents/skills/**`；
+- 是否创建 / 更新 `.agents/README.md`；
+- 根 `AGENTS.md` 哪个最薄片段需要增加 Skill entry / compatibility locator；
+- 是否需要平台原生 adapter；
+- 哪些 Consumer-local assets 明确保持不变；
+- rollback / conflict / idempotency 行为。
 
-Consumer 必须建立自己的 Repository-local capability instance，而不是复制 upstream Project Profile。
+不得把 upstream `docs/methods/**`、`docs/architecture/**`、`docs/rules/**`、Project Knowledge 或 Eval tree 当作安装清单。
 
-至少明确：
+退出条件：安装 diff 有界、Consumer-owned assets 的保留边界明确。
 
-- Consumer-local Agent Bootstrap；
-- 当前采用 Method 的 selector / entry；
-- Skill discovery entry；
-- Rule root / Rule Discovery Tool locator；
-- Consumer-local Project / Roadmap / current work owner；
-- 必要 Human View / recovery entry。
+## 7. Install Skill Release
 
-对于依赖 Tool、compute 或 external integration 的 accepted capability，还必须建立 Consumer-local executable instance，至少明确：
+按 Release artifact 执行安装：
 
-- 当前 obligation 与 canonical locator；
-- Consumer 可用时的 direct execution path；
-- direct path 不可用时的 automated alternate path；
-- execution result / logs / artifact / terminal state 等 Evidence recovery；
-- 所有 declared path 不可用、baseline 不一致或结果不可恢复时的 fail-closed behavior。
+```text
+versioned release artifact
+→ verify integrity
+→ materialize selected repository-local Skill packages
+→ preserve Consumer-local ownership
+```
 
-只复制 Method、Architecture、Rule、Tool source 或 Tool locator，而没有建立上述可执行闭环，不满足本阶段退出条件。具体 transport 由 Consumer 环境决定，不要求采用 upstream 的平台实例。
+安装目标默认以：
 
-物理文件名和目录可由 Consumer 自己决定，只要 semantic owner 清楚。
+```text
+.agents/skills/**
+```
 
-ordinary runtime 不得要求在线读取 upstream current state，也不得在本地 discovery failure 时自动回退 upstream。
+为主要 runtime surface。
 
-退出条件：Consumer 可仅依赖 local Project / capability state 恢复并执行普通工作。
+Skill supporting resources 可以包含 `references/`、`scripts/`、`assets/`；是否存在由 Release 决定，不要求机械创建空目录。
 
-## 8. Validate Adoption
+平台固定路径的 adapter 保持平台原生位置。
+
+退出条件：Release 文件已经准确安装，未把 provider Project / Research / Guide / Eval source 泄漏为 Consumer runtime Authority。
+
+## 8. Integrate Consumer-owned Bootstrap
+
+根 `AGENTS.md` 始终由 Consumer 拥有。
+
+安装只允许添加 / 更新 Release contract 所需的薄 Bootstrap / Skill locator，必须：
+
+- 保留 Consumer 原有 Authority；
+- 不整文件覆盖；
+- 不复制 Skill Procedure；
+- 不维护手工 Skill inventory；
+- 重复安装具有 bounded / idempotent 行为；
+- 能让非原生 Skill Runtime 按 Release compatibility contract 找到 discovery entry。
+
+`.agents/README.md` 是 Human View，不成为第二套 runtime selector。
+
+退出条件：Consumer Bootstrap 可以进入 installed release，同时本地 Authority 未被覆盖。
+
+## 9. Validate Installation
 
 验证至少覆盖：
 
-- local Repository / Project Authority 恢复；
-- Method entry / relevant Skill selection；
-- Rule Discovery / fail-closed；
-- upstream decoupling；
-- Consumer-local specialization 未被 upstream 覆盖；
-- upstream Project state 未成为 local current Authority；
-- adoption 引入的关键行为与 completion claim。
-- 依赖 Tool / compute / external integration 的 capability 能从 Consumer-local Authority 恢复 direct path、automated alternate path、result recovery 与 fail-closed behavior；
-- Fresh Runtime 在不读取 upstream、Human Guide、历史聊天或 memory 的条件下实际完成上述恢复，并对目标 subject 取得 required Current Evidence。
+- installed release identity / integrity；
+- expected Skill package 完整性；
+- Consumer-owned `AGENTS.md` 未被覆盖；
+- Consumer-local Requirement / Architecture / policy 未被删除；
+- repository-local Skill discovery；
+- Release 声明的 runtime compatibility；
+- 依赖 executable capability 时的 direct execution path；
+- automated alternate path；
+- result / Evidence recovery；
+- fail-closed behavior；
+- ordinary runtime `upstream access = 0`；
+- Fresh Runtime 不读取 upstream Source、历史聊天或 memory 也能恢复已安装能力。
 
-验证范围按实际 adopted capabilities 决定，不要求无差别执行全部 upstream eval。
+验证范围按 Release 实际包含能力决定，不要求无差别执行 provider-side 全部 eval。
 
-## 9. Close Evaluated Baseline
+退出条件：Current Evidence 支持“该 Release 已正确安装并可由 Consumer-local runtime 使用”。
 
-记录已评估 upstream exact baseline、Consumer-local adoption 状态和必要 Evidence。
+## 10. Record Installed Release
 
-完成 adoption 不产生未来自动升级义务。后续 upstream 变化只有显式进入 `method:consumer-upgrade` 才能改变 Consumer local state。
+在 Consumer 自己的合适 Authority / provenance owner 中记录：
 
-完成条件：Consumer ordinary runtime 可独立运行，local Project / capability instance 及其必要 executable path 可恢复，provenance 可追溯，Fresh Runtime Evidence 支持 adoption completion claim，且没有未声明的 upstream runtime dependency。
+- installed release identity / version；
+- source SHA provenance；
+- installation evidence；
+- 必要 local retained obligations；
+- 明确的 local customization（如有）。
+
+记录 installed release 不创建未来自动升级义务。后续变化只有显式进入 `method:consumer-upgrade` 才能改变 Consumer-local installation。
+
+完成条件：Consumer ordinary runtime 只依赖 local Repository + installed release，provenance 可追溯，没有未声明的 upstream Source dependency。

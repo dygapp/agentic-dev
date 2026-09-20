@@ -18,7 +18,7 @@ release-target: software-development
 
 如果 Requirement Baseline 已足够，但多个当前 / 预期 Feature 共同依赖一个尚未解决、长期、高成本难逆并阻塞可靠开发的 architecture driver，则返回真实 Architecture owner，或在 local selector 已采用并命中相应 work kind 时进入 `method:architecture-clarification`。
 
-upstream capability 存在本身不构成 Consumer 的隐式 adoption。
+upstream Source capability 存在本身不构成 Consumer runtime 能力；只有已安装 Release 与 Consumer-local Authority 才定义 Consumer 当前可用能力。
 
 ## 2. 生命周期
 

@@ -60,29 +60,33 @@ Gate A～G 在 `agentic-dev` 内连续推进。重构期间不把真实 Consumer
 
 ## 当前门禁
 
-**当前 Gate：Gate C — Source / Distribution Model Rebuild。**
+**当前 Gate：Gate D — Skill Packaging & Release Build。**
 
-Gate A 已通过 PR #173 集成并冻结 `DR-AC-01`～`DR-AC-39`。
+Gate A 已冻结 `DR-AC-01`～`DR-AC-39`；Gate B 已完成 Distribution Evidence Review、全仓发布分类与 deterministic distribution audit。
 
-Gate B 已完成：
+Gate C 已完成 Source / Distribution Model Rebuild：
 
-- Distribution Evidence Review；
-- Current tree 全仓发布分类；
-- 同源 distribution metadata / inheritance contract；
-- deterministic distribution audit；
-- `DR-AC-09`、`DR-AC-10`、`DR-AC-11`、`DR-AC-36` 的 Gate B Evidence。
+- Source / Authoring Model 与 Consumer Distribution / Runtime Model 已在 Current Architecture 中分离；
+- Method / Architecture / Rule 继续作为 provider-side Source canonical owner，但不再默认投影成 Consumer 同名 runtime asset；
+- Skill 明确成为首版主要 Distribution Unit，并允许通过 `references/`、`scripts/`、`assets/` 承载构建后的 supporting semantics；
+- Consumer 首次安装 / 后续升级已改为 versioned Release install / update；
+- Consumer 根 `AGENTS.md` 保持 Consumer-owned，repository-local 默认目标以 `.agents/README.md + .agents/skills/**` 为核心；
+- 普通 Consumer runtime / update 保持 `upstream access = 0`，不把 upstream Rule tree / Rule Discovery / Source tree 恢复成默认依赖；
+- Model Collaboration 等可选能力改为 installed Release 提供 capability 后再建立 local runtime instance。
 
-Gate B 的完整执行记录、独立复核与 Actions Evidence 由 PR #174 / Issue #172 / GitHub Actions 持有，本 Roadmap 不复制其流水账。
+Gate C 的完整 diff、Actions、Review 与 Integration Evidence 由 PR #175 / Issue #172 / GitHub Actions 持有，本 Roadmap 不复制流水账或精确 merge SHA。
 
-Gate C 只负责：
+Gate D 只负责：
 
-- 重构 Source / Distribution 的长期 Architecture / ownership model；
-- 明确哪些 Method / Rule / Architecture 继续属于 provider authoring，哪些语义只作为 release input；
-- 将 Consumer adoption / upgrade 的长期语义改为面向 versioned release install / update；
-- 清除“upstream capability type → Consumer 同名 capability type”的默认 projection 假设；
-- 满足 `DR-AC-01`～`DR-AC-08` 与 `DR-AC-20`。
+- 设计首版 release skill set；
+- 将必要 Source semantics 编译 / 包装进 Skill；
+- 引入实际需要的 `references/`、`scripts/`、`assets/`；
+- 建立 deterministic release builder；
+- 生成 repository-local install artifact；
+- 建立 release identity、provenance、integrity / checksum 与必要 migration metadata；
+- 满足 `DR-AC-12`～`DR-AC-19`。
 
-Gate C 不构建最终 Release，不执行真实 Consumer migration / validation；后续 Gate 不因出现在本文中自动跳过当前门禁。
+Gate D 不执行真实 Consumer migration / validation；后续 Gate 不因出现在本文中自动跳过当前门禁。
 
 ## 后续候选
 

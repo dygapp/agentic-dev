@@ -10,103 +10,161 @@ release-target: consumer-installation
 
 ## 1. 目标与适用范围
 
-本 Method 用于 Existing Consumer **显式**评估新的 `agentic-dev` upstream baseline，并决定是否改变 Consumer-local capability。
+本 Method 用于 Existing Consumer 从**当前已安装 Release** 显式升级到一个新的**版本化 Release**。该 Release 由 `agentic-dev` 发布，并具有可验证的 identity、provenance 与兼容 / migration metadata。
 
-upstream 新 commit、release、Project Roadmap 或其他项目状态本身不会自动改变 Consumer；ordinary runtime 也不得触发隐式 upgrade。
+它不比较 upstream Source tree，也不把 upstream 新 commit、Method / Architecture / Rule 文件变化自动同步到 Consumer。
 
-核心边界：**Project 不传播，Capability 传播。** upgrade 比较 reusable capability semantic delta，而不是把 upstream Project state 同步到 Consumer。
+核心边界：
+
+> **升级比较 Release 与 Consumer-local retained obligations，不比较 Consumer tree 与 upstream Source tree。**
 
 ## 2. 生命周期
 
 ```text
-Restore Current Consumer
-→ Select Candidate Upstream Baseline
-→ Evaluate Capability Delta
-→ Apply Local Decisions
-→ Refresh Local Capability Instance
+Restore Current Installation
+→ Select Candidate Release
+→ Evaluate Release & Migration Delta
+→ Build Bounded Update Plan
+→ Apply Release Update
+→ Reconcile Consumer-local Obligations
 → Targeted Revalidation
-→ Close New Evaluated Baseline
+→ Record Installed Release
 ```
 
-## 3. Restore Current Consumer
+## 3. Restore Current Installation
 
-先从 Consumer Repository 恢复当前 Project Knowledge、Authority、local Method / Architecture / Skills / Rules、已记录 evaluated baseline 与当前有效 adaptation。
+先从 Consumer Repository 恢复：
 
-升级比较的起点是 Consumer 当前 local state，而不是旧 upstream baseline 的假想镜像。
+- 当前 installed release identity / provenance；
+- 当前 `.agents/skills/**`；
+- Consumer-owned `AGENTS.md` integration；
+- Consumer-local Product / Requirement / Architecture / policy；
+- 上一次安装后保留或新增的 local customization；
+- 当前可执行路径与 runtime facts。
 
-退出条件：当前 Consumer canonical state、local capability instance 与 provenance 已明确。
+升级起点是**Consumer 当前真实状态**，不是旧 upstream Source baseline 的假想镜像。
 
-## 4. Select Candidate Upstream Baseline
+退出条件：current installed release 与 retained local obligations 已明确。
 
-选择精确 upstream candidate baseline，并只读取本次升级直接相关的 canonical capability assets、Architecture 与必要 Evidence。
+## 4. Select Candidate Release
 
-upstream Project Charter / Capability Profile / Roadmap / Evolution 可以作为 provenance / design context 读取，但不得带入 Consumer ordinary project facts，也不是需要逐文件同步的 upgrade object。
+选择精确 candidate Release，并恢复：
 
-退出条件：candidate baseline 和 capability 比较范围可复核。
+- version / identity；
+- source SHA provenance；
+- included Skill identities；
+- integrity；
+- compatibility；
+- release notes / migration metadata；
+- verification evidence locator。
 
-## 5. Evaluate Capability Delta
+不得通过读取 upstream current Method / Architecture / Rule tree 来“推断这次升级是什么”。
 
-针对相关 Method / Architecture / Skill / Rule / Tool contract 逐项判断：
+退出条件：candidate Release 可复核。
 
-- retain：保留 Consumer-local 现状；
-- adopt：采用 upstream 新能力 / 新语义；
-- adapt：采用目标变化但保持 local adaptation；
-- replace：明确用新 owner / 机制取代本地旧能力；
-- reject：当前不接受 upstream 变化。
+## 5. Evaluate Release & Migration Delta
 
-比较重点是语义责任，而不是目录或文件 diff。特别检查：
+比较：
 
-- Method stage / Gate / completion 是否变化；
-- Architecture ownership / runtime invariant 是否变化；
-- Skill Procedure / contract 是否变化；
-- Rule policy / metadata / discovery contract 是否变化；
-- Tool / runtime contract 是否变化；
-- Consumer-local Rule 是否仍应保留差异。
+```text
+current installed release
++ Consumer-local retained obligations
++ candidate release
+```
 
-upstream Project Profile 中出现的新 Method mapping、路径或工具 locator 只说明 upstream 自身 current instance；除非对应 reusable capability 已被接受且 Consumer 需要调整本地 instance，否则不自动复制。
+重点判断：
 
-退出条件：所有 in-scope capability semantic delta 都有明确 disposition。
+- Skill add / remove / replace / breaking change；
+- supporting references / scripts / assets 变化；
+- runtime compatibility 变化；
+- executable direct / alternate path 变化；
+- Bootstrap integration contract 变化；
+- migration / cleanup requirement；
+- Consumer-local customization 是否会冲突。
 
-## 6. Apply Local Decisions
+合法 disposition 可以是：
 
-只把已接受决定写入 Consumer-local canonical owner。不得用 upstream 文件覆盖未重新裁决的 local adaptation。
+- retain current release；
+- update；
+- update with local reconciliation；
+- reject candidate。
 
-需要迁移或替换时，旧 owner 的退出必须明确，避免两个 current owner 并存。
+不得重新建立旧式的 upstream Method / Architecture / Rule 逐项 adopt / adapt / replace 表。
 
-退出条件：local capability state 与升级决定一致，没有隐式双 Authority。
+退出条件：candidate Release 是否可升级以及需要保留的 Consumer-local obligations 已明确。
 
-## 7. Refresh Local Capability Instance
+## 6. Build Bounded Update Plan
 
-如果 accepted delta 改变了 Consumer 的 Method selection、Skill discovery、Rule root / Discovery Tool、Human / Agent entry 或其他 local instance pointer，更新 Consumer-local Project Capability Profile 或等价 Repository Authority。
+计划至少明确：
 
-如果 accepted delta 改变 Tool contract、runtime assumption、Rule Discovery contract、verification behavior 或 executable path requirement，还必须重新评估并刷新受影响的 Consumer-local executable instance，包括 obligation、canonical locator、direct execution path、automated alternate path、result / Evidence recovery 与 fail-closed behavior。不得只更新上游 provenance 或 Tool source 而保留已经失真的运行路径。
+- 哪些 installed Skill package 被新增 / 替换 / 删除；
+- 哪些 Release-owned supporting resource 更新；
+- Consumer-owned `AGENTS.md` 需要的最小 bounded change；
+- `.agents/README.md` / generated compatibility metadata 是否更新；
+- Consumer-local policy / project docs 明确保留；
+- migration / rollback / failure behavior；
+- 重复执行的 idempotency 边界。
 
-不得把 upstream `project-capability-profile.md` 直接复制成 Consumer profile；本地 profile 只记录 Consumer 实际接受并运行的 capability instance。
+Release 不拥有的 Consumer-local 文件不得因为“同步最新”被覆盖。
 
-如果 accepted delta 不影响 local instance，则不为“同步最新”机械修改 Project profile。
+退出条件：update diff、ownership 与 rollback 边界清楚。
 
-退出条件：Consumer-local Project instance 与已接受 capability 保持一致。
+## 7. Apply Release Update
 
-## 8. Targeted Revalidation
+先验证 candidate artifact integrity，再更新 Release-owned assets。
 
-根据实际 semantic delta 选择验证：
+更新过程中：
 
-- Method entry / transition；
-- Skill behavior；
-- Rule discovery / fail-closed；
-- Consumer-local policy；
-- local capability profile / runtime entry；
-- ordinary runtime upstream decoupling；
-- 受影响 capability 的 direct execution path 与 automated alternate path；
-- result / Evidence recovery、exact subject 与 terminal state；
-- 所有 declared path 不可用或 locator 破坏时的 fail-closed behavior；
-- Fresh Runtime 仅依赖 Consumer-local Authority 恢复受影响路径的行为；
-- 受影响产品 / 工程行为。
+- 不整文件覆盖 Consumer `AGENTS.md`；
+- 不删除未声明为 Release-owned 的 local files；
+- 不访问 upstream Source tree 补齐 candidate；
+- 旧 Release-owned asset 的退出必须清楚，避免两个 current release owner 并存；
+- 中途失败时保持可恢复 / 可重试状态。
 
-不因 baseline upgrade 自动运行所有历史 eval，但不得用旧 Evidence 支撑已发生语义变化的新 claim。
+退出条件：Repository 中的 Release-owned assets 与 candidate Release 一致。
 
-## 9. Close New Evaluated Baseline
+## 8. Reconcile Consumer-local Obligations
 
-记录新的 exact evaluated upstream baseline、关键 disposition 与当前验证 Evidence。
+升级后重新应用并核对 Consumer-local retained obligations，例如：
 
-完成条件：Consumer-local Project / capability owners 自洽，ordinary runtime 不依赖 upstream，upstream Project state 未泄漏成 Consumer current Authority，且所有受影响 claim 有当前 Evidence 支撑。
+- Product / Requirement / System Architecture；
+- technology policy；
+- authorization；
+- terminology；
+- current work；
+- local execution / environment adaptation；
+- 经明确允许的 local Skill customization。
+
+如果 candidate Release 与 local Authority 发生真实冲突，必须由 Consumer Authority 决定；upstream provenance 不能覆盖 local truth。
+
+退出条件：Release-owned assets 与 Consumer-owned assets 不形成隐藏双 Authority。
+
+## 9. Targeted Revalidation
+
+根据真实 release delta 选择验证，至少考虑：
+
+- installed identity / integrity；
+- changed Skill activation / behavior；
+- Bootstrap discovery；
+- supporting references / scripts；
+- direct execution path / automated alternate path；
+- result / Evidence recovery；
+- fail-closed behavior；
+- Consumer-local retained policy；
+- ordinary runtime `upstream access = 0`；
+- Fresh Runtime 只依赖 Consumer-local Authority 恢复受影响路径；
+- 受影响的软件开发行为。
+
+不得用旧 Release 的 Evidence 支撑已发生语义变化的新 claim，也不因升级自动执行 provider-side 全部历史 eval。
+
+## 10. Record Installed Release
+
+更新 Consumer-local provenance：
+
+- 新 installed release identity / version；
+- source SHA provenance；
+- migration / reconciliation summary；
+- 当前验证 Evidence；
+- retained local obligations。
+
+完成条件：Consumer-local ownership 自洽、candidate Release 已成为唯一 current installed release、普通运行不依赖 upstream Source，受影响 claim 有 Current Evidence。

@@ -51,6 +51,10 @@ class RepositoryBootstrapClosureTests(unittest.TestCase):
         ):
             self.assertIn(required, combined)
         self.assertIn("upstream access = 0", consumer)
+        self.assertIn(".agents/skills/**", consumer)
+        self.assertIn("不默认安装 upstream Rule tree", consumer)
+        self.assertIn("版本化 Release", adoption)
+        self.assertIn("版本化 Release", upgrade)
 
     def test_human_guide_explains_layers_without_retired_routing_modes(self):
         guide = self.read("docs/guides/github-agent-workflow.md")
