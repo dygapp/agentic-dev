@@ -47,6 +47,7 @@ RELEASE_BUILDER = ROOT / "tools" / "release-build" / "release_build.py"
 RUN_CONTEXT = {
     "source_commit": None,
     "codex_version": None,
+    "release_id": None,
 }
 
 
@@ -320,6 +321,7 @@ def write_run_metadata(
 ) -> None:
     source_commit = RUN_CONTEXT["source_commit"]
     codex_version = RUN_CONTEXT["codex_version"]
+    release_id = RUN_CONTEXT.get("release_id")
     if not source_commit or not codex_version:
         raise RuntimeError("Run context is incomplete; source commit / Codex version missing")
 
@@ -327,6 +329,8 @@ def write_run_metadata(
         "scenario_id": scenario_id,
         "source_commit": source_commit,
         "codex_version": codex_version,
+        "runtime_mode": "release-installed" if release_id else "source-skill-copy",
+        "release_id": release_id,
         "cwd": str(cwd.relative_to(ROOT)) if cwd.is_relative_to(ROOT) else str(cwd),
         "command": command,
         "returncode": returncode,
@@ -608,6 +612,7 @@ def main() -> int:
             release_context, release_package, release_result = build_release_package(
                 RUN_CONTEXT["source_commit"]
             )
+            RUN_CONTEXT["release_id"] = release_result["release_id"]
             print(
                 "Release runtime: "
                 f"{release_result['release_id']} "
