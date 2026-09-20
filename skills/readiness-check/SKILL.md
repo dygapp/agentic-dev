@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "method:ai-development;rule:human-intervention-necessity;rule:evidence-type-must-match-claim;rule:verification-contract-currentness"
 ---
 
 # readiness-check
@@ -21,12 +22,12 @@ metadata:
 - Current Specification / optional Technical Plan；
 - Domain / Architecture / Repository Authority；
 - 当前仓库事实；
-- 当前任务适用的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 重新读取当前 Unit 与其直接 Authority，不沿用旧会话的就绪结论。
-2. 通过 Rule Discovery 加载 readiness / verification / repository 相关 Rules。
+2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 3. 检查 Specification readiness、必要技术决定、Unit scope、依赖、artifact lifecycle、权限和 completion/verification 定义。
 4. 检查 base drift 或当前仓库状态是否使既有计划失效。
 5. 只报告 evidence-backed finding；本 Skill 内不修复 Authority、计划、代码或配置。
