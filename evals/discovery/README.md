@@ -2,6 +2,7 @@
 id: eval:rule-discovery-v4
 type: eval-guide
 status: active
+distribution: source-only
 ---
 
 # V4 Rule Discovery Evals

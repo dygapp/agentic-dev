@@ -2,6 +2,7 @@
 id: guide:skill-inventory
 type: guide
 status: active
+distribution: source-only
 ---
 
 # Skill 目录导航

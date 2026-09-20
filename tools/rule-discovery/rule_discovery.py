@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# agentic-dev-distribution: source-only
 """V4 deterministic Rule Discovery and repository metadata lint.
 
 This tool deliberately supports only the frozen agentic-dev Front Matter subset:
