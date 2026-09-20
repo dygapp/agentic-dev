@@ -124,7 +124,7 @@ Body.
         self.assertEqual(0, completed.returncode, completed.stderr)
         payload = json.loads(completed.stdout)
         self.assertEqual("ok", payload["status"])
-        self.assertEqual(12, payload["skills"])
+        self.assertEqual(15, payload["skills"])
         self.assertEqual(20, payload["rules"])
 
 
