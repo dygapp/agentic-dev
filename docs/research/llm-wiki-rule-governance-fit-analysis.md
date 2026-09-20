@@ -2,6 +2,7 @@
 id: research:llm-wiki-rule-governance
 type: research
 status: active
+distribution: source-only
 ---
 
 # LLM Wiki 与规则治理适配分析

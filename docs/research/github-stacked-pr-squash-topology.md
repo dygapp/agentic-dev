@@ -2,6 +2,7 @@
 id: research:github-stacked-pr-squash-topology
 type: research
 status: active
+distribution: source-only
 ---
 
 # GitHub Stacked PR + Squash Merge 集成拓扑研究

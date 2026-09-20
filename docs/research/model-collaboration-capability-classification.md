@@ -2,6 +2,7 @@
 id: research:model-collaboration-capability-classification
 type: research
 status: active
+distribution: source-only
 ---
 
 # Model Collaboration Capability 分类经验
