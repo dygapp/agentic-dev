@@ -80,6 +80,31 @@ class DistributionAuditTests(unittest.TestCase):
         self.assertEqual("fail-closed", result["status"])
         self.assertEqual(["docs/architecture/a.md"], result["orphan_release_input"])
 
+    def test_skill_navigation_readme_is_scoped_owner(self):
+        temp, root = self.make_repo()
+        self.addCleanup(temp.cleanup)
+        write(
+            root / "skills/README.md",
+            owner_text("guide:skill-inventory", "source-only"),
+        )
+        result = da.audit(root)
+        self.assertEqual("ok", result["status"])
+        self.assertEqual(1, result["scoped_asset_count"])
+
+    def test_generated_python_cache_is_not_repository_asset(self):
+        temp, root = self.make_repo()
+        self.addCleanup(temp.cleanup)
+        write(
+            root / "docs/architecture/a.md",
+            owner_text("architecture:a", "source-only"),
+        )
+        write(root / "tools/example/__pycache__/tool.cpython-312.pyc", "generated")
+        write(root / "evals/__pycache__/runner.cpython-312.pyc", "generated")
+        result = da.audit(root)
+        self.assertEqual("ok", result["status"])
+        self.assertEqual([], result["unexpected_unowned"])
+        self.assertEqual(1, result["repository_file_count"])
+
     def test_duplicate_identity_is_ambiguous(self):
         temp, root = self.make_repo()
         self.addCleanup(temp.cleanup)
