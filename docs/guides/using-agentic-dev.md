@@ -9,18 +9,19 @@ distribution: source-only
 
 本文是面向人的总览指南。它帮助你理解 `agentic-dev` 如何组织 AI 开发工作，但不参与 ordinary Agent runtime，也不替代 Project / Method / Architecture / Skill / Rule 的正式定义。
 
-## 1. 先区分 Project Knowledge 与可复用 Capability
+## 1. 先区分 Project Knowledge、Source Model 与 Distribution Model
 
-`agentic-dev` 同时维护两类长期知识：
+`agentic-dev` 同时维护三种不同责任：
 
-- **Project Knowledge**：只描述 `agentic-dev` 自身——为什么存在、当前采用哪些 capability、当前走到哪里以及为什么演进成今天这样；
-- **Reusable Capability**：Method / Architecture / Skill / Rule / Tool contract，可以在显式 adoption / upgrade 中被 Consumer adopt / adapt / reject。
+- **Project Knowledge**：只描述 `agentic-dev` 自身——为什么存在、当前怎样运行、走到哪里以及为什么演进成今天这样；
+- **Source / Authoring Model**：Method / Architecture / Skill / Rule / Tool 等 canonical owner，用于开发和治理长期能力语义；
+- **Distribution Model**：把经过分类的 Source semantics 构建成版本化 Agent Skills Release，交给普通软件 Consumer 安装。
 
 核心原则：
 
-> **Project 不传播，Capability 传播。**
+> **Project 不传播；Source capability semantics 通过 Distribution Build 发布；Source type / path 不直接传播。**
 
-Project Knowledge 的入口见 `docs/project/README.md`；边界定义见 `docs/architecture/project-knowledge-architecture.md`。
+普通软件 Consumer 不需要复制本仓 Source tree；首版 repository-local 发布物以 `.agents/skills/**` 为主要运行单元。Project Knowledge 的入口见 `docs/project/README.md`；边界定义见 `docs/architecture/project-knowledge-architecture.md` 与 `consumer-architecture.md`。
 
 ## 2. 五类核心能力
 
