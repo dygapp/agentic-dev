@@ -80,6 +80,56 @@ class DistributionAuditTests(unittest.TestCase):
         self.assertEqual("fail-closed", result["status"])
         self.assertEqual(["docs/architecture/a.md"], result["orphan_release_input"])
 
+    def test_invalid_release_target_fails_closed(self):
+        temp, root = self.make_repo()
+        self.addCleanup(temp.cleanup)
+        write(
+            root / "docs/architecture/a.md",
+            owner_text("architecture:a", "release-input", "typo-target"),
+        )
+        result = da.audit(root)
+        self.assertEqual("fail-closed", result["status"])
+        self.assertEqual(
+            ["docs/architecture/a.md"],
+            result["invalid_release_target"],
+        )
+
+    def test_source_only_cannot_declare_release_target(self):
+        temp, root = self.make_repo()
+        self.addCleanup(temp.cleanup)
+        write(
+            root / "docs/architecture/a.md",
+            owner_text("architecture:a", "source-only", "software-development"),
+        )
+        result = da.audit(root)
+        self.assertEqual("fail-closed", result["status"])
+        self.assertEqual(
+            ["docs/architecture/a.md"],
+            result["invalid_release_target"],
+        )
+
+    def test_skill_resource_inherits_parent_skill(self):
+        temp, root = self.make_repo()
+        self.addCleanup(temp.cleanup)
+        write(
+            root / "skills/example/SKILL.md",
+            skill_text("release-direct", "software-development"),
+        )
+        write(root / "skills/example/references/reference.md", "# Reference\n")
+        write(root / "skills/example/scripts/run.py", "print('ok')\n")
+        write(root / "skills/example/assets/template.txt", "template\n")
+        result = da.audit(root)
+        self.assertEqual("ok", result["status"])
+        for path in (
+            "skills/example/references/reference.md",
+            "skills/example/scripts/run.py",
+            "skills/example/assets/template.txt",
+        ):
+            self.assertEqual(
+                "skill-resource:skill:example",
+                result["inherited_files"][path],
+            )
+
     def test_skill_navigation_readme_is_scoped_owner(self):
         temp, root = self.make_repo()
         self.addCleanup(temp.cleanup)
