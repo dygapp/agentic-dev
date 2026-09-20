@@ -54,6 +54,13 @@ class RuntimeAcceptanceTests(unittest.TestCase):
             self.assertFalse(result["upstream_runtime_dependency"])
             self.assertEqual(
                 [
+                    {"name": "external-operation", "kind": "external"},
+                    {"name": "github-actions-verification", "kind": "external"},
+                ],
+                result["execution_contracts"],
+            )
+            self.assertEqual(
+                [
                     "AGENTS.md",
                     ".agents/release/skill-index.json",
                     ".agents/skills/<name>/SKILL.md",
@@ -95,6 +102,35 @@ class RuntimeAcceptanceTests(unittest.TestCase):
             forbidden.mkdir(parents=True)
             (forbidden / "legacy.md").write_text("legacy\n", encoding="utf-8")
             with self.assertRaisesRegex(runtime.RuntimeAcceptanceError, "forbidden provider-style"):
+                runtime.verify_installed_fixture(consumer)
+
+    def test_external_execution_contract_missing_token_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = self._fixture(Path(temp))
+            consumer = fixture["consumer"]
+            skill = consumer / ".agents/skills/external-operation/SKILL.md"
+            text = skill.read_text(encoding="utf-8")
+            skill.write_text(
+                text.replace("`evidence-recovery`", "`evidence-recovery-missing`"),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                runtime.RuntimeAcceptanceError,
+                "incomplete runtime execution contract",
+            ):
+                runtime.verify_installed_fixture(consumer)
+
+    def test_script_resource_requires_execution_contract_metadata(self):
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = self._fixture(Path(temp))
+            consumer = fixture["consumer"]
+            scripts = consumer / ".agents/skills/clarify-intent/scripts"
+            scripts.mkdir(parents=True)
+            (scripts / "helper.py").write_text("print('helper')\n", encoding="utf-8")
+            with self.assertRaisesRegex(
+                runtime.RuntimeAcceptanceError,
+                "contains scripts without runtime execution contract",
+            ):
                 runtime.verify_installed_fixture(consumer)
 
     def test_skill_index_cannot_gain_procedure_fields(self):
