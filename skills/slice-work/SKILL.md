@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "method:ai-development;rule:human-intervention-necessity"
 ---
 
 # slice-work
@@ -20,12 +21,12 @@ metadata:
 - Ready Specification；
 - Optional Technical Plan / Architecture decisions；
 - 当前仓库结构与已知依赖；
-- 当前任务适用的 Rule candidates。
+- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
 
 ## 流程
 
 1. 提取必须实现的可观察行为与验收责任。
-2. 通过 Rule Discovery 加载切分相关 Rules。
+2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 3. 优先形成窄而完整的纵向单元；避免按数据库/后端/前端/测试机械横切。
 4. 每个 Unit 明确 Scope、Authority inputs、Dependencies、Completion Conditions、Verification responsibility 与明确 Out of Scope。
 5. 检查 context-fit：新的 Agent 应能在一个上下文完成理解、实现、验证。
