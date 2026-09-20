@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import zipfile
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -118,6 +119,45 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         self.assertTrue(
             set(authenticated_runtime.BEHAVIOR_SCENARIOS) <= behavior_ids
         )
+
+    def test_authenticated_runtime_evidence_bundle_is_self_contained(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            report = root / "authenticated-model-runtime.json"
+            report.write_text('{"status":"PASS"}\n', encoding="utf-8")
+            bundle = root / "evidence.zip"
+            payload = {
+                "activation": {
+                    "evidence_files": [
+                        {"path": "AGENTS.md", "sha256": "not-used-here"},
+                    ],
+                },
+                "behavior": {
+                    "evidence_files": [
+                        {"path": "README.md", "sha256": "not-used-here"},
+                    ],
+                },
+            }
+            digest = authenticated_runtime._write_evidence_bundle(
+                bundle,
+                report,
+                payload,
+            )
+            self.assertEqual(64, len(digest))
+            self.assertTrue(bundle.is_file())
+            with zipfile.ZipFile(bundle, "r") as zf:
+                self.assertEqual(
+                    {
+                        "authenticated-model-runtime.json",
+                        "AGENTS.md",
+                        "README.md",
+                    },
+                    set(zf.namelist()),
+                )
+                self.assertEqual(
+                    (1980, 1, 1, 0, 0, 0),
+                    zf.getinfo("authenticated-model-runtime.json").date_time,
+                )
 
     def test_activation_corpus_covers_new_release_skills(self):
         ids = {case["id"] for case in runner.activation_cases()}
