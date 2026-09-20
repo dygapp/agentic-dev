@@ -12,6 +12,7 @@ on:
       - 'evals/**/*.json'
       - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
+      - 'tools/distribution-audit/**'
       - '.github/workflows/rule-discovery.yml'
   push:
     branches: [master]
@@ -24,6 +25,7 @@ on:
       - 'evals/**/*.json'
       - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
+      - 'tools/distribution-audit/**'
       - '.github/workflows/rule-discovery.yml'
   workflow_dispatch:
     inputs:
