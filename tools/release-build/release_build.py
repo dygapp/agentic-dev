@@ -179,6 +179,17 @@ def _verify_source_sha(repo_root: Path, source_sha: str) -> None:
         raise ValueError("cannot verify exact source SHA from Git HEAD") from exc
     if actual != source_sha:
         raise ValueError(f"source SHA mismatch: expected {source_sha}, actual {actual}")
+    try:
+        dirty = subprocess.run(
+            ["git", "-C", str(repo_root), "status", "--porcelain=v1", "--untracked-files=all"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise ValueError("cannot verify clean source checkout") from exc
+    if dirty:
+        raise ValueError("release build requires a clean Git checkout for exact source provenance")
 
 
 def _run_distribution_audit(repo_root: Path) -> None:
@@ -201,6 +212,22 @@ def _run_distribution_audit(repo_root: Path) -> None:
 def _write_text(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content.replace("\r\n", "\n"), encoding="utf-8", newline="\n")
+
+
+def _write_generated_text(path: Path, content: str) -> None:
+    if path.exists():
+        raise ValueError(f"generated path collision: {path}")
+    _write_text(path, content)
+
+
+def _prepare_generated_reference_root(skill_destination: Path) -> Path:
+    reference_root = skill_destination / "references/release-inputs"
+    if reference_root.exists():
+        raise ValueError(
+            f"generated reference namespace collision: {reference_root}"
+        )
+    reference_root.mkdir(parents=True, exist_ok=False)
+    return reference_root
 
 
 def _generated_reference(owner: MarkdownOwner, source_sha: str) -> str:
@@ -391,7 +418,7 @@ def build_release(
         installation_ref_root = stage / "installation/references"
         for identity in sorted(installation_inputs):
             owner = release_inputs[identity]
-            _write_text(
+            _write_generated_text(
                 installation_ref_root / _stable_reference_name(identity),
                 _generated_reference(owner, source_sha),
             )
@@ -400,10 +427,10 @@ def build_release(
         for skill in sorted(skills, key=lambda item: item.name):
             destination = skill_root / skill.name
             _copy_skill_source(skill, destination)
-            reference_root = destination / "references/release-inputs"
+            reference_root = _prepare_generated_reference_root(destination)
             for identity in sorted(skill.release_inputs):
                 owner = release_inputs[identity]
-                _write_text(
+                _write_generated_text(
                     reference_root / _stable_reference_name(identity),
                     _generated_reference(owner, source_sha),
                 )
