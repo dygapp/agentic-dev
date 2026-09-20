@@ -2,6 +2,7 @@
 id: project:distribution-rebuild-specification
 type: project
 status: active
+distribution: source-only
 ---
 
 # 发布模型重构规范与验收合同

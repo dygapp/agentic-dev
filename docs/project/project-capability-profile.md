@@ -2,6 +2,7 @@
 id: project:capability-profile
 type: project
 status: active
+distribution: source-only
 ---
 
 # Project Capability Profile

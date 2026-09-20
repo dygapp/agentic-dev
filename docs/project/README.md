@@ -2,6 +2,7 @@
 id: guide:project-navigation
 type: guide
 status: active
+distribution: source-only
 ---
 
 # Project 目录导航

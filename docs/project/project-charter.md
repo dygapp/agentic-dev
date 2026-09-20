@@ -2,6 +2,7 @@
 id: project:charter
 type: project
 status: active
+distribution: source-only
 ---
 
 # 项目章程

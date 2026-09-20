@@ -2,6 +2,7 @@
 id: repository:readme
 type: repository
 status: active
+distribution: source-only
 ---
 
 # agentic-dev
