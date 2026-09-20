@@ -27,7 +27,7 @@ release-target: consumer-installation
 
 ## 2. repository-local 默认安装形态
 
-首版 repository-local target 以以下最小结构为核心：
+首版 repository-local target 以以下最小结构为核心；其中主要运行路径明确为 `.agents/skills/**`：
 
 ```text
 AGENTS.md                  # Consumer-owned Repository Bootstrap / Authority
