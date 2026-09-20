@@ -76,6 +76,20 @@ jobs:
         run: |
           python3 tools/runtime-acceptance/runtime_acceptance.py accept             --repo-root .             --work-dir "$RUNNER_TEMP/runtime-acceptance"             --source-sha "$SOURCE_SHA"             --codex-bin codex             --expected-codex-version 0.155.0             --report "$RUNNER_TEMP/runtime-acceptance-report.json"
 
+      - name: Probe model runtime credential
+        id: model-credential
+        shell: bash
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [[ -n "$OPENAI_API_KEY" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "model_runtime_credential_available=true"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "model_runtime_credential_available=false"
+          fi
+
       - name: Upload runtime acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
