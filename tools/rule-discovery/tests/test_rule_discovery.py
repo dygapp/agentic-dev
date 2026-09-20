@@ -249,7 +249,7 @@ class ContractFailureTests(unittest.TestCase):
         path.write_text(
             rule_text(
                 "rule:a",
-                extra_top="distribution: release-input\\nrelease-target: software-development\\n",
+                extra_top="distribution: release-input\nrelease-target: software-development\n",
             ),
             encoding="utf-8",
         )
