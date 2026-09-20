@@ -90,6 +90,89 @@ jobs:
             echo "model_runtime_credential_available=false"
           fi
 
+      - name: Record model runtime credential state
+        shell: bash
+        env:
+          AVAILABLE: ${{ steps.model-credential.outputs.available }}
+        run: |
+          if [[ "$AVAILABLE" == "true" ]]; then
+            printf '{"status":"PENDING","reason":"credential available; model runtime not yet completed"}\n'               > "$RUNNER_TEMP/model-runtime-status.json"
+          else
+            printf '{"status":"BLOCKED_CREDENTIAL","reason":"OPENAI_API_KEY repository secret is not configured"}\n'               > "$RUNNER_TEMP/model-runtime-status.json"
+          fi
+
+      - name: Run release-installed representative Codex behavior
+        if: steps.model-credential.outputs.available == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: >-
+          python3 evals/run_codex_evals.py --behavior --release-runtime
+          --scenario B-RB-01
+          --scenario B-AR-01
+          --scenario B-MC-01
+          --scenario B-EO-01
+          --scenario B-EU-01
+          --codex-bin codex
+
+      - name: Grade representative Codex behavior
+        if: steps.model-credential.outputs.available == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: >-
+          python3 evals/grade_codex_evals.py --behavior
+          --scenario B-RB-01
+          --scenario B-AR-01
+          --scenario B-MC-01
+          --scenario B-EO-01
+          --scenario B-EU-01
+          --codex-bin codex
+
+      - name: Record model runtime PASS
+        if: steps.model-credential.outputs.available == 'true' && success()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          summary = json.loads(
+              Path("evals/results/behavior/runtime-acceptance.summary.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          if summary.get("status") != "PASS":
+              raise SystemExit("semantic grading did not PASS")
+          Path("$RUNNER_TEMP/model-runtime-status.json").write_text(
+              json.dumps(
+                  {
+                      "status": "PASS",
+                      "scenario_count": summary["scenario_count"],
+                      "passed": summary["passed"],
+                      "failed": summary["failed"],
+                      "scenarios": summary["scenarios"],
+                  },
+                  ensure_ascii=False,
+                  indent=2,
+              ) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Upload model runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-runtime-acceptance-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/model-runtime-status.json
+            evals/results/behavior/B-RB-01.*
+            evals/results/behavior/B-AR-01.*
+            evals/results/behavior/B-MC-01.*
+            evals/results/behavior/B-EO-01.*
+            evals/results/behavior/B-EU-01.*
+            evals/results/behavior/runtime-acceptance.summary.json
+
       - name: Upload runtime acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
