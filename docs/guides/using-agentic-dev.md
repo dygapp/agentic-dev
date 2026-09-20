@@ -364,39 +364,41 @@ current task facts / responsibility
 
 人可以通过 `docs/rules/README.md` 浏览当前所有 Rule；Agent 不使用这个 README 进行 runtime routing。
 
-## 15. Consumer 首次采用
+## 15. Consumer 首次安装
 
-首次采用不是复制整个仓库。大致过程是：
+首次安装不是复制整个仓库，也不是逐类采用 Method / Architecture / Rule。
+
+大致过程是：
 
 1. 恢复 Consumer 自己的 Project / Repository Authority；
-2. 选择精确 upstream baseline；
-3. 判断哪些 Method / Architecture / Skill / Rule / Tool contract 需要 adopt / adapt / reject；
-4. 把接受的 capability 写入 Consumer-local canonical owner；
-5. 建立 Consumer 自己的 capability profile / Method selector / Skill / Rule discovery；
-6. 验证 ordinary runtime 不在线依赖 upstream；
-7. 记录 evaluated baseline。
-
-对于 Requirement Baseline Establishment / Architecture Clarification，Consumer 应根据自己的真实 work kind 决定是否注册 local selector mapping；不能因为 upstream inventory 出现 Method 就自动改变 ordinary Feature runtime。
-
-upstream Project Charter / Capability Profile / Roadmap / Evolution 只用于 provenance / understanding，不复制为 Consumer Project state。
+2. 选择精确 versioned Release；
+3. 核对 Release integrity、compatibility、Skill inventory 与 migration information；
+4. 把 Release-owned Skills 安装到 repository-local target；
+5. 只对 Consumer-owned `AGENTS.md` 建立最薄 Skill / compatibility locator；
+6. 保留 Consumer 自己的 Requirement、Architecture、technology policy、authorization 与 current work；
+7. 验证 ordinary runtime `upstream access = 0`；
+8. 记录 installed release。
 
 正式过程由 `docs/methods/consumer-adoption.md` 定义；人类操作说明见 `adopting-agentic-dev.md`。
 
 ## 16. 现有 Consumer 升级
 
-升级不是“同步最新版”。正确思路是：
+升级不是“同步最新版 Source”。
+
+正确思路是：
 
 ```text
-当前 Consumer Project + capability state
-→ 选择精确 upstream candidate
-→ 比较 reusable capability semantic delta
-→ retain / adopt / adapt / replace / reject
-→ 必要时更新 Consumer-local capability profile
+current installed release
++ Consumer-local retained obligations
++ candidate release
+→ evaluate release / migration delta
+→ bounded update
+→ reconcile local obligations
 → targeted revalidation
-→ 记录新的 evaluated baseline
+→ record installed release
 ```
 
-Existing Consumer 如果已经用自己的方式建立稳定 Requirement / Architecture Authority，可以保留或 adapt；不需要因为 upstream 新增 Project Establishment Method 就机械重建需求基线。
+Existing Consumer 已经拥有的 Requirement / Architecture / technology policy / authorization 不会因为 candidate Release 变化而自动被覆盖。升级只修改 Release-owned assets 与明确需要调整的 bounded bootstrap integration。
 
 正式过程由 `docs/methods/consumer-upgrade.md` 定义；人类说明见 `upgrading-agentic-dev.md`。
 
