@@ -16,8 +16,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 EVALS = ROOT / "evals"
+ACTIVATION_FILE = EVALS / "activation" / "core-first-pass.json"
 BEHAVIOR_FILES = sorted((EVALS / "behavior").glob("*.json"))
-RESULTS = EVALS / "results" / "behavior"
 
 
 class GradeError(RuntimeError):
@@ -35,6 +35,60 @@ def load_behavior_cases() -> dict[str, dict[str, Any]]:
                 raise GradeError(f"duplicate behavior scenario id: {scenario_id}")
             cases[scenario_id] = {"skill_name": skill_name, **case}
     return cases
+
+
+def load_activation_cases() -> dict[str, dict[str, Any]]:
+    document = json.loads(ACTIVATION_FILE.read_text(encoding="utf-8"))
+    cases: dict[str, dict[str, Any]] = {}
+    for case in document:
+        scenario_id = case["id"]
+        if scenario_id in cases:
+            raise GradeError(f"duplicate activation scenario id: {scenario_id}")
+        target = case["target_skill"]
+        expected = case["expected_primary_skill"]
+        should_trigger = case["should_trigger_target"]
+        if should_trigger:
+            expected_behavior = (
+                f"当前请求应主要激活 {target}，并按该 Skill 的责任边界处理；"
+                "不得把近似职责或下游工作当作当前 primary responsibility。"
+            )
+            assertions = [
+                f"Runtime 输出体现 {target} 是当前主要责任或实际采用了其核心职责",
+                "Runtime 输出没有把近似但不同的职责当作 primary responsibility",
+                f"Runtime 判断与场景给出的激活理由一致：{case['reason']}",
+            ]
+        else:
+            expected_behavior = (
+                f"{target} 不应作为当前 primary Skill；"
+                f"Runtime 应主要按 {expected} 的职责处理当前请求。"
+            )
+            assertions = [
+                f"Runtime 输出没有把 {target} 作为当前 primary responsibility",
+                f"Runtime 输出体现 {expected} 才是更合适的主要职责",
+                f"Runtime 判断与场景给出的负例理由一致：{case['reason']}",
+            ]
+        cases[scenario_id] = {
+            "skill_name": target,
+            "query": case["query"],
+            "expected_behavior": expected_behavior,
+            "assertions": assertions,
+            **case,
+        }
+    return cases
+
+
+def load_cases(mode: str) -> dict[str, dict[str, Any]]:
+    if mode == "activation":
+        return load_activation_cases()
+    if mode == "behavior":
+        return load_behavior_cases()
+    raise GradeError(f"unsupported grading mode: {mode}")
+
+
+def results_dir(mode: str) -> Path:
+    if mode not in {"activation", "behavior"}:
+        raise GradeError(f"unsupported grading mode: {mode}")
+    return EVALS / "results" / mode
 
 
 def extract_last_agent_message(jsonl: str) -> str:
@@ -97,6 +151,9 @@ def run_grader(
 
 场景 ID：{scenario['id']}
 Skill：{scenario['skill_name']}
+
+场景输入：
+{scenario.get('prompt') or scenario.get('query') or '(none)'}
 
 期望行为：
 {scenario['expected_behavior']}
@@ -219,12 +276,14 @@ def grade_selected(
     codex_bin: str,
     selected: list[str],
     *,
+    mode: str,
     timeout_seconds: int,
 ) -> dict[str, Any]:
-    cases = load_behavior_cases()
+    cases = load_cases(mode)
+    output_dir = results_dir(mode)
     unknown = sorted(set(selected) - set(cases))
     if unknown:
-        raise GradeError(f"unknown behavior scenario(s): {unknown}")
+        raise GradeError(f"unknown {mode} scenario(s): {unknown}")
 
     version = subprocess.run(
         [codex_bin, "--version"],
@@ -238,11 +297,12 @@ def grade_selected(
         raise GradeError(f"cannot read Codex version: {version.stderr}")
     codex_version = version.stdout.strip() or version.stderr.strip()
 
+    output_dir.mkdir(parents=True, exist_ok=True)
     results: list[dict[str, Any]] = []
     for scenario_id in selected:
         scenario = cases[scenario_id]
-        jsonl_path = RESULTS / f"{scenario_id}.jsonl"
-        metadata_path = RESULTS / f"{scenario_id}.run.json"
+        jsonl_path = output_dir / f"{scenario_id}.jsonl"
+        metadata_path = output_dir / f"{scenario_id}.run.json"
         if not jsonl_path.is_file() or not metadata_path.is_file():
             raise GradeError(f"missing runtime result for {scenario_id}")
 
@@ -279,15 +339,15 @@ def grade_selected(
             "assertions": grade["assertions"],
             "summary": grade.get("summary"),
         }
-        (RESULTS / f"{scenario_id}.grade.json").write_text(
+        (output_dir / f"{scenario_id}.grade.json").write_text(
             json.dumps(grade_record, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
         )
-        (RESULTS / f"{scenario_id}.grader.jsonl").write_text(
+        (output_dir / f"{scenario_id}.grader.jsonl").write_text(
             raw_stdout,
             encoding="utf-8",
         )
-        (RESULTS / f"{scenario_id}.grader.stderr.txt").write_text(
+        (output_dir / f"{scenario_id}.grader.stderr.txt").write_text(
             raw_stderr,
             encoding="utf-8",
         )
@@ -316,7 +376,7 @@ def grade_selected(
             for item in results
         ],
     }
-    (RESULTS / "runtime-acceptance.summary.json").write_text(
+    (output_dir / "runtime-acceptance.summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
@@ -325,7 +385,9 @@ def grade_selected(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--behavior", action="store_true", required=True)
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--activation", action="store_true")
+    mode.add_argument("--behavior", action="store_true")
     parser.add_argument(
         "--scenario",
         action="append",
@@ -346,6 +408,7 @@ def main() -> int:
         summary = grade_selected(
             args.codex_bin,
             args.scenario,
+            mode="activation" if args.activation else "behavior",
             timeout_seconds=args.timeout_seconds,
         )
     except (GradeError, OSError, json.JSONDecodeError) as exc:
