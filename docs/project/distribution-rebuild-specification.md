@@ -261,6 +261,25 @@ AGENTS.md
 
 本轮不要求实现 Plugin 发布。
 
+### 4.12 首版 Consumer 范围限定为普通软件开发项目
+
+首版 Distribution Model 的目标 Consumer 是普通软件开发 Repository：它们拥有自己的产品 / 业务 / 系统 / 技术 / 项目知识，并使用 `agentic-dev` 发布的 Skills 支撑软件开发工作。
+
+`agentic-dev` 自身作为 capability provider / authoring Repository 的复杂 Source Model、self-governance 和 self-adoption 结构不属于首版 Consumer 需要复制的运行模型。
+
+不得因为 `agentic-dev` 自身需要 Method / Architecture / Rule / Project Knowledge 等 owner，就推导普通软件 Consumer 也必须拥有同样的一等目录和 Authority 类型。
+
+### 4.13 根 `AGENTS.md` 始终由 Consumer 拥有
+
+发布物可以要求 Consumer 根 `AGENTS.md` 建立最薄的 Skill / Bootstrap locator，但不得把 provider 生成的 `AGENTS.md` 作为整文件 Authority 覆盖 Consumer 自身内容。
+
+安装 / 升级必须保持：
+
+- Consumer Repository Authority、Knowledge Boundary、权限和项目规则由 Consumer 持有；
+- release 只增加必要的 Skill runtime entry / compatibility locator；
+- 已有 Consumer-specific Authority 不因升级发布物被删除或重写；
+- 重复安装 / 升级对 Bootstrap integration 具有可判定、可验证的幂等或 bounded update 行为。
+
 ## 5. 资产分类模型
 
 ### 5.1 全仓扫描是重构前置 Gate
@@ -628,8 +647,10 @@ gap = 0
 |---|---|
 | `DR-AC-31` | 在真实 Consumer migration 前完成 Legacy Consumer Capability Coverage Audit，并对最低覆盖清单逐项给出合法 disposition。 |
 | `DR-AC-32` | Coverage Audit 满足 `unclassified = 0`、`gap = 0`；`consumer-local` 项有明确本地 owner，不因 Release 简化而丢失。 |
-| `DR-AC-33` | Gate G 对所有 `DR-AC-01`～`DR-AC-32` 执行 Specification Conformance Review，最终 `Blocking = 0`、`Medium = 0`、`Unverified = 0`，否则不得 Freeze Release Candidate。 |
-| `DR-AC-34` | 只有 Gate G PASS 后才进入真实 Consumer migration / validation；真实验证覆盖 Codex、ChatGPT + GitHub Connector、upstream decoupling、Consumer-local Authority 与 representative software-development behavior。 |
+| `DR-AC-33` | 首版 Release 的目标 Consumer 明确限定为普通软件开发 Repository；不得把 `agentic-dev` provider / self-governance Source Model 直接泛化成普通 Consumer runtime model。 |
+| `DR-AC-34` | Consumer 根 `AGENTS.md` 保持 Consumer-owned；安装 / 升级只建立必要的薄 Bootstrap / Skill locator，不整文件覆盖 Consumer Authority，并具有可验证的 bounded / idempotent update 行为。 |
+| `DR-AC-35` | Gate G 对所有 `DR-AC-01`～`DR-AC-36` 执行 Specification Conformance Review，最终 `Blocking = 0`、`Medium = 0`、`Unverified = 0`，否则不得 Freeze Release Candidate。 |
+| `DR-AC-36` | 只有 Gate G PASS 后才进入真实 Consumer migration / validation；真实验证覆盖 Codex、ChatGPT + GitHub Connector、upstream decoupling、Consumer-local Authority 与 representative software-development behavior。 |
 
 ## 12. 实施 Gate
 
@@ -641,7 +662,7 @@ gap = 0
 - 建立 Issue #172；
 - 把 Roadmap 切换到本轮 active evolution；
 - 执行独立 `review-change`；
-- 在集成后冻结 `DR-AC-01`～`DR-AC-34`。
+- 在集成后冻结 `DR-AC-01`～`DR-AC-36`。
 
 Gate A 不修改 Source / Distribution implementation。
 
@@ -715,7 +736,7 @@ Gate A 不修改 Source / Distribution implementation。
 - 逐项核验 `DR-AC-01`～`DR-AC-32`；
 - 重新执行 exact-head required validation；
 - 独立 Final Review；
-- 满足 `DR-AC-33` 后冻结 Release Candidate。
+- 满足 `DR-AC-35` 后冻结 Release Candidate。
 
 ### Gate H — Real Consumer Migration & Validation
 
@@ -726,7 +747,7 @@ Gate H 不属于“重构中间验证”，而是 Release Candidate 完整形成
 - 在独立 Consumer 工作上下文中迁移 / 安装新 Release；
 - 删除被新 Release 正式替代的旧 AI development copies；
 - 保留 Coverage Audit 判定的 Consumer-local obligations；
-- 验证 `DR-AC-34`；
+- 验证 `DR-AC-36`；
 - 将真实 Evidence 反馈给 `agentic-dev`。
 
 ## 13. 实施顺序与连续执行原则
@@ -758,7 +779,7 @@ Gate A～G 应尽量在 `agentic-dev` 内连续推进。
 
 ## 14. Scope Change Control
 
-本文集成后，任何会改变 `DR-AC-01`～`DR-AC-34` 实质含义的修改都属于 Specification Change。
+本文集成后，任何会改变 `DR-AC-01`～`DR-AC-36` 实质含义的修改都属于 Specification Change。
 
 修改顺序必须是：
 
