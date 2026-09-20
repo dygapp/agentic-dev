@@ -13,6 +13,9 @@ on:
       - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
       - 'tools/distribution-audit/**'
+      - 'tools/release-build/**'
+      - 'tools/runtime-acceptance/**'
+      - '.github/workflows/runtime-acceptance.yml'
       - '.github/workflows/rule-discovery.yml'
   push:
     branches: [master]
@@ -26,6 +29,9 @@ on:
       - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
       - 'tools/distribution-audit/**'
+      - 'tools/release-build/**'
+      - 'tools/runtime-acceptance/**'
+      - '.github/workflows/runtime-acceptance.yml'
       - '.github/workflows/rule-discovery.yml'
   workflow_dispatch:
     inputs:
