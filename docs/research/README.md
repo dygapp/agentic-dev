@@ -2,6 +2,7 @@
 id: research:index
 type: research
 status: active
+distribution: source-only
 ---
 
 # Research

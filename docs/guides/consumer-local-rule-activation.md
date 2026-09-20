@@ -2,6 +2,7 @@
 id: guide:consumer-local-rule-adoption
 type: guide
 status: active
+distribution: source-only
 ---
 
 # Consumer-local Rule Adoption

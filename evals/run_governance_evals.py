@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# agentic-dev-distribution: source-only
 """在隔离 Codex CLI 会话中运行 agentic-dev 项目治理定向评估。"""
 
 from __future__ import annotations

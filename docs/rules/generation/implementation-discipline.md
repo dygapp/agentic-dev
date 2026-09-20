@@ -2,6 +2,8 @@
 id: rule:implementation-discipline
 type: rule
 status: active
+distribution: release-input
+release-target: software-development
 scope:
   phases: [execute]
   activities: [implementation]

@@ -2,6 +2,7 @@
 id: eval:codex-runtime
 type: eval-guide
 status: active
+distribution: source-only
 ---
 
 # 使用 Codex CLI 执行运行时评估

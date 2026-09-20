@@ -2,6 +2,7 @@
 id: research:vue3-typescript
 type: research
 status: active
+distribution: source-only
 ---
 
 # Vue 3 + TypeScript 技术研究

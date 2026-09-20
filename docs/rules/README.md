@@ -2,6 +2,7 @@
 id: guide:rules-navigation
 type: guide
 status: active
+distribution: source-only
 ---
 
 # Rule 目录导航

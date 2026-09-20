@@ -2,6 +2,7 @@
 id: research:data-access-scope-boundedness
 type: research
 status: active
+distribution: source-only
 ---
 
 # 数据访问范围与有界控制研究

@@ -2,6 +2,8 @@
 id: rule:high-impact-ai-review-required
 type: rule
 status: active
+distribution: release-input
+release-target: software-development
 scope:
   phases: []
   activities: [review]

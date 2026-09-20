@@ -2,6 +2,8 @@
 id: rule:data-access-boundedness
 type: rule
 status: active
+distribution: release-input
+release-target: software-development
 scope:
   phases: [technical-planning, execute]
   activities: [design, implementation]

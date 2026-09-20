@@ -2,6 +2,8 @@
 id: rule:integration-state-closure-review
 type: rule
 status: active
+distribution: release-input
+release-target: software-development
 scope:
   phases: [converge]
   activities: [review]

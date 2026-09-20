@@ -2,6 +2,7 @@
 id: research:rule-retrieval-design
 type: research
 status: active
+distribution: source-only
 ---
 
 # 规则检索设计参考

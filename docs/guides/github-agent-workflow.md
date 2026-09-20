@@ -2,6 +2,7 @@
 id: guide:github-agent-workflow
 type: guide
 status: active
+distribution: source-only
 ---
 
 # GitHub Agent 工作指南

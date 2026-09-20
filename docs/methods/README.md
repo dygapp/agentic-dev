@@ -2,6 +2,7 @@
 id: guide:methods-navigation
 type: guide
 status: active
+distribution: source-only
 ---
 
 # Method 目录导航

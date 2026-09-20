@@ -242,6 +242,20 @@ class ContractFailureTests(unittest.TestCase):
         (root / "docs/rules/test").mkdir(parents=True)
         return temp, root
 
+    def test_distribution_metadata_is_allowed_without_affecting_discovery(self):
+        temp, root = self.make_repo()
+        self.addCleanup(temp.cleanup)
+        path = root / "docs/rules/test/a.md"
+        path.write_text(
+            rule_text(
+                "rule:a",
+                extra_top="distribution: release-input\nrelease-target: software-development\n",
+            ),
+            encoding="utf-8",
+        )
+        records = rd.scan_rules(repo_root=root, rule_roots=[Path("docs/rules")])
+        self.assertEqual(["rule:a"], [record.id for record in records])
+
     def test_unknown_rule_metadata_fails_closed(self):
         temp, root = self.make_repo()
         self.addCleanup(temp.cleanup)

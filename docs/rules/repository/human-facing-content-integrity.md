@@ -2,6 +2,7 @@
 id: rule:human-facing-content-integrity
 type: rule
 status: active
+distribution: source-only
 scope:
   phases: []
   activities: [documentation, communication, review, implementation]

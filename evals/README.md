@@ -2,6 +2,7 @@
 id: eval:index
 type: eval-guide
 status: active
+distribution: source-only
 ---
 
 # Evals

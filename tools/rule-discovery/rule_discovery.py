@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# agentic-dev-distribution: source-only
 """V4 deterministic Rule Discovery and repository metadata lint.
 
 This tool deliberately supports only the frozen agentic-dev Front Matter subset:
@@ -24,7 +25,9 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Sequence
 
 SCOPE_KEYS = ("phases", "activities", "technologies", "artifacts", "risks")
-RULE_KEYS = {"id", "type", "status", "scope"}
+RULE_REQUIRED_KEYS = {"id", "type", "status", "scope"}
+RULE_NONDISCOVERY_KEYS = {"distribution", "release-target"}
+RULE_KEYS = RULE_REQUIRED_KEYS | RULE_NONDISCOVERY_KEYS
 COMMON_TYPES = {
     "method",
     "architecture",
@@ -202,7 +205,7 @@ def _validate_task_signal_value(
 def validate_rule(parsed: ParsedMarkdown, *, path: Path, locator: str) -> RuleRecord:
     metadata = parsed.metadata
     unknown = set(metadata) - RULE_KEYS
-    missing = RULE_KEYS - set(metadata)
+    missing = RULE_REQUIRED_KEYS - set(metadata)
     if unknown:
         raise ContractError(f"{path}: unknown Rule top-level fields: {sorted(unknown)}")
     if missing:

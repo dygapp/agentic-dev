@@ -2,6 +2,7 @@
 id: research:knowledge-activation-code-intelligence
 type: research
 status: active
+distribution: source-only
 ---
 
 # 知识激活、规则治理与使用方代码智能研究

@@ -5,6 +5,8 @@ metadata:
   agentic-dev-id: "skill:execute-unit"
   agentic-dev-type: "skill"
   agentic-dev-status: "active"
+  agentic-dev-distribution: "release-direct"
+  agentic-dev-release-target: "software-development"
 ---
 
 # execute-unit

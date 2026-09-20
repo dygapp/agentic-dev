@@ -5,6 +5,8 @@ metadata:
   agentic-dev-id: "skill:specify"
   agentic-dev-type: "skill"
   agentic-dev-status: "active"
+  agentic-dev-distribution: "release-direct"
+  agentic-dev-release-target: "software-development"
 ---
 
 # specify

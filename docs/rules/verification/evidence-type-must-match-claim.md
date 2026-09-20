@@ -2,6 +2,8 @@
 id: rule:evidence-type-must-match-claim
 type: rule
 status: active
+distribution: release-input
+release-target: software-development
 scope:
   phases: []
   activities: [verification]

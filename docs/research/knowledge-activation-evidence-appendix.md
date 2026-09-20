@@ -2,6 +2,7 @@
 id: research:knowledge-activation-evidence
 type: research
 status: active
+distribution: source-only
 ---
 
 # 知识激活关键证据附录

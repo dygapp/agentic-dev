@@ -2,6 +2,7 @@
 id: guide:human-review
 type: guide
 status: active
+distribution: source-only
 ---
 
 # 人工评审使用指南

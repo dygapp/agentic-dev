@@ -2,6 +2,7 @@
 id: architecture:project-knowledge
 type: architecture
 status: active
+distribution: source-only
 ---
 
 # Project Knowledge 架构

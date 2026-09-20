@@ -2,6 +2,7 @@
 id: research:mattpocock-skills
 type: research
 status: active
+distribution: source-only
 ---
 
 # 研究总结 — mattpocock/skills

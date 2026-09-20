@@ -1,3 +1,4 @@
+# agentic-dev-distribution: source-only
 name: Rule Discovery
 
 on:
@@ -11,6 +12,7 @@ on:
       - 'evals/**/*.json'
       - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
+      - 'tools/distribution-audit/**'
       - '.github/workflows/rule-discovery.yml'
   push:
     branches: [master]
@@ -23,6 +25,7 @@ on:
       - 'evals/**/*.json'
       - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
+      - 'tools/distribution-audit/**'
       - '.github/workflows/rule-discovery.yml'
   workflow_dispatch:
     inputs:
@@ -70,7 +73,7 @@ jobs:
           python-version: '3.12'
 
       - name: Compile eval runners
-        run: python3 -m py_compile evals/run_codex_evals.py evals/run_governance_evals.py evals/run_v4_scaling.py
+        run: python3 -m py_compile evals/run_codex_evals.py evals/run_governance_evals.py evals/run_v4_scaling.py tools/distribution-audit/distribution_audit.py
 
       - name: Smoke eval runner entrypoints
         shell: bash
@@ -92,6 +95,12 @@ jobs:
 
       - name: Run deterministic tests
         run: python3 -m unittest discover -s tools/rule-discovery/tests -v
+
+      - name: Run distribution audit tests
+        run: python3 -m unittest discover -s tools/distribution-audit/tests -v
+
+      - name: Audit distribution metadata
+        run: python3 tools/distribution-audit/distribution_audit.py --repo-root . --summary
 
       - name: Lint V4 resources
         run: python3 tools/rule-discovery/rule_discovery.py --repo-root . lint

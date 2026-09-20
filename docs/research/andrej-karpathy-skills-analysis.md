@@ -2,6 +2,7 @@
 id: research:andrej-karpathy-skills
 type: research
 status: active
+distribution: source-only
 ---
 
 # `multica-ai/andrej-karpathy-skills` 调研与适用性分析

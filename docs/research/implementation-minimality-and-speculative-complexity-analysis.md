@@ -2,6 +2,7 @@
 id: research:implementation-minimality
 type: research
 status: active
+distribution: source-only
 ---
 
 # 实现最小化与推测性复杂度控制研究

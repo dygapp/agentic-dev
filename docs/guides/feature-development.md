@@ -2,6 +2,7 @@
 id: guide:feature-development
 type: guide
 status: active
+distribution: source-only
 ---
 
 # Feature Development 使用指南

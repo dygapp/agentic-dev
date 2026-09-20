@@ -2,6 +2,7 @@
 id: research:agent-skills-specification
 type: research
 status: active
+distribution: source-only
 ---
 
 # Agent Skills Specification 研究摘要

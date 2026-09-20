@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# agentic-dev-distribution: source-only
 """Run the V4-07 20/100/500 Rule scaling gate with isolated Fresh Codex sessions."""
 
 from __future__ import annotations

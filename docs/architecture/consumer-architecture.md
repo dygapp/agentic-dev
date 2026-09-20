@@ -2,6 +2,8 @@
 id: architecture:consumer
 type: architecture
 status: active
+distribution: release-input
+release-target: consumer-installation
 ---
 
 # Consumer 架构

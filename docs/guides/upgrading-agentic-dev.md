@@ -2,6 +2,7 @@
 id: guide:upgrading-agentic-dev
 type: guide
 status: active
+distribution: source-only
 ---
 
 # 升级 Consumer 中的 agentic-dev 能力

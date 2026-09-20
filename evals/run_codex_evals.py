@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# agentic-dev-distribution: source-only
 """Run agentic-dev Fresh Runtime evals with isolated Codex CLI sessions.
 
 This runner deliberately stays thin:

@@ -2,6 +2,7 @@
 id: eval:governance
 type: eval-guide
 status: active
+distribution: source-only
 ---
 
 # 项目治理定向评估

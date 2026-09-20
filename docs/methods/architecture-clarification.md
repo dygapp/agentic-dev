@@ -2,6 +2,8 @@
 id: method:architecture-clarification
 type: method
 status: active
+distribution: release-input
+release-target: software-development
 ---
 
 # 架构澄清方法

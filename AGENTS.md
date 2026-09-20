@@ -2,6 +2,7 @@
 id: repository:agents
 type: repository
 status: active
+distribution: source-only
 ---
 
 # AGENTS.md

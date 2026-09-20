@@ -2,6 +2,8 @@
 id: method:model-collaboration-adoption
 type: method
 status: active
+distribution: release-input
+release-target: software-development
 ---
 
 # Model Collaboration Adoption Method
