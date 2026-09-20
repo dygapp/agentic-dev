@@ -19,6 +19,7 @@ ALLOWED_DISTRIBUTIONS = {
     "retired",
 }
 RELEASE_DISTRIBUTIONS = {"release-input", "release-direct"}
+ALLOWED_RELEASE_TARGETS = {"software-development", "consumer-installation"}
 MARKER_RE = re.compile(r"^#\s*agentic-dev-distribution:\s*(\S+)\s*$", re.MULTILINE)
 TARGET_MARKER_RE = re.compile(r"^#\s*agentic-dev-release-target:\s*(\S+)\s*$", re.MULTILINE)
 
@@ -197,7 +198,7 @@ def _repository_files(repo_root: Path) -> list[str]:
     return result
 
 
-def _inherited_source_class(path: str) -> str | None:
+def _inherited_source_class(path: str, assets_by_path: dict[str, Asset]) -> str | None:
     if path in {".gitignore", "LICENSE"}:
         return "repository-support"
     if path.startswith("evals/") and path.endswith(".json"):
@@ -210,6 +211,18 @@ def _inherited_source_class(path: str) -> str | None:
         and path.endswith(".py")
     ):
         return "tool-test"
+
+    parts = Path(path).parts
+    if (
+        len(parts) >= 4
+        and parts[0] == "skills"
+        and parts[2] in {"references", "scripts", "assets"}
+    ):
+        owner_path = f"skills/{parts[1]}/SKILL.md"
+        owner = assets_by_path.get(owner_path)
+        if owner is not None:
+            return f"skill-resource:{owner.identity}"
+
     return None
 
 
@@ -224,6 +237,18 @@ def audit(repo_root: Path) -> dict[str, object]:
         asset.path
         for asset in assets
         if asset.distribution in RELEASE_DISTRIBUTIONS and not asset.release_target
+    ]
+    invalid_release_target = [
+        asset.path
+        for asset in assets
+        if (
+            asset.distribution in RELEASE_DISTRIBUTIONS
+            and asset.release_target not in ALLOWED_RELEASE_TARGETS
+        )
+        or (
+            asset.distribution in {"source-only", "retired"}
+            and asset.release_target is not None
+        )
     ]
 
     identities: dict[str, list[str]] = {}
@@ -244,13 +269,14 @@ def audit(repo_root: Path) -> dict[str, object]:
     )
 
     scoped_paths = {asset.path for asset in assets}
+    assets_by_path = {asset.path: asset for asset in assets}
     inherited_files: dict[str, str] = {}
     unexpected_unowned: list[str] = []
     repository_files = _repository_files(repo_root)
     for path in repository_files:
         if path in scoped_paths:
             continue
-        inherited_class = _inherited_source_class(path)
+        inherited_class = _inherited_source_class(path, assets_by_path)
         if inherited_class is None:
             unexpected_unowned.append(path)
         else:
@@ -269,6 +295,7 @@ def audit(repo_root: Path) -> dict[str, object]:
             "ok"
             if not unclassified
             and not orphan_release_input
+            and not invalid_release_target
             and not ambiguous_release_owner
             and not unexpected_unowned
             else "fail-closed"
@@ -279,6 +306,7 @@ def audit(repo_root: Path) -> dict[str, object]:
         "counts": counts,
         "unclassified": unclassified,
         "orphan_release_input": orphan_release_input,
+        "invalid_release_target": invalid_release_target,
         "ambiguous_release_owner": ambiguous_release_owner,
         "unexpected_unowned": unexpected_unowned,
         "inherited_files": inherited_files,
@@ -312,6 +340,7 @@ def main(argv: list[str] | None = None) -> int:
                 "counts",
                 "unclassified",
                 "orphan_release_input",
+                "invalid_release_target",
                 "ambiguous_release_owner",
                 "unexpected_unowned",
             )
