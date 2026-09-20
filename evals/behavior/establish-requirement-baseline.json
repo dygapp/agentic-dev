@@ -1,0 +1,17 @@
+{
+  "skill_name": "establish-requirement-baseline",
+  "evals": [
+    {
+      "id": "B-RB-01",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 establish-requirement-baseline。项目输入有三类：正式合同明确“学生端只能查询本人就业方案”；较新的会议纪要明确“学校管理员可以查看本校学生方案”；一份旧原型截图展示了省级人员编辑学生方案，但没有任何当前需求文字支持。现在需要建立长期 Requirement Baseline。请给出来源角色、可接受事实、冲突/未决项和是否 Ready。",
+      "expected_behavior": "合同与当前会议纪要可作为不同角色边界的当前输入；旧原型截图只能作为 implementation/historical evidence，不能自动提升成省级编辑权限。应形成可持久化的长期需求事实，并把无法由当前 Authority 决定的真实冲突保留为 blocker；不能凭旧实现补需求。",
+      "assertions": [
+        "区分正式合同、当前会议纪要与旧原型截图的 source role / authority weight",
+        "不把旧原型中省级编辑能力直接提升为当前 Requirement truth",
+        "把学生本人查询与学校管理员本校查看整理为长期可维护的 Requirement facts",
+        "只对真实无法裁决的冲突保留 blocker，不为了形式完整制造新问题",
+        "没有足够证据时不宣称省级编辑能力已进入 Requirement Baseline"
+      ]
+    }
+  ]
+}
