@@ -2,6 +2,8 @@
 id: rule:evidence-claim-reuse-across-commits
 type: rule
 status: active
+distribution: release-input
+release-target: software-development
 scope:
   phases: [execute, converge]
   activities: [verification, review]

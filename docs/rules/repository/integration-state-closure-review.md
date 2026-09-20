@@ -2,6 +2,7 @@
 id: rule:integration-state-closure-review
 type: rule
 status: active
+distribution: source-only
 scope:
   phases: [converge]
   activities: [review]

@@ -2,6 +2,7 @@
 id: rule:high-impact-ai-review-required
 type: rule
 status: active
+distribution: source-only
 scope:
   phases: []
   activities: [review]

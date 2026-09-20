@@ -2,6 +2,8 @@
 id: rule:verification-contract-currentness
 type: rule
 status: active
+distribution: release-input
+release-target: software-development
 scope:
   phases: [execute, converge]
   activities: [verification]

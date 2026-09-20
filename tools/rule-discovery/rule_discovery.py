@@ -24,7 +24,7 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Sequence
 
 SCOPE_KEYS = ("phases", "activities", "technologies", "artifacts", "risks")
-RULE_KEYS = {"id", "type", "status", "scope"}
+RULE_REQUIRED_KEYS = {"id", "type", "status", "scope"}\nRULE_NONDISCOVERY_KEYS = {"distribution", "release-target"}\nRULE_KEYS = RULE_REQUIRED_KEYS | RULE_NONDISCOVERY_KEYS
 COMMON_TYPES = {
     "method",
     "architecture",
@@ -202,7 +202,7 @@ def _validate_task_signal_value(
 def validate_rule(parsed: ParsedMarkdown, *, path: Path, locator: str) -> RuleRecord:
     metadata = parsed.metadata
     unknown = set(metadata) - RULE_KEYS
-    missing = RULE_KEYS - set(metadata)
+    missing = RULE_REQUIRED_KEYS - set(metadata)
     if unknown:
         raise ContractError(f"{path}: unknown Rule top-level fields: {sorted(unknown)}")
     if missing:

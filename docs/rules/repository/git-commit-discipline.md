@@ -2,6 +2,7 @@
 id: rule:git-commit-discipline
 type: rule
 status: active
+distribution: source-only
 scope:
   phases: []
   activities: [commit]
