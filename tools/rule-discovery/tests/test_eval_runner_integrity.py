@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 from pathlib import Path
 import subprocess
@@ -15,6 +16,23 @@ sys.path.insert(0, str(EVALS_DIR))
 import run_codex_evals as runner  # noqa: E402
 import run_codex_grader as grader  # noqa: E402
 import run_governance_evals as governance_runner  # noqa: E402
+
+
+def load_authenticated_runtime_module():
+    path = REPO_ROOT / "tools/runtime-acceptance/authenticated_model_acceptance.py"
+    spec = importlib.util.spec_from_file_location(
+        "agentic_dev_authenticated_model_acceptance",
+        path,
+    )
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load {path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+authenticated_runtime = load_authenticated_runtime_module()
 
 
 class EvalRunnerIntegrityTests(unittest.TestCase):
@@ -57,6 +75,49 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                 self.assertEqual(0, completed.returncode, completed.stderr)
 
         self.assertTrue(callable(governance_runner.main))
+
+    def test_authenticated_runtime_entrypoint_and_auth_classification(self):
+        completed = self.run_python(
+            REPO_ROOT / "tools/runtime-acceptance/authenticated_model_acceptance.py",
+            "--help",
+        )
+        self.assertEqual(0, completed.returncode, completed.stderr)
+        self.assertEqual(
+            "chatgpt",
+            authenticated_runtime.infer_auth_method("Logged in using ChatGPT"),
+        )
+        self.assertEqual(
+            "codex-access-token",
+            authenticated_runtime.infer_auth_method("Authenticated with access token"),
+        )
+        self.assertEqual(
+            "api-key",
+            authenticated_runtime.infer_auth_method("Logged in with API key"),
+        )
+        self.assertEqual(
+            "workload-identity",
+            authenticated_runtime.infer_auth_method("workload identity selected"),
+        )
+
+    def test_authenticated_runtime_scenario_set_is_exact_gate_e_subject(self):
+        self.assertEqual(8, len(authenticated_runtime.ACTIVATION_SCENARIOS))
+        self.assertEqual(6, len(authenticated_runtime.BEHAVIOR_SCENARIOS))
+        self.assertEqual(
+            len(set(authenticated_runtime.ACTIVATION_SCENARIOS)),
+            len(authenticated_runtime.ACTIVATION_SCENARIOS),
+        )
+        self.assertEqual(
+            len(set(authenticated_runtime.BEHAVIOR_SCENARIOS)),
+            len(authenticated_runtime.BEHAVIOR_SCENARIOS),
+        )
+        activation_ids = {case["id"] for case in runner.activation_cases()}
+        behavior_ids = {case["id"] for _, case in runner.behavior_cases()}
+        self.assertTrue(
+            set(authenticated_runtime.ACTIVATION_SCENARIOS) <= activation_ids
+        )
+        self.assertTrue(
+            set(authenticated_runtime.BEHAVIOR_SCENARIOS) <= behavior_ids
+        )
 
     def test_activation_corpus_covers_new_release_skills(self):
         ids = {case["id"] for case in runner.activation_cases()}
