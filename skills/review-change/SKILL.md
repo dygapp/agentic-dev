@@ -7,6 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
+  agentic-dev-release-inputs: "rule:human-intervention-necessity;rule:authoritative-artifact-lifecycle-review;rule:high-impact-ai-review-required;rule:integration-state-closure-review;rule:evidence-claim-reuse-across-commits;rule:evidence-type-must-match-claim;rule:verification-contract-currentness;rule:visual-evidence"
 ---
 
 # Review Change
@@ -27,7 +28,7 @@ metadata:
 
 1. 重新读取当前 Authority 和最终变更，不依赖作者说明或旧 Review 结论。
 2. 明确本次 review claim：要判断的是哪些变更是否可安全接受，而不是重新设计目标。
-3. 从变更事实提取 review signals，读取 Rule Discovery 返回的适用 Rules。
+3. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 4. 根据变更影响选择复核深度：普通变更执行通用 consistency / regression / scope / evidence / lifecycle 检查；命中下述高影响 Authority 条件时，追加 **Authority-chain semantic review**。
 5. 检查 authority consistency、语义回归、scope、授权边界、证据与长期 artifact lifecycle；技术专项检查只在对应 Rule 适用时进行。
 6. Authority-chain mode 中按语义责任链挑战 currentness、ownership、downstream projection、replaceability、conflict classification 与 source promotion；只有命中再生性条件时才执行 bounded code-holdout / regenerability challenge。
