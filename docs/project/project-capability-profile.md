@@ -11,7 +11,7 @@ distribution: source-only
 
 本文件记录 **`agentic-dev` 当前 Repository 如何实例化通用 Capability contract**。
 
-它是 Repository-local Project Authority，不是可传播给 Consumer 的 capability，也不是 Rule / Skill / Method 的第二份正文。Consumer adoption / upgrade 只能把本文件作为 provenance / implementation context，并必须建立自己的 local capability profile 或等价 Authority。
+它是 Repository-local Project Authority，不是 Consumer Release，也不是 Rule / Skill / Method 的第二份正文。普通软件 Consumer 不复制本 profile；首次安装 / 升级只消费版本化 Release、兼容 / migration metadata 与 Consumer 自己的 Authority。
 
 当前 capability model 的已集成基础来自 PR #125 / integration commit `e5488fd22a078ab59a427e36ef9a20af935fc63f`。精确 current `master`、Open PR / Issue 与 Actions 状态仍从 GitHub 当前事实读取，不由本文件固定。
 
@@ -22,8 +22,8 @@ distribution: source-only
 当前映射：
 
 - 普通软件 / 产品变更从需求澄清到实现收敛 → `docs/methods/ai-development.md`（`method:ai-development`）；
-- Consumer 首次显式采用 `agentic-dev` capability → `docs/methods/consumer-adoption.md`（`method:consumer-adoption`）；
-- Existing Consumer 显式评估 / 升级 upstream baseline → `docs/methods/consumer-upgrade.md`（`method:consumer-upgrade`）；
+- Consumer 首次安装 `agentic-dev` 版本化 Release → `docs/methods/consumer-adoption.md`（`method:consumer-adoption`）；
+- Existing Consumer 从当前 installed release 显式升级到 candidate Release → `docs/methods/consumer-upgrade.md`（`method:consumer-upgrade`）；
 - Repository 已经接受 Model Collaboration semantics，需要建立 / 首次启用 local runtime instance → `docs/methods/model-collaboration-adoption.md`（`method:model-collaboration-adoption`）。
 
 如果当前工作不属于任何映射，不得为了获得流程而强行套用最接近的 Method；继续按 Repository Authority 与 direct responsibility 工作，并在真实 Evidence 支持时评估新增 Method。
@@ -154,17 +154,36 @@ Human entry：
 
 稳定历史里程碑由 `docs/project/project-evolution.md` 摘要；完整实施 Evidence 留在 Git / Issue / PR / Actions。
 
-## 9. Consumer 投影边界
+## 9. Consumer 发布边界
 
-Consumer 不复制本 profile 作为自己的 runtime Authority。
+Consumer 不复制本 profile，也不建立与 `agentic-dev` Source tree 同构的 runtime instance。
 
-显式 adoption / upgrade 时：
+首次安装 / 后续升级分别进入：
 
-1. 选择 exact upstream baseline；
-2. 评估 Method / Architecture / Skill / Rule / Tool contract；
-3. adopt / adapt / reject；
-4. 在 Consumer 自己的 Project Authority 中建立 local Method selector、Rule Discovery locator、Skill entry 与 current baseline；
-5. 如果接受 Model Collaboration semantics 并决定启用，则另行执行 `method:model-collaboration-adoption`，建立 Consumer-local runtime / config / tier mapping / validation / fallback instance；
-6. 验证 ordinary runtime `upstream access = 0`。
+- `method:consumer-adoption`；
+- `method:consumer-upgrade`。
 
-因此本文件是 `agentic-dev` 的 capability **instance profile**，不是跨 Repository 的 capability package。
+两者的输入都是**版本化 Release**，而不是 upstream Source baseline。
+
+Consumer repository-local 默认目标由 Consumer Architecture 定义为：
+
+```text
+Consumer-owned AGENTS.md
++ .agents/README.md
++ .agents/skills/**
+```
+
+本 profile 中的：
+
+- Method selector；
+- Rule root；
+- Rule Discovery Tool；
+- cloud transport；
+- `skills/` Source root；
+- Model Collaboration self-instance；
+
+都只描述 `agentic-dev` 自身 provider runtime，不自动进入普通软件 Consumer Release。
+
+如果某个 release Skill 需要 deterministic script / external execution，Consumer 安装过程只建立该 Skill 的 direct path / automated alternate / Evidence recovery / fail-closed instance，不复制本仓整个 Tool / Rule Discovery infrastructure。
+
+因此本文件是 `agentic-dev` 的 capability **instance profile**，不是跨 Repository 的 capability package 或 release manifest。
