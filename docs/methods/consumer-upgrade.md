@@ -10,7 +10,7 @@ release-target: consumer-update
 
 ## 1. 目标与适用范围
 
-本 Method 用于 Existing Consumer 从**当前已安装 Release** 显式升级到一个新的版本化 `agentic-dev` Release。
+本 Method 用于 Existing Consumer 从**当前已安装 Release** 显式升级到一个新的**版本化 Release**。该 Release 由 `agentic-dev` 发布，并具有可验证的 identity、provenance 与兼容 / migration metadata。
 
 它不比较 upstream Source tree，也不把 upstream 新 commit、Method / Architecture / Rule 文件变化自动同步到 Consumer。
 
