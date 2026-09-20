@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import unittest
 
 
@@ -81,6 +82,20 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         )
         self.assertEqual("final", grader.extract_last_agent_message(jsonl))
 
+    def test_grader_parses_plain_and_fenced_json(self):
+        payload = {
+            "scenario_id": "B-TEST-JSON",
+            "verdict": "PASS",
+            "assertions": [],
+            "summary": "ok",
+        }
+        raw = json.dumps(payload)
+        self.assertEqual(payload, grader.parse_json_object(raw))
+        self.assertEqual(
+            payload,
+            grader.parse_json_object("```json\n" + raw + "\n```"),
+        )
+
     def test_grader_requires_turn_completion_and_agent_message(self):
         with self.assertRaises(grader.GradeError):
             grader.extract_last_agent_message(
@@ -119,6 +134,28 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         }
         with self.assertRaises(grader.GradeError):
             grader.validate_grade(scenario, inconsistent)
+
+    def test_release_runtime_materializes_installed_release_not_source_tree(self):
+        source_commit = runner.current_source_commit()
+        release_context, package_root, release_result = runner.build_release_package(
+            source_commit
+        )
+        try:
+            with tempfile.TemporaryDirectory() as temp_dir:
+                workspace = Path(temp_dir)
+                runner.install_release_runtime(workspace, package_root)
+                self.assertTrue(
+                    (workspace / ".agents/release/manifest.json").is_file()
+                )
+                self.assertEqual(
+                    15,
+                    len(list((workspace / ".agents/skills").glob("*/SKILL.md"))),
+                )
+                self.assertFalse((workspace / "docs/rules").exists())
+                self.assertFalse((workspace / "tools/rule-discovery").exists())
+                self.assertIn(source_commit[:12], release_result["release_id"])
+        finally:
+            release_context.cleanup()
 
     def test_release_runtime_is_not_valid_for_provider_discovery_mode(self):
         completed = self.run_python(
