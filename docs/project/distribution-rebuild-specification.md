@@ -282,7 +282,23 @@ AGENTS.md
 
 ## 5. 资产分类模型
 
-### 5.1 全仓扫描是重构前置 Gate
+### 5.1 先重新验证 Distribution 假设
+
+Gate B 在全仓分类前，必须完成一次 Distribution Evidence Review，不能只因为当前讨论已经形成方向就把结论当成无需复核的实现前提。
+
+至少重新检查：
+
+- 当前 `agentic-dev` 的 Skill boundary / Method / Rule / Architecture 演进历史，识别复杂 Source Model 是由哪些 authoring / governance 需求形成；
+- 当前 Agent Skills Specification 对 `SKILL.md`、`references/`、`scripts/`、`assets/` 与 Progressive Disclosure 的真实能力边界；
+- 至少两个当前仍有参考价值的成熟 Skills-based 项目 / 官方样本，区分其 source repository、development / eval assets 与实际 runtime distribution surface；
+- 当前 `agentic-dev` 哪些独立能力类型是 provider authoring 所必需，哪些只是历史上因为 Skill 职责定义较窄而被迫成为平级 runtime object；
+- “Skill 作为主要 Distribution Unit”是否仍能保持 bounded activation、single semantic ownership、Consumer-local specialization 与 context discipline。
+
+该 Review 的目标不是重新开放本轮方向，而是验证实施依据、识别需要保留的 Source owner，并防止把“发布物简化”错误实现成“源码模型机械删除”。
+
+如果 Evidence 证明本文冻结目标本身需要实质改变，必须按 Scope Change Control 先修改本文并完成独立复核，不能在 Gate B 内静默偏离。
+
+### 5.2 全仓扫描是重构前置 Gate
 
 在大规模结构修改前，必须对当前 Repository 的 Current assets 做 Repository-wide Distribution Classification。
 
@@ -299,7 +315,7 @@ AGENTS.md
 - 是否被其他 owner 替代；
 - 是否应退出 Current tree。
 
-### 5.2 稳定 distribution disposition
+### 5.3 稳定 distribution disposition
 
 首版至少支持以下分发状态：
 
@@ -310,7 +326,7 @@ AGENTS.md
 
 不再用“文件位于 reusable 目录”隐式推断 distribution status。
 
-### 5.3 分类应同源、可机械读取
+### 5.4 分类应同源、可机械读取
 
 对已经使用 YAML Front Matter 的 Markdown owner，应在文件自身增加 distribution metadata，而不是维护长期手工中央表。
 
@@ -320,7 +336,7 @@ Skill 内部的 `references/**`、`scripts/**`、`assets/**` 默认继承所属 
 
 其他独立文本 / script owner 可以使用其原生 header comment 或等价机器可读 metadata。不得为了“每个文件都打标签”给普通 fixture、生成物或 Skill 内部附件制造重复 metadata。
 
-### 5.4 不建立第二套手工 Registry
+### 5.5 不建立第二套手工 Registry
 
 可以通过脚本从同源 metadata 生成：
 
@@ -390,6 +406,30 @@ Release 中不得包含作为 ordinary runtime Authority 的：
 - build result / verification evidence locator。
 
 provenance 可以由生成 manifest 承载，但 manifest 不是 Runtime selector 的第二 Authority。
+
+### 6.5 Consumer 安装 / 升级只面向版本化 Release
+
+首版 Distribution Model 完成后，Consumer 的首次安装和后续升级都应以明确的 Release identity / version 与发布 metadata 为输入。
+
+Consumer 不应为了升级而重新理解 `agentic-dev` Source tree、比较 upstream Method / Architecture / Rule 文件，或在线读取 upstream current Project state。
+
+如果需要迁移 Consumer-local customization，比较对象应是：
+
+```text
+current installed release
++ Consumer-local retained obligations
++ candidate release
+```
+
+而不是：
+
+```text
+Consumer local tree
+vs
+agentic-dev source repository tree
+```
+
+发布系统必须保留必要 provenance 和 migration information，使升级可以在不把 Source Repository 重新变成 ordinary dependency 的前提下完成。
 
 ## 7. Runtime 兼容要求
 
@@ -649,8 +689,11 @@ gap = 0
 | `DR-AC-32` | Coverage Audit 满足 `unclassified = 0`、`gap = 0`；`consumer-local` 项有明确本地 owner，不因 Release 简化而丢失。 |
 | `DR-AC-33` | 首版 Release 的目标 Consumer 明确限定为普通软件开发 Repository；不得把 `agentic-dev` provider / self-governance Source Model 直接泛化成普通 Consumer runtime model。 |
 | `DR-AC-34` | Consumer 根 `AGENTS.md` 保持 Consumer-owned；安装 / 升级只建立必要的薄 Bootstrap / Skill locator，不整文件覆盖 Consumer Authority，并具有可验证的 bounded / idempotent update 行为。 |
-| `DR-AC-35` | Gate G 对所有 `DR-AC-01`～`DR-AC-36` 执行 Specification Conformance Review，最终 `Blocking = 0`、`Medium = 0`、`Unverified = 0`，否则不得 Freeze Release Candidate。 |
-| `DR-AC-36` | 只有 Gate G PASS 后才进入真实 Consumer migration / validation；真实验证覆盖 Codex、ChatGPT + GitHub Connector、upstream decoupling、Consumer-local Authority 与 representative software-development behavior。 |
+| `DR-AC-35` | Consumer 首次安装与后续升级都只以版本化 Release + Consumer-local retained obligations 为输入，不要求重新比较或运行 `agentic-dev` Source Repository。 |
+| `DR-AC-36` | Gate B 已完成 Distribution Evidence Review，覆盖当前仓库演进原因、Agent Skills 规范能力与至少两个成熟 Skills-based 外部样本；实现没有把“发布模型简化”偷换成“源码 owner 机械删除”。 |
+| `DR-AC-37` | Gate G 对所有 `DR-AC-01`～`DR-AC-36` 执行 Specification Conformance Review，最终 `Blocking = 0`、`Medium = 0`、`Unverified = 0`，否则不得 Freeze Release Candidate。 |
+| `DR-AC-38` | 只有 Gate G PASS 后才进入真实 Consumer migration / validation；真实验证覆盖 Codex、ChatGPT + GitHub Connector、upstream decoupling、Consumer-local Authority 与 representative software-development behavior。 |
+| `DR-AC-39` | Gate H 收口时，已将最终稳定语义回写真实 canonical owners，并使本文退出 Current Authority；最终 Repository 不长期保留本文作为与正式 Architecture / Skill / Release owner 并行的第二套 truth。 |
 
 ## 12. 实施 Gate
 
@@ -662,20 +705,21 @@ gap = 0
 - 建立 Issue #172；
 - 把 Roadmap 切换到本轮 active evolution；
 - 执行独立 `review-change`；
-- 在集成后冻结 `DR-AC-01`～`DR-AC-36`。
+- 在集成后冻结 `DR-AC-01`～`DR-AC-39`。
 
 Gate A 不修改 Source / Distribution implementation。
 
-### Gate B — Repository-wide Asset / Distribution Classification
+### Gate B — Repository-wide Asset / Distribution Evidence & Classification
 
 目标：
 
+- 重新执行 Distribution Evidence Review，验证 Source / Distribution 分离的实施依据；
 - 扫描 Current tree；
 - 建立 distribution metadata contract；
 - 为 Current semantic owners 分类；
 - 建立 deterministic classification / audit tooling；
 - 得到完整 asset audit；
-- 满足 `DR-AC-09`～`DR-AC-11`。
+- 满足 `DR-AC-09`～`DR-AC-11` 与 `DR-AC-36`。
 
 不得在分类未闭环时大规模移动目录。
 
@@ -733,10 +777,10 @@ Gate A 不修改 Source / Distribution implementation。
 目标：
 
 - 以本文为唯一 acceptance checklist；
-- 逐项核验 `DR-AC-01`～`DR-AC-32`；
+- 逐项核验 `DR-AC-01`～`DR-AC-36`；
 - 重新执行 exact-head required validation；
 - 独立 Final Review；
-- 满足 `DR-AC-35` 后冻结 Release Candidate。
+- 满足 `DR-AC-37` 后冻结 Release Candidate。
 
 ### Gate H — Real Consumer Migration & Validation
 
@@ -747,8 +791,9 @@ Gate H 不属于“重构中间验证”，而是 Release Candidate 完整形成
 - 在独立 Consumer 工作上下文中迁移 / 安装新 Release；
 - 删除被新 Release 正式替代的旧 AI development copies；
 - 保留 Coverage Audit 判定的 Consumer-local obligations；
-- 验证 `DR-AC-36`；
-- 将真实 Evidence 反馈给 `agentic-dev`。
+- 验证 `DR-AC-38`；
+- 将真实 Evidence 反馈给 `agentic-dev`；
+- 把最终稳定语义回写真实 canonical owners，并按 `DR-AC-39` 使本文退出 Current Authority。
 
 ## 13. 实施顺序与连续执行原则
 
@@ -779,7 +824,7 @@ Gate A～G 应尽量在 `agentic-dev` 内连续推进。
 
 ## 14. Scope Change Control
 
-本文集成后，任何会改变 `DR-AC-01`～`DR-AC-36` 实质含义的修改都属于 Specification Change。
+本文集成后，任何会改变 `DR-AC-01`～`DR-AC-39` 实质含义的修改都属于 Specification Change。
 
 修改顺序必须是：
 
