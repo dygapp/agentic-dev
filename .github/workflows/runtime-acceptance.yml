@@ -111,6 +111,7 @@ jobs:
           --scenario B-AR-01
           --scenario B-MC-01
           --scenario B-EO-01
+          --scenario B-GA-01
           --scenario B-EU-01
           --codex-bin codex
 
@@ -124,6 +125,7 @@ jobs:
           --scenario B-AR-01
           --scenario B-MC-01
           --scenario B-EO-01
+          --scenario B-GA-01
           --scenario B-EU-01
           --codex-bin codex
 
@@ -171,6 +173,7 @@ jobs:
             evals/results/behavior/B-AR-01.*
             evals/results/behavior/B-MC-01.*
             evals/results/behavior/B-EO-01.*
+            evals/results/behavior/B-GA-01.*
             evals/results/behavior/B-EU-01.*
             evals/results/behavior/runtime-acceptance.summary.json
 
