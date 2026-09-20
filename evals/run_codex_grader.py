@@ -184,9 +184,10 @@ Runtime 最终输出：
 
     with tempfile.TemporaryDirectory(prefix="agentic-dev-eval-grader-") as temp:
         cwd = Path(temp)
+        # Keep the caller's Codex authentication environment. The grader isolates
+        # repository context via cwd, but must not replace CODEX_HOME because a
+        # ChatGPT-authenticated Codex CLI stores its login state there.
         env = os.environ.copy()
-        env["CODEX_HOME"] = str(cwd / "codex-home")
-        (cwd / "codex-home").mkdir()
         command = [
             codex_bin,
             "exec",
