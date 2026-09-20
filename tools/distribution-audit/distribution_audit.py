@@ -172,6 +172,34 @@ def collect_assets(repo_root: Path) -> list[Asset]:
     return sorted(assets, key=lambda asset: asset.path)
 
 
+def _repository_files(repo_root: Path) -> list[str]:
+    result: list[str] = []
+    for path in sorted(repo_root.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(repo_root)
+        if ".git" in relative.parts:
+            continue
+        result.append(relative.as_posix())
+    return result
+
+
+def _inherited_source_class(path: str) -> str | None:
+    if path in {".gitignore", "LICENSE"}:
+        return "repository-support"
+    if path.startswith("evals/") and path.endswith(".json"):
+        return "eval-corpus"
+    if path.startswith("evals/fixtures/"):
+        return "eval-fixture"
+    if (
+        path.startswith("tools/")
+        and "/tests/" in path
+        and path.endswith(".py")
+    ):
+        return "tool-test"
+    return None
+
+
 def audit(repo_root: Path) -> dict[str, object]:
     assets = collect_assets(repo_root)
     unclassified = [
@@ -202,6 +230,19 @@ def audit(repo_root: Path) -> dict[str, object]:
         }
     )
 
+    scoped_paths = {asset.path for asset in assets}
+    inherited_files: dict[str, str] = {}
+    unexpected_unowned: list[str] = []
+    repository_files = _repository_files(repo_root)
+    for path in repository_files:
+        if path in scoped_paths:
+            continue
+        inherited_class = _inherited_source_class(path)
+        if inherited_class is None:
+            unexpected_unowned.append(path)
+        else:
+            inherited_files[path] = inherited_class
+
     counts: dict[str, int] = {key: 0 for key in sorted(ALLOWED_DISTRIBUTIONS)}
     counts["unclassified"] = 0
     for asset in assets:
@@ -216,13 +257,18 @@ def audit(repo_root: Path) -> dict[str, object]:
             if not unclassified
             and not orphan_release_input
             and not ambiguous_release_owner
+            and not unexpected_unowned
             else "fail-closed"
         ),
+        "repository_file_count": len(repository_files),
         "scoped_asset_count": len(assets),
+        "inherited_file_count": len(inherited_files),
         "counts": counts,
         "unclassified": unclassified,
         "orphan_release_input": orphan_release_input,
         "ambiguous_release_owner": ambiguous_release_owner,
+        "unexpected_unowned": unexpected_unowned,
+        "inherited_files": inherited_files,
         "duplicate_identities": duplicate_identities,
         "assets": [asdict(asset) for asset in assets],
     }
@@ -247,11 +293,14 @@ def main(argv: list[str] | None = None) -> int:
             key: result[key]
             for key in (
                 "status",
+                "repository_file_count",
                 "scoped_asset_count",
+                "inherited_file_count",
                 "counts",
                 "unclassified",
                 "orphan_release_input",
                 "ambiguous_release_owner",
+                "unexpected_unowned",
             )
         }
     print(json.dumps(result, ensure_ascii=False, indent=2))
