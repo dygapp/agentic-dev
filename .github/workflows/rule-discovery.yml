@@ -79,13 +79,13 @@ jobs:
           python-version: '3.12'
 
       - name: Compile eval runners
-        run: python3 -m py_compile evals/run_codex_evals.py evals/grade_codex_evals.py evals/run_governance_evals.py evals/run_v4_scaling.py tools/distribution-audit/distribution_audit.py tools/runtime-acceptance/runtime_acceptance.py
+        run: python3 -m py_compile evals/run_codex_evals.py evals/run_codex_grader.py evals/run_governance_evals.py evals/run_v4_scaling.py tools/distribution-audit/distribution_audit.py tools/runtime-acceptance/runtime_acceptance.py
 
       - name: Smoke eval runner entrypoints
         shell: bash
         run: |
           python3 evals/run_codex_evals.py --help >/dev/null
-          python3 evals/grade_codex_evals.py --help >/dev/null
+          python3 evals/run_codex_grader.py --help >/dev/null
           python3 evals/run_governance_evals.py --help >/dev/null
 
           set +e

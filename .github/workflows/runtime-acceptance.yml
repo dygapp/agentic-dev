@@ -119,7 +119,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: >-
-          python3 evals/grade_codex_evals.py --behavior
+          python3 evals/run_codex_grader.py --behavior
           --scenario B-RB-01
           --scenario B-AR-01
           --scenario B-MC-01
