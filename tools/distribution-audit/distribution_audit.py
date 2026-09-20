@@ -1,0 +1,262 @@
+#!/usr/bin/env python3
+# agentic-dev-distribution: source-only
+"""Deterministic audit for agentic-dev distribution metadata."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from dataclasses import dataclass, asdict
+from pathlib import Path
+from typing import Iterable
+
+ALLOWED_DISTRIBUTIONS = {
+    "source-only",
+    "release-input",
+    "release-direct",
+    "retired",
+}
+RELEASE_DISTRIBUTIONS = {"release-input", "release-direct"}
+MARKER_RE = re.compile(r"^#\s*agentic-dev-distribution:\s*(\S+)\s*$", re.MULTILINE)
+TARGET_MARKER_RE = re.compile(r"^#\s*agentic-dev-release-target:\s*(\S+)\s*$", re.MULTILINE)
+
+
+@dataclass(frozen=True)
+class Asset:
+    path: str
+    identity: str
+    asset_type: str
+    distribution: str | None
+    release_target: str | None
+    source: str
+
+
+def _frontmatter(text: str) -> str | None:
+    if not text.startswith("---\n"):
+        return None
+    end = text.find("\n---\n", 4)
+    if end < 0:
+        return None
+    return text[4:end]
+
+
+def _scalar(frontmatter: str, key: str) -> str | None:
+    match = re.search(rf"^{re.escape(key)}:\s*(.+?)\s*$", frontmatter, re.MULTILINE)
+    if not match:
+        return None
+    value = match.group(1).strip()
+    if (value.startswith('"') and value.endswith('"')) or (
+        value.startswith("'") and value.endswith("'")
+    ):
+        value = value[1:-1]
+    return value
+
+
+def _metadata_scalar(frontmatter: str, key: str) -> str | None:
+    lines = frontmatter.splitlines()
+    in_metadata = False
+    for line in lines:
+        if line.strip() == "metadata:" and not line.startswith((" ", "\t")):
+            in_metadata = True
+            continue
+        if in_metadata:
+            if line and not line.startswith((" ", "\t")):
+                break
+            match = re.match(rf"^\s+{re.escape(key)}:\s*(.+?)\s*$", line)
+            if match:
+                value = match.group(1).strip()
+                if (value.startswith('"') and value.endswith('"')) or (
+                    value.startswith("'") and value.endswith("'")
+                ):
+                    value = value[1:-1]
+                return value
+    return None
+
+
+def _read(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
+
+
+def _markdown_assets(repo_root: Path) -> Iterable[Asset]:
+    candidates = [repo_root / "AGENTS.md", repo_root / "README.md"]
+    candidates.extend(sorted((repo_root / "docs").rglob("*.md")))
+    candidates.extend(sorted((repo_root / "evals").glob("*.md")))
+    candidates.extend(sorted((repo_root / "evals").glob("*/README.md")))
+
+    seen: set[Path] = set()
+    for path in candidates:
+        if not path.exists() or path in seen:
+            continue
+        seen.add(path)
+        text = _read(path)
+        fm = _frontmatter(text)
+        if fm is None:
+            continue
+        identity = _scalar(fm, "id")
+        asset_type = _scalar(fm, "type")
+        status = _scalar(fm, "status")
+        if not identity or not asset_type or not status:
+            continue
+        yield Asset(
+            path=str(path.relative_to(repo_root)),
+            identity=identity,
+            asset_type=asset_type,
+            distribution=_scalar(fm, "distribution"),
+            release_target=_scalar(fm, "release-target"),
+            source="frontmatter",
+        )
+
+
+def _skill_assets(repo_root: Path) -> Iterable[Asset]:
+    skills_root = repo_root / "skills"
+    if not skills_root.exists():
+        return
+    for path in sorted(skills_root.glob("*/SKILL.md")):
+        text = _read(path)
+        fm = _frontmatter(text)
+        if fm is None:
+            yield Asset(
+                path=str(path.relative_to(repo_root)),
+                identity=str(path.parent.name),
+                asset_type="skill",
+                distribution=None,
+                release_target=None,
+                source="skill-frontmatter-missing",
+            )
+            continue
+        name = _scalar(fm, "name") or path.parent.name
+        identity = _metadata_scalar(fm, "agentic-dev-id") or f"skill:{name}"
+        yield Asset(
+            path=str(path.relative_to(repo_root)),
+            identity=identity,
+            asset_type="skill",
+            distribution=_metadata_scalar(fm, "agentic-dev-distribution"),
+            release_target=_metadata_scalar(fm, "agentic-dev-release-target"),
+            source="skill-metadata",
+        )
+
+
+def _executable_assets(repo_root: Path) -> Iterable[Asset]:
+    paths: list[Path] = []
+    paths.extend(sorted((repo_root / ".github" / "workflows").glob("*.yml")))
+    paths.extend(sorted((repo_root / ".github" / "workflows").glob("*.yaml")))
+    paths.extend(
+        p
+        for p in sorted((repo_root / "tools").glob("*/*.py"))
+        if "/tests/" not in p.as_posix()
+    )
+    paths.extend(sorted((repo_root / "evals").glob("run_*.py")))
+
+    for path in paths:
+        text = _read(path)
+        distribution_match = MARKER_RE.search(text)
+        target_match = TARGET_MARKER_RE.search(text)
+        yield Asset(
+            path=str(path.relative_to(repo_root)),
+            identity=f"runtime:{path.relative_to(repo_root).as_posix()}",
+            asset_type="runtime",
+            distribution=distribution_match.group(1) if distribution_match else None,
+            release_target=target_match.group(1) if target_match else None,
+            source="comment-marker",
+        )
+
+
+def collect_assets(repo_root: Path) -> list[Asset]:
+    assets = [
+        *_markdown_assets(repo_root),
+        *_skill_assets(repo_root),
+        *_executable_assets(repo_root),
+    ]
+    return sorted(assets, key=lambda asset: asset.path)
+
+
+def audit(repo_root: Path) -> dict[str, object]:
+    assets = collect_assets(repo_root)
+    unclassified = [
+        asset.path
+        for asset in assets
+        if asset.distribution not in ALLOWED_DISTRIBUTIONS
+    ]
+    orphan_release_input = [
+        asset.path
+        for asset in assets
+        if asset.distribution in RELEASE_DISTRIBUTIONS and not asset.release_target
+    ]
+
+    identities: dict[str, list[str]] = {}
+    for asset in assets:
+        identities.setdefault(asset.identity, []).append(asset.path)
+    duplicate_identities = {
+        identity: paths
+        for identity, paths in identities.items()
+        if len(paths) > 1
+    }
+
+    ambiguous_release_owner = sorted(
+        {
+            path
+            for paths in duplicate_identities.values()
+            for path in paths
+        }
+    )
+
+    counts: dict[str, int] = {key: 0 for key in sorted(ALLOWED_DISTRIBUTIONS)}
+    counts["unclassified"] = 0
+    for asset in assets:
+        if asset.distribution in ALLOWED_DISTRIBUTIONS:
+            counts[asset.distribution] += 1
+        else:
+            counts["unclassified"] += 1
+
+    result: dict[str, object] = {
+        "status": (
+            "ok"
+            if not unclassified
+            and not orphan_release_input
+            and not ambiguous_release_owner
+            else "fail-closed"
+        ),
+        "scoped_asset_count": len(assets),
+        "counts": counts,
+        "unclassified": unclassified,
+        "orphan_release_input": orphan_release_input,
+        "ambiguous_release_owner": ambiguous_release_owner,
+        "duplicate_identities": duplicate_identities,
+        "assets": [asdict(asset) for asset in assets],
+    }
+    return result
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Audit agentic-dev distribution metadata and ownership."
+    )
+    parser.add_argument("--repo-root", default=".", help="Repository root.")
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Print only status/counts/failure lists instead of the full inventory.",
+    )
+    args = parser.parse_args(argv)
+
+    result = audit(Path(args.repo_root).resolve())
+    if args.summary:
+        result = {
+            key: result[key]
+            for key in (
+                "status",
+                "scoped_asset_count",
+                "counts",
+                "unclassified",
+                "orphan_release_input",
+                "ambiguous_release_owner",
+            )
+        }
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0 if result["status"] == "ok" else 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())
