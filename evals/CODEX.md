@@ -86,7 +86,7 @@ python3 tools/runtime-acceptance/authenticated_model_acceptance.py
 - 最终 `evals/results/authenticated-model-runtime.json`；
 - 可提交复核的单一证据包 `evals/results/authenticated-model-runtime-evidence.zip`，其中包含汇总报告、runtime / grader 原始输出、run / grade metadata 与 summary；命令输出同时给出 bundle SHA-256。
 
-只有两组 summary 和全部逐场景 grade 都为 `PASS`，最终报告和证据包才会生成成功结果。
+两组 summary 和全部逐场景 grade 都为 `PASS` 时，命令以 exit `0` 结束；出现有效的语义 `FAIL` 时，命令以 exit `1` 结束，但仍必须生成完整报告与 `authenticated-model-runtime-evidence.zip`，用于后续分析失败 assertions。只有 runtime / grader 基础设施异常、Evidence 缺失或完整性损坏才使用 fail-closed exit `2`，此时不能把不完整结果当作语义判定。
 
 GitHub Actions 的 `Runtime Acceptance` workflow 只负责无需模型认证即可自动执行的部分，包括 Release install、deterministic contract 和真实 Codex App Server native Skill discovery。它即使全绿，也**不等于** authenticated model runtime 已经完成；后者必须来自已认证、可审计的真实 Codex Runtime。
 
