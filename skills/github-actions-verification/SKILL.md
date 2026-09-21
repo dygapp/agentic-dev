@@ -32,8 +32,14 @@ metadata:
 3. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 4. 设计最小分层验证：优先复用缓存、预构建运行环境与已生成 artifact，但不得牺牲可追溯性。
 5. 配置合理 timeout、cancellation、失败诊断与关键日志/证据保留。
-6. 触发后按精确 commit 读取 run/job/step 终态；异步状态按有界观察处理。终态失败时先恢复失败 job / step / logs / artifacts，区分实现缺陷、陈旧验证契约、Runtime / 环境问题与外部依赖；在 Consumer 当前 Scope 和写入授权允许时，进入 systematic-debug 或等价诊断闭环并实施最小必要修复。只有不改变代码 / 配置语义的临时故障才可直接重跑同一 Head；任何修复产生新 commit 后，都必须重新绑定新的 exact Head 并重跑、复验。
-7. 只在所需 jobs 对当前目标 exact commit 完成且证据可观察时报告通过；无法在授权范围内关闭的失败、权限阻塞或达到有界观察上限时，保持未验证 / blocker 状态而不是伪装完成。
+6. 触发后按精确 commit 读取 run/job/step 终态；异步状态按有界观察处理。
+7. 终态失败不是默认退出条件。先恢复失败 job / step / logs / artifacts，区分实现缺陷、陈旧验证契约、Runtime / 环境问题与外部依赖。只要当前 Consumer Scope 与写入授权已经覆盖该修复，就必须继续进入 `systematic-debug` 或等价诊断闭环，实施最小必要修复并重跑复验，而不是只描述“可以修复”或把机械闭环交回 Human。只有确认是不改变代码 / 配置语义的临时故障时，才可直接重跑同一 Head；任何修复产生新 commit 后，都必须重新绑定新的 exact Head，再触发必要验证并重新取得 Completion Evidence。
+8. 只在以下任一条件成立时结束当前执行闭环：
+   - 目标 exact commit 的所需 jobs 已完成成功，必要 logs / artifacts 可恢复，Completion Evidence 已验证；
+   - 出现当前 Authority 无法自动解决的真实权限、Product / Business 或 Architecture blocker；
+   - 当前 Runtime 在 direct path 与已声明 automated alternate 均无法继续恢复必要 Evidence；
+   - 已达到与正常基线相称的有界观察上限。
+   后三种只能报告 blocker / 未完全验证，不能报告 Verification PASS，也不得因为当前技术上可执行而越权 merge、release 或 deploy。
 
 ## 可执行路径合同
 
