@@ -159,6 +159,82 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                     zf.getinfo("authenticated-model-runtime.json").date_time,
                 )
 
+    def test_authenticated_runtime_collects_semantic_fail_as_evidence(self):
+        original_root = authenticated_runtime.REPO_ROOT
+        original_results = authenticated_runtime.RESULTS
+        try:
+            with tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                results = root / "evals/results"
+                behavior = results / "behavior"
+                behavior.mkdir(parents=True)
+
+                scenario = "B-TEST-FAIL"
+                source_sha = "a" * 40
+                (behavior / "runtime-acceptance.summary.json").write_text(
+                    json.dumps(
+                        {
+                            "status": "FAIL",
+                            "scenario_count": 1,
+                            "passed": 0,
+                            "failed": 1,
+                        }
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
+                (behavior / f"{scenario}.run.json").write_text(
+                    json.dumps(
+                        {
+                            "source_commit": source_sha,
+                            "runtime_mode": "release-installed",
+                            "release_id": "agentic-dev@test",
+                            "returncode": 0,
+                            "grading": "fail",
+                            "codex_version": "codex-cli test",
+                        }
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
+                (behavior / f"{scenario}.grade.json").write_text(
+                    json.dumps(
+                        {
+                            "scenario_id": scenario,
+                            "verdict": "FAIL",
+                            "grader_codex_version": "codex-cli test",
+                        }
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
+                for suffix in (
+                    ".jsonl",
+                    ".stderr.txt",
+                    ".grader.jsonl",
+                    ".grader.stderr.txt",
+                ):
+                    (behavior / f"{scenario}{suffix}").write_text(
+                        "evidence\n",
+                        encoding="utf-8",
+                    )
+
+                authenticated_runtime.REPO_ROOT = root
+                authenticated_runtime.RESULTS = results
+                evidence = authenticated_runtime._collect_mode_evidence(
+                    "behavior",
+                    (scenario,),
+                    source_sha,
+                )
+
+                self.assertEqual("FAIL", evidence["status"])
+                self.assertEqual([scenario], evidence["failed_scenarios"])
+                self.assertEqual("FAIL", evidence["scenarios"][0]["verdict"])
+                self.assertEqual(7, len(evidence["evidence_files"]))
+        finally:
+            authenticated_runtime.REPO_ROOT = original_root
+            authenticated_runtime.RESULTS = original_results
+
     def test_activation_corpus_covers_new_release_skills(self):
         ids = {case["id"] for case in runner.activation_cases()}
         self.assertTrue({"A-RB-01", "A-AR-01", "A-MC-01", "A-EO-01"} <= ids)
