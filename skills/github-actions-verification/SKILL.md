@@ -32,8 +32,8 @@ metadata:
 3. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
 4. 设计最小分层验证：优先复用缓存、预构建运行环境与已生成 artifact，但不得牺牲可追溯性。
 5. 配置合理 timeout、cancellation、失败诊断与关键日志/证据保留。
-6. 触发后按精确 commit 读取 run/job/step 终态；异步状态按有界观察处理。
-7. 只在所需 jobs 对目标 commit 完成且证据可观察时报告通过。
+6. 触发后按精确 commit 读取 run/job/step 终态；异步状态按有界观察处理。终态失败时先恢复失败 job / step / logs / artifacts，区分实现缺陷、陈旧验证契约、Runtime / 环境问题与外部依赖；在 Consumer 当前 Scope 和写入授权允许时，进入 systematic-debug 或等价诊断闭环并实施最小必要修复。只有不改变代码 / 配置语义的临时故障才可直接重跑同一 Head；任何修复产生新 commit 后，都必须重新绑定新的 exact Head 并重跑、复验。
+7. 只在所需 jobs 对当前目标 exact commit 完成且证据可观察时报告通过；无法在授权范围内关闭的失败、权限阻塞或达到有界观察上限时，保持未验证 / blocker 状态而不是伪装完成。
 
 ## 可执行路径合同
 

@@ -243,6 +243,8 @@ Provisional Minimal Default 必须在当前 Capability Human Review 中可见。
 
 Terminology 不绕过这七项条件。只有 terminology ambiguity 同时会实质改变 business meaning / scope、responsibility、data semantics、Acceptance 或其他产品语义，并且阻塞当前 Requirement Baseline 时，才升级为 Human Blocking Question。业务语义已经确定但仍需统一 canonical Chinese / English naming、alias mapping 或 cross-capability naming 的情况，记录为 non-blocking terminology decision，在 Capability-level Review 集中确认；拼写风格、大小写、类名后缀、package layout 等继续属于 Technical / Code convention。
 
+Question Gate 不要求把每条正向事实机械补成完整的反向、排他或补集规则。某个当前来源只确认“Actor 可以在范围 S 内执行 X”，但没有说明范围 S 之外的行为时，这种沉默本身不构成 Material Ambiguity 或 blocker。应先保存已有证据支持的正向事实，把未被当前 Authority 决定的补集边界保持为 unknown / non-blocking；只有当前 Baseline scope、已知下游 Feature、Acceptance、安全 / 合规义务或 Authority 冲突使该补集边界成为当前必须裁决的问题时，才进入上述七项 Human Question Gate。不得为了追求权限矩阵或文档形式完整而从材料沉默中制造阻塞问题。
+
 否则应推导、应用 Authoritative Default、采用可 Review 的 Provisional Minimal Default、记录为 non-blocking open item，或推迟到后续责任层。
 
 ### 8.4 会话协议

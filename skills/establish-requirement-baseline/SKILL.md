@@ -27,9 +27,9 @@ metadata:
 
 1. 恢复当前 Repository Authority、现有 Requirement owner 和输入来源角色，不把历史实现或旧聊天自动提升为当前事实。
 2. 按当前 Skill package 的 `references/release-inputs/**` 恢复需求基线 Method、Requirement Authority 与相关验证 / 人工升级约束。
-3. 对原始输入做 source-role、冲突、缺口和重复分析，区分可直接接受事实、可唯一推导事实、设计项和真实阻塞歧义。
+3. 对原始输入做 source-role、冲突、缺口和重复分析，区分可直接接受事实、可唯一推导事实、设计项和真实阻塞歧义；不得因为正向事实没有同时声明反向 / 排他边界，就把所有未说明的补集情况制造成 blocker。
 4. 把稳定长期事实写入真实 Requirement owner；临时分析、comparison、ambiguity material 保持非 Authority，并明确退出或晋升边界。
-5. 只有当前 Authority 无法解决且不同合理答案会改变长期产品语义时，形成最小人工问题；高影响 Authority 变更按当前 Repository policy 进入独立复核。
+5. 只有当前 Authority 无法解决、不同合理答案会改变长期产品语义，而且该问题确实阻塞当前 Baseline scope 或已知下游责任时，才形成最小人工问题；高影响 Authority 变更按当前 Repository policy 进入独立复核。
 6. 检查 Requirement 信息架构、Fresh Context 导航、长期 owner、未决项与下游 Feature 可消费性。
 7. 只有当前证据支持长期需求基线可被后续工作可靠消费时返回 Requirement Baseline Ready。
 

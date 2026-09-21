@@ -259,6 +259,56 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         )
         self.assertEqual("final", grader.extract_last_agent_message(jsonl))
 
+    def test_grader_extracts_observable_runtime_trace(self):
+        jsonl = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "type": "item.completed",
+                        "item": {
+                            "type": "agent_message",
+                            "text": "先读取 AGENTS.md 和 unit.md。",
+                        },
+                    }
+                ),
+                json.dumps(
+                    {
+                        "type": "item.completed",
+                        "item": {
+                            "type": "command_execution",
+                            "command": "sed -n '1,120p' AGENTS.md unit.md greeting.py tests/test_greeting.py",
+                            "aggregated_output": "fixture content",
+                            "exit_code": 0,
+                            "status": "completed",
+                        },
+                    }
+                ),
+                json.dumps(
+                    {
+                        "type": "item.completed",
+                        "item": {
+                            "type": "file_change",
+                            "changes": [{"path": "greeting.py", "kind": "update"}],
+                            "status": "completed",
+                        },
+                    }
+                ),
+                json.dumps(
+                    {
+                        "type": "item.completed",
+                        "item": {"type": "reasoning", "text": "private reasoning"},
+                    }
+                ),
+                json.dumps({"type": "turn.completed"}),
+            ]
+        )
+        trace = grader.extract_observable_runtime_trace(jsonl)
+        self.assertIn("AGENTS.md", trace)
+        self.assertIn("unit.md", trace)
+        self.assertIn("greeting.py", trace)
+        self.assertIn("file_change", trace)
+        self.assertNotIn("private reasoning", trace)
+
     def test_grader_parses_plain_and_fenced_json(self):
         payload = {
             "scenario_id": "B-TEST-JSON",
