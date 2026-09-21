@@ -100,6 +100,40 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
             authenticated_runtime.infer_auth_method("workload identity selected"),
         )
 
+    def test_github_actions_fixture_transport_progression(self):
+        script = runner.GITHUB_ACTIONS_FIXTURE / "actions_fixture.py"
+        self.assertTrue(script.is_file())
+
+        def read_json(*args: str) -> dict:
+            completed = subprocess.run(
+                [sys.executable, str(script), *args],
+                cwd=runner.GITHUB_ACTIONS_FIXTURE,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(0, completed.returncode, completed.stderr)
+            return json.loads(completed.stdout)
+
+        first = read_json("read-run", "--run-id", "4242", "--poll", "1")
+        self.assertEqual("abc123", first["head_sha"])
+        self.assertEqual("pull_request", first["event"])
+        self.assertEqual("in_progress", first["status"])
+
+        second = read_json("read-run", "--run-id", "4242", "--poll", "2")
+        self.assertEqual("completed", second["status"])
+        self.assertEqual("success", second["conclusion"])
+
+        jobs = read_json("read-jobs", "--run-id", "4242")
+        self.assertEqual("success", jobs["jobs"][0]["conclusion"])
+        self.assertEqual("success", jobs["jobs"][0]["steps"][0]["conclusion"])
+
+        log = read_json("read-log", "--job-id", "9001")
+        self.assertIn("abc123", log["log"])
+
+        artifacts = read_json("read-artifacts", "--run-id", "4242")
+        self.assertEqual("completion-evidence", artifacts["artifacts"][0]["name"])
+
     def test_authenticated_runtime_scenario_set_is_exact_gate_e_subject(self):
         self.assertEqual(8, len(authenticated_runtime.ACTIVATION_SCENARIOS))
         self.assertEqual(6, len(authenticated_runtime.BEHAVIOR_SCENARIOS))

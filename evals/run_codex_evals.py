@@ -10,6 +10,7 @@ This runner deliberately stays thin:
 - the Codex process cwd/PWD matches the isolated workspace so repository paths do not leak;
 - behavior runs use explicit Skill invocation, while discovery runs do not invent a Skill;
 - B-EU-01 additionally receives a fresh writable fixture and its final snapshot is preserved;
+- B-GA-01 receives a deterministic read-only Actions observation fixture so polling is executable;
 - saves raw JSONL/stdout, stderr, source commit, and Codex CLI version;
 - does NOT grade semantic assertions automatically.
 
@@ -43,6 +44,7 @@ AGENTIC_DEV_DISCOVERY_BOOTSTRAP_PATHS = (
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
+GITHUB_ACTIONS_FIXTURE = EVALS / "fixtures" / "github-actions-observation"
 RELEASE_BUILDER = ROOT / "tools" / "release-build" / "release_build.py"
 RUN_CONTEXT = {
     "source_commit": None,
@@ -238,9 +240,9 @@ def populate_discovery_context(workspace: Path, case: dict) -> None:
         raise RuntimeError(f"Discovery scenario {case['id']} has no AGENTS.md")
 
 
-def copy_fixture_into(workspace: Path) -> None:
-    """Copy the executable B-EU-01 fixture into an isolated workspace root."""
-    for source in FIXTURE.iterdir():
+def copy_fixture_into(workspace: Path, fixture: Path = FIXTURE) -> None:
+    """Copy one executable behavior fixture into an isolated workspace root."""
+    for source in fixture.iterdir():
         target = workspace / source.name
         if source.is_dir():
             shutil.copytree(source, target)
@@ -484,6 +486,8 @@ def run_behavior(
                     "$execute-unit 读取当前目录的 AGENTS.md 和 unit.md，只实现 "
                     "greeting-01，并按仓库规则验证；完成后记录当前证据并停止。"
                 )
+            elif scenario_id == "B-GA-01":
+                copy_fixture_into(cwd, GITHUB_ACTIONS_FIXTURE)
 
             if release_package is None:
                 populate_isolated_skill_copies(cwd)
