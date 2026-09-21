@@ -118,9 +118,13 @@ def _scenario_args(scenarios: tuple[str, ...]) -> list[str]:
     return result
 
 
-def _run_runtime_mode(codex_bin: str, mode: str, scenarios: tuple[str, ...]) -> None:
+def _run_runtime_mode(
+    codex_bin: str,
+    mode: str,
+    scenarios: tuple[str, ...],
+) -> dict[str, int]:
     flag = "--activation" if mode == "activation" else "--behavior"
-    _run(
+    runtime = subprocess.run(
         [
             sys.executable,
             str(EVALS / "run_codex_evals.py"),
@@ -129,9 +133,20 @@ def _run_runtime_mode(codex_bin: str, mode: str, scenarios: tuple[str, ...]) -> 
             *_scenario_args(scenarios),
             "--codex-bin",
             codex_bin,
-        ]
+        ],
+        cwd=REPO_ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
     )
-    _run(
+    if runtime.returncode != 0:
+        raise AuthenticatedRuntimeError(
+            f"{mode} runtime execution failed ({runtime.returncode}): "
+            f"{runtime.stdout}\n{runtime.stderr}"
+        )
+
+    grader = subprocess.run(
         [
             sys.executable,
             str(EVALS / "run_codex_grader.py"),
@@ -139,8 +154,23 @@ def _run_runtime_mode(codex_bin: str, mode: str, scenarios: tuple[str, ...]) -> 
             *_scenario_args(scenarios),
             "--codex-bin",
             codex_bin,
-        ]
+        ],
+        cwd=REPO_ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
     )
+    if grader.returncode not in {0, 1}:
+        raise AuthenticatedRuntimeError(
+            f"{mode} semantic grader infrastructure failed ({grader.returncode}): "
+            f"{grader.stdout}\n{grader.stderr}"
+        )
+
+    return {
+        "runtime_returncode": runtime.returncode,
+        "grader_returncode": grader.returncode,
+    }
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -165,9 +195,9 @@ def _collect_mode_evidence(
     root = RESULTS / mode
     summary_path = root / "runtime-acceptance.summary.json"
     summary = _load_json(summary_path)
-    if summary.get("status") != "PASS":
+    if summary.get("status") not in {"PASS", "FAIL"}:
         raise AuthenticatedRuntimeError(
-            f"{mode} semantic grading did not PASS: {summary}"
+            f"{mode} semantic grading has invalid status: {summary}"
         )
     if summary.get("scenario_count") != len(scenarios):
         raise AuthenticatedRuntimeError(
@@ -218,13 +248,21 @@ def _collect_mode_evidence(
             raise AuthenticatedRuntimeError(
                 f"{scenario} runtime returncode is not zero: {run.get('returncode')}"
             )
-        if run.get("grading") != "pass":
+        grading = run.get("grading")
+        verdict = grade.get("verdict")
+        if grading not in {"pass", "fail"}:
             raise AuthenticatedRuntimeError(
-                f"{scenario} runtime grading state is not pass: {run.get('grading')}"
+                f"{scenario} runtime grading state is invalid: {grading}"
             )
-        if grade.get("verdict") != "PASS":
+        if verdict not in {"PASS", "FAIL"}:
             raise AuthenticatedRuntimeError(
-                f"{scenario} semantic grade is not PASS: {grade.get('verdict')}"
+                f"{scenario} semantic grade has invalid verdict: {verdict}"
+            )
+        expected_grading = "pass" if verdict == "PASS" else "fail"
+        if grading != expected_grading:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} runtime/grader semantic state mismatch: "
+                f"{grading} != {expected_grading}"
             )
         records.append(
             {
@@ -243,9 +281,14 @@ def _collect_mode_evidence(
         }
     )
     return {
-        "status": "PASS",
+        "status": summary["status"],
         "summary": summary,
         "scenarios": records,
+        "failed_scenarios": [
+            item["scenario_id"]
+            for item in records
+            if item["verdict"] == "FAIL"
+        ],
         "evidence_files": sorted(evidence_files, key=lambda item: item["path"]),
     }
 
@@ -305,8 +348,18 @@ def run_authenticated_acceptance(
     source_sha = _git_head(REPO_ROOT)
     codex_version, auth_method = _codex_runtime(codex_bin)
 
-    _run_runtime_mode(codex_bin, "activation", ACTIVATION_SCENARIOS)
-    _run_runtime_mode(codex_bin, "behavior", BEHAVIOR_SCENARIOS)
+    execution = {
+        "activation": _run_runtime_mode(
+            codex_bin,
+            "activation",
+            ACTIVATION_SCENARIOS,
+        ),
+        "behavior": _run_runtime_mode(
+            codex_bin,
+            "behavior",
+            BEHAVIOR_SCENARIOS,
+        ),
+    }
 
     activation = _collect_mode_evidence(
         "activation",
@@ -329,14 +382,23 @@ def run_authenticated_acceptance(
             f"model acceptance used multiple Release identities: {sorted(release_ids)}"
         )
 
+    overall_status = (
+        "PASS"
+        if activation["status"] == "PASS" and behavior["status"] == "PASS"
+        else "FAIL"
+    )
     payload = {
-        "status": "PASS",
+        "status": overall_status,
         "source_sha": source_sha,
         "release_id": next(iter(release_ids)),
         "codex_version": codex_version,
         "authentication_method": auth_method,
         "authentication_evidence": "codex login status",
         "scenario_count": len(ACTIVATION_SCENARIOS) + len(BEHAVIOR_SCENARIOS),
+        "failed_scenarios": (
+            activation["failed_scenarios"] + behavior["failed_scenarios"]
+        ),
+        "execution": execution,
         "activation": activation,
         "behavior": behavior,
     }
@@ -390,7 +452,7 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 2
     print(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True))
-    return 0
+    return 0 if payload["status"] == "PASS" else 1
 
 
 if __name__ == "__main__":
