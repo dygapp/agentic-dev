@@ -48,7 +48,51 @@ python3 evals/run_codex_evals.py --discovery --scenario D-V4-GEN-01
 
 V4 已删除 monolithic Technology Profile runtime owner；旧 `--capability` / Profile eval 入口不属于 current baseline。技术行为通过 current technology Rules 与 V4 discovery corpus 验证。
 
-## 3. 治理运行器
+## 3. Release 安装态与已认证模型验收
+
+普通 Skill 回归仍可以使用源码 Skill copy；**Gate E Consumer Runtime Acceptance 必须使用版本化 Release 安装态**。
+
+单独运行某个发布态场景：
+
+```bash
+python3 evals/run_codex_evals.py --activation --release-runtime --scenario A-RB-01
+python3 evals/run_codex_evals.py --behavior --release-runtime --scenario B-RB-01
+```
+
+`--release-runtime` 会：
+
+1. 绑定当前 exact Git HEAD；
+2. 用 Release Builder 生成候选发布物；
+3. 在外部临时 Consumer-like Repository 中通过 artifact `install.py` 安装；
+4. 让 `codex exec` 只看到 installed Release + 场景输入；
+5. 记录 source commit、Release ID、Codex version、JSONL 与 return code。
+
+Gate E 的完整真实模型验收使用统一入口：
+
+```bash
+codex login status
+python3 tools/runtime-acceptance/authenticated_model_acceptance.py
+```
+
+该入口要求当前 checkout 干净，并**复用当前 Codex CLI 已存在的认证状态**。本地使用 ChatGPT 登录时，不需要为了 Gate E 另建 `OPENAI_API_KEY`；也不得把本地认证文件复制到 Repository、Release 或 GitHub Secret。
+
+统一入口会自动执行：
+
+- 8 个 Release-installed activation scenarios；
+- 6 个 representative behavior scenarios；
+- 独立 Codex grader；
+- exact source SHA / Release ID / Codex version 一致性检查；
+- 每个 runtime / grade Evidence 文件的 SHA-256；
+- 最终 `evals/results/authenticated-model-runtime.json`；
+- 可提交复核的单一证据包 `evals/results/authenticated-model-runtime-evidence.zip`，其中包含汇总报告、runtime / grader 原始输出、run / grade metadata 与 summary；命令输出同时给出 bundle SHA-256。
+
+两组 summary 和全部逐场景 grade 都为 `PASS` 时，命令以 exit `0` 结束；出现有效的语义 `FAIL` 时，命令以 exit `1` 结束，但仍必须生成完整报告与 `authenticated-model-runtime-evidence.zip`，用于后续分析失败 assertions。只有 runtime / grader 基础设施异常、Evidence 缺失或完整性损坏才使用 fail-closed exit `2`，此时不能把不完整结果当作语义判定。
+
+GitHub Actions 的 `Runtime Acceptance` workflow 只负责无需模型认证即可自动执行的部分，包括 Release install、deterministic contract 和真实 Codex App Server native Skill discovery。它即使全绿，也**不等于** authenticated model runtime 已经完成；后者必须来自已认证、可审计的真实 Codex Runtime。
+
+## 4. 治理运行器
+
+
 
 ```text
 evals/run_governance_evals.py
@@ -56,7 +100,7 @@ evals/run_governance_evals.py
 
 只保留仍有 current Rule / Authority owner 的治理回归场景。语料迁移前先检查其是否仍对应当前语义。
 
-## 4. Execute 测试夹具
+## 5. Execute 测试夹具
 
 `B-EU-01` 使用：
 
@@ -64,7 +108,7 @@ evals/run_governance_evals.py
 
 每次运行必须复制到独立临时目录；不得沿用已经修改的 workspace。至少检查最终文件、实际验证输出、completion claim 与当前证据，并确认没有越过 Unit 边界执行 merge / release / deploy。
 
-## 5. Rule Discovery / 扩展验证
+## 6. Rule Discovery / 扩展验证
 
 Rule Discovery 的确定性 schema / matching / fail-closed 使用普通自动化测试；LLM Evals 只验证真正需要模型参与的部分：
 
@@ -86,7 +130,7 @@ python3 evals/run_v4_scaling.py --scenario S-V4-100
 
 20 / 100 / 500 Rules 场景用于验证：Tool scan cost 可以随 N 增长，但 ordinary LLM context 应只随候选 k 增长。
 
-## 6. 结果判定
+## 7. 结果判定
 
 进程退出码 `0` 只表示 Codex 进程正常结束，不表示语义通过。
 

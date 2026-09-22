@@ -1,0 +1,129 @@
+# agentic-dev-distribution: source-only
+name: Runtime Acceptance
+
+on:
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - 'docs/architecture/**'
+      - 'docs/methods/**'
+      - 'docs/rules/**'
+      - 'docs/project/project-capability-profile.md'
+      - 'docs/project/project-roadmap.md'
+      - 'skills/**'
+      - 'tools/release-build/**'
+      - 'tools/distribution-audit/**'
+      - 'tools/runtime-acceptance/**'
+      - 'evals/**'
+      - '.github/workflows/release-build.yml'
+      - '.github/workflows/runtime-acceptance.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'AGENTS.md'
+      - 'docs/architecture/**'
+      - 'docs/methods/**'
+      - 'docs/rules/**'
+      - 'docs/project/project-capability-profile.md'
+      - 'docs/project/project-roadmap.md'
+      - 'skills/**'
+      - 'tools/release-build/**'
+      - 'tools/distribution-audit/**'
+      - 'tools/runtime-acceptance/**'
+      - 'evals/**'
+      - '.github/workflows/release-build.yml'
+      - '.github/workflows/runtime-acceptance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact runtime subject
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: Verify exact runtime subject
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          actual_sha="$(git rev-parse HEAD)"
+          printf 'expected_sha=%s\nactual_sha=%s\n' "$EXPECTED_SHA" "$actual_sha"
+          test "$actual_sha" = "$EXPECTED_SHA"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run deterministic runtime acceptance tests
+        run: python3 -m unittest discover -s tools/runtime-acceptance/tests -v
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install pinned Codex CLI
+        run: npm install --global @openai/codex@0.155.0
+
+      - name: Record Codex version
+        run: codex --version
+
+      - name: Run release-installed native discovery acceptance
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 tools/runtime-acceptance/runtime_acceptance.py accept             --repo-root .             --work-dir "$RUNNER_TEMP/runtime-acceptance"             --source-sha "$SOURCE_SHA"             --codex-bin codex             --expected-codex-version 0.155.0             --report "$RUNNER_TEMP/runtime-acceptance-report.json"
+
+      - name: Record authenticated model runtime requirement
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = {
+              "status": "PENDING_AUTHENTICATED_CODEX_RUNTIME",
+              "source_sha": os.environ["SOURCE_SHA"],
+              "reason": (
+                  "Real model activation / representative behavior must run in an "
+                  "authenticated Codex Runtime. GitHub-hosted deterministic acceptance "
+                  "does not impersonate or replace that evidence."
+              ),
+              "entrypoint": "python3 tools/runtime-acceptance/authenticated_model_acceptance.py",
+              "authentication_contract": (
+                  "reuse the runtime's current Codex authentication; do not require "
+                  "OPENAI_API_KEY and do not copy local auth storage into GitHub Secrets"
+              ),
+          }
+          Path(
+              os.environ["RUNNER_TEMP"],
+              "authenticated-model-runtime-requirement.json",
+          ).write_text(
+              json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(payload, ensure_ascii=False))
+          PY
+
+      - name: Upload runtime acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: runtime-acceptance-${{ github.run_id }}
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/runtime-acceptance-report.json
+            ${{ runner.temp }}/authenticated-model-runtime-requirement.json

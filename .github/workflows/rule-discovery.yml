@@ -13,6 +13,9 @@ on:
       - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
       - 'tools/distribution-audit/**'
+      - 'tools/release-build/**'
+      - 'tools/runtime-acceptance/**'
+      - '.github/workflows/runtime-acceptance.yml'
       - '.github/workflows/rule-discovery.yml'
   push:
     branches: [master]
@@ -26,6 +29,9 @@ on:
       - 'evals/**/*.py'
       - 'tools/rule-discovery/**'
       - 'tools/distribution-audit/**'
+      - 'tools/release-build/**'
+      - 'tools/runtime-acceptance/**'
+      - '.github/workflows/runtime-acceptance.yml'
       - '.github/workflows/rule-discovery.yml'
   workflow_dispatch:
     inputs:
@@ -73,13 +79,15 @@ jobs:
           python-version: '3.12'
 
       - name: Compile eval runners
-        run: python3 -m py_compile evals/run_codex_evals.py evals/run_governance_evals.py evals/run_v4_scaling.py tools/distribution-audit/distribution_audit.py
+        run: python3 -m py_compile evals/run_codex_evals.py evals/run_codex_grader.py evals/run_governance_evals.py evals/run_v4_scaling.py tools/distribution-audit/distribution_audit.py tools/runtime-acceptance/runtime_acceptance.py tools/runtime-acceptance/authenticated_model_acceptance.py
 
       - name: Smoke eval runner entrypoints
         shell: bash
         run: |
           python3 evals/run_codex_evals.py --help >/dev/null
+          python3 evals/run_codex_grader.py --help >/dev/null
           python3 evals/run_governance_evals.py --help >/dev/null
+          python3 tools/runtime-acceptance/authenticated_model_acceptance.py --help >/dev/null
 
           set +e
           python3 evals/run_codex_evals.py --behavior \

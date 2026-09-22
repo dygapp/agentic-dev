@@ -108,6 +108,33 @@ Builder 从 Current Source asset 的 distribution metadata 与各 `SKILL.md` 自
 
 本节只拥有 `agentic-dev` 当前 Release Build locator / transport instance，不复制 Skill inventory、Skill → Source composition、manifest 内容或 Release Architecture 正文。精确 candidate id、archive checksum、workflow run 与 artifact id 始终从当前 build Evidence 恢复。
 
+### 3.4 Runtime Acceptance 实例
+
+当前 Gate E 的 Runtime Acceptance 明确分成两个互补 transport，二者不能互相冒充：
+
+1. **Repository-native automated acceptance**
+   - workflow：`.github/workflows/runtime-acceptance.yml`；
+   - exact-subject Release Build + isolated Consumer-like install；
+   - deterministic runtime contract；
+   - pinned Codex CLI + App Server native `skills/list`；
+   - ChatGPT + GitHub Connector repository-defined locator consistency；
+   - Progressive Disclosure / upstream dependency / tamper negative controls；
+   - 该 workflow 不要求模型服务认证，也不声称完成真实 model-turn behavior acceptance。
+
+2. **Authenticated Codex Runtime acceptance**
+   - entrypoint：`tools/runtime-acceptance/authenticated_model_acceptance.py`；
+   - 复用执行环境当前有效的 Codex authentication；
+   - 通过 `codex login status` 只确认认证方法，不复制或传播认证存储；
+   - 构建当前 exact Head Release，执行 Release-installed activation / representative behavior；
+   - 使用独立 grader 对每条 assertion 评分；
+   - 只有全部场景 PASS 才生成 exact-head model-runtime Evidence。
+
+当前认证可以来自 ChatGPT 登录或其他 Codex 当前支持且由执行环境自己管理的认证方式；本 Repository 不把 `OPENAI_API_KEY` 固化为 Gate E 语义，也不得把本地 `CODEX_HOME` / auth storage 复制到 GitHub Secret 或发布物中。
+
+Gate E 的完成声明必须同时拥有 automated acceptance 与 authenticated model runtime 的当前 Evidence。GitHub Actions 全绿只证明第一类责任完成；历史 model result、静态 parser、native discovery 或进程 exit 0 都不能替代第二类 Evidence。
+
+本节只拥有当前 runtime-acceptance locator / transport instance，不复制 scenario corpus、grader assertions 或 workflow run id。
+
 ## 4. Skill Discovery 实例
 
 当前 Repository 的 Skill root 为 `skills/`，ordinary Agent 使用 Agent Skills 原生 discovery，根据 Skill `name` / `description` 与当前责任按需加载 `SKILL.md`。
