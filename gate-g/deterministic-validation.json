@@ -1,0 +1,55 @@
+{
+  "distribution_audit": {
+    "ambiguous_release_owner": [],
+    "counts": {
+      "release-direct": 16,
+      "release-input": 31,
+      "retired": 0,
+      "source-only": 69,
+      "unclassified": 0
+    },
+    "inherited_file_count": 52,
+    "invalid_release_target": [],
+    "orphan_release_input": [],
+    "repository_file_count": 168,
+    "scoped_asset_count": 116,
+    "status": "ok",
+    "unclassified": [],
+    "unexpected_unowned": []
+  },
+  "distribution_audit_sha256": "8b727eafbc95ebe5aa685dbc3fbee80aa8c8c40d47aba4832520059304e99e13",
+  "independent_review": {
+    "blocking": 0,
+    "medium": 0,
+    "unverified": 0
+  },
+  "legacy_consumer_gate_f": {
+    "consumer_mutation": 0,
+    "gap": 0,
+    "tests": 4,
+    "unclassified": 0
+  },
+  "log_sha256": "546a615b5f68629c378585f7dbe59fb7c5a0b4bea59fd3ba8883a890140d5c8e",
+  "pr_acceptance_declaration_audit": {
+    "prs": [
+      173,
+      174,
+      175,
+      176,
+      177,
+      178
+    ],
+    "status": "PASS"
+  },
+  "remote_candidate_branch": "fix/issue-172-gate-g-release-evidence",
+  "remote_candidate_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+  "source_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+  "status": "PASS",
+  "suite_counts": {
+    "distribution_audit": 13,
+    "release_build": 33,
+    "rule_capability_eval": 116,
+    "runtime_acceptance": 10,
+    "total": 172
+  }
+}

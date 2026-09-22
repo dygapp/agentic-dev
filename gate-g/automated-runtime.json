@@ -1,0 +1,172 @@
+{
+  "codex_native_discovery": {
+    "codex_version": "codex-cli 0.155.1",
+    "cwd": "/tmp/agentic-dev-gate-g-automated-51db058/consumer",
+    "force_reload": true,
+    "local_skill_inventory_only": true,
+    "skill_count": 15,
+    "skills": [
+      {
+        "enabled": true,
+        "name": "activate-model-collaboration",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/activate-model-collaboration/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "clarify-architecture",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/clarify-architecture/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "clarify-intent",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/clarify-intent/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "converge",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/converge/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "establish-requirement-baseline",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/establish-requirement-baseline/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "execute-unit",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/execute-unit/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "external-operation",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/external-operation/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "github-actions-verification",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/github-actions-verification/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "human-review",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/human-review/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "readiness-check",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/readiness-check/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "review-change",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/review-change/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "slice-work",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/slice-work/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "specify",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/specify/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "systematic-debug",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/systematic-debug/SKILL.md"
+      },
+      {
+        "enabled": true,
+        "name": "technical-plan",
+        "path": "/tmp/agentic-dev-gate-g-automated-51db058/consumer/.agents/skills/technical-plan/SKILL.md"
+      }
+    ],
+    "status": "ok"
+  },
+  "installed_runtime": {
+    "chatgpt_compatibility_path": [
+      "AGENTS.md",
+      ".agents/release/skill-index.json",
+      ".agents/skills/<name>/SKILL.md"
+    ],
+    "execution_contracts": [
+      {
+        "kind": "external",
+        "name": "external-operation"
+      },
+      {
+        "kind": "external",
+        "name": "github-actions-verification"
+      }
+    ],
+    "progressive_disclosure": {
+      "bootstrap_contains_skill_bodies": false,
+      "index_contains_skill_bodies": false,
+      "supporting_content_location": ".agents/skills/<name>/references/**"
+    },
+    "provider_source_paths_present": false,
+    "release_id": "agentic-dev@0.0.0-runtime.51db05801382+51db05801382",
+    "skill_count": 15,
+    "skill_paths": [
+      ".agents/skills/activate-model-collaboration/SKILL.md",
+      ".agents/skills/clarify-architecture/SKILL.md",
+      ".agents/skills/clarify-intent/SKILL.md",
+      ".agents/skills/converge/SKILL.md",
+      ".agents/skills/establish-requirement-baseline/SKILL.md",
+      ".agents/skills/execute-unit/SKILL.md",
+      ".agents/skills/external-operation/SKILL.md",
+      ".agents/skills/github-actions-verification/SKILL.md",
+      ".agents/skills/human-review/SKILL.md",
+      ".agents/skills/readiness-check/SKILL.md",
+      ".agents/skills/review-change/SKILL.md",
+      ".agents/skills/slice-work/SKILL.md",
+      ".agents/skills/specify/SKILL.md",
+      ".agents/skills/systematic-debug/SKILL.md",
+      ".agents/skills/technical-plan/SKILL.md"
+    ],
+    "skills": [
+      "activate-model-collaboration",
+      "clarify-architecture",
+      "clarify-intent",
+      "converge",
+      "establish-requirement-baseline",
+      "execute-unit",
+      "external-operation",
+      "github-actions-verification",
+      "human-review",
+      "readiness-check",
+      "review-change",
+      "slice-work",
+      "specify",
+      "systematic-debug",
+      "technical-plan"
+    ],
+    "source_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+    "status": "ok"
+  },
+  "release_build": {
+    "archive": "agentic-dev-0.0.0-runtime.51db05801382.zip",
+    "archive_sha256": "a6c018981e031eb10a18d0f5f6f608ec5bb22dbca37706ff366eb1e493ebc1d7",
+    "build_evidence_locator": "runtime-acceptance:exact-subject",
+    "installation_input_count": 3,
+    "manifest_sha256": "4b27579c42ad2645a91e6c102dc9ebc18ad57753922ced5a8f758b221095e42a",
+    "release_id": "agentic-dev@0.0.0-runtime.51db05801382+51db05801382",
+    "runtime_evidence": null,
+    "runtime_evidence_locator": null,
+    "skill_count": 15,
+    "software_release_input_count": 28,
+    "source_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+    "status": "ok",
+    "verification_evidence": null,
+    "verification_evidence_locator": null
+  },
+  "source_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+  "status": "ok",
+  "upstream_negative_control": {
+    "mechanism": "source-root-permission-denial",
+    "native_discovery_status": "ok",
+    "provider_source_read_probe": "denied",
+    "status": "ok"
+  }
+}

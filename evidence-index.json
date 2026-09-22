@@ -1,0 +1,47 @@
+{
+  "files": {
+    "gate-g/authenticated-model-runtime-evidence.zip": {
+      "sha256": "54c71a3f3f22accb71eea354a2f4ae2d10b65567f9c79da5f6f06d4bbf46cb93",
+      "size": 332329
+    },
+    "gate-g/authenticated-model-runtime.json": {
+      "sha256": "b18b6fa8fc3ea6374cfe8e0070f47235b1f8bd5a7e5fd05951943705c9aa69a1",
+      "size": 21045
+    },
+    "gate-g/automated-runtime.json": {
+      "sha256": "69c4617f7f58d199eaab83848b973e4201933d653fd00081ef7264bccab79864",
+      "size": 6106
+    },
+    "gate-g/deterministic-tests.log": {
+      "sha256": "546a615b5f68629c378585f7dbe59fb7c5a0b4bea59fd3ba8883a890140d5c8e",
+      "size": 29447
+    },
+    "gate-g/deterministic-validation.json": {
+      "sha256": "98d4b702d6dbf7ed215a068377a214c60bcafbdc5e3fc6e852f4943e21f2e524",
+      "size": 1367
+    },
+    "gate-g/distribution-audit.json": {
+      "sha256": "8b727eafbc95ebe5aa685dbc3fbee80aa8c8c40d47aba4832520059304e99e13",
+      "size": 390
+    },
+    "gate-g/final-conformance.json": {
+      "sha256": "c16ce2279f4fd7e0e19973af4caa06ead43d6995c26850319727dfad4e5705c1",
+      "size": 11737
+    },
+    "gate-g/release-build.json": {
+      "sha256": "01b4fc58da481e0800a23241b79b4e6fb4473988c3676e5a739fe38a9817ac39",
+      "size": 1775
+    },
+    "release/agentic-dev-0.0.0-rc.1.zip": {
+      "sha256": "03bed5faf356184337f91e05ad57dca9f08567bc188998bff56c3e2a6d218eee",
+      "size": 304193
+    },
+    "release/manifest.json": {
+      "sha256": "bff3045079d82f0b58fe25ec3355aa6a0cd67ff40b816c0be57be4a85ac66304",
+      "size": 44008
+    }
+  },
+  "release_id": "agentic-dev@0.0.0-rc.1+51db05801382",
+  "source_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+  "status": "PASS"
+}

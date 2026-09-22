@@ -1,0 +1,33 @@
+{
+  "archive": "release/agentic-dev-0.0.0-rc.1.zip",
+  "archive_sha256": "03bed5faf356184337f91e05ad57dca9f08567bc188998bff56c3e2a6d218eee",
+  "archive_verify": {
+    "status": "ok"
+  },
+  "build_evidence_locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/release-build.json",
+  "installation_input_count": 3,
+  "manifest_sha256": "bff3045079d82f0b58fe25ec3355aa6a0cd67ff40b816c0be57be4a85ac66304",
+  "release_id": "agentic-dev@0.0.0-rc.1+51db05801382",
+  "runtime_evidence": {
+    "authenticated_evidence_bundle_sha256": "54c71a3f3f22accb71eea354a2f4ae2d10b65567f9c79da5f6f06d4bbf46cb93",
+    "authenticated_report_sha256": "b18b6fa8fc3ea6374cfe8e0070f47235b1f8bd5a7e5fd05951943705c9aa69a1",
+    "automated_report_sha256": "69c4617f7f58d199eaab83848b973e4201933d653fd00081ef7264bccab79864",
+    "locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/runtime"
+  },
+  "runtime_evidence_locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/runtime",
+  "skill_count": 15,
+  "source_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+  "status": "PASS",
+  "verification_evidence": {
+    "acceptance_authority": {
+      "path": "docs/project/distribution-rebuild-specification.md",
+      "profile_sha256": "3586f5e3009cf7c07d6c182a0c79e69d3c9633ba751a7950a74c88362ba426a3",
+      "sha256": "2bb8f431dae11259d84b4a8c0a2cee361e392193f361114017967b926b491dd7"
+    },
+    "acceptance_count": 36,
+    "claim_id": "DR-AC-37",
+    "locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/final-conformance.json",
+    "report_sha256": "c16ce2279f4fd7e0e19973af4caa06ead43d6995c26850319727dfad4e5705c1"
+  },
+  "verification_evidence_locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/final-conformance.json"
+}

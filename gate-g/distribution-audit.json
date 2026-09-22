@@ -1,0 +1,18 @@
+{
+  "status": "ok",
+  "repository_file_count": 168,
+  "scoped_asset_count": 116,
+  "inherited_file_count": 52,
+  "counts": {
+    "release-direct": 16,
+    "release-input": 31,
+    "retired": 0,
+    "source-only": 69,
+    "unclassified": 0
+  },
+  "unclassified": [],
+  "orphan_release_input": [],
+  "invalid_release_target": [],
+  "ambiguous_release_owner": [],
+  "unexpected_unowned": []
+}

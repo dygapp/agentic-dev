@@ -1,0 +1,572 @@
+{
+  "activation": {
+    "evidence_files": [
+      {
+        "path": "evals/results/activation/A-AR-01.grade.json",
+        "sha256": "f53f35b46fb849e60525238ca85ca74a797c5210790bab9833269e7c023a5a73"
+      },
+      {
+        "path": "evals/results/activation/A-AR-01.grader.jsonl",
+        "sha256": "2aa8b6e59b3a5e47c3e1ce82bf161facdd07488c41c78e73976982ceb096eec1"
+      },
+      {
+        "path": "evals/results/activation/A-AR-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-AR-01.jsonl",
+        "sha256": "56c05b1030abd76cab5a5aac58dbaa7af7921c737ca559ef6f456ca8facf60a7"
+      },
+      {
+        "path": "evals/results/activation/A-AR-01.run.json",
+        "sha256": "afd0f68df76d9283a290f1450d609bb6c8156b19a08e97a75fcf9459f3421421"
+      },
+      {
+        "path": "evals/results/activation/A-AR-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-CG-01.grade.json",
+        "sha256": "9ec35e3902a2f300a5bc4a68f1ad473d97e1a60b852f248205d2a99485eed15a"
+      },
+      {
+        "path": "evals/results/activation/A-CG-01.grader.jsonl",
+        "sha256": "82bb1bea018dbafd424f0f3598bb5731f08c6126e7221a16177393be981b57fa"
+      },
+      {
+        "path": "evals/results/activation/A-CG-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-CG-01.jsonl",
+        "sha256": "6d22501235156832d992c5c7c2ede323501143f1f457187413bb27b6e9752348"
+      },
+      {
+        "path": "evals/results/activation/A-CG-01.run.json",
+        "sha256": "02b32c7abfc0ae270debb05f97798426b909971f76becfa5d3061145b2af6f00"
+      },
+      {
+        "path": "evals/results/activation/A-CG-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-CI-01.grade.json",
+        "sha256": "f2fa9784223f06b9f34fd1016e396b646d415deacc29636a1ea36acbcc3ad77f"
+      },
+      {
+        "path": "evals/results/activation/A-CI-01.grader.jsonl",
+        "sha256": "f235b2de9a017d204c8bb2bd4fa82c7253dff7450e0f375cc629e67bc2701b48"
+      },
+      {
+        "path": "evals/results/activation/A-CI-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-CI-01.jsonl",
+        "sha256": "44029d3ec9de4319577b5cab867fd75862b7a37815071881c1e6c05ac50b0a51"
+      },
+      {
+        "path": "evals/results/activation/A-CI-01.run.json",
+        "sha256": "0cab86a8ddaaf424c38342b1c96040fd6f296dc76c56679c7c1b2f9112cf45bf"
+      },
+      {
+        "path": "evals/results/activation/A-CI-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-EO-01.grade.json",
+        "sha256": "7eac3e62af11990c38869ba6f7e208e94c98d4567717af7d468a42552e879ca9"
+      },
+      {
+        "path": "evals/results/activation/A-EO-01.grader.jsonl",
+        "sha256": "4a2cd0365a3524acd26e9bd17e1f0c38710cc31366d2e99d3c30be50c4e21e58"
+      },
+      {
+        "path": "evals/results/activation/A-EO-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-EO-01.jsonl",
+        "sha256": "6c1103b387eeb649c85bb211a5f5be8d80ac819a17621ee6501bc2a4be1af2cd"
+      },
+      {
+        "path": "evals/results/activation/A-EO-01.run.json",
+        "sha256": "d94696370b7789c66834bdadd824fcb2b9cd7a278fff2291715a1cc01acd4049"
+      },
+      {
+        "path": "evals/results/activation/A-EO-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-EU-01.grade.json",
+        "sha256": "01d20c4d61a0c606bc297c4c42a223a6c8779116ed3bc00b33359c472cde3f9d"
+      },
+      {
+        "path": "evals/results/activation/A-EU-01.grader.jsonl",
+        "sha256": "4a449b14d7b8c7a1d3d3889e416f3d05e147f840bdfe14e52660353224802e18"
+      },
+      {
+        "path": "evals/results/activation/A-EU-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-EU-01.jsonl",
+        "sha256": "fb6400dc80e9144ce4f3a5d26524da9b4616d93d21f8b8f157fe3fd1f83a861d"
+      },
+      {
+        "path": "evals/results/activation/A-EU-01.run.json",
+        "sha256": "462697921d234307afc188b71711761c2eecaf5156bcb7ab39cce55e8cb2fa2f"
+      },
+      {
+        "path": "evals/results/activation/A-EU-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-MC-01.grade.json",
+        "sha256": "6c0ba134dcb92020117494cd4b0c75eb17e6f8a2044527476989b0bf92d9497d"
+      },
+      {
+        "path": "evals/results/activation/A-MC-01.grader.jsonl",
+        "sha256": "0946117c9b90a622a70381464ff60c4e43dbf08689cdfb98f2cfba75702e02ee"
+      },
+      {
+        "path": "evals/results/activation/A-MC-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-MC-01.jsonl",
+        "sha256": "ebc206083467929a54311263c54e707095659ba68b27b47ecb5600838601bfab"
+      },
+      {
+        "path": "evals/results/activation/A-MC-01.run.json",
+        "sha256": "3fa2ddc0cacedab0be4c4f4c90cbf4a95430eb28b1013a835ddde11076acc57c"
+      },
+      {
+        "path": "evals/results/activation/A-MC-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-RB-01.grade.json",
+        "sha256": "b9d6ff21a8371143a01a55aae008d4bf34f447cd498ccaf1a24be207cab84819"
+      },
+      {
+        "path": "evals/results/activation/A-RB-01.grader.jsonl",
+        "sha256": "15e950a405612fd74611ce44fd42d4fe790b722054d6254c404e285c8649f316"
+      },
+      {
+        "path": "evals/results/activation/A-RB-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-RB-01.jsonl",
+        "sha256": "90432264332f4cdd456b6075329602ecabef07bf8b6fc43565d1b0cfd358c515"
+      },
+      {
+        "path": "evals/results/activation/A-RB-01.run.json",
+        "sha256": "c85023dbd966ded7b9317a0d637de7a42365549e88200faba1ff7750f26fa25b"
+      },
+      {
+        "path": "evals/results/activation/A-RB-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-RC-01.grade.json",
+        "sha256": "6ce4a79181d44114d97b89319641455b0ce124c22fbc1042c0d54f8e1d27b43f"
+      },
+      {
+        "path": "evals/results/activation/A-RC-01.grader.jsonl",
+        "sha256": "8c2de0628a59cf476ceabe67b79439f90e39da3eca39ac5c5594018237d098a9"
+      },
+      {
+        "path": "evals/results/activation/A-RC-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/A-RC-01.jsonl",
+        "sha256": "88b7c5649d01bb5be9d717962bcc8aca419a4a485450364a674b74ed13f0a847"
+      },
+      {
+        "path": "evals/results/activation/A-RC-01.run.json",
+        "sha256": "c3e7ae739c6c1d604b870749f59c98c9d3f47ea90af9c2e1e48fa60e4c310514"
+      },
+      {
+        "path": "evals/results/activation/A-RC-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/activation/runtime-acceptance.summary.json",
+        "sha256": "d310353c077858e6f9b4ae5f351ab1733d92cef47250f8898ab6584dc8165ff4"
+      }
+    ],
+    "failed_scenarios": [],
+    "scenarios": [
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "A-CI-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "A-RC-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "A-EU-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "A-CG-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "A-RB-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "A-AR-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "A-MC-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "A-EO-01",
+        "verdict": "PASS"
+      }
+    ],
+    "status": "PASS",
+    "summary": {
+      "failed": 0,
+      "grader_codex_version": "codex-cli 0.155.1",
+      "passed": 8,
+      "scenario_count": 8,
+      "scenarios": [
+        {
+          "id": "A-CI-01",
+          "skill": "clarify-intent",
+          "verdict": "PASS"
+        },
+        {
+          "id": "A-RC-01",
+          "skill": "readiness-check",
+          "verdict": "PASS"
+        },
+        {
+          "id": "A-EU-01",
+          "skill": "execute-unit",
+          "verdict": "PASS"
+        },
+        {
+          "id": "A-CG-01",
+          "skill": "converge",
+          "verdict": "PASS"
+        },
+        {
+          "id": "A-RB-01",
+          "skill": "establish-requirement-baseline",
+          "verdict": "PASS"
+        },
+        {
+          "id": "A-AR-01",
+          "skill": "clarify-architecture",
+          "verdict": "PASS"
+        },
+        {
+          "id": "A-MC-01",
+          "skill": "activate-model-collaboration",
+          "verdict": "PASS"
+        },
+        {
+          "id": "A-EO-01",
+          "skill": "external-operation",
+          "verdict": "PASS"
+        }
+      ],
+      "status": "PASS"
+    }
+  },
+  "authentication_evidence": "codex login status",
+  "authentication_method": "chatgpt",
+  "behavior": {
+    "evidence_files": [
+      {
+        "path": "evals/results/behavior/B-AR-01.grade.json",
+        "sha256": "f0624040db3dc4fe058722bdb13d98adc4c5b96d1f393a247820fbfed06f5ad4"
+      },
+      {
+        "path": "evals/results/behavior/B-AR-01.grader.jsonl",
+        "sha256": "8ad617d3c30305d42b8e137e7903e629e78019fc5a31f139cba2337b1972cc28"
+      },
+      {
+        "path": "evals/results/behavior/B-AR-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-AR-01.jsonl",
+        "sha256": "4145bd73b29210c82d3662e6d5beae0ea8e3c601ea25b75a28d4de8958105d4a"
+      },
+      {
+        "path": "evals/results/behavior/B-AR-01.run.json",
+        "sha256": "463d8c1e4b5cbdaff8cfb4ea625cdf67215828bd4609de54a964bb8a9b21bce7"
+      },
+      {
+        "path": "evals/results/behavior/B-AR-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-EO-01.grade.json",
+        "sha256": "d9316b57142486bb0ee1cd27104dae721213e58c6a71837abce08fe84df22d41"
+      },
+      {
+        "path": "evals/results/behavior/B-EO-01.grader.jsonl",
+        "sha256": "aa06bf450b71f4483d0834b58e60f8260068dd5ca068f6440f6d8b0c7c628939"
+      },
+      {
+        "path": "evals/results/behavior/B-EO-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-EO-01.jsonl",
+        "sha256": "3e73f27fcaf684c9d5d9270aa6c45805cd7316ec67880c3f5b0c0c632ba5e94e"
+      },
+      {
+        "path": "evals/results/behavior/B-EO-01.run.json",
+        "sha256": "ac32253af6b4de1141627e9e136643f64bab074dd70c73bf3142b0904c87971f"
+      },
+      {
+        "path": "evals/results/behavior/B-EO-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-EU-01.grade.json",
+        "sha256": "bdfc90fb0d864402832f09c3a8e286dce6a5ff9a831e3c2791c88ef20e91b65e"
+      },
+      {
+        "path": "evals/results/behavior/B-EU-01.grader.jsonl",
+        "sha256": "cb567ad96548ecb62d8ddf6eff8322dc2015539c55a7c296ddb6b9a72daae016"
+      },
+      {
+        "path": "evals/results/behavior/B-EU-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-EU-01.jsonl",
+        "sha256": "183a2c50eb3d74f5d51b6a927771c66fbadaa16b9433e9b8d0f84194c3a640f2"
+      },
+      {
+        "path": "evals/results/behavior/B-EU-01.run.json",
+        "sha256": "8d4d388df645f7256900d53b19738ca7ec0ffa758d79c3456000b6802ca8fa21"
+      },
+      {
+        "path": "evals/results/behavior/B-EU-01.stderr.txt",
+        "sha256": "28ac4402bced5b0f7a3c17d9d72ffba52f7372a1352eb9ca3755d4c50237e626"
+      },
+      {
+        "path": "evals/results/behavior/B-GA-01.grade.json",
+        "sha256": "915cd0656d01cc8a94ca60536d83e41af3e2336c1f6219fa481c7dc29f23d26e"
+      },
+      {
+        "path": "evals/results/behavior/B-GA-01.grader.jsonl",
+        "sha256": "295cfdf501bde7f26302c910ff5bd7fb3211a7d58ed0763d770a8418b55ed6f8"
+      },
+      {
+        "path": "evals/results/behavior/B-GA-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-GA-01.jsonl",
+        "sha256": "45d93e5a394e7f856d24a410db119df3288f07418ed760257db91962c038726a"
+      },
+      {
+        "path": "evals/results/behavior/B-GA-01.run.json",
+        "sha256": "9661a3d170dadf8e266e0848bf5911ce2e398f53f1c5cea9d40f1061d5fdd3bf"
+      },
+      {
+        "path": "evals/results/behavior/B-GA-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-MC-01.grade.json",
+        "sha256": "ee9717a860625999059d4535bd438c5b807bb6f4b41431886ec4d23ce9d9a957"
+      },
+      {
+        "path": "evals/results/behavior/B-MC-01.grader.jsonl",
+        "sha256": "31f8403f8766e3d8e2036dd33abffdaa260d21b1904c53b9b8ac7b7e90eb83ee"
+      },
+      {
+        "path": "evals/results/behavior/B-MC-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-MC-01.jsonl",
+        "sha256": "c11dbc0ed9c991f99003c6399c5951b0317ad5e63a60c7d9d7a7dfec223939b0"
+      },
+      {
+        "path": "evals/results/behavior/B-MC-01.run.json",
+        "sha256": "b89129893ece07a724d17e4149f04e67859bb2fe6b85f49f4b23d5d3c091fd0b"
+      },
+      {
+        "path": "evals/results/behavior/B-MC-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-RB-01.grade.json",
+        "sha256": "a1e68b322d5a0db8b09bdfdffe85edfbba387c89a847d796ce53915ef9ad6d38"
+      },
+      {
+        "path": "evals/results/behavior/B-RB-01.grader.jsonl",
+        "sha256": "0da370c4e8b0434982635b25c722a39d1bba6440f19d662a21d2b0b215beebed"
+      },
+      {
+        "path": "evals/results/behavior/B-RB-01.grader.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/B-RB-01.jsonl",
+        "sha256": "3ec70cfd38e121ddaeeb0cee12af3ad8dd249491ef0b040ce1f8698ecdd8937d"
+      },
+      {
+        "path": "evals/results/behavior/B-RB-01.run.json",
+        "sha256": "2c064fc095ad34fce405c713be389a44a834fee826d614f33a867630f0d83a2d"
+      },
+      {
+        "path": "evals/results/behavior/B-RB-01.stderr.txt",
+        "sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      },
+      {
+        "path": "evals/results/behavior/runtime-acceptance.summary.json",
+        "sha256": "f13224d60b8b3d60c35470d3d85a456c990fb4f73f3ecfcb768ea0c13c463af7"
+      }
+    ],
+    "failed_scenarios": [],
+    "scenarios": [
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "B-RB-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "B-AR-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "B-MC-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "B-EO-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "B-GA-01",
+        "verdict": "PASS"
+      },
+      {
+        "grader_codex_version": "codex-cli 0.155.1",
+        "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+        "runtime_codex_version": "codex-cli 0.155.1",
+        "scenario_id": "B-EU-01",
+        "verdict": "PASS"
+      }
+    ],
+    "status": "PASS",
+    "summary": {
+      "failed": 0,
+      "grader_codex_version": "codex-cli 0.155.1",
+      "passed": 6,
+      "scenario_count": 6,
+      "scenarios": [
+        {
+          "id": "B-RB-01",
+          "skill": "establish-requirement-baseline",
+          "verdict": "PASS"
+        },
+        {
+          "id": "B-AR-01",
+          "skill": "clarify-architecture",
+          "verdict": "PASS"
+        },
+        {
+          "id": "B-MC-01",
+          "skill": "activate-model-collaboration",
+          "verdict": "PASS"
+        },
+        {
+          "id": "B-EO-01",
+          "skill": "external-operation",
+          "verdict": "PASS"
+        },
+        {
+          "id": "B-GA-01",
+          "skill": "github-actions-verification",
+          "verdict": "PASS"
+        },
+        {
+          "id": "B-EU-01",
+          "skill": "execute-unit",
+          "verdict": "PASS"
+        }
+      ],
+      "status": "PASS"
+    }
+  },
+  "codex_version": "codex-cli 0.155.1",
+  "evidence_kind": "authenticated-model-runtime-acceptance",
+  "execution": {
+    "activation": {
+      "grader_returncode": 0,
+      "runtime_returncode": 0
+    },
+    "behavior": {
+      "grader_returncode": 0,
+      "runtime_returncode": 0
+    }
+  },
+  "failed_scenarios": [],
+  "recovery": {
+    "reason": "runner job identity became unavailable after server/session transport interruption",
+    "strategy": "reused exact-head per-scenario evidence already written to the repository results tree, reran only B-AR-01 after its prior inactivity timeout, then graded all six behavior scenarios on the same exact source subject"
+  },
+  "release_id": "agentic-dev@0.0.0-eval.51db05801382+51db05801382",
+  "scenario_count": 14,
+  "schema_version": 1,
+  "source_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+  "status": "PASS"
+}

@@ -1,0 +1,321 @@
+{
+  "acceptance_results": [
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/engineering-capability-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/release-architecture.md"
+      ],
+      "id": "DR-AC-01",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#AGENTS.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/project/project-charter.md"
+      ],
+      "id": "DR-AC-02",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/skill-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-03",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/skill-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json"
+      ],
+      "id": "DR-AC-04",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/project/distribution-rebuild-specification.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/release-architecture.md"
+      ],
+      "id": "DR-AC-05",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/release-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/consumer-architecture.md"
+      ],
+      "id": "DR-AC-06",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/consumer-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-07",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/consumer-architecture.md"
+      ],
+      "id": "DR-AC-08",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json"
+      ],
+      "id": "DR-AC-09",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json"
+      ],
+      "id": "DR-AC-10",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json"
+      ],
+      "id": "DR-AC-11",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-12",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/release-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-13",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-14",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/final-conformance.json"
+      ],
+      "id": "DR-AC-15",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json"
+      ],
+      "id": "DR-AC-16",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/consumer-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-17",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/release-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-18",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/consumer-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-19",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/consumer-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/automated-runtime.json"
+      ],
+      "id": "DR-AC-20",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/authenticated-model-runtime.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/automated-runtime.json"
+      ],
+      "id": "DR-AC-21",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/automated-runtime.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/release-architecture.md"
+      ],
+      "id": "DR-AC-22",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/automated-runtime.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-23",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/automated-runtime.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#skills/external-operation/SKILL.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#skills/github-actions-verification/SKILL.md"
+      ],
+      "id": "DR-AC-24",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/automated-runtime.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/release-architecture.md"
+      ],
+      "id": "DR-AC-25",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/project/distribution-rebuild-specification.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/project/project-roadmap.md"
+      ],
+      "id": "DR-AC-26",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "https://github.com/dygapp/agentic-dev/pull/173",
+        "https://github.com/dygapp/agentic-dev/pull/174",
+        "https://github.com/dygapp/agentic-dev/pull/175",
+        "https://github.com/dygapp/agentic-dev/pull/176",
+        "https://github.com/dygapp/agentic-dev/pull/177",
+        "https://github.com/dygapp/agentic-dev/pull/178"
+      ],
+      "id": "DR-AC-27",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/project/distribution-rebuild-specification.md",
+        "https://github.com/dygapp/agentic-dev/pull/173"
+      ],
+      "id": "DR-AC-28",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/automated-runtime.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/authenticated-model-runtime.json"
+      ],
+      "id": "DR-AC-29",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/final-conformance.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json"
+      ],
+      "id": "DR-AC-30",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/research/legacy-consumer-capability-coverage-audit.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#evals/fixtures/legacy-consumer-coverage/gate-f.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json"
+      ],
+      "id": "DR-AC-31",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/research/legacy-consumer-capability-coverage-audit.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#evals/fixtures/legacy-consumer-coverage/gate-f.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json"
+      ],
+      "id": "DR-AC-32",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/consumer-architecture.md"
+      ],
+      "id": "DR-AC-33",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/architecture/consumer-architecture.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/deterministic-validation.json",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-34",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/methods/consumer-adoption.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/methods/consumer-upgrade.md",
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#release/agentic-dev-0.0.0-rc.1.zip"
+      ],
+      "id": "DR-AC-35",
+      "status": "PASS"
+    },
+    {
+      "evidence_locators": [
+        "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1#docs/research/distribution-model-evidence-review.md",
+        "https://github.com/dygapp/agentic-dev/pull/174"
+      ],
+      "id": "DR-AC-36",
+      "status": "PASS"
+    }
+  ],
+  "claim_id": "DR-AC-37",
+  "conclusion": "PASS — DR-AC-01..36 individually rechecked on the exact subject; DR-AC-37 zero-finding condition satisfied. Review PASS does not authorize merge/deploy.",
+  "evidence_kind": "release-completion-verification",
+  "finding_counts": {
+    "blocking": 0,
+    "low": 0,
+    "medium": 0,
+    "unverified": 0
+  },
+  "findings": [],
+  "release_id": "agentic-dev@0.0.0-rc.1+51db05801382",
+  "review_context": {
+    "base_sha": "87a6ff8e1ba29baf8154c605bf1fbfef14574c8d",
+    "changed_files": 34,
+    "deterministic_regression": "distribution + release-build + rule/capability/eval + runtime-acceptance suites PASS",
+    "head_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+    "mode": "fresh-isolated-worktree-independent-review",
+    "pr_traceability": "PR #173-#178 acceptance declaration/current evidence semantics independently rechecked",
+    "remote_branch": "fix/issue-172-gate-g-release-evidence",
+    "runtime_evidence": "14/14 authenticated scenarios PASS + automated release-installed acceptance PASS",
+    "source_commits_above_base": 1
+  },
+  "schema_version": 1,
+  "source_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+  "status": "PASS"
+}

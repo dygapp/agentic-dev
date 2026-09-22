@@ -1,0 +1,801 @@
+{
+  "build_evidence_locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/release-build.json",
+  "compatibility": {
+    "chatgpt_github_connector": {
+      "index": ".agents/release/skill-index.json",
+      "status": "verified"
+    },
+    "codex_repository_skills": {
+      "path": ".agents/skills/**",
+      "status": "verified"
+    },
+    "installer_python": ">=3.11"
+  },
+  "distribution_target": "repository-local",
+  "installation_inputs": [
+    "architecture:consumer",
+    "method:consumer-adoption",
+    "method:consumer-upgrade"
+  ],
+  "integrity": {
+    "algorithm": "sha256",
+    "files": [
+      {
+        "path": "install.py",
+        "sha256": "a3d3b83490e961c88e6afb8689a0b0c7f7d6cfff116702bb365b0348226e7294"
+      },
+      {
+        "path": "installation/references/architecture--consumer.md",
+        "sha256": "8d51f6ad9079a61facb634fd08ad744e883a197fef221a1d4a94e147ec1711a0"
+      },
+      {
+        "path": "installation/references/method--consumer-adoption.md",
+        "sha256": "c7c241a3b36b4260ccae3533811c601c48434a44685d7927e557295b051324ce"
+      },
+      {
+        "path": "installation/references/method--consumer-upgrade.md",
+        "sha256": "5b969b0ab4035ff49f93e71aa5fd6188efaaebf667cebef075e2dfe2199891e6"
+      },
+      {
+        "path": "repository/.agents/README.md",
+        "sha256": "42c02688a48ea89b3e691a88750e8d82dc88b5f93544847be7cdee546d2daaf6"
+      },
+      {
+        "path": "repository/.agents/release/skill-index.json",
+        "sha256": "54c46f32e311515ed4aa3610a0ddd9ae3db12608ae35489ce441b9f48afc3c07"
+      },
+      {
+        "path": "repository/.agents/skills/activate-model-collaboration/SKILL.md",
+        "sha256": "2eeb57249b2a178fc85422cb7012b3514b615ff7c63fd2f8575e83a00f478ae8"
+      },
+      {
+        "path": "repository/.agents/skills/activate-model-collaboration/references/release-inputs/architecture--model-collaboration.md",
+        "sha256": "03dd4f3aaf5b7901e3cbdefd16e6ed8a8907ad2961bfb5edc001f1d7fc8455b5"
+      },
+      {
+        "path": "repository/.agents/skills/activate-model-collaboration/references/release-inputs/method--model-collaboration-adoption.md",
+        "sha256": "4434f0decd1ba105bce9d9a121a9befd637bd097c2d8559b4d05bd334011a2f9"
+      },
+      {
+        "path": "repository/.agents/skills/activate-model-collaboration/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/activate-model-collaboration/references/release-inputs/rule--execution-context-runtime-boundary.md",
+        "sha256": "cfd593fb1461800d1a1e3e5dde0cf2a62be78e7051fa1a55739748f0aeb4c6e6"
+      },
+      {
+        "path": "repository/.agents/skills/activate-model-collaboration/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/activate-model-collaboration/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/activate-model-collaboration/references/release-inputs/rule--shared-resource-concurrency-ownership.md",
+        "sha256": "aee3cd2bffa9949b3ec0907456fba148cd98da21adf764c3447a73d17a52ab5d"
+      },
+      {
+        "path": "repository/.agents/skills/activate-model-collaboration/references/release-inputs/rule--verification-contract-currentness.md",
+        "sha256": "246632a33401eab26ce0cfca4bba85e5ddf0247b065cac0d16851ec2dd9c1057"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-architecture/SKILL.md",
+        "sha256": "70c3d622ba8b756afa856fd57384b259ed2f7d54cb97ce59a8092f2e7061d8a7"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-architecture/references/release-inputs/method--architecture-clarification.md",
+        "sha256": "73b66a16b8d56ff1da0e5962a6b725fea3bfb24bce4009ed1b76cea200b821f9"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-architecture/references/release-inputs/rule--authoritative-artifact-lifecycle-review.md",
+        "sha256": "522b6856eb18455ae9d160f392f52734b5f48a1aa304daa077b1653ae6636dde"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-architecture/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-architecture/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-architecture/references/release-inputs/rule--high-impact-ai-review-required.md",
+        "sha256": "89efd4dca9db8c3d0d2c931b46efeb493435ce8dc48c760425a0007583850451"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-architecture/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-architecture/references/release-inputs/rule--verification-contract-currentness.md",
+        "sha256": "246632a33401eab26ce0cfca4bba85e5ddf0247b065cac0d16851ec2dd9c1057"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-intent/SKILL.md",
+        "sha256": "7e9127188816493f8d970d42bb86cee8729ae7667583c93fd467532e4b1baa9a"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-intent/references/release-inputs/method--ai-development.md",
+        "sha256": "32b071b33a9c63b549f0cc729614349d45bb2539ee8b354905d34c4b3607eff7"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-intent/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/clarify-intent/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/converge/SKILL.md",
+        "sha256": "671f7b6218033ff43ff1c162a9cd43c465dfa432d783259349aaf376db03d9c3"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/architecture--data-migration.md",
+        "sha256": "6ab79b2b35a78ecd27de8d75b0895d13be3d4b492ae5877856b758da442ca8bf"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/method--ai-development.md",
+        "sha256": "32b071b33a9c63b549f0cc729614349d45bb2539ee8b354905d34c4b3607eff7"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--authoritative-artifact-lifecycle-review.md",
+        "sha256": "522b6856eb18455ae9d160f392f52734b5f48a1aa304daa077b1653ae6636dde"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--database-migration-completion-evidence.md",
+        "sha256": "e79aab0163a234f8232f26bc076ae19b9b508da2a911e1f389a75093d6667e29"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--evidence-claim-reuse-across-commits.md",
+        "sha256": "5f20bf8d412458e8224162e65fbab5e54c0a4df32712a7d72c92cb2e6a355955"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--high-impact-ai-review-required.md",
+        "sha256": "89efd4dca9db8c3d0d2c931b46efeb493435ce8dc48c760425a0007583850451"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--integration-state-closure-review.md",
+        "sha256": "38be98cb0c00fb45217f41ae99ddd646a88c3f80e9bd8ae17b10cbbcb8afeb82"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--temporary-evidence-to-persistent-input-promotion.md",
+        "sha256": "5ecd3e94a355885f4ecc0eeb220801b2e8dcc9502c2b372c72509745ce868628"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--verification-contract-currentness.md",
+        "sha256": "246632a33401eab26ce0cfca4bba85e5ddf0247b065cac0d16851ec2dd9c1057"
+      },
+      {
+        "path": "repository/.agents/skills/converge/references/release-inputs/rule--visual-evidence.md",
+        "sha256": "36cc71880282e0a918290131332354f4590320473e4f3799ad381f467e45e668"
+      },
+      {
+        "path": "repository/.agents/skills/establish-requirement-baseline/SKILL.md",
+        "sha256": "3cba438be1dcdb8d1a03d43e569292224004239af1c0df9fcfe74b342e0898ce"
+      },
+      {
+        "path": "repository/.agents/skills/establish-requirement-baseline/references/release-inputs/architecture--requirement-authority.md",
+        "sha256": "e1f5d2b53aa38c101125cdb7ffafec4c0d4db555d77b1699c4d1faac88e12a4d"
+      },
+      {
+        "path": "repository/.agents/skills/establish-requirement-baseline/references/release-inputs/method--requirement-baseline-establishment.md",
+        "sha256": "3ca87d59fecdf29806f8ea094c276e17fcee6b9464af4ae35c774d2a1b079b14"
+      },
+      {
+        "path": "repository/.agents/skills/establish-requirement-baseline/references/release-inputs/rule--authoritative-artifact-lifecycle-review.md",
+        "sha256": "522b6856eb18455ae9d160f392f52734b5f48a1aa304daa077b1653ae6636dde"
+      },
+      {
+        "path": "repository/.agents/skills/establish-requirement-baseline/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/establish-requirement-baseline/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/establish-requirement-baseline/references/release-inputs/rule--high-impact-ai-review-required.md",
+        "sha256": "89efd4dca9db8c3d0d2c931b46efeb493435ce8dc48c760425a0007583850451"
+      },
+      {
+        "path": "repository/.agents/skills/establish-requirement-baseline/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/establish-requirement-baseline/references/release-inputs/rule--verification-contract-currentness.md",
+        "sha256": "246632a33401eab26ce0cfca4bba85e5ddf0247b065cac0d16851ec2dd9c1057"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/SKILL.md",
+        "sha256": "0b4f8da8146d2adcf720416db9afed7cee12918a019007bad8c142c48f3c9657"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/architecture--data-migration.md",
+        "sha256": "6ab79b2b35a78ecd27de8d75b0895d13be3d4b492ae5877856b758da442ca8bf"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/method--ai-development.md",
+        "sha256": "32b071b33a9c63b549f0cc729614349d45bb2539ee8b354905d34c4b3607eff7"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/rule--data-access-boundedness.md",
+        "sha256": "afc5ea4fc7c45ca3932fe44ae705e077f3d4692ced72912960178497f4ad6b74"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/rule--database-migration-completion-evidence.md",
+        "sha256": "e79aab0163a234f8232f26bc076ae19b9b508da2a911e1f389a75093d6667e29"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/rule--external-binary-content-validation.md",
+        "sha256": "b6852889a5f4ada6b08c734c49a2e1b2d6c195937ae9bb7d130ffceca83c8d50"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/rule--implementation-discipline.md",
+        "sha256": "c4b8608d107e63261f0acfa2f922da0704178e40bf39ee61c71e111b08814a07"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/rule--verification-contract-currentness.md",
+        "sha256": "246632a33401eab26ce0cfca4bba85e5ddf0247b065cac0d16851ec2dd9c1057"
+      },
+      {
+        "path": "repository/.agents/skills/execute-unit/references/release-inputs/rule--visual-evidence.md",
+        "sha256": "36cc71880282e0a918290131332354f4590320473e4f3799ad381f467e45e668"
+      },
+      {
+        "path": "repository/.agents/skills/external-operation/SKILL.md",
+        "sha256": "38b18aee32263a72310be2472dcad024ce273cd5affdd020f15c213aef2cce60"
+      },
+      {
+        "path": "repository/.agents/skills/external-operation/references/release-inputs/rule--async-operation-bounded-observation.md",
+        "sha256": "95cbc4e2cc2c433cb752c13c3a0388e67503a05ffb262d6d98a006496c0a605e"
+      },
+      {
+        "path": "repository/.agents/skills/external-operation/references/release-inputs/rule--cross-repository-authorization.md",
+        "sha256": "b74f1a328c83bccb1f2b2714c1e62f5ec78dea38edb51d33b2999d62a1369e98"
+      },
+      {
+        "path": "repository/.agents/skills/external-operation/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/external-operation/references/release-inputs/rule--external-binary-content-validation.md",
+        "sha256": "b6852889a5f4ada6b08c734c49a2e1b2d6c195937ae9bb7d130ffceca83c8d50"
+      },
+      {
+        "path": "repository/.agents/skills/external-operation/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/external-operation/references/release-inputs/rule--safe-external-write.md",
+        "sha256": "1deee30b335a67354897d0968375a041a0508ea79714d4a217576a26818ddf54"
+      },
+      {
+        "path": "repository/.agents/skills/external-operation/references/release-inputs/rule--shared-resource-concurrency-ownership.md",
+        "sha256": "aee3cd2bffa9949b3ec0907456fba148cd98da21adf764c3447a73d17a52ab5d"
+      },
+      {
+        "path": "repository/.agents/skills/external-operation/references/release-inputs/rule--temporary-evidence-to-persistent-input-promotion.md",
+        "sha256": "5ecd3e94a355885f4ecc0eeb220801b2e8dcc9502c2b372c72509745ce868628"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/SKILL.md",
+        "sha256": "72b6ed20b4c09265673f376a53b6ad9bc68c9994b5522b230c2a841cd9c6c2a8"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--async-operation-bounded-observation.md",
+        "sha256": "95cbc4e2cc2c433cb752c13c3a0388e67503a05ffb262d6d98a006496c0a605e"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--evidence-claim-reuse-across-commits.md",
+        "sha256": "5f20bf8d412458e8224162e65fbab5e54c0a4df32712a7d72c92cb2e6a355955"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--human-review-baseline-isolation.md",
+        "sha256": "5eb70cfc80d67f686dadaaae1cf031cb18553aefd5cc90cd178082a749eb2dcc"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--safe-external-write.md",
+        "sha256": "1deee30b335a67354897d0968375a041a0508ea79714d4a217576a26818ddf54"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--shared-resource-concurrency-ownership.md",
+        "sha256": "aee3cd2bffa9949b3ec0907456fba148cd98da21adf764c3447a73d17a52ab5d"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--temporary-evidence-to-persistent-input-promotion.md",
+        "sha256": "5ecd3e94a355885f4ecc0eeb220801b2e8dcc9502c2b372c72509745ce868628"
+      },
+      {
+        "path": "repository/.agents/skills/github-actions-verification/references/release-inputs/rule--verification-contract-currentness.md",
+        "sha256": "246632a33401eab26ce0cfca4bba85e5ddf0247b065cac0d16851ec2dd9c1057"
+      },
+      {
+        "path": "repository/.agents/skills/human-review/SKILL.md",
+        "sha256": "6effc9fbb5465732dd39e93055a9de1b01c0555917d9a471f3b565ab0a862062"
+      },
+      {
+        "path": "repository/.agents/skills/human-review/references/release-inputs/architecture--human-review.md",
+        "sha256": "6c059a74c8f08442fd9ed37ea401afa7499c3ea825214ff9cea76a6ec5aae63d"
+      },
+      {
+        "path": "repository/.agents/skills/human-review/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/human-review/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/human-review/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/human-review/references/release-inputs/rule--human-review-baseline-isolation.md",
+        "sha256": "5eb70cfc80d67f686dadaaae1cf031cb18553aefd5cc90cd178082a749eb2dcc"
+      },
+      {
+        "path": "repository/.agents/skills/human-review/references/release-inputs/rule--visual-evidence.md",
+        "sha256": "36cc71880282e0a918290131332354f4590320473e4f3799ad381f467e45e668"
+      },
+      {
+        "path": "repository/.agents/skills/readiness-check/SKILL.md",
+        "sha256": "52ee921f049e719e811e1d59194e6b839a8e1f04cdaa55122c9179b92230b0ed"
+      },
+      {
+        "path": "repository/.agents/skills/readiness-check/references/release-inputs/method--ai-development.md",
+        "sha256": "32b071b33a9c63b549f0cc729614349d45bb2539ee8b354905d34c4b3607eff7"
+      },
+      {
+        "path": "repository/.agents/skills/readiness-check/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/readiness-check/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/readiness-check/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/readiness-check/references/release-inputs/rule--verification-contract-currentness.md",
+        "sha256": "246632a33401eab26ce0cfca4bba85e5ddf0247b065cac0d16851ec2dd9c1057"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/SKILL.md",
+        "sha256": "dd6a4dbaf5be0d3e77021fe766b327ee33588ea40866c64d0739f678f7ffeca9"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--authoritative-artifact-lifecycle-review.md",
+        "sha256": "522b6856eb18455ae9d160f392f52734b5f48a1aa304daa077b1653ae6636dde"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--evidence-claim-reuse-across-commits.md",
+        "sha256": "5f20bf8d412458e8224162e65fbab5e54c0a4df32712a7d72c92cb2e6a355955"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--execution-context-runtime-boundary.md",
+        "sha256": "cfd593fb1461800d1a1e3e5dde0cf2a62be78e7051fa1a55739748f0aeb4c6e6"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--high-impact-ai-review-required.md",
+        "sha256": "89efd4dca9db8c3d0d2c931b46efeb493435ce8dc48c760425a0007583850451"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--integration-state-closure-review.md",
+        "sha256": "38be98cb0c00fb45217f41ae99ddd646a88c3f80e9bd8ae17b10cbbcb8afeb82"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--verification-contract-currentness.md",
+        "sha256": "246632a33401eab26ce0cfca4bba85e5ddf0247b065cac0d16851ec2dd9c1057"
+      },
+      {
+        "path": "repository/.agents/skills/review-change/references/release-inputs/rule--visual-evidence.md",
+        "sha256": "36cc71880282e0a918290131332354f4590320473e4f3799ad381f467e45e668"
+      },
+      {
+        "path": "repository/.agents/skills/slice-work/SKILL.md",
+        "sha256": "4ee4fc4e0cedd2b11a6cc7b53d28926b3f828e72c817a5ca82e3f1b0c9eb3596"
+      },
+      {
+        "path": "repository/.agents/skills/slice-work/references/release-inputs/method--ai-development.md",
+        "sha256": "32b071b33a9c63b549f0cc729614349d45bb2539ee8b354905d34c4b3607eff7"
+      },
+      {
+        "path": "repository/.agents/skills/slice-work/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/slice-work/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/specify/SKILL.md",
+        "sha256": "81703f46fb28131b487894e96bfc3d7134a68216c469e7f1c333ced5d9ec1705"
+      },
+      {
+        "path": "repository/.agents/skills/specify/references/release-inputs/architecture--requirement-authority.md",
+        "sha256": "e1f5d2b53aa38c101125cdb7ffafec4c0d4db555d77b1699c4d1faac88e12a4d"
+      },
+      {
+        "path": "repository/.agents/skills/specify/references/release-inputs/method--ai-development.md",
+        "sha256": "32b071b33a9c63b549f0cc729614349d45bb2539ee8b354905d34c4b3607eff7"
+      },
+      {
+        "path": "repository/.agents/skills/specify/references/release-inputs/rule--authoritative-artifact-lifecycle-review.md",
+        "sha256": "522b6856eb18455ae9d160f392f52734b5f48a1aa304daa077b1653ae6636dde"
+      },
+      {
+        "path": "repository/.agents/skills/specify/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/specify/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/systematic-debug/SKILL.md",
+        "sha256": "628b3fb5e06dc12779acbc5ea1e196fe10228dae2a9c2abc5aba3c1061ad6d72"
+      },
+      {
+        "path": "repository/.agents/skills/systematic-debug/references/release-inputs/method--ai-development.md",
+        "sha256": "32b071b33a9c63b549f0cc729614349d45bb2539ee8b354905d34c4b3607eff7"
+      },
+      {
+        "path": "repository/.agents/skills/systematic-debug/references/release-inputs/rule--evidence-type-must-match-claim.md",
+        "sha256": "1cff2cf2d33c9646381811259ea185f3e413ec7a5967f500ff02e079cda08065"
+      },
+      {
+        "path": "repository/.agents/skills/systematic-debug/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/systematic-debug/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      },
+      {
+        "path": "repository/.agents/skills/systematic-debug/references/release-inputs/rule--implementation-discipline.md",
+        "sha256": "c4b8608d107e63261f0acfa2f922da0704178e40bf39ee61c71e111b08814a07"
+      },
+      {
+        "path": "repository/.agents/skills/systematic-debug/references/release-inputs/rule--verification-contract-currentness.md",
+        "sha256": "246632a33401eab26ce0cfca4bba85e5ddf0247b065cac0d16851ec2dd9c1057"
+      },
+      {
+        "path": "repository/.agents/skills/technical-plan/SKILL.md",
+        "sha256": "ae2782ca5fe109e824c99970c8579d2677f5712f94fe0fbc1f2e576c117a45a4"
+      },
+      {
+        "path": "repository/.agents/skills/technical-plan/references/release-inputs/architecture--data-migration.md",
+        "sha256": "6ab79b2b35a78ecd27de8d75b0895d13be3d4b492ae5877856b758da442ca8bf"
+      },
+      {
+        "path": "repository/.agents/skills/technical-plan/references/release-inputs/method--ai-development.md",
+        "sha256": "32b071b33a9c63b549f0cc729614349d45bb2539ee8b354905d34c4b3607eff7"
+      },
+      {
+        "path": "repository/.agents/skills/technical-plan/references/release-inputs/rule--authoritative-artifact-lifecycle-review.md",
+        "sha256": "522b6856eb18455ae9d160f392f52734b5f48a1aa304daa077b1653ae6636dde"
+      },
+      {
+        "path": "repository/.agents/skills/technical-plan/references/release-inputs/rule--data-access-boundedness.md",
+        "sha256": "afc5ea4fc7c45ca3932fe44ae705e077f3d4692ced72912960178497f4ad6b74"
+      },
+      {
+        "path": "repository/.agents/skills/technical-plan/references/release-inputs/rule--execution-continuity-and-stop-condition.md",
+        "sha256": "86e32ed586c5848dbea8af48d6252dd1d57227bb5dd0be82545404cff7f104a7"
+      },
+      {
+        "path": "repository/.agents/skills/technical-plan/references/release-inputs/rule--human-intervention-necessity.md",
+        "sha256": "9b1a9a344b9927498b1d6ddc6f63344b6395322a90f88ec0492924ed01be14ba"
+      }
+    ],
+    "scope": "all artifact files except the two identical manifest copies"
+  },
+  "platform_adapters": [],
+  "release_id": "agentic-dev@0.0.0-rc.1+51db05801382",
+  "release_version": "0.0.0-rc.1",
+  "runtime_evidence": {
+    "authenticated_evidence_bundle_sha256": "54c71a3f3f22accb71eea354a2f4ae2d10b65567f9c79da5f6f06d4bbf46cb93",
+    "authenticated_report_sha256": "b18b6fa8fc3ea6374cfe8e0070f47235b1f8bd5a7e5fd05951943705c9aa69a1",
+    "automated_report_sha256": "69c4617f7f58d199eaab83848b973e4201933d653fd00081ef7264bccab79864",
+    "locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/runtime"
+  },
+  "runtime_evidence_locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/runtime",
+  "schema_version": 1,
+  "skills": [
+    {
+      "description": "Establishes and validates a Consumer-local model/agent collaboration instance after the installed Release already provides the collaboration capability. Use to detect actual runtime capabilities, choose a bounded strategy, configure local mapping, validate delegation and fallback, and enable only the verified scope.",
+      "id": "skill:activate-model-collaboration",
+      "name": "activate-model-collaboration",
+      "path": ".agents/skills/activate-model-collaboration/SKILL.md",
+      "release_inputs": [
+        "method:model-collaboration-adoption",
+        "architecture:model-collaboration",
+        "rule:human-intervention-necessity",
+        "rule:shared-resource-concurrency-ownership",
+        "rule:evidence-type-must-match-claim",
+        "rule:execution-context-runtime-boundary",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:verification-contract-currentness"
+      ]
+    },
+    {
+      "description": "Resolves systemic architecture drivers that span multiple current or expected features and would otherwise block reliable specification or technical planning. Use for durable, high-cost-to-reverse structural decisions; do not use for local reversible implementation choices or ordinary feature technical planning.",
+      "id": "skill:clarify-architecture",
+      "name": "clarify-architecture",
+      "path": ".agents/skills/clarify-architecture/SKILL.md",
+      "release_inputs": [
+        "method:architecture-clarification",
+        "rule:human-intervention-necessity",
+        "rule:authoritative-artifact-lifecycle-review",
+        "rule:high-impact-ai-review-required",
+        "rule:evidence-type-must-match-claim",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:verification-contract-currentness"
+      ]
+    },
+    {
+      "description": "Clarifies only product-intent ambiguities that materially affect goal, scope, user-visible behavior, business boundaries, acceptance, or significant non-functional obligations. Use before specification when current authority cannot resolve a high-impact product decision; do not use for ordinary reversible implementation choices.",
+      "id": "skill:clarify-intent",
+      "name": "clarify-intent",
+      "path": ".agents/skills/clarify-intent/SKILL.md",
+      "release_inputs": [
+        "method:ai-development",
+        "rule:human-intervention-necessity",
+        "rule:execution-continuity-and-stop-condition"
+      ]
+    },
+    {
+      "description": "Performs feature-wide convergence against specification, domain and architecture authority, applicable project-roadmap state, artifact lifecycle responsibilities, current implementation, and verification evidence. Use after required execution work is complete enough for final review; return READY or route evidence-backed gaps to the responsible layer, then stop at Ready to Integrate.",
+      "id": "skill:converge",
+      "name": "converge",
+      "path": ".agents/skills/converge/SKILL.md",
+      "release_inputs": [
+        "method:ai-development",
+        "architecture:data-migration",
+        "rule:human-intervention-necessity",
+        "rule:temporary-evidence-to-persistent-input-promotion",
+        "rule:authoritative-artifact-lifecycle-review",
+        "rule:high-impact-ai-review-required",
+        "rule:integration-state-closure-review",
+        "rule:database-migration-completion-evidence",
+        "rule:evidence-claim-reuse-across-commits",
+        "rule:evidence-type-must-match-claim",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:verification-contract-currentness",
+        "rule:visual-evidence"
+      ]
+    },
+    {
+      "description": "Establishes or rebuilds a durable Requirement Baseline from raw, fragmented, conflicting, or weak-authority project inputs. Use for greenfield project establishment or systemic requirement-baseline gaps; do not use for ordinary feature-level intent clarification or specification.",
+      "id": "skill:establish-requirement-baseline",
+      "name": "establish-requirement-baseline",
+      "path": ".agents/skills/establish-requirement-baseline/SKILL.md",
+      "release_inputs": [
+        "method:requirement-baseline-establishment",
+        "architecture:requirement-authority",
+        "rule:human-intervention-necessity",
+        "rule:authoritative-artifact-lifecycle-review",
+        "rule:high-impact-ai-review-required",
+        "rule:evidence-type-must-match-claim",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:verification-contract-currentness"
+      ]
+    },
+    {
+      "description": "Implements and verifies exactly one ready execution unit in minimal fresh context using current repository evidence. Use when a single unit is ready to execute; discover repository-specific verification, route unexpected failures through systematic-debug, and stop after evidence supports or fails the unit completion condition.",
+      "id": "skill:execute-unit",
+      "name": "execute-unit",
+      "path": ".agents/skills/execute-unit/SKILL.md",
+      "release_inputs": [
+        "method:ai-development",
+        "architecture:data-migration",
+        "rule:data-access-boundedness",
+        "rule:implementation-discipline",
+        "rule:external-binary-content-validation",
+        "rule:human-intervention-necessity",
+        "rule:database-migration-completion-evidence",
+        "rule:evidence-type-must-match-claim",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:verification-contract-currentness",
+        "rule:visual-evidence"
+      ]
+    },
+    {
+      "description": "Safely performs authorized changes to external or shared state such as GitHub objects, CI runs, remote APIs, review environments, or other mutable services. Use when a task requires an external write or asynchronous external state transition; do not use for read-only inspection or purely local edits.",
+      "id": "skill:external-operation",
+      "name": "external-operation",
+      "path": ".agents/skills/external-operation/SKILL.md",
+      "release_inputs": [
+        "rule:async-operation-bounded-observation",
+        "rule:cross-repository-authorization",
+        "rule:external-binary-content-validation",
+        "rule:human-intervention-necessity",
+        "rule:safe-external-write",
+        "rule:shared-resource-concurrency-ownership",
+        "rule:temporary-evidence-to-persistent-input-promotion",
+        "rule:execution-continuity-and-stop-condition"
+      ]
+    },
+    {
+      "description": "Establishes or optimizes an observable, traceable, cost-aware GitHub Actions verification path for a Consumer Repository. Use when GitHub Actions provides completion evidence and branch/PR trigger choice, CI observability, layered verification, prebuilt runtime containers, artifact reuse, timeouts, cancellation, or diagnostics materially affect reliable verification.",
+      "id": "skill:github-actions-verification",
+      "name": "github-actions-verification",
+      "path": ".agents/skills/github-actions-verification/SKILL.md",
+      "release_inputs": [
+        "rule:async-operation-bounded-observation",
+        "rule:human-intervention-necessity",
+        "rule:safe-external-write",
+        "rule:shared-resource-concurrency-ownership",
+        "rule:temporary-evidence-to-persistent-input-promotion",
+        "rule:evidence-claim-reuse-across-commits",
+        "rule:evidence-type-must-match-claim",
+        "rule:human-review-baseline-isolation",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:verification-contract-currentness"
+      ]
+    },
+    {
+      "description": "为 Consumer 软件项目准备结构化人工评审材料，分类人工反馈，并把确认后的长期语义返回正确的需求、功能规格、架构或技术方案所有者；默认只生成结构化 Markdown 评审草稿，除非调用方明确要求最终交付格式。",
+      "id": "skill:human-review",
+      "name": "human-review",
+      "path": ".agents/skills/human-review/SKILL.md",
+      "release_inputs": [
+        "architecture:human-review",
+        "rule:human-intervention-necessity",
+        "rule:evidence-type-must-match-claim",
+        "rule:human-review-baseline-isolation",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:visual-evidence"
+      ]
+    },
+    {
+      "description": "Performs a read-only pre-execution gate across specification, optional technical plan, execution units, domain and architecture authority, artifact lifecycle responsibilities, and governance. Use immediately before execution to return PASS or evidence-backed findings; never repair authoritative artifacts inside the check.",
+      "id": "skill:readiness-check",
+      "name": "readiness-check",
+      "path": ".agents/skills/readiness-check/SKILL.md",
+      "release_inputs": [
+        "method:ai-development",
+        "rule:human-intervention-necessity",
+        "rule:evidence-type-must-match-claim",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:verification-contract-currentness"
+      ]
+    },
+    {
+      "description": "Reviews a final repository change against current authority, scope, contracts, applicable rules, and evidence, then reports actionable findings or a bounded pass conclusion. Use when repository policy or the user requests an independent or high-impact change review; do not use as a substitute for implementation verification or human integration approval.",
+      "id": "skill:review-change",
+      "name": "review-change",
+      "path": ".agents/skills/review-change/SKILL.md",
+      "release_inputs": [
+        "rule:human-intervention-necessity",
+        "rule:authoritative-artifact-lifecycle-review",
+        "rule:high-impact-ai-review-required",
+        "rule:integration-state-closure-review",
+        "rule:evidence-claim-reuse-across-commits",
+        "rule:evidence-type-must-match-claim",
+        "rule:execution-context-runtime-boundary",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:verification-contract-currentness",
+        "rule:visual-evidence"
+      ]
+    },
+    {
+      "description": "Turns a ready specification and optional technical plan into bounded, traceable, context-fit execution units with observable completion conditions and explicit dependencies. Use before readiness checking or when convergence exposes implementation gaps that need new or corrected execution work.",
+      "id": "skill:slice-work",
+      "name": "slice-work",
+      "path": ".agents/skills/slice-work/SKILL.md",
+      "release_inputs": [
+        "method:ai-development",
+        "rule:human-intervention-necessity",
+        "rule:execution-continuity-and-stop-condition"
+      ]
+    },
+    {
+      "description": "Creates or incrementally updates an authoritative WHAT/WHY specification and evaluates durable domain-fact candidates under repository authority. Use when intent is ready, required behavior needs to be explicit for a fresh agent, or a domain-authority candidate or conflict must be validated and routed.",
+      "id": "skill:specify",
+      "name": "specify",
+      "path": ".agents/skills/specify/SKILL.md",
+      "release_inputs": [
+        "method:ai-development",
+        "architecture:requirement-authority",
+        "rule:human-intervention-necessity",
+        "rule:authoritative-artifact-lifecycle-review",
+        "rule:execution-continuity-and-stop-condition"
+      ]
+    },
+    {
+      "description": "Investigates an observed defect or unexpected failure through reproduction, authority-backed expected-versus-actual analysis, falsifiable root-cause hypotheses, minimal fix, and regression evidence. Use for unexpected failures or standalone defect work; not for expected initial TDD failures or undefined product behavior.",
+      "id": "skill:systematic-debug",
+      "name": "systematic-debug",
+      "path": ".agents/skills/systematic-debug/SKILL.md",
+      "release_inputs": [
+        "method:ai-development",
+        "rule:implementation-discipline",
+        "rule:human-intervention-necessity",
+        "rule:evidence-type-must-match-claim",
+        "rule:execution-continuity-and-stop-condition",
+        "rule:verification-contract-currentness"
+      ]
+    },
+    {
+      "description": "Resolves durable cross-unit HOW decisions, maintains cross-feature architecture context changes, and conditionally persists ADRs for decisions whose background or trade-offs need durable history. Use for cross-module, data, integration, migration, shared contract, deployment topology, or significant architecture work; skip when only local reversible implementation details remain.",
+      "id": "skill:technical-plan",
+      "name": "technical-plan",
+      "path": ".agents/skills/technical-plan/SKILL.md",
+      "release_inputs": [
+        "method:ai-development",
+        "architecture:data-migration",
+        "rule:data-access-boundedness",
+        "rule:human-intervention-necessity",
+        "rule:authoritative-artifact-lifecycle-review",
+        "rule:execution-continuity-and-stop-condition"
+      ]
+    }
+  ],
+  "source_sha": "51db05801382b74ee01601f391305fcbbff98db3",
+  "verification_evidence": {
+    "acceptance_authority": {
+      "path": "docs/project/distribution-rebuild-specification.md",
+      "profile_sha256": "3586f5e3009cf7c07d6c182a0c79e69d3c9633ba751a7950a74c88362ba426a3",
+      "sha256": "2bb8f431dae11259d84b4a8c0a2cee361e392193f361114017967b926b491dd7"
+    },
+    "acceptance_count": 36,
+    "claim_id": "DR-AC-37",
+    "locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/final-conformance.json",
+    "report_sha256": "c16ce2279f4fd7e0e19973af4caa06ead43d6995c26850319727dfad4e5705c1"
+  },
+  "verification_evidence_locator": "git-ref:refs/tags/agentic-dev-v0.0.0-rc.1-evidence#gate-g/final-conformance.json"
+}
