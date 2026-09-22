@@ -60,35 +60,35 @@ Gate A～G 在 `agentic-dev` 内连续推进。重构期间不把真实 Consumer
 
 ## 当前门禁
 
-**当前 Gate：Gate E — Automated Runtime Acceptance。**
+**本 PR 集成后的当前 Gate：Gate G — Final Specification Conformance Review & Release Candidate Freeze。**
 
-Gate A 已冻结 `DR-AC-01`～`DR-AC-39`；Gate B 已完成 Distribution Evidence Review 与全仓发布分类；Gate C 已完成 Source / Distribution Model Rebuild。
+Gate A～E 已集成并形成当前发布基线：
 
-Gate D 已完成 Skill Packaging & Release Build：
+- Gate A 冻结 `DR-AC-01`～`DR-AC-39`；
+- Gate B 完成 Distribution Evidence Review 与全仓发布分类；
+- Gate C 完成 Source / Distribution Model Rebuild；
+- Gate D 完成 15 个有界 Skill 的 deterministic Release Build、manifest / integrity / bounded installer 与 repository-local payload；
+- Gate E 完成 Release-installed Runtime Acceptance、Codex native discovery / authenticated behavior、ChatGPT + GitHub Connector compatibility、Progressive Disclosure、upstream negative controls 与 Evidence recovery，PR #177 已集成。
 
-- 首版 Release 使用 15 个有界 Skill，不引入接管完整开发生命周期的超级 Skill；
-- 现有 Source `release-input` 通过各 Skill 自有 composition metadata 机械投影到 `references/release-inputs/**`，不建立手工中央 Registry；
-- `consumer-installation` Source semantics 进入 release-level installation references，不进入 Consumer ordinary `.agents/**` runtime；
-- deterministic builder 从 exact source SHA、release version 与 Current classified source 生成 artifact；
-- manifest 可恢复 release identity、exact source SHA、Skill inventory、compatibility declaration、verification Evidence locator 与 SHA-256 integrity；
-- repository-local payload 以 `.agents/README.md + .agents/release/** + .agents/skills/**` 为核心；
-- installer 只维护 Consumer-owned `AGENTS.md` 中一个 bounded marker block，并只替换已声明的 Release-owned assets；
-- 同输入 byte-identical build、archive verify、结构性 fixture install 与 idempotency 已进入 repository-native deterministic verification。
+Gate F 当前候选通过真实 Consumer `dygapp/jilinjobs-cms` 的只读 obligation-level audit 收敛 `DR-AC-31/32`：
 
-Gate D 的完整 diff、candidate artifact、checksums、Actions、Review 与 Integration Evidence 由 PR #176 / Issue #172 / GitHub Actions 持有，本 Roadmap 不复制精确 artifact id、checksum 或 merge SHA。
+- 固定 Consumer exact subject，不随审计期间的 Consumer 后续提交漂移；
+- 按冻结规范逐项审计 26 个 legacy Consumer AI development obligations，而不是做旧目录 / 新目录文件映射；
+- 使用 `release-covered`、`release-composed`、`consumer-local`、`bootstrap-covered` 等合法 disposition；
+- 5 个 `consumer-local` obligation 均具有显式 Consumer-local owner；
+- machine-readable Evidence 与 deterministic tests 验证 26 项唯一分类、合法 disposition、本地 owner 与零缺口退出条件；
+- 当前 candidate 结果为 `unclassified=0`、`gap=0`、`consumer mutation=0`；
+- 未发现需要返回 Gate C / D / E 修复的 upstream Release gap。
 
-Gate E 只负责 Automated Runtime Acceptance：
+Gate F 的完整矩阵、固定 Consumer / Release subject 与验证 Evidence 由 `docs/research/legacy-consumer-capability-coverage-audit.md`、`evals/fixtures/legacy-consumer-coverage/gate-f.json`、PR #178 / Issue #172 / GitHub Actions 持有。本 Roadmap 不复制逐项矩阵正文。
 
-- 验证 Agent Skills 格式 / metadata 与 generated locator consistency；
-- 在 isolated Consumer-like fixture 中安装 Release；
-- 取得 Codex 对 `.agents/skills/**` 的真实 native discovery / activation / representative behavior Evidence；
-- 验证 ChatGPT + GitHub Connector compatibility path 中能够自动取得的部分，不假设其原生扫描行为与 Codex 相同；
-- 对依赖 script / external execution 的 Skill 验证 direct path、automated alternate、Evidence recovery 与 fail-closed；
-- 验证 upstream dependency negative control；
-- 验证 Progressive Disclosure，不让 Bootstrap 重新全量加载 Skill references / Rule semantics；
-- 满足 `DR-AC-21`～`DR-AC-30` 中当前 Gate 应取得的 Evidence。
+PR #178 集成后进入 Gate G。Gate G 只负责 Final Specification Conformance Review 与 Release Candidate Freeze：
 
-Gate E 不修改真实 Consumer；后续 Gate 不因出现在本文中自动跳过当前门禁。
+- 逐项回到 `distribution-rebuild-specification.md` 复核 `DR-AC-01`～`DR-AC-39` 当前完成状态与 Evidence；
+- 检查 Gate A～F 的集成状态、最终 Source / Distribution Architecture、Release composition、runtime compatibility、legacy coverage 与治理边界是否仍与冻结 Specification 一致；
+- 对任何未验证、被后续变更影响或只能由历史 Evidence 支撑的 acceptance claim fail closed；
+- 只有 Final Conformance Review 完整通过后才冻结 Release Candidate，并允许进入 Gate H；
+- Gate G 不修改真实 Consumer，不把 Gate H 的 migration / validation 提前作为 Gate G 的替代证据。
 
 ## 后续候选
 
