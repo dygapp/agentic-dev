@@ -65,6 +65,21 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         self.assertIn("B-MC-01", actual_ids)
         self.assertIn("B-EO-01", actual_ids)
 
+    def test_requirement_baseline_behavior_eval_scopes_ready_preconditions(self):
+        path = EVALS_DIR / "behavior/establish-requirement-baseline.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        case = next(item for item in document["evals"] if item["id"] == "B-RB-01")
+
+        prompt = case["prompt"]
+        self.assertIn("其它 project-level Requirement Convergence 条件均已满足", prompt)
+        self.assertIn("Capability Human Review", prompt)
+        self.assertIn("mandatory independent semantic review", prompt)
+        self.assertIn("唯一待收敛内容", prompt)
+        self.assertIn(
+            "不把场景已明确满足的其它 project-level Ready / review 前提重新制造为 blocker",
+            case["assertions"][3],
+        )
+
     def test_runner_help_entrypoints_import_cleanly(self):
         for script in (
             EVALS_DIR / "run_codex_evals.py",
