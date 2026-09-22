@@ -10,7 +10,7 @@ This runner deliberately stays thin:
 - the Codex process cwd/PWD matches the isolated workspace so repository paths do not leak;
 - behavior runs use explicit Skill invocation, while discovery runs do not invent a Skill;
 - B-EU-01 additionally receives a fresh writable fixture and its final snapshot is preserved;
-- B-GA-01 receives a deterministic read-only Actions observation fixture so polling is executable;
+- B-GA-01 receives a deterministic stateful Actions fixture so failure diagnosis, minimal repair, new-subject rerun, and re-verification are executable;
 - saves raw JSONL/stdout, stderr, source commit, and Codex CLI version;
 - does NOT grade semantic assertions automatically.
 
@@ -488,6 +488,7 @@ def run_behavior(
                 )
             elif scenario_id == "B-GA-01":
                 copy_fixture_into(cwd, GITHUB_ACTIONS_FIXTURE)
+                workspace_write = True
 
             if release_package is None:
                 populate_isolated_skill_copies(cwd)

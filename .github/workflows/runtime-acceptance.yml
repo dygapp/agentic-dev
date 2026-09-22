@@ -5,25 +5,33 @@ on:
   pull_request:
     paths:
       - 'AGENTS.md'
-      - 'docs/architecture/release-architecture.md'
+      - 'docs/architecture/**'
+      - 'docs/methods/**'
+      - 'docs/rules/**'
       - 'docs/project/project-capability-profile.md'
       - 'docs/project/project-roadmap.md'
       - 'skills/**'
       - 'tools/release-build/**'
+      - 'tools/distribution-audit/**'
       - 'tools/runtime-acceptance/**'
       - 'evals/**'
+      - '.github/workflows/release-build.yml'
       - '.github/workflows/runtime-acceptance.yml'
   push:
     branches: [master]
     paths:
       - 'AGENTS.md'
-      - 'docs/architecture/release-architecture.md'
+      - 'docs/architecture/**'
+      - 'docs/methods/**'
+      - 'docs/rules/**'
       - 'docs/project/project-capability-profile.md'
       - 'docs/project/project-roadmap.md'
       - 'skills/**'
       - 'tools/release-build/**'
+      - 'tools/distribution-audit/**'
       - 'tools/runtime-acceptance/**'
       - 'evals/**'
+      - '.github/workflows/release-build.yml'
       - '.github/workflows/runtime-acceptance.yml'
   workflow_dispatch:
 

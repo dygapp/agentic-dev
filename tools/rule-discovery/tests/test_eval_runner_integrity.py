@@ -101,38 +101,78 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         )
 
     def test_github_actions_fixture_transport_progression(self):
-        script = runner.GITHUB_ACTIONS_FIXTURE / "actions_fixture.py"
-        self.assertTrue(script.is_file())
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = Path(temp)
+            for name in ("actions_fixture.py", "ci-config.txt"):
+                source = runner.GITHUB_ACTIONS_FIXTURE / name
+                (fixture / name).write_bytes(source.read_bytes())
 
-        def read_json(*args: str) -> dict:
-            completed = subprocess.run(
-                [sys.executable, str(script), *args],
-                cwd=runner.GITHUB_ACTIONS_FIXTURE,
-                text=True,
-                capture_output=True,
-                check=False,
+            script = fixture / "actions_fixture.py"
+
+            def run_fixture(*args: str) -> subprocess.CompletedProcess[str]:
+                return subprocess.run(
+                    [sys.executable, str(script), *args],
+                    cwd=fixture,
+                    text=True,
+                    capture_output=True,
+                    check=False,
+                )
+
+            def read_json(*args: str) -> dict:
+                completed = run_fixture(*args)
+                self.assertEqual(0, completed.returncode, completed.stderr)
+                return json.loads(completed.stdout)
+
+            first = read_json("read-run", "--run-id", "4242", "--poll", "1")
+            self.assertEqual("abc123", first["head_sha"])
+            self.assertEqual("pull_request", first["event"])
+            self.assertEqual("in_progress", first["status"])
+
+            failed = read_json("read-run", "--run-id", "4242", "--poll", "2")
+            self.assertEqual("completed", failed["status"])
+            self.assertEqual("failure", failed["conclusion"])
+
+            jobs = read_json("read-jobs", "--run-id", "4242")
+            self.assertEqual("failure", jobs["jobs"][0]["conclusion"])
+            self.assertEqual("failure", jobs["jobs"][0]["steps"][0]["conclusion"])
+
+            log = read_json("read-log", "--job-id", "9001")
+            self.assertIn("cache-version=v2", log["log"])
+
+            premature = run_fixture("register-fix", "--base-head", "abc123")
+            self.assertNotEqual(0, premature.returncode)
+
+            (fixture / "ci-config.txt").write_text(
+                "cache-version=v2\n",
+                encoding="utf-8",
             )
-            self.assertEqual(0, completed.returncode, completed.stderr)
-            return json.loads(completed.stdout)
+            fix = read_json("register-fix", "--base-head", "abc123")
+            self.assertEqual("def456", fix["new_head_sha"])
 
-        first = read_json("read-run", "--run-id", "4242", "--poll", "1")
-        self.assertEqual("abc123", first["head_sha"])
-        self.assertEqual("pull_request", first["event"])
-        self.assertEqual("in_progress", first["status"])
+            rerun = read_json("dispatch-rerun", "--head", "def456")
+            self.assertEqual(4243, rerun["run_id"])
 
-        second = read_json("read-run", "--run-id", "4242", "--poll", "2")
-        self.assertEqual("completed", second["status"])
-        self.assertEqual("success", second["conclusion"])
+            repaired_running = read_json(
+                "read-run", "--run-id", "4243", "--poll", "1"
+            )
+            self.assertEqual("def456", repaired_running["head_sha"])
+            self.assertEqual("in_progress", repaired_running["status"])
 
-        jobs = read_json("read-jobs", "--run-id", "4242")
-        self.assertEqual("success", jobs["jobs"][0]["conclusion"])
-        self.assertEqual("success", jobs["jobs"][0]["steps"][0]["conclusion"])
+            repaired = read_json("read-run", "--run-id", "4243", "--poll", "2")
+            self.assertEqual("completed", repaired["status"])
+            self.assertEqual("success", repaired["conclusion"])
 
-        log = read_json("read-log", "--job-id", "9001")
-        self.assertIn("abc123", log["log"])
+            repaired_jobs = read_json("read-jobs", "--run-id", "4243")
+            self.assertEqual("success", repaired_jobs["jobs"][0]["conclusion"])
 
-        artifacts = read_json("read-artifacts", "--run-id", "4242")
-        self.assertEqual("completion-evidence", artifacts["artifacts"][0]["name"])
+            repaired_log = read_json("read-log", "--job-id", "9002")
+            self.assertIn("def456", repaired_log["log"])
+
+            artifacts = read_json("read-artifacts", "--run-id", "4243")
+            self.assertEqual(
+                "completion-evidence",
+                artifacts["artifacts"][0]["name"],
+            )
 
     def test_authenticated_runtime_scenario_set_is_exact_gate_e_subject(self):
         self.assertEqual(8, len(authenticated_runtime.ACTIVATION_SCENARIOS))

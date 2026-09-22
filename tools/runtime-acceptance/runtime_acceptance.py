@@ -4,12 +4,15 @@
 
 from __future__ import annotations
 
+from contextlib import contextmanager
+
 import argparse
 import json
 import os
 import re
 import selectors
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -398,8 +401,67 @@ def verify_installed_fixture(consumer: Path) -> dict[str, Any]:
             "index_contains_skill_bodies": False,
             "supporting_content_location": ".agents/skills/<name>/references/**",
         },
-        "upstream_runtime_dependency": False,
+        "provider_source_paths_present": False,
     }
+
+
+
+@contextmanager
+def upstream_source_unavailable(repo_root: Path, runtime_cwd: Path):
+    """Make the provider Source tree unreadable while runtime discovery executes."""
+    repo_root = repo_root.resolve()
+    runtime_cwd = runtime_cwd.resolve()
+    if runtime_cwd == repo_root or repo_root in runtime_cwd.parents:
+        raise RuntimeAcceptanceError(
+            "upstream negative-control runtime must be outside the source repository"
+        )
+    if os.name != "posix":
+        raise RuntimeAcceptanceError(
+            "upstream source unavailability negative control requires POSIX permissions"
+        )
+
+    original_cwd = Path.cwd()
+    original_mode = stat.S_IMODE(repo_root.stat().st_mode)
+    disabled = False
+    try:
+        os.chdir(runtime_cwd)
+        repo_root.chmod(0)
+        disabled = True
+        probe = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                (
+                    "from pathlib import Path\n"
+                    "import sys\n"
+                    "path = Path(sys.argv[1])\n"
+                    "try:\n"
+                    "    next(path.iterdir(), None)\n"
+                    "except (PermissionError, OSError):\n"
+                    "    raise SystemExit(0)\n"
+                    "raise SystemExit(1)\n"
+                ),
+                str(repo_root),
+            ],
+            cwd=runtime_cwd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=False,
+        )
+        if probe.returncode != 0:
+            raise RuntimeAcceptanceError(
+                "upstream negative control could still read the provider Source tree"
+            )
+        yield {
+            "status": "ok",
+            "mechanism": "source-root-permission-denial",
+            "provider_source_read_probe": "denied",
+        }
+    finally:
+        if disabled:
+            repo_root.chmod(original_mode)
+        os.chdir(original_cwd)
 
 
 def _read_rpc_response(
@@ -592,7 +654,7 @@ def codex_native_discovery(
                         for name in sorted(runtime_skills)
                     ],
                     "force_reload": True,
-                    "upstream_source_fallback": False,
+                    "local_skill_inventory_only": True,
                 }
             except Exception as exc:  # noqa: BLE001 - preserve exact runtime error
                 last_error = exc
@@ -618,16 +680,21 @@ def accept(
 ) -> dict[str, Any]:
     fixture = build_and_install_fixture(repo_root, work_dir, source_sha)
     static = verify_installed_fixture(fixture["consumer"])
-    codex = codex_native_discovery(
-        fixture["consumer"],
-        codex_bin,
-        expected_version=expected_codex_version,
-    )
+    with upstream_source_unavailable(repo_root, fixture["consumer"]) as upstream_control:
+        codex = codex_native_discovery(
+            fixture["consumer"],
+            codex_bin,
+            expected_version=expected_codex_version,
+        )
     return {
         "status": "ok",
         "source_sha": source_sha,
         "release_build": fixture["build_result"],
         "installed_runtime": static,
+        "upstream_negative_control": {
+            **upstream_control,
+            "native_discovery_status": codex["status"],
+        },
         "codex_native_discovery": codex,
     }
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -51,7 +52,7 @@ class RuntimeAcceptanceTests(unittest.TestCase):
             result = runtime.verify_installed_fixture(fixture["consumer"])
             self.assertEqual("ok", result["status"])
             self.assertEqual(15, result["skill_count"])
-            self.assertFalse(result["upstream_runtime_dependency"])
+            self.assertFalse(result["provider_source_paths_present"])
             self.assertEqual(
                 [
                     {"name": "external-operation", "kind": "external"},
@@ -67,6 +68,26 @@ class RuntimeAcceptanceTests(unittest.TestCase):
                 ],
                 result["chatgpt_compatibility_path"],
             )
+
+    @unittest.skipIf(
+        os.name != "posix" or getattr(os, "geteuid", lambda: -1)() == 0,
+        "permission-denial negative control requires a non-root POSIX user",
+    )
+    def test_upstream_source_unavailable_negative_control_restores_permissions(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "provider-source"
+            consumer = root / "consumer"
+            source.mkdir()
+            consumer.mkdir()
+            sentinel = source / "sentinel.txt"
+            sentinel.write_text("provider-only\n", encoding="utf-8")
+
+            with runtime.upstream_source_unavailable(source, consumer) as evidence:
+                self.assertEqual("ok", evidence["status"])
+                self.assertEqual("denied", evidence["provider_source_read_probe"])
+
+            self.assertEqual("provider-only\n", sentinel.read_text(encoding="utf-8"))
 
     def test_tampered_skill_index_path_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
