@@ -119,6 +119,19 @@ deterministic first
 
 ## 9. 成本、启用与效率声明
 
+### 9.1 Execution Context 与 Runtime Under Test
+
+模型协作必须区分当前责任的 **Primary execution context** 与为了验证某项 provider / runtime-specific claim 而启动的 **Runtime Under Test**。Fresh / isolated context、独立 Review、不同模型与不同 Runtime 是不同维度，不得互相偷换。
+
+- 当前执行面已经能够完成 ordinary reasoning、Repository 操作、deterministic verification 或独立 Review 时，默认复用该执行面；“需要独立”不自动推出“需要再启动一个模型 / CLI”。
+- 独立 Review 的核心是隔离实施结论、重新恢复 Authority 与独立形成 findings。具体是否需要不同 provider / model 属于 local policy 或 claim-specific decision。
+- 当 claim 明确针对 Codex native discovery、authenticated model behavior、provider permissions / isolation 等 Runtime-specific 行为时，必须调用真实目标 Runtime；协调验证的 Fresh Context 不能替代目标 Runtime Evidence。
+- 高成本 Runtime 只承担其不可替代的那部分责任，并应具有最小必要 scenario、timeout / cancellation、结果恢复与 fallback；能由 deterministic tooling 或当前 Primary Agent 可靠完成的检查不升级为模型调用。
+
+该概念模型的横切执行约束由发布 Rule 投影到相关 Skills；具体 Primary execution surface、CLI、provider 和认证方式继续属于 Repository-local capability instance。
+
+### 9.2 成本与效率声明
+
 Model Collaboration 不承诺减少总 token。多 Agent 工作可能增加总输入与协调开销。
 
 评估重点应区分：

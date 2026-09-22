@@ -80,8 +80,31 @@ class CurrentRepositoryTests(unittest.TestCase):
         )
         self.assertEqual("ok", result["status"])
         self.assertEqual(15, result["skills"])
-        self.assertEqual(20, result["rules"])
+        self.assertEqual(22, result["rules"])
         self.assertTrue(result["fixture_markdown_excluded"])
+
+    def test_review_discovers_execution_context_runtime_boundary(self):
+        result = self.discover(
+            signals(phases=None, activities=["review"], artifacts=["code"])
+        )
+        ids = {item["id"] for item in result["candidates"]}
+        self.assertIn("rule:execution-context-runtime-boundary", ids)
+
+    def test_execution_continuity_rule_covers_suboperation_responsibilities(self):
+        for activity in (
+            "design",
+            "documentation",
+            "implementation",
+            "verification",
+            "review",
+            "external-operation",
+        ):
+            with self.subTest(activity=activity):
+                result = self.discover(
+                    signals(phases=None, activities=[activity], artifacts=[])
+                )
+                ids = {item["id"] for item in result["candidates"]}
+                self.assertIn("rule:execution-continuity-and-stop-condition", ids)
 
     def test_generation_filters_out_data_access_without_signal(self):
         result = self.discover(

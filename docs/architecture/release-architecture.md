@@ -130,7 +130,9 @@ repository/
 - exact source SHA；
 - distribution target；
 - Runtime compatibility declaration；
-- verification evidence locator；
+- build evidence locator；
+- Runtime Acceptance evidence locator（只有通过当前 subject 的机器可读 runtime evidence 校验后才记录为已验证）；
+- 当前 Release completion claim 对应的 verification evidence locator；
 - Skill inventory；
 - Skill → release input composition；
 - installation input inventory；
@@ -140,6 +142,10 @@ repository/
 
 Release manifest 与 Skill index 都由 Build 生成；不得手工维护第二套 inventory。
 
+Release Build 本身只能证明 artifact composition / integrity，不能把尚未执行的 Runtime Acceptance 声明成已验证兼容性。Builder 在没有完整 Runtime Evidence 时必须把相关 Runtime compatibility 保持为未验证候选状态；只有同时提供 durable Runtime Evidence locator、repository-native automated runtime report、authenticated model runtime report 与该 authenticated report 对应的 evidence bundle，并机械确认两类 Evidence 都为成功、都绑定当前 exact source SHA、authenticated report 具有当前完整 scenario identity / release identity / authentication status，且 bundle 与 report 中声明的逐场景 Evidence digest 一致时，才能把对应兼容性标记为 `verified`。单独一个 locator、只有顶层 PASS 的摘要 JSON、历史 / 失败 / subject 不匹配 report、缺失 bundle 或不完整 Evidence 组合必须 fail closed，不能提升 compatibility 状态。Manifest 同时记录 locator、两份已校验 report 的 digest 与 authenticated evidence bundle digest，使后续 Evidence recovery 可以核对实际证据身份；Build Evidence locator 继续独立保留，避免 Runtime Evidence 覆盖 artifact provenance。
+
+Release completion Evidence 与上述两类 Evidence 同样保持独立，但 finalization 不能与未验证 Runtime compatibility 共存。Builder 不得用 Build Evidence 或 Runtime Acceptance Evidence 自动填充 `verification_evidence_locator`，也不得让调用方自行声明“哪些 acceptance 构成完整 completion claim”。当前 Project Capability Profile 只保存 completion acceptance owner locator 与 claim identity；Builder 在 exact-subject clean checkout 中读取该 selector，再从 canonical acceptance owner 的 claim 定义机械恢复完整 expected acceptance scope。只有当前 Release 已具有通过机械校验的 Runtime Acceptance Evidence，并同时提供 durable verification locator 与机器可读的 Release completion report，且 report 类型 / schema、`PASS` 状态、exact source SHA、当前 release identity、claim identity、实际 acceptance set 与 expected scope 完全一致、逐项 `PASS` 且具有可恢复 Evidence locator，以及 `Blocking = 0`、`Medium = 0`、`Unverified = 0` 后，才记录 Release completion verification locator。任何“completion 已验证但 manifest compatibility 仍未验证”的组合、只有顶层 `PASS`、非空但缺项的部分列表、额外 acceptance、调用方自定义 scope、历史 / subject 不匹配 Evidence 或其他不完整输入都必须 fail closed。Manifest 同时记录 claim id、acceptance count、canonical acceptance authority path / digest、Project selector digest 与 completion report digest，使 Build provenance、Runtime compatibility Evidence 与最终 Release completion Evidence 可以分别恢复和核对；具体 Gate scope 仍只由 Project acceptance owner 持有，不写死进 Builder。
+
 ## 8. 确定性构建
 
 给定完全相同的：
@@ -147,7 +153,9 @@ Release manifest 与 Skill index 都由 Build 生成；不得手工维护第二�
 ```text
 exact source SHA
 + release version
-+ verification evidence locator
++ build evidence locator
++ optional validated Runtime Acceptance reports + authenticated evidence bundle + durable evidence locator
++ optional exact-subject Project-selected completion contract + validated Release completion report + durable verification evidence locator
 + current classified source
 + release build logic
 ```
@@ -163,6 +171,8 @@ Build 应 fail closed：
 - release input 未被消费；
 - Skill 引用非法 source id；
 - generated path 冲突；
+- Runtime Evidence 输入不完整、失败、无法解析或与 exact source SHA 不匹配；
+- Release completion Evidence 输入不完整、失败、claim identity / acceptance scope 与当前 Project-selected canonical contract 不一致、finding 非零或与 exact source / release identity 不匹配；
 - artifact integrity 无法验证。
 
 ## 9. Consumer-owned Bootstrap

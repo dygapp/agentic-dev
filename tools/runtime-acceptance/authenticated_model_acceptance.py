@@ -18,6 +18,8 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[2]
 EVALS = REPO_ROOT / "evals"
 RESULTS = EVALS / "results"
+EVIDENCE_KIND = "authenticated-model-runtime-acceptance"
+EVIDENCE_SCHEMA_VERSION = 1
 
 ACTIVATION_SCENARIOS = (
     "A-CI-01",
@@ -234,6 +236,10 @@ def _collect_mode_evidence(
 
         run = _load_json(run_path)
         grade = _load_json(grade_path)
+        if run.get("scenario_id") != scenario:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} runtime scenario identity mismatch: {run.get('scenario_id')}"
+            )
         if run.get("source_commit") != source_sha:
             raise AuthenticatedRuntimeError(
                 f"{scenario} source SHA mismatch: {run.get('source_commit')} != {source_sha}"
@@ -247,6 +253,35 @@ def _collect_mode_evidence(
         if run.get("returncode") != 0:
             raise AuthenticatedRuntimeError(
                 f"{scenario} runtime returncode is not zero: {run.get('returncode')}"
+            )
+        if grade.get("scenario_id") != scenario:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} semantic grade scenario identity mismatch: {grade.get('scenario_id')}"
+            )
+        if grade.get("source_commit") != source_sha:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} semantic grade source SHA mismatch: {grade.get('source_commit')} != {source_sha}"
+            )
+        if grade.get("runtime_mode") != "release-installed":
+            raise AuthenticatedRuntimeError(
+                f"{scenario} semantic grade was not produced for release-installed runtime"
+            )
+        if grade.get("release_id") != run.get("release_id"):
+            raise AuthenticatedRuntimeError(
+                f"{scenario} semantic grade release identity mismatch"
+            )
+        if grade.get("runtime_codex_version") != run.get("codex_version"):
+            raise AuthenticatedRuntimeError(
+                f"{scenario} semantic grade runtime identity mismatch"
+            )
+        grader_version = grade.get("grader_codex_version")
+        if not isinstance(grader_version, str) or not grader_version.strip():
+            raise AuthenticatedRuntimeError(
+                f"{scenario} semantic grade has no grader runtime identity"
+            )
+        if run.get("grader_codex_version") != grader_version:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} runtime/grader identity mismatch"
             )
         grading = run.get("grading")
         verdict = grade.get("verdict")
@@ -269,7 +304,7 @@ def _collect_mode_evidence(
                 "scenario_id": scenario,
                 "release_id": run["release_id"],
                 "runtime_codex_version": run.get("codex_version"),
-                "grader_codex_version": grade.get("grader_codex_version"),
+                "grader_codex_version": grader_version,
                 "verdict": grade["verdict"],
             }
         )
@@ -388,6 +423,8 @@ def run_authenticated_acceptance(
         else "FAIL"
     )
     payload = {
+        "evidence_kind": EVIDENCE_KIND,
+        "schema_version": EVIDENCE_SCHEMA_VERSION,
         "status": overall_status,
         "source_sha": source_sha,
         "release_id": next(iter(release_ids)),

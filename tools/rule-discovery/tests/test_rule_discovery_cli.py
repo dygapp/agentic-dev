@@ -38,7 +38,7 @@ class DiscoveryCliTests(unittest.TestCase):
         self.assertEqual(0, completed.returncode, completed.stderr)
         payload = json.loads(completed.stdout)
         self.assertEqual("ok", payload["status"])
-        self.assertEqual(20, payload["scanned"])
+        self.assertEqual(22, payload["scanned"])
         self.assertEqual(payload["candidate_count"], len(payload["candidates"]))
         self.assertTrue(payload["candidates"])
         self.assertTrue(all(set(item) == {"id", "path"} for item in payload["candidates"]))
@@ -125,7 +125,7 @@ Body.
         payload = json.loads(completed.stdout)
         self.assertEqual("ok", payload["status"])
         self.assertEqual(15, payload["skills"])
-        self.assertEqual(20, payload["rules"])
+        self.assertEqual(22, payload["rules"])
 
 
 class ScanCompletenessTests(unittest.TestCase):

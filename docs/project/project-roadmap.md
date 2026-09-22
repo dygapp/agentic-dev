@@ -84,7 +84,7 @@ Gate F 的完整矩阵、固定 Consumer / Release subject 与验证 Evidence �
 
 PR #178 集成后进入 Gate G。Gate G 只负责 Final Specification Conformance Review 与 Release Candidate Freeze：
 
-- 逐项回到 `distribution-rebuild-specification.md` 复核 `DR-AC-01`～`DR-AC-39` 当前完成状态与 Evidence；
+- 逐项回到 `distribution-rebuild-specification.md` 复核 `DR-AC-01`～`DR-AC-36` 当前完成状态与 Evidence，并以 `DR-AC-37` 的零 finding 条件收口 Gate G；`DR-AC-38/39` 保留给 Gate H；
 - 检查 Gate A～F 的集成状态、最终 Source / Distribution Architecture、Release composition、runtime compatibility、legacy coverage 与治理边界是否仍与冻结 Specification 一致；
 - 对任何未验证、被后续变更影响或只能由历史 Evidence 支撑的 acceptance claim fail closed；
 - 只有 Final Conformance Review 完整通过后才冻结 Release Candidate，并允许进入 Gate H；

@@ -37,6 +37,7 @@ distribution: source-only
 
 - [`async-operation-bounded-observation.md`](operations/async-operation-bounded-observation.md)
 - [`cross-repository-authorization.md`](operations/cross-repository-authorization.md)
+- [`execution-continuity-and-stop-condition.md`](operations/execution-continuity-and-stop-condition.md)
 - [`external-binary-content-validation.md`](operations/external-binary-content-validation.md)
 - [`human-intervention-necessity.md`](operations/human-intervention-necessity.md)
 - [`safe-external-write.md`](operations/safe-external-write.md)
@@ -57,8 +58,9 @@ distribution: source-only
 - [`database-migration-completion-evidence.md`](verification/database-migration-completion-evidence.md)
 - [`evidence-claim-reuse-across-commits.md`](verification/evidence-claim-reuse-across-commits.md)
 - [`evidence-type-must-match-claim.md`](verification/evidence-type-must-match-claim.md)
+- [`execution-context-runtime-boundary.md`](verification/execution-context-runtime-boundary.md)
 - [`human-review-baseline-isolation.md`](verification/human-review-baseline-isolation.md)
 - [`verification-contract-currentness.md`](verification/verification-contract-currentness.md)
 - [`visual-evidence.md`](verification/visual-evidence.md)
 
-当前共 20 条 discoverable Rule。该数量不是目标 KPI；增减只按 `docs/architecture/rule-architecture.md` 的任务级语义边界、独立 discovery 价值和总加载成本判断。
+当前共 22 条 discoverable Rule。该数量不是目标 KPI；增减只按 `docs/architecture/rule-architecture.md` 的任务级语义边界、独立 discovery 价值和总加载成本判断。

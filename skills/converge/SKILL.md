@@ -7,7 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "method:ai-development;architecture:data-migration;rule:human-intervention-necessity;rule:temporary-evidence-to-persistent-input-promotion;rule:authoritative-artifact-lifecycle-review;rule:high-impact-ai-review-required;rule:integration-state-closure-review;rule:database-migration-completion-evidence;rule:evidence-claim-reuse-across-commits;rule:evidence-type-must-match-claim;rule:verification-contract-currentness;rule:visual-evidence"
+  agentic-dev-release-inputs: "method:ai-development;architecture:data-migration;rule:human-intervention-necessity;rule:temporary-evidence-to-persistent-input-promotion;rule:authoritative-artifact-lifecycle-review;rule:high-impact-ai-review-required;rule:integration-state-closure-review;rule:database-migration-completion-evidence;rule:evidence-claim-reuse-across-commits;rule:evidence-type-must-match-claim;rule:execution-continuity-and-stop-condition;rule:verification-contract-currentness;rule:visual-evidence"
 ---
 
 # converge

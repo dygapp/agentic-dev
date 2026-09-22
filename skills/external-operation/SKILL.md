@@ -7,7 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "rule:async-operation-bounded-observation;rule:cross-repository-authorization;rule:external-binary-content-validation;rule:human-intervention-necessity;rule:safe-external-write;rule:shared-resource-concurrency-ownership;rule:temporary-evidence-to-persistent-input-promotion"
+  agentic-dev-release-inputs: "rule:async-operation-bounded-observation;rule:cross-repository-authorization;rule:external-binary-content-validation;rule:human-intervention-necessity;rule:safe-external-write;rule:shared-resource-concurrency-ownership;rule:temporary-evidence-to-persistent-input-promotion;rule:execution-continuity-and-stop-condition"
   agentic-dev-runtime-execution: "external"
 ---
 

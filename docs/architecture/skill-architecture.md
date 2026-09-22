@@ -92,6 +92,8 @@ metadata:
 
 supporting resource 只是发布 projection，不取得其来源语义的 Source canonical ownership。
 
+所有 `release-direct` Skill 都必须把 `rule:execution-continuity-and-stop-condition` 声明为 `release-input`，使子操作终态后的责任重算、合法停止条件和成本边界随版本化 Release 进入 Consumer。Skill 只引用该 Rule，不复制其正文；未来新增发布 Skill 也必须满足同一 composition contract，并由确定性测试检查。
+
 `release-direct` 表示当前 Skill 自身可以直接进入 Release；`release-input` 则表示还需要 build transformation / composition。无论哪种 disposition，都不得绕过 Trigger / Inputs / Procedure / Outputs / Exit / Escalation 边界。
 
 首版 repository-local deployment target 可以是 `.agents/skills/**`，但 Architecture 不把这一物理路径提升为 Skill 的跨 Runtime identity。未来其他 Runtime / Plugin target 可以消费同一 canonical Skill source。

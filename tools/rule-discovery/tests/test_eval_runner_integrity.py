@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 import zipfile
 
@@ -91,6 +93,186 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                 self.assertEqual(0, completed.returncode, completed.stderr)
 
         self.assertTrue(callable(governance_runner.main))
+
+    def test_model_collaboration_activation_stays_read_only_and_defers_enablement(self):
+        case = next(item for item in runner.activation_cases() if item["id"] == "A-MC-01")
+        self.assertIn("只验证能力选择与边界", case["query"])
+        self.assertIn("不修改任何配置或仓库文件", case["query"])
+        self.assertIn("Behavior Eval", case["reason"])
+        self.assertNotIn("workspace_write", case)
+
+    def test_model_collaboration_behavior_uses_bounded_given_runtime_evidence(self):
+        path = EVALS_DIR / "behavior/activate-model-collaboration.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        case = next(item for item in document["evals"] if item["id"] == "B-MC-01")
+        self.assertIn("作为本场景当前 runtime evidence", case["prompt"])
+        self.assertIn("不要再启动额外 child", case["prompt"])
+        self.assertIn("不要修改任何配置或仓库文件", case["prompt"])
+
+    def test_bounded_jsonl_process_reaps_lingering_process_after_turn_completed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            stdout_path = root / "stdout.jsonl"
+            stderr_path = root / "stderr.txt"
+            command = [
+                sys.executable,
+                "-c",
+                (
+                    "import json,time; "
+                    "print(json.dumps({'type':'turn.completed'}), flush=True); "
+                    "time.sleep(30)"
+                ),
+            ]
+            started = time.monotonic()
+            result = runner.run_bounded_jsonl_process(
+                command=command,
+                cwd=root,
+                env=dict(),
+                stdout_path=stdout_path,
+                stderr_path=stderr_path,
+                timeout_seconds=5,
+                completion_grace_seconds=0.1,
+            )
+            elapsed = time.monotonic() - started
+
+            self.assertLess(elapsed, 3)
+            self.assertEqual(0, result["returncode"])
+            self.assertTrue(result["completion_event_observed"])
+            self.assertTrue(result["terminated_after_completion"])
+            self.assertFalse(result["timed_out"])
+            self.assertNotEqual(0, result["process_returncode"])
+
+    def test_bounded_jsonl_process_times_out_without_turn_completed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            stdout_path = root / "stdout.jsonl"
+            stderr_path = root / "stderr.txt"
+            command = [sys.executable, "-c", "import time; time.sleep(30)"]
+            started = time.monotonic()
+            result = runner.run_bounded_jsonl_process(
+                command=command,
+                cwd=root,
+                env=dict(),
+                stdout_path=stdout_path,
+                stderr_path=stderr_path,
+                timeout_seconds=0.2,
+                inactivity_timeout_seconds=5,
+                completion_grace_seconds=0.1,
+            )
+            elapsed = time.monotonic() - started
+
+            self.assertLess(elapsed, 3)
+            self.assertEqual(124, result["returncode"])
+            self.assertFalse(result["completion_event_observed"])
+            self.assertFalse(result["terminated_after_completion"])
+            self.assertTrue(result["timed_out"])
+            self.assertNotEqual(0, result["process_returncode"])
+
+    def test_bounded_jsonl_process_times_out_on_no_observable_progress(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            stdout_path = root / "stdout.jsonl"
+            stderr_path = root / "stderr.txt"
+            command = [
+                sys.executable,
+                "-c",
+                (
+                    "import json,time; "
+                    "print(json.dumps({'type':'item.started'}), flush=True); "
+                    "time.sleep(30)"
+                ),
+            ]
+            started = time.monotonic()
+            result = runner.run_bounded_jsonl_process(
+                command=command,
+                cwd=root,
+                env=dict(),
+                stdout_path=stdout_path,
+                stderr_path=stderr_path,
+                timeout_seconds=5,
+                inactivity_timeout_seconds=0.2,
+                completion_grace_seconds=0.1,
+            )
+            elapsed = time.monotonic() - started
+
+            self.assertLess(elapsed, 3)
+            self.assertEqual(124, result["returncode"])
+            self.assertTrue(result["timed_out"])
+            self.assertEqual("inactivity", result["timeout_reason"])
+            self.assertFalse(result["completion_event_observed"])
+
+    @unittest.skipUnless(os.name == "posix", "process-group cancellation test is POSIX-specific")
+    def test_parent_sigterm_reaps_runtime_process_group(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            child_pid_path = root / "child.pid"
+            launcher = root / "launcher.py"
+            launcher.write_text(
+                "\n".join(
+                    [
+                        "from pathlib import Path",
+                        "import os",
+                        "import sys",
+                        f"sys.path.insert(0, {str(EVALS_DIR)!r})",
+                        "import run_codex_evals as runner",
+                        f"root = Path({str(root)!r})",
+                        "runner.run_bounded_jsonl_process(",
+                        "    command=[sys.executable, '-c', "
+                        + repr(
+                            "from pathlib import Path; import os,time; "
+                            f"Path({str(child_pid_path)!r}).write_text(str(os.getpid())); "
+                            "time.sleep(30)"
+                        )
+                        + "],",
+                        "    cwd=root,",
+                        "    env=os.environ.copy(),",
+                        "    stdout_path=root / 'stdout.jsonl',",
+                        "    stderr_path=root / 'stderr.txt',",
+                        "    timeout_seconds=20,",
+                        "    inactivity_timeout_seconds=20,",
+                        ")",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            parent = subprocess.Popen([sys.executable, str(launcher)], cwd=root)
+            deadline = time.monotonic() + 3
+            while not child_pid_path.exists() and time.monotonic() < deadline:
+                time.sleep(0.05)
+            self.assertTrue(child_pid_path.exists(), "runtime child did not start")
+            child_pid = int(child_pid_path.read_text(encoding="utf-8"))
+
+            parent.terminate()
+            parent.wait(timeout=3)
+            deadline = time.monotonic() + 3
+            while time.monotonic() < deadline:
+                try:
+                    os.kill(child_pid, 0)
+                except ProcessLookupError:
+                    break
+                time.sleep(0.05)
+            else:
+                self.fail(f"runtime child {child_pid} survived parent cancellation")
+
+    def test_new_runtime_attempt_clears_stale_scenario_evidence(self):
+        with tempfile.TemporaryDirectory() as temp:
+            result_dir = Path(temp)
+            scenario = "A-STALE-01"
+            for suffix in (
+                ".run.json",
+                ".grade.json",
+                ".grader.jsonl",
+                ".grader.stderr.txt",
+            ):
+                (result_dir / f"{scenario}{suffix}").write_text("stale\n", encoding="utf-8")
+            summary = result_dir / "runtime-acceptance.summary.json"
+            summary.write_text("stale\n", encoding="utf-8")
+
+            runner._clear_stale_scenario_evidence(result_dir, scenario)
+
+            self.assertFalse(summary.exists())
+            self.assertFalse(any(result_dir.iterdir()))
 
     def test_authenticated_runtime_entrypoint_and_auth_classification(self):
         completed = self.run_python(
@@ -275,12 +457,14 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                 (behavior / f"{scenario}.run.json").write_text(
                     json.dumps(
                         {
+                            "scenario_id": scenario,
                             "source_commit": source_sha,
                             "runtime_mode": "release-installed",
                             "release_id": "agentic-dev@test",
                             "returncode": 0,
                             "grading": "fail",
                             "codex_version": "codex-cli test",
+                            "grader_codex_version": "codex-cli test",
                         }
                     )
                     + "\n",
@@ -290,6 +474,10 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                     json.dumps(
                         {
                             "scenario_id": scenario,
+                            "source_commit": source_sha,
+                            "runtime_mode": "release-installed",
+                            "release_id": "agentic-dev@test",
+                            "runtime_codex_version": "codex-cli test",
                             "verdict": "FAIL",
                             "grader_codex_version": "codex-cli test",
                         }

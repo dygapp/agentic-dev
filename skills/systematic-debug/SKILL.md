@@ -7,7 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "method:ai-development;rule:implementation-discipline;rule:human-intervention-necessity;rule:evidence-type-must-match-claim;rule:verification-contract-currentness"
+  agentic-dev-release-inputs: "method:ai-development;rule:implementation-discipline;rule:human-intervention-necessity;rule:evidence-type-must-match-claim;rule:execution-continuity-and-stop-condition;rule:verification-contract-currentness"
 ---
 
 # systematic-debug

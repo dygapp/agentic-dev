@@ -7,7 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "method:ai-development;rule:human-intervention-necessity"
+  agentic-dev-release-inputs: "method:ai-development;rule:human-intervention-necessity;rule:execution-continuity-and-stop-condition"
 ---
 
 # slice-work

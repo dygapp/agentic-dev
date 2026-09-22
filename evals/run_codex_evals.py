@@ -22,10 +22,12 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import signal
 import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import zipfile
 from pathlib import Path
 from typing import Iterable
@@ -51,6 +53,12 @@ RUN_CONTEXT = {
     "codex_version": None,
     "release_id": None,
 }
+
+DEFAULT_SCENARIO_TIMEOUT_SECONDS = 600.0
+DEFAULT_INACTIVITY_TIMEOUT_SECONDS = 120.0
+DEFAULT_COMPLETION_GRACE_SECONDS = 3.0
+PROCESS_TERMINATION_GRACE_SECONDS = 2.0
+PROCESS_POLL_INTERVAL_SECONDS = 0.2
 
 
 def load_json(path: Path):
@@ -314,13 +322,178 @@ def check_codex(codex_bin: str) -> str:
     return version
 
 
+def _jsonl_contains_turn_completed(path: Path) -> bool:
+    if not path.is_file():
+        return False
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(event, dict) and event.get("type") == "turn.completed":
+            return True
+    return False
+
+
+def _clear_stale_scenario_evidence(result_dir: Path, scenario_id: str) -> None:
+    for suffix in (
+        ".run.json",
+        ".grade.json",
+        ".grader.jsonl",
+        ".grader.stderr.txt",
+    ):
+        (result_dir / f"{scenario_id}{suffix}").unlink(missing_ok=True)
+    (result_dir / "runtime-acceptance.summary.json").unlink(missing_ok=True)
+
+
+def _terminate_process_tree(process: subprocess.Popen[str]) -> None:
+    if process.poll() is not None:
+        return
+    try:
+        if os.name == "posix":
+            os.killpg(process.pid, signal.SIGTERM)
+        else:
+            process.terminate()
+    except ProcessLookupError:
+        return
+
+    try:
+        process.wait(timeout=PROCESS_TERMINATION_GRACE_SECONDS)
+        return
+    except subprocess.TimeoutExpired:
+        pass
+
+    try:
+        if os.name == "posix":
+            os.killpg(process.pid, signal.SIGKILL)
+        else:
+            process.kill()
+    except ProcessLookupError:
+        return
+    process.wait(timeout=PROCESS_TERMINATION_GRACE_SECONDS)
+
+
+def run_bounded_jsonl_process(
+    *,
+    command: list[str],
+    cwd: Path,
+    env: dict[str, str],
+    stdout_path: Path,
+    stderr_path: Path,
+    timeout_seconds: float = DEFAULT_SCENARIO_TIMEOUT_SECONDS,
+    inactivity_timeout_seconds: float = DEFAULT_INACTIVITY_TIMEOUT_SECONDS,
+    completion_grace_seconds: float = DEFAULT_COMPLETION_GRACE_SECONDS,
+) -> dict[str, object]:
+    if timeout_seconds <= 0:
+        raise ValueError("timeout_seconds must be positive")
+    if inactivity_timeout_seconds <= 0:
+        raise ValueError("inactivity_timeout_seconds must be positive")
+    if completion_grace_seconds < 0:
+        raise ValueError("completion_grace_seconds must be non-negative")
+
+    stdout_path.parent.mkdir(parents=True, exist_ok=True)
+    stderr_path.parent.mkdir(parents=True, exist_ok=True)
+    started = time.monotonic()
+    last_progress_at = started
+    observed_stdout_size = 0
+    completion_observed_at: float | None = None
+    timeout_reason: str | None = None
+    terminated_after_completion = False
+    process: subprocess.Popen[str] | None = None
+    previous_handlers: dict[int, object] = {}
+
+    def handle_parent_signal(signum, _frame) -> None:
+        if process is not None:
+            _terminate_process_tree(process)
+        raise SystemExit(128 + signum)
+
+    try:
+        for signum in (signal.SIGTERM, signal.SIGINT):
+            previous_handlers[signum] = signal.getsignal(signum)
+            signal.signal(signum, handle_parent_signal)
+
+        with stdout_path.open("w", encoding="utf-8") as stdout_handle, stderr_path.open(
+            "w", encoding="utf-8"
+        ) as stderr_handle:
+            process = subprocess.Popen(
+                command,
+                cwd=cwd,
+                env=env,
+                stdout=stdout_handle,
+                stderr=stderr_handle,
+                text=True,
+                start_new_session=(os.name == "posix"),
+            )
+            while process.poll() is None:
+                now = time.monotonic()
+                try:
+                    stdout_size = stdout_path.stat().st_size
+                except FileNotFoundError:
+                    stdout_size = 0
+                if stdout_size != observed_stdout_size:
+                    observed_stdout_size = stdout_size
+                    last_progress_at = now
+
+                if completion_observed_at is None and _jsonl_contains_turn_completed(stdout_path):
+                    completion_observed_at = now
+                if completion_observed_at is not None:
+                    if now - completion_observed_at >= completion_grace_seconds:
+                        terminated_after_completion = True
+                        _terminate_process_tree(process)
+                        break
+                elif now - last_progress_at >= inactivity_timeout_seconds:
+                    timeout_reason = "inactivity"
+                    _terminate_process_tree(process)
+                    break
+                elif now - started >= timeout_seconds:
+                    timeout_reason = "total"
+                    _terminate_process_tree(process)
+                    break
+                time.sleep(PROCESS_POLL_INTERVAL_SECONDS)
+
+            process_returncode = process.wait()
+    finally:
+        if process is not None and process.poll() is None:
+            _terminate_process_tree(process)
+        for signum, previous in previous_handlers.items():
+            signal.signal(signum, previous)
+
+    completion_event_observed = _jsonl_contains_turn_completed(stdout_path)
+    timed_out = timeout_reason is not None
+    if completion_event_observed:
+        returncode = 0
+    elif timed_out:
+        returncode = 124
+    else:
+        returncode = process_returncode
+
+    return {
+        "returncode": returncode,
+        "process_returncode": process_returncode,
+        "completion_event_observed": completion_event_observed,
+        "terminated_after_completion": terminated_after_completion,
+        "timed_out": timed_out,
+        "timeout_reason": timeout_reason,
+    }
+
+
 def write_run_metadata(
     result_dir: Path,
     scenario_id: str,
     command: list[str],
     cwd: Path,
-    returncode: int,
+    lifecycle: dict[str, object] | int,
 ) -> None:
+    if isinstance(lifecycle, int):
+        lifecycle = {
+            "returncode": lifecycle,
+            "process_returncode": lifecycle,
+            "completion_event_observed": False,
+            "terminated_after_completion": False,
+            "timed_out": False,
+            "timeout_reason": None,
+        }
+
     source_commit = RUN_CONTEXT["source_commit"]
     codex_version = RUN_CONTEXT["codex_version"]
     release_id = RUN_CONTEXT.get("release_id")
@@ -335,7 +508,7 @@ def write_run_metadata(
         "release_id": release_id,
         "cwd": str(cwd.relative_to(ROOT)) if cwd.is_relative_to(ROOT) else str(cwd),
         "command": command,
-        "returncode": returncode,
+        **lifecycle,
         "grading": "pending",
     }
     (result_dir / f"{scenario_id}.run.json").write_text(
@@ -356,6 +529,7 @@ def run_codex(
 ) -> int:
     result_dir = RESULTS / result_group
     result_dir.mkdir(parents=True, exist_ok=True)
+    _clear_stale_scenario_evidence(result_dir, scenario_id)
 
     command = [codex_bin, "exec", "--ephemeral", "--json"]
     if workspace_write:
@@ -371,29 +545,26 @@ def run_codex(
         runtime_env.pop(key, None)
 
     print(f"[{scenario_id}] fresh codex exec")
-    completed = subprocess.run(
-        command,
+    stdout_path = result_dir / f"{scenario_id}.jsonl"
+    stderr_path = result_dir / f"{scenario_id}.stderr.txt"
+    lifecycle = run_bounded_jsonl_process(
+        command=command,
         cwd=cwd,
         env=runtime_env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        check=False,
+        stdout_path=stdout_path,
+        stderr_path=stderr_path,
     )
+    write_run_metadata(result_dir, scenario_id, command, cwd, lifecycle)
 
-    (result_dir / f"{scenario_id}.jsonl").write_text(
-        completed.stdout,
-        encoding="utf-8",
-    )
-    (result_dir / f"{scenario_id}.stderr.txt").write_text(
-        completed.stderr,
-        encoding="utf-8",
-    )
-    write_run_metadata(result_dir, scenario_id, command, cwd, completed.returncode)
-
-    status = "OK" if completed.returncode == 0 else f"EXIT {completed.returncode}"
+    returncode = int(lifecycle["returncode"])
+    if lifecycle["timed_out"]:
+        status = f"TIMEOUT ({lifecycle['timeout_reason']})"
+    elif lifecycle["terminated_after_completion"]:
+        status = "OK (turn.completed; lingering process tree reaped)"
+    else:
+        status = "OK" if returncode == 0 else f"EXIT {returncode}"
     print(f"[{scenario_id}] {status}")
-    return completed.returncode
+    return returncode
 
 
 def activation_cases() -> list[dict]:

@@ -7,7 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "method:ai-development;architecture:data-migration;rule:data-access-boundedness;rule:implementation-discipline;rule:external-binary-content-validation;rule:human-intervention-necessity;rule:database-migration-completion-evidence;rule:evidence-type-must-match-claim;rule:verification-contract-currentness;rule:visual-evidence"
+  agentic-dev-release-inputs: "method:ai-development;architecture:data-migration;rule:data-access-boundedness;rule:implementation-discipline;rule:external-binary-content-validation;rule:human-intervention-necessity;rule:database-migration-completion-evidence;rule:evidence-type-must-match-claim;rule:execution-continuity-and-stop-condition;rule:verification-contract-currentness;rule:visual-evidence"
 ---
 
 # execute-unit

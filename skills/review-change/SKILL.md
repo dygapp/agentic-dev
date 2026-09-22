@@ -7,7 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "rule:human-intervention-necessity;rule:authoritative-artifact-lifecycle-review;rule:high-impact-ai-review-required;rule:integration-state-closure-review;rule:evidence-claim-reuse-across-commits;rule:evidence-type-must-match-claim;rule:verification-contract-currentness;rule:visual-evidence"
+  agentic-dev-release-inputs: "rule:human-intervention-necessity;rule:authoritative-artifact-lifecycle-review;rule:high-impact-ai-review-required;rule:integration-state-closure-review;rule:evidence-claim-reuse-across-commits;rule:evidence-type-must-match-claim;rule:execution-context-runtime-boundary;rule:execution-continuity-and-stop-condition;rule:verification-contract-currentness;rule:visual-evidence"
 ---
 
 # Review Change
@@ -27,14 +27,15 @@ metadata:
 ## 流程
 
 1. 重新读取当前 Authority 和最终变更，不依赖作者说明或旧 Review 结论。
-2. 明确本次 review claim：要判断的是哪些变更是否可安全接受，而不是重新设计目标。
-3. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
-4. 根据变更影响选择复核深度：普通变更执行通用 consistency / regression / scope / evidence / lifecycle 检查；命中下述高影响 Authority 条件时，追加 **Authority-chain semantic review**。
-5. 检查 authority consistency、语义回归、scope、授权边界、证据与长期 artifact lifecycle；技术专项检查只在对应 Rule 适用时进行。
-6. Authority-chain mode 中按语义责任链挑战 currentness、ownership、downstream projection、replaceability、conflict classification 与 source promotion；只有命中再生性条件时才执行 bounded code-holdout / regenerability challenge。
-7. 记录可执行 findings，区分阻塞、中等与低 / 非阻塞问题；每项 finding 指向具体事实和影响。
-8. 修复发生后重新读取最终变更，并只复用能够证明仍不受影响的旧结论。
-9. 没有未解决的阻塞或中等级 finding 时，可报告 review 通过。
+2. 建立 review isolation：默认优先在当前平台创建 fresh / isolated context，重新恢复 exact subject 与 Authority；独立性不要求另起 provider、模型或 CLI。只有 review claim 本身要求 Runtime-specific behavior，或 Consumer-local Authority 明确要求时，才调用额外 Runtime。
+3. 明确本次 review claim：要判断的是哪些变更是否可安全接受，而不是重新设计目标。
+4. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
+5. 根据变更影响选择复核深度：普通变更执行通用 consistency / regression / scope / evidence / lifecycle 检查；命中下述高影响 Authority 条件时，追加 **Authority-chain semantic review**。
+6. 检查 authority consistency、语义回归、scope、授权边界、证据与长期 artifact lifecycle；技术专项检查只在对应 Rule 适用时进行。
+7. Authority-chain mode 中按语义责任链挑战 currentness、ownership、downstream projection、replaceability、conflict classification 与 source promotion；只有命中再生性条件时才执行 bounded code-holdout / regenerability challenge。
+8. 记录可执行 findings，区分阻塞、中等与低 / 非阻塞问题；每项 finding 指向具体事实和影响。
+9. 修复发生后重新读取最终变更，并只复用能够证明仍不受影响的旧结论。
+10. 没有未解决的阻塞或中等级 finding 时，可报告 review 通过。
 
 ## 权威链语义复核
 

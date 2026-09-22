@@ -146,10 +146,10 @@
   {
     "id": "A-MC-01",
     "target_skill": "activate-model-collaboration",
-    "query": "当前仓库已经安装的 agentic-dev Release 包含模型协作能力。现在需要在不改变产品开发流程的前提下，探测实际运行平台是否支持子 Agent、独立 review 和 single-writer，并只启用已经验证的本地协作策略。",
+    "query": "当前仓库已经安装的 agentic-dev Release 包含模型协作能力。请先判断这个任务应该激活哪个能力，并说明真正启用前需要探测哪些 runtime capability，以及 independent review、single-writer 和 fallback 的边界。本 activation 场景只验证能力选择与边界，不修改任何配置或仓库文件。",
     "should_trigger_target": true,
     "expected_primary_skill": "activate-model-collaboration",
-    "reason": "目标是在 installed Release 已提供 capability 后建立并验证 Consumer-local collaboration instance。"
+    "reason": "目标是在 installed Release 已提供 capability 后识别模型协作本地启用能力及其运行边界；实际启用行为由 Behavior Eval 验证。"
   },
   {
     "id": "A-EO-01",

@@ -7,7 +7,7 @@ metadata:
   agentic-dev-status: "active"
   agentic-dev-distribution: "release-direct"
   agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "method:ai-development;architecture:requirement-authority;rule:human-intervention-necessity;rule:authoritative-artifact-lifecycle-review"
+  agentic-dev-release-inputs: "method:ai-development;architecture:requirement-authority;rule:human-intervention-necessity;rule:authoritative-artifact-lifecycle-review;rule:execution-continuity-and-stop-condition"
 ---
 
 # specify

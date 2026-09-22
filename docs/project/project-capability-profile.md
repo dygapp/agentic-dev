@@ -3,6 +3,8 @@ id: project:capability-profile
 type: project
 status: active
 distribution: source-only
+release-completion-authority: docs/project/distribution-rebuild-specification.md
+release-completion-claim: DR-AC-37
 ---
 
 # Project Capability Profile
@@ -103,8 +105,9 @@ GitHub Connector / API 主要承担 workflow 触发、branch / PR 协调与结�
 - cloud build / evidence transport：`.github/workflows/release-build.yml`；
 - release identity 输入：exact source SHA + explicit release version；
 - build evidence：exact-subject GitHub Actions run + uploaded release artifact。
+- Release completion contract selector：本文件 Front Matter 的 `release-completion-authority` + `release-completion-claim`；两者只定位当前 Project acceptance owner / claim，不复制 acceptance scope。
 
-Builder 从 Current Source asset 的 distribution metadata 与各 `SKILL.md` 自有 composition metadata 机械恢复发布内容，生成 manifest、Skill index、checksums 与 install artifact。
+Builder 从 Current Source asset 的 distribution metadata 与各 `SKILL.md` 自有 composition metadata 机械恢复发布内容，生成 manifest、Skill index、checksums 与 install artifact。只有在最终 Release completion Evidence 被显式提供时，Builder 才从 exact-subject Project Capability Profile 恢复当前 completion claim locator，再从该 canonical acceptance owner 机械恢复完整 acceptance scope，并要求 Evidence 的实际逐项结果与期望 scope 完全一致。
 
 本节只拥有 `agentic-dev` 当前 Release Build locator / transport instance，不复制 Skill inventory、Skill → Source composition、manifest 内容或 Release Architecture 正文。精确 candidate id、archive checksum、workflow run 与 artifact id 始终从当前 build Evidence 恢复。
 
@@ -134,6 +137,16 @@ Builder 从 Current Source asset 的 distribution metadata 与各 `SKILL.md` 自
 Gate E 的完成声明必须同时拥有 automated acceptance 与 authenticated model runtime 的当前 Evidence。GitHub Actions 全绿只证明第一类责任完成；历史 model result、静态 parser、native discovery 或进程 exit 0 都不能替代第二类 Evidence。
 
 本节只拥有当前 runtime-acceptance locator / transport instance，不复制 scenario corpus、grader assertions 或 workflow run id。
+
+### 3.5 Execution Context / Runtime Under Test 实例
+
+当前 `agentic-dev` 的默认 Primary execution surface 是 **ChatGPT + WebCodex + 本地 Repository Runtime**。在该执行面可完成的 Repository 读取 / 修改、Git、deterministic tests、build、audit 与普通语义判断，默认直接使用 WebCodex / local Runner；不得仅为了获得“另一个 Agent”而再启动本地 `codex-cli`。
+
+本地 `codex-cli` 在当前实例中主要是 **Runtime Under Test**，只在当前 claim 明确要求证明 Codex-specific 行为时启动，例如 Codex native Skill discovery / App Server behavior、authenticated Codex model-turn behavior，或未来 Repository Authority 明确新增的其他 Codex-specific acceptance。Fresh ChatGPT Context 可以负责组织这些验证和复核 Evidence，但不能替代被测 Codex Runtime 自身的证据。
+
+独立语义 Review / Final Review 默认优先使用新的 **Fresh ChatGPT Context + WebCodex**：从 exact subject 重新恢复 Repository Authority，不继承实施线程的分析、作者意图或完成结论。独立性来自 fresh / isolated context 和重新判定，而不是必须切换 provider、模型或 CLI；只有 review claim 本身要求特定 Runtime 行为或当前 Authority 明确要求时，才额外调用该 Runtime。
+
+对于 authenticated model / 外部 Agent 等明显消耗 premium-model budget、运行时间或并发资源的执行面，必须保持最小必要范围与有界 timeout / cancellation。能由当前 Primary execution surface 或 deterministic tooling 可靠完成的责任，不升级为额外模型调用。通用可发布约束由 `rule:execution-context-runtime-boundary` 持有；本节只拥有 `agentic-dev` 当前平台实例。
 
 ## 4. Skill Discovery 实例
 
