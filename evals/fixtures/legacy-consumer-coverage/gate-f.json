@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "gate": "F",
+  "acceptance": ["DR-AC-31", "DR-AC-32"],
+  "provider": {
+    "repository": "dygapp/agentic-dev",
+    "source_sha": "d4176b14bec9c4f14d118a791497d4cfb86b23f0",
+    "release_build_run": 35692280317,
+    "release_id": "agentic-dev@0.0.0-candidate.d4176b14bec9+d4176b14bec9",
+    "release_archive_sha256": "b7f87e33f9f98c03fd607da264138a52fe9f1d27c6e0af21686823af68946f15",
+    "skill_count": 15,
+    "software_release_input_count": 26,
+    "installation_input_count": 3
+  },
+  "consumer": {
+    "repository": "dygapp/jilinjobs-cms",
+    "source_sha": "a8f96a949973f8d6592180464f5d72c52e8174be",
+    "current_ready_execution_unit": "NONE",
+    "mutated": false
+  },
+  "allowed_dispositions": [
+    "release-covered",
+    "release-composed",
+    "consumer-local",
+    "bootstrap-covered",
+    "platform-covered",
+    "intentionally-retired",
+    "gap"
+  ],
+  "obligations": [
+    {
+      "id": "GF-01",
+      "obligation": "Repository Authority / Knowledge Boundary",
+      "disposition": "consumer-local",
+      "legacy_consumer_evidence": ["AGENTS.md", "docs/README.md", "docs/project/project-capability-profile.md"],
+      "current_coverage": ["Consumer-owned authority retained outside Release", "installation/references/architecture--consumer.md"],
+      "consumer_local_owner": ["AGENTS.md", "docs/README.md", "docs/project/project-capability-profile.md"]
+    },
+    {
+      "id": "GF-02",
+      "obligation": "Fresh Context / Bootstrap",
+      "disposition": "bootstrap-covered",
+      "legacy_consumer_evidence": ["AGENTS.md", "docs/README.md"],
+      "current_coverage": ["install.py bounded AGENTS.md marker", ".agents/README.md", ".agents/release/skill-index.json"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-03",
+      "obligation": "Requirement Baseline Establishment",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/methods/requirement-baseline-establishment.md"],
+      "current_coverage": [".agents/skills/establish-requirement-baseline/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-04",
+      "obligation": "Architecture Clarification",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/methods/architecture-clarification.md"],
+      "current_coverage": [".agents/skills/clarify-architecture/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-05",
+      "obligation": "ordinary Feature / change lifecycle",
+      "disposition": "release-composed",
+      "legacy_consumer_evidence": ["docs/methods/ai-development.md"],
+      "current_coverage": [".agents/skills/clarify-intent/SKILL.md", ".agents/skills/specify/SKILL.md", ".agents/skills/technical-plan/SKILL.md", ".agents/skills/slice-work/SKILL.md", ".agents/skills/readiness-check/SKILL.md", ".agents/skills/execute-unit/SKILL.md", ".agents/skills/converge/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-06",
+      "obligation": "Specification",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/methods/ai-development.md"],
+      "current_coverage": [".agents/skills/specify/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-07",
+      "obligation": "Technical Planning",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/methods/ai-development.md"],
+      "current_coverage": [".agents/skills/technical-plan/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-08",
+      "obligation": "work slicing",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/methods/ai-development.md"],
+      "current_coverage": [".agents/skills/slice-work/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-09",
+      "obligation": "readiness",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/methods/ai-development.md"],
+      "current_coverage": [".agents/skills/readiness-check/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-10",
+      "obligation": "implementation",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/methods/ai-development.md"],
+      "current_coverage": [".agents/skills/execute-unit/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-11",
+      "obligation": "systematic debugging",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/methods/ai-development.md"],
+      "current_coverage": [".agents/skills/systematic-debug/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-12",
+      "obligation": "convergence",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/methods/ai-development.md"],
+      "current_coverage": [".agents/skills/converge/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-13",
+      "obligation": "verification / evidence discipline",
+      "disposition": "release-composed",
+      "legacy_consumer_evidence": ["docs/technical/verification-strategy.md", "docs/methods/ai-development.md"],
+      "current_coverage": ["rule:evidence-type-must-match-claim", "rule:verification-contract-currentness", ".agents/skills/execute-unit/SKILL.md", ".agents/skills/converge/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-14",
+      "obligation": "independent change review",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["skills/review-change/SKILL.md"],
+      "current_coverage": [".agents/skills/review-change/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-15",
+      "obligation": "human review",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["skills/human-review/SKILL.md"],
+      "current_coverage": [".agents/skills/human-review/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-16",
+      "obligation": "human escalation",
+      "disposition": "release-composed",
+      "legacy_consumer_evidence": ["AGENTS.md", "docs/project/project-capability-profile.md"],
+      "current_coverage": ["rule:human-intervention-necessity packaged into applicable Skills"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-17",
+      "obligation": "external operation safety",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["skills/external-operation/SKILL.md"],
+      "current_coverage": [".agents/skills/external-operation/SKILL.md", "rule:safe-external-write"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-18",
+      "obligation": "GitHub Actions verification",
+      "disposition": "release-covered",
+      "legacy_consumer_evidence": ["docs/project/project-capability-profile.md"],
+      "current_coverage": [".agents/skills/github-actions-verification/SKILL.md"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-19",
+      "obligation": "conditional policy / rule activation",
+      "disposition": "consumer-local",
+      "legacy_consumer_evidence": ["docs/architecture/rule-discovery.md", "tools/rule-discovery/rule_discovery.py"],
+      "current_coverage": ["Release intentionally does not install provider Rule tree; Consumer-local policy remains authoritative"],
+      "consumer_local_owner": ["docs/architecture/rule-discovery.md", "tools/rule-discovery/rule_discovery.py"]
+    },
+    {
+      "id": "GF-20",
+      "obligation": "language / terminology governance",
+      "disposition": "consumer-local",
+      "legacy_consumer_evidence": ["AGENTS.md", "docs/architecture/requirement-authority.md"],
+      "current_coverage": ["Release does not replace Consumer terminology or language authority"],
+      "consumer_local_owner": ["AGENTS.md", "docs/architecture/requirement-authority.md"]
+    },
+    {
+      "id": "GF-21",
+      "obligation": "technology-specific policy",
+      "disposition": "consumer-local",
+      "legacy_consumer_evidence": ["docs/project/project-capability-profile.md", "docs/rules/technology/vue/component-authoring.md", "docs/rules/technology/vue/typecheck.md"],
+      "current_coverage": ["Release leaves technology-specific policy Consumer-owned"],
+      "consumer_local_owner": ["docs/rules/technology/vue/component-authoring.md", "docs/rules/technology/vue/typecheck.md"]
+    },
+    {
+      "id": "GF-22",
+      "obligation": "current work / Roadmap ownership",
+      "disposition": "consumer-local",
+      "legacy_consumer_evidence": ["docs/work/README.md", "docs/work/current/README.md", "docs/project/project-roadmap.md"],
+      "current_coverage": ["Release excludes provider Roadmap / Current Gate and preserves Consumer project state"],
+      "consumer_local_owner": ["docs/work/README.md", "docs/work/current/README.md", "docs/project/project-roadmap.md"]
+    },
+    {
+      "id": "GF-23",
+      "obligation": "upstream decoupling",
+      "disposition": "release-composed",
+      "legacy_consumer_evidence": ["AGENTS.md", "docs/project/project-capability-profile.md"],
+      "current_coverage": ["installation/references/architecture--consumer.md", "Gate E provider Source unreadable negative control with native discovery 15/15"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-24",
+      "obligation": "adoption / upgrade / release update",
+      "disposition": "release-composed",
+      "legacy_consumer_evidence": ["docs/methods/consumer-upgrade.md"],
+      "current_coverage": ["installation/references/method--consumer-adoption.md", "installation/references/method--consumer-upgrade.md", "install.py"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-25",
+      "obligation": "executable capability / alternate path / fail-closed",
+      "disposition": "release-composed",
+      "legacy_consumer_evidence": ["docs/project/project-capability-profile.md", "skills/external-operation/SKILL.md"],
+      "current_coverage": ["installation/references/architecture--consumer.md §6", ".agents/skills/external-operation/SKILL.md", ".agents/skills/github-actions-verification/SKILL.md", "Gate E executable negative controls"],
+      "consumer_local_owner": []
+    },
+    {
+      "id": "GF-26",
+      "obligation": "Current Evidence / exact-subject verification",
+      "disposition": "release-composed",
+      "legacy_consumer_evidence": ["AGENTS.md", "docs/project/project-capability-profile.md"],
+      "current_coverage": ["rule:evidence-type-must-match-claim", "rule:verification-contract-currentness", "Release Build exact-SHA verification", "Runtime Acceptance exact-SHA verification"],
+      "consumer_local_owner": []
+    }
+  ],
+  "summary": {
+    "total": 26,
+    "classified": 26,
+    "unclassified": 0,
+    "gap": 0,
+    "consumer_mutation": 0
+  }
+}
