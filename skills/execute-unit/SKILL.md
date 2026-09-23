@@ -1,13 +1,6 @@
 ---
 name: execute-unit
 description: Implements and verifies exactly one ready execution unit in minimal fresh context using current repository evidence. Use when a single unit is ready to execute; discover repository-specific verification, route unexpected failures through systematic-debug, and stop after evidence supports or fails the unit completion condition.
-metadata:
-  agentic-dev-id: "skill:execute-unit"
-  agentic-dev-type: "skill"
-  agentic-dev-status: "active"
-  agentic-dev-distribution: "release-direct"
-  agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "method:ai-development;architecture:data-migration;rule:data-access-boundedness;rule:implementation-discipline;rule:external-binary-content-validation;rule:human-intervention-necessity;rule:database-migration-completion-evidence;rule:evidence-type-must-match-claim;rule:verification-contract-currentness;rule:visual-evidence"
 ---
 
 # execute-unit
@@ -21,17 +14,20 @@ metadata:
 - One Ready Execution Unit；
 - Direct Specification / Technical / Architecture Authority；
 - 当前代码与测试状态；
-- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
+- Consumer-local constraints。
 
 ## 流程
 
-1. 重新读取 Unit、直接 Authority 与当前仓库事实，确认没有使 readiness 失效的 drift。
-2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
-3. 形成临时 JIT Execution Plan，只包含本 Unit 的精确施工与验证步骤。
-4. 按当前仓库既有模式实施最低必要变更；不顺带处理其他 Unit。
-5. 对预期 TDD 失败按计划推进；意外失败调用/转入 `systematic-debug`，不得猜测绕过。
-6. 运行与 Completion Conditions 对应的当前验证，并只基于当前证据声明结果。
-7. 停在 Unit 完成边界，不自动合并、发布、部署或启动下一 Unit。
+1. 重新读取 Unit、直接 Authority、Consumer-local constraints 与当前仓库事实，确认没有使 readiness 失效的 drift。
+2. 形成临时 JIT Execution Plan，只包含本 Unit 的精确施工与验证步骤；最终差异中的每个有意义变化都必须能追溯到当前 Unit、验证责任或必要清理。
+3. 按当前仓库既有模式实施最低必要复杂度，不顺带处理其他 Unit。集合型数据访问必须匹配真实消费边界；不得默认全量读取持续增长集合，也不得用固定小上限静默截断正确结果。
+4. 当前 Unit 涉及 legacy / historical / business data migration 时，明确 source role、semantic preservation、identity / duplicate、replay / idempotency、exception / conflict disposition 与 provenance；legacy source 不反向成为新的 Requirement Authority。数据库 schema / initialization migration 仍按数据库迁移责任单独验证。
+5. 从外部站点、接口、附件或其他仓库取得二进制 / 媒体资源时，在版本化或交给运行时消费前验证真实内容签名 / 类型和必要可解析属性；转换后重新验证，不用改扩展名掩盖格式错误。
+6. 对预期 TDD 失败按计划推进；意外失败进入 `systematic-debug`，不得猜测绕过。验证失败先区分 implementation defect、stale verification contract、runtime / environment 与 external dependency，不因旧测试存在就让实现迎合失效断言。
+7. 运行与 Completion Conditions 对应的当前验证。涉及数据库 schema / migration lifecycle 且环境允许取得完整初始化证据时，至少覆盖一次 `Fresh Database → Full Migration Chain → Application Startup`；无法取得时明确保留 Evidence gap。
+8. Requirement 明确要求视觉复刻、设计稿还原或其他 visual fidelity 时，功能 / 路由测试不能单独证明视觉通过；按当前风险取得真实页面、参考视觉、AI 对照和必要人工复核。
+9. 每个测试、构建、工具调用、修复或异步步骤进入终态后重新计算本 Unit 的剩余责任；只要仍可在当前授权内自动关闭就继续，直到全部 Completion Conditions 有匹配的当前证据或出现真实 blocker。
+10. 停在 Unit 完成边界，不自动合并、发布、部署或启动下一 Unit。
 
 ## 输出
 
@@ -45,4 +41,4 @@ metadata:
 
 ## 升级
 
-上游 Authority 缺口、未授权产品/架构改变、不可逆外部操作或权限阻塞按责任层升级。
+上游 Authority 缺口、未授权产品 / 架构改变、不可逆外部操作或权限阻塞按责任层升级。请求人工前先检查当前已授权工具、Repository / CI / 日志 /文件中的可恢复 Evidence 与等价自动路径；只有不可替代的人类决定、权限或环境事实才升级，并把请求缩到最小必要动作。

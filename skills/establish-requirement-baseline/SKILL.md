@@ -1,13 +1,6 @@
 ---
 name: establish-requirement-baseline
 description: Establishes or rebuilds a durable Requirement Baseline from raw, fragmented, conflicting, or weak-authority project inputs. Use for greenfield project establishment or systemic requirement-baseline gaps; do not use for ordinary feature-level intent clarification or specification.
-metadata:
-  agentic-dev-id: "skill:establish-requirement-baseline"
-  agentic-dev-type: "skill"
-  agentic-dev-status: "active"
-  agentic-dev-distribution: "release-direct"
-  agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "method:requirement-baseline-establishment;architecture:requirement-authority;rule:human-intervention-necessity;rule:authoritative-artifact-lifecycle-review;rule:high-impact-ai-review-required;rule:evidence-type-must-match-claim;rule:verification-contract-currentness"
 ---
 
 # establish-requirement-baseline
@@ -21,17 +14,19 @@ metadata:
 - Raw Project Inputs；
 - 当前 Repository / Product / Domain Authority；
 - 已有 Requirement 资产与其 currentness / provenance；
-- 当前运行环境提供的 packaged references 与 Consumer-local policy。
+- Consumer-local constraints。
 
 ## 流程
 
-1. 恢复当前 Repository Authority、现有 Requirement owner 和输入来源角色，不把历史实现或旧聊天自动提升为当前事实。
-2. 按当前 Skill package 的 `references/release-inputs/**` 恢复需求基线 Method、Requirement Authority 与相关验证 / 人工升级约束。
-3. 对原始输入做 source-role、冲突、缺口和重复分析，区分可直接接受事实、可唯一推导事实、设计项和真实阻塞歧义；不得因为正向事实没有同时声明反向 / 排他边界，就把所有未说明的补集情况制造成 blocker。
-4. 把稳定长期事实写入真实 Requirement owner；临时分析、comparison、ambiguity material 保持非 Authority，并明确退出或晋升边界。
-5. 只有当前 Authority 无法解决、不同合理答案会改变长期产品语义，而且该问题确实阻塞当前 Baseline scope 或已知下游责任时，才形成最小人工问题；高影响 Authority 变更按当前 Repository policy 进入独立复核。
-6. 检查 Requirement 信息架构、Fresh Context 导航、长期 owner、未决项与下游 Feature 可消费性。
-7. 只有当前证据支持长期需求基线可被后续工作可靠消费时返回 Requirement Baseline Ready。
+1. 恢复当前 Repository Authority、现有 Requirement owner、Consumer-local constraints 和输入来源角色；历史实现、旧聊天、分析表、Issue 或迁移材料都不会因为“信息丰富”自动提升为当前 Requirement fact。
+2. 建立 single-owner Requirement contract：Human navigation 只解释如何阅读 / 维护；Authority locator / index 只指向唯一 owner；长期 Product / Domain / NFR fact 进入真实 owner；analysis workspace 默认非 Authority。Consumer 可以调整物理目录，但不得让 README、index、草稿或派生视图复制第二套事实。
+3. 对原始输入做 source-role、currentness、冲突、缺口和重复分析，区分可直接接受事实、可唯一推导事实、设计项和真实阻塞歧义；不得因为正向事实没有同时声明反向 / 排他边界，就把所有未说明补集制造成 blocker。
+4. 把稳定长期事实写入真实 Requirement owner；跨 Feature 长期术语、业务不变量或横向约束只有确有共享语义时才建立 / 更新相应 owner。临时 comparison、ambiguity material、流程图和候选清单保持非 Authority，并明确 promote / archive / delete 边界。
+5. 新增、替换或退役长期 owner 时同步检查 locator、Human navigation、verification consumer 与 current-state wording，确保 Fresh Context 能区分 Current truth 与 historical / provenance evidence。
+6. 只有当前 Authority 无法解决、不同合理答案会改变长期产品语义，而且问题确实阻塞当前 Baseline scope 或已知下游责任时，才形成最小人工问题；请求人工前先检查 Repository、现有 Evidence 与已授权工具是否已经可以裁决，避免机械中转。
+7. 高影响 Requirement Authority 重构按 Consumer Repository policy 进入 fresh / independent `review-change`；Review PASS 不等于人工批准。
+8. 检查 Requirement 信息架构、Fresh Context 导航、长期 owner、未决项与下游 Feature 可消费性；单个文档写入或 source inventory 完成不等于 Baseline Ready。
+9. 只有当前证据支持长期需求基线可被后续工作可靠消费时返回 Requirement Baseline Ready。
 
 ## 输出
 
@@ -47,4 +42,4 @@ metadata:
 
 ## 升级
 
-产品使命、跨域高影响取舍、无法由当前 Authority 裁决的冲突，以及 Repository policy 保留给人工的决定必须升级。本 Skill 不自动进入 Architecture Clarification 或具体 Feature 开发。
+产品使命、跨域高影响取舍、无法由当前 Authority 裁决的冲突，以及 Repository policy 保留给人工的决定必须升级；人工请求必须说明自动化 / Evidence 路径为何不足以及需要返回的最小决定。本 Skill 不自动进入 Architecture Clarification 或具体 Feature 开发。

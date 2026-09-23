@@ -1,13 +1,6 @@
 ---
 name: human-review
 description: 为 Consumer 软件项目准备结构化人工评审材料，分类人工反馈，并把确认后的长期语义返回正确的需求、功能规格、架构或技术方案所有者；默认只生成结构化 Markdown 评审草稿，除非调用方明确要求最终交付格式。
-metadata:
-  agentic-dev-id: "skill:human-review"
-  agentic-dev-type: "skill"
-  agentic-dev-status: "active"
-  agentic-dev-distribution: "release-direct"
-  agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "architecture:human-review;rule:human-intervention-necessity;rule:evidence-type-must-match-claim;rule:human-review-baseline-isolation;rule:visual-evidence"
 ---
 
 # 人工评审
@@ -18,7 +11,7 @@ metadata:
 
 本 Skill 只面向 Consumer 软件项目，不用于 `agentic-dev` 自身的方法论演进、Issue / PR 决策或能力设计过程。
 
-人工评审的长期边界、派生视图生命周期、反馈分类和交付投影契约由 `architecture:human-review` 持有；本 Skill 只负责稳定执行该契约，不复制第二套规范语义。
+本 Skill 直接拥有 Consumer-facing 人工评审执行契约：结构化 Markdown 是默认工作介质，派生视图默认可再生且非 Authority，人工反馈必须分类并回写真正语义 owner，最终交付格式只有在显式请求后进入。
 
 ## 触发条件
 
@@ -43,6 +36,8 @@ metadata:
 - 如果显式要求最终交付，可选的客户模板、Consumer 本地文档规范和目标办公环境。
 
 不得为了生成“完整评审材料”默认读取全量项目文档、archive 或无关实现。
+
+如果自动验证会修改与人工复核共享的数据库、文件、缓存、导航或其他状态，进入人工复核前先保存自动验证的 Current Evidence，再恢复来源明确、可重复构建的人工复核 baseline；测试残留状态不得静默成为人工评审基线。
 
 ## 流程
 
@@ -92,27 +87,28 @@ metadata:
 
 8. **处理交付目标**
    - `delivery_target = none` 时，只有满足人工评审完成条件才以“评审完成”退出；
-   - 调用方明确要求最终格式时，先确认内容状态和目标格式，再按 `architecture:human-review` 的交付投影契约执行；
+   - 调用方明确要求最终格式时，先确认内容状态和目标格式，再执行本 Skill 下方定义的交付投影边界；
    - 处于待权威回写状态时，不得生成正式已确认交付物；如人工明确要求输出中间版本，只能作为“草案 / 待确认”交付；
    - 交付投影只能使用当前确认的 Markdown / 权威内容，不通过渲染重新解释业务、架构或技术语义；
    - 如果运行环境缺少真实文件生成或目标格式验证能力，明确报告能力缺口并保留已确认 Markdown 输入，不得声称已经生成或验证文件。
 
 9. **生成 HTML 交互评审视图（仅在显式要求时）**
-   - `delivery_target = html` 时，按 `architecture:human-review` 的 HTML 契约生成静态、轻量评审视图；
+   - `delivery_target = html` 时，生成静态、轻量、无需后台服务的评审视图；
    - 只实现当前评审真正需要的导航、展开 / 收起、有限筛选、待确认项突出和临时图形等交互；
    - 不为交互效果引入新的业务系统、后台服务或持久事实源；
    - 评审尚未收敛或仍待权威回写时，清楚标识草稿和待确认状态。
 
 10. **生成 DOCX 正式文档（仅在显式要求时）**
-    - `delivery_target = docx` 时，先按 `architecture:human-review` 确定模板优先级、内容状态和正式文档要求；
+    - `delivery_target = docx` 时，先按客户 / 合同模板、Consumer 本地规范、通用正式文档默认值的优先级确定内容状态和格式要求；
     - 正式 DOCX 只能使用已经实际回写并重新读取确认的收敛内容；
     - 评审未收敛或仍待权威回写时，只有人工明确要求才能输出 DOCX，并且必须标识“草案 / 待确认”；
     - 按客户模板、Consumer 本地规范或通用中文正式办公文档默认配置生成，不在本 Skill 复制另一套格式规范。
 
 11. **验证最终交付物**
     - 核对交付物与已确认 Markdown / 当前权威内容的语义一致性；
-    - 按 `architecture:human-review` 对目标格式执行相应的结构、字体、分页、交互或兼容性验证；
+    - 对目标格式执行与声明相匹配的结构、字体、分页、交互或兼容性验证；Requirement 明确要求视觉 fidelity 时，功能可用不能单独证明视觉通过，应使用真实渲染、参考视觉、AI 对照和必要人工视觉复核；
     - 只有真实生成并实际完成相应验证后，才声明目标交付物完成。
+    - 文件生成、一次人工回复、单个视图通过或工具调用终态都不等于整个人工评审完成；每一步后重新核对尚未完成的 feedback classification、Authority writeback、re-read 与最终交付责任。
 
 ## 输出
 
@@ -156,6 +152,8 @@ metadata:
 - 必须明确状态为 **待权威回写 / 评审未完成**；
 - 不得声称语义已收敛、评审已完成或正式交付已就绪；
 - 后续执行必须先完成并重新读取验证权威回写，再重新判断完成条件。
+
+确认确实需要人工决定或操作前，先使用当前可访问的 Repository、文件、日志、工具和已有 Evidence 关闭可自动解决的问题；不得让人工做可由 Agent 完成的复制粘贴、命令执行或系统间中转。人工问题只保留 Product / Domain intent、高影响长期取舍、授权、受控环境或法规职责等不可替代责任。
 
 ## 升级
 
