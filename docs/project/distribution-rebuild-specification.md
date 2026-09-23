@@ -7,6 +7,8 @@ distribution: source-only
 
 # 发布模型重构规范与验收合同
 
+> 本规范对应的 Gate A～G 与 Release Candidate 作为历史 Evidence 保留。新的产品边界重审已终止原 Gate H 路线；Current 目标模型由 `docs/project/methodology-product-boundary-specification.md` 持有。本文不得继续作为新实施的 Acceptance Authority。以下正文保持当时冻结的历史合同，不逐段重写为退役措辞；其中现在时表述只按原 Issue #172 上下文解释。
+
 ## 1. 文档职责
 
 本文是 Issue #172 — **发布模型重构：从能力仓库直接投影转向 Skills 发布产物** 的项目级规范与验收 Authority。

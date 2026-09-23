@@ -20,110 +20,80 @@ distribution: source-only
 - upstream 不维护具体语言 / framework 技术知识 Rule family；technology specialization 由 Consumer-local Authority 持有；
 - Issue #164 已完成 R1～R4：核心边界、评估入口、Rule Discovery / Evidence contract、Bootstrap 成本与真实 Consumer applicability 均已完成收敛和独立验证。
 
-上述 baseline 在 Issue #172 重构完成前继续是当前已集成运行事实；本轮新目标不通过 planning 文档提前改写现行 Capability semantics。
+上述 baseline 仍是当前已集成运行事实，直到新的产品边界规范完成独立复核并进入后续实施；本轮 Specification 只冻结目标模型，不把尚未实施的语义冒充为当前 runtime。
 
 稳定演进里程碑与历史原因由 `docs/project/project-evolution.md` 持有；精确 branch / Issue / PR / Actions / commit 状态始终从 GitHub 当前事实读取。
 
 ## 当前演进
 
-Issue #172 — **发布模型重构：从能力仓库直接投影转向 Skills 发布产物** 已获得明确 Planning / Execute Authority。
+当前进入 **AI 驱动软件开发方法论产品边界重构**。
 
-本轮目标不是简单调整 Consumer 目录，而是正式分离：
+本轮首先只冻结目标模型，不进入实现。当前候选 Authority：
+
+- `docs/project/methodology-product-boundary-specification.md`
+
+核心方向是重新限定方法论面向普通软件项目，并审查是否可以将：
 
 ```text
-agentic-dev Source / Authoring Model
-→ deterministic Release Build
-→ versioned Software Development Agent Skills
-→ Consumer installation / runtime
+Guides / Project Knowledge
+→ 方法理解与导航
+
+skills/**
+→ 唯一 Consumer-facing runtime product
+
+Consumer-local Rules / Policies
+→ 项目特有约束
 ```
 
-冻结目标、Source / Distribution 边界、Runtime compatibility、Legacy Consumer coverage 与 Acceptance Criteria 由：
+作为长期最小模型，同时取消 Provider 与 Consumer 必须运行同构 Capability Runtime 的假设。
 
-- `docs/project/distribution-rebuild-specification.md`
-
-统一持有。
-
-Issue #172 只承担实施协调、Gate 与 Evidence timeline，不作为第二份规范 owner。
-
-本轮实施固定按以下 Gate 推进：
-
-1. Gate A — Specification & Acceptance Freeze
-2. Gate B — Repository-wide Asset / Distribution Evidence & Classification
-3. Gate C — Source / Distribution Model Rebuild
-4. Gate D — Skill Packaging & Release Build
-5. Gate E — Automated Runtime Acceptance
-6. Gate F — Legacy Consumer Capability Coverage Audit
-7. Gate G — Final Specification Conformance Review & Release Candidate Freeze
-8. Gate H — Real Consumer Migration & Validation
-
-Gate A～G 在 `agentic-dev` 内连续推进。重构期间不把真实 Consumer mutation / 人工 Consumer validation 作为每个中间 Gate 的阻塞条件；完全自动化的 Consumer-like fixture / runtime acceptance 可以保留。真实 Consumer migration / validation 只在 Release Candidate Freeze 后进入。
+上一轮 Issue #172 的 Gate A～G、Release Candidate 与验证 Evidence 保留为历史成果；原 Gate H 暂停且不再作为当前执行路径。旧 `distribution-rebuild-specification.md` 已退出 Current Authority。
 
 ## 当前门禁
 
-**本 PR 集成后的当前 Gate：Gate G — Final Specification Conformance Review & Release Candidate Freeze。**
+**当前只执行 Specification Definition & Independent Review。**
 
-Gate A～E 已集成并形成当前发布基线：
+在新的 Specification 冻结前：
 
-- Gate A 冻结 `DR-AC-01`～`DR-AC-39`；
-- Gate B 完成 Distribution Evidence Review 与全仓发布分类；
-- Gate C 完成 Source / Distribution Model Rebuild；
-- Gate D 完成 15 个有界 Skill 的 deterministic Release Build、manifest / integrity / bounded installer 与 repository-local payload；
-- Gate E 完成 Release-installed Runtime Acceptance、Codex native discovery / authenticated behavior、ChatGPT + GitHub Connector compatibility、Progressive Disclosure、upstream negative controls 与 Evidence recovery，PR #177 已集成。
+- 不进入 Repository implementation；
+- 不删除或迁移现有 Method / Architecture / Rule / Guide / Release infrastructure；
+- 不修改真实 Consumer；
+- 不执行原 Gate H；
+- 不把现有 RC 安装到 `dygapp/jilinjobs-cms`；
+- 不制定依赖未冻结目标模型的详细实施 Gate。
 
-Gate F 当前候选通过真实 Consumer `dygapp/jilinjobs-cms` 的只读 obligation-level audit 收敛 `DR-AC-31/32`：
-
-- 固定 Consumer exact subject，不随审计期间的 Consumer 后续提交漂移；
-- 按冻结规范逐项审计 26 个 legacy Consumer AI development obligations，而不是做旧目录 / 新目录文件映射；
-- 使用 `release-covered`、`release-composed`、`consumer-local`、`bootstrap-covered` 等合法 disposition；
-- 5 个 `consumer-local` obligation 均具有显式 Consumer-local owner；
-- machine-readable Evidence 与 deterministic tests 验证 26 项唯一分类、合法 disposition、本地 owner 与零缺口退出条件；
-- 当前 candidate 结果为 `unclassified=0`、`gap=0`、`consumer mutation=0`；
-- 未发现需要返回 Gate C / D / E 修复的 upstream Release gap。
-
-Gate F 的完整矩阵、固定 Consumer / Release subject 与验证 Evidence 由 `docs/research/legacy-consumer-capability-coverage-audit.md`、`evals/fixtures/legacy-consumer-coverage/gate-f.json`、PR #178 / Issue #172 / GitHub Actions 持有。本 Roadmap 不复制逐项矩阵正文。
-
-PR #178 集成后进入 Gate G。Gate G 只负责 Final Specification Conformance Review 与 Release Candidate Freeze：
-
-- 逐项回到 `distribution-rebuild-specification.md` 复核 `DR-AC-01`～`DR-AC-39` 当前完成状态与 Evidence；
-- 检查 Gate A～F 的集成状态、最终 Source / Distribution Architecture、Release composition、runtime compatibility、legacy coverage 与治理边界是否仍与冻结 Specification 一致；
-- 对任何未验证、被后续变更影响或只能由历史 Evidence 支撑的 acceptance claim fail closed；
-- 只有 Final Conformance Review 完整通过后才冻结 Release Candidate，并允许进入 Gate H；
-- Gate G 不修改真实 Consumer，不把 Gate H 的 migration / validation 提前作为 Gate G 的替代证据。
+Specification 必须先证明第 0～4 层候选模型可以覆盖新项目 Bootstrap、已有项目 Adoption、“下一步做什么”、Skill execution 与 Consumer-local constraints，并通过高影响独立语义复核。通过后才进行全仓资产 disposition 和实施计划。
 
 ## 后续候选
 
-当前除 Issue #172 之外的演进候选保持非活动状态：
+在本轮 Specification 冻结前，其他能力扩展保持非活动。尤其不提前新增：
 
-- Review Governance / Human Review 的跨 Consumer 持续有效性；
-- GitHub / execution transport / human escalation 的新平台证据；
-- Requirement Baseline / Architecture Clarification 的更多真实 Consumer validation；
-- C6 verification invariant 与 deterministic current-owner tooling 的跨案例 Evidence；
-- Consumer feedback（包括 Issue #58）与未来 Method selection scaling；
-- 独立 `code-review` Skill 是否成立；
-- setup / install / upgrade orchestration 是否需要独立 Skill；
-- Plugin 或其他 Distribution Target。
+- 新 Method / Rule / Architecture runtime 类型；
+- 新中央 discovery / registry；
+- 新 custom package / installer；
+- 与本轮产品边界无关的 Skill 扩展。
 
-这些候选不得插入 Issue #172 的当前 Gate，除非当前 Acceptance Evidence 证明其已成为完成本轮重构的必要条件；若会改变冻结 Acceptance，必须先修改重构规范并完成独立复核。
+历史 Consumer feedback、Runtime Evidence 与旧 Coverage Audit 可以作为设计证据，但不能反向要求新模型兼容旧实现。
 
 ## 已知约束
 
-- Issue #172 重构期间，当前已集成 Method / Architecture / Rule / Skill semantics 仍是 Repository ordinary runtime Authority，直到对应 Gate 明确替换并集成；
-- Source Model 与 Distribution Model 分离不等于把所有内部 Method / Architecture / Rule 机械删除或全部塞入单个 Skill；
-- Consumer-local Product / Requirement / System Architecture / technology policy / authorization / current state 不得被通用 Release 吸收；
-- Architecture Clarification 的 Evidence maturity 仍低于 Requirement Baseline Establishment，应保持 conditional / anti-BDUF；
-- C6 verification invariant 继续暂缓，直到出现足够跨案例 Evidence；
-- Human Guide、Research、Project Evolution 不进入 ordinary Agent 固定 Bootstrap；只有当前责任明确需要时才加载；
-- 每个 Issue #172 实现 PR 必须显式声明 Covered Acceptance IDs、Not Covered IDs 与 Current Evidence；
-- 实施不得以便利性静默缩减 `DR-AC-01`～`DR-AC-39`。
+- 当前已集成 Repository Authority 在新规范正式集成前仍约束本仓 ordinary runtime；
+- 新模型必须保留 Progressive Disclosure、Consumer-local Authority、Evidence 与 Fresh Context 等已验证需求；
+- Guide 可供 AI 按需使用，不等于进入 ordinary Agent 固定 Bootstrap；
+- `skills/**` 成为唯一 Consumer runtime product 不等于把所有知识塞入一个超级 Skill；
+- Consumer-local Product / Requirement / System Architecture / technology policy / authorization / current state 不得被通用 Skill 吸收；
+- Consumer-local Rules 的需求必须保留，但其发现机制需要重新从最小方案证明；
+- 新规范通过独立复核前不得制定以具体删除 / 迁移为前提的实施计划。
 
 ## 状态归属
 
 - Repository live state：GitHub；
-- 项目使命 / 核心要求：`project-charter.md`；
-- Repository-local capability instance：`project-capability-profile.md`；
-- Issue #172 冻结目标 / Acceptance：`distribution-rebuild-specification.md`；
+- 当前已集成项目使命 / 核心要求：`project-charter.md`；
+- 当前已集成 Repository runtime instance：`project-capability-profile.md`；
+- 新一轮产品边界与 Acceptance：`methodology-product-boundary-specification.md`；
+- 上一轮发布模型规范：`distribution-rebuild-specification.md`，仅作为历史规范 / Evidence locator；
 - 当前 evolution / gate / compact next candidates：本 Roadmap；
 - 稳定历史里程碑：`project-evolution.md`；
-- bounded unit 的完整 Gate / Review / Actions / commit Evidence：对应 GitHub Issue / PR / Actions。
+- bounded unit 的完整 Review / Actions / commit Evidence：对应 GitHub Issue / PR / Actions。
 
 Roadmap 不复制完整重构规范、Architecture、Capability body、历史实施日志或完整 Review Evidence。
