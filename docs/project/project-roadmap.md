@@ -36,9 +36,10 @@ Repository-wide disposition 已形成：
 
 - `docs/research/methodology-product-boundary-asset-disposition.md`
 
-当前实施计划候选：
+实施计划与资产处置已在 exact SHA `0c51232f17738d1351ca638c0f4a184f8524efbf` 完成第二次 Fresh Independent Semantic Review（`Blocking=0`、`Medium=0`）：
 
 - `docs/project/methodology-product-boundary-implementation-plan.md`
+- `../research/methodology-product-boundary-asset-disposition.md`
 
 核心方向是重新限定方法论面向普通软件项目，并审查是否可以将：
 
@@ -59,21 +60,24 @@ Consumer-local Rules / Policies
 
 ## 当前门禁
 
-**当前 Gate：Asset Disposition + Implementation Plan Independent Review。**
+**当前 Gate：P1 — 标准 Skills Distribution 可行性验证。**
 
-在实施计划完成独立复核前：
+P1 只验证最关键的外部前提：canonical `skills/**` 能否从 GitHub Repository / 明确版本通过标准 Agent Skills 兼容路径安装并被 Codex 原生发现。
 
-- 不进入 Repository implementation；
-- 不删除或迁移现有 Method / Architecture / Rule / Guide / Release infrastructure；
+P1 期间：
+
+- 只使用 disposable fixture；
+- 不删除 Release Builder 或其他旧 Current asset；
+- 不大规模重写 15 个 Skill；
 - 不修改真实 Consumer；
 - 不执行原 Gate H；
-- 不把现有 RC 安装到 `dygapp/jilinjobs-cms`。
+- 无法精确确定版本时 fail closed，不通过 `latest` 或自定义 semantic packaging 绕过问题。
 
-当前计划必须证明实施顺序遵守“语义先迁移、旧 owner 后删除”，并显式覆盖标准 Skills distribution、15 个 canonical Skills、Guide / Bootstrap / navigation、Consumer-local constraints、Runtime/Eval 切换、Provider governance cutover、RC-only delta 和真实 Consumer 最小 Adoption。
+P1 通过后才进入 P2 canonical Skills 重构。
 
 ## 后续候选
 
-在本轮实施计划完成独立复核前，其他能力扩展保持非活动。尤其不提前新增：
+在 P1～P9 产品边界重构完成前，与当前 Gate 无关的能力扩展保持非活动。尤其不提前新增：
 
 - 新 Method / Rule / Architecture runtime 类型；
 - 新中央 discovery / registry；
