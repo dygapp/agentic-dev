@@ -28,9 +28,17 @@ distribution: source-only
 
 当前进入 **AI 驱动软件开发方法论产品边界重构**。
 
-本轮首先只冻结目标模型，不进入实现。当前候选 Authority：
+目标模型已在 exact SHA `6eae3cf192c9ae67eed7f9d3e0aa33ef14d2c338` 完成 Fresh Independent Semantic Review（`Blocking=0`、`Medium=0`）并冻结。当前规范 Authority：
 
 - `docs/project/methodology-product-boundary-specification.md`
+
+Repository-wide disposition 已形成：
+
+- `docs/research/methodology-product-boundary-asset-disposition.md`
+
+当前实施计划候选：
+
+- `docs/project/methodology-product-boundary-implementation-plan.md`
 
 核心方向是重新限定方法论面向普通软件项目，并审查是否可以将：
 
@@ -51,22 +59,21 @@ Consumer-local Rules / Policies
 
 ## 当前门禁
 
-**当前只执行 Specification Definition & Independent Review。**
+**当前 Gate：Asset Disposition + Implementation Plan Independent Review。**
 
-在新的 Specification 冻结前：
+在实施计划完成独立复核前：
 
 - 不进入 Repository implementation；
 - 不删除或迁移现有 Method / Architecture / Rule / Guide / Release infrastructure；
 - 不修改真实 Consumer；
 - 不执行原 Gate H；
-- 不把现有 RC 安装到 `dygapp/jilinjobs-cms`；
-- 不制定依赖未冻结目标模型的详细实施 Gate。
+- 不把现有 RC 安装到 `dygapp/jilinjobs-cms`。
 
-Specification 必须先证明第 0～4 层候选模型可以覆盖新项目 Bootstrap、已有项目 Adoption、“下一步做什么”、Skill execution 与 Consumer-local constraints，并通过高影响独立语义复核。通过后才进行全仓资产 disposition 和实施计划。
+当前计划必须证明实施顺序遵守“语义先迁移、旧 owner 后删除”，并显式覆盖标准 Skills distribution、15 个 canonical Skills、Guide / Bootstrap / navigation、Consumer-local constraints、Runtime/Eval 切换、Provider governance cutover、RC-only delta 和真实 Consumer 最小 Adoption。
 
 ## 后续候选
 
-在本轮 Specification 冻结前，其他能力扩展保持非活动。尤其不提前新增：
+在本轮实施计划完成独立复核前，其他能力扩展保持非活动。尤其不提前新增：
 
 - 新 Method / Rule / Architecture runtime 类型；
 - 新中央 discovery / registry；
@@ -83,7 +90,7 @@ Specification 必须先证明第 0～4 层候选模型可以覆盖新项目 Boot
 - `skills/**` 成为唯一 Consumer runtime product 不等于把所有知识塞入一个超级 Skill；
 - Consumer-local Product / Requirement / System Architecture / technology policy / authorization / current state 不得被通用 Skill 吸收；
 - Consumer-local Rules 的需求必须保留，但其发现机制需要重新从最小方案证明；
-- 新规范通过独立复核前不得制定以具体删除 / 迁移为前提的实施计划。
+- 已冻结 Specification 不因实施便利静默改变；若实施计划暴露目标级冲突，必须返回 Specification 重新复核。
 
 ## 状态归属
 
@@ -91,6 +98,8 @@ Specification 必须先证明第 0～4 层候选模型可以覆盖新项目 Boot
 - 当前已集成项目使命 / 核心要求：`project-charter.md`；
 - 当前已集成 Repository runtime instance：`project-capability-profile.md`；
 - 新一轮产品边界与 Acceptance：`methodology-product-boundary-specification.md`；
+- Repository-wide disposition Evidence：`../research/methodology-product-boundary-asset-disposition.md`；
+- 当前实施计划：`methodology-product-boundary-implementation-plan.md`；
 - 上一轮发布模型规范：`distribution-rebuild-specification.md`，仅作为历史规范 / Evidence locator；
 - 当前 evolution / gate / compact next candidates：本 Roadmap；
 - 稳定历史里程碑：`project-evolution.md`；
