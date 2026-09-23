@@ -60,20 +60,21 @@ Consumer-local Rules / Policies
 
 ## 当前门禁
 
-**当前 Gate：P1 — 标准 Skills Distribution 可行性验证。**
+Gate P1 — 标准 Skills Distribution 可行性验证已在 exact SHA `f5b1d90e8d3e642045f5ae57b6afb207f6cdbae3` 完成 Fresh Independent Review（`Blocking=0`、`Medium=0`）。Evidence：
 
-P1 只验证最关键的外部前提：canonical `skills/**` 能否从 GitHub Repository / 明确版本通过标准 Agent Skills 兼容路径安装并被 Codex 原生发现。
+- `../research/standard-skills-distribution-feasibility.md`
 
-P1 期间：
+P1 已确认 GitHub exact tag + 标准 Skills CLI + `skills-lock.json` + Codex native discovery 可以承担普通安装路径；arbitrary commit SHA URL 不是标准 CLI 支持的安装 UX，无版本 generic `update` 也不作为已验证升级协议。
 
-- 只使用 disposable fixture；
-- 不删除 Release Builder 或其他旧 Current asset；
-- 不大规模重写 15 个 Skill；
-- 不修改真实 Consumer；
-- 不执行原 Gate H；
-- 无法精确确定版本时 fail closed，不通过 `latest` 或自定义 semantic packaging 绕过问题。
+**当前 Gate：P2 — Canonical Skills 重构。**
 
-P1 通过后才进入 P2 canonical Skills 重构。
+P2 将 15 个现有 `skills/**` 收敛为真正 canonical、可直接安装且对其通用执行责任自包含的 Consumer 产品：
+
+- 先迁入旧 Method / Rule / Architecture / RC-only delta 中仍需的执行语义；
+- 再删除 `agentic-dev-release-*` / composition metadata；
+- 不新增新 Skill，不创建 Skill 外共享 Consumer runtime namespace；
+- P2 期间仍不删除旧 Source owner / Release Builder；只有 canonical Skills 已承接语义并通过行为验证后，后续 Gate 才允许退役旧机制；
+- 不修改真实 Consumer。
 
 ## 后续候选
 
