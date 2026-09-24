@@ -98,6 +98,65 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
             case["assertions"][3],
         )
 
+    def test_isolated_skill_copy_writes_minimal_provenance_locator(self):
+        original_context = dict(runner.RUN_CONTEXT)
+        try:
+            runner.RUN_CONTEXT.update(
+                {
+                    "source_commit": "a" * 40,
+                    "skill_set_sha256": "b" * 64,
+                }
+            )
+            with tempfile.TemporaryDirectory() as temp:
+                workspace = Path(temp)
+                runner.populate_isolated_skill_copies(workspace)
+                locator = (workspace / ".agents/README.md").read_text(
+                    encoding="utf-8"
+                )
+                self.assertIn("source_commit: " + "a" * 40, locator)
+                self.assertIn("skill_set_sha256: " + "b" * 64, locator)
+                self.assertIn("runtime_mode: canonical-skill-copy", locator)
+                self.assertNotIn("docs/rules", locator)
+        finally:
+            runner.RUN_CONTEXT.clear()
+            runner.RUN_CONTEXT.update(original_context)
+
+    def test_behavior_git_baseline_is_clean_and_has_head(self):
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = Path(temp)
+            (workspace / "AGENTS.md").write_text("# fixture\n", encoding="utf-8")
+            (workspace / "unit.md").write_text("unit\n", encoding="utf-8")
+            runner.initialize_local_git_baseline(workspace)
+            status = subprocess.run(
+                ["git", "status", "--porcelain"],
+                cwd=workspace,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            head = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=workspace,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(0, status.returncode, status.stderr)
+            self.assertEqual("", status.stdout.strip())
+            self.assertEqual(0, head.returncode, head.stderr)
+            self.assertEqual(40, len(head.stdout.strip()))
+
+    def test_model_collaboration_behavior_uses_supplied_observed_capability(self):
+        document = json.loads(
+            (EVALS_DIR / "behavior/activate-model-collaboration.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        case = next(item for item in document["evals"] if item["id"] == "B-MC-01")
+        self.assertIn("当前 observed capability evidence", case["prompt"])
+        self.assertIn("不要在本场景中再次调用", case["prompt"])
+        self.assertIn(".agents/README.md", case["prompt"])
+
     def test_runner_help_entrypoints_import_cleanly(self):
         for script in (
             EVALS_DIR / "run_codex_evals.py",

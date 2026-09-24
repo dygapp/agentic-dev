@@ -88,12 +88,25 @@ def iter_skill_dirs() -> Iterable[Path]:
 
 
 def populate_isolated_skill_copies(workspace: Path) -> None:
-    """Copy only current Skill packages into an external eval workspace."""
-    skill_root = workspace / ".agents" / "skills"
+    """Copy canonical Skill packages plus minimal installed-runtime provenance."""
+    agents_root = workspace / ".agents"
+    skill_root = agents_root / "skills"
     skill_root.mkdir(parents=True, exist_ok=True)
 
     for skill_dir in iter_skill_dirs():
         shutil.copytree(skill_dir, skill_root / skill_dir.name)
+
+    source_commit = RUN_CONTEXT.get("source_commit")
+    skill_set_sha256 = RUN_CONTEXT.get("skill_set_sha256")
+    if source_commit and skill_set_sha256:
+        (agents_root / "README.md").write_text(
+            "# Installed agentic-dev Skills\n\n"
+            f"source_commit: {source_commit}\n"
+            f"skill_set_sha256: {skill_set_sha256}\n"
+            "runtime_mode: canonical-skill-copy\n"
+            "Provider docs are not runtime dependencies.\n",
+            encoding="utf-8",
+        )
 
 
 def canonical_skill_set_sha256() -> str:
@@ -171,6 +184,40 @@ def copy_fixture_into(workspace: Path, fixture: Path = FIXTURE) -> None:
             shutil.copytree(source, target)
         else:
             shutil.copy2(source, target)
+
+
+def initialize_local_git_baseline(workspace: Path) -> None:
+    """Create a deterministic local-only Git baseline for executable behavior fixtures."""
+    env = os.environ.copy()
+    env.update(
+        {
+            "GIT_AUTHOR_NAME": "agentic-dev eval",
+            "GIT_AUTHOR_EMAIL": "eval@agentic-dev.invalid",
+            "GIT_COMMITTER_NAME": "agentic-dev eval",
+            "GIT_COMMITTER_EMAIL": "eval@agentic-dev.invalid",
+            "GIT_AUTHOR_DATE": "2000-01-01T00:00:00+00:00",
+            "GIT_COMMITTER_DATE": "2000-01-01T00:00:00+00:00",
+        }
+    )
+    for command in (
+        ["git", "init", "-q"],
+        ["git", "add", "-A"],
+        ["git", "commit", "-q", "--no-gpg-sign", "-m", "eval baseline"],
+    ):
+        completed = subprocess.run(
+            command,
+            cwd=workspace,
+            env=env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=False,
+        )
+        if completed.returncode != 0:
+            raise RuntimeError(
+                f"Cannot create behavior Git baseline ({' '.join(command)}): "
+                f"{completed.stderr.strip()}"
+            )
 
 
 def preserve_execute_fixture_snapshot(workspace: Path) -> None:
@@ -486,6 +533,7 @@ def run_behavior(
 
             ensure_consumer_bootstrap(cwd)
             populate_isolated_skill_copies(cwd)
+            initialize_local_git_baseline(cwd)
             failed = run_codex(
                 codex_bin=codex_bin,
                 scenario_id=scenario_id,
