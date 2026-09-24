@@ -156,6 +156,9 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         self.assertIn("当前 observed capability evidence", case["prompt"])
         self.assertIn("不要在本场景中再次调用", case["prompt"])
         self.assertIn(".agents/README.md", case["prompt"])
+        self.assertIn("B-MC-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
+        self.assertIn("B-EU-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
+        self.assertIn("B-GA-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
 
     def test_runner_help_entrypoints_import_cleanly(self):
         for script in (
