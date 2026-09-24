@@ -44,9 +44,10 @@ AGENTIC_DEV_DISCOVERY_BOOTSTRAP_PATHS = (
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
+REQUIREMENT_FIXTURE = EVALS / "fixtures" / "requirement-baseline-basic"
 ARCHITECTURE_FIXTURE = EVALS / "fixtures" / "clarify-architecture-basic"
 GITHUB_ACTIONS_FIXTURE = EVALS / "fixtures" / "github-actions-observation"
-WORKSPACE_WRITE_BEHAVIOR_SCENARIOS = {"B-EU-01", "B-GA-01"}
+WORKSPACE_WRITE_BEHAVIOR_SCENARIOS = {"B-RB-01", "B-EU-01", "B-GA-01"}
 READ_ONLY_BEHAVIOR_SCENARIOS = {"B-MC-01", "B-AR-01"}
 RUN_CONTEXT = {
     "source_commit": None,
@@ -529,7 +530,9 @@ def run_behavior(
             read_only = scenario_id in READ_ONLY_BEHAVIOR_SCENARIOS
             prompt = "$" + skill_name + " " + case["prompt"]
 
-            if scenario_id == "B-EU-01":
+            if scenario_id == "B-RB-01":
+                copy_fixture_into(cwd, REQUIREMENT_FIXTURE)
+            elif scenario_id == "B-EU-01":
                 copy_fixture_into(cwd)
                 prompt = (
                     "$execute-unit 读取当前目录的 AGENTS.md 和 unit.md，只实现 "

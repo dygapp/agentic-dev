@@ -98,6 +98,36 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
             case["assertions"][3],
         )
 
+    def test_requirement_baseline_behavior_uses_existing_requirement_owner(self):
+        document = json.loads(
+            (EVALS_DIR / "behavior/establish-requirement-baseline.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        case = next(item for item in document["evals"] if item["id"] == "B-RB-01")
+        self.assertIn("docs/requirements/access-control.md", case["prompt"])
+        self.assertIn("把已接受的长期权限事实写入现有 Requirement owner", case["prompt"])
+        self.assertIn("B-RB-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
+        self.assertTrue((runner.REQUIREMENT_FIXTURE / "AGENTS.md").is_file())
+        self.assertTrue(
+            (
+                runner.REQUIREMENT_FIXTURE
+                / "docs/requirements/access-control.md"
+            ).is_file()
+        )
+
+    def test_github_actions_behavior_requires_observable_bound_and_exit_reason(self):
+        document = json.loads(
+            (EVALS_DIR / "behavior/github-actions-verification.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        case = next(item for item in document["evals"] if item["id"] == "B-GA-01")
+        self.assertIn("观察上限", case["prompt"])
+        self.assertIn("合法退出条件", case["prompt"])
+        self.assertIn("dispatch accepted", case["prompt"])
+        self.assertIn("`in_progress`", case["prompt"])
+
     def test_isolated_skill_copy_writes_minimal_provenance_locator(self):
         original_context = dict(runner.RUN_CONTEXT)
         try:
