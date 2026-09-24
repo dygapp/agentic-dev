@@ -81,9 +81,9 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 **非目标**：预设 Design 专用 Skill、通用 Authority registry，或把 Consumer 的 `DESIGN.md` 格式提升为 Provider 标准。
 
-**当前工作入口**：GitHub Issue #183 — `演进事项 1：Skill 与 Consumer 项目权威适配`。Issue 承载详细冻结方案、实现前交叉评审与后续实施 Evidence；长期稳定结论回写真实 Architecture / Guide / Skill / Governance owner。
+**完成 Evidence**：GitHub Issue #183 / PR #184。详细方案、实现前交叉评审、实施 Evidence 与最终 Fresh / Independent Review 由 GitHub 历史保存；长期稳定结论已回写真实 Architecture / Guide / Skill owner。
 
-当前已完成 Evidence 重新分析、必要外部研究、第一版方案收敛、GPT-6 Sol 实现前独立交叉评审及其 Medium findings 修订，并已按修订方案完成 canonical Skill / Guide contract 实施。Focused validation 已覆盖 deterministic repository contracts、Provider-unknown Authority bounded scenarios 与真实 Consumer `jilinjobs-cms` 的只读 applicability challenge；真实 Consumer adoption / runtime PASS 仍保持未验证。最终高影响 Skill contract 变更仍必须执行 Provider Fresh / Independent Review。
+演进事项 1 已完成并集成。最终 exact candidate `9335ea22dea972e3b52fee160703d603708b583d` 的 Fresh / Independent Review 结果为 `Blocking=0`、`Medium=0`、`Low=0`、`FINAL REVIEW PASS`；随后通过 PR #184 集成，integration commit 为 `1cf3901d1096ca998a16923363c29f663bc8e1a2`。Focused validation 覆盖 deterministic repository contracts、Provider-unknown Authority bounded scenarios 与真实 Consumer `jilinjobs-cms` 的只读 applicability challenge；真实 Consumer adoption / runtime PASS 仍保持未验证。
 
 ### 演进事项 2 — 小规模变更的执行粒度
 
@@ -158,15 +158,17 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 ## 6. 当前停止点
 
-当前演进事项 1 已完成：
+演进事项 1 已完成并收口：
 
 - 当前 baseline 与 Issue / Consumer Evidence 重新分析；
 - Authority 与 Consumer-local Constraint 边界澄清；
 - Agent / Skill / Guide / Authority / Constraint / Execution Unit 核心运行模型收敛；
 - GPT-6 Sol 实现前独立方案评审及 4 个 Medium findings 修订；
 - 开放 Consumer Authority contract 的 Architecture / Guide / canonical Skill 实施；
-- deterministic repository contracts、bounded behavior scenarios 与 `jilinjobs-cms` 只读 applicability challenge。
+- deterministic repository contracts、bounded behavior scenarios 与 `jilinjobs-cms` 只读 applicability challenge；
+- exact candidate `9335ea22dea972e3b52fee160703d603708b583d` 最终 Fresh / Independent Review PASS；
+- PR #184 集成到 `master`，Issue #183 closed / completed。
 
-演进事项 1 当前尚未完成最终 Fresh / Independent Review 与集成决定；真实 Consumer adoption / runtime PASS 不属于当前已验证事实。演进事项 2～4 仍未展开。
+真实 Consumer adoption / runtime PASS 仍不属于当前已验证事实。演进事项 3～4 仍未展开。
 
-下一责任：以 GitHub Issue #183 当前 implementation candidate 和 Evidence 为输入，对最终 exact candidate 执行 Fresh / Independent Review；Review 通过后再由 Human Authority 决定集成与本事项收口。
+下一责任：单独进入演进事项 2 — 小规模变更的执行粒度，先按本计划的单项闭环协议重新分析 Issue #179 Evidence；不得继承演进事项 1 的具体方案作为事项 2 的预设设计。

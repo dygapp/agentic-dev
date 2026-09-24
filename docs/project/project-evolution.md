@@ -267,3 +267,18 @@ Issue #164 因此完成最终闭环。该轮继续遵守“减法优先”：没
 
 最终完成声明严格限定为：**Provider 极简切换完成，可供采用**。它不表示真实 Consumer 已完成 adoption / upgrade 验证，也不授予 merge、release 或 deploy 权限。后续真实采用问题进入正常产品反馈；只有 Evidence 证明当前产品边界本身存在实质缺陷时，才重新评估基础设施层设计。
 
+## 17. 开放 Consumer Current Authority 与 Skill 生命周期集成
+
+方法论产品边界极简切换后，真实 Consumer `dygapp/jilinjobs-cms` 引入独立 Visual Design Authority，暴露出 canonical Skills 对 Requirement / Specification / Architecture / Technical 等已知 owner 的表达仍带有封闭集合倾向。Issue #183 / PR #184 将该问题收敛为开放 Consumer Current Authority 与 Skill 生命周期的通用适配，而没有新增 Design Skill、Authority Registry、metadata schema 或中央 discovery runtime。
+
+长期结果包括：
+
+- 明确 Agent 是执行主体，Skill 是 procedure / contract，Guide 是责任导航，Current Authority 是 Consumer-owned semantic owner，Constraint / Policy 是 Consumer-owned execution constraint，Execution Unit 只是跨 Fresh Context 的有界责任与 Authority 恢复线索载体；
+- Current Authority 类型保持开放集合，Provider 不维护 Requirement / Architecture / Design 等固定 taxonomy；同一物理文件可以承载 Authority 与 Policy，但分类依据是语义归属与用途，同一长期事实仍只允许一个 Current owner；
+- `slice-work` 只把当时已知的 Authority input 作为恢复线索，后续 `readiness-check`、`execute-unit`、`systematic-debug`、`converge`、`review-change` 与 `human-review` 按当前 task / claim、Consumer locator 和 Repository facts 重新解析实际适用 Authority，避免 Unit 冻结 stale owner；
+- verification obligation 由当前适用 Authority 与当前 claim 决定，Visual Design 等独立 owner 可以直接产生对应验证义务，不要求 Requirement 重复声明，也不把视觉验证扩张为所有任务固定步骤；
+- `clarify-architecture` 与 `establish-requirement-baseline` 继续保持专项 producer，开放 Authority 消费不意味着 Provider 必须为每类 Authority 提供 authoring Skill；
+- Provider-unknown `Presentation Authority` bounded scenarios 与 `jilinjobs-cms` 只读 applicability challenge 证明新 contract 不依赖 Design-specific hardcoding；真实 Consumer adoption / runtime PASS 仍需 Consumer 自己在采用时验证。
+
+实现前 GPT-6 Sol 独立方案评审提出 4 个 Medium finding，修订后最终 exact candidate `9335ea22dea972e3b52fee160703d603708b583d` 的 Fresh / Independent Review 得到 `Blocking=0`、`Medium=0`、`Low=0`、`FINAL REVIEW PASS`，随后通过 PR #184 集成到 `master`，integration commit 为 `1cf3901d1096ca998a16923363c29f663bc8e1a2`。
+
