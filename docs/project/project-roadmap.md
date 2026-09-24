@@ -87,7 +87,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 
 当前顺序暂定为：
 
-1. **Skill 与项目权威的适配边界**：当前正在推进，Evidence / 方案收敛已完成，下一责任是实现前交叉评审；
+1. **Skill 与项目权威的适配边界**：方案、实现与 focused validation 已完成，当前下一责任是最终 Fresh / Independent Review；
 2. **小规模变更的执行粒度**；
 3. **多仓库项目的工作区与权威边界**；
 4. **本地验证环境的资源生命周期**。

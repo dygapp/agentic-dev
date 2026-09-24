@@ -83,7 +83,7 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 **当前工作入口**：GitHub Issue #183 — `演进事项 1：Skill 与 Consumer 项目权威适配`。Issue 承载详细冻结方案、实现前交叉评审与后续实施 Evidence；长期稳定结论回写真实 Architecture / Guide / Skill / Governance owner。
 
-当前已完成 Evidence 重新分析、必要外部研究与第一版方案收敛。方案把问题冻结为“开放 Consumer Authority 与 canonical Skill 生命周期集成”，而不是新增 Design-specific procedure；具体实现尚未开始。实现前优先使用 GPT-6 Sol 做一次独立交叉评审，但该增强评审不作为计划成立或 Roadmap 推进的硬 Gate，是否等待 / 跳过由 Human Authority 决定。最终高影响 Skill contract 变更仍服从 Provider Fresh / Independent Review。
+当前已完成 Evidence 重新分析、必要外部研究、第一版方案收敛、GPT-6 Sol 实现前独立交叉评审及其 Medium findings 修订，并已按修订方案完成 canonical Skill / Guide contract 实施。Focused validation 已覆盖 deterministic repository contracts、Provider-unknown Authority bounded scenarios 与真实 Consumer `jilinjobs-cms` 的只读 applicability challenge；真实 Consumer adoption / runtime PASS 仍保持未验证。最终高影响 Skill contract 变更仍必须执行 Provider Fresh / Independent Review。
 
 ### 演进事项 2 — 小规模变更的执行粒度
 
@@ -163,8 +163,10 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 - 当前 baseline 与 Issue / Consumer Evidence 重新分析；
 - Authority 与 Consumer-local Constraint 边界澄清；
 - Agent / Skill / Guide / Authority / Constraint / Execution Unit 核心运行模型收敛；
-- 开放 Consumer Authority lifecycle 方案、修改范围、验证与负向约束冻结。
+- GPT-6 Sol 实现前独立方案评审及 4 个 Medium findings 修订；
+- 开放 Consumer Authority contract 的 Architecture / Guide / canonical Skill 实施；
+- deterministic repository contracts、bounded behavior scenarios 与 `jilinjobs-cms` 只读 applicability challenge。
 
-演进事项 1 尚未开始 canonical Skill / Guide 的具体实现；演进事项 2～4 仍未展开。
+演进事项 1 当前尚未完成最终 Fresh / Independent Review 与集成决定；真实 Consumer adoption / runtime PASS 不属于当前已验证事实。演进事项 2～4 仍未展开。
 
-下一责任：对 GitHub Issue #183 中的冻结方案执行实现前交叉评审；优先 GPT-6 Sol，若当前模型额度 / Runtime 不可用则由 Human Authority 明确决定是否跳过，然后才进入冻结范围实施。
+下一责任：以 GitHub Issue #183 当前 implementation candidate 和 Evidence 为输入，对最终 exact candidate 执行 Fresh / Independent Review；Review 通过后再由 Human Authority 决定集成与本事项收口。
