@@ -2,7 +2,6 @@
 id: guide:bootstrap-new-project
 type: guide
 status: active
-distribution: source-only
 ---
 
 # 新软件项目 Bootstrap

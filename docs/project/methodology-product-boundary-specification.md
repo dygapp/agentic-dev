@@ -2,7 +2,6 @@
 id: project:methodology-product-boundary-specification
 type: project
 status: active
-distribution: source-only
 ---
 
 # AI 驱动软件开发方法论产品边界重构规范

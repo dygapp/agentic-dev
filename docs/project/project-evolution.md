@@ -2,7 +2,6 @@
 id: project:evolution
 type: project
 status: active
-distribution: source-only
 ---
 
 # Project Evolution

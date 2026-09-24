@@ -2,7 +2,6 @@
 id: guide:consumer-local-constraints
 type: guide
 status: active
-distribution: source-only
 ---
 
 # Consumer-local Constraints
@@ -287,8 +286,8 @@ P4 已验证：
 
 即使触发，也不得直接复制：
 
-- 当前五维 Rule metadata；
-- 当前 Rule Discovery Tool；
+- Provider 历史五维 Rule metadata；
+- Provider 历史 Rule Discovery Tool；
 - 中央 Rule Registry / Catalog；
 - 固定 task-signals schema。
 
@@ -300,8 +299,8 @@ P4 v1 不要求普通 Consumer：
 
 - 建立 `.agents/rules/**`；
 - 安装 Provider Rule corpus；
-- 安装 Provider Rule Discovery Tool；
-- 维护 Project Capability Profile；
+- 安装 Provider 历史 Rule Discovery Tool；
+- 维护 Provider capability instance profile；
 - 维护五维 task signals；
 - 运行中央 policy registry；
 - 每个任务扫描全部 policy；

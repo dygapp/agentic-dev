@@ -2,12 +2,11 @@
 id: guide:getting-started
 type: guide
 status: active
-distribution: source-only
 ---
 
 # 从这里开始
 
-`agentic-dev` 面向普通软件项目提供一套 AI 驱动开发方法。用户不需要先理解 Provider 内部的 Method、Rule、Architecture 或发布实现；先判断自己处于哪一种使用场景，再进入对应 Guide 或 Skill。
+`agentic-dev` 面向普通软件项目提供一套 AI 驱动开发方法。用户不需要先理解 Provider 内部治理或历史发布实现；先判断自己处于哪一种使用场景，再进入对应 Guide 或 Skill。
 
 Guide 同时服务人和 AI，但默认按需读取。普通实现任务不需要把整个 `docs/guides/**` 加入上下文。
 
@@ -79,7 +78,7 @@ Guide 提供导航和判断框架，不拥有 Consumer 当前事实。AI 必须�
 .agents/skills/<skill>/SKILL.md
 ```
 
-Skill 自己持有 Trigger、Inputs、Procedure、Outputs、Exit、Escalation。Consumer 不需要在线读取 `agentic-dev/docs/methods/**`、`docs/rules/**` 或 `docs/architecture/**` 补齐 Skill 执行语义。
+Skill 自己持有 Trigger、Inputs、Procedure、Outputs、Exit、Escalation。Consumer 不需要在线读取 Provider 内部设计、治理或项目文档补齐 Skill 执行语义。
 
 ## 5. 项目事实始终属于 Consumer
 

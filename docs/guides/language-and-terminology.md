@@ -2,7 +2,6 @@
 id: guide:language-and-terminology
 type: guide
 status: active
-distribution: source-only
 ---
 
 # 语言与术语指南

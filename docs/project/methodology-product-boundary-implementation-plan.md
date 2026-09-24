@@ -2,7 +2,6 @@
 id: project:methodology-product-boundary-implementation-plan
 type: project
 status: active
-distribution: source-only
 ---
 
 # 方法论产品边界重构实施计划

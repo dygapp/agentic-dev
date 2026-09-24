@@ -2,7 +2,6 @@
 id: guide:guides-navigation
 type: guide
 status: active
-distribution: source-only
 ---
 
 # 使用指南与方法导航
@@ -14,7 +13,7 @@ distribution: source-only
 - Guide 解释怎么开始、当前可能处于什么状态、下一步通常做什么，以及 Skills 怎样组合；
 - canonical `skills/**` 持有真正的 Consumer execution contract；
 - Consumer Repository 持有自己的 Product / Requirement / Architecture / current work / local constraints；
-- Provider 内部 Method / Rule / Architecture 可以继续服务 `agentic-dev` 自身研发，但不是普通 Consumer 必须安装或理解的 runtime 类型。
+- Provider 内部设计、治理与 Research 只服务 `agentic-dev` 自身维护，不是普通 Consumer 必须安装或理解的 runtime 类型。
 
 ## 推荐入口
 

@@ -2,7 +2,6 @@
 id: guide:choosing-next-step
 type: guide
 status: active
-distribution: source-only
 ---
 
 # 根据项目当前状态选择下一步

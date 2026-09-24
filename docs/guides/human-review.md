@@ -2,7 +2,6 @@
 id: guide:human-review
 type: guide
 status: active
-distribution: source-only
 ---
 
 # 人工评审使用指南
@@ -259,13 +258,11 @@ Human Review 是横向能力，不拥有这些阶段本身。
 
 ## 13. 进一步阅读
 
-规范定义：
+执行与复核入口：
 
-- `docs/architecture/human-review-architecture.md` — Human Review 的长期边界、反馈分类、Authority 回写和交付投影契约；
-- `skills/human-review/SKILL.md` — Agent 执行 Human Review 的稳定过程；
-- `docs/methods/requirement-baseline-establishment.md` — Requirement Baseline 中何时进入 Capability-level Human Review；
-- `docs/methods/architecture-clarification.md` — 高影响 Architecture decision 的人工升级边界；
-- `docs/methods/ai-development.md` — Feature / Specification / Technical Planning 中的 Human Review 触发与返回关系。
+- `skills/human-review/SKILL.md` — Consumer 项目人工评审的 canonical 执行过程；
+- `skills/review-change/SKILL.md` — Repository change 的独立变更复核；
+- Consumer 自己的 Requirement / Specification / Architecture / Technical Authority — 人工反馈的真实长期回写位置。
 
 人类导航：
 

@@ -2,7 +2,6 @@
 id: guide:adopting-agentic-dev
 type: guide
 status: active
-distribution: source-only
 ---
 
 # 在已有项目中采用 agentic-dev
@@ -34,7 +33,7 @@ distribution: source-only
 
 采用一个 immutable Git tag 或等价不可歧义 ref。
 
-普通安装不比较 Consumer tree 与 `agentic-dev` Source tree，也不复制 Provider `docs/methods/**`、`docs/rules/**`、`docs/architecture/**`。
+普通安装不比较 Consumer tree 与 `agentic-dev` Source tree，也不复制 Provider 内部设计、治理、Project 或 Research 文档。
 
 ## 3. 使用标准 Skills 安装路径
 

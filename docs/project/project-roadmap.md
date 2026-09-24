@@ -2,7 +2,6 @@
 id: project:roadmap
 type: project
 status: active
-distribution: source-only
 ---
 
 # 项目路线图
