@@ -8,7 +8,7 @@ status: active
 
 ## 当前基线
 
-`agentic-dev` 当前稳定 baseline 是面向普通软件项目的极简 Provider 产品模型：
+`agentic-dev` 当前稳定 baseline 是 `agentic-dev-v0.1.0`（integration commit `ae8ee8032e34c046d619c719dad408edda2d2d8a`）对应的极简 Provider 产品模型：
 
 - `skills/**` 是唯一正式 Consumer-facing runtime product；
 - `docs/guides/**` 只为人和 AI 提供按需 Bootstrap、方法理解与下一步导航；
@@ -17,13 +17,13 @@ status: active
 - Provider 自身只保留少量直接 governance，普通修改使用与声明匹配的最小 deterministic validation 与必要 Review，不恢复批量模型 grader、custom Release Builder 或多级 Gate；
 - 历史复杂机制解决过的 bounded context、Consumer ownership、Evidence integrity、Fresh Context、human escalation 等长期语义已经进入 Skills、Guides、Provider governance 或 Consumer-local Authority。
 
-当前允许的完成声明是：**Provider 极简切换完成，可供采用**。这不表示任何真实 Consumer 已完成采用验证，也不授予 merge、release 或 deploy 权限。
+当前允许的完成声明是：**Provider 极简切换完成，`agentic-dev-v0.1.0` 可供采用**。这不表示任何真实 Consumer 已完成采用验证，也不授予后续版本的 merge、release 或 deploy 权限。
 
 稳定演进里程碑与历史原因由 `docs/project/project-evolution.md` 持有；精确 branch / Issue / PR / Actions / commit 状态始终从 GitHub 与当前 checkout 重新读取。
 
 ## 当前演进
 
-**AI 驱动软件开发方法论产品边界重构已完成 S1～S3 Provider 收敛。**
+**AI 驱动软件开发方法论产品边界重构已完成 S1～S3 Provider 收敛，并已集成 / 发布为 `agentic-dev-v0.1.0`。**
 
 本轮目标模型先后完成 Specification、Repository-wide disposition、P1～P4 能力验证、S1 Authority Freeze、S2 Subtractive Cutover 与 S3 Final Fresh Independent Review。`methodology-product-boundary-specification.md` 与 `methodology-product-boundary-implementation-plan.md` 已完成本轮临时 Authority 职责，现作为本轮历史规范 / 实施计划保留，不再参与 ordinary Provider runtime。
 
@@ -36,9 +36,9 @@ S3 Final Fresh Independent Review 在 exact candidate `c84d5ec2a6616a79629879bd4
 - 真实 Consumer adoption：未验证，且不属于本轮完成门槛
 - 当前 exact candidate 的远端 PR / Actions：未作为本轮 PASS Evidence
 
-当前责任进入 **Integration Preparation / Release Preparation**：只做必要的状态收口、正常集成准备与后续 immutable release tag 准备；merge / release 必须取得对应 Authority，不因 S3 PASS 自动执行。
+当前进入 **post-v0.1.0 Consumer Feedback Evolution**。当前演进计划由 [`post-v0.1.0-consumer-feedback-evolution-plan.md`](post-v0.1.0-consumer-feedback-evolution-plan.md) 持有：先完成 Consumer feedback 概览与主题划分，再严格一次只激活一个主题，按 Evidence re-analysis → 必要外部研究 → Design Freeze → Implementation → Focused Validation / Review → Closure 闭环。
 
-上一轮 Issue #172 Gate A～G、旧 Release Candidate 与相关 Runtime Evidence 继续只作为历史 Evidence；原 Gate H 与旧 custom Release 路线不恢复。
+上一轮 Issue #172 Gate A～G、旧 Release Candidate 与相关 Runtime Evidence 继续只作为历史 Evidence；原 Gate H、custom Release Builder 与旧发布路线不恢复。Issue #172 只剩状态收口责任，不再作为当前能力设计入口。
 
 ## 已完成阶段与当前收敛
 
@@ -85,9 +85,15 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 
 ## 后续候选
 
-当前下一责任是正常 Integration Preparation，并在获得相应 Authority 后进入主分支集成与 immutable release tag。Provider 正式版本形成后，真实 Consumer 可以按 exact-version adoption / upgrade 路径采用；其结果作为正常产品反馈，不作为本轮 S3 的追加 Gate。
+当前主题队列按计划暂定为：
 
-非 Blocking / Medium 的文案、体验和额外平台验证改进进入 backlog，不重新扩大基础设施重构。
+1. Theme 0 — `v0.1.0` 状态与旧入口收口；
+2. Theme 1 — Skill Authority Contract Extensibility；
+3. Theme 2 — Lightweight Change Execution；
+4. Theme 3 — Multi-Repository Project Workspace；
+5. Theme 4 — Local Validation Runtime Resource Lifecycle。
+
+该顺序不是永久 Roadmap。每个主题闭环后必须基于届时最新 Repository / Consumer Evidence 重新判断后续主题，禁止为了“一次规划完整”同时展开多个主题的详细分析和设计。
 
 ## 已知约束
 
@@ -95,6 +101,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - `skills/**` 是唯一正式 Consumer runtime product，Guides 只按需导航；
 - Consumer-local Product / Requirement / Architecture / technology policy / authorization / current state 不得被通用 Skill 吸收；
 - WebCodex 不调用 `codex-cli`；
+- post-v0.1.0 演进一次只激活一个主题；Issue 候选方案只作为 Evidence，不直接成为 Current design；
 - S3 review subject `c84d5ec2a6616a79629879bd4ef24f6584ad45c6` 的完成结论不依赖远端 PR / Actions；后续 integration / release 状态必须从 GitHub 当前事实重新核验；
 - 真实 Consumer adoption 明确保留为未验证状态，不得从 Provider S3 PASS 外推。
 
@@ -110,6 +117,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - 本轮已完成的产品边界规范 / 实施计划：`methodology-product-boundary-specification.md`、`methodology-product-boundary-implementation-plan.md`，仅作为历史收敛依据；
 - Repository-wide disposition Evidence：`../research/methodology-product-boundary-asset-disposition.md`；
 - 当前 evolution / next responsibility：本 Roadmap；
+- post-v0.1.0 Consumer feedback 主题队列与逐项闭环协议：`post-v0.1.0-consumer-feedback-evolution-plan.md`；
 - 稳定历史里程碑：`project-evolution.md`；
 - 历史研究与旧模型 Evidence：`../research/**`；
 - bounded change 的精确 commit / Review / Actions Evidence：Git / GitHub 对应对象。
