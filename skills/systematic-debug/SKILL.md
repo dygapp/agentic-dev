@@ -19,7 +19,7 @@ description: Investigates an observed defect or unexpected failure through repro
 ## 流程
 
 1. 在当前 exact subject 上稳定复现问题，记录 actual behavior、最小触发条件、Consumer-local constraints 与相关 runtime / environment facts；无法复现时不猜测根因。
-2. 从 Current Requirement / Specification / Architecture 确认 expected behavior；若产品行为本身未定义，返回 `clarify-intent` / `specify`，不得自行定义。测试或 Workflow 与 Current Authority 冲突时先判断 stale verification contract，而不是修改产品迎合旧断言。
+2. 结合当前 defect / failure claim、Consumer locator / navigation 与 Repository facts，重新判断并读取实际适用的 Current Authority，从中确认 expected behavior；Requirement / Specification / Architecture 只是常见来源，不构成封闭列表。若 expected behavior 未被任何可靠 Current owner 定义，返回真实责任层（产品行为缺口可返回 `clarify-intent` / `specify`），不得自行定义。测试或 Workflow 与 Current Authority 冲突时先判断 stale verification contract，而不是修改产品迎合旧断言。
 3. 区分 implementation defect、stale verification contract、runtime / environment problem 与 external dependency problem，收集能区分原因的 Evidence，形成有限、可证伪的 root-cause hypotheses。
 4. 逐一验证假设，直到 Evidence 支持根因；不得同时做多项无关“可能修复”，也不通过大规模重构掩盖尚未确认的原因。
 5. 实施针对根因的最低必要修复，最终差异只包含当前 defect、验证责任和由修复直接产生的必要清理。

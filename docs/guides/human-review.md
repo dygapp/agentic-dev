@@ -6,9 +6,9 @@ status: active
 
 # 人工评审使用指南
 
-本文帮助人和 AI 理解：在普通 Consumer 软件项目中，怎样使用 `human-review` Skill，把需求、功能规格、架构或技术方案整理成便于人工理解和判断的材料，并把人工确认产生的长期语义正确返回真实 Authority。
+本文帮助人和 AI 理解：在普通 Consumer 软件项目中，怎样使用 `human-review` Skill，把当前评审责任实际适用的 Consumer Current Authority 整理成便于人工理解和判断的材料，并把人工确认产生的长期语义正确返回真实 owner。
 
-真正的执行契约由 installed `human-review` Skill 持有；Requirement、Specification、Architecture 和 Technical decisions 仍由 Consumer 自己的真实 owner 持有。本文只提供方法导航、评审材料组织原则和人类可读示例，不建立第二套执行或事实 Authority。
+真正的执行契约由 installed `human-review` Skill 持有；Requirement、Specification、Architecture、Technical decisions 以及 Consumer 自己定义的其他 Current Authority 都继续由各自真实 owner 持有。本文只提供方法导航、评审材料组织原则和人类可读示例，不建立第二套执行或事实 Authority。
 
 ## 1. 人工评审解决什么问题
 
@@ -17,7 +17,7 @@ Human Review 不是新的通用开发阶段，也不是每层文档都必须经�
 它主要解决两件事：
 
 1. 把当前真实 Authority 中已经存在的内容重新组织成人容易理解、比较和判断的评审材料；
-2. 把人工评审产生的语义修正或新增长期决定，准确回写到真正拥有这些事实的 Requirement、Specification、Architecture 或 Technical owner。
+2. 把人工评审产生的语义修正或新增长期决定，准确回写到真正拥有这些事实的 Current semantic owner；Requirement、Specification、Architecture 或 Technical 只是常见例子，不构成封闭列表。
 
 因此人工评审的核心不是“多生成一份文档”，而是：
 
@@ -137,7 +137,7 @@ Review Draft 是一个临时投影。
 
 > “所有适用业务单元统一采用这一失败处理规则。”
 
-只要它会长期约束后续开发与 Acceptance，就必须进入适当的 Requirement / Specification / Architecture / Technical owner，而不是只停留在评审会议或聊天记录里。
+只要它会长期约束后续开发与 Acceptance，就必须进入拥有该语义的真实 Current owner，而不是只停留在评审会议或聊天记录里。
 
 ### 未决问题
 

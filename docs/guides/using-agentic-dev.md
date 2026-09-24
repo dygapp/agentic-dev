@@ -8,17 +8,20 @@ status: active
 
 `agentic-dev` 面向普通软件项目提供一套 AI 驱动开发方法。
 
-完整使用体验由三部分组成：
+完整使用体验由三类可恢复输入组成：
 
 ```text
 Guides
 → 帮助人和 AI 理解怎么开始、当前处于什么状态、下一步做什么
 
 Skills
-→ 提供真正可安装、可发现、可执行的软件开发能力
+→ 提供真正可安装、可发现、可执行的软件开发 procedure / contract
 
-Consumer-local Project Knowledge / Constraints
-→ 保存当前项目自己的事实、架构、当前工作和项目级约束
+Consumer-local Project Knowledge
+→ 保存 Current Authority、current work 与其他项目事实
+
+Consumer-local Constraints / Policies
+→ 保存当前工作必须遵守的执行方式、权限、流程和技术政策
 ```
 
 其中只有 `skills/**` 是 `agentic-dev` 的正式 Consumer runtime 产品。
@@ -65,6 +68,17 @@ Layer 4 — Local Constraints
 
 这些层只描述职责与加载方式，不是新的 Capability 类型系统。
 
+### 六个核心运行角色
+
+- **Agent 是执行主体**：恢复当前 Repository、判断责任、选择 / 执行 Skill，并按当前任务解析需要的 Authority 与 Constraint；
+- **Skill 是 procedure / contract**：定义一类责任怎样完成，不主动“发现”项目事实；
+- **Authority 是 Consumer-owned Current truth / semantic owner**：回答“当前什么事实、contract、设计或决定是正确的”；
+- **Constraint / Policy 是 Consumer-owned execution constraint**：回答“在这个项目里做这件事还必须遵守什么”；
+- **Guide 是责任导航**：帮助判断下一责任，不复制 Skill procedure；
+- **Execution Unit 是跨 Fresh Context 的有界执行责任载体**：保存 Scope、恢复 Authority 所需的线索、Dependencies、Completion Conditions 和 Verification responsibility，不复制 Authority 正文。
+
+Authority 类型是开放的。Requirement、Specification、Architecture 或 Visual Design 只能作为 Consumer 可能拥有的例子，Provider 不维护固定 Authority 枚举。Agent 在责任确定后根据当前 task / claim、Consumer locator、Unit 已知线索和当前 Repository facts，按需恢复会改变当前判断的最小 Current Authority。
+
 ### Host Adapter
 
 只负责把 Agent 带到正确 Repository，例如告诉 ChatGPT 使用哪个 WebCodex Project、先读取哪个 `AGENTS.md`。
@@ -89,7 +103,7 @@ Codex Work / codex-cli 已经处于 Repository Context 时可以直接从 `AGENT
 
 Guide 回答“现在应该做什么、为什么”。
 
-Consumer Project Knowledge 回答“这个项目当前事实是什么”。
+Consumer Project Knowledge 回答“这个项目当前事实是什么”。其中 Current Authority 拥有长期语义真值；current work、代码、测试和运行 Evidence 则承担各自事实责任。
 
 Guide 不能覆盖 Consumer facts，Consumer facts 也不需要复制 upstream 方法论正文。
 
@@ -101,9 +115,9 @@ Skill 回答“这件事具体怎么做”。
 
 ### Consumer-local constraints
 
-回答“在这个项目里做这件事还有什么特殊约束”。
+回答“在这个项目里做这件事还有什么特殊执行约束”。
 
-技术栈、数据库迁移、安全、部署、代码组织、项目术语和审批边界等都属于 Consumer，而不是通用 Skill。
+执行方式、权限、流程、技术政策、部署边界和代码组织约定等由 Consumer 自己拥有。若某条内容定义的是目标产品、领域、设计或验收状态本身，则它属于对应 Current Authority，而不是因为写成“必须 / 禁止”就自动归为 Constraint。
 
 ## 3. 新项目怎样开始
 

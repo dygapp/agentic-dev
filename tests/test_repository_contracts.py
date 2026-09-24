@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
 OBLIGATIONS = ROOT / "tests" / "fixtures" / "legacy-consumer-obligations.json"
+AUTHORITY_EXTENSION = ROOT / "tests" / "fixtures" / "consumer-authority-extension.json"
 
 EXPECTED_SKILLS = {"activate-model-collaboration", "clarify-architecture", "clarify-intent", "converge", "establish-requirement-baseline", "execute-unit", "external-operation", "github-actions-verification", "human-review", "readiness-check", "review-change", "slice-work", "specify", "systematic-debug", "technical-plan"}
 RETIRED_PATHS = (
@@ -150,6 +151,67 @@ class RepositoryContractsTests(unittest.TestCase):
         self.assertIn("只要仍可在当前授权内自动关闭就继续", execute)
         converge = (SKILLS / "converge/SKILL.md").read_text(encoding="utf-8")
         self.assertIn("ancestor→current 精确 diff", converge)
+
+    def test_open_consumer_authority_contract_has_bounded_fixture(self):
+        fixture = json.loads(AUTHORITY_EXTENSION.read_text(encoding="utf-8"))
+        self.assertEqual("test-only bounded scenarios; not a Provider runtime schema", fixture["fixture_role"])
+        self.assertEqual("Presentation Authority", fixture["unknown_authority_name"])
+
+        scenario_ids = [item["id"] for item in fixture["scenarios"]]
+        self.assertEqual(
+            [
+                "related-task-loads-current-owner",
+                "unrelated-task-does-not-load-owner",
+                "post-slice-owner-drift-is-reresolved",
+                "broken-locator-blocks-affected-claim",
+                "authority-violation-rejects-functional-pass",
+                "human-feedback-writes-back-unknown-owner",
+            ],
+            scenario_ids,
+        )
+
+        skills_text = "\n".join(path.read_text(encoding="utf-8") for path in sorted(SKILLS.glob("*/SKILL.md")))
+        self.assertNotIn(fixture["unknown_authority_name"], skills_text)
+
+        scenarios = {item["id"]: item for item in fixture["scenarios"]}
+        related = scenarios["related-task-loads-current-owner"]
+        self.assertNotEqual(related["unit_authority_hints"], related["expected"]["loaded_authority"])
+        self.assertEqual(["docs/presentation-v2.md"], related["expected"]["loaded_authority"])
+
+        unrelated = scenarios["unrelated-task-does-not-load-owner"]
+        self.assertEqual([], unrelated["expected"]["loaded_authority"])
+        self.assertEqual("VERIFIED_NO_MATCH", unrelated["expected"]["decision"])
+
+        drift = scenarios["post-slice-owner-drift-is-reresolved"]
+        self.assertNotEqual(drift["unit_authority_hints"], drift["expected"]["loaded_authority"])
+        self.assertEqual(["docs/presentation-v3.md"], drift["expected"]["loaded_authority"])
+
+        broken = scenarios["broken-locator-blocks-affected-claim"]
+        self.assertEqual("BLOCK_AFFECTED_CLAIM", broken["expected"]["decision"])
+        self.assertFalse(broken["expected"]["repository_wide_block"])
+
+        violation = scenarios["authority-violation-rejects-functional-pass"]
+        self.assertEqual("PASS", violation["functional_tests"])
+        self.assertEqual("NOT_READY", violation["expected"]["decision"])
+
+        writeback = scenarios["human-feedback-writes-back-unknown-owner"]
+        self.assertEqual(
+            writeback["current_locator"]["public-ui"],
+            writeback["expected"]["writeback_target"],
+        )
+
+    def test_open_authority_structural_invariants(self):
+        architecture = (ROOT / "docs/architecture/skill-architecture.md").read_text(encoding="utf-8")
+        self.assertIn("不由 Provider 维护固定枚举", architecture)
+        self.assertIn("Authority inputs` 是恢复线索", architecture)
+        self.assertIn("只 fail closed 受影响的执行或结论", architecture)
+
+        execute = (SKILLS / "execute-unit/SKILL.md").read_text(encoding="utf-8")
+        converge = (SKILLS / "converge/SKILL.md").read_text(encoding="utf-8")
+        review = (SKILLS / "review-change/SKILL.md").read_text(encoding="utf-8")
+        for text in (execute, converge, review):
+            self.assertNotIn("Requirement 明确要求视觉", text)
+            self.assertIn("Requirement 只是可能的义务来源之一", text)
 
     def test_webcodex_codex_cli_boundary_is_durable(self):
         agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")

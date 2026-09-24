@@ -210,7 +210,30 @@ Repository 已声明存在 constraint locator，但：
 
 P4 broken-locator fixture 已验证该行为。
 
-## 7. Skill 与 Consumer-local constraint 的边界
+## 7. Current Authority 与 Constraint / Policy 的边界
+
+两者都属于 Consumer，但不能合并成一个类型系统：
+
+```text
+Current Authority
+→ 当前什么产品、领域、行为、设计、验收状态或其他长期语义是正确的？
+
+Consumer-local Constraint / Policy
+→ 执行当前工作时，在方式、权限、流程、技术政策或仓库操作上还必须遵守什么？
+```
+
+分类依据是**语义归属和用途**，不是文件名、目录名或“必须 / 禁止”等措辞。同一个物理文件可以同时承载两类内容，但同一长期事实仍只能有一个 Current owner。
+
+例如：
+
+- “某页面必须使用给定字号、间距和视觉层级”如果定义目标设计状态，属于对应 Design / Presentation Current Authority；
+- “修改前端必须运行指定 lint / visual regression command”属于执行 Policy；
+- “术语 X 的正式业务含义是什么”属于 Domain / Semantic Authority；
+- “文档和 UI 统一使用术语 X，不使用同义词 Y”通常属于语言 / 表达 Policy。
+
+Security、Accessibility、Terminology、Design 等名称本身也不决定类别；先判断它在当前项目中拥有的是目标语义真值，还是执行方式与治理约束。
+
+## 8. Skill 与 Consumer-local constraint 的边界
 
 通用 Skill 回答：
 
@@ -230,7 +253,7 @@ Consumer-local constraint 回答：
 
 也不要为了通用 Skill 复用而让普通运行时在线读取 Provider Rule tree。
 
-## 8. Ownership 与升级
+## 9. Ownership 与升级
 
 Consumer-local constraint 必须：
 
@@ -247,7 +270,7 @@ P4 fixture 在安装全部 15 个 canonical Skills 前后，对 5 个 Consumer-l
 
 因此 Skills install 与 Consumer-local constraints ownership 可以自然解耦。
 
-## 9. Codex local 与 ChatGPT + WebCodex
+## 10. Codex local 与 ChatGPT + WebCodex
 
 ### Codex local
 

@@ -102,12 +102,12 @@ Feature-specific 技术规划不能重新定义产品语义；发现产品歧义
 
 ## 6. slice-work
 
-把 Ready Specification 和必要 Technical Plan 转成 context-fit Execution Units。
+把 Ready Specification、必要 Technical Plan 与当前责任实际适用的 Consumer Current Authority 转成 context-fit Execution Units。
 
 每个 Unit 至少明确：
 
 - Scope；
-- Authority inputs；
+- Authority inputs / 可恢复 Current owner 线索；
 - Dependencies；
 - Completion Conditions；
 - Verification responsibility；
@@ -123,13 +123,15 @@ Feature-specific 技术规划不能重新定义产品语义；发现产品歧义
 
 避免机械拆成“数据库 → 后端 → 前端 → 测试”而让责任跨多个 Unit 漂移。
 
+Unit 的 Authority inputs 只记录切分时已知的恢复线索，不复制 Authority 正文，也不冻结后续所有适用 owner。新的 Fresh Context 必须结合当前 task / claim、Consumer locator 和当前 Repository facts 重新判断 applicability；切分后新增 / 替换 owner 或 Unit 漏记 owner，不能仅因为 Unit 未列出就忽略。
+
 ## 7. readiness-check
 
 这是 Execute 前的只读 Gate。
 
 它重新检查：
 
-- 当前 Unit 与直接 Authority 是否仍然 current；
+- 当前 Unit 的 Authority 线索能否在当前 Repository 中恢复，且当前责任实际适用的 Current Authority 是否完整、current；
 - Scope / Dependencies 是否明确；
 - 必要技术决定是否关闭；
 - Completion / Verification 定义是否足够；
@@ -147,13 +149,13 @@ Feature-specific 技术规划不能重新定义产品语义；发现产品歧义
 执行前重新读取：
 
 - Unit；
-- 直接 Authority；
+- Unit 中已有 Authority 线索，以及按当前 task / claim 与 Consumer locator 重新解析出的直接 Current Authority；
 - 当前代码 / runtime facts；
 - 当前任务适用的 Consumer-local constraints。
 
 即使上游规划充分，也可以形成一个临时 JIT Execution Plan 决定当前代码库里的施工顺序；它是工作材料，不自动成为长期 Authority。
 
-意外 failure / defect 使用 `systematic-debug`。实现暴露上游 Requirement / Architecture 缺口时返回真实 owner，不在代码里静默创造新规则。
+意外 failure / defect 使用 `systematic-debug`。实现暴露任何适用 Current Authority 的长期语义缺口时返回真实 owner；没有对应 owner / procedure 时明确升级，不在代码里静默创造新规则。
 
 ## 9. Evidence 必须匹配 claim
 
@@ -169,6 +171,8 @@ Feature-specific 技术规划不能重新定义产品语义；发现产品歧义
 正确问题是：
 
 > 哪些当前 Evidence 能真正区分这个 Unit / Feature 的 Completion claim 是真是假？
+
+Verification obligation 来自当前适用 Authority 与当前 claim，而不是来自某个固定 Authority 类型。只要适用 Authority 对视觉 fidelity、安全、可访问性或其他质量属性提出可验证义务，就必须选择能够区分该义务是否成立的 Evidence。
 
 权限、失败边界、数据库迁移、业务数据迁移、视觉表现、外部系统或生产行为都可能需要不同 Evidence。
 
@@ -196,7 +200,7 @@ Converge 判断完整 change 是否真正 Ready，不是“再跑一次测试”
 - Specification Acceptance 是否都有实现与 Evidence；
 - 多 Unit 组合后是否出现边界冲突；
 - 长期 artifact responsibility 是否正确；
-- 当前实现是否仍符合 Requirement / Architecture；
+- 当前实现是否仍符合本 change 实际适用的 Current Authority；
 - verification contract 是否仍 current；
 - 是否还有已知 blocker。
 
