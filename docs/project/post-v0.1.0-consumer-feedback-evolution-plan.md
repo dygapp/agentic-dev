@@ -29,6 +29,8 @@ status: active
 
 一次只推进一个演进事项。当前事项收口前，不展开下一事项的详细分析或实现。
 
+单项的详细 Evidence、方案草稿、交叉评审记录与实施过程默认由对应 GitHub Issue / PR / Git 历史承载；`docs/project/**` 只保留仍具有稳定消费者的长期 Project Authority、Roadmap、当前阶段级演进协议与必要 locator，不为每个演进事项保留一次性详细方案文档。
+
 每个事项统一执行：
 
 1. **证据重新分析**
@@ -79,7 +81,7 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 **非目标**：预设 Design 专用 Skill、通用 Authority registry，或把 Consumer 的 `DESIGN.md` 格式提升为 Provider 标准。
 
-**当前方案**：[`skill-consumer-authority-integration-plan.md`](skill-consumer-authority-integration-plan.md)。
+**当前工作入口**：GitHub Issue #183 — `演进事项 1：Skill 与 Consumer 项目权威适配`。Issue 承载详细冻结方案、实现前交叉评审与后续实施 Evidence；长期稳定结论回写真实 Architecture / Guide / Skill / Governance owner。
 
 当前已完成 Evidence 重新分析、必要外部研究与第一版方案收敛。方案把问题冻结为“开放 Consumer Authority 与 canonical Skill 生命周期集成”，而不是新增 Design-specific procedure；具体实现尚未开始。实现前优先使用 GPT-6 Sol 做一次独立交叉评审，但该增强评审不作为计划成立或 Roadmap 推进的硬 Gate，是否等待 / 跳过由 Human Authority 决定。最终高影响 Skill contract 变更仍服从 Provider Fresh / Independent Review。
 
@@ -165,4 +167,4 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 演进事项 1 尚未开始 canonical Skill / Guide 的具体实现；演进事项 2～4 仍未展开。
 
-下一责任：对 [`skill-consumer-authority-integration-plan.md`](skill-consumer-authority-integration-plan.md) 执行实现前交叉评审；优先 GPT-6 Sol，若当前模型额度 / Runtime 不可用则由 Human Authority 明确决定是否跳过，然后才进入冻结范围实施。
+下一责任：对 GitHub Issue #183 中的冻结方案执行实现前交叉评审；优先 GPT-6 Sol，若当前模型额度 / Runtime 不可用则由 Human Authority 明确决定是否跳过，然后才进入冻结范围实施。

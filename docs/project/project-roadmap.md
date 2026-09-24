@@ -117,7 +117,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - Repository-wide disposition Evidence：`../research/methodology-product-boundary-asset-disposition.md`；
 - 当前 evolution / next responsibility：本 Roadmap；
 - post-v0.1.0 Consumer 反馈演进事项与逐项闭环协议：`post-v0.1.0-consumer-feedback-evolution-plan.md`；
-- 演进事项 1 当前方案：`skill-consumer-authority-integration-plan.md`；
+- 演进事项 1 当前工作入口与详细方案 / Review Evidence：GitHub Issue #183；
 - 稳定历史里程碑：`project-evolution.md`；
 - 历史研究与旧模型 Evidence：`../research/**`；
 - bounded change 的精确 commit / Review / Actions Evidence：Git / GitHub 对应对象。
