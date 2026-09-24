@@ -2,7 +2,6 @@
 id: project:evolution
 type: project
 status: active
-distribution: source-only
 ---
 
 # Project Evolution
@@ -226,17 +225,15 @@ Issue #143 Candidate A 随后补齐 `docs/guides/human-review.md` Human View，�
 
 从当前阶段开始，项目演进遵守：
 
-- 当前工作树表达当前有效 owner，不保留历史兼容层；
-- Project Knowledge 保存稳定项目定义 / 实例 / Roadmap / 里程碑，不恢复阶段文档膨胀；
-- reusable capability 继续以真实 Consumer Evidence 驱动，而不是理论扩张；
-- 历史细节需要时从 GitHub Issue / PR / Git 恢复，不复制到 ordinary Fresh Context；
-- Project Capability Profile 必须持续保持为薄的 Repository-local instance owner，不演变成新的 Runtime Catalog / Rule Index；
-- 新 capability 的 semantic owner 分类应先区分 reusable semantics、semantic acceptance、local instance activation 与 ordinary use，再决定是否需要 Architecture / Method / Skill / Rule / Project / Guide；
-- 新增 specialized Method 除了通过自身 admission gate，还必须复核与相邻 Method 的 Gate ownership 和组合关系；
-- 多个 Method 可以通过 Return Contract 与 Repository-local selector 形成上下游关系，但不为串联过程额外建立 super-method；
-- Consumer-oriented Method 是否适用于 `agentic-dev` 自身演进，必须由本 Repository 的真实 work kind 与 local selector 独立决定，不能从 reusable capability 的存在反推 self-adoption；
-- 对新项目需求建立，问题数量不是成熟度指标；AI 应优先提取、推导、应用已确认默认并形成可 Review 的 Requirement Capability，只把真实需要 Authority 的决定升级给人；
-- 面向人的 Guide 可以完整解释 current capability，但必须始终保持为 Human View，不成为 Agent runtime selector、第二套 Gate 或规范正文 owner。
+- 当前工作树表达当前有效 owner，不为历史模型保留兼容 Runtime；
+- `skills/**` 是唯一正式 Consumer-facing runtime product，Guide 只承担按需方法理解、Bootstrap 与导航；
+- Consumer 始终拥有自己的 Product / Requirement / Architecture / current work、技术政策、授权和本地约束；
+- Provider 自身只保留少量直接 governance，不恢复 Method selector、Project Capability Profile、Rule Engine、Rule Discovery、Capability Runtime、custom Release Builder 或批量模型 grader 作为 ordinary work 前置；
+- reusable capability 继续以真实 Consumer Evidence 驱动，而不是理论扩张；简单机制能够解决的问题不新增 metadata、registry、discovery 或 orchestration；
+- ordinary Provider 修改采用与声明匹配的最小 deterministic validation；只有持续塑造 Agent 行为的高影响 Authority / Skill / governance / 产品边界变化才要求 Fresh / Independent Review；
+- 历史细节从 GitHub Issue / PR / Git 与 Research Evidence 恢复，不复制到 ordinary Fresh Context，也不因为旧机制曾经有效就继续维持其 runtime identity；
+- 对新项目需求建立，问题数量不是成熟度指标；AI 应优先提取、推导、应用已确认默认并形成可 Review 的 Requirement Baseline，只把真实需要 Authority 的决定升级给人；
+- 真实 Consumer adoption 是产品反馈与兼容性 Evidence，不再自动成为每次 Provider 内部重构的固定完成 Gate。
 
 ## 15. Runtime closure、核心边界与验证可信度收敛
 
@@ -252,4 +249,21 @@ Issue #143 Candidate A 随后补齐 `docs/guides/human-review.md` Human View，�
 - Issue #164 R4 对 R1～R3 integrated baseline 执行独立最终语义复核，并从真实 Consumer `dygapp/jilinjobs-cms` 自身 Repository Authority 做 read-only applicability / upgrade-impact validation；最终 Blocking / Medium / Low = 0 / 0 / 0，Consumer compatibility PASS，当前 upstream upgrade 归类为 optional，本轮没有执行 Consumer mutation。
 
 Issue #164 因此完成最终闭环。该轮继续遵守“减法优先”：没有新增 Method、Skill、technology Rule family、central registry 或 release / deploy / production-operations lifecycle。
+
+## 16. 方法论产品边界极简切换
+
+2026 年 9 月后续复核进一步确认：此前逐步形成的 Method / Rule Discovery / Capability Runtime / custom Release / batch eval 体系虽然分别解决过真实问题，但 Provider 与普通 Consumer 运行同构治理 Runtime 已产生明显认知、维护与验证成本。项目因此重新以普通软件项目的真实使用体验为目标，执行一次减法优先的产品边界重构。
+
+长期结果包括：
+
+- 15 个 canonical Skills 直接成为唯一正式 Consumer runtime product，并完成旧 release-input 语义迁移与 self-contained 验证；
+- Guides 同时服务人和 AI，但只按需承担 Bootstrap、方法理解与下一步导航，不成为 ordinary execution Runtime；
+- Consumer-local constraints 收敛为 root / nested instructions + Consumer-local thin locator 的最小模型，只有真实 Evidence 证明不足时才允许增加 metadata / filter；
+- Provider 根 `AGENTS.md` 与 `docs/governance/**` 直接化，ordinary work 不再执行 Method selector、Project Capability Profile、五维 Rule Discovery 或中央 capability routing；
+- 旧 Method / Rule / Rule Discovery / Capability / custom Release Builder / installer / authenticated model acceptance / batch eval / grader 基础设施从 Current tree 删除，不保留兼容入口；
+- S3 只保留一个最小 deterministic repository-contract suite 与单一 CI，并通过 disposable Consumer-like copy / ownership、26 legacy obligations、RC-only semantics 与 dead-locator 等检查证明减法没有产生责任空洞；
+- P2 exact Skill subject `4918846e411b9797fb705fa0b6695891f190a51e` 到 S3 review subject `c84d5ec2a6616a79629879bd4ef24f6584ad45c6` 的 15 个 `skills/*/SKILL.md` 无内容漂移，因此已有 P2 runtime / behavior Evidence 只按未变化 subject 的具体 claim 继续复用；
+- S3 Final Fresh Independent Review 在 `c84d5ec2a6616a79629879bd4ef24f6584ad45c6` 得出 `Blocking=0`、`Medium=0`，本轮 Provider 基础设施重构结束。
+
+最终完成声明严格限定为：**Provider 极简切换完成，可供采用**。它不表示真实 Consumer 已完成 adoption / upgrade 验证，也不授予 merge、release 或 deploy 权限。后续真实采用问题进入正常产品反馈；只有 Evidence 证明当前产品边界本身存在实质缺陷时，才重新评估基础设施层设计。
 

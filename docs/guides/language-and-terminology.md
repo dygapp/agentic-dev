@@ -2,18 +2,13 @@
 id: guide:language-and-terminology
 type: guide
 status: active
-distribution: source-only
 ---
 
 # 语言与术语指南
 
-本文帮助人工理解和维护 `agentic-dev` 的中文表达、原始标识和正式概念身份。它是 **Human View**，不是第二套语言 Authority。
+本文帮助人和 AI 按需理解和维护 `agentic-dev` 的中文表达、原始标识和正式概念身份。它是语言与术语导航，不进入 ordinary task 固定上下文，也不建立第二套语言 Authority。
 
-规范性 owner：
-
-- 通用面向人内容：`rule:human-facing-content-integrity`；
-- Git Commit 格式与摘要语言：`rule:git-commit-discipline`；
-- Method、Architecture、Skill、Rule 等正式对象的职责与身份：各自 canonical owner。
+在 `agentic-dev` Provider Repository 内，面向人内容和 Git Commit 等本仓规范仍由本仓当前治理 owner 约束；普通 Consumer 不需要采用这些 Provider-local Rule 作为 runtime 产品。正式 Skill 名称、文件路径、API、CLI、SHA、状态值等机器标识保持原样。
 
 本文可以在语言复查、术语整理、文档重写等责任中由 Agent 按需参考，但不进入 ordinary Agent runtime 的固定 Bootstrap。
 
@@ -168,7 +163,7 @@ Agent 面向用户的以下内容默认使用中文：
 
 当前仓库的 Issue、PR、Review 和状态说明默认使用中文叙述；精确路径、SHA、Rule / Skill id、workflow 名称等保持原样。
 
-Git Commit 另受 `rule:git-commit-discipline` 约束。固定的 `type(scope)` 是协议结构，摘要使用自然中文。
+Git Commit 继续受当前 Repository 自己的 commit policy 约束；在 `agentic-dev` Provider 中，既有 `type(scope)` 协议结构保持不变，摘要使用自然中文。普通 Consumer 使用自己的本地提交规范。
 
 ## 10. 既有内容怎样收敛
 

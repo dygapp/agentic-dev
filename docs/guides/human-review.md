@@ -2,14 +2,13 @@
 id: guide:human-review
 type: guide
 status: active
-distribution: source-only
 ---
 
 # 人工评审使用指南
 
-本文面向人类说明：在普通 Consumer 软件项目中，怎样使用 `agentic-dev` 的 Human Review capability，把需求、功能规格、架构或技术方案整理成便于人工理解和判断的材料，并把人工确认产生的长期语义正确返回真实 Authority。
+本文帮助人和 AI 理解：在普通 Consumer 软件项目中，怎样使用 `human-review` Skill，把需求、功能规格、架构或技术方案整理成便于人工理解和判断的材料，并把人工确认产生的长期语义正确返回真实 Authority。
 
-规范边界由 `architecture:human-review` 持有；稳定执行过程由 `skill:human-review` 持有；需求、功能规格、架构和技术规划各自仍由原有 Method / Authority owner 持有。本文只提供 Human View，不建立第二套规范。
+真正的执行契约由 installed `human-review` Skill 持有；Requirement、Specification、Architecture 和 Technical decisions 仍由 Consumer 自己的真实 owner 持有。本文只提供方法导航、评审材料组织原则和人类可读示例，不建立第二套执行或事实 Authority。
 
 ## 1. 人工评审解决什么问题
 
@@ -259,13 +258,11 @@ Human Review 是横向能力，不拥有这些阶段本身。
 
 ## 13. 进一步阅读
 
-规范定义：
+执行与复核入口：
 
-- `docs/architecture/human-review-architecture.md` — Human Review 的长期边界、反馈分类、Authority 回写和交付投影契约；
-- `skills/human-review/SKILL.md` — Agent 执行 Human Review 的稳定过程；
-- `docs/methods/requirement-baseline-establishment.md` — Requirement Baseline 中何时进入 Capability-level Human Review；
-- `docs/methods/architecture-clarification.md` — 高影响 Architecture decision 的人工升级边界；
-- `docs/methods/ai-development.md` — Feature / Specification / Technical Planning 中的 Human Review 触发与返回关系。
+- `skills/human-review/SKILL.md` — Consumer 项目人工评审的 canonical 执行过程；
+- `skills/review-change/SKILL.md` — Repository change 的独立变更复核；
+- Consumer 自己的 Requirement / Specification / Architecture / Technical Authority — 人工反馈的真实长期回写位置。
 
 人类导航：
 

@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "source": "Gate F legacy Consumer coverage, remapped for minimal product boundary",
+  "obligations": [
+    {
+      "id": "GF-01",
+      "obligation": "Repository Authority / Knowledge Boundary",
+      "owner_kind": "consumer-local",
+      "owners": []
+    },
+    {
+      "id": "GF-02",
+      "obligation": "Fresh Context / Bootstrap",
+      "owner_kind": "files",
+      "owners": [
+        "docs/guides/getting-started.md",
+        "docs/guides/bootstrap-new-project.md"
+      ]
+    },
+    {
+      "id": "GF-03",
+      "obligation": "Requirement Baseline Establishment",
+      "owner_kind": "files",
+      "owners": [
+        "skills/establish-requirement-baseline/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-04",
+      "obligation": "Architecture Clarification",
+      "owner_kind": "files",
+      "owners": [
+        "skills/clarify-architecture/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-05",
+      "obligation": "ordinary Feature / change lifecycle",
+      "owner_kind": "files",
+      "owners": [
+        "skills/clarify-intent/SKILL.md",
+        "skills/specify/SKILL.md",
+        "skills/technical-plan/SKILL.md",
+        "skills/slice-work/SKILL.md",
+        "skills/readiness-check/SKILL.md",
+        "skills/execute-unit/SKILL.md",
+        "skills/converge/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-06",
+      "obligation": "Specification",
+      "owner_kind": "files",
+      "owners": [
+        "skills/specify/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-07",
+      "obligation": "Technical Planning",
+      "owner_kind": "files",
+      "owners": [
+        "skills/technical-plan/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-08",
+      "obligation": "work slicing",
+      "owner_kind": "files",
+      "owners": [
+        "skills/slice-work/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-09",
+      "obligation": "readiness",
+      "owner_kind": "files",
+      "owners": [
+        "skills/readiness-check/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-10",
+      "obligation": "implementation",
+      "owner_kind": "files",
+      "owners": [
+        "skills/execute-unit/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-11",
+      "obligation": "systematic debugging",
+      "owner_kind": "files",
+      "owners": [
+        "skills/systematic-debug/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-12",
+      "obligation": "convergence",
+      "owner_kind": "files",
+      "owners": [
+        "skills/converge/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-13",
+      "obligation": "verification / evidence discipline",
+      "owner_kind": "files",
+      "owners": [
+        "skills/execute-unit/SKILL.md",
+        "skills/converge/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-14",
+      "obligation": "independent change review",
+      "owner_kind": "files",
+      "owners": [
+        "skills/review-change/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-15",
+      "obligation": "human review",
+      "owner_kind": "files",
+      "owners": [
+        "skills/human-review/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-16",
+      "obligation": "human escalation",
+      "owner_kind": "all-skills-escalation",
+      "owners": []
+    },
+    {
+      "id": "GF-17",
+      "obligation": "external operation safety",
+      "owner_kind": "files",
+      "owners": [
+        "skills/external-operation/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-18",
+      "obligation": "GitHub Actions verification",
+      "owner_kind": "files",
+      "owners": [
+        "skills/github-actions-verification/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-19",
+      "obligation": "conditional policy / rule activation",
+      "owner_kind": "consumer-local",
+      "owners": []
+    },
+    {
+      "id": "GF-20",
+      "obligation": "language / terminology governance",
+      "owner_kind": "consumer-local",
+      "owners": []
+    },
+    {
+      "id": "GF-21",
+      "obligation": "technology-specific policy",
+      "owner_kind": "consumer-local",
+      "owners": []
+    },
+    {
+      "id": "GF-22",
+      "obligation": "current work / Roadmap ownership",
+      "owner_kind": "consumer-local",
+      "owners": []
+    },
+    {
+      "id": "GF-23",
+      "obligation": "upstream decoupling",
+      "owner_kind": "repository-contract",
+      "owners": [
+        "docs/architecture/skill-architecture.md",
+        "docs/guides/getting-started.md"
+      ]
+    },
+    {
+      "id": "GF-24",
+      "obligation": "adoption / upgrade / release update",
+      "owner_kind": "files",
+      "owners": [
+        "docs/guides/adopting-agentic-dev.md",
+        "docs/guides/upgrading-agentic-dev.md"
+      ]
+    },
+    {
+      "id": "GF-25",
+      "obligation": "executable capability / alternate path / fail-closed",
+      "owner_kind": "files",
+      "owners": [
+        "skills/external-operation/SKILL.md",
+        "skills/github-actions-verification/SKILL.md"
+      ]
+    },
+    {
+      "id": "GF-26",
+      "obligation": "Current Evidence / exact-subject verification",
+      "owner_kind": "files",
+      "owners": [
+        "skills/converge/SKILL.md",
+        "docs/governance/review-and-verification.md"
+      ]
+    }
+  ]
+}

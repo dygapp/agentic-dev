@@ -1,13 +1,6 @@
 ---
 name: technical-plan
 description: Resolves durable cross-unit HOW decisions, maintains cross-feature architecture context changes, and conditionally persists ADRs for decisions whose background or trade-offs need durable history. Use for cross-module, data, integration, migration, shared contract, deployment topology, or significant architecture work; skip when only local reversible implementation details remain.
-metadata:
-  agentic-dev-id: "skill:technical-plan"
-  agentic-dev-type: "skill"
-  agentic-dev-status: "active"
-  agentic-dev-distribution: "release-direct"
-  agentic-dev-release-target: "software-development"
-  agentic-dev-release-inputs: "method:ai-development;architecture:data-migration;rule:data-access-boundedness;rule:human-intervention-necessity;rule:authoritative-artifact-lifecycle-review"
 ---
 
 # technical-plan
@@ -21,16 +14,17 @@ metadata:
 - Ready Specification；
 - 当前 Architecture / ADR / code state；
 - 技术约束；
-- 当前运行环境提供的适用约束 / references 与 Consumer-local policy。
+- Consumer-local constraints。
 
 ## 流程
 
-1. 确认 Technical Planning 是否真的需要；若 Specification 可直接安全映射到已有模式，则返回无需独立 Technical Plan。
-2. 读取并应用当前运行环境为本职责提供的适用约束；Consumer Release 使用随 Skill 打包的 references 与 Consumer-local policy，provider runtime 服从当前 Repository Bootstrap。
-3. 只收敛跨执行单元需要共享的组件边界、数据/契约、集成、迁移、部署、测试策略与关键风险。
-4. 判断是否改变长期 Architecture Context；需要跨功能持续约束时更新真实架构 owner。
-5. 只有决定背景、主要权衡或替代关系具有长期价值时才形成/更新 ADR；普通局部选择不创建 ADR。
-6. 清除仍会阻塞安全实施的技术不确定性。
+1. 确认 Technical Planning 是否真的需要；若 Specification 可直接安全映射到当前系统已有模式，则返回无需独立 Technical Plan，局部可逆施工细节留给 JIT Execution Plan。
+2. 只收敛跨执行单元需要共享的组件边界、数据 / contract、集成、迁移、部署、测试策略与关键风险，并应用 Consumer-local constraints。
+3. 设计集合型数据访问时确认真实消费范围与 bounded / growing / unknown 性质；不得为了实现方便默认全量读取持续增长数据，也不得用固定小上限静默截断正确集合。
+4. 涉及 legacy / historical / business data migration 时，明确 source role、semantic preservation、identity / duplicate、replay / idempotency、exception / conflict disposition、reconciliation 与 provenance；legacy source / mapping 不反向成为新 Requirement Authority。数据库 schema / initialization migration 与业务数据迁移是不同责任，不因名称相同混用。
+5. 判断是否改变长期 Architecture Context；需要跨 Feature 持续约束时更新真实 Architecture owner。新 owner、replace / retire / archive transition 同步检查 locator / navigation、verification consumer 与 current-state wording。
+6. 只有决定背景、主要权衡或替代关系具有长期价值时才形成 / 更新 ADR；普通局部选择不创建 ADR，也不为了对称性创建无真实消费者的抽象。
+7. 清除仍会阻塞安全实施的技术不确定性。每个分析或工具步骤结束后重新判断剩余 planning responsibility，只要当前范围内仍可自动收敛就继续。
 
 ## 输出
 
@@ -44,4 +38,4 @@ metadata:
 
 ## 升级
 
-重大架构方向、高影响难逆权衡、Authority 冲突或超出授权的共享契约改变需要升级。Skill 不创建 Execute Authority。
+重大架构方向、高影响难逆权衡、Authority 冲突或超出授权的共享 contract 改变需要升级。发出人工请求前先检查当前 Authority、代码 / 配置 facts、已有 Evidence 和已授权工具是否足以裁决，并把请求缩到最小不可替代决定。Skill 不创建 Execute Authority。
