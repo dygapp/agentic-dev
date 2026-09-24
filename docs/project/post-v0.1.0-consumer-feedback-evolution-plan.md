@@ -62,6 +62,8 @@ Issue 中的方案只作为 Evidence。每个主题都必须优先问：
 
 ### Theme 0 — v0.1.0 状态与旧入口收口
 
+**状态：已完成。** Issue #172 已按 `v0.1.0` 当前产品模型明确 superseded / completed 并关闭；旧 Gate H / custom Release 路线不再是 Current responsibility。
+
 **来源**：Issue #172、当前 Roadmap、`agentic-dev-v0.1.0`。
 
 **目标**：消除旧发布路线对 Fresh Context 的干扰。
@@ -181,6 +183,6 @@ Theme 0 — 状态 / 旧入口收口
 - 单主题闭环协议；
 - baseline / non-goal 固化。
 
-**尚未开始 Theme 1～4 的详细 Evidence re-analysis、外部研究、Design Freeze 或实现。**
+**Theme 0 已完成；Theme 1～4 尚未开始详细 Evidence re-analysis、外部研究、Design Freeze 或实现。**
 
-下一责任：先完成 Theme 0；完成后以新的 Fresh Context 单独进入 Theme 1。
+下一责任：以新的 Fresh Context 单独进入 Theme 1 — Skill Authority Contract Extensibility 的 Evidence Re-analysis。

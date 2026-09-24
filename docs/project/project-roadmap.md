@@ -38,7 +38,7 @@ S3 Final Fresh Independent Review 在 exact candidate `c84d5ec2a6616a79629879bd4
 
 当前进入 **post-v0.1.0 Consumer Feedback Evolution**。当前演进计划由 [`post-v0.1.0-consumer-feedback-evolution-plan.md`](post-v0.1.0-consumer-feedback-evolution-plan.md) 持有：先完成 Consumer feedback 概览与主题划分，再严格一次只激活一个主题，按 Evidence re-analysis → 必要外部研究 → Design Freeze → Implementation → Focused Validation / Review → Closure 闭环。
 
-上一轮 Issue #172 Gate A～G、旧 Release Candidate 与相关 Runtime Evidence 继续只作为历史 Evidence；原 Gate H、custom Release Builder 与旧发布路线不恢复。Issue #172 只剩状态收口责任，不再作为当前能力设计入口。
+上一轮 Issue #172 Gate A～G、旧 Release Candidate 与相关 Runtime Evidence 继续只作为历史 Evidence；原 Gate H、custom Release Builder 与旧发布路线不恢复。Theme 0 已完成：Issue #172 已明确 superseded / completed 并关闭，不再作为当前能力设计入口。
 
 ## 已完成阶段与当前收敛
 
@@ -87,8 +87,8 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 
 当前主题队列按计划暂定为：
 
-1. Theme 0 — `v0.1.0` 状态与旧入口收口；
-2. Theme 1 — Skill Authority Contract Extensibility；
+1. Theme 0 — `v0.1.0` 状态与旧入口收口：**完成**；
+2. Theme 1 — Skill Authority Contract Extensibility：**当前下一责任**；
 3. Theme 2 — Lightweight Change Execution；
 4. Theme 3 — Multi-Repository Project Workspace；
 5. Theme 4 — Local Validation Runtime Resource Lifecycle。
