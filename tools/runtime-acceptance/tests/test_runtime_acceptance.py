@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import importlib.util
-import json
 import os
 import subprocess
 import sys
@@ -46,27 +45,40 @@ class RuntimeAcceptanceTests(unittest.TestCase):
             self.source_sha,
         )
 
-    def test_release_installed_fixture_satisfies_static_runtime_contract(self):
+    def test_canonical_skill_fixture_satisfies_static_runtime_contract(self):
         with tempfile.TemporaryDirectory() as temp:
             fixture = self._fixture(Path(temp))
-            result = runtime.verify_installed_fixture(fixture["consumer"])
+            result = runtime.verify_installed_fixture(
+                fixture["consumer"],
+                expected_skills=fixture["source_skills"],
+            )
             self.assertEqual("ok", result["status"])
             self.assertEqual(15, result["skill_count"])
             self.assertFalse(result["provider_source_paths_present"])
             self.assertEqual(
                 [
-                    {"name": "external-operation", "kind": "external"},
-                    {"name": "github-actions-verification", "kind": "external"},
-                ],
-                result["execution_contracts"],
-            )
-            self.assertEqual(
-                [
                     "AGENTS.md",
-                    ".agents/release/skill-index.json",
                     ".agents/skills/<name>/SKILL.md",
                 ],
                 result["chatgpt_compatibility_path"],
+            )
+            self.assertFalse((fixture["consumer"] / ".agents/release").exists())
+            self.assertEqual(
+                runtime.canonical_skill_set_sha256(REPO_ROOT),
+                fixture["skill_set_sha256"],
+            )
+
+    def test_consumer_owned_files_survive_fixture_install(self):
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = self._fixture(Path(temp))
+            consumer = fixture["consumer"]
+            self.assertIn(
+                "Consumer Repository Authority",
+                (consumer / "AGENTS.md").read_text(encoding="utf-8"),
+            )
+            self.assertIn(
+                "Consumer-owned",
+                (consumer / "docs/product.md").read_text(encoding="utf-8"),
             )
 
     @unittest.skipIf(
@@ -89,31 +101,38 @@ class RuntimeAcceptanceTests(unittest.TestCase):
 
             self.assertEqual("provider-only\n", sentinel.read_text(encoding="utf-8"))
 
-    def test_tampered_skill_index_path_fails_closed(self):
+    def test_missing_installed_skill_fails_closed_against_canonical_inventory(self):
         with tempfile.TemporaryDirectory() as temp:
             fixture = self._fixture(Path(temp))
             consumer = fixture["consumer"]
-            index_path = consumer / ".agents/release/skill-index.json"
-            index = json.loads(index_path.read_text(encoding="utf-8"))
-            index["skills"][0]["path"] = "../../outside/SKILL.md"
-            index_path.write_text(
-                json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            skill = next((consumer / ".agents/skills").glob("*/SKILL.md"))
+            skill.unlink()
+            with self.assertRaisesRegex(
+                runtime.RuntimeAcceptanceError,
+                "installed Skill inventory mismatch",
+            ):
+                runtime.verify_installed_fixture(
+                    consumer,
+                    expected_skills=fixture["source_skills"],
+                )
+
+    def test_tampered_installed_skill_fails_digest_check(self):
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = self._fixture(Path(temp))
+            consumer = fixture["consumer"]
+            skill = consumer / ".agents/skills/clarify-intent/SKILL.md"
+            skill.write_text(
+                skill.read_text(encoding="utf-8") + "\nTAMPERED\n",
                 encoding="utf-8",
             )
-            with self.assertRaisesRegex(runtime.RuntimeAcceptanceError, "skill-index mismatch"):
-                runtime.verify_installed_fixture(consumer)
-
-    def test_missing_installed_skill_fails_closed(self):
-        with tempfile.TemporaryDirectory() as temp:
-            fixture = self._fixture(Path(temp))
-            consumer = fixture["consumer"]
-            manifest = json.loads(
-                (consumer / ".agents/release/manifest.json").read_text(encoding="utf-8")
-            )
-            path = consumer / manifest["skills"][0]["path"]
-            path.unlink()
-            with self.assertRaisesRegex(runtime.RuntimeAcceptanceError, "installed Skill path is missing"):
-                runtime.verify_installed_fixture(consumer)
+            with self.assertRaisesRegex(
+                runtime.RuntimeAcceptanceError,
+                "installed Skill package digest mismatch",
+            ):
+                runtime.verify_installed_fixture(
+                    consumer,
+                    expected_skills=fixture["source_skills"],
+                )
 
     def test_provider_style_runtime_namespace_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -122,50 +141,54 @@ class RuntimeAcceptanceTests(unittest.TestCase):
             forbidden = consumer / ".agents/rules"
             forbidden.mkdir(parents=True)
             (forbidden / "legacy.md").write_text("legacy\n", encoding="utf-8")
-            with self.assertRaisesRegex(runtime.RuntimeAcceptanceError, "forbidden provider-style"):
+            with self.assertRaisesRegex(
+                runtime.RuntimeAcceptanceError,
+                "forbidden provider-style runtime namespace",
+            ):
                 runtime.verify_installed_fixture(consumer)
 
-    def test_external_execution_contract_missing_token_fails_closed(self):
+    def test_legacy_release_namespace_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
             fixture = self._fixture(Path(temp))
             consumer = fixture["consumer"]
-            skill = consumer / ".agents/skills/external-operation/SKILL.md"
-            text = skill.read_text(encoding="utf-8")
+            legacy = consumer / ".agents/release"
+            legacy.mkdir(parents=True)
+            with self.assertRaisesRegex(
+                runtime.RuntimeAcceptanceError,
+                "forbidden provider-style runtime namespace|legacy release runtime",
+            ):
+                runtime.verify_installed_fixture(consumer)
+
+    def test_provider_source_dependency_inside_skill_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = self._fixture(Path(temp))
+            consumer = fixture["consumer"]
+            skill = consumer / ".agents/skills/clarify-intent/SKILL.md"
             skill.write_text(
-                text.replace("`evidence-recovery`", "`evidence-recovery-missing`"),
+                skill.read_text(encoding="utf-8")
+                + "\nRead docs/rules/provider-only.md before execution.\n",
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(
                 runtime.RuntimeAcceptanceError,
-                "incomplete runtime execution contract",
+                "depends on provider Source path",
             ):
                 runtime.verify_installed_fixture(consumer)
 
-    def test_script_resource_requires_execution_contract_metadata(self):
+    def test_old_release_composition_token_inside_skill_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
             fixture = self._fixture(Path(temp))
             consumer = fixture["consumer"]
-            scripts = consumer / ".agents/skills/clarify-intent/scripts"
-            scripts.mkdir(parents=True)
-            (scripts / "helper.py").write_text("print('helper')\n", encoding="utf-8")
-            with self.assertRaisesRegex(
-                runtime.RuntimeAcceptanceError,
-                "contains scripts without runtime execution contract",
-            ):
-                runtime.verify_installed_fixture(consumer)
-
-    def test_skill_index_cannot_gain_procedure_fields(self):
-        with tempfile.TemporaryDirectory() as temp:
-            fixture = self._fixture(Path(temp))
-            consumer = fixture["consumer"]
-            index_path = consumer / ".agents/release/skill-index.json"
-            index = json.loads(index_path.read_text(encoding="utf-8"))
-            index["skills"][0]["procedure"] = "load everything"
-            index_path.write_text(
-                json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            skill = consumer / ".agents/skills/clarify-intent/SKILL.md"
+            skill.write_text(
+                skill.read_text(encoding="utf-8")
+                + "\nagentic-dev-release-inputs: legacy\n",
                 encoding="utf-8",
             )
-            with self.assertRaisesRegex(runtime.RuntimeAcceptanceError, "locator metadata only"):
+            with self.assertRaisesRegex(
+                runtime.RuntimeAcceptanceError,
+                "retired composition token",
+            ):
                 runtime.verify_installed_fixture(consumer)
 
 

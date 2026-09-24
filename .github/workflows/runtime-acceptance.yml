@@ -4,34 +4,18 @@ name: Runtime Acceptance
 on:
   pull_request:
     paths:
-      - 'AGENTS.md'
-      - 'docs/architecture/**'
-      - 'docs/methods/**'
-      - 'docs/rules/**'
-      - 'docs/project/project-capability-profile.md'
-      - 'docs/project/project-roadmap.md'
       - 'skills/**'
-      - 'tools/release-build/**'
-      - 'tools/distribution-audit/**'
       - 'tools/runtime-acceptance/**'
+      - 'tools/rule-discovery/tests/test_eval_runner_integrity.py'
       - 'evals/**'
-      - '.github/workflows/release-build.yml'
       - '.github/workflows/runtime-acceptance.yml'
   push:
     branches: [master]
     paths:
-      - 'AGENTS.md'
-      - 'docs/architecture/**'
-      - 'docs/methods/**'
-      - 'docs/rules/**'
-      - 'docs/project/project-capability-profile.md'
-      - 'docs/project/project-roadmap.md'
       - 'skills/**'
-      - 'tools/release-build/**'
-      - 'tools/distribution-audit/**'
       - 'tools/runtime-acceptance/**'
+      - 'tools/rule-discovery/tests/test_eval_runner_integrity.py'
       - 'evals/**'
-      - '.github/workflows/release-build.yml'
       - '.github/workflows/runtime-acceptance.yml'
   workflow_dispatch:
 
@@ -66,10 +50,13 @@ jobs:
       - name: Run deterministic runtime acceptance tests
         run: python3 -m unittest discover -s tools/runtime-acceptance/tests -v
 
+      - name: Run deterministic eval runtime integrity tests
+        run: python3 -m unittest tools.rule-discovery.tests.test_eval_runner_integrity -v
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '22.20.0'
 
       - name: Install pinned Codex CLI
         run: npm install --global @openai/codex@0.155.0
@@ -77,12 +64,18 @@ jobs:
       - name: Record Codex version
         run: codex --version
 
-      - name: Run release-installed native discovery acceptance
+      - name: Run canonical Skill native discovery acceptance
         shell: bash
         env:
           SOURCE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
         run: |
-          python3 tools/runtime-acceptance/runtime_acceptance.py accept             --repo-root .             --work-dir "$RUNNER_TEMP/runtime-acceptance"             --source-sha "$SOURCE_SHA"             --codex-bin codex             --expected-codex-version 0.155.0             --report "$RUNNER_TEMP/runtime-acceptance-report.json"
+          python3 tools/runtime-acceptance/runtime_acceptance.py accept \
+            --repo-root . \
+            --work-dir "$RUNNER_TEMP/runtime-acceptance" \
+            --source-sha "$SOURCE_SHA" \
+            --codex-bin codex \
+            --expected-codex-version 0.155.0 \
+            --report "$RUNNER_TEMP/runtime-acceptance-report.json"
 
       - name: Record authenticated model runtime requirement
         shell: bash
@@ -97,6 +90,7 @@ jobs:
           payload = {
               "status": "PENDING_AUTHENTICATED_CODEX_RUNTIME",
               "source_sha": os.environ["SOURCE_SHA"],
+              "runtime_mode": "canonical-skill-copy",
               "reason": (
                   "Real model activation / representative behavior must run in an "
                   "authenticated Codex Runtime. GitHub-hosted deterministic acceptance "

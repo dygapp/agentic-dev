@@ -380,12 +380,21 @@ def grade_selected(
             raise GradeError(f"missing runtime result for {scenario_id}")
 
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-        if metadata.get("runtime_mode") != "release-installed":
+        if metadata.get("schema_version") != 2:
+            raise GradeError(f"{scenario_id} runtime metadata schema is not v2")
+        if metadata.get("evidence_kind") != "agentic-dev-codex-runtime":
+            raise GradeError(f"{scenario_id} runtime evidence kind is invalid")
+        if metadata.get("runtime_mode") != "canonical-skill-copy":
             raise GradeError(
-                f"{scenario_id} was not executed in release-installed runtime"
+                f"{scenario_id} was not executed in canonical-skill-copy runtime"
             )
-        if not metadata.get("release_id"):
-            raise GradeError(f"{scenario_id} runtime metadata has no release_id")
+        skill_set_sha256 = metadata.get("skill_set_sha256")
+        if not isinstance(skill_set_sha256, str) or len(skill_set_sha256) != 64:
+            raise GradeError(
+                f"{scenario_id} runtime metadata has invalid skill_set_sha256"
+            )
+        if metadata.get("timed_out") is not False:
+            raise GradeError(f"{scenario_id} runtime process timed out")
         if metadata.get("returncode") != 0:
             raise GradeError(f"{scenario_id} runtime process did not exit successfully")
 
@@ -405,7 +414,7 @@ def grade_selected(
             "scenario_id": scenario_id,
             "skill_name": scenario["skill_name"],
             "runtime_mode": metadata["runtime_mode"],
-            "release_id": metadata["release_id"],
+            "skill_set_sha256": skill_set_sha256,
             "source_commit": metadata["source_commit"],
             "runtime_codex_version": metadata["codex_version"],
             "grader_codex_version": codex_version,

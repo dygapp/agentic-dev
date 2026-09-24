@@ -35,9 +35,9 @@ Runtime workspace 只得到当前 runtime entry、Rule Discovery Tool、current 
 
 ### Skill activation / behavior
 
-- `activation/core-first-pass.json`：Skill metadata activation 回归语料；
+- `activation/core-first-pass.json`：canonical Skill activation 回归语料；
 - `behavior/*.json`：仍对应 current Skills 的行为回归语料；该目录中的 current JSON 由 runner 机械发现，不维护第二份手工注册列表；
-- `run_codex_evals.py`：统一隔离 runner；`--scenario` 必须属于当前选择的 mode，mode / scenario 不匹配时在启动 Codex 前以非零状态失败。
+- `run_codex_evals.py`：统一隔离 runner；activation / behavior 直接复制 canonical `skills/**` 到临时 Consumer `.agents/skills/**`，绑定 clean exact HEAD + Skill-set digest，并对单场景执行有界 timeout / stale-evidence cleanup；`--scenario` 必须属于当前选择的 mode。
 
 这些历史语料只作为 targeted regression input；不得把旧运行结果直接扩大为当前 PASS。
 

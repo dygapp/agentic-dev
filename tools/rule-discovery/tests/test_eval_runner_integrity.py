@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 import zipfile
 
 
@@ -31,6 +32,23 @@ def load_authenticated_runtime_module():
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
+
+
+def load_runtime_acceptance_module():
+    path = REPO_ROOT / "tools/runtime-acceptance/runtime_acceptance.py"
+    spec = importlib.util.spec_from_file_location(
+        "agentic_dev_runtime_acceptance_for_evals",
+        path,
+    )
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load {path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+runtime_acceptance = load_runtime_acceptance_module()
 
 
 authenticated_runtime = load_authenticated_runtime_module()
@@ -189,7 +207,7 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                 artifacts["artifacts"][0]["name"],
             )
 
-    def test_authenticated_runtime_scenario_set_is_exact_gate_e_subject(self):
+    def test_authenticated_runtime_scenario_set_is_bounded_representative_subject(self):
         self.assertEqual(8, len(authenticated_runtime.ACTIVATION_SCENARIOS))
         self.assertEqual(6, len(authenticated_runtime.BEHAVIOR_SCENARIOS))
         self.assertEqual(
@@ -216,6 +234,9 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
             report.write_text('{"status":"PASS"}\n', encoding="utf-8")
             bundle = root / "evidence.zip"
             payload = {
+                "deterministic_runtime": {
+                    "report": "evals/README.md",
+                },
                 "activation": {
                     "evidence_files": [
                         {"path": "AGENTS.md", "sha256": "not-used-here"},
@@ -240,6 +261,7 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                         "authenticated-model-runtime.json",
                         "AGENTS.md",
                         "README.md",
+                        "evals/README.md",
                     },
                     set(zf.namelist()),
                 )
@@ -275,9 +297,12 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                 (behavior / f"{scenario}.run.json").write_text(
                     json.dumps(
                         {
+                            "schema_version": 2,
+                            "evidence_kind": "agentic-dev-codex-runtime",
                             "source_commit": source_sha,
-                            "runtime_mode": "release-installed",
-                            "release_id": "agentic-dev@test",
+                            "runtime_mode": "canonical-skill-copy",
+                            "skill_set_sha256": "b" * 64,
+                            "timed_out": False,
                             "returncode": 0,
                             "grading": "fail",
                             "codex_version": "codex-cli test",
@@ -290,6 +315,9 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                     json.dumps(
                         {
                             "scenario_id": scenario,
+                            "source_commit": source_sha,
+                            "runtime_mode": "canonical-skill-copy",
+                            "skill_set_sha256": "b" * 64,
                             "verdict": "FAIL",
                             "grader_codex_version": "codex-cli test",
                         }
@@ -319,12 +347,13 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                 self.assertEqual("FAIL", evidence["status"])
                 self.assertEqual([scenario], evidence["failed_scenarios"])
                 self.assertEqual("FAIL", evidence["scenarios"][0]["verdict"])
+                self.assertEqual("b" * 64, evidence["scenarios"][0]["skill_set_sha256"])
                 self.assertEqual(7, len(evidence["evidence_files"]))
         finally:
             authenticated_runtime.REPO_ROOT = original_root
             authenticated_runtime.RESULTS = original_results
 
-    def test_activation_corpus_covers_new_release_skills(self):
+    def test_activation_corpus_covers_current_canonical_skills(self):
         ids = {case["id"] for case in runner.activation_cases()}
         self.assertTrue({"A-RB-01", "A-AR-01", "A-MC-01", "A-EO-01"} <= ids)
 
@@ -451,39 +480,86 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         with self.assertRaises(grader.GradeError):
             grader.validate_grade(scenario, inconsistent)
 
-    def test_release_runtime_materializes_installed_release_not_source_tree(self):
-        source_commit = runner.current_source_commit()
-        release_context, package_root, release_result = runner.build_release_package(
-            source_commit
-        )
-        try:
-            with tempfile.TemporaryDirectory() as temp_dir:
-                workspace = Path(temp_dir)
-                runner.install_release_runtime(workspace, package_root)
-                self.assertTrue(
-                    (workspace / ".agents/release/manifest.json").is_file()
-                )
-                self.assertEqual(
-                    15,
-                    len(list((workspace / ".agents/skills").glob("*/SKILL.md"))),
-                )
-                self.assertFalse((workspace / "docs/rules").exists())
-                self.assertFalse((workspace / "tools/rule-discovery").exists())
-                self.assertIn(source_commit[:12], release_result["release_id"])
-        finally:
-            release_context.cleanup()
+    def test_canonical_skill_copy_materializes_only_skill_packages(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            workspace = Path(temp_dir)
+            runner.populate_isolated_skill_copies(workspace)
+            self.assertEqual(
+                15,
+                len(list((workspace / ".agents/skills").glob("*/SKILL.md"))),
+            )
+            self.assertFalse((workspace / ".agents/release").exists())
+            self.assertFalse((workspace / "docs/rules").exists())
+            self.assertFalse((workspace / "tools/rule-discovery").exists())
+            self.assertEqual(64, len(runner.canonical_skill_set_sha256()))
 
-    def test_release_runtime_is_not_valid_for_provider_discovery_mode(self):
+    def test_runtime_and_eval_runner_share_skill_set_identity(self):
+        self.assertEqual(
+            runtime_acceptance.canonical_skill_set_sha256(REPO_ROOT),
+            runner.canonical_skill_set_sha256(),
+        )
+
+    def test_release_runtime_flag_is_removed(self):
         completed = self.run_python(
             EVALS_DIR / "run_codex_evals.py",
-            "--discovery",
+            "--behavior",
             "--release-runtime",
-            "--codex-bin",
-            "false",
         )
         self.assertEqual(2, completed.returncode)
-        self.assertIn("--release-runtime is not valid with --discovery", completed.stderr)
-        self.assertNotIn("Codex CLI version check failed", completed.stderr)
+        self.assertIn("unrecognized arguments: --release-runtime", completed.stderr)
+
+    def test_stale_scenario_results_are_removed_before_rerun(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            scenario = "B-STALE"
+            for suffix in (
+                ".jsonl", ".stderr.txt", ".run.json", ".grade.json",
+                ".grader.jsonl", ".grader.stderr.txt",
+            ):
+                (root / f"{scenario}{suffix}").write_text("stale\n", encoding="utf-8")
+            runner._clear_stale_scenario_results(root, scenario)
+            self.assertEqual([], list(root.iterdir()))
+
+    def test_runtime_timeout_is_bounded_and_recorded(self):
+        original_results = runner.RESULTS
+        original_context = dict(runner.RUN_CONTEXT)
+        try:
+            with tempfile.TemporaryDirectory() as temp_dir:
+                root = Path(temp_dir)
+                runner.RESULTS = root / "results"
+                runner.RUN_CONTEXT.update(
+                    {
+                        "source_commit": "a" * 40,
+                        "codex_version": "codex-cli test",
+                        "skill_set_sha256": "b" * 64,
+                        "timeout_seconds": 1,
+                    }
+                )
+                timeout = subprocess.TimeoutExpired(
+                    cmd=["codex"], timeout=1, output="partial", stderr="waiting"
+                )
+                with mock.patch.object(runner.subprocess, "run", side_effect=timeout):
+                    code = runner.run_codex(
+                        codex_bin="codex",
+                        scenario_id="B-TIMEOUT",
+                        prompt="$clarify-intent test",
+                        result_group="behavior",
+                        cwd=root,
+                        skip_git_repo_check=True,
+                    )
+                self.assertEqual(124, code)
+                metadata = json.loads(
+                    (runner.RESULTS / "behavior/B-TIMEOUT.run.json").read_text(
+                        encoding="utf-8"
+                    )
+                )
+                self.assertTrue(metadata["timed_out"])
+                self.assertEqual(1, metadata["timeout_seconds"])
+                self.assertEqual("canonical-skill-copy", metadata["runtime_mode"])
+        finally:
+            runner.RESULTS = original_results
+            runner.RUN_CONTEXT.clear()
+            runner.RUN_CONTEXT.update(original_context)
 
     def test_governance_context_paths_resolve_current_repository_files(self):
         referenced: set[str] = set()

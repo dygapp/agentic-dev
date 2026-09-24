@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # agentic-dev-distribution: source-only
-"""Build, install, and validate an agentic-dev Release in an isolated Consumer-like runtime."""
+"""Validate canonical agentic-dev Skills in an isolated Consumer-like runtime."""
 
 from __future__ import annotations
 
 from contextlib import contextmanager
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -17,18 +18,10 @@ import subprocess
 import sys
 import tempfile
 import time
-import zipfile
 from pathlib import Path
 from typing import Any
 
-START = "<!-- agentic-dev-release:start -->"
-END = "<!-- agentic-dev-release:end -->"
 SKILL_FRONTMATTER_END = "\n---\n"
-EXPECTED_LOCAL_LOCATORS = (
-    ".agents/README.md",
-    ".agents/release/skill-index.json",
-    ".agents/skills/**",
-)
 FORBIDDEN_RUNTIME_NAMESPACES = (
     ".agents/methods",
     ".agents/architecture",
@@ -36,23 +29,15 @@ FORBIDDEN_RUNTIME_NAMESPACES = (
     ".agents/contracts",
     ".agents/tools",
     ".agents/evals",
+    ".agents/release",
 )
 FORBIDDEN_SKILL_SOURCE_PATHS = (
     "docs/methods/",
     "docs/architecture/",
     "docs/rules/",
     "tools/rule-discovery/",
+    "tools/release-build/",
 )
-INDEX_SKILL_KEYS = {"id", "name", "description", "path"}
-EXECUTION_KINDS = {"external", "script"}
-EXECUTION_CONTRACT_TOKENS = (
-    "`direct-path`",
-    "`automated-alternate`",
-    "`evidence-recovery`",
-    "`fail-closed`",
-)
-
-
 class RuntimeAcceptanceError(RuntimeError):
     pass
 
@@ -80,19 +65,6 @@ def _run(
     return completed
 
 
-def _safe_extract(archive: Path, destination: Path) -> None:
-    destination = destination.resolve()
-    destination.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(archive, "r") as zf:
-        for info in zf.infolist():
-            target = (destination / info.filename).resolve()
-            if target != destination and destination not in target.parents:
-                raise RuntimeAcceptanceError(
-                    f"archive path escapes extraction root: {info.filename}"
-                )
-        zf.extractall(destination)
-
-
 def _frontmatter(text: str) -> str:
     if not text.startswith("---\n"):
         raise RuntimeAcceptanceError("SKILL.md has no YAML front matter")
@@ -112,41 +84,105 @@ def _scalar(frontmatter: str, key: str) -> str | None:
     return value
 
 
-def _metadata_scalar(frontmatter: str, key: str) -> str | None:
-    in_metadata = False
-    for line in frontmatter.splitlines():
-        if line.strip() == "metadata:" and not line.startswith((" ", "\t")):
-            in_metadata = True
+def _sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _tree_sha256(root: Path) -> str:
+    root = root.resolve()
+    digest = hashlib.sha256()
+    for path in sorted(item for item in root.rglob("*") if item.is_file()):
+        relative = path.relative_to(root).as_posix().encode("utf-8")
+        payload = path.read_bytes()
+        digest.update(relative); digest.update(b"\0")
+        digest.update(str(len(payload)).encode("ascii")); digest.update(b"\0")
+        digest.update(payload); digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def _skill_inventory(skill_root: Path) -> dict[str, dict[str, Any]]:
+    skill_root = skill_root.resolve()
+    if not skill_root.is_dir():
+        raise RuntimeAcceptanceError(f"Skill root is missing: {skill_root}")
+
+    inventory: dict[str, dict[str, Any]] = {}
+    for skill_dir in sorted(path for path in skill_root.iterdir() if path.is_dir()):
+        skill_path = skill_dir / "SKILL.md"
+        if not skill_path.is_file():
             continue
-        if in_metadata and line and not line.startswith((" ", "\t")):
-            break
-        if in_metadata:
-            match = re.match(rf"^\s+{re.escape(key)}:\s*(.+?)\s*$", line)
-            if match:
-                value = match.group(1).strip()
-                if len(value) >= 2 and value[0] == value[-1] and value[0] in {"\"", "'"}:
-                    value = value[1:-1]
-                return value
-    return None
+        body = skill_path.read_text(encoding="utf-8")
+        frontmatter = _frontmatter(body)
+        name = _scalar(frontmatter, "name")
+        description = _scalar(frontmatter, "description")
+        if not name or not description:
+            raise RuntimeAcceptanceError(
+                f"Skill {skill_dir.name} must define name and description"
+            )
+        if name != skill_dir.name:
+            raise RuntimeAcceptanceError(
+                f"Skill directory/name mismatch: {skill_dir.name} != {name}"
+            )
+        if name in inventory:
+            raise RuntimeAcceptanceError(f"duplicate Skill name: {name}")
+
+        for token in (
+            "agentic-dev-release-inputs",
+            "agentic-dev-release-target",
+            "generated-release-reference",
+            "references/release-inputs",
+        ):
+            if token in body:
+                raise RuntimeAcceptanceError(
+                    f"Skill {name} still contains retired composition token: {token}"
+                )
+        for token in FORBIDDEN_SKILL_SOURCE_PATHS:
+            if token in body:
+                raise RuntimeAcceptanceError(
+                    f"Skill {name} depends on provider Source path: {token}"
+                )
+
+        inventory[name] = {
+            "name": name,
+            "description": description,
+            "path": skill_path,
+            "package_root": skill_dir,
+            "package_sha256": _tree_sha256(skill_dir),
+            "skill_md_sha256": _sha256_file(skill_path),
+        }
+
+    if not inventory:
+        raise RuntimeAcceptanceError(f"no Skills found under {skill_root}")
+    return inventory
 
 
-def _load_json(path: Path) -> dict[str, Any]:
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise RuntimeAcceptanceError(f"cannot read JSON {path}: {exc}") from exc
-    if not isinstance(payload, dict):
-        raise RuntimeAcceptanceError(f"expected JSON object: {path}")
-    return payload
+def canonical_skill_inventory(repo_root: Path) -> dict[str, dict[str, Any]]:
+    return _skill_inventory(repo_root.resolve() / "skills")
+
+
+def canonical_skill_set_sha256(repo_root: Path) -> str:
+    skill_root = (repo_root.resolve() / "skills").resolve()
+    digest = hashlib.sha256()
+    for skill_dir in sorted(path for path in skill_root.iterdir() if path.is_dir()):
+        if not (skill_dir / "SKILL.md").is_file():
+            continue
+        for path in sorted(item for item in skill_dir.rglob("*") if item.is_file()):
+            relative = path.relative_to(skill_root).as_posix().encode("utf-8")
+            payload = path.read_bytes()
+            digest.update(relative)
+            digest.update(b"\0")
+            digest.update(str(len(payload)).encode("ascii"))
+            digest.update(b"\0")
+            digest.update(payload)
+            digest.update(b"\0")
+    return digest.hexdigest()
 
 
 def build_and_install_fixture(
     repo_root: Path,
     work_dir: Path,
     source_sha: str,
-    *,
-    release_version: str | None = None,
 ) -> dict[str, Any]:
+    """Create an isolated Consumer by directly installing canonical Skill packages."""
     repo_root = repo_root.resolve()
     work_dir = work_dir.resolve()
     if work_dir == repo_root or repo_root in work_dir.parents:
@@ -158,44 +194,16 @@ def build_and_install_fixture(
         shutil.rmtree(work_dir)
     work_dir.mkdir(parents=True)
 
-    release_version = release_version or f"0.0.0-runtime.{source_sha[:12]}"
-    output_dir = work_dir / "release"
-    builder = repo_root / "tools/release-build/release_build.py"
-    completed = _run(
-        [
-            sys.executable,
-            str(builder),
-            "build",
-            "--repo-root",
-            str(repo_root),
-            "--output-dir",
-            str(output_dir),
-            "--source-sha",
-            source_sha,
-            "--release-version",
-            release_version,
-            "--evidence-locator",
-            "runtime-acceptance:exact-subject",
-        ]
-    )
-    try:
-        build_result = json.loads(completed.stdout)
-    except json.JSONDecodeError as exc:
-        raise RuntimeAcceptanceError(
-            f"release builder did not emit JSON: {completed.stdout}"
-        ) from exc
-
-    archive = output_dir / build_result["archive"]
-    package_root = work_dir / "package"
-    _safe_extract(archive, package_root)
-
+    source_skills = canonical_skill_inventory(repo_root)
     consumer = work_dir / "consumer"
     consumer.mkdir()
     _run(["git", "init", "-q"], cwd=consumer)
+
     (consumer / "AGENTS.md").write_text(
         "# Consumer Repository Authority\n\n"
         "Product, requirements, system architecture, technology policy and current state "
-        "belong to this Consumer repository.\n",
+        "belong to this Consumer repository.\n"
+        "Repository-local Skills live under .agents/skills/**.\n",
         encoding="utf-8",
     )
     (consumer / "docs").mkdir()
@@ -204,206 +212,90 @@ def build_and_install_fixture(
         encoding="utf-8",
     )
 
-    installer = package_root / "install.py"
-    _run([sys.executable, str(installer), "--target", str(consumer)])
+    installed_root = consumer / ".agents" / "skills"
+    installed_root.mkdir(parents=True)
+    for name, item in source_skills.items():
+        shutil.copytree(item["package_root"], installed_root / name)
 
     return {
-        "build_result": build_result,
-        "archive": archive,
-        "package_root": package_root,
         "consumer": consumer,
+        "source_skills": source_skills,
+        "source_sha": source_sha,
+        "skill_set_sha256": canonical_skill_set_sha256(repo_root),
     }
 
 
-def verify_installed_fixture(consumer: Path) -> dict[str, Any]:
+def verify_installed_fixture(
+    consumer: Path,
+    *,
+    expected_skills: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     consumer = consumer.resolve()
     agents_path = consumer / "AGENTS.md"
-    readme_path = consumer / ".agents/README.md"
-    manifest_path = consumer / ".agents/release/manifest.json"
-    index_path = consumer / ".agents/release/skill-index.json"
-
-    for path in (agents_path, readme_path, manifest_path, index_path):
-        if not path.is_file():
-            raise RuntimeAcceptanceError(f"installed runtime missing required file: {path}")
-
-    manifest = _load_json(manifest_path)
-    index = _load_json(index_path)
-    manifest_skills = manifest.get("skills")
-    index_skills = index.get("skills")
-    if not isinstance(manifest_skills, list) or not isinstance(index_skills, list):
-        raise RuntimeAcceptanceError("manifest / skill-index has invalid Skill inventory")
-    if index.get("release_id") != manifest.get("release_id"):
-        raise RuntimeAcceptanceError("skill-index release_id does not match manifest")
-    if index.get("schema_version") != 1:
-        raise RuntimeAcceptanceError("unsupported skill-index schema_version")
-
-    manifest_by_name: dict[str, dict[str, Any]] = {}
-    for item in manifest_skills:
-        if not isinstance(item, dict):
-            raise RuntimeAcceptanceError("manifest Skill entry is not an object")
-        name = item.get("name")
-        if not isinstance(name, str) or not name:
-            raise RuntimeAcceptanceError("manifest Skill entry has invalid name")
-        if name in manifest_by_name:
-            raise RuntimeAcceptanceError(f"duplicate manifest Skill: {name}")
-        manifest_by_name[name] = item
-
-    index_by_name: dict[str, dict[str, Any]] = {}
-    for item in index_skills:
-        if not isinstance(item, dict):
-            raise RuntimeAcceptanceError("skill-index entry is not an object")
-        if set(item) != INDEX_SKILL_KEYS:
-            raise RuntimeAcceptanceError(
-                f"skill-index entry must remain locator metadata only: {sorted(item)}"
-            )
-        name = item.get("name")
-        if not isinstance(name, str) or not name:
-            raise RuntimeAcceptanceError("skill-index entry has invalid name")
-        if name in index_by_name:
-            raise RuntimeAcceptanceError(f"duplicate skill-index Skill: {name}")
-        index_by_name[name] = item
-
-    if set(manifest_by_name) != set(index_by_name):
-        raise RuntimeAcceptanceError(
-            "manifest and skill-index Skill inventories are inconsistent"
-        )
-
-    installed_paths: list[str] = []
-    execution_contracts: list[dict[str, str]] = []
-    for name in sorted(manifest_by_name):
-        manifest_item = manifest_by_name[name]
-        index_item = index_by_name[name]
-        for key in ("id", "name", "description", "path"):
-            if index_item.get(key) != manifest_item.get(key):
-                raise RuntimeAcceptanceError(
-                    f"skill-index mismatch for {name}: {key}"
-                )
-
-        relative = index_item["path"]
-        if not isinstance(relative, str) or not relative.startswith(".agents/skills/"):
-            raise RuntimeAcceptanceError(f"invalid local Skill path for {name}: {relative}")
-        skill_path = (consumer / relative).resolve()
-        if consumer not in skill_path.parents:
-            raise RuntimeAcceptanceError(f"Skill path escapes Consumer root: {relative}")
-        if not skill_path.is_file():
-            raise RuntimeAcceptanceError(f"installed Skill path is missing: {relative}")
-
-        text = skill_path.read_text(encoding="utf-8")
-        frontmatter = _frontmatter(text)
-        if _scalar(frontmatter, "name") != name:
-            raise RuntimeAcceptanceError(f"installed Skill name mismatch: {name}")
-        if _scalar(frontmatter, "description") != manifest_item.get("description"):
-            raise RuntimeAcceptanceError(f"installed Skill description mismatch: {name}")
-
-        for forbidden in FORBIDDEN_SKILL_SOURCE_PATHS:
-            if forbidden in text:
-                raise RuntimeAcceptanceError(
-                    f"installed Skill {name} depends on provider Source path: {forbidden}"
-                )
-
-        skill_dir = skill_path.parent
-        has_scripts = (skill_dir / "scripts").is_dir() and any(
-            path.is_file() for path in (skill_dir / "scripts").rglob("*")
-        )
-        execution_kind = _metadata_scalar(
-            frontmatter, "agentic-dev-runtime-execution"
-        )
-        if has_scripts and execution_kind not in EXECUTION_KINDS:
-            raise RuntimeAcceptanceError(
-                f"installed Skill {name} contains scripts without runtime execution contract"
-            )
-        if execution_kind is not None:
-            if execution_kind not in EXECUTION_KINDS:
-                raise RuntimeAcceptanceError(
-                    f"installed Skill {name} has unsupported runtime execution kind: "
-                    f"{execution_kind}"
-                )
-            missing_tokens = [
-                token for token in EXECUTION_CONTRACT_TOKENS if token not in text
-            ]
-            if missing_tokens:
-                raise RuntimeAcceptanceError(
-                    f"installed Skill {name} has incomplete runtime execution contract: "
-                    f"{missing_tokens}"
-                )
-            execution_contracts.append(
-                {"name": name, "kind": execution_kind}
-            )
-
-        installed_paths.append(relative)
-
-    for namespace in FORBIDDEN_RUNTIME_NAMESPACES:
-        if (consumer / namespace).exists():
-            raise RuntimeAcceptanceError(
-                f"forbidden provider-style runtime namespace installed: {namespace}"
-            )
+    product_path = consumer / "docs/product.md"
+    if not agents_path.is_file():
+        raise RuntimeAcceptanceError("Consumer AGENTS.md is missing")
+    if not product_path.is_file():
+        raise RuntimeAcceptanceError("Consumer-owned product doc is missing")
 
     agents = agents_path.read_text(encoding="utf-8")
-    if agents.count(START) != 1 or agents.count(END) != 1:
-        raise RuntimeAcceptanceError("Consumer AGENTS.md has invalid release locator block")
-    for locator in EXPECTED_LOCAL_LOCATORS:
-        if locator not in agents:
-            raise RuntimeAcceptanceError(
-                f"Consumer AGENTS.md missing runtime locator: {locator}"
-            )
+    product = product_path.read_text(encoding="utf-8")
+    if "Consumer Repository Authority" not in agents:
+        raise RuntimeAcceptanceError("Consumer AGENTS.md authority sentinel is missing")
+    if ".agents/skills/**" not in agents:
+        raise RuntimeAcceptanceError("Consumer AGENTS.md missing local Skill locator")
+    if "Consumer-owned" not in product:
+        raise RuntimeAcceptanceError("Consumer-owned project knowledge was not preserved")
+
     for forbidden in FORBIDDEN_SKILL_SOURCE_PATHS:
         if forbidden in agents:
             raise RuntimeAcceptanceError(
                 f"Consumer AGENTS.md depends on provider Source path: {forbidden}"
             )
 
-    readme = readme_path.read_text(encoding="utf-8")
-    if any(name in readme for name in manifest_by_name):
+    installed = _skill_inventory(consumer / ".agents/skills")
+    if expected_skills is not None:
+        if set(installed) != set(expected_skills):
+            raise RuntimeAcceptanceError(
+                "installed Skill inventory mismatch: "
+                f"expected={sorted(expected_skills)}, actual={sorted(installed)}"
+            )
+        for name, expected in expected_skills.items():
+            if installed[name]["package_sha256"] != expected["package_sha256"]:
+                raise RuntimeAcceptanceError(
+                    f"installed Skill package digest mismatch: {name}"
+                )
+
+    for namespace in FORBIDDEN_RUNTIME_NAMESPACES:
+        if (consumer / namespace).exists():
+            raise RuntimeAcceptanceError(
+                f"forbidden provider-style runtime namespace installed: {namespace}"
+            )
+    if (consumer / ".agents/release").exists():
         raise RuntimeAcceptanceError(
-            ".agents/README.md must not become a hand-maintained Skill inventory"
+            "legacy release runtime namespace installed: .agents/release"
         )
-    for forbidden in ("## 流程", "generated-release-reference", "source-id:"):
-        if forbidden in readme:
-            raise RuntimeAcceptanceError(
-                f".agents/README.md contains runtime procedure/reference content: {forbidden}"
-            )
-
-    index_text = index_path.read_text(encoding="utf-8")
-    for forbidden in ("## 流程", "generated-release-reference", "source-id:"):
-        if forbidden in index_text:
-            raise RuntimeAcceptanceError(
-                f"skill-index violates Progressive Disclosure: {forbidden}"
-            )
-
-    compatibility = manifest.get("compatibility")
-    if not isinstance(compatibility, dict):
-        raise RuntimeAcceptanceError("manifest compatibility declaration is missing")
-    chatgpt = compatibility.get("chatgpt_github_connector")
-    if not isinstance(chatgpt, dict):
-        raise RuntimeAcceptanceError("ChatGPT + GitHub Connector compatibility entry missing")
-    if chatgpt.get("index") != ".agents/release/skill-index.json":
-        raise RuntimeAcceptanceError("ChatGPT compatibility index locator is inconsistent")
-
-    product = consumer / "docs/product.md"
-    if not product.is_file() or "Consumer-owned" not in product.read_text(encoding="utf-8"):
-        raise RuntimeAcceptanceError("Consumer-owned docs were not preserved")
 
     return {
         "status": "ok",
-        "release_id": manifest.get("release_id"),
-        "source_sha": manifest.get("source_sha"),
-        "skill_count": len(manifest_by_name),
-        "skills": sorted(manifest_by_name),
-        "skill_paths": installed_paths,
-        "execution_contracts": execution_contracts,
+        "skill_count": len(installed),
+        "skills": sorted(installed),
+        "skill_paths": [
+            f".agents/skills/{name}/SKILL.md" for name in sorted(installed)
+        ],
+        "skill_package_sha256": {
+            name: installed[name]["package_sha256"] for name in sorted(installed)
+        },
         "chatgpt_compatibility_path": [
             "AGENTS.md",
-            ".agents/release/skill-index.json",
             ".agents/skills/<name>/SKILL.md",
         ],
         "progressive_disclosure": {
             "bootstrap_contains_skill_bodies": False,
-            "index_contains_skill_bodies": False,
-            "supporting_content_location": ".agents/skills/<name>/references/**",
+            "supporting_content_location": ".agents/skills/<name>/**",
         },
         "provider_source_paths_present": False,
     }
-
 
 
 @contextmanager
@@ -521,10 +413,9 @@ def codex_native_discovery(
             f"unexpected Codex version: expected {expected_version!r}, got {version!r}"
         )
 
-    manifest = _load_json(consumer / ".agents/release/manifest.json")
+    installed = _skill_inventory(consumer / ".agents/skills")
     expected = {
-        item["name"]: str((consumer / item["path"]).resolve())
-        for item in manifest["skills"]
+        name: str(item["path"].resolve()) for name, item in installed.items()
     }
 
     last_error: Exception | None = None
@@ -671,6 +562,20 @@ def codex_native_discovery(
     raise RuntimeAcceptanceError(f"Codex native discovery failed: {last_error}")
 
 
+def _require_exact_clean_subject(repo_root: Path, source_sha: str) -> None:
+    repo_root = repo_root.resolve()
+    actual = _run(["git", "rev-parse", "HEAD"], cwd=repo_root).stdout.strip()
+    if actual != source_sha:
+        raise RuntimeAcceptanceError(
+            f"runtime subject mismatch: requested={source_sha}, actual={actual}"
+        )
+    status = _run(["git", "status", "--porcelain"], cwd=repo_root).stdout.strip()
+    if status:
+        raise RuntimeAcceptanceError(
+            "runtime acceptance requires a clean exact-subject checkout"
+        )
+
+
 def accept(
     repo_root: Path,
     work_dir: Path,
@@ -678,8 +583,12 @@ def accept(
     codex_bin: str,
     expected_codex_version: str | None,
 ) -> dict[str, Any]:
+    repo_root = repo_root.resolve()
+    _require_exact_clean_subject(repo_root, source_sha)
     fixture = build_and_install_fixture(repo_root, work_dir, source_sha)
-    static = verify_installed_fixture(fixture["consumer"])
+    static = verify_installed_fixture(
+        fixture["consumer"], expected_skills=fixture["source_skills"]
+    )
     with upstream_source_unavailable(repo_root, fixture["consumer"]) as upstream_control:
         codex = codex_native_discovery(
             fixture["consumer"],
@@ -689,7 +598,8 @@ def accept(
     return {
         "status": "ok",
         "source_sha": source_sha,
-        "release_build": fixture["build_result"],
+        "runtime_mode": "canonical-skill-copy",
+        "skill_set_sha256": fixture["skill_set_sha256"],
         "installed_runtime": static,
         "upstream_negative_control": {
             **upstream_control,
@@ -744,7 +654,7 @@ def main(argv: list[str] | None = None) -> int:
                     json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
                     encoding="utf-8",
                 )
-    except (RuntimeAcceptanceError, OSError, json.JSONDecodeError, zipfile.BadZipFile) as exc:
+    except (RuntimeAcceptanceError, OSError, json.JSONDecodeError) as exc:
         print(json.dumps({"status": "fail-closed", "error": str(exc)}, ensure_ascii=False))
         return 2
 

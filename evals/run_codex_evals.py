@@ -20,13 +20,13 @@ No third-party Python packages are required.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
 import subprocess
 import sys
 import tempfile
-import zipfile
 from pathlib import Path
 from typing import Iterable
 
@@ -45,11 +45,11 @@ RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
 GITHUB_ACTIONS_FIXTURE = EVALS / "fixtures" / "github-actions-observation"
-RELEASE_BUILDER = ROOT / "tools" / "release-build" / "release_build.py"
 RUN_CONTEXT = {
     "source_commit": None,
     "codex_version": None,
-    "release_id": None,
+    "skill_set_sha256": None,
+    "timeout_seconds": 180,
 }
 
 
@@ -96,110 +96,33 @@ def populate_isolated_skill_copies(workspace: Path) -> None:
         shutil.copytree(skill_dir, skill_root / skill_dir.name)
 
 
-def _safe_extract_release(archive: Path, destination: Path) -> None:
-    destination = destination.resolve()
-    destination.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(archive, "r") as zf:
-        for info in zf.infolist():
-            target = (destination / info.filename).resolve()
-            if target != destination and destination not in target.parents:
-                raise RuntimeError(f"Release archive path escapes extraction root: {info.filename}")
-        zf.extractall(destination)
+def canonical_skill_set_sha256() -> str:
+    digest = hashlib.sha256()
+    for skill_dir in iter_skill_dirs():
+        for path in sorted(item for item in skill_dir.rglob("*") if item.is_file()):
+            relative = path.relative_to(ROOT / "skills").as_posix().encode("utf-8")
+            payload = path.read_bytes()
+            digest.update(relative)
+            digest.update(b"\0")
+            digest.update(str(len(payload)).encode("ascii"))
+            digest.update(b"\0")
+            digest.update(payload)
+            digest.update(b"\0")
+    return digest.hexdigest()
 
 
-def build_release_package(source_commit: str):
-    """Build one exact-source Release package outside the repository for runtime evals."""
-    temp_context = tempfile.TemporaryDirectory(prefix="agentic-dev-eval-release-")
-    temp_root = Path(temp_context.name)
-    output_dir = temp_root / "output"
-    release_version = f"0.0.0-eval.{source_commit[:12]}"
-    completed = subprocess.run(
-        [
-            sys.executable,
-            str(RELEASE_BUILDER),
-            "build",
-            "--repo-root",
-            str(ROOT),
-            "--output-dir",
-            str(output_dir),
-            "--source-sha",
-            source_commit,
-            "--release-version",
-            release_version,
-            "--evidence-locator",
-            "codex-runtime-eval:exact-subject",
-        ],
-        cwd=ROOT,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        check=False,
-    )
-    if completed.returncode != 0:
-        temp_context.cleanup()
-        raise RuntimeError(
-            "Release build failed for runtime eval "
-            f"({completed.returncode}): {completed.stdout}\n{completed.stderr}"
-        )
-    try:
-        result = json.loads(completed.stdout)
-    except json.JSONDecodeError as exc:
-        temp_context.cleanup()
-        raise RuntimeError(
-            f"Release builder did not emit JSON: {completed.stdout}"
-        ) from exc
-
-    archive = output_dir / result["archive"]
-    package_root = temp_root / "package"
-    _safe_extract_release(archive, package_root)
-    return temp_context, package_root, result
-
-
-def install_release_runtime(workspace: Path, package_root: Path) -> None:
-    """Install the built Release into an isolated Consumer-like eval workspace."""
-    if not (workspace / ".git").exists():
-        completed = subprocess.run(
-            ["git", "init", "-q"],
-            cwd=workspace,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            check=False,
-        )
-        if completed.returncode != 0:
-            raise RuntimeError(
-                f"Cannot initialize eval Consumer repository: {completed.stderr}"
-            )
-
+def ensure_consumer_bootstrap(workspace: Path) -> None:
+    """Create the thin Consumer runtime authority when a fixture has none."""
     agents = workspace / "AGENTS.md"
-    if not agents.exists():
-        agents.write_text(
-            "# Consumer Repository Authority\n\n"
-            "The current workspace and prompt are the complete Consumer context. "
-            "Do not access upstream agentic-dev Source state.\n",
-            encoding="utf-8",
-        )
-
-    completed = subprocess.run(
-        [
-            sys.executable,
-            str(package_root / "install.py"),
-            "--target",
-            str(workspace),
-        ],
-        cwd=workspace,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        check=False,
+    if agents.exists():
+        return
+    agents.write_text(
+        "# Consumer Repository Authority\n\n"
+        "The current workspace and its repository-local installed Skills are the "
+        "complete runtime inputs for this scenario.\n"
+        "Do not read upstream agentic-dev Provider Source or Provider docs to fill gaps.\n",
+        encoding="utf-8",
     )
-    if completed.returncode != 0:
-        raise RuntimeError(
-            "Release install failed for runtime eval "
-            f"({completed.returncode}): {completed.stdout}\n{completed.stderr}"
-        )
-    if not (workspace / ".agents/release/manifest.json").is_file():
-        raise RuntimeError("Release install did not create installed manifest")
 
 
 def materialize_workspace_files(workspace: Path, files: dict[str, str]) -> None:
@@ -285,6 +208,21 @@ def current_source_commit() -> str:
     commit = completed.stdout.strip()
     if len(commit) != 40:
         raise RuntimeError(f"Unexpected evaluation source commit: {commit!r}")
+    status = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
+    )
+    if status.returncode != 0:
+        raise RuntimeError(f"Cannot inspect evaluation checkout: {status.stderr.strip()}")
+    if status.stdout.strip():
+        raise RuntimeError(
+            "Fresh Runtime evals require a clean checkout so source_commit binds "
+            "the exact Skill subject"
+        )
     return commit
 
 
@@ -314,28 +252,47 @@ def check_codex(codex_bin: str) -> str:
     return version
 
 
+def _clear_stale_scenario_results(result_dir: Path, scenario_id: str) -> None:
+    for suffix in (
+        ".jsonl", ".stderr.txt", ".run.json", ".grade.json",
+        ".grader.jsonl", ".grader.stderr.txt",
+    ):
+        target = result_dir / f"{scenario_id}{suffix}"
+        if target.exists():
+            target.unlink()
+
+
 def write_run_metadata(
     result_dir: Path,
     scenario_id: str,
     command: list[str],
     cwd: Path,
     returncode: int,
+    *,
+    runtime_mode: str,
+    timed_out: bool,
 ) -> None:
     source_commit = RUN_CONTEXT["source_commit"]
     codex_version = RUN_CONTEXT["codex_version"]
-    release_id = RUN_CONTEXT.get("release_id")
-    if not source_commit or not codex_version:
-        raise RuntimeError("Run context is incomplete; source commit / Codex version missing")
-
+    skill_set_sha256 = RUN_CONTEXT["skill_set_sha256"]
+    if not source_commit or not codex_version or not skill_set_sha256:
+        raise RuntimeError(
+            "Run context is incomplete; source commit / Codex version / "
+            "Skill-set digest missing"
+        )
     metadata = {
+        "schema_version": 2,
+        "evidence_kind": "agentic-dev-codex-runtime",
         "scenario_id": scenario_id,
         "source_commit": source_commit,
+        "skill_set_sha256": skill_set_sha256,
         "codex_version": codex_version,
-        "runtime_mode": "release-installed" if release_id else "source-skill-copy",
-        "release_id": release_id,
+        "runtime_mode": runtime_mode,
         "cwd": str(cwd.relative_to(ROOT)) if cwd.is_relative_to(ROOT) else str(cwd),
         "command": command,
         "returncode": returncode,
+        "timed_out": timed_out,
+        "timeout_seconds": RUN_CONTEXT["timeout_seconds"],
         "grading": "pending",
     }
     (result_dir / f"{scenario_id}.run.json").write_text(
@@ -353,10 +310,11 @@ def run_codex(
     cwd: Path,
     workspace_write: bool = False,
     skip_git_repo_check: bool = False,
+    runtime_mode: str = "canonical-skill-copy",
 ) -> int:
     result_dir = RESULTS / result_group
     result_dir.mkdir(parents=True, exist_ok=True)
-
+    _clear_stale_scenario_results(result_dir, scenario_id)
     command = [codex_bin, "exec", "--ephemeral", "--json"]
     if workspace_write:
         command.extend(["--sandbox", "workspace-write"])
@@ -371,29 +329,38 @@ def run_codex(
         runtime_env.pop(key, None)
 
     print(f"[{scenario_id}] fresh codex exec")
-    completed = subprocess.run(
-        command,
-        cwd=cwd,
-        env=runtime_env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        check=False,
-    )
+    timed_out = False
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=cwd,
+            env=runtime_env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=False,
+            timeout=int(RUN_CONTEXT["timeout_seconds"]),
+        )
+        stdout, stderr, returncode = completed.stdout, completed.stderr, completed.returncode
+    except subprocess.TimeoutExpired as exc:
+        timed_out = True
+        stdout, stderr = exc.stdout or "", exc.stderr or ""
+        if isinstance(stdout, bytes):
+            stdout = stdout.decode("utf-8", errors="replace")
+        if isinstance(stderr, bytes):
+            stderr = stderr.decode("utf-8", errors="replace")
+        stderr += f"\nagentic-dev eval timeout after {RUN_CONTEXT['timeout_seconds']} seconds\n"
+        returncode = 124
 
-    (result_dir / f"{scenario_id}.jsonl").write_text(
-        completed.stdout,
-        encoding="utf-8",
+    (result_dir / f"{scenario_id}.jsonl").write_text(stdout, encoding="utf-8")
+    (result_dir / f"{scenario_id}.stderr.txt").write_text(stderr, encoding="utf-8")
+    write_run_metadata(
+        result_dir, scenario_id, command, cwd, returncode,
+        runtime_mode=runtime_mode, timed_out=timed_out,
     )
-    (result_dir / f"{scenario_id}.stderr.txt").write_text(
-        completed.stderr,
-        encoding="utf-8",
-    )
-    write_run_metadata(result_dir, scenario_id, command, cwd, completed.returncode)
-
-    status = "OK" if completed.returncode == 0 else f"EXIT {completed.returncode}"
+    status = "TIMEOUT" if timed_out else ("OK" if returncode == 0 else f"EXIT {returncode}")
     print(f"[{scenario_id}] {status}")
-    return completed.returncode
+    return returncode
 
 
 def activation_cases() -> list[dict]:
@@ -430,23 +397,18 @@ def scenario_ids_for_mode(args: argparse.Namespace) -> set[str]:
 def run_activation(
     codex_bin: str,
     selected: set[str] | None,
-    release_package: Path | None = None,
 ) -> int:
     failures = 0
-
     for case in activation_cases():
         scenario_id = case["id"]
         if selected and scenario_id not in selected:
             continue
-
         with tempfile.TemporaryDirectory(
             prefix=f"agentic-dev-activation-{scenario_id}-"
         ) as temp_dir:
             cwd = Path(temp_dir)
-            if release_package is None:
-                populate_isolated_skill_copies(cwd)
-            else:
-                install_release_runtime(cwd, release_package)
+            populate_isolated_skill_copies(cwd)
+            ensure_consumer_bootstrap(cwd)
             failures += run_codex(
                 codex_bin=codex_bin,
                 scenario_id=scenario_id,
@@ -455,29 +417,24 @@ def run_activation(
                 cwd=cwd,
                 skip_git_repo_check=True,
             ) != 0
-
     return failures
 
 
 def run_behavior(
     codex_bin: str,
     selected: set[str] | None,
-    release_package: Path | None = None,
 ) -> int:
     failures = 0
-
     for skill_name, case in behavior_cases():
         scenario_id = case["id"]
         if selected and scenario_id not in selected:
             continue
-
         with tempfile.TemporaryDirectory(
             prefix=f"agentic-dev-behavior-{scenario_id}-"
         ) as temp_dir:
             cwd = Path(temp_dir)
-
             workspace_write = False
-            prompt = f"${skill_name} {case['prompt']}"
+            prompt = "$" + skill_name + " " + case["prompt"]
 
             if scenario_id == "B-EU-01":
                 copy_fixture_into(cwd)
@@ -490,11 +447,8 @@ def run_behavior(
                 copy_fixture_into(cwd, GITHUB_ACTIONS_FIXTURE)
                 workspace_write = True
 
-            if release_package is None:
-                populate_isolated_skill_copies(cwd)
-            else:
-                install_release_runtime(cwd, release_package)
-
+            ensure_consumer_bootstrap(cwd)
+            populate_isolated_skill_copies(cwd)
             failed = run_codex(
                 codex_bin=codex_bin,
                 scenario_id=scenario_id,
@@ -508,7 +462,6 @@ def run_behavior(
 
             if scenario_id == "B-EU-01":
                 preserve_execute_fixture_snapshot(cwd)
-
     return failures
 
 
@@ -540,6 +493,7 @@ def run_discovery(codex_bin: str, selected: set[str] | None) -> int:
                 result_group="discovery",
                 cwd=cwd,
                 skip_git_repo_check=True,
+                runtime_mode="legacy-provider-discovery",
             ) != 0
 
     return failures
@@ -555,12 +509,12 @@ def parse_args() -> argparse.Namespace:
     mode.add_argument(
         "--discovery",
         action="store_true",
-        help="run V4 Rule Discovery discriminating corpus",
+        help="run legacy Provider Rule Discovery corpus during P5/P6 transition",
     )
     mode.add_argument(
         "--all",
         action="store_true",
-        help="run Skill activation then Skill behavior corpora (historical behavior)",
+        help="run Skill activation then Skill behavior corpora",
     )
     parser.add_argument(
         "--scenario",
@@ -569,9 +523,10 @@ def parse_args() -> argparse.Namespace:
         help="run only the given scenario id; repeat for multiple ids",
     )
     parser.add_argument(
-        "--release-runtime",
-        action="store_true",
-        help="build and install the exact-source Release before activation/behavior scenarios",
+        "--timeout-seconds",
+        type=int,
+        default=180,
+        help="per-scenario Codex process timeout (default: 180)",
     )
     parser.add_argument(
         "--codex-bin",
@@ -584,6 +539,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     selected = set(args.scenario) or None
+    if args.timeout_seconds <= 0:
+        print("--timeout-seconds must be positive", file=sys.stderr)
+        return 2
 
     available = scenario_ids_for_mode(args)
     if not available:
@@ -600,42 +558,24 @@ def main() -> int:
             )
             return 2
 
-    if args.release_runtime and args.discovery:
-        print("--release-runtime is not valid with --discovery", file=sys.stderr)
-        return 2
-
     RUN_CONTEXT["source_commit"] = current_source_commit()
     RUN_CONTEXT["codex_version"] = check_codex(args.codex_bin)
+    RUN_CONTEXT["skill_set_sha256"] = canonical_skill_set_sha256()
+    RUN_CONTEXT["timeout_seconds"] = args.timeout_seconds
     print(f"Source commit: {RUN_CONTEXT['source_commit']}")
+    print(f"Skill set SHA-256: {RUN_CONTEXT['skill_set_sha256']}")
 
     RESULTS.mkdir(parents=True, exist_ok=True)
 
-    release_context = None
-    release_package = None
-    try:
-        if args.release_runtime:
-            release_context, release_package, release_result = build_release_package(
-                RUN_CONTEXT["source_commit"]
-            )
-            RUN_CONTEXT["release_id"] = release_result["release_id"]
-            print(
-                "Release runtime: "
-                f"{release_result['release_id']} "
-                f"archive_sha256={release_result['archive_sha256']}"
-            )
-
-        if args.activation:
-            failures = run_activation(args.codex_bin, selected, release_package)
-        elif args.behavior:
-            failures = run_behavior(args.codex_bin, selected, release_package)
-        elif args.discovery:
-            failures = run_discovery(args.codex_bin, selected)
-        else:
-            failures = run_activation(args.codex_bin, selected, release_package)
-            failures += run_behavior(args.codex_bin, selected, release_package)
-    finally:
-        if release_context is not None:
-            release_context.cleanup()
+    if args.activation:
+        failures = run_activation(args.codex_bin, selected)
+    elif args.behavior:
+        failures = run_behavior(args.codex_bin, selected)
+    elif args.discovery:
+        failures = run_discovery(args.codex_bin, selected)
+    else:
+        failures = run_activation(args.codex_bin, selected)
+        failures += run_behavior(args.codex_bin, selected)
 
     if failures:
         print(f"Codex process failures: {failures}", file=sys.stderr)

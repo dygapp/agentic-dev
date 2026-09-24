@@ -48,47 +48,49 @@ python3 evals/run_codex_evals.py --discovery --scenario D-V4-GEN-01
 
 V4 已删除 monolithic Technology Profile runtime owner；旧 `--capability` / Profile eval 入口不属于 current baseline。技术行为通过 current technology Rules 与 V4 discovery corpus 验证。
 
-## 3. Release 安装态与已认证模型验收
+## 3. Canonical Skill Runtime 与已认证模型验收
 
-普通 Skill 回归仍可以使用源码 Skill copy；**Gate E Consumer Runtime Acceptance 必须使用版本化 Release 安装态**。
+Activation / behavior Runtime 直接从当前 clean exact subject 的 canonical `skills/**` 复制到外部临时 Consumer-like workspace 的 `.agents/skills/**`。它不经过 Release Builder、generated ZIP、`install.py` 或 `.agents/release/**`。
 
-单独运行某个发布态场景：
+单独运行场景：
 
 ```bash
-python3 evals/run_codex_evals.py --activation --release-runtime --scenario A-RB-01
-python3 evals/run_codex_evals.py --behavior --release-runtime --scenario B-RB-01
+python3 evals/run_codex_evals.py --activation --scenario A-RB-01
+python3 evals/run_codex_evals.py --behavior --scenario B-RB-01
 ```
 
-`--release-runtime` 会：
+runner 会：
 
-1. 绑定当前 exact Git HEAD；
-2. 用 Release Builder 生成候选发布物；
-3. 在外部临时 Consumer-like Repository 中通过 artifact `install.py` 安装；
-4. 让 `codex exec` 只看到 installed Release + 场景输入；
-5. 记录 source commit、Release ID、Codex version、JSONL 与 return code。
+1. 要求当前 checkout clean，并绑定 exact Git HEAD；
+2. 计算 canonical Skill-set SHA-256；
+3. 只把当前 canonical Skill packages 和场景必要 fixture 放入隔离 workspace；
+4. 清理该 scenario 的 stale runtime / grade Evidence；
+5. 对每个 Codex process 使用有界 timeout；
+6. 记录 source commit、Skill-set digest、runtime mode、Codex version、JSONL、return code 与 timeout state。
 
-Gate E 的完整真实模型验收使用统一入口：
+完整真实模型验收使用统一入口：
 
 ```bash
 codex login status
 python3 tools/runtime-acceptance/authenticated_model_acceptance.py
 ```
 
-该入口要求当前 checkout 干净，并**复用当前 Codex CLI 已存在的认证状态**。本地使用 ChatGPT 登录时，不需要为了 Gate E 另建 `OPENAI_API_KEY`；也不得把本地认证文件复制到 Repository、Release 或 GitHub Secret。
+该入口要求当前 checkout 干净，并**复用当前 Codex CLI 已存在的认证状态**。本地使用 ChatGPT 登录时，不需要另建 `OPENAI_API_KEY`；也不得把本地认证文件复制到 Repository 或 GitHub Secret。
 
 统一入口会自动执行：
 
-- 8 个 Release-installed activation scenarios；
+- 8 个 activation scenarios；
 - 6 个 representative behavior scenarios；
 - 独立 Codex grader；
-- exact source SHA / Release ID / Codex version 一致性检查；
+- exact source SHA / canonical Skill-set digest / runtime mode / Codex version binding；
+- runtime 与 grader 对同一 scenario/source/digest 的交叉一致性检查；
 - 每个 runtime / grade Evidence 文件的 SHA-256；
 - 最终 `evals/results/authenticated-model-runtime.json`；
-- 可提交复核的单一证据包 `evals/results/authenticated-model-runtime-evidence.zip`，其中包含汇总报告、runtime / grader 原始输出、run / grade metadata 与 summary；命令输出同时给出 bundle SHA-256。
+- 可提交复核的证据包 `evals/results/authenticated-model-runtime-evidence.zip`。
 
-两组 summary 和全部逐场景 grade 都为 `PASS` 时，命令以 exit `0` 结束；出现有效的语义 `FAIL` 时，命令以 exit `1` 结束，但仍必须生成完整报告与 `authenticated-model-runtime-evidence.zip`，用于后续分析失败 assertions。只有 runtime / grader 基础设施异常、Evidence 缺失或完整性损坏才使用 fail-closed exit `2`，此时不能把不完整结果当作语义判定。
+两组 summary 和全部逐场景 grade 都为 `PASS` 时，命令以 exit `0` 结束；有效语义 `FAIL` 使用 exit `1` 并保留完整 Evidence。Runtime / grader 基础设施异常、timeout、Evidence 缺失或 binding / integrity 损坏使用 fail-closed exit `2`，不得把不完整结果解释为语义 PASS / FAIL。
 
-GitHub Actions 的 `Runtime Acceptance` workflow 只负责无需模型认证即可自动执行的部分，包括 Release install、deterministic contract 和真实 Codex App Server native Skill discovery。它即使全绿，也**不等于** authenticated model runtime 已经完成；后者必须来自已认证、可审计的真实 Codex Runtime。
+GitHub Actions 的 `Runtime Acceptance` workflow 只负责无需模型认证即可自动执行的部分，包括 canonical Skill deterministic contract、Provider Source unavailable negative control 和真实 Codex App Server native Skill discovery。它即使全绿，也**不等于** authenticated model runtime 已完成；后者必须来自已认证、可审计的真实 Codex Runtime。
 
 ## 4. 治理运行器
 

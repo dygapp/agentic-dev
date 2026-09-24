@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # agentic-dev-distribution: source-only
-"""Run Gate E model behavior acceptance in the caller's authenticated Codex Runtime."""
+"""Run canonical Skill model behavior acceptance in the caller's authenticated Codex Runtime."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import zipfile
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,7 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[2]
 EVALS = REPO_ROOT / "evals"
 RESULTS = EVALS / "results"
+RUNTIME_ACCEPTANCE = REPO_ROOT / "tools/runtime-acceptance/runtime_acceptance.py"
 
 ACTIVATION_SCENARIOS = (
     "A-CI-01",
@@ -129,8 +131,9 @@ def _run_runtime_mode(
             sys.executable,
             str(EVALS / "run_codex_evals.py"),
             flag,
-            "--release-runtime",
             *_scenario_args(scenarios),
+            "--timeout-seconds",
+            "180",
             "--codex-bin",
             codex_bin,
         ],
@@ -234,19 +237,48 @@ def _collect_mode_evidence(
 
         run = _load_json(run_path)
         grade = _load_json(grade_path)
+        if run.get("schema_version") != 2:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} runtime metadata schema is not v2"
+            )
+        if run.get("evidence_kind") != "agentic-dev-codex-runtime":
+            raise AuthenticatedRuntimeError(
+                f"{scenario} runtime evidence kind is invalid"
+            )
         if run.get("source_commit") != source_sha:
             raise AuthenticatedRuntimeError(
                 f"{scenario} source SHA mismatch: {run.get('source_commit')} != {source_sha}"
             )
-        if run.get("runtime_mode") != "release-installed":
+        if run.get("runtime_mode") != "canonical-skill-copy":
             raise AuthenticatedRuntimeError(
-                f"{scenario} was not executed in release-installed runtime"
+                f"{scenario} was not executed in canonical-skill-copy runtime"
             )
-        if not run.get("release_id"):
-            raise AuthenticatedRuntimeError(f"{scenario} has no release_id")
+        skill_set_sha256 = run.get("skill_set_sha256")
+        if not isinstance(skill_set_sha256, str) or len(skill_set_sha256) != 64:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} has invalid skill_set_sha256"
+            )
+        if run.get("timed_out") is not False:
+            raise AuthenticatedRuntimeError(f"{scenario} runtime timed out")
         if run.get("returncode") != 0:
             raise AuthenticatedRuntimeError(
                 f"{scenario} runtime returncode is not zero: {run.get('returncode')}"
+            )
+        if grade.get("scenario_id") != scenario:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} grader scenario binding mismatch: {grade.get('scenario_id')}"
+            )
+        if grade.get("source_commit") != source_sha:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} grader source SHA mismatch: {grade.get('source_commit')}"
+            )
+        if grade.get("runtime_mode") != run.get("runtime_mode"):
+            raise AuthenticatedRuntimeError(
+                f"{scenario} runtime/grader mode binding mismatch"
+            )
+        if grade.get("skill_set_sha256") != skill_set_sha256:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} runtime/grader Skill-set digest mismatch"
             )
         grading = run.get("grading")
         verdict = grade.get("verdict")
@@ -267,7 +299,7 @@ def _collect_mode_evidence(
         records.append(
             {
                 "scenario_id": scenario,
-                "release_id": run["release_id"],
+                "skill_set_sha256": skill_set_sha256,
                 "runtime_codex_version": run.get("codex_version"),
                 "grader_codex_version": grade.get("grader_codex_version"),
                 "verdict": grade["verdict"],
@@ -293,6 +325,76 @@ def _collect_mode_evidence(
     }
 
 
+def _run_deterministic_runtime_acceptance(
+    codex_bin: str,
+    source_sha: str,
+) -> dict[str, Any]:
+    RESULTS.mkdir(parents=True, exist_ok=True)
+    report_path = RESULTS / "canonical-runtime-acceptance.json"
+    if report_path.exists():
+        report_path.unlink()
+
+    with tempfile.TemporaryDirectory(
+        prefix="agentic-dev-authenticated-runtime-"
+    ) as temp_dir:
+        completed = subprocess.run(
+            [
+                sys.executable,
+                str(RUNTIME_ACCEPTANCE),
+                "accept",
+                "--repo-root",
+                str(REPO_ROOT),
+                "--work-dir",
+                str(Path(temp_dir) / "consumer-runtime"),
+                "--source-sha",
+                source_sha,
+                "--codex-bin",
+                codex_bin,
+                "--report",
+                str(report_path),
+            ],
+            cwd=REPO_ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=False,
+        )
+    if completed.returncode != 0:
+        raise AuthenticatedRuntimeError(
+            "deterministic canonical runtime acceptance failed "
+            f"({completed.returncode}): {completed.stdout}\n{completed.stderr}"
+        )
+    payload = _load_json(report_path)
+    if payload.get("source_sha") != source_sha:
+        raise AuthenticatedRuntimeError(
+            "deterministic runtime acceptance source SHA mismatch"
+        )
+    if payload.get("runtime_mode") != "canonical-skill-copy":
+        raise AuthenticatedRuntimeError(
+            "deterministic runtime acceptance mode is not canonical-skill-copy"
+        )
+    digest = payload.get("skill_set_sha256")
+    if not isinstance(digest, str) or len(digest) != 64:
+        raise AuthenticatedRuntimeError(
+            "deterministic runtime acceptance has invalid Skill-set digest"
+        )
+    negative = payload.get("upstream_negative_control")
+    if not isinstance(negative, dict) or negative.get("status") != "ok":
+        raise AuthenticatedRuntimeError(
+            "Provider Source unavailable negative control did not pass"
+        )
+    discovery = payload.get("codex_native_discovery")
+    if not isinstance(discovery, dict) or discovery.get("status") != "ok":
+        raise AuthenticatedRuntimeError("Codex native Skill discovery did not pass")
+    return {
+        "status": "PASS",
+        "skill_set_sha256": digest,
+        "report": report_path.relative_to(REPO_ROOT).as_posix(),
+        "report_sha256": _sha256(report_path),
+        "details": payload,
+    }
+
+
 def _write_evidence_bundle(
     bundle_path: Path,
     report_path: Path,
@@ -303,6 +405,7 @@ def _write_evidence_bundle(
         for group_name in ("activation", "behavior")
         for item in payload[group_name]["evidence_files"]
     }
+    evidence_paths.add(payload["deterministic_runtime"]["report"])
     bundle_path = bundle_path.resolve()
     bundle_path.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(
@@ -347,6 +450,10 @@ def run_authenticated_acceptance(
     _require_clean_checkout(REPO_ROOT)
     source_sha = _git_head(REPO_ROOT)
     codex_version, auth_method = _codex_runtime(codex_bin)
+    deterministic_runtime = _run_deterministic_runtime_acceptance(
+        codex_bin,
+        source_sha,
+    )
 
     execution = {
         "activation": _run_runtime_mode(
@@ -372,14 +479,20 @@ def run_authenticated_acceptance(
         source_sha,
     )
 
-    release_ids = {
-        item["release_id"]
+    skill_set_digests = {
+        item["skill_set_sha256"]
         for group in (activation, behavior)
         for item in group["scenarios"]
     }
-    if len(release_ids) != 1:
+    if len(skill_set_digests) != 1:
         raise AuthenticatedRuntimeError(
-            f"model acceptance used multiple Release identities: {sorted(release_ids)}"
+            "model acceptance used multiple canonical Skill-set identities: "
+            f"{sorted(skill_set_digests)}"
+        )
+    skill_set_sha256 = next(iter(skill_set_digests))
+    if deterministic_runtime["skill_set_sha256"] != skill_set_sha256:
+        raise AuthenticatedRuntimeError(
+            "deterministic runtime and model runtime Skill-set identities differ"
         )
 
     overall_status = (
@@ -390,10 +503,12 @@ def run_authenticated_acceptance(
     payload = {
         "status": overall_status,
         "source_sha": source_sha,
-        "release_id": next(iter(release_ids)),
+        "runtime_mode": "canonical-skill-copy",
+        "skill_set_sha256": skill_set_sha256,
         "codex_version": codex_version,
         "authentication_method": auth_method,
         "authentication_evidence": "codex login status",
+        "deterministic_runtime": deterministic_runtime,
         "scenario_count": len(ACTIVATION_SCENARIOS) + len(BEHAVIOR_SCENARIOS),
         "failed_scenarios": (
             activation["failed_scenarios"] + behavior["failed_scenarios"]
