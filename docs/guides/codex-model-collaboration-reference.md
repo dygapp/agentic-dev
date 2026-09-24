@@ -7,11 +7,11 @@ distribution: source-only
 
 # Codex 模型协作参考配置
 
-本文件是 **Human-facing、非规范、平台专项参考实现**。Model Collaboration 的 canonical semantics 由 `docs/architecture/model-collaboration-architecture.md` 与 `docs/methods/model-collaboration-adoption.md` 持有；本文件不拥有新的 Method Gate、Rule policy 或 `agentic-dev` 当前 runtime instance。
+本文件是**人和 AI 可按需读取的、非规范、平台专项参考实现**。真正的 Consumer execution contract 由 installed `activate-model-collaboration` Skill 持有；本文件不拥有新的 Gate、policy 或 Consumer runtime state。
 
 参考核验日期：**2026-09-14**。
 
-本 Reference 基于当日 OpenAI Codex Subagents / configuration 文档与历史 `experiment/codex-multi-model-collaboration` 经验整理。Codex custom-agent 格式、模型目录、reasoning effort、并发与观测能力都可能变化；Consumer 执行 `method:model-collaboration-adoption` 时必须重新探测当前 runtime，不能把本文件当作永久兼容配置。
+本 Reference 基于当日 OpenAI Codex Subagents / configuration 文档与历史 `experiment/codex-multi-model-collaboration` 经验整理。Codex custom-agent 格式、模型目录、reasoning effort、并发与观测能力都可能变化；Consumer 启用协作时必须通过 `activate-model-collaboration` 重新探测当前 Runtime，不能把本文件当作永久兼容配置。
 
 ## 1. 当前 Codex 能力形态
 
@@ -84,7 +84,7 @@ enabled = false
 
 ```toml
 name = "context_explorer"
-description = "只读探索与上下文准备，用于有界定位 Authority、代码、依赖、Rule candidate 和验证入口。"
+description = "只读探索与上下文准备，用于有界定位 Authority、代码、依赖、Consumer-local constraints 和验证入口。"
 
 # 由 Consumer 将 low-cost capability 映射到当前真实可用模型：
 # model = "<consumer-selected-low-cost-model>"
@@ -95,7 +95,7 @@ sandbox_mode = "read-only"
 developer_instructions = """
 只处理 Primary Agent 明确分配的有界只读任务。
 优先返回 canonical locator、当前观察事实、Evidence locator 与 unknown，不把自己的摘要提升为 Authority。
-Rule 必须通过当前 Repository 的 Rule Discovery contract 获取候选，不枚举全量 Rule tree 代替 discovery。
+项目级约束必须从当前 Consumer 声明的 local-constraint 入口按需恢复，不枚举全量 policy corpus，也不在线读取 upstream Rule tree 代替本地入口。
 不要修改文件，不执行外部写操作，不继续递归委派。
 """
 ```

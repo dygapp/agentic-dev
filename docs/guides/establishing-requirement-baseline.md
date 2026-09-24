@@ -7,9 +7,9 @@ distribution: source-only
 
 # 建立项目 Requirement Baseline
 
-本文面向人类说明：一个新项目如何从原始需求材料开始，逐步形成可被 AI 开发稳定消费的 Requirement Baseline。
+本文帮助人和 AI 理解：一个新项目如何从原始需求材料开始，逐步形成可被后续 AI 开发稳定消费的 Consumer-owned Requirement Baseline。
 
-规范过程由 `method:requirement-baseline-establishment` 持有；Requirement ownership 与推荐 `docs/requirements` 信息架构由 `architecture:requirement-authority` 持有。本文只提供可操作的 Human View，不建立第二套 Method / Architecture Authority。
+真正的执行契约由 installed `establish-requirement-baseline` Skill 持有；Requirement 事实、owner、目录和 currentness 由目标 Consumer Repository 自己拥有。本文只提供方法导航、信息架构建议和人类可理解示例，不建立第二套 Requirement Authority。
 
 ## 1. 什么时候需要这套流程
 
@@ -453,5 +453,5 @@ AI 负责：
 达到 `Requirement Baseline Ready` 后：
 
 - 没有 systemic architecture blocker → 可以开始具体 Feature Development；
-- 有跨多个 Feature 的长期 Architecture blocker → 进入 `method:architecture-clarification`；
-- 后续普通 Feature 使用 `method:ai-development`，不重复整套项目需求建立流程。
+- 有跨多个 Feature 的长期 Architecture blocker → 使用 `clarify-architecture`；
+- 后续普通 Feature 进入 [`feature-development.md`](feature-development.md) 导航，并按需调用对应 installed Skills，不重复整套项目需求建立流程。

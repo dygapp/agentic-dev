@@ -5,52 +5,65 @@ status: active
 distribution: source-only
 ---
 
-# 升级 Consumer 中的 agentic-dev Release
+# 升级 Consumer 中的 agentic-dev Skills
 
-本文是 `method:consumer-upgrade` 的人类说明，不替代正式 Method。
-
-## 升级不是同步 upstream Source
+升级不是同步 upstream Source，也不是重新采用 Provider 的 Method / Architecture / Rule。
 
 Existing Consumer 已拥有：
 
-- 当前 installed release；
+- 当前 installed Skills 与 lock / provenance；
 - Consumer-owned `AGENTS.md`；
-- Consumer-local Requirement / Architecture / policy；
-- 本地执行与环境适配。
+- Product / Requirement / Architecture / current work；
+- Consumer-local constraints；
+- 本地 Runtime / platform config。
 
-升级比较的是：
+## 1. 显式选择新的 exact tag
 
-```text
-current installed release
-+ Consumer-local retained obligations
-+ candidate release
-```
+先恢复当前 adopted ref，再明确选择目标 immutable tag。不要把无版本 `latest` 或 generic update 当作 agentic-dev 的隐式升级协议。
 
-而不是 Consumer tree 与 `agentic-dev` Source tree。
+P1 已验证 exact-tag install 与同 tag reinstall；真正的 `tag A → tag B` 跨版本迁移仍应在存在第二个正式版本后用真实版本 Evidence 单独验证。
 
-## 推荐过程
+## 2. 比较真正会改变 Consumer 的内容
 
-1. 恢复当前 installed release 与 Consumer Authority；
-2. 选择精确 candidate Release；
-3. 核对 Release / migration delta；
-4. 形成 bounded update plan；
-5. 更新 Release-owned Skills / resources；
-6. 保留并重新核对 Consumer-local obligations；
-7. 对真实受影响行为做 targeted revalidation；
-8. 记录新的 installed release。
+升级重点是：
 
-## 必须保护的本地内容
+- Skill inventory 变化；
+- 已安装 Skill 内容 / hash 变化；
+- bootstrap / Guide locator 变化；
+- 对当前 Consumer 实际使用路径有影响的兼容性说明。
 
-升级不得自动覆盖：
+不比较 Consumer tree 与 Provider Source tree，也不要求 Consumer adopt Provider `docs/**`。
+
+## 3. 使用标准 installer 显式安装目标 tag
+
+形成有界 update plan 后，用标准 Agent Skills-compatible installer 指向新的 exact tag。
+
+安装不得自动覆盖：
 
 - Product / Requirement / Domain facts；
 - System / Application / Data / Interface Architecture；
 - technology policy；
-- repository / external-operation authorization；
+- authorization；
 - terminology；
 - Roadmap / current work；
-- 其他 Consumer-local customization。
+- Consumer-local rules / policies；
+- 其他项目自有文件。
 
-旧 Evidence 也不能自动证明 candidate Release 的新行为；已变化的 Skill、compatibility 或 execution path 必须重新取得 Current Evidence。
+## 4. 只重新验证受影响行为
 
-正式过程与完成条件见 `docs/methods/consumer-upgrade.md`。
+旧版本 Evidence 不能自动证明新版本 Skill 行为。
+
+至少：
+
+- 验证新 Skill inventory / native discovery；
+- 对发生变化、且当前 Consumer 实际依赖的 Skill 做 targeted behavior revalidation；
+- 检查 Consumer-local constraints 仍能正确叠加；
+- 检查 `AGENTS.md` / project docs 没有被覆盖。
+
+未变化的 claim 可以按 Consumer 自己的 Evidence reuse policy 复用，但必须证明 exact diff 不影响该 claim。
+
+## 5. 最后更新 Guide locator
+
+只有 Skills 安装与必要验证通过后，才把 Consumer 记录的 adopted ref / exact-version Guide locator 切到新 tag。
+
+如果新版本验证失败，保留旧 adopted identity 和真实 blocker，不把“下载成功”描述成升级完成。

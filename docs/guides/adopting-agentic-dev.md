@@ -5,54 +5,90 @@ status: active
 distribution: source-only
 ---
 
-# 首次安装 agentic-dev Release
+# 在已有项目中采用 agentic-dev
 
-本文是 `method:consumer-adoption` 的人类说明，不替代正式 Method。
+本文用于已有软件 Repository 第一次引入 `agentic-dev`。默认目标是**最小侵入 adoption**：安装 exact-version Skills、建立最薄方法论 locator、验证 Agent 能发现 Skills，然后立即回到 Consumer 自己的开发工作。
 
-## 什么时候使用
+## 1. 先恢复 Consumer，而不是先整理 Consumer
 
-当一个普通软件项目第一次决定安装 `agentic-dev` 发布的 Software Development Agent Skills Release 时使用。普通开发任务不需要重新执行安装。
+安装前确认：
 
-## 核心边界
-
-Consumer 安装的是**版本化 Release**，不是 `agentic-dev` Source Repository。
-
-先从 Consumer 自己出发，确认：
-
-- 根 `AGENTS.md` / Repository Authority；
-- 产品、Requirement、System Architecture 与项目文档；
+- 当前 Repository / `AGENTS.md`；
+- Product / Requirement / Architecture / current work 的稳定入口；
 - 已有 Agent Skills / local policy；
-- Runtime 与权限边界。
+- 当前 Runtime 与权限边界。
 
-然后选择一个精确 Release，核对 version、source SHA provenance、integrity、included Skills、compatibility 与 migration information。
+这些内容继续由 Consumer 自己拥有。
 
-## 默认安装形态
+不要把以下工作设为 adoption 固定前置：
 
-首版 repository-local 目标以：
+- 全仓文档重构；
+- Requirement / Architecture Authority rebuild；
+- 历史资料清理；
+- 目录结构统一；
+- Consumer-local rule 体系重构。
+
+只有真实项目问题证明必要时，才把它们作为单独 remediation。
+
+## 2. 选择精确版本
+
+采用一个 immutable Git tag 或等价不可歧义 ref。
+
+普通安装不比较 Consumer tree 与 `agentic-dev` Source tree，也不复制 Provider `docs/methods/**`、`docs/rules/**`、`docs/architecture/**`。
+
+## 3. 使用标准 Skills 安装路径
+
+目标形态：
 
 ```text
-AGENTS.md              # Consumer-owned
-.agents/
-  README.md
-  skills/
-    <skill>/
+<consumer>/
+├── AGENTS.md            # Consumer-owned
+├── docs/**              # Consumer-owned
+└── .agents/
+    └── skills/**        # installed agentic-dev Skills
 ```
 
-为核心。
+以当前 P1 验证过的 Codex 示例：
 
-安装只允许对根 `AGENTS.md` 做有界、可重复的 Skill / compatibility locator 集成，不整文件覆盖 Consumer Authority。
+```bash
+npx -y skills@1.7.0 add \
+  https://github.com/dygapp/agentic-dev/tree/<exact-tag> \
+  --skill '*' \
+  --agent codex \
+  --copy \
+  --yes
+```
 
-Consumer 的业务 / 项目 `docs/**` 继续保存自己的 Requirement、Architecture、Technical、Project Knowledge；不会因为安装 Agent Skills 就镜像 upstream 的 Method / Architecture / Rule 目录。
+实际使用前仍需满足安装器当前运行时要求。
 
-## 验证重点
+## 4. 只做最薄 Bootstrap integration
 
-完成后至少确认：
+如果 Consumer 已有稳定 `AGENTS.md`，只在必要时补充：
 
-- Skill 已按 Release 完整安装；
-- Consumer-owned Authority 未被覆盖；
-- Runtime 能发现 / 使用对应 Skill；
-- 脚本或外部执行依赖具有 direct / alternate path；
-- ordinary runtime `upstream access = 0`；
-- Fresh Runtime 不需要读取 upstream Source Repository。
+- repository-local Skill locator；
+- Consumer-local constraints locator；
+- adopted `agentic-dev` Repository + exact tag；
+- exact-version Guide root / entry。
 
-正式 Gate 与完成条件见 `docs/methods/consumer-adoption.md`；长期 Consumer ownership 见 `docs/architecture/consumer-architecture.md`。
+不要覆盖整个 `AGENTS.md`，也不要把 Guide 正文复制进去。
+
+普通 Skill execution 不在线读取 Provider docs；用户明确询问“怎么用 / 下一步做什么”时，才按 adopted exact version 读取对应 Guide。
+
+## 5. 验证
+
+至少确认：
+
+- 预期 Skill inventory 已安装；
+- Consumer-owned `AGENTS.md` / docs 未被覆盖；
+- native Agent runtime 能发现 repository-local Skills；
+- install provenance 能恢复 exact ref；
+- 普通 Skill 行为不依赖 Provider `docs/**`；
+- 当前项目原有验证和权限边界仍成立。
+
+## 6. 可选 Repository 治理
+
+如果 adoption 后发现 Fresh Context 无法恢复项目事实、Requirement 大量冲突、Architecture owner 不清或本地规则全部堆进根 `AGENTS.md`，可以建议一次单独治理评估。
+
+这是**项目问题驱动的可选工作**，不是“用了 agentic-dev 就必须重构仓库”。
+
+完成最小 adoption 后，如果不知道下一步，使用 [`choosing-next-step.md`](choosing-next-step.md)。

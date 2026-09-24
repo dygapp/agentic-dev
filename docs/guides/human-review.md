@@ -7,9 +7,9 @@ distribution: source-only
 
 # 人工评审使用指南
 
-本文面向人类说明：在普通 Consumer 软件项目中，怎样使用 `agentic-dev` 的 Human Review capability，把需求、功能规格、架构或技术方案整理成便于人工理解和判断的材料，并把人工确认产生的长期语义正确返回真实 Authority。
+本文帮助人和 AI 理解：在普通 Consumer 软件项目中，怎样使用 `human-review` Skill，把需求、功能规格、架构或技术方案整理成便于人工理解和判断的材料，并把人工确认产生的长期语义正确返回真实 Authority。
 
-规范边界由 `architecture:human-review` 持有；稳定执行过程由 `skill:human-review` 持有；需求、功能规格、架构和技术规划各自仍由原有 Method / Authority owner 持有。本文只提供 Human View，不建立第二套规范。
+真正的执行契约由 installed `human-review` Skill 持有；Requirement、Specification、Architecture 和 Technical decisions 仍由 Consumer 自己的真实 owner 持有。本文只提供方法导航、评审材料组织原则和人类可读示例，不建立第二套执行或事实 Authority。
 
 ## 1. 人工评审解决什么问题
 

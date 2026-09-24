@@ -5,23 +5,39 @@ status: active
 distribution: source-only
 ---
 
-# 人类使用指南
+# 使用指南与方法导航
 
-`docs/guides/` 只承担 **Human View**：帮助人理解、采用和维护 `agentic-dev`。普通 Agent 运行时默认不依赖这里的文档；正式 Method、Rule、Skill contract 与 Architecture 以各自规范性归属为准。
+`docs/guides/**` 是 `agentic-dev` 的方法论知识与导航层，**同时面向人和 AI 按需读取**。
 
-推荐阅读：
+它不是 ordinary task 的固定上下文，也不是第二套执行 Authority：
 
-1. [`using-agentic-dev.md`](using-agentic-dev.md) — 从整体上理解项目和日常使用方式；
-2. [`language-and-terminology.md`](language-and-terminology.md) — 理解中文表达、原始标识、正式概念身份和语言复核方式；
-3. [`establishing-requirement-baseline.md`](establishing-requirement-baseline.md) — 新项目从 Raw Project Inputs 建立 `docs/requirements`、进行高效需求会话、控制问题下钻尺度并收敛到 `Requirement Baseline Ready` 的人类操作指南；
-4. [`feature-development.md`](feature-development.md) — 普通 Feature / change 从 Clarify Intent、Specification、可选 Technical Planning、Slice & Ready、Execute 到 Converge / `Ready to Integrate` 的连续人类操作指南；
-5. [`human-review.md`](human-review.md) — 理解何时进入人工评审、如何使用结构化 Markdown Review Draft、怎样分类反馈并把长期语义回写真正 Authority，以及 HTML / DOCX 何时才作为显式交付投影生成；
-6. [`github-agent-workflow.md`](github-agent-workflow.md) — GitHub 托管 Repository 中 Local / Cloud Repository Runtime、GitHub Connector 与 GitHub Actions 的协同方式、责任转换、副作用边界与人工升级边界；
-7. [`adopting-agentic-dev.md`](adopting-agentic-dev.md) — 人类视角的 Consumer 首次采用指南；
-8. [`upgrading-agentic-dev.md`](upgrading-agentic-dev.md) — 人类视角的 Existing Consumer 升级指南；
-9. [`multi-model-collaboration.md`](multi-model-collaboration.md) — 理解 Model Collaboration capability、Consumer adoption、路由与验证边界；
-10. [`codex-model-collaboration-reference.md`](codex-model-collaboration-reference.md) — Codex 平台的非规范参考配置、角色配置与运行时冒烟检查结构；
-11. [`rule-activation-guide.md`](rule-activation-guide.md) — 理解 Rule Discovery 如何工作；
-12. [`consumer-local-rule-activation.md`](consumer-local-rule-activation.md) — 理解 Rule 如何在 Consumer 本地化。
+- Guide 解释怎么开始、当前可能处于什么状态、下一步通常做什么，以及 Skills 怎样组合；
+- canonical `skills/**` 持有真正的 Consumer execution contract；
+- Consumer Repository 持有自己的 Product / Requirement / Architecture / current work / local constraints；
+- Provider 内部 Method / Rule / Architecture 可以继续服务 `agentic-dev` 自身研发，但不是普通 Consumer 必须安装或理解的 runtime 类型。
 
-Guide 可以完整解释规范流程，但不重新定义 Gate、路由或规范策略。若 Guide 与规范性归属冲突，以 Method / Architecture / Skill / Rule 为准并修正 Guide。
+## 推荐入口
+
+1. [`getting-started.md`](getting-started.md) — 不知道从哪里开始时先读这里；
+2. [`bootstrap-new-project.md`](bootstrap-new-project.md) — 从基本项目情况建立新软件 Repository；
+3. [`adopting-agentic-dev.md`](adopting-agentic-dev.md) — 已有 Repository 最小侵入接入 Skills；
+4. [`choosing-next-step.md`](choosing-next-step.md) — 根据 Consumer 当前事实判断下一责任；
+5. [`feature-development.md`](feature-development.md) — 普通 Feature / change 的方法导航；
+6. [`establishing-requirement-baseline.md`](establishing-requirement-baseline.md) — 系统性 Requirement Baseline 建立；
+7. [`human-review.md`](human-review.md) — 人工评审与 durable semantic writeback；
+8. [`upgrading-agentic-dev.md`](upgrading-agentic-dev.md) — 显式采用新的 exact-version Skills；
+9. [`consumer-local-constraints.md`](consumer-local-constraints.md) — Consumer 项目级约束的 ownership 与 progressive disclosure 边界；
+10. [`github-agent-workflow.md`](github-agent-workflow.md) — ChatGPT + WebCodex、Codex 与 GitHub 执行面；
+11. [`multi-model-collaboration.md`](multi-model-collaboration.md) — 可选多模型 / 多 Agent 协作；
+12. [`codex-model-collaboration-reference.md`](codex-model-collaboration-reference.md) — Codex 平台参考配置；
+13. [`language-and-terminology.md`](language-and-terminology.md) — 面向人的语言与术语表达。
+
+## AI 使用边界
+
+AI 只有在 Bootstrap、方法论咨询、导航或用户明确要求理解整体流程时按需读取 Guide。进入具体责任后，使用 installed Skill 的 `SKILL.md` 执行。
+
+如果 Guide 与 Skill 对同一可执行 procedure 出现冲突，应修正 Guide；如果 Guide 与 Consumer 项目事实冲突，以 Consumer Repository Authority 为准。
+
+## 过渡资产
+
+`rule-activation-guide.md` 与 `consumer-local-rule-activation.md` 记录当前 Provider 既有 Rule / Rule Discovery 机制。它们不是新 Consumer 的默认 Bootstrap 入口；Consumer-local constraints 的最终最小机制由 P4 单独验证后确定。
