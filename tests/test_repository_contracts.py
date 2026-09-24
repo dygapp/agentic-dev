@@ -125,6 +125,32 @@ class RepositoryContractsTests(unittest.TestCase):
         for path in SKILLS.glob("*/SKILL.md"):
             self.assertIn("## 升级", path.read_text(encoding="utf-8"), str(path))
 
+    def test_active_markdown_links_resolve(self):
+        import re
+
+        paths = [ROOT / "README.md", ROOT / "docs/project/README.md",
+                 ROOT / "docs/architecture/README.md", ROOT / "skills/README.md"]
+        paths += sorted((ROOT / "docs/guides").glob("*.md"))
+        paths += sorted((ROOT / "docs/governance").glob("*.md"))
+        pattern = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+        for path in paths:
+            for target in pattern.findall(path.read_text(encoding="utf-8")):
+                if target.startswith(("http://", "https://", "#", "mailto:")):
+                    continue
+                relative = target.split("#", 1)[0]
+                if relative:
+                    self.assertTrue((path.parent / relative).resolve().exists(), f"{path}: {target}")
+
+    def test_rc_only_semantics_remain_in_canonical_skills(self):
+        collaboration = (SKILLS / "activate-model-collaboration/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Primary execution context", collaboration)
+        self.assertIn("Runtime Under Test", collaboration)
+        self.assertIn("single-agent fallback", collaboration)
+        execute = (SKILLS / "execute-unit/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("只要仍可在当前授权内自动关闭就继续", execute)
+        converge = (SKILLS / "converge/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("ancestor→current 精确 diff", converge)
+
     def test_webcodex_codex_cli_boundary_is_durable(self):
         agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
         self.assertIn("WebCodex Runner **不得直接或间接启动 `codex-cli`**", agents)

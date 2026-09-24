@@ -85,56 +85,58 @@ P4 已冻结第一版最小约定：root `AGENTS.md` 承担极少量 repository-
 
 Disposable fixture 没有暴露前三种简单机制的缺口，因此按冻结前置条件没有触发真实软件 Consumer applicability challenge，也没有进入 metadata/filter 设计。旧 `rule-activation-guide.md` 与 `consumer-local-rule-activation.md` 已退出。
 
-当前旧 Provider `rule-discovery lint` 因 P2 已删除 Skill composition metadata 而 fail closed；该 stale verification contract 在 S2 随旧 Rule Discovery current path 一并退出，不通过恢复旧 metadata 处理。
+S1 Authority Freeze 已在 exact candidate `9a86785f613b50e48b868cdcec272a739011bb8e` 完成 Fresh Independent Semantic Review：`Blocking=0`、`Medium=0`。两项 Low 只作为 backlog；远端 PR / Actions 与真实 Consumer adoption 保持未验证，不阻塞本轮 Provider 收敛。
 
-**当前阶段：Minimal Convergence / S1 — Authority Freeze。**
+S2 已完成两步减法切换：
 
-P1～P4 已完成成果保留，不重新执行。原 P5～P9 路线停止继续扩张，剩余工作压缩为：
+- `60bfa2a17e353bd888dbfafa9e1802fc14ae758e` — Provider governance 直接化，根 Bootstrap 不再执行 Method selector / Rule Discovery；
+- `0c7f7f8483076eb5ae1410e09ff6a37705e0ce16` — 删除旧 Method / Rule / Capability / Release / Eval 基础设施，建立最小 deterministic tests 与单一 CI。
+
+旧 Provider `rule-discovery lint`、Project Capability Profile、custom Release Builder / installer、authenticated batch model acceptance 与旧 workflows 已退出 Current tree，不保留兼容运行入口。
+
+**当前阶段：S3 — Minimal Validation / Final Independent Review Candidate。**
+
+S3 只允许：
 
 ```text
-S1 — Authority Freeze
-→ Fresh Independent Semantic Review
-→ S2 — Subtractive Cutover
-→ S3 — Minimal Validation
-→ Provider 极简切换完成，可供采用
+exact candidate
+→ deterministic repository contracts
+→ isolated Consumer-like Skill install / update smoke
+→ dead locator / owner mapping / RC-only semantic checks
+→ Fresh Independent Review
 ```
 
-真实 Consumer adoption 已取消为本轮完成门槛；本轮不修改 `jilinjobs-cms`，也不声称真实 Consumer 已验证。未来采用问题进入正常产品反馈，除非证明产品边界本身存在 Blocking 缺陷，否则不自动重开基础设施重构。
+普通 Provider 修改不再要求 Method / Rule Discovery、批量模型自测或多级 Gate。WebCodex Runner 继续禁止直接或间接调用 `codex-cli`；只有未来 claim 明确依赖 Codex-specific Runtime Under Test 时，才在非 WebCodex 独立子任务中临时授权。
 
-WebCodex Runner 继续禁止直接或间接调用 `codex-cli`；Codex-specific Runtime Under Test 只允许拆成非 WebCodex 独立子任务并由人工临时授权。原 P5 中已产生的 runtime / eval Evidence 保留为历史证据，但不要求把旧批量 authenticated acceptance 路径继续跑绿。
+真实 Consumer adoption 不属于本轮完成门槛；最终允许的完成声明仍只到：**Provider 极简切换完成，可供采用**。
 
 ## 后续候选
 
-在 S1～S3 极简收敛完成前，与当前阶段无关的能力扩展保持非活动。尤其不提前新增：
-
-- 新 Method / Rule / Architecture runtime 类型；
-- 新中央 discovery / registry；
-- 新 custom package / installer；
-- 与本轮产品边界无关的 Skill 扩展。
-
-历史 Consumer feedback、Runtime Evidence 与旧 Coverage Audit 可以作为设计证据，但不能反向要求新模型兼容旧实现。
+在 S3 Fresh Independent Review 完成前，与当前收敛无关的能力扩展保持非活动。非 Blocking / Medium 改进全部进入 backlog，不再扩大本轮重构。
 
 ## 已知约束
 
-- 当前已集成 Repository Authority 在新规范正式集成前仍约束本仓 ordinary runtime；
-- 新模型必须保留 Progressive Disclosure、Consumer-local Authority、Evidence 与 Fresh Context 等已验证需求；
-- Guide 可供 AI 按需使用，不等于进入 ordinary Agent 固定 Bootstrap；
-- `skills/**` 成为唯一 Consumer runtime product 不等于把所有知识塞入一个超级 Skill；
-- Consumer-local Product / Requirement / System Architecture / technology policy / authorization / current state 不得被通用 Skill 吸收；
-- Consumer-local Rules 的需求必须保留，但其发现机制需要重新从最小方案证明；
-- 已冻结 Specification 不因实施便利静默改变；若实施计划暴露目标级冲突，必须返回 Specification 重新复核。
+- P1～P4 的历史 Evidence 继续支持未变化的 exact Skill subject；跨 subject 复用必须证明差异不影响 claim；
+- `skills/**` 是唯一正式 Consumer runtime product，Guides 只按需导航；
+- Consumer-local Product / Requirement / Architecture / technology policy / authorization / current state 不得被通用 Skill 吸收；
+- WebCodex 不调用 `codex-cli`；
+- 当前候选尚未发布到远端，因此不能声称当前 exact SHA 已有 GitHub PR / Actions Evidence；
+- 真实 Consumer adoption 明确保留为未验证状态。
 
 ## 状态归属
 
-- Repository live state：GitHub；
-- 当前已集成项目使命 / 核心要求：`project-charter.md`；
-- 当前已集成 Repository runtime instance：`project-capability-profile.md`；
-- 新一轮产品边界与 Acceptance：`methodology-product-boundary-specification.md`；
+- Repository live state：GitHub 与当前 checkout 的 Git facts；
+- 项目使命 / 核心要求：`project-charter.md`；
+- Provider Bootstrap：根 `AGENTS.md`；
+- Provider 直接治理：`../governance/**`；
+- Consumer runtime product：`../../skills/**`；
+- 人与 AI 的按需方法导航：`../guides/**`；
+- 当前产品边界与 Acceptance：`methodology-product-boundary-specification.md`；
+- 当前收敛计划：`methodology-product-boundary-implementation-plan.md`；
 - Repository-wide disposition Evidence：`../research/methodology-product-boundary-asset-disposition.md`；
-- 当前实施计划：`methodology-product-boundary-implementation-plan.md`；
-- 上一轮发布模型规范：`distribution-rebuild-specification.md`，仅作为历史规范 / Evidence locator；
-- 当前 evolution / gate / compact next candidates：本 Roadmap；
+- 当前 evolution / next responsibility：本 Roadmap；
 - 稳定历史里程碑：`project-evolution.md`；
-- bounded unit 的完整 Review / Actions / commit Evidence：对应 GitHub Issue / PR / Actions。
+- 历史研究与旧模型 Evidence：`../research/**`；
+- bounded change 的精确 commit / Review / Actions Evidence：Git / GitHub 对应对象。
 
-Roadmap 不复制完整重构规范、Architecture、Capability body、历史实施日志或完整 Review Evidence。
+Roadmap 不复制完整规范、Skill procedure、历史实施日志或完整 Review Evidence。
