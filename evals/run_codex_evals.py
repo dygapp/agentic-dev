@@ -44,8 +44,9 @@ AGENTIC_DEV_DISCOVERY_BOOTSTRAP_PATHS = (
 RESULTS = EVALS / "results"
 WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
+ARCHITECTURE_FIXTURE = EVALS / "fixtures" / "clarify-architecture-basic"
 GITHUB_ACTIONS_FIXTURE = EVALS / "fixtures" / "github-actions-observation"
-WORKSPACE_WRITE_BEHAVIOR_SCENARIOS = {"B-MC-01", "B-EU-01", "B-GA-01"}
+WORKSPACE_WRITE_BEHAVIOR_SCENARIOS = {"B-AR-01", "B-EU-01", "B-GA-01"}
 RUN_CONTEXT = {
     "source_commit": None,
     "codex_version": None,
@@ -527,6 +528,8 @@ def run_behavior(
                     "$execute-unit 读取当前目录的 AGENTS.md 和 unit.md，只实现 "
                     "greeting-01，并按仓库规则验证；完成后记录当前证据并停止。"
                 )
+            elif scenario_id == "B-AR-01":
+                copy_fixture_into(cwd, ARCHITECTURE_FIXTURE)
             elif scenario_id == "B-GA-01":
                 copy_fixture_into(cwd, GITHUB_ACTIONS_FIXTURE)
 

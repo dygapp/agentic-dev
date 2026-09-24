@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": "B-MC-01",
-      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 activate-model-collaboration。当前 Repository 已安装 activate-model-collaboration Skill package，并且该 package 是本场景唯一通用方法论运行输入；安装 exact source / Skill-set provenance 可从 .agents/README.md 恢复。本场景已经提供当前 observed capability evidence：运行平台只证明可以启动一个只读子 Agent；独立 model/effort、并发写入和独立 review 都没有当前证据。请基于这些已观察事实决定本地启用状态、仍需验证什么，以及 fallback。不要在本场景中再次调用 spawn/wait 等 collaboration tools 去重复探测题面已经给出的 capability matrix；live delegation validation 由独立 Runtime-specific validation 负责。",
+      "prompt": "这是隔离 Runtime Eval：当前工作目录和本提示构成本场景全部可用上下文；不要读取或搜索当前工作目录之外的路径。请使用 activate-model-collaboration。当前 Repository 已安装 activate-model-collaboration Skill package，并且该 package 是本场景唯一通用方法论运行输入；安装 exact source / Skill-set provenance 可从 .agents/README.md 恢复。本场景已经提供当前 observed capability evidence：运行平台只证明可以启动一个只读子 Agent；独立 model/effort、并发写入和独立 review 都没有当前证据。请基于这些已观察事实决定本地启用状态、仍需验证什么，以及 fallback。本场景到形成这个有证据约束的决策即结束：不要创建或修改 Consumer-local collaboration 配置，不要调用 spawn/wait 等 collaboration tools 去重复探测题面已经给出的 capability matrix；local instance persistence 与 live delegation validation 由独立 Runtime-specific validation 负责。",
       "expected_behavior": "只能启用已有证据支持的缩减策略，不能把 requested configuration 冒充 observed runtime capability。应保持 Primary Agent/single-writer，未知能力保持 disabled/conditional，并给出 single-agent fallback；不得为了补能力在线读取 upstream agentic-dev Source。",
       "assertions": [
         "区分已观察到的只读子 Agent 能力与尚未验证的 model/effort、并发写入、独立 review 能力",
