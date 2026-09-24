@@ -29,6 +29,8 @@ status: active
 
 一次只推进一个演进事项。当前事项收口前，不展开下一事项的详细分析或实现。
 
+单项的详细 Evidence、方案草稿、交叉评审记录与实施过程默认由对应 GitHub Issue / PR / Git 历史承载；`docs/project/**` 只保留仍具有稳定消费者的长期 Project Authority、Roadmap、当前阶段级演进协议与必要 locator，不为每个演进事项保留一次性详细方案文档。
+
 每个事项统一执行：
 
 1. **证据重新分析**
@@ -66,16 +68,22 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 **来源**：Issue #58 最新 Design Authority feedback。
 
-**问题**：重新判断现有 Skill 在 Consumer 引入新的合法项目权威时，是否能够正确发现、使用并回写相关语义，以及问题应归属于 Skill、Guide 还是 Consumer-local 约束。
+**问题**：重新判断 Agent 在使用现有 Skill 完成软件开发责任时，面对 Consumer 新增的合法 Current Authority，是否能够从当前 Repository 按需解析、消费、跨 Fresh Context 恢复、验证并把长期语义返回真实 owner；同时保持 Authority 与 Consumer-local Constraint 的语义边界。
 
 **分析范围**：
 
 - 当前 Skill 对项目权威的输入、使用和反馈回写边界；
 - Guide 是否提供了足够的方法导航；
 - Consumer-local Authority 是否已经足以解决问题；
+- Agent / Skill / Guide / Authority / Constraint / Execution Unit 的主体与责任关系；
+- Authority 在 planning / slicing / readiness / execution / debug / convergence / review 中的生命周期；
 - 新的项目权威类型是否暴露真正的 Provider 通用缺口。
 
 **非目标**：预设 Design 专用 Skill、通用 Authority registry，或把 Consumer 的 `DESIGN.md` 格式提升为 Provider 标准。
+
+**当前工作入口**：GitHub Issue #183 — `演进事项 1：Skill 与 Consumer 项目权威适配`。Issue 承载详细冻结方案、实现前交叉评审与后续实施 Evidence；长期稳定结论回写真实 Architecture / Guide / Skill / Governance owner。
+
+当前已完成 Evidence 重新分析、必要外部研究、第一版方案收敛、GPT-6 Sol 实现前独立交叉评审及其 Medium findings 修订，并已按修订方案完成 canonical Skill / Guide contract 实施。Focused validation 已覆盖 deterministic repository contracts、Provider-unknown Authority bounded scenarios 与真实 Consumer `jilinjobs-cms` 的只读 applicability challenge；真实 Consumer adoption / runtime PASS 仍保持未验证。最终高影响 Skill contract 变更仍必须执行 Provider Fresh / Independent Review。
 
 ### 演进事项 2 — 小规模变更的执行粒度
 
@@ -150,13 +158,15 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 ## 6. 当前停止点
 
-本计划现在只完成：
+当前演进事项 1 已完成：
 
-- Consumer 反馈概览；
-- 演进事项划分和顺序；
-- 单项闭环协议；
-- 基线与非目标固化。
+- 当前 baseline 与 Issue / Consumer Evidence 重新分析；
+- Authority 与 Consumer-local Constraint 边界澄清；
+- Agent / Skill / Guide / Authority / Constraint / Execution Unit 核心运行模型收敛；
+- GPT-6 Sol 实现前独立方案评审及 4 个 Medium findings 修订；
+- 开放 Consumer Authority contract 的 Architecture / Guide / canonical Skill 实施；
+- deterministic repository contracts、bounded behavior scenarios 与 `jilinjobs-cms` 只读 applicability challenge。
 
-**前置状态收口已完成；演进事项 1～4 尚未开始详细证据重新分析、外部研究、方案收敛或实现。**
+演进事项 1 当前尚未完成最终 Fresh / Independent Review 与集成决定；真实 Consumer adoption / runtime PASS 不属于当前已验证事实。演进事项 2～4 仍未展开。
 
-下一责任：以新的 Fresh Context 单独进入演进事项 1 — Skill 与项目权威的适配边界，先执行证据重新分析。
+下一责任：以 GitHub Issue #183 当前 implementation candidate 和 Evidence 为输入，对最终 exact candidate 执行 Fresh / Independent Review；Review 通过后再由 Human Authority 决定集成与本事项收口。

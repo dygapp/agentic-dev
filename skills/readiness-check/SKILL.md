@@ -1,6 +1,6 @@
 ---
 name: readiness-check
-description: Performs a read-only pre-execution gate across specification, optional technical plan, execution units, domain and architecture authority, artifact lifecycle responsibilities, and governance. Use immediately before execution to return PASS or evidence-backed findings; never repair authoritative artifacts inside the check.
+description: Performs a read-only pre-execution gate across an execution unit, its currently applicable consumer authority, optional technical plan, artifact lifecycle responsibilities, and governance. Use immediately before execution to return PASS or evidence-backed findings; never repair authoritative artifacts inside the check.
 ---
 
 # readiness-check
@@ -13,17 +13,18 @@ description: Performs a read-only pre-execution gate across specification, optio
 
 - Target Execution Unit；
 - Current Specification / optional Technical Plan；
-- Domain / Architecture / Repository Authority；
+- Unit 中已有 Authority 恢复线索，以及按当前 task / claim 与 Consumer locator 重新解析的适用 Current Authority；
+- Repository Authority；
 - 当前仓库事实；
 - Consumer-local constraints。
 
 ## 流程
 
-1. 重新读取当前 Unit、直接 Authority、Consumer-local constraints 与当前仓库事实，不沿用旧会话的就绪结论。
-2. 检查 Specification readiness、必要技术决定、Unit scope、依赖、artifact lifecycle、权限和 completion / verification 定义；验证 contract 必须与 Current Requirement / Specification / Architecture 一致，旧测试或 Workflow 不能因为已存在就覆盖更高层 Authority。
+1. 重新读取当前 Unit、Consumer-local constraints 与当前仓库事实；结合 Unit 线索、当前 task / claim 和 Consumer locator / navigation 重新判断当前责任实际适用的 Current Authority，不把切分时的 owner 清单或旧会话就绪结论当成永久事实。
+2. 检查 Specification readiness、必要技术决定、Unit scope、依赖、artifact lifecycle、权限和 completion / verification 定义；验证 contract 必须覆盖当前责任实际适用的 Current Authority 及其可验证义务，旧测试或 Workflow 不能因为已存在就覆盖 Current Authority。
 3. 检查 base drift、未提交 / 并发变化、当前 exact subject 与 Repository 状态是否使既有计划或旧 Evidence 失效。
 4. 逐项完成当前门禁检查后重新计算剩余责任；单个检查、测试或工具调用完成不等于 readiness gate 完成。
-5. 只报告 evidence-backed finding，并给出明确 Return To：Specification / Acceptance 的 WHAT/WHY 缺口返回 `specify`；只有底层 Product Intent 本身仍未决定时才先返回 `clarify-intent`。Execution Unit 的 scope、completion condition、traceability 或 dependency 形状问题返回 `slice-work`；跨 Unit 的持久 HOW 缺口返回 `technical-plan`；系统性长期 Architecture driver 返回 `clarify-architecture`。本 Skill 内不修复 Authority、计划、代码或配置，也不把无法验证的假设降级为 PASS。
+5. 只报告 evidence-backed finding，并给出明确 Return To：Specification / Acceptance 的 WHAT/WHY 缺口返回 `specify`；只有底层 Product Intent 本身仍未决定时才先返回 `clarify-intent`。Execution Unit 的 scope、completion condition、traceability 或 dependency 形状问题返回 `slice-work`；跨 Unit 的持久 HOW 缺口返回 `technical-plan`；系统性长期 Architecture driver 返回 `clarify-architecture`；其他 Current Authority 缺口返回其真实 owner / Consumer-local maintenance procedure。applicability / owner / locator 无法可靠判断且会影响当前 readiness claim 时，只阻断受影响结论。本 Skill 内不修复 Authority、计划、代码或配置，也不把无法验证的假设降级为 PASS。
 
 ## 输出
 

@@ -1,0 +1,77 @@
+{
+  "fixture_role": "test-only bounded scenarios; not a Provider runtime schema",
+  "unknown_authority_name": "Presentation Authority",
+  "scenarios": [
+    {
+      "id": "related-task-loads-current-owner",
+      "task_facts": {"responsibility": "execute-unit", "signals": ["public-ui", "presentation"]},
+      "unit_authority_hints": ["docs/presentation-v1.md"],
+      "current_locator": {"public-ui": "docs/presentation-v2.md"},
+      "available_authority": ["docs/presentation-v2.md"],
+      "expected": {
+        "loaded_authority": ["docs/presentation-v2.md"],
+        "decision": "APPLY_CURRENT_OWNER",
+        "reason": "current locator supersedes stale unit hint"
+      }
+    },
+    {
+      "id": "unrelated-task-does-not-load-owner",
+      "task_facts": {"responsibility": "execute-unit", "signals": ["backend-batch"]},
+      "unit_authority_hints": [],
+      "current_locator": {"public-ui": "docs/presentation-v2.md"},
+      "available_authority": ["docs/presentation-v2.md"],
+      "expected": {
+        "loaded_authority": [],
+        "decision": "VERIFIED_NO_MATCH"
+      }
+    },
+    {
+      "id": "post-slice-owner-drift-is-reresolved",
+      "task_facts": {"responsibility": "readiness-check", "signals": ["public-ui", "presentation"]},
+      "unit_authority_hints": ["docs/presentation-v1.md"],
+      "current_locator": {"public-ui": "docs/presentation-v3.md"},
+      "available_authority": ["docs/presentation-v3.md"],
+      "expected": {
+        "loaded_authority": ["docs/presentation-v3.md"],
+        "decision": "USE_CURRENT_NOT_FROZEN_HINT"
+      }
+    },
+    {
+      "id": "broken-locator-blocks-affected-claim",
+      "task_facts": {"responsibility": "readiness-check", "signals": ["public-ui", "presentation"]},
+      "unit_authority_hints": ["docs/presentation-v1.md"],
+      "current_locator": {"public-ui": "docs/missing-presentation.md"},
+      "available_authority": [],
+      "expected": {
+        "loaded_authority": [],
+        "decision": "BLOCK_AFFECTED_CLAIM",
+        "repository_wide_block": false
+      }
+    },
+    {
+      "id": "authority-violation-rejects-functional-pass",
+      "task_facts": {"responsibility": "converge", "signals": ["public-ui", "presentation"]},
+      "unit_authority_hints": ["docs/presentation-v2.md"],
+      "current_locator": {"public-ui": "docs/presentation-v2.md"},
+      "available_authority": ["docs/presentation-v2.md"],
+      "authority_obligation": {"tab_height_px": 32},
+      "implementation_observation": {"tab_height_px": 42},
+      "functional_tests": "PASS",
+      "expected": {
+        "decision": "NOT_READY",
+        "evidence_gap": "presentation obligation violated"
+      }
+    },
+    {
+      "id": "human-feedback-writes-back-unknown-owner",
+      "task_facts": {"responsibility": "human-review", "signals": ["public-ui", "presentation"]},
+      "current_locator": {"public-ui": "docs/presentation-v2.md"},
+      "available_authority": ["docs/presentation-v2.md"],
+      "human_feedback": {"durable_change": {"tab_height_px": 36}},
+      "expected": {
+        "writeback_target": "docs/presentation-v2.md",
+        "decision": "WRITE_TRUE_CURRENT_OWNER"
+      }
+    }
+  ]
+}

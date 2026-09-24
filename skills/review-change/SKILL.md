@@ -21,12 +21,12 @@ description: Reviews a final repository change against current authority, scope,
 
 1. 建立 review isolation：优先在当前平台创建 fresh / isolated context，重新恢复 exact subject、Repository Authority 与 Consumer-local constraints，不继承作者意图、旧 finding 处置或此前 PASS。独立性来自隔离与重新判断，不要求另起 provider、模型或 CLI。
 2. 明确本次 review claim：要判断哪些最终变更是否可安全接受，而不是重新设计目标；只有 claim 本身依赖 Codex native discovery、authenticated model behavior、provider permissions / isolation 等 Runtime-specific 行为时，才把对应 Runtime 作为 Runtime Under Test 启动。
-3. 重新读取精确 diff / changed files、当前 Authority、最终实现与当前 Evidence。验证 contract 只有在与 Current Requirement / Specification / Architecture 一致时才定义有效 expected behavior。
+3. 重新读取精确 diff / changed files，并结合当前 review claim、Consumer locator / navigation 与 Repository facts 重新解析本次变更实际适用的 Current Authority，再读取最终实现与当前 Evidence。验证 contract 只有在与这些适用 Current Authority 一致时才定义有效 expected behavior。
 4. 根据变更影响选择复核深度：普通变更执行 consistency / regression / scope / evidence / lifecycle 检查；命中下述高影响 Authority 条件时追加 **Authority-chain semantic review**。
 5. 检查 authority consistency、语义回归、scope、授权边界、证据与长期 artifact lifecycle。当前 owner 被 replace / retire / archive 时，确认 locator / navigation、verification consumer 与 durable current-state wording 已迁移，historical reference 只承担 provenance 而不是 Current dependency。
    - 如果变更触及 README、Roadmap 或 Fresh Context 恢复入口，按拟集成后的长期状态检查其表述；`等待本 PR 合并`、临时 branch 等瞬时事实不应被固化为集成后立即陈旧的 Current 状态。
 6. 复用祖先 commit 的 CI / Review / Runtime evidence 时，必须取得 ancestor→current exact diff，逐项证明对应 claim 不受差异影响并记录 ancestor SHA、current SHA、差异范围和 claim mapping；祖先 Run 不得描述为当前 Run。
-7. Requirement 明确要求视觉 fidelity 时，功能验证不能单独支持视觉 PASS；按风险检查真实运行页面、参考视觉、AI 对照与必要人工复核。
+7. 当前适用 Authority 或 review claim 要求视觉 fidelity 时，功能验证不能单独支持视觉 PASS；按风险检查真实运行页面、参考视觉、AI 对照与必要人工复核。Requirement 只是可能的义务来源之一。
 8. Authority-chain mode 中按语义责任链挑战 currentness、ownership、downstream projection、replaceability、conflict classification 与 source promotion；只有命中再生性条件时才执行 bounded code-holdout / regenerability challenge。
 9. 记录可执行 findings，区分阻塞、中等与低 / 非阻塞问题；每项 finding 指向具体事实、影响与最小修复边界。
 10. 修复发生后重新读取最终变更；只复用能够证明未受修改影响的旧 Evidence。每个测试 / 子审查 / 工具调用终态后重新计算剩余 review responsibility，不能因局部 PASS 静默结束。

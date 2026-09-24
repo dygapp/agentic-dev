@@ -87,7 +87,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 
 当前顺序暂定为：
 
-1. **Skill 与项目权威的适配边界**：当前下一责任；
+1. **Skill 与项目权威的适配边界**：方案、实现与 focused validation 已完成，当前下一责任是最终 Fresh / Independent Review；
 2. **小规模变更的执行粒度**；
 3. **多仓库项目的工作区与权威边界**；
 4. **本地验证环境的资源生命周期**。
@@ -117,6 +117,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - Repository-wide disposition Evidence：`../research/methodology-product-boundary-asset-disposition.md`；
 - 当前 evolution / next responsibility：本 Roadmap；
 - post-v0.1.0 Consumer 反馈演进事项与逐项闭环协议：`post-v0.1.0-consumer-feedback-evolution-plan.md`；
+- 演进事项 1 当前工作入口与详细方案 / Review Evidence：GitHub Issue #183；
 - 稳定历史里程碑：`project-evolution.md`；
 - 历史研究与旧模型 Evidence：`../research/**`；
 - bounded change 的精确 commit / Review / Actions Evidence：Git / GitHub 对应对象。
