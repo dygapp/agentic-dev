@@ -567,23 +567,26 @@ Consumer-local lightweight policy
 
 发现关键反例时先修改本文，不进入实现。
 
-## 21. 下一阶段
+## 21. 收敛与完成边界
 
-本文候选完成后，顺序固定为：
+本轮不再把真实 Consumer adoption 作为 Provider 重构完成门槛。后续收敛顺序固定为：
 
 ```text
-Specification candidate
-→ Independent Semantic Review
-→ Specification freeze
-→ Repository-wide asset disposition
-→ 具体实施方案
-→ 实施 / 验证
-→ 真实 Consumer adoption validation
+S1 — Authority Freeze
+→ Fresh Independent Semantic Review
+→ S2 — Subtractive Cutover
+→ S3 — Minimal Validation
+→ Provider 切换完成，可供采用
 ```
 
-在 Specification freeze 之前：
+完成声明只表示：Provider 已切换到本文定义的极简产品边界，`skills/**` 可直接安装，必要 Provider 治理已直接化，旧基础设施已退出 current path，并通过最小确定性检查、隔离安装 / 运行冒烟和 Fresh Independent Review。该声明**不表示任何真实 Consumer 已完成采用验证**。
 
-- 不删除现有 Capability / Distribution 资产；
-- 不修改 `jilinjobs-cms`；
+真实 Consumer 的后续采用、兼容性问题和使用反馈进入正常产品反馈流程；除非反馈证明本文产品边界本身存在 Blocking 缺陷，否则不自动重开基础设施重构。`jilinjobs-cms` 不再作为本轮完成门槛或必做验证对象。
+
+S1 完成并通过 Fresh Independent Semantic Review 之前：
+
+- 不进入 S2 删除；
+- 不修改真实 Consumer；
 - 不继续旧 Gate H；
-- 不把讨论结论提前写成最终 Implementation Architecture。
+- 不因实现便利降低 `PB-AC-01`～`PB-AC-29` 的产品目标；
+- 不新增 Method / Rule Engine / Discovery / Runtime / Gate 类型。

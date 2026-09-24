@@ -235,223 +235,136 @@ P4 结束时才冻结第一版 Consumer-local constraints 约定。
 
 覆盖：`PB-AC-15`～`18`、`22`。
 
-## 7. Gate P5 — Runtime / Eval 基础设施切换
+## 7. S1 — Authority Freeze
 
-### 7.1 Runtime Acceptance
+P1～P4 已完成的成果与 Evidence 保留，不重新执行。本阶段只冻结极简终局和剩余收敛路径，不开始删除旧资产。
 
-重构当前 Runtime Acceptance：
+S1 必须完成：
 
-```text
-canonical skills/**
-→ standard-compatible install/copy into isolated Consumer
-→ native discovery
-→ activation / behavior
-→ negative controls
-→ evidence collection
-```
+- 修订本 Specification、Implementation Plan、Project Roadmap 与 Asset Disposition，使它们一致表达极简终局；
+- 取消真实 Consumer adoption 作为本轮完成门槛；
+- 冻结 Provider 最小治理边界：薄 `AGENTS.md` 直接指向少量 Git、语言 / 术语、文档 Authority、重大变更复核、Evidence 匹配等治理正文；
+- 冻结 Consumer 产品边界：`skills/**` 是唯一正式 Consumer runtime product，Guides 只按需服务人和 AI，Consumer 自己拥有项目事实与约束；
+- 冻结执行边界：WebCodex Runner 不得直接或间接调用 `codex-cli`；Fresh Context、Independent Review 和普通语义判断由 ChatGPT 承担；只有 Codex-specific Runtime Under Test 才拆成非 WebCodex 独立子任务并等待人工临时授权；
+- 已保留的 Codex 场景在仍存在期间统一使用 600 秒单场景 timeout，但这些批量模型场景不再属于本轮默认完成路径；
+- 不新增 Method / Rule Engine / Discovery / Runtime / Gate 类型。
 
-不再：
+S1 Authority 修订完成后执行一次 Fresh Independent Semantic Review。Review 只检查：极简目标是否一致、是否仍残留旧 P5～P9 强制路径、是否误删长期必要语义。`Blocking=0`、`Medium=0` 后进入 S2。
 
-```text
-docs Method / Rule / Architecture
-→ release_build.py
-→ generated ZIP
-→ install_release.py
-```
+## 8. S2 — Subtractive Cutover
 
-### 7.2 保留的验证能力
+S2 以“迁移必要语义，再删除旧 owner”为唯一实施原则。
 
-- exact subject identity；
-- Codex native Skill discovery；
-- authenticated representative behavior；
-- independent grader；
-- process timeout / cancellation；
-- stale evidence cleanup；
-- Evidence kind / schema；
-- source / scenario / runtime / grader binding；
-- Provider Source / docs unreadable / unavailable negative controls；
-- Skill resource integrity；
-- progressive disclosure。
+### 8.1 保留并直接化
 
-### 7.3 ChatGPT + WebCodex
+- 15 个 canonical Skills；
+- 按需 Guides；
+- Consumer-local ownership / constraints 语义；
+- 少量 Provider governance：Git、语言 / 术语、文档 Authority、重大变更复核、Evidence 匹配及确有必要的外部写授权原则；
+- P1～P4、旧 Gate / RC 与 26 obligation 的历史 Evidence。
 
-验证第 0 层 Project Instructions 只负责：
+Provider `AGENTS.md` 直接指向这些少量治理正文，不再通过 Method selector、五维 Rule Discovery 或 Project Capability Profile 间接恢复它们。
 
-```text
-定位 Repository
-→ WebCodex
-→ AGENTS.md
-```
+### 8.2 简化
 
-进入 Repository 后由 Layer 1～4 接管。不得要求 ChatGPT Project Instructions 复制方法论正文。
+- Bootstrap：缩为 Repository Authority + 少量直接 governance locator；
+- 验证：缩为少量 deterministic checks、隔离安装 / 运行冒烟和必要 negative control；
+- 跨 Skill invariant：只保留能够静态或小型 fixture 验证的关键一致性，不维持批量模型自测体系；
+- Codex-specific Runtime 验证：只在相关产品声明发生变化且确实必须观察 Codex runtime 时作为独立临时授权子任务执行。
 
-P5 执行期间额外冻结以下执行边界：WebCodex Runner 只承担 Repository / deterministic runtime 工作，不得启动 `codex-cli`；Fresh Context、independent review 与普通 semantic grading 由 ChatGPT 完成。只有 Codex-specific Runtime Under Test 声明必须使用 `codex-cli` 时，才拆成独立子任务并等待人工在单独会话显式临时授权。仓库自带 Codex 执行入口在 WebCodex 环境必须 fail closed。单个 Codex Runtime / grader 场景 timeout 统一为 600 秒。
+### 8.3 删除
 
-覆盖：`PB-AC-20`～`23`。
+在对应长期语义已经迁移后删除：
 
-## 8. Gate P6 — Provider Governance Cutover 与减法清理
+- Method runtime / selector 与 `project-capability-profile.md`；
+- 五维 Rule Discovery tool / workflow / metadata runtime；
+- 旧统一 Capability / Source Distribution classification；
+- custom Release Builder / installer / workflow；
+- 被 Skills / Guides / Provider governance 直接替代的旧 Method / Architecture / Rule runtime owner；
+- 只服务上述旧机制的 tests / evals；
+- 默认批量 `codex-cli` runtime eval / grader orchestration，包括不再具有独立长期价值的 `authenticated_model_acceptance.py` 路径。
 
-P1～P5 全部通过后才执行 Provider 自身 cutover。
+S2 不要求把历史 Research 和 Evidence 机械删除；它们只要不再进入 current runtime 就可以保留。
 
-### 8.1 更新真正 Current Owners
+## 9. S3 — Minimal Validation & Closure
 
-调整：
-
-- `project-charter.md`；
-- `AGENTS.md`；
-- 根 `README.md`；
-- `project-roadmap.md`；
-- `skill-architecture.md`；
-- 必要 Consumer / Project Knowledge 说明。
-
-目标：
-
-- Provider 不再声明必须 self-consume Consumer runtime；
-- Fresh Context 不固定加载 Project Capability Profile；
-- 不执行 Method selector；
-- 不执行旧五维 Rule Discovery；
-- Guides 从 Human-only 改为 Human + AI on-demand；
-- `skills/**` 是唯一 Consumer runtime product。
-
-### 8.2 Provider 自身 Rules
-
-Provider 只保留有独立本仓治理价值的少量规则。第一轮优先：
-
-- human-facing content；
-- Git commit discipline；
-- external write / authorization 中仍需的最小原则；
-- high-impact independent review；
-- 必要 Evidence integrity。
-
-通过薄 Bootstrap / 少量明确 trigger 使用，不为这几条规则重建通用 Rule Engine。
-
-### 8.3 删除已替代资产
-
-只有对应语义已迁移且新验证已通过后，删除：
-
-- Project Capability Profile；
-- Method runtime / selector；
-- 统一 Capability Architecture；
-- upstream Rule distribution model；
-- Rule Discovery tool / workflow / obsolete tests；
-- distribution metadata / audit tool；
-- Release Builder / custom installer / workflow；
-- 被 Skill / Guide 正式替代的 Method / Architecture 文档；
-- 旧 Discovery evals。
-
-旧 Specification / disposition / implementation plan 在最终 canonical convergence 前继续作为本轮 Evidence；完成后按各自生命周期退出 Current Authority。
-
-覆盖：`PB-AC-01`～`05`、`24`、`27`。
-
-## 9. Gate P7 — 全仓最终验证与独立复核
-
-在最终 exact candidate 上执行：
+S3 只执行能够区分极简目标是否真实成立的最小验证。
 
 ### 9.1 Deterministic
 
-- Markdown / Skill schema；
-- dead locator / broken reference；
-- no old distribution metadata；
-- no active Release Builder / installer locator；
-- Guide / Skill link consistency；
-- new Bootstrap fixtures；
-- Consumer-local constraints fixtures；
-- full eval suite；
-- runtime acceptance。
+至少验证：
 
-### 9.2 Negative controls
+- canonical Skill package 仍只有必要标准 metadata，内部引用可解析；
+- Provider `AGENTS.md` 和 Guides 没有指向已删除的 Method selector、Rule Discovery、Release Builder / installer 或其他死入口；
+- 普通 Provider 修改不再要求 Method / Rule Discovery、批量模型自测或多级 Gate；
+- Consumer-owned `AGENTS.md` / docs / constraints 在安装或更新 fixture 中不被覆盖；
+- 旧 26 Consumer obligations 已有静态 owner 映射且没有因删除旧基础设施出现归属空洞；
+- RC-only 有价值语义已迁移或有明确历史处置。
 
-至少包括：
+### 9.2 隔离安装 / 运行冒烟
 
-- Provider `docs/**` 对安装后的 Skill runtime 不可读；
-- Guide exact ref 不可用时 methodology navigation 不回退 latest；
-- Consumer local policy 与 Skill 默认冲突时 local Authority 优先；
-- 删除 optional Layer 0 后 Codex local work 仍能从 `AGENTS.md` 启动；
-- ChatGPT Project Instructions 不包含项目 current facts；
-- install/update 不覆盖 Consumer-owned `AGENTS.md` / docs；
-- retired Method / Rule / Release locator 不再参与 ordinary runtime。
-- Provider Fresh Context 在没有旧 Rule Discovery Tool 的情况下，仍能通过薄 `AGENTS.md` + 少量明确 Provider-local trigger 恢复本仓关键治理约束；
+使用 disposable Consumer-like fixture 验证：
+
+```text
+canonical skills/**
+→ standard-compatible install / copy
+→ Consumer-owned files preserved
+→ Skill package 可被目标宿主的标准机制识别 / 使用到本轮声明所需边界
+```
+
+默认不启动批量模型任务。已有 P1～P4 的 Codex-specific Evidence 只有在对应 Skill package exact subject / digest 未变化、且当前声明只依赖该未变化 subject 时才可继续支持该声明；不得仅因历史曾 PASS 就跨 subject 复用。若最终 candidate 改变了相关 subject，或新增必须重新观察的 Codex-specific claim，则另拆独立临时授权子任务，不允许 WebCodex Runner 启动 `codex-cli`。
 
 ### 9.3 Fresh Independent Review
 
-独立复核：
+对最终 exact candidate 执行一次 Fresh ChatGPT Independent Review，重点只检查：
 
-- 目标模型是否真正变简单，而不是概念换名；
-- 旧 26 Consumer obligations 是否仍无 gap；
-- RC-only delta 是否全部处置；
-- Guides 是否既能给 AI 使用又没有恢复常驻大上下文；
-- Skills 是否真正 canonical / self-contained；
-- Consumer-local constraints 是否没有偷偷重建 Rule Runtime。
+- 是否真的比旧模型简单，而不是换名；
+- `skills/**` 是否仍是唯一 Consumer runtime product；
+- Provider governance 是否已经直接化且数量有界；
+- 是否仍存在旧 Method selector / Rule Discovery / Release machinery 的活动路径；
+- 26 obligations 与 RC-only 语义是否无 gap；
+- 验证基础设施是否本身再次形成新的复杂运行时。
 
-Blocking / Medium 必须为 0 才进入真实 Consumer。
+`Blocking=0`、`Medium=0` 后结束本轮基础设施重构。
 
-## 10. Gate P8 — 真实 Consumer 最小 Adoption
+## 10. Acceptance 映射
 
-目标仍使用 `dygapp/jilinjobs-cms`，但这是**新模型的 adoption validation**，不是旧 Gate H 延续。
-
-默认动作严格最小：
-
-1. 恢复 Consumer 当前 Authority；
-2. 安装 canonical Skills；
-3. 对 Consumer-owned `AGENTS.md` 做 bounded Bootstrap integration；
-4. 建立 exact-version Guide locator；
-5. 保留现有 Product / Requirement / Architecture / technology policy / local rules；
-6. 验证 Codex 与 ChatGPT + WebCodex；
-7. 验证 representative software-development behavior；
-8. 验证普通开发不依赖 Provider docs。
-
-Consumer 当前历史 AI governance 清理只有在与新入口形成真实冲突时才做必要部分；更广泛的文档 / Rule / Authority remediation 作为独立可选工作，不再绑在 Adoption 上。
-
-覆盖：`PB-AC-13`～`18`、`21`～`26`。
-
-## 11. Gate P9 — 最终收敛
-
-真实 Consumer validation 通过后：
-
-1. 把仍有价值的稳定结论写回 canonical owner；
-2. Roadmap 切换到完成后的稳定 baseline；
-3. 本 Specification、asset disposition 与 implementation plan 退出 Current Authority；
-4. 历史由 Git / Issue / PR / Actions 与 Research Evidence 保留；
-5. 不保留“新模型迁移中”兼容入口。
-
-## 12. Acceptance 映射
-
-| Acceptance | 主要 Gate |
+| Acceptance | 当前主要证据 / 收敛责任 |
 |---|---|
-| PB-AC-01～05 | P2、P6 |
-| PB-AC-06～10 | P3 |
-| PB-AC-11～14 | P3、P8 |
-| PB-AC-15～18 | P4、P8 |
-| PB-AC-19～23 | P1、P2、P5、P7 |
-| PB-AC-24～27 | P6、P7、P9 |
-| PB-AC-28 | 已由 Specification Fresh Independent Review 满足 |
-| PB-AC-29 | P2、P5、P6、P7 |
+| PB-AC-01～05 | P2 已有成果 + S2 Provider cutover |
+| PB-AC-06～10 | P3 已有成果 + S2 Guide / Bootstrap 直接化 |
+| PB-AC-11～14 | P3 已有成果 + S3 隔离 fixture / 静态检查 |
+| PB-AC-15～18 | P4 已有成果 + S3 Consumer-owned constraint fixture |
+| PB-AC-19～23 | P1 / P2 已有成果 + S3 最小 runtime / negative-control 验证 |
+| PB-AC-24～27 | S1 disposition + S2 删除 + S3 dead-entry 检查 |
+| PB-AC-28 | 原 Specification Review 已满足；S1 Authority 修订另做 Fresh Independent Review |
+| PB-AC-29 | P2 已有迁移 Evidence + S2 / S3 RC-only 处置核对 |
 
-## 13. 停止与回退条件
+真实 Consumer adoption 不再承担任何 PB-AC 的本轮完成证明责任。
 
-只在以下情况停止自动推进：
+## 11. 停止条件
 
-- P1 证明标准 Skills distribution 无法满足必要能力，需要改变产品边界；
-- P4 的真实约束场景证明轻量方案不足，且需要新增复杂机制；
-- 新项目 Bootstrap 出现需要人工决定的重大产品边界；
-- 当前 Repository Authority / 权限形成不可关闭 blocker；
-- Independent Review 发现需要修改冻结 Specification 的 Blocking / Medium finding。
+S1 以后只允许以下问题阻塞收敛：
 
-普通文件组织、reference 拆分、fixture 结构和测试实现属于可逆实现决定，不作为人工中断点。
+- 会导致极简产品边界自相矛盾；
+- 使 canonical Skills 无法安装或无法承担已冻结责任；
+- 会覆盖 / 破坏 Consumer-owned Authority；
+- 删除后产生无法归属的现有必要软件开发责任；
+- Fresh Independent Review 发现 `Blocking` / `Medium`。
 
-## 14. 实施完成定义
+其他优化、体验改进、额外平台验证和真实 Consumer adoption 反馈全部进入 backlog，不再自动扩大本轮重构。
+
+## 12. 实施完成定义
 
 只有同时满足以下条件才算本轮完成：
 
 - canonical Consumer product 只剩直接可安装 `skills/**`；
 - Guides 对人和 AI 都可按需使用；
-- New Project Bootstrap / Existing Project Adoption 均有真实可执行路径；
-- “下一步做什么”能够依据 Consumer facts + Guide 工作；
-- Consumer-local constraints 有最小、已验证方案；
-- `AGENTS.md` 保持薄；
-- Provider 不再依赖统一 Capability Runtime 自我治理；
-- old Release Builder / distribution classification / Method selector / upstream Rule Runtime 退出 current path；
-- 15 Skills 与 26 legacy obligations 没有能力缺口；
-- RC-only 有价值语义全部迁移；
-- deterministic / runtime / Fresh Context / independent review 全部通过；
-- 真实 Consumer 最小 adoption validation 通过。
+- Consumer-local facts / constraints 继续由 Consumer 拥有；
+- Provider `AGENTS.md` 足够薄，并直接指向少量必要治理正文；
+- Provider ordinary work 不再依赖 Method selector、Project Capability Profile、五维 Rule Discovery、old Release Builder / installer、批量模型自测或多级 Gate；
+- 15 Skills、26 legacy obligations 与 RC-only 有价值语义没有能力 / 归属缺口；
+- 最小 deterministic checks 与隔离安装 / 运行冒烟通过；
+- 最终 Fresh Independent Review 为 `Blocking=0`、`Medium=0`。
+
+完成后声明为：**Provider 极简切换完成，可供采用**。不得声明真实 Consumer 已完成采用验证；未来 Consumer adoption 问题进入正常产品反馈，不自动重开基础设施重构。

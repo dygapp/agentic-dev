@@ -58,7 +58,7 @@ Consumer-local Rules / Policies
 
 上一轮 Issue #172 的 Gate A～G、Release Candidate 与验证 Evidence 保留为历史成果；原 Gate H 暂停且不再作为当前执行路径。旧 `distribution-rebuild-specification.md` 已退出 Current Authority。
 
-## 当前门禁
+## 已完成阶段与当前收敛
 
 Gate P1 — 标准 Skills Distribution 可行性验证已在 exact SHA `f5b1d90e8d3e642045f5ae57b6afb207f6cdbae3` 完成 Fresh Independent Review（`Blocking=0`、`Medium=0`）。Evidence：
 
@@ -86,19 +86,27 @@ P4 已冻结第一版最小约定：root `AGENTS.md` 承担极少量 repository-
 
 Disposable fixture 没有暴露前三种简单机制的缺口，因此按冻结前置条件没有触发真实软件 Consumer applicability challenge，也没有进入 metadata/filter 设计。旧 `rule-activation-guide.md` 与 `consumer-local-rule-activation.md` 已退出。
 
-当前旧 Provider `rule-discovery lint` 仍因 P2 已删除 Skill composition metadata 而 fail closed；这是 P5/P6 必须解决的 stale verification contract，不通过恢复旧 metadata 处理。
+当前旧 Provider `rule-discovery lint` 因 P2 已删除 Skill composition metadata 而 fail closed；该 stale verification contract 在 S2 随旧 Rule Discovery current path 一并退出，不通过恢复旧 metadata 处理。
 
-**当前 Gate：P5 — Runtime / Eval 基础设施切换。**
+**当前阶段：Minimal Convergence / S1 — Authority Freeze。**
 
-P5 把验证路径切换为：
+P1～P4 已完成成果保留，不重新执行。原 P5～P9 路线停止继续扩张，剩余工作压缩为：
 
-`canonical skills/** → standard-compatible isolated Consumer install/copy → native discovery → activation / behavior → negative controls → Evidence`
+```text
+S1 — Authority Freeze
+→ Fresh Independent Semantic Review
+→ S2 — Subtractive Cutover
+→ S3 — Minimal Validation
+→ Provider 极简切换完成，可供采用
+```
 
-P5 保留 exact-subject identity、native discovery、authenticated behavior、independent grading、timeout / cancellation、stale-evidence cleanup、Evidence binding、Provider docs unavailable negative controls 与 progressive disclosure；不再以 `release_build.py` / generated ZIP / `install_release.py` 作为运行前提。
+真实 Consumer adoption 已取消为本轮完成门槛；本轮不修改 `jilinjobs-cms`，也不声称真实 Consumer 已验证。未来采用问题进入正常产品反馈，除非证明产品边界本身存在 Blocking 缺陷，否则不自动重开基础设施重构。
+
+WebCodex Runner 继续禁止直接或间接调用 `codex-cli`；Codex-specific Runtime Under Test 只允许拆成非 WebCodex 独立子任务并由人工临时授权。原 P5 中已产生的 runtime / eval Evidence 保留为历史证据，但不要求把旧批量 authenticated acceptance 路径继续跑绿。
 
 ## 后续候选
 
-在 P1～P9 产品边界重构完成前，与当前 Gate 无关的能力扩展保持非活动。尤其不提前新增：
+在 S1～S3 极简收敛完成前，与当前阶段无关的能力扩展保持非活动。尤其不提前新增：
 
 - 新 Method / Rule / Architecture runtime 类型；
 - 新中央 discovery / registry；
