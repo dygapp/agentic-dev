@@ -100,8 +100,8 @@ Repository support：
 | `docs/guides/language-and-terminology.md` | adapt | 解释项目语言 / 概念约定；不作为 Consumer 强制语言 Rule |
 | `docs/guides/adopting-agentic-dev.md` | adapt | 重写为 Existing Project 最小侵入 Adoption |
 | `docs/guides/upgrading-agentic-dev.md` | adapt | 重写为标准 Skills 精确版本更新 |
-| `docs/guides/rule-activation-guide.md` | adapt → retire | 与 Consumer-local constraints Guide 合并，删除旧五维 Rule Runtime 教程 |
-| `docs/guides/consumer-local-rule-activation.md` | adapt | 重构为 Consumer-local constraints 组织 / 按需加载指南；若合并后由新文件接管则 retire |
+| `docs/guides/rule-activation-guide.md` | retired in P4 | 已由 `consumer-local-constraints.md` 的 v1 最小约定接管；不再保留旧五维 Rule Runtime 教程 |
+| `docs/guides/consumer-local-rule-activation.md` | retired in P4 | Consumer-local constraints ownership / progressive disclosure 已由 `consumer-local-constraints.md` 接管 |
 
 ### 5.2 新增必要入口
 

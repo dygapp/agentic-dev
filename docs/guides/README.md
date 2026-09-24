@@ -38,6 +38,14 @@ AI 只有在 Bootstrap、方法论咨询、导航或用户明确要求理解整�
 
 如果 Guide 与 Skill 对同一可执行 procedure 出现冲突，应修正 Guide；如果 Guide 与 Consumer 项目事实冲突，以 Consumer Repository Authority 为准。
 
-## 过渡资产
+## Consumer-local constraints v1
 
-`rule-activation-guide.md` 与 `consumer-local-rule-activation.md` 记录当前 Provider 既有 Rule / Rule Discovery 机制。它们不是新 Consumer 的默认 Bootstrap 入口；Consumer-local constraints 的最终最小机制由 P4 单独验证后确定。
+P4 已验证第一版最小约定：
+
+- repository-wide stable policy → 根 `AGENTS.md`；
+- path / module scoped policy → nested `AGENTS.md` / 宿主原生 scoped instructions；
+- activity / semantic scoped policy → Consumer-local policy docs + 薄 locator；
+- verified no-match → 正常继续；
+- locator 损坏 / applicability 不可靠 → fail closed。
+
+当前没有 Evidence 要求普通 Consumer 采用 Provider 的五维 Rule Discovery、Rule metadata schema 或 discovery tool。旧 `rule-activation-guide.md` 与 `consumer-local-rule-activation.md` 已由 `consumer-local-constraints.md` 接管并退出 Guide 导航。
