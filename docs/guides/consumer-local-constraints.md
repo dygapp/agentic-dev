@@ -228,7 +228,7 @@ Consumer-local constraint 回答：
 
 不要把 Consumer policy 复制进 upstream Skill。
 
-也不要为了通用 Skill 复用而让普通运行时在线读取 Provider `docs/rules/**`。
+也不要为了通用 Skill 复用而让普通运行时在线读取 Provider Rule tree。
 
 ## 8. Ownership 与升级
 
