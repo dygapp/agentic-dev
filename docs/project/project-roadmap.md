@@ -78,17 +78,23 @@ Gate P3 — Guides / Bootstrap / Navigation 已在 exact candidate `c104b58de4cb
 
 P3 已完成 Guide 的 Human + AI 按需导航重构、greenfield Bootstrap、Existing Project 最小 adoption、exact-version Guide locator 和三类 next-step AI 行为验证。Greenfield 首次长任务存在一个非阻塞 Runtime limitation：目标工件已真实建立，但原 Agent process 未正常返回终态；独立只读收口与 Codex native discovery 已验证实际完成边界。该 limitation 不通过增加新的 Bootstrap Framework 解决。
 
-**当前 Gate：P4 — Consumer-local Constraints 最小方案。**
+Gate P4 — Consumer-local Constraints 最小方案已在 exact candidate `f7fc76396e50f8524873ba38121564e8031de125` 完成 Fresh Independent Review（`Blocking=0`、`Medium=0`）。Evidence：
 
-P4 只验证 Consumer 自己的项目级约束怎样以最小机制按需进入 Agent 工作：
+- `../research/consumer-local-constraints-minimal-evidence.md`
 
-- 先验证 repository-wide stable policy；
-- 再验证 path / module scoped policy；
-- 再验证 activity / semantic scoped policy；
-- 优先使用根 `AGENTS.md`、nested `AGENTS.md` / 宿主原生 scoped instructions、Consumer-local policy docs + 薄 locator；
-- 明确“可靠判断无额外约束”与“约束入口损坏 / applicability 不可靠”的不同处理；
-- 只有简单机制在 disposable fixture 中出现真实缺口后，才允许对真实软件 Consumer 做只读 applicability challenge；仍不足时才评估最小 metadata / filter；
-- 禁止直接复制当前五维 Rule Discovery，也不修改真实 Consumer。
+P4 已冻结第一版最小约定：root `AGENTS.md` 承担极少量 repository-wide stable policy；nested `AGENTS.md` / 宿主原生 scoped instructions 承担 path / module policy；Consumer-local policy docs + 薄 locator 承担 activity / semantic policy；verified no-match 正常继续，broken / uncertain locator fail closed。Codex local 与 ChatGPT + WebCodex 均有验证路径，Skills 安装不覆盖 Consumer policy。
+
+Disposable fixture 没有暴露前三种简单机制的缺口，因此按冻结前置条件没有触发真实软件 Consumer applicability challenge，也没有进入 metadata/filter 设计。旧 `rule-activation-guide.md` 与 `consumer-local-rule-activation.md` 已退出。
+
+当前旧 Provider `rule-discovery lint` 仍因 P2 已删除 Skill composition metadata 而 fail closed；这是 P5/P6 必须解决的 stale verification contract，不通过恢复旧 metadata 处理。
+
+**当前 Gate：P5 — Runtime / Eval 基础设施切换。**
+
+P5 把验证路径切换为：
+
+`canonical skills/** → standard-compatible isolated Consumer install/copy → native discovery → activation / behavior → negative controls → Evidence`
+
+P5 保留 exact-subject identity、native discovery、authenticated behavior、independent grading、timeout / cancellation、stale-evidence cleanup、Evidence binding、Provider docs unavailable negative controls 与 progressive disclosure；不再以 `release_build.py` / generated ZIP / `install_release.py` 作为运行前提。
 
 ## 后续候选
 
