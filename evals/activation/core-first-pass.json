@@ -130,7 +130,7 @@
   {
     "id": "A-RB-01",
     "target_skill": "establish-requirement-baseline",
-    "query": "这是一个新软件项目，现有资料来自合同、会议纪要、旧系统截图和几份互相冲突的需求草稿，目前还没有可靠的长期需求权威。先不要进入具体 Feature 开发，请把这些输入收敛成 Fresh Context Agent 可以持续使用的 Requirement Baseline。",
+    "query": "这是一个新软件项目，现有资料来自合同、会议纪要、旧系统截图和几份互相冲突的需求草稿，目前还没有可靠的长期需求权威。当前只判断首先应该进入哪一种 primary responsibility、为什么不是单个 Feature 的澄清或 Specification，以及开始前需要哪些输入；不要实际创建完整 Requirement Baseline 文档。",
     "should_trigger_target": true,
     "expected_primary_skill": "establish-requirement-baseline",
     "reason": "目标是项目级 Requirement Baseline 建立，而不是单个 Feature 的意图澄清或 Specification。"
@@ -146,15 +146,15 @@
   {
     "id": "A-MC-01",
     "target_skill": "activate-model-collaboration",
-    "query": "当前仓库已经安装的 agentic-dev Release 包含模型协作能力。现在需要在不改变产品开发流程的前提下，探测实际运行平台是否支持子 Agent、独立 review 和 single-writer，并只启用已经验证的本地协作策略。",
+    "query": "当前仓库已经安装 activate-model-collaboration Skill package。现在只判断这个请求的 primary responsibility：后续需要探测实际运行平台是否支持子 Agent、独立 review 和 single-writer，并只启用有证据支持的本地策略。不要在本 activation 场景里实际启动子 Agent、写协作配置或执行完整 activation；说明应该由哪个 Skill 接管以及关键边界。",
     "should_trigger_target": true,
     "expected_primary_skill": "activate-model-collaboration",
-    "reason": "目标是在 installed Release 已提供 capability 后建立并验证 Consumer-local collaboration instance。"
+    "reason": "目标是在已安装 canonical Skill 后识别并进入 Consumer-local collaboration activation responsibility；完整行为由 behavior corpus 单独验证。"
   },
   {
     "id": "A-EO-01",
     "target_skill": "external-operation",
-    "query": "当前任务已授权触发仓库的验证 workflow。请先读取当前 run 状态，执行最小必要触发，然后持续读取到终态或明确 blocker，并只根据重新读取的远程状态汇报结果。",
+    "query": "当前任务已授权触发仓库的验证 workflow。现在只判断这个请求应由哪个 primary responsibility 接管，并说明为什么请求被接受不能等同于 workflow 完成、后续需要怎样写后 reread 与有界观察。不要在本 activation 场景里实际执行外部写或访问真实 GitHub。",
     "should_trigger_target": true,
     "expected_primary_skill": "external-operation",
     "reason": "任务需要对外部可变状态执行授权写入并完成写后重新读取与有界观察。"

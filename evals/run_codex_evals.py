@@ -262,6 +262,17 @@ def _clear_stale_scenario_results(result_dir: Path, scenario_id: str) -> None:
             target.unlink()
 
 
+def _jsonl_has_turn_completed(output: str) -> bool:
+    for line in output.splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(event, dict) and event.get("type") == "turn.completed":
+            return True
+    return False
+
+
 def write_run_metadata(
     result_dir: Path,
     scenario_id: str,
@@ -271,6 +282,8 @@ def write_run_metadata(
     *,
     runtime_mode: str,
     timed_out: bool,
+    process_exit_timed_out: bool,
+    semantic_completed: bool,
 ) -> None:
     source_commit = RUN_CONTEXT["source_commit"]
     codex_version = RUN_CONTEXT["codex_version"]
@@ -292,6 +305,8 @@ def write_run_metadata(
         "command": command,
         "returncode": returncode,
         "timed_out": timed_out,
+        "process_exit_timed_out": process_exit_timed_out,
+        "semantic_completed": semantic_completed,
         "timeout_seconds": RUN_CONTEXT["timeout_seconds"],
         "grading": "pending",
     }
@@ -330,6 +345,7 @@ def run_codex(
 
     print(f"[{scenario_id}] fresh codex exec")
     timed_out = False
+    process_exit_timed_out = False
     try:
         completed = subprocess.run(
             command,
@@ -342,23 +358,44 @@ def run_codex(
             timeout=int(RUN_CONTEXT["timeout_seconds"]),
         )
         stdout, stderr, returncode = completed.stdout, completed.stderr, completed.returncode
+        semantic_completed = _jsonl_has_turn_completed(stdout)
     except subprocess.TimeoutExpired as exc:
-        timed_out = True
+        process_exit_timed_out = True
         stdout, stderr = exc.stdout or "", exc.stderr or ""
         if isinstance(stdout, bytes):
             stdout = stdout.decode("utf-8", errors="replace")
         if isinstance(stderr, bytes):
             stderr = stderr.decode("utf-8", errors="replace")
-        stderr += f"\nagentic-dev eval timeout after {RUN_CONTEXT['timeout_seconds']} seconds\n"
-        returncode = 124
+        semantic_completed = _jsonl_has_turn_completed(stdout)
+        if semantic_completed:
+            returncode = 0
+            stderr += (
+                "\nagentic-dev Codex process-exit timeout after observable "
+                "turn.completed; semantic result retained for grading\n"
+            )
+        else:
+            timed_out = True
+            returncode = 124
+            stderr += (
+                f"\nagentic-dev eval timeout after "
+                f"{RUN_CONTEXT['timeout_seconds']} seconds before turn.completed\n"
+            )
 
     (result_dir / f"{scenario_id}.jsonl").write_text(stdout, encoding="utf-8")
     (result_dir / f"{scenario_id}.stderr.txt").write_text(stderr, encoding="utf-8")
     write_run_metadata(
         result_dir, scenario_id, command, cwd, returncode,
-        runtime_mode=runtime_mode, timed_out=timed_out,
+        runtime_mode=runtime_mode,
+        timed_out=timed_out,
+        process_exit_timed_out=process_exit_timed_out,
+        semantic_completed=semantic_completed,
     )
-    status = "TIMEOUT" if timed_out else ("OK" if returncode == 0 else f"EXIT {returncode}")
+    if timed_out:
+        status = "TIMEOUT"
+    elif process_exit_timed_out:
+        status = "OK (turn completed; process-exit timeout recorded)"
+    else:
+        status = "OK" if returncode == 0 else f"EXIT {returncode}"
     print(f"[{scenario_id}] {status}")
     return returncode
 

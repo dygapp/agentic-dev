@@ -303,6 +303,8 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                             "runtime_mode": "canonical-skill-copy",
                             "skill_set_sha256": "b" * 64,
                             "timed_out": False,
+                            "process_exit_timed_out": False,
+                            "semantic_completed": True,
                             "returncode": 0,
                             "grading": "fail",
                             "codex_version": "codex-cli test",
@@ -554,8 +556,57 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                     )
                 )
                 self.assertTrue(metadata["timed_out"])
+                self.assertTrue(metadata["process_exit_timed_out"])
+                self.assertFalse(metadata["semantic_completed"])
                 self.assertEqual(1, metadata["timeout_seconds"])
                 self.assertEqual("canonical-skill-copy", metadata["runtime_mode"])
+        finally:
+            runner.RESULTS = original_results
+            runner.RUN_CONTEXT.clear()
+            runner.RUN_CONTEXT.update(original_context)
+
+    def test_turn_completed_survives_process_exit_timeout(self):
+        original_results = runner.RESULTS
+        original_context = dict(runner.RUN_CONTEXT)
+        try:
+            with tempfile.TemporaryDirectory() as temp_dir:
+                root = Path(temp_dir)
+                runner.RESULTS = root / "results"
+                runner.RUN_CONTEXT.update(
+                    {
+                        "source_commit": "a" * 40,
+                        "codex_version": "codex-cli test",
+                        "skill_set_sha256": "b" * 64,
+                        "timeout_seconds": 1,
+                    }
+                )
+                output = (
+                    '{"type":"item.completed","item":{"type":"agent_message",'
+                    '"text":"done"}}\n'
+                    '{"type":"turn.completed","usage":{}}\n'
+                )
+                timeout = subprocess.TimeoutExpired(
+                    cmd=["codex"], timeout=1, output=output, stderr="waiting"
+                )
+                with mock.patch.object(runner.subprocess, "run", side_effect=timeout):
+                    code = runner.run_codex(
+                        codex_bin="codex",
+                        scenario_id="B-COMPLETED-EXIT-TIMEOUT",
+                        prompt="$clarify-intent test",
+                        result_group="behavior",
+                        cwd=root,
+                        skip_git_repo_check=True,
+                    )
+                self.assertEqual(0, code)
+                metadata = json.loads(
+                    (
+                        runner.RESULTS
+                        / "behavior/B-COMPLETED-EXIT-TIMEOUT.run.json"
+                    ).read_text(encoding="utf-8")
+                )
+                self.assertFalse(metadata["timed_out"])
+                self.assertTrue(metadata["process_exit_timed_out"])
+                self.assertTrue(metadata["semantic_completed"])
         finally:
             runner.RESULTS = original_results
             runner.RUN_CONTEXT.clear()

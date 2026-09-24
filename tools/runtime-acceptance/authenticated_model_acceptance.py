@@ -260,6 +260,15 @@ def _collect_mode_evidence(
             )
         if run.get("timed_out") is not False:
             raise AuthenticatedRuntimeError(f"{scenario} runtime timed out")
+        if run.get("semantic_completed") is not True:
+            raise AuthenticatedRuntimeError(
+                f"{scenario} has no observable turn.completed semantic terminal event"
+            )
+        process_exit_timed_out = run.get("process_exit_timed_out")
+        if not isinstance(process_exit_timed_out, bool):
+            raise AuthenticatedRuntimeError(
+                f"{scenario} has invalid process_exit_timed_out evidence"
+            )
         if run.get("returncode") != 0:
             raise AuthenticatedRuntimeError(
                 f"{scenario} runtime returncode is not zero: {run.get('returncode')}"
@@ -302,6 +311,7 @@ def _collect_mode_evidence(
                 "skill_set_sha256": skill_set_sha256,
                 "runtime_codex_version": run.get("codex_version"),
                 "grader_codex_version": grade.get("grader_codex_version"),
+                "process_exit_timed_out": process_exit_timed_out,
                 "verdict": grade["verdict"],
             }
         )
