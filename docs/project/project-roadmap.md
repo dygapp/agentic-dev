@@ -72,16 +72,23 @@ Gate P2 — Canonical Skills 重构已在 exact Skill subject `4918846e411b9797f
 
 P2 已完成 15 个 canonical Skill 的语义迁移，移除旧 Release composition metadata 与 Provider docs runtime dependency；28/28 旧 release-input owner 已有明确投影 / disposition；标准安装、Codex native discovery 与 15/15 代表性 behavior semantic grading 均通过。
 
-**当前 Gate：P3 — Guides / Bootstrap / Navigation。**
+Gate P3 — Guides / Bootstrap / Navigation 已在 exact candidate `c104b58de4cb5ea78db8e408c8fe37480256a6ef` 完成 Fresh Independent Review（`Blocking=0`、`Medium=0`）。Evidence：
 
-P3 只建立方法论知识与使用入口，不新增 Consumer runtime 类型：
+- `../research/methodology-guide-bootstrap-navigation-evidence.md`
 
-- Guide 同时服务人和 AI，但只按需读取，不进入 ordinary task 固定上下文；
-- 建立 `getting-started.md`、`bootstrap-new-project.md`、`choosing-next-step.md` 等明确入口；
-- 新项目必须能从“项目基本情况 + agentic-dev Repository / 精确版本”完成最小谈判式 Bootstrap；
-- Existing Project 默认采用最小侵入安装 / integration，不把全仓治理重构设为 adoption 前置；
-- Bootstrap 完成后普通项目工作切换到 Consumer Repository Authority + installed Skills + Consumer-local constraints；
-- P3 不提前设计 P4 的 Consumer-local constraint discovery 实现，也不修改真实 Consumer。
+P3 已完成 Guide 的 Human + AI 按需导航重构、greenfield Bootstrap、Existing Project 最小 adoption、exact-version Guide locator 和三类 next-step AI 行为验证。Greenfield 首次长任务存在一个非阻塞 Runtime limitation：目标工件已真实建立，但原 Agent process 未正常返回终态；独立只读收口与 Codex native discovery 已验证实际完成边界。该 limitation 不通过增加新的 Bootstrap Framework 解决。
+
+**当前 Gate：P4 — Consumer-local Constraints 最小方案。**
+
+P4 只验证 Consumer 自己的项目级约束怎样以最小机制按需进入 Agent 工作：
+
+- 先验证 repository-wide stable policy；
+- 再验证 path / module scoped policy；
+- 再验证 activity / semantic scoped policy；
+- 优先使用根 `AGENTS.md`、nested `AGENTS.md` / 宿主原生 scoped instructions、Consumer-local policy docs + 薄 locator；
+- 明确“可靠判断无额外约束”与“约束入口损坏 / applicability 不可靠”的不同处理；
+- 只有简单机制在 disposable fixture 中出现真实缺口后，才允许对真实软件 Consumer 做只读 applicability challenge；仍不足时才评估最小 metadata / filter；
+- 禁止直接复制当前五维 Rule Discovery，也不修改真实 Consumer。
 
 ## 后续候选
 
