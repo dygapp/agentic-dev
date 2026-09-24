@@ -66,15 +66,22 @@ Gate P1 — 标准 Skills Distribution 可行性验证已在 exact SHA `f5b1d90e
 
 P1 已确认 GitHub exact tag + 标准 Skills CLI + `skills-lock.json` + Codex native discovery 可以承担普通安装路径；arbitrary commit SHA URL 不是标准 CLI 支持的安装 UX，无版本 generic `update` 也不作为已验证升级协议。
 
-**当前 Gate：P2 — Canonical Skills 重构。**
+Gate P2 — Canonical Skills 重构已在 exact Skill subject `4918846e411b9797fb705fa0b6695891f190a51e` 完成 Fresh Independent Review（`Blocking=0`、`Medium=0`）。Evidence：
 
-P2 将 15 个现有 `skills/**` 收敛为真正 canonical、可直接安装且对其通用执行责任自包含的 Consumer 产品：
+- `../research/canonical-skill-semantic-migration.md`
 
-- 先迁入旧 Method / Rule / Architecture / RC-only delta 中仍需的执行语义；
-- 再删除 `agentic-dev-release-*` / composition metadata；
-- 不新增新 Skill，不创建 Skill 外共享 Consumer runtime namespace；
-- P2 期间仍不删除旧 Source owner / Release Builder；只有 canonical Skills 已承接语义并通过行为验证后，后续 Gate 才允许退役旧机制；
-- 不修改真实 Consumer。
+P2 已完成 15 个 canonical Skill 的语义迁移，移除旧 Release composition metadata 与 Provider docs runtime dependency；28/28 旧 release-input owner 已有明确投影 / disposition；标准安装、Codex native discovery 与 15/15 代表性 behavior semantic grading 均通过。
+
+**当前 Gate：P3 — Guides / Bootstrap / Navigation。**
+
+P3 只建立方法论知识与使用入口，不新增 Consumer runtime 类型：
+
+- Guide 同时服务人和 AI，但只按需读取，不进入 ordinary task 固定上下文；
+- 建立 `getting-started.md`、`bootstrap-new-project.md`、`choosing-next-step.md` 等明确入口；
+- 新项目必须能从“项目基本情况 + agentic-dev Repository / 精确版本”完成最小谈判式 Bootstrap；
+- Existing Project 默认采用最小侵入安装 / integration，不把全仓治理重构设为 adoption 前置；
+- Bootstrap 完成后普通项目工作切换到 Consumer Repository Authority + installed Skills + Consumer-local constraints；
+- P3 不提前设计 P4 的 Consumer-local constraint discovery 实现，也不修改真实 Consumer。
 
 ## 后续候选
 

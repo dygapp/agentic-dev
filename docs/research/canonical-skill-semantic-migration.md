@@ -92,16 +92,35 @@ P2 不把这批 generated references 原样搬回 `skills/**`。这会把 semant
 
 P2 已把这些语义直接写回 canonical Skill body，不继续依赖 composition metadata。
 
-## 6. 当前待验证项
+## 6. P2 验收结果
 
-P2 在进入 PASS 前仍需完成：
+Gate P2 的 canonical Skill exact subject：
 
-1. 标准 Skill schema / CLI discovery；
-2. 15 Skill isolated copy / install；
-3. Codex native discovery；
-4. behavior eval 与必要 semantic grading；
-5. Provider `docs/**` 不可见条件下的 representative behavior / negative control；
-6. 全量扫描确认不存在旧 composition locator；
-7. exact clean candidate 的 Fresh Independent Review。
+`4918846e411b9797fb705fa0b6695891f190a51e`
 
-因此本文当前是迁移核对 Evidence，不是 P2 PASS 结论。
+最终验收结果：
+
+- 15/15 `skills/*/SKILL.md` 只保留标准 `name` / `description` front matter；
+- 旧 `agentic-dev-release-*`、`release-inputs`、`references/release-inputs/**` 与 Provider docs runtime locator 扫描为 0；
+- 冻结 RC 的 28 个唯一 release-input owner 全部进入本文件迁移矩阵，`missing=0`；
+- 标准 Skills CLI 能从 canonical `skills/**` 发现并安装 15/15 Skill；
+- disposable Consumer 安装结果不复制 Provider `docs/**`，也不覆盖 Consumer-owned `AGENTS.md` / project docs；
+- Codex native `skills/list` 发现 15/15 repo-local Skill，全部 enabled，`errors=[]`；
+- 每个 Skill 至少一个代表性 behavior scenario 已实际运行并完成 assertion-level semantic grading，最终为 15/15 PASS；
+- 首轮 grading 暴露的 `clarify-architecture` Requirement 越界、`github-actions-verification` 跨提交语义 Evidence 复用不足、`readiness-check` Return To 不明确三个问题已在当前 exact subject 修复并重新运行 / 重新 grading 为 PASS；
+- 旧 RC-only 的 execution continuity / stop condition 已投影进各 Skill 自身 completion / escalation / observation responsibility；Execution Context 与 Runtime Under Test 区分已进入 `activate-model-collaboration` 与 `review-change`，`review-change` 保留 fresh / isolated review；
+- Fresh Independent Review 结果：`Blocking=0`、`Medium=0`。
+
+代表性 behavior Evidence 中，12 个未受最终 remediation 影响的 Skill 复用 `48bc7d3555fc26ef1b7665b019ec810b633d243e` 的已评分结果；精确 `48bc7d3… → 4918846…` diff 只修改：
+
+- `skills/clarify-architecture/SKILL.md`
+- `skills/github-actions-verification/SKILL.md`
+- `skills/readiness-check/SKILL.md`
+
+这三个 Skill 已在 `4918846…` 上重新运行并重新评分。祖先 Evidence 不被描述为当前 Run，只按未受 diff 影响的具体 behavior claim 复用。
+
+保留 1 个非阻塞 Low：
+
+- `skills/README.md` 仍以旧 Provider Capability / Method / Rule 模型解释 Skill 来源和维护关系。该文件是 `source-only` Human View，不进入标准安装 payload、native Skill discovery 或 ordinary Consumer runtime，因此不阻塞 P2；在后续 Provider governance cutover 中统一改写。
+
+因此 Gate P2：**PASS / CLOSED**。
