@@ -128,6 +128,16 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         self.assertIn("dispatch accepted", case["prompt"])
         self.assertIn("`in_progress`", case["prompt"])
 
+    def test_external_operation_behavior_requires_observable_bound(self):
+        document = json.loads(
+            (EVALS_DIR / "behavior/external-operation.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        case = next(item for item in document["evals"] if item["id"] == "B-EO-01")
+        self.assertIn("有界上限", case["prompt"])
+        self.assertIn("终态、真实 blocker 或观察上限", case["prompt"])
+
     def test_isolated_skill_copy_writes_minimal_provenance_locator(self):
         original_context = dict(runner.RUN_CONTEXT)
         try:
