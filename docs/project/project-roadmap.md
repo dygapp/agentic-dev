@@ -36,9 +36,9 @@ S3 Final Fresh Independent Review 在 exact candidate `c84d5ec2a6616a79629879bd4
 - 真实 Consumer adoption：未验证，且不属于本轮完成门槛
 - 当前 exact candidate 的远端 PR / Actions：未作为本轮 PASS Evidence
 
-当前进入 **post-v0.1.0 Consumer Feedback Evolution**。当前演进计划由 [`post-v0.1.0-consumer-feedback-evolution-plan.md`](post-v0.1.0-consumer-feedback-evolution-plan.md) 持有：先完成 Consumer feedback 概览与主题划分，再严格一次只激活一个主题，按 Evidence re-analysis → 必要外部研究 → Design Freeze → Implementation → Focused Validation / Review → Closure 闭环。
+当前进入 **v0.1.0 后 Consumer 反馈演进阶段**。当前演进计划由 [`post-v0.1.0-consumer-feedback-evolution-plan.md`](post-v0.1.0-consumer-feedback-evolution-plan.md) 持有：后续工作划分为独立演进事项，每次只推进一项，按证据重新分析 → 必要的外部研究 → 方案收敛 → 实施 → 聚焦验证与必要复核 → 收口逐项完成。
 
-上一轮 Issue #172 Gate A～G、旧 Release Candidate 与相关 Runtime Evidence 继续只作为历史 Evidence；原 Gate H、custom Release Builder 与旧发布路线不恢复。Theme 0 已完成：Issue #172 已明确 superseded / completed 并关闭，不再作为当前能力设计入口。
+上一轮 Issue #172 Gate A～G、旧 Release Candidate 与相关 Runtime Evidence 继续只作为历史 Evidence；原 Gate H、custom Release Builder 与旧发布路线不恢复。前置状态收口已经完成：Issue #172 已明确 superseded / completed 并关闭，不再作为当前能力设计入口。
 
 ## 已完成阶段与当前收敛
 
@@ -83,17 +83,16 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 
 完成声明严格限定为：**Provider 极简切换完成，可供采用**。
 
-## 后续候选
+## 后续演进事项
 
-当前主题队列按计划暂定为：
+当前顺序暂定为：
 
-1. Theme 0 — `v0.1.0` 状态与旧入口收口：**完成**；
-2. Theme 1 — Skill Authority Contract Extensibility：**当前下一责任**；
-3. Theme 2 — Lightweight Change Execution；
-4. Theme 3 — Multi-Repository Project Workspace；
-5. Theme 4 — Local Validation Runtime Resource Lifecycle。
+1. **Skill 与项目权威的适配边界**：当前下一责任；
+2. **小规模变更的执行粒度**；
+3. **多仓库项目的工作区与权威边界**；
+4. **本地验证环境的资源生命周期**。
 
-该顺序不是永久 Roadmap。每个主题闭环后必须基于届时最新 Repository / Consumer Evidence 重新判断后续主题，禁止为了“一次规划完整”同时展开多个主题的详细分析和设计。
+该顺序不是永久 Roadmap。每个演进事项收口后必须基于届时最新 Repository / Consumer Evidence 重新判断后续事项，允许调整、拆分或删除，不为了“一次规划完整”同时展开多个事项的详细分析和设计。
 
 ## 已知约束
 
@@ -101,7 +100,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - `skills/**` 是唯一正式 Consumer runtime product，Guides 只按需导航；
 - Consumer-local Product / Requirement / Architecture / technology policy / authorization / current state 不得被通用 Skill 吸收；
 - WebCodex 不调用 `codex-cli`；
-- post-v0.1.0 演进一次只激活一个主题；Issue 候选方案只作为 Evidence，不直接成为 Current design；
+- post-v0.1.0 演进一次只推进一个演进事项；Issue 中已有判断和候选方案只作为 Evidence，不直接成为 Current design；
 - S3 review subject `c84d5ec2a6616a79629879bd4ef24f6584ad45c6` 的完成结论不依赖远端 PR / Actions；后续 integration / release 状态必须从 GitHub 当前事实重新核验；
 - 真实 Consumer adoption 明确保留为未验证状态，不得从 Provider S3 PASS 外推。
 
@@ -117,7 +116,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - 本轮已完成的产品边界规范 / 实施计划：`methodology-product-boundary-specification.md`、`methodology-product-boundary-implementation-plan.md`，仅作为历史收敛依据；
 - Repository-wide disposition Evidence：`../research/methodology-product-boundary-asset-disposition.md`；
 - 当前 evolution / next responsibility：本 Roadmap；
-- post-v0.1.0 Consumer feedback 主题队列与逐项闭环协议：`post-v0.1.0-consumer-feedback-evolution-plan.md`；
+- post-v0.1.0 Consumer 反馈演进事项与逐项闭环协议：`post-v0.1.0-consumer-feedback-evolution-plan.md`；
 - 稳定历史里程碑：`project-evolution.md`；
 - 历史研究与旧模型 Evidence：`../research/**`；
 - bounded change 的精确 commit / Review / Actions Evidence：Git / GitHub 对应对象。
