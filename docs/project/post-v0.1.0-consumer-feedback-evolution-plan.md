@@ -66,16 +66,22 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 **来源**：Issue #58 最新 Design Authority feedback。
 
-**问题**：重新判断现有 Skill 在 Consumer 引入新的合法项目权威时，是否能够正确发现、使用并回写相关语义，以及问题应归属于 Skill、Guide 还是 Consumer-local 约束。
+**问题**：重新判断 Agent 在使用现有 Skill 完成软件开发责任时，面对 Consumer 新增的合法 Current Authority，是否能够从当前 Repository 按需解析、消费、跨 Fresh Context 恢复、验证并把长期语义返回真实 owner；同时保持 Authority 与 Consumer-local Constraint 的语义边界。
 
 **分析范围**：
 
 - 当前 Skill 对项目权威的输入、使用和反馈回写边界；
 - Guide 是否提供了足够的方法导航；
 - Consumer-local Authority 是否已经足以解决问题；
+- Agent / Skill / Guide / Authority / Constraint / Execution Unit 的主体与责任关系；
+- Authority 在 planning / slicing / readiness / execution / debug / convergence / review 中的生命周期；
 - 新的项目权威类型是否暴露真正的 Provider 通用缺口。
 
 **非目标**：预设 Design 专用 Skill、通用 Authority registry，或把 Consumer 的 `DESIGN.md` 格式提升为 Provider 标准。
+
+**当前方案**：[`skill-consumer-authority-integration-plan.md`](skill-consumer-authority-integration-plan.md)。
+
+当前已完成 Evidence 重新分析、必要外部研究与第一版方案收敛。方案把问题冻结为“开放 Consumer Authority 与 canonical Skill 生命周期集成”，而不是新增 Design-specific procedure；具体实现尚未开始。实现前优先使用 GPT-6 Sol 做一次独立交叉评审，但该增强评审不作为计划成立或 Roadmap 推进的硬 Gate，是否等待 / 跳过由 Human Authority 决定。最终高影响 Skill contract 变更仍服从 Provider Fresh / Independent Review。
 
 ### 演进事项 2 — 小规模变更的执行粒度
 
@@ -150,13 +156,13 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 ## 6. 当前停止点
 
-本计划现在只完成：
+当前演进事项 1 已完成：
 
-- Consumer 反馈概览；
-- 演进事项划分和顺序；
-- 单项闭环协议；
-- 基线与非目标固化。
+- 当前 baseline 与 Issue / Consumer Evidence 重新分析；
+- Authority 与 Consumer-local Constraint 边界澄清；
+- Agent / Skill / Guide / Authority / Constraint / Execution Unit 核心运行模型收敛；
+- 开放 Consumer Authority lifecycle 方案、修改范围、验证与负向约束冻结。
 
-**前置状态收口已完成；演进事项 1～4 尚未开始详细证据重新分析、外部研究、方案收敛或实现。**
+演进事项 1 尚未开始 canonical Skill / Guide 的具体实现；演进事项 2～4 仍未展开。
 
-下一责任：以新的 Fresh Context 单独进入演进事项 1 — Skill 与项目权威的适配边界，先执行证据重新分析。
+下一责任：对 [`skill-consumer-authority-integration-plan.md`](skill-consumer-authority-integration-plan.md) 执行实现前交叉评审；优先 GPT-6 Sol，若当前模型额度 / Runtime 不可用则由 Human Authority 明确决定是否跳过，然后才进入冻结范围实施。
