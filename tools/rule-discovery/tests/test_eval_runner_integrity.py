@@ -157,8 +157,8 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         self.assertIn("不要调用 spawn/wait 等 collaboration tools", case["prompt"])
         self.assertIn(".agents/README.md", case["prompt"])
         self.assertNotIn("B-MC-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
+        self.assertIn("B-MC-01", runner.READ_ONLY_BEHAVIOR_SCENARIOS)
         self.assertIn("不要创建或修改 Consumer-local collaboration 配置", case["prompt"])
-        self.assertIn("B-AR-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
         self.assertIn("B-EU-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
         self.assertIn("B-GA-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
 
@@ -170,8 +170,10 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
         )
         case = next(item for item in document["evals"] if item["id"] == "B-AR-01")
         self.assertIn("当前 fixture 已提供 Requirement owner", case["prompt"])
-        self.assertIn("不要新建 README、Authority Map", case["prompt"])
-        self.assertIn("B-AR-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
+        self.assertIn("不执行实际 Repository mutation", case["prompt"])
+        self.assertIn("不要启动 review-change / collaboration tool", case["prompt"])
+        self.assertIn("B-AR-01", runner.READ_ONLY_BEHAVIOR_SCENARIOS)
+        self.assertNotIn("B-AR-01", runner.WORKSPACE_WRITE_BEHAVIOR_SCENARIOS)
         self.assertTrue((runner.ARCHITECTURE_FIXTURE / "AGENTS.md").is_file())
         self.assertTrue(
             (runner.ARCHITECTURE_FIXTURE / "docs/requirements/current.md").is_file()

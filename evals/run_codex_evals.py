@@ -46,7 +46,8 @@ WORKSPACE = EVALS / "workspace"
 FIXTURE = EVALS / "fixtures" / "execute-unit-basic"
 ARCHITECTURE_FIXTURE = EVALS / "fixtures" / "clarify-architecture-basic"
 GITHUB_ACTIONS_FIXTURE = EVALS / "fixtures" / "github-actions-observation"
-WORKSPACE_WRITE_BEHAVIOR_SCENARIOS = {"B-AR-01", "B-EU-01", "B-GA-01"}
+WORKSPACE_WRITE_BEHAVIOR_SCENARIOS = {"B-EU-01", "B-GA-01"}
+READ_ONLY_BEHAVIOR_SCENARIOS = {"B-MC-01", "B-AR-01"}
 RUN_CONTEXT = {
     "source_commit": None,
     "codex_version": None,
@@ -373,15 +374,20 @@ def run_codex(
     result_group: str,
     cwd: Path,
     workspace_write: bool = False,
+    read_only: bool = False,
     skip_git_repo_check: bool = False,
     runtime_mode: str = "canonical-skill-copy",
 ) -> int:
     result_dir = RESULTS / result_group
     result_dir.mkdir(parents=True, exist_ok=True)
     _clear_stale_scenario_results(result_dir, scenario_id)
+    if workspace_write and read_only:
+        raise RuntimeError("A scenario cannot request both workspace-write and read-only")
     command = [codex_bin, "exec", "--ephemeral", "--json"]
     if workspace_write:
         command.extend(["--sandbox", "workspace-write"])
+    elif read_only:
+        command.extend(["--sandbox", "read-only"])
     if skip_git_repo_check:
         command.append("--skip-git-repo-check")
     command.extend(["-C", str(cwd), prompt])
@@ -520,6 +526,7 @@ def run_behavior(
         ) as temp_dir:
             cwd = Path(temp_dir)
             workspace_write = scenario_id in WORKSPACE_WRITE_BEHAVIOR_SCENARIOS
+            read_only = scenario_id in READ_ONLY_BEHAVIOR_SCENARIOS
             prompt = "$" + skill_name + " " + case["prompt"]
 
             if scenario_id == "B-EU-01":
@@ -543,6 +550,7 @@ def run_behavior(
                 result_group="behavior",
                 cwd=cwd,
                 workspace_write=workspace_write,
+                read_only=read_only,
                 skip_git_repo_check=True,
             ) != 0
             failures += failed
