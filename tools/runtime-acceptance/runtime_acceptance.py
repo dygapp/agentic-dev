@@ -42,6 +42,15 @@ class RuntimeAcceptanceError(RuntimeError):
     pass
 
 
+def _require_codex_cli_allowed() -> None:
+    if os.environ.get("WEBCODEX_NPM_WRAPPER") or ".webcodex-managed-worktrees" in str(Path.cwd().resolve()):
+        raise RuntimeAcceptanceError(
+            "codex-cli execution is disabled in WebCodex Runner context; "
+            "run Codex-specific Runtime Under Test only as a separately authorized task "
+            "outside WebCodex"
+        )
+
+
 def _run(
     command: list[str],
     *,
@@ -406,6 +415,7 @@ def codex_native_discovery(
     expected_version: str | None = None,
     timeout_seconds: float = 20.0,
 ) -> dict[str, Any]:
+    _require_codex_cli_allowed()
     consumer = consumer.resolve()
     version = _run([codex_bin, "--version"]).stdout.strip()
     if expected_version and expected_version not in version:

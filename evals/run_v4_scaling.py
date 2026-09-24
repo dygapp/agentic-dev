@@ -121,7 +121,16 @@ def current_source_commit() -> str:
     return commit
 
 
+def _require_codex_cli_allowed() -> None:
+    if os.environ.get("WEBCODEX_NPM_WRAPPER") or ".webcodex-managed-worktrees" in str(Path.cwd().resolve()):
+        raise RuntimeError(
+            "codex-cli execution is disabled in WebCodex Runner context; "
+            "run this Codex-specific eval only as a separately authorized task outside WebCodex"
+        )
+
+
 def codex_version(codex_bin: str) -> str:
+    _require_codex_cli_allowed()
     try:
         completed = subprocess.run(
             [codex_bin, "--version"], cwd=ROOT, stdout=subprocess.PIPE,

@@ -49,6 +49,12 @@ Architecture、Method、Skill、Rule 各自只拥有其 capability 语义责任�
 
 不得为了恢复上下文读取全量 Rules、全量 metadata、全部 Skills、全部 Architecture、完整 Research 或完整 Project Evolution。ordinary runtime 不得通过目录遍历、Human README、IDE tree 或其他枚举机制把未命中 Rule locator / 文件名集合送入模型上下文；Rule Discovery 返回值是普通运行时获得 Rule locator 的唯一入口。
 
+## WebCodex 与 Codex CLI 执行边界
+
+ChatGPT + WebCodex 是本仓默认工作模式时，WebCodex Runner **不得启动 `codex-cli`**，包括直接执行 `codex`、`codex exec`、`codex app-server`，以及通过 Python / shell / wrapper 间接启动同一 CLI。Fresh Context、独立复核或语义判分本身不构成调用 `codex-cli` 的理由。
+
+只有当前声明本身必须观察 Codex-specific Runtime Under Test 时，才把该验证拆成独立子任务；当前 WebCodex 执行路径停止在可恢复 Evidence 边界，由人工在单独会话中显式临时授权后，于非 WebCodex 执行上下文运行。未取得这次显式临时授权时保持未验证，不得用 WebCodex Runner 的现有 Codex 登录状态或技术可执行性替代授权。
+
 ## Method 选择
 
 `docs/architecture/method-architecture.md` 只定义通用 Method Selection Contract；当前 `agentic-dev` 的 `work kind → Method locator` 映射由 `docs/project/project-capability-profile.md` 单独拥有。

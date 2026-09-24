@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -259,6 +260,29 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
             "workload-identity",
             authenticated_runtime.infer_auth_method("workload identity selected"),
         )
+
+    def test_codex_runtime_default_timeout_is_600_seconds(self):
+        self.assertEqual(600, runner.DEFAULT_CODEX_TIMEOUT_SECONDS)
+        self.assertEqual(600, runner.RUN_CONTEXT["timeout_seconds"])
+        self.assertEqual(600, grader.DEFAULT_CODEX_TIMEOUT_SECONDS)
+        self.assertEqual(600, authenticated_runtime.CODEX_SCENARIO_TIMEOUT_SECONDS)
+
+    def test_webcodex_context_blocks_repository_codex_entrypoints(self):
+        with mock.patch.dict(os.environ, {"WEBCODEX_NPM_WRAPPER": "1"}, clear=False):
+            with self.assertRaisesRegex(RuntimeError, "disabled in WebCodex"):
+                runner._require_codex_cli_allowed()
+            with self.assertRaisesRegex(grader.GradeError, "disabled in WebCodex"):
+                grader._require_codex_cli_allowed()
+            with self.assertRaisesRegex(
+                runtime_acceptance.RuntimeAcceptanceError,
+                "disabled in WebCodex",
+            ):
+                runtime_acceptance._require_codex_cli_allowed()
+            with self.assertRaisesRegex(
+                authenticated_runtime.AuthenticatedRuntimeError,
+                "disabled in WebCodex",
+            ):
+                authenticated_runtime._require_codex_cli_allowed()
 
     def test_github_actions_fixture_transport_progression(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -667,7 +691,9 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                 timeout = subprocess.TimeoutExpired(
                     cmd=["codex"], timeout=1, output="partial", stderr="waiting"
                 )
-                with mock.patch.object(runner.subprocess, "run", side_effect=timeout):
+                with mock.patch.object(runner, "_require_codex_cli_allowed"), mock.patch.object(
+                    runner.subprocess, "run", side_effect=timeout
+                ):
                     code = runner.run_codex(
                         codex_bin="codex",
                         scenario_id="B-TIMEOUT",
@@ -715,7 +741,9 @@ class EvalRunnerIntegrityTests(unittest.TestCase):
                 timeout = subprocess.TimeoutExpired(
                     cmd=["codex"], timeout=1, output=output, stderr="waiting"
                 )
-                with mock.patch.object(runner.subprocess, "run", side_effect=timeout):
+                with mock.patch.object(runner, "_require_codex_cli_allowed"), mock.patch.object(
+                    runner.subprocess, "run", side_effect=timeout
+                ):
                     code = runner.run_codex(
                         codex_bin="codex",
                         scenario_id="B-COMPLETED-EXIT-TIMEOUT",

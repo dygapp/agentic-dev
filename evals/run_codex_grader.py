@@ -27,6 +27,7 @@ class GradeError(RuntimeError):
 MAX_TRACE_CHARS = 24000
 MAX_AGENT_MESSAGE_CHARS = 4000
 MAX_COMMAND_OUTPUT_CHARS = 2000
+DEFAULT_CODEX_TIMEOUT_SECONDS = 600
 
 
 def _clip_text(value: str, limit: int) -> str:
@@ -345,6 +346,14 @@ def validate_grade(
     return all_passed
 
 
+def _require_codex_cli_allowed() -> None:
+    if os.environ.get("WEBCODEX_NPM_WRAPPER") or ".webcodex-managed-worktrees" in str(Path.cwd().resolve()):
+        raise GradeError(
+            "codex-cli execution is disabled in WebCodex Runner context; "
+            "run Codex-specific grading only as a separately authorized task outside WebCodex"
+        )
+
+
 def grade_selected(
     codex_bin: str,
     selected: list[str],
@@ -352,6 +361,7 @@ def grade_selected(
     mode: str,
     timeout_seconds: int,
 ) -> dict[str, Any]:
+    _require_codex_cli_allowed()
     cases = load_cases(mode)
     output_dir = results_dir(mode)
     unknown = sorted(set(selected) - set(cases))
@@ -481,7 +491,9 @@ def parse_args() -> argparse.Namespace:
         "--codex-bin",
         default=os.environ.get("CODEX_BIN", "codex"),
     )
-    parser.add_argument("--timeout-seconds", type=int, default=180)
+    parser.add_argument(
+        "--timeout-seconds", type=int, default=DEFAULT_CODEX_TIMEOUT_SECONDS
+    )
     return parser.parse_args()
 
 

@@ -20,6 +20,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 EVALS = REPO_ROOT / "evals"
 RESULTS = EVALS / "results"
 RUNTIME_ACCEPTANCE = REPO_ROOT / "tools/runtime-acceptance/runtime_acceptance.py"
+CODEX_SCENARIO_TIMEOUT_SECONDS = 600
 
 ACTIVATION_SCENARIOS = (
     "A-CI-01",
@@ -44,6 +45,15 @@ BEHAVIOR_SCENARIOS = (
 
 class AuthenticatedRuntimeError(RuntimeError):
     pass
+
+
+def _require_codex_cli_allowed() -> None:
+    if os.environ.get("WEBCODEX_NPM_WRAPPER") or ".webcodex-managed-worktrees" in str(Path.cwd().resolve()):
+        raise AuthenticatedRuntimeError(
+            "codex-cli execution is disabled in WebCodex Runner context; "
+            "split Codex-specific Runtime Under Test into a separate task and obtain "
+            "explicit temporary Human authorization outside WebCodex"
+        )
 
 
 def _run(
@@ -133,7 +143,7 @@ def _run_runtime_mode(
             flag,
             *_scenario_args(scenarios),
             "--timeout-seconds",
-            "180",
+            str(CODEX_SCENARIO_TIMEOUT_SECONDS),
             "--codex-bin",
             codex_bin,
         ],
@@ -157,6 +167,8 @@ def _run_runtime_mode(
             *_scenario_args(scenarios),
             "--codex-bin",
             codex_bin,
+            "--timeout-seconds",
+            str(CODEX_SCENARIO_TIMEOUT_SECONDS),
         ],
         cwd=REPO_ROOT,
         stdout=subprocess.PIPE,
@@ -457,6 +469,7 @@ def run_authenticated_acceptance(
     report_path: Path,
     bundle_path: Path,
 ) -> dict[str, Any]:
+    _require_codex_cli_allowed()
     _require_clean_checkout(REPO_ROOT)
     source_sha = _git_head(REPO_ROOT)
     codex_version, auth_method = _codex_runtime(codex_bin)

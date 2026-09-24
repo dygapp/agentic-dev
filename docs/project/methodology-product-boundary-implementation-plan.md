@@ -285,6 +285,8 @@ docs Method / Rule / Architecture
 
 进入 Repository 后由 Layer 1～4 接管。不得要求 ChatGPT Project Instructions 复制方法论正文。
 
+P5 执行期间额外冻结以下执行边界：WebCodex Runner 只承担 Repository / deterministic runtime 工作，不得启动 `codex-cli`；Fresh Context、independent review 与普通 semantic grading 由 ChatGPT 完成。只有 Codex-specific Runtime Under Test 声明必须使用 `codex-cli` 时，才拆成独立子任务并等待人工在单独会话显式临时授权。仓库自带 Codex 执行入口在 WebCodex 环境必须 fail closed。单个 Codex Runtime / grader 场景 timeout 统一为 600 秒。
+
 覆盖：`PB-AC-20`～`23`。
 
 ## 8. Gate P6 — Provider Governance Cutover 与减法清理

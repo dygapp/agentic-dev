@@ -123,15 +123,15 @@ Builder 从 Current Source asset 的 distribution metadata 与各 `SKILL.md` 自
 
 2. **Authenticated Codex Runtime acceptance**
    - entrypoint：`tools/runtime-acceptance/authenticated_model_acceptance.py`；
-   - 复用执行环境当前有效的 Codex authentication；
-   - 通过 `codex login status` 只确认认证方法，不复制或传播认证存储；
-   - 构建当前 exact Head Release，执行 Release-installed activation / representative behavior；
-   - 使用独立 grader 对每条 assertion 评分；
-   - 只有全部场景 PASS 才生成 exact-head model-runtime Evidence。
+   - 只在 Codex-specific Runtime Under Test 声明确实需要时作为独立验证子任务运行；
+   - WebCodex Runner 不得直接或间接启动 `codex-cli`，该入口在 WebCodex 上必须 fail closed；
+   - 需要该 Evidence 时，由人工在单独会话中显式临时授权，并在非 WebCodex 执行上下文复用当前有效的 Codex authentication；
+   - 单个 Runtime / grader 场景的默认 timeout 为 600 秒；
+   - 只有真实执行过的 Codex-specific 场景才能生成对应 model-runtime Evidence。
 
-当前认证可以来自 ChatGPT 登录或其他 Codex 当前支持且由执行环境自己管理的认证方式；本 Repository 不把 `OPENAI_API_KEY` 固化为 Gate E 语义，也不得把本地 `CODEX_HOME` / auth storage 复制到 GitHub Secret 或发布物中。
+当前认证可以来自 ChatGPT 登录或其他 Codex 当前支持且由执行环境自己管理的认证方式；本 Repository 不把 `OPENAI_API_KEY` 固化为运行语义，也不得把本地 `CODEX_HOME` / auth storage 复制到 GitHub Secret 或发布物中。Fresh Context、独立复核和普通语义判分默认由当前 ChatGPT 上下文承担，不因为需要隔离判断而转交 `codex-cli`。
 
-Gate E 的完成声明必须同时拥有 automated acceptance 与 authenticated model runtime 的当前 Evidence。GitHub Actions 全绿只证明第一类责任完成；历史 model result、静态 parser、native discovery 或进程 exit 0 都不能替代第二类 Evidence。
+WebCodex 路径只声明它实际取得的 deterministic / Repository Runtime Evidence；Codex-specific claim 若尚未在独立授权子任务中验证，应明确保持未验证，不得由历史 model result、静态 parser、进程 exit 0 或 WebCodex 可访问的 Codex 登录状态代替。
 
 本节只拥有当前 runtime-acceptance locator / transport instance，不复制 scenario corpus、grader assertions 或 workflow run id。
 

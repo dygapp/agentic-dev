@@ -49,11 +49,12 @@ ARCHITECTURE_FIXTURE = EVALS / "fixtures" / "clarify-architecture-basic"
 GITHUB_ACTIONS_FIXTURE = EVALS / "fixtures" / "github-actions-observation"
 WORKSPACE_WRITE_BEHAVIOR_SCENARIOS = {"B-RB-01", "B-EU-01", "B-GA-01"}
 READ_ONLY_BEHAVIOR_SCENARIOS = {"B-MC-01", "B-AR-01"}
+DEFAULT_CODEX_TIMEOUT_SECONDS = 600
 RUN_CONTEXT = {
     "source_commit": None,
     "codex_version": None,
     "skill_set_sha256": None,
-    "timeout_seconds": 180,
+    "timeout_seconds": DEFAULT_CODEX_TIMEOUT_SECONDS,
 }
 
 
@@ -277,7 +278,17 @@ def current_source_commit() -> str:
     return commit
 
 
+def _require_codex_cli_allowed() -> None:
+    if os.environ.get("WEBCODEX_NPM_WRAPPER") or ".webcodex-managed-worktrees" in str(Path.cwd().resolve()):
+        raise RuntimeError(
+            "codex-cli execution is disabled in WebCodex Runner context; "
+            "run Codex-specific Runtime Under Test only as a separately authorized task "
+            "outside WebCodex"
+        )
+
+
 def check_codex(codex_bin: str) -> str:
+    _require_codex_cli_allowed()
     try:
         completed = subprocess.run(
             [codex_bin, "--version"],
@@ -379,6 +390,7 @@ def run_codex(
     skip_git_repo_check: bool = False,
     runtime_mode: str = "canonical-skill-copy",
 ) -> int:
+    _require_codex_cli_allowed()
     result_dir = RESULTS / result_group
     result_dir.mkdir(parents=True, exist_ok=True)
     _clear_stale_scenario_results(result_dir, scenario_id)
@@ -623,8 +635,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--timeout-seconds",
         type=int,
-        default=180,
-        help="per-scenario Codex process timeout (default: 180)",
+        default=DEFAULT_CODEX_TIMEOUT_SECONDS,
+        help="per-scenario Codex process timeout (default: 600)",
     )
     parser.add_argument(
         "--codex-bin",
