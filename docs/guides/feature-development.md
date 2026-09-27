@@ -29,6 +29,8 @@ status: active
 
 若目标、Acceptance 或适用 Authority 不清楚，先返回真实语义 owner。若工作需要独立恢复、依赖协调或独立验收，则形成 Execution Unit，并使用 `slice-work`、`readiness-check`、`execute-unit`。在直接变更中发现范围、风险或语义责任扩大时重新判断粒度；不把最初的轻量判断当作永久豁免。两种路径都须遵守 Consumer-local constraints，并用当前证据支持完成声明。
 
+当同一 change 跨多个独立 Git Repository，先按 [多仓库软件项目](multi-repository-projects.md) 确认项目级与组件级 owner、逐仓授权，以及当前完成声明是否需要精确仓库组合；跨仓本身不规定 Unit 数量或 PR 形状。
+
 ## 3. 常见 Feature 路径
 
 ```text
