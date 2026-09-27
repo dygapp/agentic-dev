@@ -15,7 +15,7 @@ Consumer 当前项目事实
 +
 本 Guide 的方法导航
 → 当前最主要阻塞责任
-→ 对应 Skill / Guide
+→ 直接实施或对应 Skill / Guide
 ```
 
 本 Guide 不是状态机，也不拥有项目当前状态。
@@ -44,13 +44,14 @@ Consumer 当前项目事实
 | Requirement Authority 分散、冲突、owner 不清，或多个 Feature 被同一需求缺口阻塞 | `establish-requirement-baseline` |
 | 多个当前 / 预期 Feature 共同依赖长期、高成本难逆的 systemic architecture driver | `clarify-architecture` |
 | 当前 Feature 目标 / Scope / 用户可见行为 / Acceptance 仍有高影响产品歧义 | `clarify-intent` |
-| 当前 Feature intent 已清楚，但 WHAT / WHY / Acceptance 还没有稳定 Specification | `specify` |
+| 当前工作需要新的 WHAT / WHY / Acceptance 决定，且尚无稳定 Specification | `specify` |
 | 实施前存在必须跨多个 execution unit 稳定的 HOW | `technical-plan` |
+| 目标和验收已明确，修改局部、低风险、可逆，且无需独立执行生命周期 | Agent 直接完成有界变更并按范围验证；不为形式完整而创建 Unit |
 | Specification 已 Ready，需要形成可独立执行的工作单元 | `slice-work` |
 | 已有目标 Execution Unit，但不确定是否真的可执行 | `readiness-check` |
 | Execution Unit 已 Ready | `execute-unit` |
 | 出现 unexpected failure / defect | `systematic-debug` |
-| 多个 Unit 基本完成，需要判断完整 change 是否真的 Ready | `converge` |
+| 当前变更的实施基本完成，需要判断整体是否真的 Ready | `converge`；存在多个 Unit 时还须检查接缝 |
 | 当前责任需要安全修改 GitHub / 外部 API / review environment / shared state | `external-operation` |
 | GitHub Actions 本身是关键验证路径 | `github-actions-verification` |
 | 需要产品 / 业务 / 架构 / 工程责任人集中理解和确认 | `human-review` |
@@ -104,7 +105,7 @@ Consumer 当前项目事实
 
 ### Requirement / Architecture 已足够
 
-如果当前已有明确 Feature，可以进入：
+如果当前已有明确 Feature，且工作需要独立执行生命周期，可以进入：
 
 ```text
 clarify-intent
@@ -116,7 +117,7 @@ clarify-intent
 → converge
 ```
 
-这不是强制固定流程。某些步骤可以因当前项目事实已经满足而直接跳过；每个 Skill 自己定义 Trigger 和 Exit。
+这不是强制固定流程。当前 Authority 已能确定目标与验收的局部可逆变更，可以直接实施并按范围验证；若发现语义、风险或依赖扩大，再重新判断应返回哪个 owner 或是否需要 Unit。每个 Skill 自己定义 Trigger 和 Exit。
 
 ## 5. 输出“下一步建议”时至少说明
 
@@ -134,6 +135,6 @@ clarify-intent
 
 ## 6. Guide 与 Skill 的边界
 
-本 Guide 只负责“选下一类工作”。
+本 Guide 只负责“选下一类工作”。有界变更无需为了调用 Skill 虚构 Unit；当前项目适用的 Authority、约束与验证责任仍然有效。
 
 一旦选定 `execute-unit`、`specify`、`clarify-architecture` 等责任，就读取 installed Skill 的 `SKILL.md` 执行，不继续用本 Guide 维护第二套 procedure。
