@@ -290,3 +290,11 @@ Issue #179 来自真实 Consumer 的局部常量抽取：旧执行习惯把很�
 
 最终 candidate `0b346d478b2e49d591a0f2f429f82e9a671715b2` 的 11/11 repository contracts 与 Fresh / Independent Review（`Blocking=0`、`Medium=0`、`Low=0`；[只读复核记录](https://github.com/dygapp/agentic-dev/pull/185#issuecomment-5855895673)）通过；CI Run #17 在与 candidate 无文件差异的 PR merge ref `5904b00194669a64afdda7cba13cd40ff9f99854` 上通过。PR #185 的 integration commit 为 `765ed1e48c4840402cfe13e8ce5c60cd342c020c`。真实 Consumer adoption / runtime PASS 尚未验证。
 
+## 19. 多仓库项目的工作区与权威边界
+
+Issue #181 提出一个软件项目由多个独立 Git Repository 组成时的项目级事实、组件级实现、共同工作区与精确组合问题。PR #186 在现行 Skills + 按需 Guides 模型下，将 Project Repository 根目录嵌套独立 Component Repositories 确认为推荐但非必选布局；没有恢复旧 Method / Rule Discovery，也没有把目录嵌套解释为 Git Authority 或写权限继承。
+
+长期导航由 [多仓库软件项目 Guide](../guides/multi-repository-projects.md) 持有：项目与组件各自拥有对应 Consumer Authority，跨仓执行逐仓恢复身份、状态、约束和授权；父仓忽略组件目录，防止意外跟踪，但显式强制暂存或清理仍需独立保护。跨仓集成、可重建候选或发布声明记录参与仓库的精确身份 / SHA 组合；不为普通单仓变更建立固定全量 baseline，也不预设 manifest schema 或 orchestrator。
+
+最终 candidate `1f4e2b1a8b8f434265f5048b7f7d9e341c22b15f` 的 12/12 repository contracts、嵌套 Git 隔离样例与 Fresh / Independent Review（`Blocking=0`、`Medium=0`、`Low=0`；[只读复核记录](https://github.com/dygapp/agentic-dev/pull/186#issuecomment-5856587052)）通过；CI Run #21 在与 candidate 无文件差异的 PR merge ref `deaa137ed8abf40723b9a98c86f6c96e66603557` 上通过。PR #186 的 integration commit 为 `b9ebbecf485192532071a4b25c1894ce18f327f6`。真实 Consumer adoption、跨宿主 instruction / Skill 发现及实际跨仓 CI 重建尚未验证。
+

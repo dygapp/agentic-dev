@@ -23,7 +23,7 @@ status: active
 - Consumer 拥有项目事实、架构、current work、技术政策、授权和本地约束；
 - 不恢复 Method selector、Rule Discovery、Capability Runtime、custom Release Builder、批量模型 grader 或多级 Gate。
 
-旧 Issue 须在 `v0.1.0` 产品边界下重新解释，旧架构中的候选方案不自动进入当前设计。每个后续事项的执行基线则是开始该事项时最新已集成的 Repository Authority 与精确 HEAD；不得回退到发布起点而忽略已完成事项 1～2 的变化。
+旧 Issue 须在 `v0.1.0` 产品边界下重新解释，旧架构中的候选方案不自动进入当前设计。每个后续事项的执行基线则是开始该事项时最新已集成的 Repository Authority 与精确 HEAD；不得回退到发布起点而忽略此前已完成事项的变化。
 
 ## 3. 单项执行协议
 
@@ -99,18 +99,9 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 **来源**：Issue #181。
 
-**问题**：一个软件项目由多个独立 Git Repository 组成时，如何划分项目级权威、仓库级权威、工作区、跨仓工作和精确组合关系。
+**完成 Evidence**：Issue #181 / PR #186；最终 candidate `1f4e2b1a8b8f434265f5048b7f7d9e341c22b15f` 通过 12/12 deterministic repository contracts、嵌套 Git 隔离样例与 Fresh / Independent Review（`Blocking=0`、`Medium=0`、`Low=0`；[只读复核记录](https://github.com/dygapp/agentic-dev/pull/186#issuecomment-5856587052)）。CI Run #21 检出与 candidate 无文件差异的 PR merge ref `deaa137ed8abf40723b9a98c86f6c96e66603557` 并通过；PR #186 集成于 `b9ebbecf485192532071a4b25c1894ce18f327f6`。
 
-优先验证：
-
-- Project Repository + nested independent repositories 是否适合作为推荐模式之一；
-- root / component `AGENTS.md` 边界；
-- 跨仓 Fresh Context 与权限隔离；
-- Project-level work 与 repository-local implementation；
-- 何时真正需要 machine-readable topology；
-- 何时真正需要 exact multi-repository baseline。
-
-首轮优先澄清方法导航和 Authority 边界，不预设 `repositories.yaml`、bootstrap orchestrator、cross-repository runtime 或 central registry。
+本事项将 Project Repository + nested independent Component Repositories 确认为**推荐但非必选**的多仓库布局。项目级与组件级事实各有 Consumer-owned owner，跨仓 Fresh Context、Git 状态和授权逐仓恢复；父仓忽略组件目录不等于跟踪组件版本或免除 gitlink / 强制清理风险。跨仓集成、可重建候选或发布声明才需要明确项目与参与组件的精确身份 / SHA 组合，普通单仓变更不强制维护全量 baseline。长期方法导航在 [多仓库软件项目 Guide](../guides/multi-repository-projects.md)，没有新增 Skill、固定 `repositories.yaml` schema、bootstrap orchestrator 或 central registry。真实 Consumer adoption、跨宿主 instruction / Skill 发现及实际跨仓 CI 重建仍未验证。
 
 ### 演进事项 4 — 本地验证环境的资源生命周期
 
@@ -149,6 +140,6 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 ## 6. 当前停止点
 
-演进事项 2 已完成小规模变更执行粒度的规范收敛，并通过 PR #185 集成到 `master`。完整实施与验证过程由 Issue #179、PR #185 和 Git 历史保存；真实 Consumer adoption / runtime PASS 仍不属于已验证事实。
+演进事项 3 已完成多仓库项目推荐布局与权威边界的方法导航，并通过 PR #186 集成到 `master`。完整实施与验证过程由 Issue #181、PR #186 和 Git 历史保存；真实 Consumer adoption、跨宿主 instruction / Skill 发现及实际跨仓 CI 重建仍不属于已验证事实。
 
-集成后重新核验：Issue #181 与 #180 仍开放；演进事项 2 未提供调整两者先后顺序的新证据。下一责任暂为**演进事项 3 — 多仓库项目的工作区与权威边界**。进入时先从当前 Repository Authority 重新分析 Issue #181；其中旧 Method / Rule Discovery 等假设仅作为历史反馈，不预设为现行设计。演进事项 4 尚未展开。
+集成后重新核验：Issue #180 仍开放。演进事项 3 明确了 project / component identity，但未提供跳过事项 4 或预设 Docker 实现方案的新证据。下一责任暂为**演进事项 4 — 本地验证环境的资源生命周期**；进入时从最新 Repository Authority 重新分析 Issue #180，先区分通用资源生命周期、Docker / WSL 专项与 Consumer-local policy，不因已推荐嵌套布局就预设缓存 schema 或新 Skill。

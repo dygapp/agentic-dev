@@ -89,8 +89,8 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 
 1. **Skill 与项目权威的适配边界**：已完成并集成；Issue #183 / PR #184 保存方案、Review 与实施 Evidence，integration commit 为 `1cf3901d1096ca998a16923363c29f663bc8e1a2`；
 2. **小规模变更的执行粒度**：已完成并集成；Issue #179 / PR #185 保存反馈、实施与验证 Evidence，integration commit 为 `765ed1e48c4840402cfe13e8ce5c60cd342c020c`；
-3. **多仓库项目的工作区与权威边界**：当前下一责任，须从现行模型重新分析 Issue #181；
-4. **本地验证环境的资源生命周期**。
+3. **多仓库项目的工作区与权威边界**：已完成并集成；Issue #181 / PR #186 保存方案、验证与 Review Evidence，integration commit 为 `b9ebbecf485192532071a4b25c1894ce18f327f6`；
+4. **本地验证环境的资源生命周期**：当前下一责任，须从现行模型重新分析 Issue #180。
 
 该顺序不是永久 Roadmap。每个演进事项收口后必须基于届时最新 Repository / Consumer Evidence 重新判断后续事项，允许调整、拆分或删除，不为了“一次规划完整”同时展开多个事项的详细分析和设计。
 
@@ -119,6 +119,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - post-v0.1.0 Consumer 反馈演进事项与逐项闭环协议：`post-v0.1.0-consumer-feedback-evolution-plan.md`；
 - 演进事项 1 已完成 Evidence：GitHub Issue #183 / PR #184；
 - 演进事项 2 已完成 Evidence：GitHub Issue #179 / PR #185；
+- 演进事项 3 已完成 Evidence：GitHub Issue #181 / PR #186；
 - 稳定历史里程碑：`project-evolution.md`；
 - 历史研究与旧模型 Evidence：`../research/**`；
 - bounded change 的精确 commit / Review / Actions Evidence：Git / GitHub 对应对象。
