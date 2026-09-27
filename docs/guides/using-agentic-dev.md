@@ -75,7 +75,7 @@ Layer 4 — Local Constraints
 - **Authority 是 Consumer-owned Current truth / semantic owner**：回答“当前什么事实、contract、设计或决定是正确的”；
 - **Constraint / Policy 是 Consumer-owned execution constraint**：回答“在这个项目里做这件事还必须遵守什么”；
 - **Guide 是责任导航**：帮助判断下一责任，不复制 Skill procedure；
-- **Execution Unit 是跨 Fresh Context 的有界执行责任载体**：保存 Scope、恢复 Authority 所需的线索、Dependencies、Completion Conditions 和 Verification responsibility，不复制 Authority 正文。
+- **Execution Unit 是需要独立恢复和验收时的有界执行责任载体**：保存 Scope、恢复 Authority 所需的线索、Dependencies、Completion Conditions 和 Verification responsibility，不复制 Authority 正文；局部、低风险、可逆的变更不因修改代码自动需要 Unit。
 
 Authority 类型是开放的。Requirement、Specification、Architecture 或 Visual Design 只能作为 Consumer 可能拥有的例子，Provider 不维护固定 Authority 枚举。Agent 在责任确定后根据当前 task / claim、Consumer locator、Unit 已知线索和当前 Repository facts，按需恢复会改变当前判断的最小 Current Authority。
 
@@ -109,7 +109,7 @@ Guide 不能覆盖 Consumer facts，Consumer facts 也不需要复制 upstream �
 
 ### Skills
 
-Skill 回答“这件事具体怎么做”。
+Skill 回答其独立责任“具体怎么做”。局部有界变更可由 Agent 直接实施并按范围验证，不为调用 Skill 虚构 Execution Unit。
 
 正式 Consumer runtime 从 repository-local installed Skills 取得通用执行能力。普通 Skill execution 不在线读取 Provider `docs/**` 补齐语义。
 
@@ -180,7 +180,7 @@ Consumer 当前事实
 方法论 Guide
 → 当前最主要缺口
 → 下一责任
-→ 对应 Skill
+→ 直接实施或对应 Skill
 ```
 
 Guide 只选择“下一类工作”，不会维护另一套 Skill procedure。
@@ -196,13 +196,13 @@ Guide 只选择“下一类工作”，不会维护另一套 Skill procedure。
 
 只有多个当前或预期 Feature 共同依赖一个长期、高成本难逆、并且不解决就会阻塞可靠开发的 systemic architecture driver 时，才使用 `clarify-architecture`。
 
-局部、低风险、可逆的实现选择留给 `technical-plan` 或 `execute-unit`。
+局部、低风险、可逆的实现选择可在有界变更中直接处理；正式 Unit 中由 `execute-unit` 处理。跨 Unit 持续有价值的 HOW 才进入 `technical-plan`。
 
 ## 7. 普通 Feature / change
 
 见 [feature-development.md](feature-development.md)。
 
-常见路径：
+需要正式执行单元时的常见路径：
 
 ```text
 clarify-intent
@@ -215,7 +215,7 @@ clarify-intent
 → Ready to Integrate
 ```
 
-这不是硬编码状态机。当前项目事实已经满足某一步的责任时，可以跳过；出现上游缺口时返回真实 owner。
+这不是硬编码状态机。当前 Authority 已能确定目标和验收、且无需独立执行生命周期的局部可逆变更，可以由 Agent 直接实施并按范围验证；现有 Skill 只在各自 Trigger 成立时使用。出现上游缺口时返回真实 owner。
 
 `Ready to Integrate` 不是 merge / release / deploy 授权。
 

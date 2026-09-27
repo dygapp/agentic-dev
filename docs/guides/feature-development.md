@@ -23,7 +23,13 @@ status: active
 
 如果多个 Feature 共同依赖长期、高成本难逆的 systemic architecture driver，先使用 `clarify-architecture`。
 
-## 2. 常见路径
+## 2. 先判断执行粒度
+
+目标和验收已能从当前 Consumer Authority 恢复、修改局部且低风险可逆、不需要独立恢复或验收生命周期时，Agent 可以直接完成有界变更，并按当前 claim 做范围相称的验证。典型情况是既有实现中的小范围整理或明确的局部修复；是否满足条件由当前 Repository 事实判断，不能只凭文件数量或代码行数决定。相关修改可以在持续工作区中一起检查、修正和验证，不因此建立新的长期工作产物。
+
+若目标、Acceptance 或适用 Authority 不清楚，先返回真实语义 owner。若工作需要独立恢复、依赖协调或独立验收，则形成 Execution Unit，并使用 `slice-work`、`readiness-check`、`execute-unit`。在直接变更中发现范围、风险或语义责任扩大时重新判断粒度；不把最初的轻量判断当作永久豁免。两种路径都须遵守 Consumer-local constraints，并用当前证据支持完成声明。
+
+## 3. 常见 Feature 路径
 
 ```text
 Current Consumer Authority
@@ -46,11 +52,9 @@ converge
 Ready to Integrate
 ```
 
-这不是强制状态机。
+这是需要正式执行单元时的常见组合，不是每次 Repository 修改的强制状态机。当前项目事实已经满足某个责任时可以跳过；执行过程中发现上游缺口时返回真实 owner。`execute-unit` 只用于 Ready Unit，不把无正式 Unit 的有界变更伪装成 Unit。
 
-当前项目事实已经满足某个责任时可以跳过；执行过程中发现上游缺口时返回真实 owner。
-
-## 3. clarify-intent
+## 4. clarify-intent
 
 只解决会实质改变当前 Feature 的：
 
@@ -63,11 +67,11 @@ Ready to Integrate
 
 Authority 已能唯一决定的事情不重复询问。
 
-局部、低影响、可逆 HOW 留给后续 `technical-plan` / `execute-unit`。
+局部、低影响、可逆 HOW 可留给直接有界变更；进入正式 Unit 时由 `execute-unit` 处理。只有跨 Unit 持续有价值的 HOW 才需要 `technical-plan`。
 
 如果发现的是系统性 Requirement gap，返回 `establish-requirement-baseline`；如果是 systemic architecture driver，返回 `clarify-architecture`。
 
-## 4. specify
+## 5. specify
 
 `specify` 负责把当前 Feature 的 WHAT / WHY / Acceptance 写清楚。
 
@@ -83,7 +87,7 @@ Authority 已能唯一决定的事情不重复询问。
 
 类名、文件路径、framework 构造、施工顺序等 HOW 默认不进入 Specification。
 
-## 5. technical-plan 只在需要时使用
+## 6. technical-plan 只在需要时使用
 
 只有实施前存在跨多个 Execution Unit 需要稳定的 HOW 时，才值得形成独立 Technical Plan，例如：
 
@@ -100,9 +104,9 @@ Authority 已能唯一决定的事情不重复询问。
 
 Feature-specific 技术规划不能重新定义产品语义；发现产品歧义时返回 Requirement / Specification owner。
 
-## 6. slice-work
+## 7. slice-work
 
-把 Ready Specification、必要 Technical Plan 与当前责任实际适用的 Consumer Current Authority 转成 context-fit Execution Units。
+当工作需要独立、可恢复和可验收的执行责任时，把 Ready Specification、必要 Technical Plan 与当前责任实际适用的 Consumer Current Authority 转成 context-fit Execution Units。有界变更不因发生代码修改而自动进入切分。
 
 每个 Unit 至少明确：
 
@@ -125,7 +129,7 @@ Feature-specific 技术规划不能重新定义产品语义；发现产品歧义
 
 Unit 的 Authority inputs 只记录切分时已知的恢复线索，不复制 Authority 正文，也不冻结后续所有适用 owner。新的 Fresh Context 必须结合当前 task / claim、Consumer locator 和当前 Repository facts 重新判断 applicability；切分后新增 / 替换 owner 或 Unit 漏记 owner，不能仅因为 Unit 未列出就忽略。
 
-## 7. readiness-check
+## 8. readiness-check
 
 这是 Execute 前的只读 Gate。
 
@@ -142,7 +146,7 @@ Unit 的 Authority inputs 只记录切分时已知的恢复线索，不复制 Au
 
 `PASS` 只表示当前 Unit 可以进入 Execute，不代表 Unit 已完成，也不授予 merge / release / deploy。
 
-## 8. execute-unit
+## 9. execute-unit
 
 一次只执行一个 Ready Unit。
 
@@ -157,7 +161,7 @@ Unit 的 Authority inputs 只记录切分时已知的恢复线索，不复制 Au
 
 意外 failure / defect 使用 `systematic-debug`。实现暴露任何适用 Current Authority 的长期语义缺口时返回真实 owner；没有对应 owner / procedure 时明确升级，不在代码里静默创造新规则。
 
-## 9. Evidence 必须匹配 claim
+## 10. Evidence 必须匹配 claim
 
 不要用以下证据替代真实完成：
 
@@ -170,13 +174,13 @@ Unit 的 Authority inputs 只记录切分时已知的恢复线索，不复制 Au
 
 正确问题是：
 
-> 哪些当前 Evidence 能真正区分这个 Unit / Feature 的 Completion claim 是真是假？
+> 哪些当前 Evidence 能真正区分这个有界变更 / Unit / Feature 的完成声明是真还是假？
 
 Verification obligation 来自当前适用 Authority 与当前 claim，而不是来自某个固定 Authority 类型。只要适用 Authority 对视觉 fidelity、安全、可访问性或其他质量属性提出可验证义务，就必须选择能够区分该义务是否成立的 Evidence。
 
 权限、失败边界、数据库迁移、业务数据迁移、视觉表现、外部系统或生产行为都可能需要不同 Evidence。
 
-## 10. systematic-debug
+## 11. systematic-debug
 
 Unexpected failure 进入 `systematic-debug`：
 
@@ -191,14 +195,14 @@ Unexpected failure 进入 `systematic-debug`：
 
 不要通过猜测性大改掩盖未确认根因，也不要让旧测试反向覆盖 Current Requirement。
 
-## 11. converge
+## 12. converge
 
 Converge 判断完整 change 是否真正 Ready，不是“再跑一次测试”。
 
 需要检查：
 
 - Specification Acceptance 是否都有实现与 Evidence；
-- 多 Unit 组合后是否出现边界冲突；
+- 存在多个 Unit 时，组合后是否出现边界冲突；
 - 长期 artifact responsibility 是否正确；
 - 当前实现是否仍符合本 change 实际适用的 Current Authority；
 - verification contract 是否仍 current；
@@ -206,9 +210,9 @@ Converge 判断完整 change 是否真正 Ready，不是“再跑一次测试”
 
 缺口返回真实 owner，不在 Converge 中静默重设计。
 
-只有 Authority、实现和当前 Evidence 一致时才返回 `Ready to Integrate`。
+只有 Authority、实现和当前 Evidence 一致时才返回 `Ready to Integrate`。有界变更没有正式 Unit 时，仍从当前 Authority、实际 diff 和验证证据判断完整变更是否就绪；不补造 Unit 来满足输入形式。
 
-## 12. Human Review 与独立变更复核
+## 13. Human Review 与独立变更复核
 
 Human Review 不是固定开发阶段。
 
@@ -220,7 +224,7 @@ Human Review 不是固定开发阶段。
 
 详见 [human-review.md](human-review.md)。
 
-## 13. Ready to Integrate 之后
+## 14. Ready to Integrate 之后
 
 `Ready to Integrate` 表示当前 change 的通用开发责任已经收敛。
 
@@ -233,13 +237,14 @@ Human Review 不是固定开发阶段。
 - deploy；
 - post-integration closure
 
-由目标 Consumer Repository 自己的治理与授权决定。
+由目标 Consumer Repository 自己的治理与授权决定。编辑、验证、commit、CI、PR 与 Execution Unit 不存在固定的一一对应关系；持续工作区中的未提交 diff 和本地验证是合法的当前执行态证据，但需要跨上下文长期成立的事实仍须进入可恢复的 Repository / GitHub 状态。
 
-## 14. 常见误用
+## 15. 常见误用
 
 - **没有恢复 Authority 就写 Specification** → 先恢复 Consumer facts。
 - **HOW 塞进 Specification** → WHAT / WHY 与 HOW 分开。
 - **每个 Feature 都建长期 Technical Plan** → 只有跨 Unit 稳定 HOW 才需要。
+- **每次小修改都创建 Execution Unit** → 先判断是否真的需要独立恢复、依赖协调或独立验收。
 - **机械按技术层切 Unit** → 优先 context-fit 纵向单元。
 - **Readiness 中直接修问题** → 只读 Gate，finding 返回真实 owner。
 - **低强度 Evidence 冒充 completion** → Evidence 必须匹配 claim。
@@ -248,7 +253,7 @@ Human Review 不是固定开发阶段。
 - **Ready to Integrate 自动 merge** → 集成仍由 Consumer Repository 决定。
 - **每次 Feature 都加载整套 Guides** → 只按当前责任读取必要 Guide / Skill。
 
-## 15. Canonical execution owners
+## 16. Canonical execution owners
 
 本 Guide 只解释组合关系。真正执行责任在 installed Skills：
 

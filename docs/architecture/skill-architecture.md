@@ -41,6 +41,8 @@ Skill 不因为自身存在取得 Repository 写入、merge、release、deploy �
 
 同一物理文件可以同时包含 Authority 语义与执行 Policy；分类依据是语义归属和用途，而不是文件名、目录名或“必须 / 禁止”等措辞。
 
+Execution Unit 用于确实需要独立恢复、协调依赖或独立验收的执行责任，不由“发生了代码修改”自动触发。若目标和验收已能从当前 Consumer Authority 恢复，修改局部、低风险、可逆，且不需要独立的长期执行生命周期，Agent 可以直接实施有界变更并取得与当前 claim 匹配的按范围验证证据。没有正式 Unit 不免除 Authority、约束、验证、复核或授权责任；范围扩大、语义缺口或风险变化时，重新判断是否需要上游澄清、切分和就绪检查。
+
 ## 5. Current Authority 解析与 Skill 消费
 
 Skill 选择前，Agent 只恢复判断当前责任所需的最小 Repository Context 和 installed Skill descriptions；责任确定后，再结合当前 task / claim、Consumer-owned locator / navigation、Unit 中已有恢复线索（如存在）与当前 Repository facts，解析**当前责任实际适用的最小 Current Authority**。

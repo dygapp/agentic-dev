@@ -77,6 +77,8 @@ Codex Work / codex-cli 已经处于 Repository Context 时直接从 `AGENTS.md` 
 
 但“本地可写”不增加 Authority；仍要遵守目标 Repository 自己的权限和 local constraints。
 
+持续工作区允许在一次相关变更中反复编辑、检查和按范围验证，再于有意义的版本边界提交。未提交 diff 与本地验证结果是当前执行态证据；需要跨上下文长期成立的语义、结论和必要 Evidence，仍须进入可恢复的 Repository / GitHub 状态。本地验证是否足以支持完成声明取决于当前 claim，而不取决于运行环境名称。
+
 ## 5. GitHub Connector / API 负责 GitHub-native coordination
 
 适合：
@@ -86,6 +88,8 @@ Codex Work / codex-cli 已经处于 Repository Context 时直接从 `AGENTS.md` 
 - Actions；
 - GitHub-native comments / Evidence；
 - 最终 merge / release coordination（前提是已获授权）。
+
+编辑、验证、commit、CI、PR 和正式 Execution Unit 不必一一对应。是否需要 branch、push、CI、PR 或独立复核由目标 Repository 的政策、协作与风险决定；GitHub Actions 可以承担必要的远端验证，但不是每轮本地编辑的固定反馈步骤。
 
 外部写操作遵循：
 
