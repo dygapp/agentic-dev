@@ -38,6 +38,7 @@ Guide 可以被人和 AI 按需阅读，但不进入 ordinary task 的固定上�
 - 已有项目首次采用： [adopting-agentic-dev.md](adopting-agentic-dev.md)
 - 不知道下一步做什么： [choosing-next-step.md](choosing-next-step.md)
 - 普通 Feature / change： [feature-development.md](feature-development.md)
+- 多仓库软件项目： [multi-repository-projects.md](multi-repository-projects.md)
 - Requirement Baseline 不稳定： [establishing-requirement-baseline.md](establishing-requirement-baseline.md)
 - 需要集中人工评审： [human-review.md](human-review.md)
 - 升级已安装 Skills： [upgrading-agentic-dev.md](upgrading-agentic-dev.md)

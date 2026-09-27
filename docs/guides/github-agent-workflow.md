@@ -206,6 +206,8 @@ Consumer Project Knowledge
 - 重新核验 branch / PR / Head；
 - 不携带旧 Repository 的权限、规则候选、current work 或 Evidence 结论。
 
+若这些 Repository 属于同一个软件项目，项目级与组件级 Authority、嵌套独立仓库布局和精确组合的边界见 [多仓库软件项目](multi-repository-projects.md)；共享工作区不改变上述逐仓恢复要求。
+
 ## 12. 最后才请求人工介入
 
 适合人工承担的通常是：
