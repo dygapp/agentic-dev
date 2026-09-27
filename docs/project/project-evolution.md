@@ -282,3 +282,11 @@ Issue #164 因此完成最终闭环。该轮继续遵守“减法优先”：没
 
 实现前 GPT-6 Sol 独立方案评审提出 4 个 Medium finding，修订后最终 exact candidate `9335ea22dea972e3b52fee160703d603708b583d` 的 Fresh / Independent Review 得到 `Blocking=0`、`Medium=0`、`Low=0`、`FINAL REVIEW PASS`，随后通过 PR #184 集成到 `master`，integration commit 为 `1cf3901d1096ca998a16923363c29f663bc8e1a2`。
 
+## 18. 小规模变更的执行粒度
+
+Issue #179 来自真实 Consumer 的局部常量抽取：旧执行习惯把很小的实现修改也带入完整 Execution Unit 与远端集成循环。v0.1.0 极简切换已退出旧 Method / Rule Discovery，因此 PR #185 直接在当前 Skill Architecture、Guides 与 `converge` 中收敛仍然存在的执行粒度缺口。
+
+长期结果是：目标与验收可从 Consumer Current Authority 恢复、修改局部低风险可逆且无需独立执行生命周期时，Agent 可直接实施有界变更并按范围验证；需要独立恢复、依赖协调或独立验收时继续使用正式 Execution Unit。直接变更仍遵守适用 Authority、约束、验证、复核与授权；范围或风险变化时重新判断。`converge` 可以在没有正式 Unit 时核对完整变更。持续工作区的未提交差异和本地验证属于当前执行态证据，branch、commit、CI 与 PR 的使用由目标 Consumer Repository 决定，没有形成新的 artifact type、Skill 或平台专用 Method。
+
+最终 candidate `0b346d478b2e49d591a0f2f429f82e9a671715b2` 的 11/11 repository contracts 与 Fresh / Independent Review（`Blocking=0`、`Medium=0`、`Low=0`；[只读复核记录](https://github.com/dygapp/agentic-dev/pull/185#issuecomment-5855895673)）通过；CI Run #17 在与 candidate 无文件差异的 PR merge ref `5904b00194669a64afdda7cba13cd40ff9f99854` 上通过。PR #185 的 integration commit 为 `765ed1e48c4840402cfe13e8ce5c60cd342c020c`。真实 Consumer adoption / runtime PASS 尚未验证。
+

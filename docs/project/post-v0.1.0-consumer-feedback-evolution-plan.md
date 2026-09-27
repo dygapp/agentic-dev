@@ -14,7 +14,7 @@ status: active
 
 ## 2. 基线与约束
 
-当前稳定 baseline：
+本计划的发布起点：
 
 - Release：`agentic-dev-v0.1.0`
 - Integration commit：`ae8ee8032e34c046d619c719dad408edda2d2d8a`
@@ -23,7 +23,7 @@ status: active
 - Consumer 拥有项目事实、架构、current work、技术政策、授权和本地约束；
 - 不恢复 Method selector、Rule Discovery、Capability Runtime、custom Release Builder、批量模型 grader 或多级 Gate。
 
-所有 Issue 都必须从这个 baseline 重新解释，旧架构中的候选方案不自动进入当前设计。
+旧 Issue 须在 `v0.1.0` 产品边界下重新解释，旧架构中的候选方案不自动进入当前设计。每个后续事项的执行基线则是开始该事项时最新已集成的 Repository Authority 与精确 HEAD；不得回退到发布起点而忽略已完成事项 1～2 的变化。
 
 ## 3. 单项执行协议
 
@@ -89,20 +89,11 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 **来源**：Issue #179。
 
-**问题**：重新判断对于产品、需求和架构已经稳定的局部、低风险、可逆修改，当前执行路径需要保留多少正式生命周期。
+**完成 Evidence**：Issue #179 / PR #185；最终 candidate `0b346d478b2e49d591a0f2f429f82e9a671715b2` 通过 11/11 deterministic repository contracts 与 Fresh / Independent Review（`Blocking=0`、`Medium=0`、`Low=0`；[只读复核记录](https://github.com/dygapp/agentic-dev/pull/185#issuecomment-5855895673)）。CI Run #17 检出 PR merge ref `5904b00194669a64afdda7cba13cd40ff9f99854`，与 candidate 无文件差异并通过；随后集成于 `765ed1e48c4840402cfe13e8ce5c60cd342c020c`。
 
-重新分析必须分开：
+本事项把执行粒度与 branch / commit / CI / PR 集成政策分开：目标和验收可从当前 Consumer Authority 恢复、修改局部低风险可逆且无需独立执行生命周期时，Agent 可直接实施有界变更并按范围验证；正式 Execution Unit 留给需要独立恢复、协调依赖或独立验收的责任。`converge` 支持无正式 Unit 的完整变更判断。持续工作区中的未提交差异与本地验证是当前执行态证据，长期事实仍进入可恢复的 Repository / GitHub 状态；集成政策由 Consumer 自己决定。
 
-- execution granularity；
-- branch / commit / CI / PR integration policy。
-
-当前 `v0.1.0` 已经允许 persistent Repository Runtime，并明确 PR 是否需要由 Consumer Repository / Human Authority 决定，因此不得重新建立 WebCodex-specific Method 或 GitHub transport Framework。
-
-核心问题：
-
-> 什么条件真正要求 Formal Execution Unit；什么情况下 bounded change + scoped verification 已经足够？
-
-“Direct Change / Work Batch”目前只作为分析词，不预先成为 artifact type 或 Skill。
+没有新增 Direct Change / Work Batch artifact、Skill、WebCodex 专用 Method 或 GitHub transport Framework。真实 Consumer adoption / runtime PASS 尚未验证。
 
 ### 演进事项 3 — 多仓库项目的工作区与权威边界
 
@@ -158,17 +149,6 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 ## 6. 当前停止点
 
-演进事项 1 已完成并收口：
+演进事项 2 已完成小规模变更执行粒度的规范收敛，并通过 PR #185 集成到 `master`。完整实施与验证过程由 Issue #179、PR #185 和 Git 历史保存；真实 Consumer adoption / runtime PASS 仍不属于已验证事实。
 
-- 当前 baseline 与 Issue / Consumer Evidence 重新分析；
-- Authority 与 Consumer-local Constraint 边界澄清；
-- Agent / Skill / Guide / Authority / Constraint / Execution Unit 核心运行模型收敛；
-- GPT-6 Sol 实现前独立方案评审及 4 个 Medium findings 修订；
-- 开放 Consumer Authority contract 的 Architecture / Guide / canonical Skill 实施；
-- deterministic repository contracts、bounded behavior scenarios 与 `jilinjobs-cms` 只读 applicability challenge；
-- exact candidate `9335ea22dea972e3b52fee160703d603708b583d` 最终 Fresh / Independent Review PASS；
-- PR #184 集成到 `master`，Issue #183 closed / completed。
-
-真实 Consumer adoption / runtime PASS 仍不属于当前已验证事实。演进事项 3～4 仍未展开。
-
-下一责任：单独进入演进事项 2 — 小规模变更的执行粒度，先按本计划的单项闭环协议重新分析 Issue #179 Evidence；不得继承演进事项 1 的具体方案作为事项 2 的预设设计。
+集成后重新核验：Issue #181 与 #180 仍开放；演进事项 2 未提供调整两者先后顺序的新证据。下一责任暂为**演进事项 3 — 多仓库项目的工作区与权威边界**。进入时先从当前 Repository Authority 重新分析 Issue #181；其中旧 Method / Rule Discovery 等假设仅作为历史反馈，不预设为现行设计。演进事项 4 尚未展开。
