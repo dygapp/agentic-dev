@@ -19,7 +19,7 @@ description: Establishes or optimizes an observable, traceable, cost-aware GitHu
 
 ## 流程
 
-1. 读取 Consumer 当前 workflow、触发拓扑、Consumer-local constraints 与权限，不从 `agentic-dev` 推断项目事实。
+1. 读取 Consumer 当前 workflow、触发拓扑、Consumer-local constraints 与权限，不从 Skill Provider、upstream source repository 或其他项目推断当前项目事实。
 2. 明确哪些 claim 必须由 Actions 证明，以及对应 exact branch / PR / commit baseline；触发成功、run 创建或单个 job 成功不能替代 claim 所需 Completion Evidence。
 3. 设计最小分层验证：优先复用缓存、预构建运行环境与已有 artifact，但不得牺牲 exact-subject identity、可追溯性和 Evidence currentness。
 4. 配置合理 timeout、cancellation、失败诊断与关键日志 / Evidence 保留。新的 run 开始前清理或隔离会污染判断的 stale temporary evidence；不得让旧 artifact 冒充当前 run 输出。

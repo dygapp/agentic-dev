@@ -33,7 +33,7 @@ description: Safely performs authorized changes to external or shared state such
 - `direct-path`：优先使用当前 Runtime 已授权、且能够在操作后重新读取目标真实状态的 connector / API / external tool；工具存在本身不授予权限。
 - `automated-alternate`：direct path 不可用时，只能使用 Consumer Repository 已声明、已授权且同样能够恢复当前 Evidence 的自动化路径，例如仓库 workflow、受控 API transport 或等价 external tool；不得临时回 upstream 补工具。
 - `evidence-recovery`：保存或恢复目标对象 identity、必要 run / job / step / log / artifact 等当前证据，并以重新读取后的真实状态支持 completion claim。
-- `fail-closed`：不存在授权执行路径、缺少 credential / capability、无法恢复目标 identity，或不能重新读取足以支持声明的当前证据时，停止并保留为 blocker / 未验证状态，不报告成功；不得为了绕过本地能力缺口临时在线读取 upstream 方法论源码。
+- `fail-closed`：不存在授权执行路径、缺少 credential / capability、无法恢复目标 identity，或不能重新读取足以支持声明的当前证据时，停止并保留为 blocker / 未验证状态，不报告成功；不得为了绕过本地能力缺口临时读取未安装的 upstream source 来补齐工具或执行语义。
 
 ## 输出
 

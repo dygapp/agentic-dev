@@ -9,7 +9,7 @@ description: 为 Consumer 软件项目准备结构化人工评审材料，分类
 
 把当前评审责任实际适用的 Consumer Current Authority 整理成便于人工理解和判断的结构化评审材料，并把人工确认产生的语义变化准确返回真实语义所有者。
 
-本 Skill 只面向 Consumer 软件项目，不用于 `agentic-dev` 自身的方法论演进、Issue / PR 决策或能力设计过程。
+本 Skill 只面向 Consumer 软件项目的人工评审；不承担 Skill Provider 自身的产品治理、上游能力演进、Issue / PR 集成决策或独立仓库变更复核。
 
 本 Skill 直接拥有 Consumer-facing 人工评审执行契约：结构化 Markdown 是默认工作介质，派生视图默认可再生且非 Authority，人工反馈必须分类并回写真正语义 owner，最终交付格式只有在显式请求后进入。
 

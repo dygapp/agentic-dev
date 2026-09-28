@@ -83,6 +83,13 @@ class RepositoryContractsTests(unittest.TestCase):
             for token in forbidden:
                 self.assertNotIn(token, text, f"{path}: {token}")
 
+    def test_runtime_skills_do_not_embed_provider_identity_or_governance(self):
+        forbidden = ("agentic-dev", "docs/governance/", "docs/project/")
+        for path in SKILLS.glob("*/SKILL.md"):
+            text = path.read_text(encoding="utf-8")
+            for token in forbidden:
+                self.assertNotIn(token, text, f"{path}: {token}")
+
     def test_retired_runtime_paths_are_absent(self):
         for relative in RETIRED_PATHS:
             self.assertFalse((ROOT / relative).exists(), relative)
