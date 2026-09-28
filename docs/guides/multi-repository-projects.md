@@ -46,7 +46,7 @@ Project Repository 的根 `AGENTS.md` 保持薄入口，指出项目级事实、
 
 从项目级任务进入组件仓时，先从项目 Current Authority 确认受影响的组件和共同目标，再逐仓核对实际路径、Git top-level、仓库身份、branch / HEAD / working tree、`AGENTS.md`、当前适用 Authority、local constraints、installed Skills 与权限。只加载当前责任需要的仓库；组件缺失、身份或 remote 不符、locator 损坏时，只阻断受影响的执行或完成声明，不以同名目录代替目标仓库。
 
-跨仓工作按实际责任切分，不规定一个 Repository 必须对应一个 Execution Unit，也不因为跨仓就自动建立 Unit。局部、低风险、可逆且不需要独立生命周期的变更仍可直接实施；需要独立恢复、依赖协调或独立验收时使用现有 `slice-work`、`readiness-check`、`execute-unit`。项目级 Specification 或 Work 记录共同目标与依赖，组件仓保存本地实现和验证证据；最终用 `converge` 检查跨组件接缝。每仓的 commit、PR、CI、merge 仍由其自己的 Authority 决定，某仓授权不传递给另一仓。
+跨仓工作按实际责任切分，不规定一个 Repository 必须对应一个 Execution Unit，也不因为跨仓就自动建立 Unit。局部、低风险、可逆且不需要独立生命周期的变更仍可直接实施；需要独立恢复、依赖协调或独立验收时使用现有 `slice-work`、`readiness-check`、`execute-unit`。项目级 Specification 或 Work 记录共同目标与依赖，组件仓保存本地实现和验证证据；最终用 `converge` 检查跨组件接缝。项目仓忽略的组件目录不会出现在根仓普通 Git 状态中；项目级完成判断和独立变更复核须按已知拓扑分别核对工作区内组件仓的 Git 状态，不能把根仓干净或根仓 PR diff 当作所有代码已提交的证据。每仓的 commit、PR、CI、merge 仍由其自己的 Authority 决定，某仓授权不传递给另一仓。
 
 ## 4. 何时记录精确组合
 

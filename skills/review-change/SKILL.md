@@ -22,6 +22,7 @@ description: Reviews a final repository change against current authority, scope,
 1. 建立 review isolation：优先在当前平台创建 fresh / isolated context，重新恢复 exact subject、Repository Authority 与 Consumer-local constraints，不继承作者意图、旧 finding 处置或此前 PASS。独立性来自隔离与重新判断，不要求另起 provider、模型或 CLI。
 2. 明确本次 review claim：要判断哪些最终变更是否可安全接受，而不是重新设计目标；只有 claim 本身依赖 Codex native discovery、authenticated model behavior、provider permissions / isolation 等 Runtime-specific 行为时，才把对应 Runtime 作为 Runtime Under Test 启动。
 3. 重新读取精确 diff / changed files，并结合当前 review claim、Consumer locator / navigation 与 Repository facts 重新解析本次变更实际适用的 Current Authority，再读取最终实现与当前 Evidence。验证 contract 只有在与这些适用 Current Authority 一致时才定义有效 expected behavior。
+   - 多仓项目中，先按 Consumer 的项目级拓扑与当前工作确认组件仓身份和检查范围；对工作区内已存在的组件仓分别检查 Git top-level、repository / remote 身份、branch / HEAD 与包含 staged、unstaged、untracked 变化的工作树状态。对当前变更涉及或出现改动的仓库进一步核对精确 diff、验证证据与授权。项目仓的干净状态或 PR diff 不覆盖被忽略的独立组件仓；不能据此宣称整个变更已提交或已复核。拓扑无法可靠恢复、组件仓缺失、身份不符或无法检查时，按其对当前 review claim 的影响保留 finding / 未验证边界，不清理或擅自提交不属于本变更的工作。
 4. 根据变更影响选择复核深度：普通变更执行 consistency / regression / scope / evidence / lifecycle 检查；命中下述高影响 Authority 条件时追加 **Authority-chain semantic review**。
 5. 检查 authority consistency、语义回归、scope、授权边界、证据与长期 artifact lifecycle。当前 owner 被 replace / retire / archive 时，确认 locator / navigation、verification consumer 与 durable current-state wording 已迁移，historical reference 只承担 provenance 而不是 Current dependency。
    - 如果变更触及 README、Roadmap 或 Fresh Context 恢复入口，按拟集成后的长期状态检查其表述；`等待本 PR 合并`、临时 branch 等瞬时事实不应被固化为集成后立即陈旧的 Current 状态。
