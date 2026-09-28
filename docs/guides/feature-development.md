@@ -165,6 +165,8 @@ Unit 的 Authority inputs 只记录切分时已知的恢复线索，不复制 Au
 
 ## 10. Evidence 必须匹配 claim
 
+自动化验证可按 Consumer 实际执行环境选择[GitHub Actions 路径](github-actions-automated-verification.md)或[本地 Docker 路径](docker-automated-verification.md)；两者均不改变当前 Authority、验收和证据责任，也不要求项目同时维护两套 CI。
+
 不要用以下证据替代真实完成：
 
 - “代码写完了”；

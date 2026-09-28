@@ -90,9 +90,11 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 1. **Skill 与项目权威的适配边界**：已完成并集成；Issue #183 / PR #184 保存方案、Review 与实施 Evidence，integration commit 为 `1cf3901d1096ca998a16923363c29f663bc8e1a2`；
 2. **小规模变更的执行粒度**：已完成并集成；Issue #179 / PR #185 保存反馈、实施与验证 Evidence，integration commit 为 `765ed1e48c4840402cfe13e8ce5c60cd342c020c`；
 3. **多仓库项目的工作区与权威边界**：已完成并集成；Issue #181 / PR #186 保存方案、验证与 Review Evidence，integration commit 为 `b9ebbecf485192532071a4b25c1894ce18f327f6`；
-4. **本地验证环境的资源生命周期**：当前下一责任，须从现行模型重新分析 Issue #180。
+4. **自动化验证路径与本地 Docker 资源生命周期**：以 Issue #180 为反馈起点，形成 [GitHub Actions 自动化验证](../guides/github-actions-automated-verification.md)与可独立用于非 GitHub 仓库的[本地 Docker 自动化验证](../guides/docker-automated-verification.md)两条按需向导；未新增通用 Docker Skill 或 Provider 编排器，真实 Consumer 的多轮构建、缓存与磁盘回收效果尚未验证。
 
 该顺序不是永久 Roadmap。每个演进事项收口后必须基于届时最新 Repository / Consumer Evidence 重新判断后续事项，允许调整、拆分或删除，不为了“一次规划完整”同时展开多个事项的详细分析和设计。
+
+当前不预设演进事项 5；未来若有真实 Consumer 证据暴露稳定的跨项目执行缺口，再从届时 Authority 重新评估，而不把事项 4 未进行的 Consumer 实测冒充已完成。
 
 ## 已知约束
 
