@@ -20,9 +20,9 @@ description: Performs a read-only pre-execution gate across an execution unit, i
 
 ## 流程
 
-1. 重新读取当前 Unit、Consumer-local constraints 与当前仓库事实；结合 Unit 线索、当前 task / claim 和 Consumer locator / navigation 重新判断当前责任实际适用的 Current Authority，不把切分时的 owner 清单或旧会话就绪结论当成永久事实。
-2. 检查 Specification readiness、必要技术决定、Unit scope、依赖、artifact lifecycle、权限和 completion / verification 定义；验证 contract 必须覆盖当前责任实际适用的 Current Authority 及其可验证义务，旧测试或 Workflow 不能因为已存在就覆盖 Current Authority。
-3. 检查 base drift、未提交 / 并发变化、当前 exact subject 与 Repository 状态是否使既有计划或旧 Evidence 失效。
+1. 重新读取当前 Unit、Consumer-local constraints 与当前仓库事实；结合 Unit 线索、当前 task / claim 和 Consumer locator / navigation 重新判断当前责任实际适用的 Current Authority，不把切分时的 owner 清单或旧会话就绪结论当成永久事实。多仓项目还须从 Consumer 项目级拓扑和 Unit 实际范围识别受影响的独立组件仓，逐仓确认路径、Git top-level、repository / remote 身份及适用约束；目录嵌套或项目仓忽略规则不代表同一个 Git 仓库。
+2. 检查 Specification readiness、必要技术决定、Unit scope、依赖、artifact lifecycle、权限和 completion / verification 定义；验证 contract 必须覆盖当前责任实际适用的 Current Authority 及其可验证义务，旧测试或 Workflow 不能因为已存在就覆盖 Current Authority。若 Unit 涉及独立组件仓，确认执行范围、仓库本地验证、必要的跨仓接缝验证和证据回写均指向正确仓库；各仓分支、提交与 PR 仍按自己的 Authority 决定，不把项目仓的一次 Git 操作当作组件仓处理。
+3. 检查 base drift、未提交 / 并发变化、当前 exact subject 与 Repository 状态是否使既有计划或旧 Evidence 失效。多仓 Unit 的相关组件仓逐仓核对 branch / HEAD 与 staged、unstaged、untracked 状态；项目仓状态干净不能证明组件仓没有既有修改。受影响仓库身份或执行 / 验证边界不明时保留 finding，不因 Unit 未列出该仓库就忽略从当前目标可确认的责任。
 4. 逐项完成当前门禁检查后重新计算剩余责任；单个检查、测试或工具调用完成不等于 readiness gate 完成。
 5. 只报告 evidence-backed finding，并给出明确 Return To：Specification / Acceptance 的 WHAT/WHY 缺口返回 `specify`；只有底层 Product Intent 本身仍未决定时才先返回 `clarify-intent`。Execution Unit 的 scope、completion condition、traceability 或 dependency 形状问题返回 `slice-work`；跨 Unit 的持久 HOW 缺口返回 `technical-plan`；系统性长期 Architecture driver 返回 `clarify-architecture`；其他 Current Authority 缺口返回其真实 owner / Consumer-local maintenance procedure。applicability / owner / locator 无法可靠判断且会影响当前 readiness claim 时，只阻断受影响结论。本 Skill 内不修复 Authority、计划、代码或配置，也不把无法验证的假设降级为 PASS。
 
