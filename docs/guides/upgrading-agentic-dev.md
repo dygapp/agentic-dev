@@ -20,7 +20,9 @@ Existing Consumer 已拥有：
 
 先恢复当前 adopted ref，再明确选择目标 immutable tag。不要把无版本 `latest` 或 generic update 当作 agentic-dev 的隐式升级协议。
 
-P1 已验证 exact-tag install 与同 tag reinstall；真正的 `tag A → tag B` 跨版本迁移仍应在存在第二个正式版本后用真实版本 Evidence 单独验证。
+`agentic-dev-v0.2.0` 已形成第二个稳定版本，并完成 `agentic-dev-v0.1.0 → agentic-dev-v0.2.0` 的有界跨版本验证。验证使用标准 Skills installer 显式选择版本：先从 `agentic-dev-v0.1.0` 安装全部 15 个 Skill，再以 v0.2.0 release candidate 覆盖安装；升级后 15 个 Skill inventory 保持完整，11 个发生内容变化的 Skill 被替换，Codex 目标 inventory 仍可见 15 项，Consumer-owned `AGENTS.md`、项目文档和 constraints 均未被覆盖。
+
+该结论只验证**显式版本切换、Skill inventory / 安装边界与 Consumer ownership preservation**。它不表示任意 Consumer 对 11 个变化 Skill 的实际业务行为都自动完成回归；真实 Consumer 仍必须按自身使用路径重新验证受影响行为。无版本 `latest` 或 generic `update` 仍不属于 agentic-dev 的已验证升级协议。
 
 ## 2. 比较真正会改变 Consumer 的内容
 

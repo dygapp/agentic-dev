@@ -8,7 +8,7 @@ status: active
 
 ## 当前基线
 
-`agentic-dev` 当前稳定 baseline 是 `agentic-dev-v0.1.0`（integration commit `ae8ee8032e34c046d619c719dad408edda2d2d8a`）对应的极简 Provider 产品模型：
+`agentic-dev` 当前稳定 baseline 是 `agentic-dev-v0.2.0` 对应的极简 Provider 产品模型；`agentic-dev-v0.1.0`（integration commit `ae8ee8032e34c046d619c719dad408edda2d2d8a`）继续保留为上一稳定版本：
 
 - `skills/**` 是唯一正式 Consumer-facing runtime product；
 - `docs/guides/**` 只为人和 AI 提供按需 Bootstrap、方法理解与下一步导航；
@@ -17,13 +17,13 @@ status: active
 - Provider 自身只保留少量直接 governance，普通修改使用与声明匹配的最小 deterministic validation 与必要 Review，不恢复批量模型 grader、custom Release Builder 或多级 Gate；
 - 历史复杂机制解决过的 bounded context、Consumer ownership、Evidence integrity、Fresh Context、human escalation 等长期语义已经进入 Skills、Guides、Provider governance 或 Consumer-local Authority。
 
-当前允许的完成声明是：**Provider 极简切换完成，`agentic-dev-v0.1.0` 可供采用**。这不表示任何真实 Consumer 已完成采用验证，也不授予后续版本的 merge、release 或 deploy 权限。
+当前允许的完成声明是：**Provider 极简切换完成，`agentic-dev-v0.2.0` 可供采用，并已完成从 `agentic-dev-v0.1.0` 到本版本的有界升级验证**。这不表示任何真实 Consumer 已完成采用验证，也不授予后续版本的 merge、release 或 deploy 权限。
 
 稳定演进里程碑与历史原因由 `docs/project/project-evolution.md` 持有；精确 branch / Issue / PR / Actions / commit 状态始终从 GitHub 与当前 checkout 重新读取。
 
 ## 当前演进
 
-**AI 驱动软件开发方法论产品边界重构已完成 S1～S3 Provider 收敛，并已集成 / 发布为 `agentic-dev-v0.1.0`。**
+**AI 驱动软件开发方法论产品边界重构已完成 S1～S3 Provider 收敛并发布为 `agentic-dev-v0.1.0`；随后基于真实 Consumer 反馈完成当前一轮有界演进，并收敛为第二个稳定版本 `agentic-dev-v0.2.0`。**
 
 本轮目标模型先后完成 Specification、Repository-wide disposition、P1～P4 能力验证、S1 Authority Freeze、S2 Subtractive Cutover 与 S3 Final Fresh Independent Review。`methodology-product-boundary-specification.md` 与 `methodology-product-boundary-implementation-plan.md` 已完成本轮临时 Authority 职责，现作为本轮历史规范 / 实施计划保留，不再参与 ordinary Provider runtime。
 
@@ -39,6 +39,19 @@ S3 Final Fresh Independent Review 在 exact candidate `c84d5ec2a6616a79629879bd4
 当前进入 **v0.1.0 后 Consumer 反馈演进阶段**。当前演进计划由 [`post-v0.1.0-consumer-feedback-evolution-plan.md`](post-v0.1.0-consumer-feedback-evolution-plan.md) 持有：后续工作划分为独立演进事项，每次只推进一项，按证据重新分析 → 必要的外部研究 → 方案收敛 → 实施 → 聚焦验证与必要复核 → 收口逐项完成。
 
 上一轮 Issue #172 Gate A～G、旧 Release Candidate 与相关 Runtime Evidence 继续只作为历史 Evidence；原 Gate H、custom Release Builder 与旧发布路线不恢复。前置状态收口已经完成：Issue #172 已明确 superseded / completed 并关闭，不再作为当前能力设计入口。
+
+### v0.2.0 最小发布验证
+
+`agentic-dev-v0.2.0` 的发布内容候选冻结在 `995f218d7e1866e2c529e6b0710acf8a294e3883`。该 exact candidate 的最小发布验证结论为：
+
+- 当前 deterministic repository contracts：13 / 13 PASS；
+- disposable Consumer 使用标准 `skills@1.7.0` 安装当前 candidate，15 / 15 Skill 完整，Codex 目标 inventory 可见 15 项，Consumer-owned `AGENTS.md`、项目文档与 constraints 哈希保持不变；
+- `agentic-dev-v0.1.0 → v0.2.0 candidate` 的显式 reinstall 路径完成有界验证：旧版本 exact-tag 安装得到 15 个 lock entry，升级后仍为 15 个 Skill，11 个发生内容变化的 Skill 被正确替换，Consumer-owned 文件保持不变；
+- Codex native discovery 的直接 Runtime Evidence 复用 P1 exact subject `f5b1d90e8d3e642045f5ae57b6afb207f6cdbae3`：当前版本未改变 Skill inventory、标准 frontmatter 或 `.agents/skills/**` 安装边界，当前标准 installer / Codex-target inventory 验证也保持 15 / 15；按当前 WebCodex 边界不在 Runner 内重新启动 `codex-cli`；
+- 本轮重点复核的开放式 Consumer Authority 解析、无正式 Execution Unit 的局部有界变更、嵌套独立仓库状态识别、Skill 不隐含特定 Consumer 项目结构四项语义均有当前 contract / fixture / Guide / Skill Evidence 支持；
+- Fresh / Independent Review 在该 exact candidate 上重新执行，结果 `Blocking=0`、`Medium=0`。
+
+以上只证明 Provider release 与 disposable Consumer 的有界安装 / 升级契约，不外推为任意真实 Consumer 的完整行为回归。正式发布仍以 exact release commit 的 CI 终态以及远端 `agentic-dev-v0.2.0` tag 绑定事实为准。
 
 ## 已完成阶段与当前收敛
 
