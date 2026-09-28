@@ -165,7 +165,7 @@ Agent 面向用户的以下内容默认使用中文：
 
 当前仓库的 Issue、PR、Review 和状态说明默认使用中文叙述；精确路径、SHA、Rule / Skill id、workflow 名称等保持原样。
 
-Git Commit 继续受当前 Repository 自己的 commit policy 约束；在 `agentic-dev` Provider 中，既有 `type(scope)` 协议结构保持不变，摘要使用自然中文。普通 Consumer 使用自己的本地提交规范。
+Git Commit 继续受当前 Repository 自己的 commit policy 约束；在 `agentic-dev` Provider 中，既有 `type(scope)` 协议结构保持不变，摘要使用自然中文。普通 Consumer 使用自己的本地提交规范；需要建立或补充本地约定时，按需参见 [Git Commit 方法与常用约定](git-commit-conventions.md)。
 
 ## 10. 既有内容怎样收敛
 

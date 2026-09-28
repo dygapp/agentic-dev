@@ -18,6 +18,7 @@ Guide 同时服务人和 AI，但默认按需读取。普通实现任务不需�
 | 已有软件 Repository，第一次引入 `agentic-dev` | [`adopting-agentic-dev.md`](adopting-agentic-dev.md) |
 | 已经采用，但不知道现在最值得推进什么 | [`choosing-next-step.md`](choosing-next-step.md) |
 | 已有 Requirement / Architecture 基础，要开发一个 Feature / change | [`feature-development.md`](feature-development.md) |
+| 需要组织有界 Git commit，或为项目选择常用 type / scope | [`git-commit-conventions.md`](git-commit-conventions.md) |
 | 一个软件项目由多个独立 Git Repository 组成，需要判断工作区与权威边界 | [`multi-repository-projects.md`](multi-repository-projects.md) |
 | Requirement 分散、冲突、没有稳定 owner，或多个 Feature 被同一需求缺口阻塞 | [`establishing-requirement-baseline.md`](establishing-requirement-baseline.md) |
 | 需要让产品、业务、架构或工程责任人集中人工评审 | [`human-review.md`](human-review.md) |

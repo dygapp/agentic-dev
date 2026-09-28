@@ -22,17 +22,18 @@ status: active
 3. [`adopting-agentic-dev.md`](adopting-agentic-dev.md) — 已有 Repository 最小侵入接入 Skills；
 4. [`choosing-next-step.md`](choosing-next-step.md) — 根据 Consumer 当前事实判断下一责任；
 5. [`feature-development.md`](feature-development.md) — 普通 Feature / change 的方法导航；
-6. [`github-actions-automated-verification.md`](github-actions-automated-verification.md) — 选择 GitHub Actions 时的自动化验证路径；
-7. [`docker-automated-verification.md`](docker-automated-verification.md) — 不依赖 GitHub 的本地 Docker 自动化验证路径；
-8. [`multi-repository-projects.md`](multi-repository-projects.md) — 多仓库项目的推荐布局、权威与精确组合边界；
-9. [`establishing-requirement-baseline.md`](establishing-requirement-baseline.md) — 系统性 Requirement Baseline 建立；
-10. [`human-review.md`](human-review.md) — 人工评审与 durable semantic writeback；
-11. [`upgrading-agentic-dev.md`](upgrading-agentic-dev.md) — 显式采用新的 exact-version Skills；
-12. [`consumer-local-constraints.md`](consumer-local-constraints.md) — Consumer 项目级约束的 ownership 与 progressive disclosure 边界；
-13. [`github-agent-workflow.md`](github-agent-workflow.md) — ChatGPT + WebCodex、Codex 与 GitHub 执行面；
-14. [`multi-model-collaboration.md`](multi-model-collaboration.md) — 可选多模型 / 多 Agent 协作；
-15. [`codex-model-collaboration-reference.md`](codex-model-collaboration-reference.md) — Codex 平台参考配置；
-16. [`language-and-terminology.md`](language-and-terminology.md) — 面向人的语言与术语表达。
+6. [`git-commit-conventions.md`](git-commit-conventions.md) — Consumer 可裁剪的 Git commit 方法、常用 type 与 scope 选择；
+7. [`github-actions-automated-verification.md`](github-actions-automated-verification.md) — 选择 GitHub Actions 时的自动化验证路径；
+8. [`docker-automated-verification.md`](docker-automated-verification.md) — 不依赖 GitHub 的本地 Docker 自动化验证路径；
+9. [`multi-repository-projects.md`](multi-repository-projects.md) — 多仓库项目的推荐布局、权威与精确组合边界；
+10. [`establishing-requirement-baseline.md`](establishing-requirement-baseline.md) — 系统性 Requirement Baseline 建立；
+11. [`human-review.md`](human-review.md) — 人工评审与 durable semantic writeback；
+12. [`upgrading-agentic-dev.md`](upgrading-agentic-dev.md) — 显式采用新的 exact-version Skills；
+13. [`consumer-local-constraints.md`](consumer-local-constraints.md) — Consumer 项目级约束的 ownership 与 progressive disclosure 边界；
+14. [`github-agent-workflow.md`](github-agent-workflow.md) — ChatGPT + WebCodex、Codex 与 GitHub 执行面；
+15. [`multi-model-collaboration.md`](multi-model-collaboration.md) — 可选多模型 / 多 Agent 协作；
+16. [`codex-model-collaboration-reference.md`](codex-model-collaboration-reference.md) — Codex 平台参考配置；
+17. [`language-and-terminology.md`](language-and-terminology.md) — 面向人的语言与术语表达。
 
 ## AI 使用边界
 
