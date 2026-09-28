@@ -1,10 +1,10 @@
 ---
-id: guide:local-docker-automated-verification
+id: guide:docker-automated-verification
 type: guide
 status: active
 ---
 
-# 基于本地 Docker 的自动化验证与磁盘治理
+# 基于本地 Docker 的自动化验证
 
 本文帮助 Consumer 在持久本地环境中用 Docker 建立可重复的构建、集成、E2E 等自动化验证路径，并控制镜像与构建缓存占用。它可以独立承担项目选定的 CI 验证，不要求 GitHub、GitHub Actions、GHCR 或 PR；与[GitHub Actions 自动化验证](github-actions-automated-verification.md)是可选择的对应路径。项目自己的 Authority 决定要验证什么、哪些证据足够、是否仍有其他集成检查要求。
 

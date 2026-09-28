@@ -23,7 +23,7 @@ status: active
 4. [`choosing-next-step.md`](choosing-next-step.md) — 根据 Consumer 当前事实判断下一责任；
 5. [`feature-development.md`](feature-development.md) — 普通 Feature / change 的方法导航；
 6. [`github-actions-automated-verification.md`](github-actions-automated-verification.md) — 选择 GitHub Actions 时的自动化验证路径；
-7. [`local-docker-automated-verification.md`](local-docker-automated-verification.md) — 不依赖 GitHub 的本地 Docker 验证与磁盘治理；
+7. [`docker-automated-verification.md`](docker-automated-verification.md) — 不依赖 GitHub 的本地 Docker 自动化验证路径；
 8. [`multi-repository-projects.md`](multi-repository-projects.md) — 多仓库项目的推荐布局、权威与精确组合边界；
 9. [`establishing-requirement-baseline.md`](establishing-requirement-baseline.md) — 系统性 Requirement Baseline 建立；
 10. [`human-review.md`](human-review.md) — 人工评审与 durable semantic writeback；

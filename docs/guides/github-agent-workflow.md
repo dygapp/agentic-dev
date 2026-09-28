@@ -108,7 +108,7 @@ read current state
 
 Actions 适合在明确 subject 上运行 Repository-native verification。
 
-选择 Actions 承担 AI 开发自动化验证时，按需参见[基于 GitHub Actions 的自动化验证](github-actions-automated-verification.md)；其对应的非 GitHub 本地路径见[基于本地 Docker 的自动化验证](local-docker-automated-verification.md)。本节只说明平台职责，不复制验证路径的完整导航。
+选择 Actions 承担 AI 开发自动化验证时，按需参见[基于 GitHub Actions 的自动化验证](github-actions-automated-verification.md)；其对应的非 GitHub 本地路径见[基于本地 Docker 的自动化验证](docker-automated-verification.md)。本节只说明平台职责，不复制验证路径的完整导航。
 
 高可信路径通常绑定 exact SHA / exact PR Head，并验证 checkout 结果。
 

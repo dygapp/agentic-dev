@@ -6,7 +6,7 @@ status: active
 
 # 基于 GitHub Actions 的自动化验证
 
-本文帮助使用 GitHub 的 Consumer 把 AI 开发中的构建、测试、集成与必要的浏览器验证组织为可观察的自动化路径。它与[本地 Docker 自动化验证](local-docker-automated-verification.md)是两种可独立选择的执行方式，不要求同时运行，也不把 GitHub Actions 设为所有项目的默认门槛。普通变更的目标、执行粒度与完成判断仍见[普通 Feature / change 指南](feature-development.md)；Actions 的可执行责任由已安装的 `github-actions-verification` Skill 持有。
+本文帮助使用 GitHub 的 Consumer 把 AI 开发中的构建、测试、集成与必要的浏览器验证组织为可观察的自动化路径。它与[本地 Docker 自动化验证](docker-automated-verification.md)是两种可独立选择的执行方式，不要求同时运行，也不把 GitHub Actions 设为所有项目的默认门槛。普通变更的目标、执行粒度与完成判断仍见[普通 Feature / change 指南](feature-development.md)；Actions 的可执行责任由已安装的 `github-actions-verification` Skill 持有。
 
 ## 1. 先决定这条路径证明什么
 
@@ -38,4 +38,4 @@ Workflow 应使 Agent 能恢复触发、checkout、关键 job / step、终态、
 
 两条路径共用 Consumer 的目标、验收与证据要求，但运行位置、缓存和证据来源不同。GitHub Actions 的 Run / Job 是 GitHub 原生事实；本地 Docker 的日志与报告不是 Actions Run。选择或更换路径时，逐项核对原来由 Actions 证明的声明是否已有同等可辨别的当前证据，再按 Consumer 自己的集成政策调整检查要求；不能仅因本地命令退出码为零就宣布整条验证路径等价。
 
-本 Guide 只适用于选择 GitHub Actions 的项目。非 GitHub 仓库可以直接使用[本地 Docker 自动化验证](local-docker-automated-verification.md)，不需要迁入 GitHub、建立虚拟 PR 或引入 GHCR。
+本 Guide 只适用于选择 GitHub Actions 的项目。非 GitHub 仓库可以直接使用[本地 Docker 自动化验证](docker-automated-verification.md)，不需要迁入 GitHub、建立虚拟 PR 或引入 GHCR。
