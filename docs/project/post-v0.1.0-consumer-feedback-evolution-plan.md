@@ -103,22 +103,24 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 本事项将 Project Repository + nested independent Component Repositories 确认为**推荐但非必选**的多仓库布局。项目级与组件级事实各有 Consumer-owned owner，跨仓 Fresh Context、Git 状态和授权逐仓恢复；父仓忽略组件目录不等于跟踪组件版本或免除 gitlink / 强制清理风险。跨仓集成、可重建候选或发布声明才需要明确项目与参与组件的精确身份 / SHA 组合，普通单仓变更不强制维护全量 baseline。长期方法导航在 [多仓库软件项目 Guide](../guides/multi-repository-projects.md)，没有新增 Skill、固定 `repositories.yaml` schema、bootstrap orchestrator 或 central registry。真实 Consumer adoption、跨宿主 instruction / Skill 发现及实际跨仓 CI 重建仍未验证。
 
-### 演进事项 4 — 本地验证环境的资源生命周期
+### 演进事项 4 — 自动化验证路径与本地 Docker 资源生命周期
 
 **来源**：Issue #180。
 
-**问题**：持久本地 Runner 中，验证镜像、BuildKit cache 和临时 container / volume / network 怎样避免无界增长和跨项目误删。
+**问题**：为 AI 开发提供两条相互对应、可独立选择的自动化验证向导：GitHub Actions 路径与无需 GitHub 的本地 Docker 路径。本地路径能够承担 Consumer 选定的 CI 验证，并在持久 Runner 中按真实组件输入复用当前有效镜像与数据库基线、清理被替代版本和临时资源、约束 BuildKit cache，兼顾下一轮局部验证速度与磁盘占用。
 
 排在演进事项 3 之后，避免提前假设 project / component identity。
 
 重新分析先区分：
 
+- 现有 `github-agent-workflow` 平台导航、`github-actions-verification` 可执行契约与新增 Actions 验证 Guide 的职责；
+- 本地 Docker 作为独立验证路径所需的目标身份、可重复入口、证据和失败处理，不把 Actions Run 当作前提；
 - 与 Docker 无关的通用 resource lifecycle invariant；
 - Docker / BuildKit / GHCR / WSL specialization；
 - 已由 `external-operation` / `github-actions-verification` 覆盖的责任；
 - Consumer-local 实现政策。
 
-当前不预设新增 Docker Skill。只有新的 Evidence 证明存在稳定、跨 Consumer 的 reusable procedure 时，才重新评估 Provider 能力。
+本事项优先以两份按需 Guide 承载对应路径，保持 `execute-unit` / `converge` 的通用验证责任与 `github-actions-verification` 的 Actions 专项责任，不预设新增 Docker Skill、Provider 编排器或 Consumer 固定命令格式。发布镜像与生产部署不进入本事项；只有新的 Evidence 证明现有 Guide / Skill / Consumer-local 机制不足且存在稳定跨 Consumer procedure 时，才重新评估 Provider 能力。
 
 ## 5. 默认顺序
 
@@ -126,7 +128,7 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 演进事项 1 — Skill 与项目权威的适配边界
 → 演进事项 2 — 小规模变更的执行粒度
 → 演进事项 3 — 多仓库项目的工作区与权威边界
-→ 演进事项 4 — 本地验证环境的资源生命周期
+→ 演进事项 4 — 自动化验证路径与本地 Docker 资源生命周期
 ```
 
 顺序只表达当前规划：
@@ -134,7 +136,7 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 - 先处理 Skill 与项目权威的适配边界；
 - 再收敛小规模变更的执行粒度；
 - 再澄清多仓库项目的工作区与权威边界；
-- 最后评估依赖项目 / 组件身份的本地验证资源治理。
+- 最后评估依赖项目 / 组件身份的本地 Docker 验证与资源治理，并与 GitHub Actions 路径建立对应导航。
 
 每个事项收口后都可以基于新 Evidence 调整、拆分或删除后续事项。
 
@@ -142,4 +144,4 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 演进事项 3 已完成多仓库项目推荐布局与权威边界的方法导航，并通过 PR #186 集成到 `master`。完整实施与验证过程由 Issue #181、PR #186 和 Git 历史保存；真实 Consumer adoption、跨宿主 instruction / Skill 发现及实际跨仓 CI 重建仍不属于已验证事实。
 
-集成后重新核验：Issue #180 仍开放。演进事项 3 明确了 project / component identity，但未提供跳过事项 4 或预设 Docker 实现方案的新证据。下一责任暂为**演进事项 4 — 本地验证环境的资源生命周期**；进入时从最新 Repository Authority 重新分析 Issue #180，先区分通用资源生命周期、Docker / WSL 专项与 Consumer-local policy，不因已推荐嵌套布局就预设缓存 schema 或新 Skill。
+集成后重新核验：Issue #180 仍开放。演进事项 3 明确了 project / component identity，但未提供跳过事项 4 或预设 Docker 实现方案的新证据。下一责任暂为**演进事项 4 — 自动化验证路径与本地 Docker 资源生命周期**；进入时从最新 Repository Authority 重新分析 Issue #180，并按本事项当前问题与边界区分两条验证路径、Docker / WSL 专项与 Consumer-local policy，不因已推荐嵌套布局就预设缓存 schema 或新 Skill。
