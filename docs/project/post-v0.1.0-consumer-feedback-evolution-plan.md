@@ -122,6 +122,8 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 本事项优先以两份按需 Guide 承载对应路径，保持 `execute-unit` / `converge` 的通用验证责任与 `github-actions-verification` 的 Actions 专项责任，不预设新增 Docker Skill、Provider 编排器或 Consumer 固定命令格式。发布镜像与生产部署不进入本事项；只有新的 Evidence 证明现有 Guide / Skill / Consumer-local 机制不足且存在稳定跨 Consumer procedure 时，才重新评估 Provider 能力。
 
+Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/github-actions-automated-verification.md)和[本地 Docker 自动化验证 Guide](../guides/docker-automated-verification.md)承载。Issue #180 中的固定命令接口、统一缓存 schema 与真实持久 Consumer Runner 实测仍是原始候选及未验证边界，不因 Guide 建立而被宣称完成；真实采纳和磁盘收益须由具体 Consumer 后续证据证明。
+
 ## 5. 默认顺序
 
 ```text
@@ -142,6 +144,6 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 ## 6. 当前停止点
 
-演进事项 3 已完成多仓库项目推荐布局与权威边界的方法导航，并通过 PR #186 集成到 `master`。完整实施与验证过程由 Issue #181、PR #186 和 Git 历史保存；真实 Consumer adoption、跨宿主 instruction / Skill 发现及实际跨仓 CI 重建仍不属于已验证事实。
+演进事项 1～3 已按各自 Issue / PR / Git Evidence 集成。事项 4 基于 Issue #180 的反馈与后续澄清，收敛为两条相互对应的按需自动化验证 Guide：GitHub Actions 路径与可独立用于非 GitHub 项目的本地 Docker 路径。Docker 镜像、BuildKit cache 与临时资源治理是本地路径的内部责任，不上升为所有 Consumer 的固定 runtime contract。
 
-集成后重新核验：Issue #180 仍开放。演进事项 3 明确了 project / component identity，但未提供跳过事项 4 或预设 Docker 实现方案的新证据。下一责任暂为**演进事项 4 — 自动化验证路径与本地 Docker 资源生命周期**；进入时从最新 Repository Authority 重新分析 Issue #180，并按本事项当前问题与边界区分两条验证路径、Docker / WSL 专项与 Consumer-local policy，不因已推荐嵌套布局就预设缓存 schema 或新 Skill。
+当前不预设下一演进事项。真实 Consumer adoption、多轮 Docker 构建的磁盘占用与回收、不同宿主的运行差异，以及任何发布环境用途都不属于已验证的 Provider 文档成果；若后续证据显示新的稳定跨 Consumer 缺口，另行确认 owner、边界和验收，再决定是否进入新的演进事项。
