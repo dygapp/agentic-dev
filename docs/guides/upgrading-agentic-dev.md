@@ -20,9 +20,11 @@ Existing Consumer 已拥有：
 
 先恢复当前 adopted ref，再明确选择目标 immutable tag。不要把无版本 `latest` 或 generic update 当作 agentic-dev 的隐式升级协议。
 
-`agentic-dev-v0.2.0` 已形成第二个稳定版本，并完成 `agentic-dev-v0.1.0 → agentic-dev-v0.2.0` 的有界跨版本验证。验证使用标准 Skills installer 显式选择版本：先从 `agentic-dev-v0.1.0` 安装全部 15 个 Skill，再以 v0.2.0 release candidate 覆盖安装；升级后 15 个 Skill inventory 保持完整，11 个发生内容变化的 Skill 被替换，Codex 目标 inventory 仍可见 15 项，Consumer-owned `AGENTS.md`、项目文档和 constraints 均未被覆盖。
+`agentic-dev-v0.2.1` 是当前稳定版本。它在 `v0.2.0` 上只改变 `execute-unit` 与 `converge` 两个 canonical Skill，引入 Commit lifecycle / History Convergence 语义；Skill inventory、安装边界和 Consumer ownership 模型不变。
 
-该结论只验证**显式版本切换、Skill inventory / 安装边界与 Consumer ownership preservation**。它不表示任意 Consumer 对 11 个变化 Skill 的实际业务行为都自动完成回归；真实 Consumer 仍必须按自身使用路径重新验证受影响行为。无版本 `latest` 或 generic `update` 仍不属于 agentic-dev 的已验证升级协议。
+`v0.2.0 → v0.2.1` 已执行有界升级 smoke：先通过标准 Skills installer 从远端 `agentic-dev-v0.2.0` exact tag 安装全部 15 个 Skill，再以 `v0.2.1` release candidate 覆盖安装；升级后仍为 15 个 Skill，只有 `execute-unit` 与 `converge` 内容变化，`skills-lock.json` 仍含 15 项，Consumer-owned `AGENTS.md`、项目文档和 constraints 哈希均保持不变。
+
+该结论只验证**显式版本切换、Skill inventory / 安装边界与 Consumer ownership preservation**，并由本版本的 targeted contracts / Review 支持两个变化 Skill 的新治理语义。它不表示任意 Consumer 已自动完成真实业务回归；使用 `execute-unit` / `converge` 的 Consumer 应按自身当前工作与约束验证受影响流程。无版本 `latest` 或 generic `update` 仍不属于 agentic-dev 的已验证升级协议。
 
 ## 2. 比较真正会改变 Consumer 的内容
 

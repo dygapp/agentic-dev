@@ -8,7 +8,7 @@ status: active
 
 ## 当前基线
 
-`agentic-dev` 当前稳定 baseline 是 `agentic-dev-v0.2.0` 对应的极简 Provider 产品模型；`agentic-dev-v0.1.0`（integration commit `ae8ee8032e34c046d619c719dad408edda2d2d8a`）继续保留为上一稳定版本：
+`agentic-dev` 当前稳定 baseline 是 `agentic-dev-v0.2.1` 对应的极简 Provider 产品模型；`agentic-dev-v0.2.0` 继续保留为上一稳定版本：
 
 - `skills/**` 是唯一正式 Consumer-facing runtime product；
 - `docs/guides/**` 只为人和 AI 提供按需 Bootstrap、方法理解与下一步导航；
@@ -17,13 +17,13 @@ status: active
 - Provider 自身只保留少量直接 governance，普通修改使用与声明匹配的最小 deterministic validation 与必要 Review，不恢复批量模型 grader、custom Release Builder 或多级 Gate；
 - 历史复杂机制解决过的 bounded context、Consumer ownership、Evidence integrity、Fresh Context、human escalation 等长期语义已经进入 Skills、Guides、Provider governance 或 Consumer-local Authority。
 
-当前允许的完成声明是：**Provider 极简切换完成，`agentic-dev-v0.2.0` 可供采用，并已完成从 `agentic-dev-v0.1.0` 到本版本的有界升级验证**。这不表示任何真实 Consumer 已完成采用验证，也不授予后续版本的 merge、release 或 deploy 权限。
+当前允许的完成声明是：**Provider 极简切换保持完成，`agentic-dev-v0.2.1` 可供采用；本版本在 `v0.2.0` 基础上收敛 Commit lifecycle / History Convergence，并完成有界升级验证**。这不表示任意真实 Consumer 已自动完成升级或业务回归，也不授予后续版本的 merge、release 或 deploy 权限。
 
 稳定演进里程碑与历史原因由 `docs/project/project-evolution.md` 持有；精确 branch / Issue / PR / Actions / commit 状态始终从 GitHub 与当前 checkout 重新读取。
 
 ## 当前演进
 
-**AI 驱动软件开发方法论产品边界重构已完成 S1～S3 Provider 收敛并发布为 `agentic-dev-v0.1.0`；随后基于真实 Consumer 反馈完成当前一轮有界演进，并收敛为第二个稳定版本 `agentic-dev-v0.2.0`。**
+**AI 驱动软件开发方法论产品边界重构已完成 S1～S3 Provider 收敛并发布为 `agentic-dev-v0.1.0`；后续真实 Consumer 反馈先收敛为 `agentic-dev-v0.2.0`，本轮又将 Commit lifecycle / History Convergence 修订发布为向后兼容的 `agentic-dev-v0.2.1`。**
 
 本轮目标模型先后完成 Specification、Repository-wide disposition、P1～P4 能力验证、S1 Authority Freeze、S2 Subtractive Cutover 与 S3 Final Fresh Independent Review。`methodology-product-boundary-specification.md` 与 `methodology-product-boundary-implementation-plan.md` 已完成本轮临时 Authority 职责，现作为本轮历史规范 / 实施计划保留，不再参与 ordinary Provider runtime。
 
@@ -52,6 +52,14 @@ S3 Final Fresh Independent Review 在 exact candidate `c84d5ec2a6616a79629879bd4
 - Fresh / Independent Review 在该 exact candidate 上重新执行，结果 `Blocking=0`、`Medium=0`。
 
 以上只证明 Provider release 与 disposable Consumer 的有界安装 / 升级契约，不外推为任意真实 Consumer 的完整行为回归。正式发布仍以 exact release commit 的 CI 终态以及远端 `agentic-dev-v0.2.0` tag 绑定事实为准。
+
+### v0.2.1 Commit lifecycle / History Convergence 修订
+
+Issue #188 来自真实 Consumer `dygapp/jilinjobs-cms` 的 EU-68 及历史 EU 证据：Readiness、验证、debug / 修复等过程步骤容易被机械投影成永久 Git commit。实现 candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 将 Working State、Candidate Commit 与 Durable Integration History 分离，并把 History Convergence 纳入集成前责任；不建立 `1 EU = 1 commit` 规则。
+
+本轮同时覆盖单仓、父仓忽略的嵌套独立 Component Repository 与 Git submodule：各仓独立拥有 commit / history 生命周期与授权，跨仓 exact combination 只在 claim 需要时记录；组件 SHA 改写会使旧组合 Evidence 失效，submodule 场景还必须同步父仓 `160000` gitlink。
+
+最终实现 subject 的 deterministic repository contracts 为 14 / 14 PASS，Fresh / Independent Review 结果为 `Blocking=0`、`Medium=0`。发布升级 smoke 从远端 `agentic-dev-v0.2.0` exact tag 安装 15 个 Skill，再以当前 release candidate 覆盖安装；升级后仍为 15 个 Skill，仅 `execute-unit` 与 `converge` 内容变化，Consumer-owned `AGENTS.md`、项目文档和 constraints 哈希保持不变，lock 仍为 15 项。正式版本身份由远端 `agentic-dev-v0.2.1` immutable tag 与其绑定 commit 决定。
 
 ## 已完成阶段与当前收敛
 
@@ -103,11 +111,12 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 1. **Skill 与项目权威的适配边界**：已完成并集成；Issue #183 / PR #184 保存方案、Review 与实施 Evidence，integration commit 为 `1cf3901d1096ca998a16923363c29f663bc8e1a2`；
 2. **小规模变更的执行粒度**：已完成并集成；Issue #179 / PR #185 保存反馈、实施与验证 Evidence，integration commit 为 `765ed1e48c4840402cfe13e8ce5c60cd342c020c`；
 3. **多仓库项目的工作区与权威边界**：已完成并集成；Issue #181 / PR #186 保存方案、验证与 Review Evidence，integration commit 为 `b9ebbecf485192532071a4b25c1894ce18f327f6`；
-4. **自动化验证路径与本地 Docker 资源生命周期**：以 Issue #180 为反馈起点，形成 [GitHub Actions 自动化验证](../guides/github-actions-automated-verification.md)与可独立用于非 GitHub 仓库的[本地 Docker 自动化验证](../guides/docker-automated-verification.md)两条按需向导；未新增通用 Docker Skill 或 Provider 编排器，真实 Consumer 的多轮构建、缓存与磁盘回收效果尚未验证。
+4. **自动化验证路径与本地 Docker 资源生命周期**：以 Issue #180 为反馈起点，形成 [GitHub Actions 自动化验证](../guides/github-actions-automated-verification.md)与可独立用于非 GitHub 仓库的[本地 Docker 自动化验证](../guides/docker-automated-verification.md)两条按需向导；未新增通用 Docker Skill 或 Provider 编排器，真实 Consumer 的多轮构建、缓存与磁盘回收效果尚未验证；
+5. **Git Commit 生命周期与集成历史收敛**：Issue #188 已完成；实现 candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 通过 14 / 14 contracts 与 Fresh / Independent Review，覆盖单仓、嵌套独立仓和 submodule，并作为 `agentic-dev-v0.2.1` 的唯一 runtime semantic delta 发布。
 
 该顺序不是永久 Roadmap。每个演进事项收口后必须基于届时最新 Repository / Consumer Evidence 重新判断后续事项，允许调整、拆分或删除，不为了“一次规划完整”同时展开多个事项的详细分析和设计。
 
-当前不预设演进事项 5；未来若有真实 Consumer 证据暴露稳定的跨项目执行缺口，再从届时 Authority 重新评估，而不把事项 4 未进行的 Consumer 实测冒充已完成。
+当前不预设演进事项 6；未来若有新的真实 Consumer 证据暴露稳定跨项目缺口，再从届时 Authority 重新评估，不把未执行的 Consumer adoption 或环境实测冒充 Provider 已验证事实。
 
 ## 已知约束
 
@@ -135,6 +144,8 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - 演进事项 1 已完成 Evidence：GitHub Issue #183 / PR #184；
 - 演进事项 2 已完成 Evidence：GitHub Issue #179 / PR #185；
 - 演进事项 3 已完成 Evidence：GitHub Issue #181 / PR #186；
+- 演进事项 4 已完成 Provider 文档层 Evidence：GitHub Issue #180 与对应 Guides；
+- 演进事项 5 已完成 Evidence：GitHub Issue #188、implementation candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 与 `agentic-dev-v0.2.1` release binding；
 - 稳定历史里程碑：`project-evolution.md`；
 - 历史研究与旧模型 Evidence：`../research/**`；
 - bounded change 的精确 commit / Review / Actions Evidence：Git / GitHub 对应对象。

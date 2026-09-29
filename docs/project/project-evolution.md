@@ -298,3 +298,13 @@ Issue #181 提出一个软件项目由多个独立 Git Repository 组成时的�
 
 最终 candidate `1f4e2b1a8b8f434265f5048b7f7d9e341c22b15f` 的 12/12 repository contracts、嵌套 Git 隔离样例与 Fresh / Independent Review（`Blocking=0`、`Medium=0`、`Low=0`；[只读复核记录](https://github.com/dygapp/agentic-dev/pull/186#issuecomment-5856587052)）通过；CI Run #21 在与 candidate 无文件差异的 PR merge ref `deaa137ed8abf40723b9a98c86f6c96e66603557` 上通过。PR #186 的 integration commit 为 `b9ebbecf485192532071a4b25c1894ce18f327f6`。真实 Consumer adoption、跨宿主 instruction / Skill 发现及实际跨仓 CI 重建尚未验证。
 
+## 20. Commit 生命周期与 Durable Integration History
+
+Issue #188 由真实 Consumer `dygapp/jilinjobs-cms` 的 EU-68 与历史工作单元触发：Agent 容易把 Readiness、测试 / CI、debug、Review finding 与修复轮次当作 Git commit 边界，导致 durable history 变成执行日志。
+
+长期结果是把 Working State、Candidate Commit 与 Durable Integration History 明确拆开：执行迭代默认留在工作状态；exact-Head Evidence 或 durable handoff 需要时形成按逻辑目的组织的 candidate；集成前执行 History Convergence，把仅代表同一目的中间状态的过程 commit 收敛掉。该模型明确拒绝 `1 EU = 1 commit` 的机械映射，多个真正独立、可验证、可回退的逻辑目的仍可以保留多个 commit。
+
+多 Git Repository 场景逐仓应用相同生命周期。Project Repository 与每个 Component Repository 的 Git history、授权与 candidate 独立；父仓忽略组件目录时不能据根仓状态推断组件已提交，也不能统一改写组件历史。跨仓 claim 需要时记录最终 repository identity / SHA 组合；submodule 的 `160000` gitlink 作为显式版本绑定，在组件 SHA 改写后必须同步更新。没有新增 Commit Skill、中央编排器或固定 baseline schema。
+
+实现 candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 通过 14 / 14 deterministic contracts 与最终 Fresh / Independent Review（`Blocking=0`、`Medium=0`）。`v0.2.0 → v0.2.1` 有界升级 smoke 保持 15 个 Skill，只改变 `execute-unit` 与 `converge`，Consumer-owned 文件保持不变；该变化以 `agentic-dev-v0.2.1` 发布。
+

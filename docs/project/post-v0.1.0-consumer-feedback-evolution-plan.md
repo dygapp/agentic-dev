@@ -124,6 +124,16 @@ Issue 中已有判断和候选方案只作为 Evidence。每个事项都必须�
 
 Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/github-actions-automated-verification.md)和[本地 Docker 自动化验证 Guide](../guides/docker-automated-verification.md)承载。Issue #180 中的固定命令接口、统一缓存 schema 与真实持久 Consumer Runner 实测仍是原始候选及未验证边界，不因 Guide 建立而被宣称完成；真实采纳和磁盘收益须由具体 Consumer 后续证据证明。
 
+### 演进事项 5 — Git Commit 生命周期与集成历史收敛
+
+**来源**：Issue #188；真实 Consumer `dygapp/jilinjobs-cms` 的 EU-68 与历史 EU 暴露出 Readiness、CI / 测试、debug / Review 修复等执行步骤被机械转换成永久 commit 的问题。
+
+本事项将 commit boundary 与 Method / Gate / Evidence 生命周期解耦：实现、验证与同一逻辑目的内的修复默认属于 Working State；只有 exact-Head Evidence、durable handoff 或其他可恢复 subject 需要时才形成 Candidate Commit；进入集成前通过 History Convergence 清理仅代表过程状态的 WIP / Readiness / Gate / iterative-fix commits，同时保留真正独立、可理解、可验证和可回退的多个 logical commits。因此不建立 `1 EU = 1 commit` 规则。
+
+多仓场景按 Repository 独立收敛：Project Repository 与每个 Component Repository 分别拥有 history、授权和 candidate，父仓不能统一改写被忽略组件仓；需要精确组合时逐仓记录最终 identity / SHA。Git submodule 的 `160000` gitlink 是显式版本绑定，组件 SHA 改写后父仓 gitlink 与相关 Evidence 必须同步更新。没有新增 Commit Skill、中央 orchestrator、固定 baseline schema 或 Gate Framework。
+
+**完成 Evidence**：implementation candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4`；14 / 14 deterministic repository contracts PASS；Fresh / Independent Review `Blocking=0`、`Medium=0`；`v0.2.0 → v0.2.1` release smoke 保持 15 个 Skill、只替换 `execute-unit` / `converge`、Consumer-owned 文件不变。正式发布身份由 `agentic-dev-v0.2.1` immutable tag 持有。
+
 ## 5. 默认顺序
 
 ```text
@@ -131,6 +141,7 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 → 演进事项 2 — 小规模变更的执行粒度
 → 演进事项 3 — 多仓库项目的工作区与权威边界
 → 演进事项 4 — 自动化验证路径与本地 Docker 资源生命周期
+→ 演进事项 5 — Git Commit 生命周期与集成历史收敛
 ```
 
 顺序只表达当前规划：
@@ -138,12 +149,13 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 - 先处理 Skill 与项目权威的适配边界；
 - 再收敛小规模变更的执行粒度；
 - 再澄清多仓库项目的工作区与权威边界；
-- 最后评估依赖项目 / 组件身份的本地 Docker 验证与资源治理，并与 GitHub Actions 路径建立对应导航。
+- 再评估依赖项目 / 组件身份的本地 Docker 验证与资源治理，并与 GitHub Actions 路径建立对应导航；
+- 随后的真实 Consumer commit-history Evidence 再启动事项 5，不把它预设为事项 4 的派生步骤。
 
 每个事项收口后都可以基于新 Evidence 调整、拆分或删除后续事项。
 
 ## 6. 当前停止点
 
-演进事项 1～3 已按各自 Issue / PR / Git Evidence 集成。事项 4 基于 Issue #180 的反馈与后续澄清，收敛为两条相互对应的按需自动化验证 Guide：GitHub Actions 路径与可独立用于非 GitHub 项目的本地 Docker 路径。Docker 镜像、BuildKit cache 与临时资源治理是本地路径的内部责任，不上升为所有 Consumer 的固定 runtime contract。
+演进事项 1～3 已按各自 Issue / PR / Git Evidence 集成。事项 4 基于 Issue #180 收敛为 GitHub Actions 与本地 Docker 两条按需验证 Guide。事项 5 基于 Issue #188 收敛 Working State、Candidate Commit 与 History Convergence，并同时覆盖单仓、嵌套独立仓与 submodule；本次 runtime delta 通过 `agentic-dev-v0.2.1` 发布。
 
-当前不预设下一演进事项。真实 Consumer adoption、多轮 Docker 构建的磁盘占用与回收、不同宿主的运行差异，以及任何发布环境用途都不属于已验证的 Provider 文档成果；若后续证据显示新的稳定跨 Consumer 缺口，另行确认 owner、边界和验收，再决定是否进入新的演进事项。
+当前不预设下一演进事项。真实 Consumer adoption、多轮 Docker 构建的磁盘占用与回收、不同宿主的运行差异，以及任何发布环境用途都不属于已验证的 Provider 成果；若后续 Evidence 显示新的稳定跨 Consumer 缺口，另行确认 owner、边界和验收，再决定是否进入新的演进事项。
