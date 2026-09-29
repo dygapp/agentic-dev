@@ -6,6 +6,8 @@
 
 一次提交只表达一个主要逻辑目的。为完成该目的必须同步修改的 Authority、实现和验证可以同提交；无关修正和独立重构应拆开。
 
+编辑、验证、Readiness / Review、debug 与同一目的内的修复轮次属于工作过程，不机械形成永久 commit。需要 exact-Head subject 时可以先形成 candidate；尚未共享且当前授权允许时，同一逻辑目的的后续修复优先收敛回 candidate。任何 SHA 改写都会使旧 exact-Head Evidence 失效。进入集成前检查 History Convergence，只保留长期有意义的最少必要 logical commits。
+
 提交前确认工作树没有临时调试文件，Authority 与实现顺序一致，Evidence 与当前 subject 匹配，diff 不混入无关变化。
 
 ## Branch 与历史

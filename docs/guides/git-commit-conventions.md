@@ -32,7 +32,17 @@ status: active
 
 commit 不要求与一次编辑、一次测试、一个 Execution Unit、一个 Issue 或一个 PR 一一对应。小型有界变更可以形成一个 commit；较大责任可以有多个可解释 commit，最终仍由 Consumer 的集成政策决定。
 
-## 3. 提交闭环
+## 3. Working State、Candidate Commit 与 Durable History
+
+Git history 用来表达长期有意义的逻辑变化，不用来逐步记录 Agent 的执行过程。实现、测试、Readiness、CI、Review、debug、修复和重测默认属于 **Working State**；在 Consumer policy 允许时，这些步骤可以在 dirty worktree 中连续进行，不因为某个步骤进入终态就机械创建 commit。
+
+当当前 claim 明确需要 exact-Head Evidence、跨上下文可恢复候选或其他 durable subject 时，才形成 **Candidate Commit**。Candidate 仍按单一逻辑目的组织，而不是按 Gate / 测试轮次组织。候选尚未进入共享历史、当前 Repository policy 与授权允许历史整理时，同一逻辑目的内后续发现的问题可以通过 amend、fixup / autosquash 或等价方式收回候选；任何改变 SHA 的整理都会使旧 exact-Head Evidence 失效，必须针对新 subject 重新取得受影响证据。已经进入共享历史的 commit 不因为“历史更好看”而擅自改写。
+
+进入集成前执行 **History Convergence**：检查 checkpoint、WIP、Readiness、Gate、Evidence 记录、测试失败修复、Review finding 修复等过程性 commit 是否只是同一逻辑目的的中间状态；如果是，并且当前仓库允许整理，则收敛进最终 logical commit。一个 Execution Unit、Issue、PR 或 Feature 都不要求与 commit 一一对应：窄而完整的变更通常自然形成一个 commit，存在多个真正可独立理解、验证和回退的逻辑目的时则保留多个 commit。
+
+多 Git Repository 项目必须**逐仓**应用上述生命周期。Project Repository 与每个 Component Repository 分别拥有自己的 Working State、Candidate Commit、History Convergence、授权和共享历史；不能因为目录嵌套就在项目根统一 `add`、squash、rebase 或 amend 所有组件。跨仓 claim 需要精确组合时，在各仓候选稳定后记录实际 repository identity + SHA 组合；任一参与仓改写 candidate 后，旧组合及绑定 Evidence 都必须重新判断，不能把其他仓未变化当作该组合仍然有效的证明。
+
+## 4. 提交闭环
 
 按以下顺序形成提交：
 
@@ -47,7 +57,7 @@ commit 不要求与一次编辑、一次测试、一个 Execution Unit、一个 
 
 未提交 diff 和本地验证可以是当前执行态证据；需要跨上下文长期恢复的结论，应进入 Consumer 认可的 Repository / GitHub 状态。commit 本身也不证明构建、测试或 Review 已通过。
 
-## 4. 可选的 message 基线
+## 5. 可选的 message 基线
 
 希望采用紧凑、机器和人都容易识别的格式时，可以从以下形态开始：
 
@@ -105,7 +115,7 @@ summary 应准确说明主要动作，避免“update files”“misc fixes”�
 
 只有公开 contract、持久数据、调用方式或兼容承诺确实发生不兼容变化时才使用 breaking 标记，并说明受影响对象和迁移方式。普通内部整理、文件移动或大 diff 不等于 breaking change。
 
-## 5. Consumer 怎样持有这套政策
+## 6. Consumer 怎样持有这套政策
 
 载体与复杂度匹配：
 
@@ -116,7 +126,7 @@ summary 应准确说明主要动作，避免“update files”“misc fixes”�
 
 不要在 `AGENTS.md`、guideline、commit template 和 lint 配置中分别维护会漂移的 type / scope 清单。确定一个 Current owner，其他位置只做 locator、解释或可再生投影。
 
-## 6. 最小采用方式
+## 7. 最小采用方式
 
 Consumer 可以从以下最小政策开始：
 

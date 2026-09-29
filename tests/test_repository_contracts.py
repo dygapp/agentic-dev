@@ -159,6 +159,26 @@ class RepositoryContractsTests(unittest.TestCase):
         converge = (SKILLS / "converge/SKILL.md").read_text(encoding="utf-8")
         self.assertIn("ancestor→current 精确 diff", converge)
 
+    def test_commit_lifecycle_and_nested_history_convergence_are_durable(self):
+        guide = (ROOT / "docs/guides/git-commit-conventions.md").read_text(encoding="utf-8")
+        multi = (ROOT / "docs/guides/multi-repository-projects.md").read_text(encoding="utf-8")
+        governance = (ROOT / "docs/governance/git-conventions.md").read_text(encoding="utf-8")
+        execute = (SKILLS / "execute-unit/SKILL.md").read_text(encoding="utf-8")
+        converge = (SKILLS / "converge/SKILL.md").read_text(encoding="utf-8")
+
+        for token in ("Working State", "Candidate Commit", "History Convergence"):
+            self.assertIn(token, guide)
+        self.assertIn("不因为某个步骤进入终态就机械创建 commit", guide)
+        self.assertIn("不因执行步骤进入终态就机械创建 commit", execute)
+        self.assertIn("最少必要 logical commits", governance)
+        self.assertIn("分别经历 Working State → Candidate Commit → Durable Integration History", multi)
+        self.assertIn("不得从 Project Repository 对被忽略的组件仓执行统一 squash / rebase / amend", multi)
+        self.assertIn("父仓 `160000` gitlink 本身就是显式版本绑定", multi)
+        self.assertIn("分别完成各仓 History Convergence", converge)
+        self.assertIn("不能从项目根统一 amend / rebase / squash 组件仓", converge)
+        self.assertIn("核对 gitlink 指向 History Convergence 后的最终组件 SHA", converge)
+        self.assertIn("一个 Unit / Issue / PR 不要求对应一个 commit", converge)
+
     def test_open_consumer_authority_contract_has_bounded_fixture(self):
         fixture = json.loads(AUTHORITY_EXTENSION.read_text(encoding="utf-8"))
         self.assertEqual("test-only bounded scenarios; not a Provider runtime schema", fixture["fixture_role"])
