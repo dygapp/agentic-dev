@@ -18,7 +18,7 @@ status: active
 | Architecture | 跨 Feature 持续成立的系统职责、结构和替换边界 | Consumer 指定的 Architecture owner |
 | Durable Design | 会长期影响实现、组件协作、接口 / 协议、数据 / 状态、重要算法与不变量的逻辑或物理设计 | Consumer 指定的实际 Design owner |
 | Technical Plan | 某次变更如何组织施工、迁移、集成和验证 | 条件性的工作方案，不自动成为长期设计 owner |
-| ADR | 为什么做出重要决定、有哪些替代方案和权衡 | 决策历史，不能替代当前设计 |
+| ADR（Consumer 可选） | 在既有历史渠道不足且确需独立保留时，说明重要决定的原因、备选与权衡 | 条件性决策记录，不能替代当前设计 |
 | EU / JIT Plan | 某次需要独立恢复与验证的执行责任 / 当前施工步骤 | 短生命周期执行材料，不复制长期 Current truth |
 | Code / IDL / Schema / Tests | 当前实现、机器可读合同及其验证 | 可承载 Consumer 指定的部分 Design Authority；其余部分是实现 / 验证证据 |
 
@@ -43,7 +43,7 @@ status: active
 3. 重大变更说明适用范围和版本条件、受影响的消费者 / 接口与测试、替代或退役关系；跨组件共同 contract 通常由共同项目 owner 管理，组件局部实现设计可由组件仓 owner 管理。
 4. 更新长期 owner 后同步检查 locator、实现、IDL / Schema、契约测试、引用者及 Current wording。旧 owner 退出后只保留明确的历史 / provenance 角色；不能继续作为普通执行的 Current dependency。
 
-无需统一中央 Registry、固定 `component-design/` / `interfaces/` 目录或为每条设计维护复杂元数据。Consumer 已存在可靠的目录和导航方式时直接复用。
+无需统一中央 Registry、固定 `component-design/` / `interfaces/` 目录、ADR 制度或为每条设计维护复杂元数据。Consumer 已存在可靠的目录、Issue / PR / Git 历史和导航方式时直接复用。
 
 ## 4. 什么责任触发哪项能力
 

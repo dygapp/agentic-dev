@@ -140,7 +140,7 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 
 **问题**：现有开放 Current Authority 已能识别、消费、回写已有 owner，但还需审计并完善「长期 Design 候选形成 → 合法 owner 建立/更新 → 发现与适用版本 → 执行中回流 → Design / Code / Contract / Tests convergence」的闭环；一个 EU 产生的稳定设计也可能具有长期约束价值。不能依赖永久 EU / 旧 Technical Plan 取代设计知识。
 
-**边界**：先审计当前 Skills 与 Consumer-local 机制，再选择最少产品变更；不预设独立 `detailed-design` Skill、固定 Design 目录、Registry、全面事前设计。Technical Plan 是条件性施工方案，ADR 是重大决策取舍历史，不取代长期设计 owner。独立任务平台、`work/` 和 EU 归档另议。
+**边界**：先审计当前 Skills 与 Consumer-local 机制，再选择最少产品变更；不预设独立 `detailed-design` Skill、固定 Design 目录、Registry、全面事前设计。Technical Plan 是条件性施工方案；重要决策的取舍优先由现有 Issue / PR / Git 历史保存，只有 Consumer 确有独立决策记录需求时才按其本地约定使用 ADR，且不能取代长期设计 owner。独立任务平台、`work/` 和 EU 归档另议。
 
 **验收重点**：单 EU 稳定接口、跨 EU 已有设计不额外规划、执行中新增长期设计、技术实现替换保留上层契约；以及局部小修不增产物、无 owner 必须升级、设计 / 实现漂移不得 READY、旧 owner 退役后的 current locator 迁移等正反例。实施与验证 Evidence 保存于 Issue #189 及后续 PR，稳定语义进入实际 canonical Skills / Guide，不为本事项创建第二套长期规范。
 
