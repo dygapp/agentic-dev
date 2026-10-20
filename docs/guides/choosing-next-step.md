@@ -45,7 +45,7 @@ Consumer 当前项目事实
 | 多个当前 / 预期 Feature 共同依赖长期、高成本难逆的 systemic architecture driver | `clarify-architecture` |
 | 当前 Feature 目标 / Scope / 用户可见行为 / Acceptance 仍有高影响产品歧义 | `clarify-intent` |
 | 当前工作需要新的 WHAT / WHY / Acceptance 决定，且尚无稳定 Specification | `specify` |
-| 实施前存在必须跨多个 execution unit 稳定的 HOW | `technical-plan` |
+| 存在必须收敛的 HOW 或有长期约束价值的 Design（包括单个 Unit 产生的稳定接口） | `technical-plan` |
 | 目标和验收已明确，修改局部、低风险、可逆，且无需独立执行生命周期 | Agent 直接完成有界变更并按范围验证；不为形式完整而创建 Unit |
 | Specification 已 Ready，需要形成可独立执行的工作单元 | `slice-work` |
 | 已有目标 Execution Unit，但不确定是否真的可执行 | `readiness-check` |

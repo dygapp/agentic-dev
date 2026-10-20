@@ -59,13 +59,24 @@ Authority 解析遵循：
 
 Current Authority 与 Consumer-local Constraint 都按需恢复，但语义不同：前者拥有当前正确事实，后者拥有执行方式、权限、流程或技术政策。
 
-## 6. Inventory 与安装
+## 6. 长期设计知识责任
+
+Consumer 可以按自身事实建立长期 Design owner，但 Provider 不规定固定设计文档、目录、类型枚举或 Registry。判断依据是设计决定是否持续约束未来组件 / 接口消费者、系统替换、安全、验证或后续工作，而不是出现于多少个 EU、是不是传统“详细设计”阶段，或具体写在 Markdown、IDL / Schema、代码契约还是测试中。
+
+- **Requirement / Specification** 拥有 WHY / WHAT、对外可观察契约、业务错误语义与 Acceptance；设计活动不得反向改写这些决定。
+- **Architecture** 拥有跨 Feature、长期且难逆的系统性结构、责任与替换边界；局部但稳定的组件 / 数据 / 接口设计可以由 Consumer 另选合法 Design owner，不全部升级为 Architecture。
+- **Durable Design** 是长期语义责任而非新的默认文件类型或步骤：逻辑设计可以脱离某种技术实现，物理设计只在适用实现 / 版本范围内有效。不同表示载体须遵循单一语义 owner，不以代码现状反向取代更高层 Authority。
+- **Technical Planning** 是收敛 HOW 的活动；**Technical Plan** 是条件性实施方案，不因其存在就成为长期设计权威；**ADR** 条件性保留重要取舍的理由与历史，不取代当前设计；**EU / JIT Plan** 是短生命周期执行责任，不保存第二套设计真值。
+
+当长期设计候选在规划或执行时出现，Agent 判断长期约束价值与现有 owner；在 Consumer 允许的 owner 建立 / 更新程序下明确适用范围、消费者、版本与可发现路径，再实施相应写回与验证。缺少合法 owner / 程序且影响当前 claim 时升级受影响责任，不允许横向 Skill 静默创造 Authority。新旧 owner 替代 / 退役同步迁移 locator、消费引用、契约与测试；正常局部可逆修改不强制 Technical Plan、设计文件或 EU。
+
+## 7. Inventory 与安装
 
 实际 `skills/*/SKILL.md` corpus 是 Skill inventory 的机器事实来源；`skills/README.md` 只是 Human View。
 
 普通 Consumer 通过标准 Agent Skills 兼容方式安装明确版本的 Skills。安装 / 更新不得覆盖 Consumer-owned `AGENTS.md`、docs、local constraints 或其他项目文件。
 
-## 7. 准入
+## 8. 准入
 
 新增 Skill 至少证明独立 trigger / purpose、稳定 inputs、可重复 procedure、稳定 outputs、明确 exit / escalation、有界上下文、单一语义 owner，并证明现有 Skill / Guide / Consumer-local mechanism 无法更简单地承担该责任。
 

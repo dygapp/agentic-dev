@@ -38,6 +38,7 @@ Guide 可以被人和 AI 按需阅读，但不进入 ordinary task 的固定上�
 - 已有项目首次采用： [adopting-agentic-dev.md](adopting-agentic-dev.md)
 - 不知道下一步做什么： [choosing-next-step.md](choosing-next-step.md)
 - 普通 Feature / change： [feature-development.md](feature-development.md)
+- 需要形成或维护长期组件 / 接口设计： [design-knowledge.md](design-knowledge.md)
 - 多仓库软件项目： [multi-repository-projects.md](multi-repository-projects.md)
 - Requirement Baseline 不稳定： [establishing-requirement-baseline.md](establishing-requirement-baseline.md)
 - 需要集中人工评审： [human-review.md](human-review.md)
@@ -197,7 +198,7 @@ Guide 只选择“下一类工作”，不会维护另一套 Skill procedure。
 
 只有多个当前或预期 Feature 共同依赖一个长期、高成本难逆、并且不解决就会阻塞可靠开发的 systemic architecture driver 时，才使用 `clarify-architecture`。
 
-局部、低风险、可逆的实现选择可在有界变更中直接处理；正式 Unit 中由 `execute-unit` 处理。跨 Unit 持续有价值的 HOW 才进入 `technical-plan`。
+局部、低风险、可逆的实现选择可在有界变更中直接处理；正式 Unit 中由 `execute-unit` 处理。必须提前收敛的 HOW 或具有长期约束价值的 Durable Design（即使仅由单个 Unit 产生）可由 `technical-plan` 形成 / 维护合法 Consumer owner。Technical Plan 是条件性施工产物，不是默认设计 Authority。详见 [长期设计知识](design-knowledge.md)。
 
 ## 7. 普通 Feature / change
 

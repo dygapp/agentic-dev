@@ -69,7 +69,7 @@ Ready to Integrate
 
 Authority 已能唯一决定的事情不重复询问。
 
-局部、低影响、可逆 HOW 可留给直接有界变更；进入正式 Unit 时由 `execute-unit` 处理。只有跨 Unit 持续有价值的 HOW 才需要 `technical-plan`。
+局部、低影响、可逆 HOW 可留给直接有界变更；进入正式 Unit 时由 `execute-unit` 处理。实施前必须明确的 HOW、单个或多个 Unit 产生的长期 Design 契约按需进入 `technical-plan` 或 Consumer 当前真实设计 owner，不以 EU 数量决定。参阅 [长期设计知识](design-knowledge.md)。
 
 如果发现的是系统性 Requirement gap，返回 `establish-requirement-baseline`；如果是 systemic architecture driver，返回 `clarify-architecture`。
 
@@ -91,7 +91,7 @@ Authority 已能唯一决定的事情不重复询问。
 
 ## 6. technical-plan 只在需要时使用
 
-只有实施前存在跨多个 Execution Unit 需要稳定的 HOW 时，才值得形成独立 Technical Plan，例如：
+当实施前存在重要技术不确定性或必须先稳定的 HOW / Durable Design 时，按需进行 Technical Planning，例如：
 
 - shared contract；
 - 核心数据结构；
@@ -102,7 +102,7 @@ Authority 已能唯一决定的事情不重复询问。
 - 跨 Unit verification strategy；
 - 高成本技术风险。
 
-如果 Specification 可以直接映射到仓库已有模式，剩余只是局部可逆施工细节，跳过长期 Technical Plan。
+单 EU 也可能形成具有长期约束价值的接口 / 组件设计，应固化到合法 Design owner；但 Technical Plan 本身只是条件性实施方案，不必因为存在设计知识就创建长期 Plan。如果 Specification 可以直接映射到仓库已有模式，剩余只是局部可逆施工细节，跳过 Technical Planning 与独立 Technical Plan。
 
 Feature-specific 技术规划不能重新定义产品语义；发现产品歧义时返回 Requirement / Specification owner。
 
@@ -247,7 +247,7 @@ Human Review 不是固定开发阶段。
 
 - **没有恢复 Authority 就写 Specification** → 先恢复 Consumer facts。
 - **HOW 塞进 Specification** → WHAT / WHY 与 HOW 分开。
-- **每个 Feature 都建长期 Technical Plan** → 只有跨 Unit 稳定 HOW 才需要。
+- **每个 Feature 都建长期 Technical Plan** → 按实际技术不确定性与长期约束价值判断，必要 Design 回归真实 Current owner，Technical Plan 按需即可。
 - **每次小修改都创建 Execution Unit** → 先判断是否真的需要独立恢复、依赖协调或独立验收。
 - **机械按技术层切 Unit** → 优先 context-fit 纵向单元。
 - **Readiness 中直接修问题** → 只读 Gate，finding 返回真实 owner。

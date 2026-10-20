@@ -1,41 +1,42 @@
 ---
 name: technical-plan
-description: Resolves durable cross-unit HOW decisions, maintains cross-feature architecture context changes, and conditionally persists ADRs for decisions whose background or trade-offs need durable history. Use for cross-module, data, integration, migration, shared contract, deployment topology, or significant architecture work; skip when only local reversible implementation details remain.
+description: Resolves consequential technical HOW and establishes or updates consumer-owned durable design contracts when needed, including for a single execution unit. Use for stable component/interface/data decisions, integration, migration, shared contracts, or significant technical risks; skip for local reversible implementation details.
 ---
 
 # technical-plan
 
 ## 目的
 
-只解决实施前必须稳定、且跨一个以上执行单元持续有价值的 HOW；局部可逆施工细节留给 JIT Execution Plan。
+按当前责任收敛必须明确的 HOW，以及会长期约束后续实现、协作、替换或验证的设计知识；是否跨多个 Execution Unit 不是长期价值的判据。局部可逆施工细节留给 JIT Execution Plan，本 Skill 不承担所有代码细节的事前设计。
 
 ## 输入
 
 - Ready Specification；
-- 当前 Architecture / ADR / code state，以及会约束当前 HOW 的其他适用 Consumer Current Authority（如存在）；
+- 当前 Architecture / ADR / code state、已有组件 / 接口 / 数据等 Design Authority（如适用），以及会约束当前 HOW 的其他 Consumer Current Authority；
 - 技术约束；
 - Consumer-local constraints。
 
 ## 流程
 
-1. 确认 Technical Planning 是否真的需要；若 Specification 可直接安全映射到当前系统已有模式，则返回无需独立 Technical Plan，局部可逆施工细节留给 JIT Execution Plan。
-2. 只收敛跨执行单元需要共享的组件边界、数据 / contract、集成、迁移、部署、测试策略与关键风险，并应用 Consumer-local constraints；Technical Plan 必须与当前责任实际适用的 Current Authority 一致，不得把 HOW 规划变成覆盖其他 semantic owner 的后门。
+1. 判断是否存在必须收敛的技术不确定性或长期设计约束；即使只有一个 Unit，稳定接口、关键不变量、组件替换边界等仍可能需要设计固化。仅有局部、低影响、可逆 HOW 且已有模式足以实施时，跳过独立 Technical Planning / Technical Plan，不额外建立文档。
+2. 在最小必要范围收敛组件职责、接口 / 协议、数据与状态、错误处理、依赖、集成、迁移、部署、验证和关键风险；分别判断哪些是产品可观察 WHAT（返回 Requirement / Specification owner）、哪些是跨 Feature 的系统性 Architecture、哪些是有长期约束力的逻辑或技术实现 Design、哪些仅为本次施工步骤。不得让 HOW 覆盖其他 semantic owner。
 3. 设计集合型数据访问时确认真实消费范围与 bounded / growing / unknown 性质；不得为了实现方便默认全量读取持续增长数据，也不得用固定小上限静默截断正确集合。
 4. 涉及 legacy / historical / business data migration 时，明确 source role、semantic preservation、identity / duplicate、replay / idempotency、exception / conflict disposition、reconciliation 与 provenance；legacy source / mapping 不反向成为新 Requirement Authority。数据库 schema / initialization migration 与业务数据迁移是不同责任，不因名称相同混用。
-5. 判断是否改变长期 Architecture Context；需要跨 Feature 持续约束时更新真实 Architecture owner。新 owner、replace / retire / archive transition 同步检查 locator / navigation、verification consumer 与 current-state wording。
-6. 如果规划过程中暴露的长期语义属于 Consumer 其他既有 Current owner，返回该 owner / maintenance procedure；没有对应 owner 时显式暴露 gap，不为了完成 Technical Plan 临时创造第二套 Authority。
+5. 对会持续影响后续实现、接口消费者、技术替换、安全或验证的 Design 决定，即使仅由一个 Unit 产生，也要确认 Consumer 指定的合法 Current owner、适用范围、版本 / 替代关系及消费者，并在授权内写入真实 owner（Markdown、IDL / Schema、代码中的契约及其测试等载体依项目约定，不能制造互相竞争的真值）。Technical Plan 是可选施工方案，不因包含设计内容就自动成为 Current Design Authority。
+6. 需要跨 Feature 持续约束的系统性架构 driver 返回 `clarify-architecture` 或既有 Architecture owner；已有合法 Design / Requirement 等 owner 时依其维护 procedure 更新。没有 owner 或建立程序时，依据 Consumer Repository Authority 请求确立 / 授权 owner，不能擅自创建第二套 Current truth；新建、替换或退役合法 owner 时同步检查 locator、适用版本、依赖的 consumer、验证契约和 current-state wording。
 7. 只有决定背景、主要权衡或替代关系具有长期价值时才形成 / 更新 ADR；普通局部选择不创建 ADR，也不为了对称性创建无真实消费者的抽象。
 8. 清除仍会阻塞安全实施的技术不确定性。每个分析或工具步骤结束后重新判断剩余 planning responsibility，只要当前范围内仍可自动收敛就继续。
 
 ## 输出
 
-- Technical Plan（必要时）；
-- Architecture / ADR updates（条件性）；
+- 必要的 Current Design / Architecture owner updates（条件性，保留单一语义 owner）；
+- Technical Plan（仅当确需独立实施方案时）；
+- ADR（仅在重要决定的背景、备选与权衡需要长期保留时）；
 - Remaining technical blockers。
 
 ## 退出条件
 
-实施前必须解决的技术不确定性已关闭，长期架构责任已进入正确 owner；或已明确本工作无需独立 Technical Plan。
+当前范围中必需的技术不确定性已关闭，具有长期约束价值的 Design / Architecture 已进入合法可恢复的 owner，或已明确只需局部可逆实施而无需独立 Technical Planning / Technical Plan。
 
 ## 升级
 

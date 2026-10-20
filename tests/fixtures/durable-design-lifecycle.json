@@ -1,0 +1,61 @@
+{
+  "fixture_role": "test-only design lifecycle challenge matrix; not a runtime schema or a claimed Consumer acceptance run",
+  "scenarios": [
+    {
+      "id": "single-unit-stable-interface",
+      "scope": "one unit",
+      "fact": "shared signature/encoding interface constrains later consumers",
+      "owner": "consumer-authorized interface owner",
+      "expected": "PERSIST_TO_LEGITIMATE_OWNER"
+    },
+    {
+      "id": "cross-unit-existing-design-no-new-plan",
+      "scope": "multiple units",
+      "fact": "existing design and execution obligations are sufficient",
+      "owner": "existing current design owner",
+      "expected": "USE_EXISTING_OWNER_SKIP_PLAN"
+    },
+    {
+      "id": "execution-discovers-durable-design",
+      "scope": "implementation",
+      "fact": "previously unknown stable state/contract invariant",
+      "owner": "consumer-authorized design owner",
+      "expected": "WRITE_BACK_AND_VERIFY"
+    },
+    {
+      "id": "replace-implementation-keep-logical-contract",
+      "scope": "technology substitution",
+      "fact": "stable product behavior and logical interface stay valid; old physical design retires",
+      "owner": "shared logical owner plus versioned physical owner",
+      "expected": "PRESERVE_WHAT_REPLACE_PHYSICAL_DESIGN"
+    },
+    {
+      "id": "local-reversible-fix",
+      "scope": "local fix",
+      "fact": "no new durable design obligation",
+      "owner": null,
+      "expected": "NO_DESIGN_ARTIFACT_OR_UNIT_REQUIRED"
+    },
+    {
+      "id": "no-authorized-owner",
+      "scope": "one unit",
+      "fact": "new persistent cross-component contract with no owner creation procedure",
+      "owner": null,
+      "expected": "BLOCK_AFFECTED_CLAIM_ESCALATE"
+    },
+    {
+      "id": "design-code-contract-drift",
+      "scope": "convergence",
+      "fact": "functional tests pass, but schema or implementation contradicts current design",
+      "owner": "current consumer design owner",
+      "expected": "NOT_READY"
+    },
+    {
+      "id": "retired-owner-still-current-locator",
+      "scope": "owner replacement",
+      "fact": "new current design exists but navigation or verification still uses retired owner",
+      "owner": "superseding consumer design owner",
+      "expected": "NOT_READY"
+    }
+  ]
+}

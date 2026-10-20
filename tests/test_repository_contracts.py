@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
 OBLIGATIONS = ROOT / "tests" / "fixtures" / "legacy-consumer-obligations.json"
 AUTHORITY_EXTENSION = ROOT / "tests" / "fixtures" / "consumer-authority-extension.json"
+DESIGN_LIFECYCLE = ROOT / "tests" / "fixtures" / "durable-design-lifecycle.json"
 
 EXPECTED_SKILLS = {"activate-model-collaboration", "clarify-architecture", "clarify-intent", "converge", "establish-requirement-baseline", "execute-unit", "external-operation", "github-actions-verification", "human-review", "readiness-check", "review-change", "slice-work", "specify", "systematic-debug", "technical-plan"}
 RETIRED_PATHS = (
@@ -239,6 +240,49 @@ class RepositoryContractsTests(unittest.TestCase):
         for text in (execute, converge, review):
             self.assertNotIn("Requirement 明确要求视觉", text)
             self.assertIn("Requirement 只是可能的义务来源之一", text)
+
+    def test_durable_design_lifecycle_contract_has_positive_and_negative_scenarios(self):
+        fixture = json.loads(DESIGN_LIFECYCLE.read_text(encoding="utf-8"))
+        self.assertIn("test-only", fixture["fixture_role"])
+        scenarios = {item["id"]: item for item in fixture["scenarios"]}
+        self.assertEqual(
+            {
+                "single-unit-stable-interface",
+                "cross-unit-existing-design-no-new-plan",
+                "execution-discovers-durable-design",
+                "replace-implementation-keep-logical-contract",
+                "local-reversible-fix",
+                "no-authorized-owner",
+                "design-code-contract-drift",
+                "retired-owner-still-current-locator",
+            },
+            set(scenarios),
+        )
+        self.assertEqual("PERSIST_TO_LEGITIMATE_OWNER", scenarios["single-unit-stable-interface"]["expected"])
+        self.assertEqual("NO_DESIGN_ARTIFACT_OR_UNIT_REQUIRED", scenarios["local-reversible-fix"]["expected"])
+        self.assertEqual("BLOCK_AFFECTED_CLAIM_ESCALATE", scenarios["no-authorized-owner"]["expected"])
+        self.assertEqual("NOT_READY", scenarios["design-code-contract-drift"]["expected"])
+        self.assertEqual("NOT_READY", scenarios["retired-owner-still-current-locator"]["expected"])
+
+        architecture = (ROOT / "docs/architecture/skill-architecture.md").read_text(encoding="utf-8")
+        plan = (SKILLS / "technical-plan/SKILL.md").read_text(encoding="utf-8")
+        execute = (SKILLS / "execute-unit/SKILL.md").read_text(encoding="utf-8")
+        converge = (SKILLS / "converge/SKILL.md").read_text(encoding="utf-8")
+        review = (SKILLS / "review-change/SKILL.md").read_text(encoding="utf-8")
+        guide = (ROOT / "docs/guides/design-knowledge.md").read_text(encoding="utf-8")
+        adr = (ROOT / "docs/architecture/adr-0001-durable-design-ownership.md").read_text(encoding="utf-8")
+
+        self.assertIn("是否跨多个 Execution Unit 不是长期价值的判据", plan)
+        self.assertIn("Consumer Repository Authority 请求确立 / 授权 owner", plan)
+        self.assertIn("长期约束价值而非 EU 数量", adr)
+        self.assertIn("status: proposed", adr)
+        self.assertIn("临时 JIT", guide)
+        self.assertIn("不按执行单元数量", adr)
+        self.assertIn("Durable Design", architecture)
+        self.assertIn("owner 尚不存在", execute)
+        self.assertIn("不能返回 READY", converge)
+        self.assertIn("设计与代码漂移", review)
+        self.assertNotIn("必须跨多个 Execution Unit 需要稳定的 HOW", (ROOT / "docs/guides/feature-development.md").read_text(encoding="utf-8"))
 
     def test_webcodex_codex_cli_boundary_is_durable(self):
         agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")

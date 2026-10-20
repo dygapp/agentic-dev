@@ -22,6 +22,7 @@ status: active
 3. [`adopting-agentic-dev.md`](adopting-agentic-dev.md) — 已有 Repository 最小侵入接入 Skills；
 4. [`choosing-next-step.md`](choosing-next-step.md) — 根据 Consumer 当前事实判断下一责任；
 5. [`feature-development.md`](feature-development.md) — 普通 Feature / change 的方法导航；
+   - [`design-knowledge.md`](design-knowledge.md) — 设计详情何时晋升为长期 Authority，及其 owner / 回流 / 收敛边界；
 6. [`git-commit-conventions.md`](git-commit-conventions.md) — Consumer 可裁剪的 Git commit 方法、常用 type 与 scope 选择；
 7. [`github-actions-automated-verification.md`](github-actions-automated-verification.md) — 选择 GitHub Actions 时的自动化验证路径；
 8. [`docker-automated-verification.md`](docker-automated-verification.md) — 不依赖 GitHub 的本地 Docker 自动化验证路径；

@@ -134,6 +134,16 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 
 **完成 Evidence**：implementation candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4`；14 / 14 deterministic repository contracts PASS；Fresh / Independent Review `Blocking=0`、`Medium=0`；`v0.2.0 → v0.2.1` release smoke 保持 15 个 Skill、只替换 `execute-unit` / `converge`、Consumer-owned 文件不变。正式发布身份由 `agentic-dev-v0.2.1` immutable tag 持有。
 
+### 演进事项 6 — 长期设计知识的权威固化与收敛
+
+**来源**：Issue #189，结合 `lotus-pki` 的组件化设计和 `jilinjobs-cms` 的技术替换代表性场景。
+
+**问题**：现有开放 Current Authority 已能识别、消费、回写已有 owner，但还需审计并完善「长期 Design 候选形成 → 合法 owner 建立/更新 → 发现与适用版本 → 执行中回流 → Design / Code / Contract / Tests convergence」的闭环；一个 EU 产生的稳定设计也可能具有长期约束价值。不能依赖永久 EU / 旧 Technical Plan 取代设计知识。
+
+**边界**：先审计当前 Skills 与 Consumer-local 机制，再选择最少产品变更；不预设独立 `detailed-design` Skill、固定 Design 目录、Registry、全面事前设计。Technical Plan 是条件性施工方案，ADR 是重大决策取舍历史，不取代长期设计 owner。独立任务平台、`work/` 和 EU 归档另议。
+
+**验收重点**：单 EU 稳定接口、跨 EU 已有设计不额外规划、执行中新增长期设计、技术实现替换保留上层契约；以及局部小修不增产物、无 owner 必须升级、设计 / 实现漂移不得 READY、旧 owner 退役后的 current locator 迁移等正反例。实施与验证 Evidence 保存于 Issue #189 及后续 PR，稳定语义进入实际 canonical Skills / Guide，不为本事项创建第二套长期规范。
+
 ## 5. 默认顺序
 
 ```text
@@ -142,6 +152,7 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 → 演进事项 3 — 多仓库项目的工作区与权威边界
 → 演进事项 4 — 自动化验证路径与本地 Docker 资源生命周期
 → 演进事项 5 — Git Commit 生命周期与集成历史收敛
+→ 演进事项 6 — 长期设计知识的权威固化与收敛
 ```
 
 顺序只表达当前规划：
@@ -151,6 +162,7 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 - 再澄清多仓库项目的工作区与权威边界；
 - 再评估依赖项目 / 组件身份的本地 Docker 验证与资源治理，并与 GitHub Actions 路径建立对应导航；
 - 随后的真实 Consumer commit-history Evidence 再启动事项 5，不把它预设为事项 4 的派生步骤。
+- 设计详情权威固化的真实 Consumer 反馈再启动事项 6；不从事项 5 的 Git 生命周期反推设计知识的 owner。
 
 每个事项收口后都可以基于新 Evidence 调整、拆分或删除后续事项。
 
@@ -158,4 +170,4 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 
 演进事项 1～3 已按各自 Issue / PR / Git Evidence 集成。事项 4 基于 Issue #180 收敛为 GitHub Actions 与本地 Docker 两条按需验证 Guide。事项 5 基于 Issue #188 收敛 Working State、Candidate Commit 与 History Convergence，并同时覆盖单仓、嵌套独立仓与 submodule；本次 runtime delta 通过 `agentic-dev-v0.2.1` 发布。
 
-当前不预设下一演进事项。真实 Consumer adoption、多轮 Docker 构建的磁盘占用与回收、不同宿主的运行差异，以及任何发布环境用途都不属于已验证的 Provider 成果；若后续 Evidence 显示新的稳定跨 Consumer 缺口，另行确认 owner、边界和验收，再决定是否进入新的演进事项。
+演进事项 6 已有 Issue #189 作为反馈入口，依单项协议完成审计、设计、实施与验证后才能进入集成决策。真实 Consumer adoption、多轮 Docker 构建的磁盘占用与回收、不同宿主的运行差异，以及任何发布环境用途都不属于已验证的 Provider 成果；后续新的稳定跨 Consumer 缺口仍须另行确认 owner、边界和验收。
