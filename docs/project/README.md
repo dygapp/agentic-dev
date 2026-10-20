@@ -12,3 +12,5 @@
 `methodology-product-boundary-specification.md` 与 `methodology-product-boundary-implementation-plan.md` 已完成本轮产品边界重构的临时 Authority 职责，现作为历史规范 / 实施计划保留；当前产品边界、状态与下一责任从 `project-charter.md`、根 `AGENTS.md`、`docs/architecture/skill-architecture.md` 与本目录 Roadmap 恢复。
 
 精确 branch、HEAD、Issue / PR、Actions、review 与 merge 状态始终重新从 GitHub 当前事实读取，不在本目录复制运行流水账。
+
+本目录承担**项目级**权威与长期演进摘要，不是所有设计事实的总目录。可复用 Skill 设计决定及必要的长期取舍依据进入 [Skill 产品工程规范](../architecture/skill-architecture.md)，可执行责任进入 `skills/**`；当前需要的长期事实必须从 Git 版本化资产恢复，Issue / PR 仅补充讨论和过程证据，不能替代项目或产品 Authority。

@@ -10,7 +10,7 @@ status: active
 
 本文件只保存对理解 `agentic-dev` 当前设计仍有长期价值的**稳定演进里程碑摘要**。
 
-它不是实施日志，也不替代 Git / Issue / PR / Actions。每个阶段的完整实验、Gate、Review 和 commit 证据仍由 GitHub 历史保存。
+它不是实施日志，也不复制 Issue / PR / Actions 的过程记录。每个阶段的完整实验、Gate、Review 和 commit 证据可以通过历史对象追溯；**长期有效的项目决定与必要的设计取舍依据必须保存在 Git 版本化的当前 owner 内**（例如本目录、Architecture 或 Skills），不能要求恢复者从 Issue / PR 重新拼装当前真值。本文件仅提炼已经成立、对理解当前设计仍重要的稳定演进结果。
 
 ## 2. 真实 Consumer 验证建立项目方向
 
@@ -178,7 +178,7 @@ Issue #138 / PR #139 在 Software Project Clarification v1 的基础上识别出
 - `method:ai-development` 分别把系统性 Requirement Baseline gap 与 systemic Architecture gap 返回各自长期 owner / Method，不再依赖模糊的“项目级澄清”责任；
 - 当前没有因为新增 Method 自动创建 Requirement / Architecture Skill；是否 Skill 化继续等待真实 Consumer 中稳定、可独立调用、能显著减少重复错误的 procedure Evidence。
 
-Issue #138 保存设计 Evidence 与边界决定，PR #139 是本次 capability 集成载体；精确 integration commit 与 Actions / Review Evidence 继续由 GitHub 历史保存，Project Evolution 不复制瞬时执行状态。
+Issue #138 记录了当时的讨论与设计 Evidence，PR #139 是本次 capability 集成载体；本节保留已形成的长期边界摘要，当前有效规范仍由当前版本化 owner 承担，精确 integration commit 与 Actions / Review Evidence 可以从历史恢复，Project Evolution 不复制瞬时执行状态。
 
 这一阶段进一步确认：**对于 AI 驱动的新软件项目，Requirement Baseline Establishment 是 Feature Development 的上游 Project Establishment work kind；Architecture Clarification 是条件性的独立 work kind，而不是新项目必须机械执行的固定阶段。**
 

@@ -289,5 +289,26 @@ class RepositoryContractsTests(unittest.TestCase):
             self.assertNotIn("codex exec", text)
             self.assertNotIn("codex app-server", text)
 
+    def test_durable_authority_and_design_rationale_are_git_owned(self):
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        governance = (ROOT / "docs/governance/documentation-authority.md").read_text(encoding="utf-8")
+        evolution_plan = (ROOT / "docs/project/post-v0.1.0-consumer-feedback-evolution-plan.md").read_text(encoding="utf-8")
+        architecture = (ROOT / "docs/architecture/skill-architecture.md").read_text(encoding="utf-8")
+        guide = (ROOT / "docs/guides/design-knowledge.md").read_text(encoding="utf-8")
+        plan_skill = (SKILLS / "technical-plan/SKILL.md").read_text(encoding="utf-8")
+        clarify_skill = (SKILLS / "clarify-architecture/SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn("本 Git Repository 中的版本化文件", agents)
+        self.assertIn("Git Repository 的版本化内容必须足以独立恢复", governance)
+        self.assertIn("不能成为长期权威事实或关键设计取舍的唯一来源", governance)
+        self.assertIn("在集成前进入 Git 版本化的真实 owner", evolution_plan)
+        self.assertIn("不读取 Issue / PR 讨论正文时", evolution_plan)
+        self.assertIn("设计责任边界的长期取舍依据", architecture)
+        self.assertIn("单独新增 `detailed-design` Skill", architecture)
+        self.assertIn("Issue / PR / 聊天不应成为", guide)
+        self.assertIn("不能仅保存在 Issue / PR / 聊天中", plan_skill)
+        self.assertIn("额外形成 / 更新 ADR", clarify_skill)
+        self.assertFalse((ROOT / "docs/architecture/adr-0001-durable-design-ownership.md").exists())
+
 if __name__ == "__main__":
     unittest.main()

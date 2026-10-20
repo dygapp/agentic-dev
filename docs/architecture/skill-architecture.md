@@ -70,6 +70,18 @@ Consumer 可以按自身事实建立长期 Design owner，但 Provider 不规定
 
 当长期设计候选在规划或执行时出现，Agent 判断长期约束价值与现有 owner；在 Consumer 允许的 owner 建立 / 更新程序下明确适用范围、消费者、版本与可发现路径，再实施相应写回与验证。缺少合法 owner / 程序且影响当前 claim 时升级受影响责任，不允许横向 Skill 静默创造 Authority。新旧 owner 替代 / 退役同步迁移 locator、消费引用、契约与测试；正常局部可逆修改不强制 Technical Plan、设计文件或 EU。
 
+### 设计责任边界的长期取舍依据
+
+此前按“跨多个 EU 的 HOW”决定是否进入 Technical Planning，无法覆盖单个 EU 中形成、但未来组件、接口消费者或替换工作仍必须遵守的长期契约。故将判断标准改为**持续约束价值、合法 owner 与可恢复性**，而非 EU 数量；也不因此对所有局部实施强制事前设计。
+
+对曾比较的路径，明确保留以下取舍：
+
+- **仅写 Guide / Consumer-local 建议**不足以修复已经写入 canonical Skill 的跨 EU 硬门槛；必须同步修订相关 Skill contract。
+- **单独新增 `detailed-design` Skill**尚无独立 Trigger / Procedure / Exit 的跨 Consumer 证据，容易与 `technical-plan`、`clarify-architecture` 重叠；目前通过扩展现有责任形成和回流设计知识，未来只在真实缺口证明必要时重评。
+- **将所有详细设计放进系统 Architecture 或一次性 Technical Plan**会混淆跨 Feature 系统边界、局部长期契约与施工计划，制造第二个 Current owner。合法长期设计仍由 Consumer 的真实 owner 保存，具体载体不限于文档。
+
+以上理由与当前模型一起保存在本仓库的版本化 Architecture 中，不依赖 Issue / PR 讨论才能恢复。背景讨论和审查 Evidence 可以从 Git 历史追溯，但不得作为 ordinary runtime 的必读 Authority。
+
 ## 7. Inventory 与安装
 
 实际 `skills/*/SKILL.md` corpus 是 Skill inventory 的机器事实来源；`skills/README.md` 只是 Human View。

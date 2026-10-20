@@ -29,7 +29,7 @@ status: active
 
 一次只推进一个演进事项。当前事项收口前，不展开下一事项的详细分析或实现。
 
-单项的详细 Evidence、方案草稿、交叉评审记录与实施过程默认由对应 GitHub Issue / PR / Git 历史承载；`docs/project/**` 只保留仍具有稳定消费者的长期 Project Authority、Roadmap、当前阶段级演进协议与必要 locator，不为每个演进事项保留一次性详细方案文档。
+单项的讨论、方案草稿、交叉评审、运行日志与过程 Evidence 可以由对应 GitHub Issue / PR / Actions 暂存；**最终有效的权威结论与有长期恢复价值的关键取舍依据必须在集成前进入 Git 版本化的真实 owner**（Skill、Architecture、Guide、Project 或适用的其他资产），不能让 Issue / PR 成为唯一保存位置。`docs/project/**` 只保留仍具有稳定消费者的长期 Project Authority、Roadmap、阶段级演进协议、稳定演进摘要和必要 locator，不为每个事项复制全量实施记录。
 
 每个事项统一执行：
 
@@ -52,7 +52,8 @@ status: active
    - 只有当前声明需要时才使用真实 Consumer 或 Runtime Under Test；
    - 高影响 Authority / canonical Skill contract / governance 变化才进入 Fresh / Independent Review。
 6. **收口**
-   - 回写 Evidence 与最终 owner；
+   - 在 Git 版本化的真实 owner 中回写最终决定、必要的关键取舍依据和适用边界，再将 Issue / PR 留作过程 Evidence；
+   - 验证不读取 Issue / PR 讨论正文时，Fresh Context 仍能恢复当前需要的长期设计真值；
    - 更新本计划 / Roadmap / 对应 Issue；
    - 重新读取最新 baseline，再决定下一个事项是否仍成立。
 
@@ -140,7 +141,7 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 
 **问题**：现有开放 Current Authority 已能识别、消费、回写已有 owner，但还需审计并完善「长期 Design 候选形成 → 合法 owner 建立/更新 → 发现与适用版本 → 执行中回流 → Design / Code / Contract / Tests convergence」的闭环；一个 EU 产生的稳定设计也可能具有长期约束价值。不能依赖永久 EU / 旧 Technical Plan 取代设计知识。
 
-**边界**：先审计当前 Skills 与 Consumer-local 机制，再选择最少产品变更；不预设独立 `detailed-design` Skill、固定 Design 目录、Registry、全面事前设计。Technical Plan 是条件性施工方案；重要决策的取舍优先由现有 Issue / PR / Git 历史保存，只有 Consumer 确有独立决策记录需求时才按其本地约定使用 ADR，且不能取代长期设计 owner。独立任务平台、`work/` 和 EU 归档另议。
+**边界**：先审计当前 Skills 与 Consumer-local 机制，再选择最少产品变更；不预设独立 `detailed-design` Skill、固定 Design 目录、Registry、全面事前设计。Technical Plan 是条件性施工方案；本轮的长期设计结论和必要取舍应进入版本化 Skill Architecture / Skills，Issue / PR 仅保留过程 Evidence。只有 Consumer 现有 owner 无法满足长期恢复、且独立记录确有稳定消费者时才考虑 ADR，并遵守其本地约定。独立任务平台、`work/` 和 EU 归档另议。
 
 **验收重点**：单 EU 稳定接口、跨 EU 已有设计不额外规划、执行中新增长期设计、技术实现替换保留上层契约；以及局部小修不增产物、无 owner 必须升级、设计 / 实现漂移不得 READY、旧 owner 退役后的 current locator 迁移等正反例。实施与验证 Evidence 保存于 Issue #189 及后续 PR，稳定语义进入实际 canonical Skills / Guide，不为本事项创建第二套长期规范。
 

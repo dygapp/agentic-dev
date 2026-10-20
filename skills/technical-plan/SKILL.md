@@ -24,14 +24,14 @@ description: Resolves consequential technical HOW and establishes or updates con
 4. 涉及 legacy / historical / business data migration 时，明确 source role、semantic preservation、identity / duplicate、replay / idempotency、exception / conflict disposition、reconciliation 与 provenance；legacy source / mapping 不反向成为新 Requirement Authority。数据库 schema / initialization migration 与业务数据迁移是不同责任，不因名称相同混用。
 5. 对会持续影响后续实现、接口消费者、技术替换、安全或验证的 Design 决定，即使仅由一个 Unit 产生，也要确认 Consumer 指定的合法 Current owner、适用范围、版本 / 替代关系及消费者，并在授权内写入真实 owner（Markdown、IDL / Schema、代码中的契约及其测试等载体依项目约定，不能制造互相竞争的真值）。Technical Plan 是可选施工方案，不因包含设计内容就自动成为 Current Design Authority。
 6. 需要跨 Feature 持续约束的系统性架构 driver 返回 `clarify-architecture` 或既有 Architecture owner；已有合法 Design / Requirement 等 owner 时依其维护 procedure 更新。没有 owner 或建立程序时，依据 Consumer Repository Authority 请求确立 / 授权 owner，不能擅自创建第二套 Current truth；新建、替换或退役合法 owner 时同步检查 locator、适用版本、依赖的 consumer、验证契约和 current-state wording。
-7. 只有决定背景、主要权衡或替代关系具有长期价值时才形成 / 更新 ADR；普通局部选择不创建 ADR，也不为了对称性创建无真实消费者的抽象。
+7. 对会持续影响后续维护或重新决策的关键技术取舍，连同稳定结论与适用边界写回 Consumer Git 版本化的合法 Current owner，不能仅保存在 Issue / PR / 聊天中；不要求逐字保存讨论。只有 Consumer 现有决策记录约定确需独立 ADR 且有稳定消费者时才形成 / 更新 ADR；普通局部选择和已有 owner 可充分说明的决定不额外创建 ADR。
 8. 清除仍会阻塞安全实施的技术不确定性。每个分析或工具步骤结束后重新判断剩余 planning responsibility，只要当前范围内仍可自动收敛就继续。
 
 ## 输出
 
 - 必要的 Current Design / Architecture owner updates（条件性，保留单一语义 owner）；
 - Technical Plan（仅当确需独立实施方案时）；
-- ADR（仅在重要决定的背景、备选与权衡需要长期保留时）；
+- ADR（仅在 Consumer 有合法独立决策记录责任时）；
 - Remaining technical blockers。
 
 ## 退出条件
