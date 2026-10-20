@@ -4,7 +4,7 @@
 
 `agentic-dev` 是 Software Development Agent Skills 的 Provider Repository。`skills/**` 是唯一正式的 Consumer-facing runtime product；`docs/guides/**` 为人和 AI 提供按需方法导航；Consumer 始终拥有自己的项目事实、架构、当前工作和本地约束。
 
-GitHub Repository 是本仓库唯一长期项目事实来源。会话历史、个人记忆、其他仓库状态和未固化推理不构成本仓库事实。
+本 Git Repository 中的版本化文件是当前长期项目 Authority 的事实来源；GitHub Issue / PR / Actions 承担过程协调、讨论与验证 Evidence，不是必须在线读取才能恢复的长期权威正文。当前 Git branch / commit 与远端集成状态仍从实际 Git / GitHub 核验。会话历史、个人记忆、其他仓库状态和未固化推理不构成本仓库事实。
 
 ## Fresh Context
 
