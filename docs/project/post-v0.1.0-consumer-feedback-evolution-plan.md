@@ -139,9 +139,9 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 
 **来源**：Issue #189，结合 `lotus-pki` 的组件化设计和 `jilinjobs-cms` 的技术替换代表性场景。
 
-**问题**：现有开放 Current Authority 已能识别、消费、回写已有 owner，但还需审计并完善「长期 Design 候选形成 → 合法 owner 建立/更新 → 发现与适用版本 → 执行中回流 → Design / Code / Contract / Tests convergence」的闭环；一个 EU 产生的稳定设计也可能具有长期约束价值。不能依赖永久 EU / 旧 Technical Plan 取代设计知识。
+**问题与收敛方向**：在既有开放 Current Authority 的消费与回写能力之上，补齐「长期 Design 候选形成 → 合法 owner 建立/更新 → 发现与适用版本 → 执行中回流 → Design / Code / Contract / Tests convergence」的责任闭环；一个 EU 产生的稳定设计也可能具有长期约束价值。不能依赖永久 EU / 旧 Technical Plan 取代设计知识。
 
-**边界**：先审计当前 Skills 与 Consumer-local 机制，再选择最少产品变更；不预设独立 `detailed-design` Skill、固定 Design 目录、Registry、全面事前设计。Technical Plan 是条件性施工方案；本轮的长期设计结论和必要取舍应进入版本化 Skill Architecture / Skills，Issue / PR 仅保留过程 Evidence。只有 Consumer 现有 owner 无法满足长期恢复、且独立记录确有稳定消费者时才考虑 ADR，并遵守其本地约定。独立任务平台、`work/` 和 EU 归档另议。
+**边界**：依最少产品变更原则扩展现有 Skills，不新增独立 `detailed-design` Skill、固定 Design 目录、Registry 或全面事前设计。Technical Plan 是条件性施工方案；长期设计结论与必要取舍由版本化 Skill Architecture / Skills 持有，Issue / PR 仅作过程 Evidence。只有 Consumer 现有 owner 无法满足长期恢复、且独立记录确有稳定消费者时才考虑 ADR，并遵守其本地约定。独立任务平台、`work/` 和 EU 归档另议。
 
 **验收重点**：单 EU 稳定接口、跨 EU 已有设计不额外规划、执行中新增长期设计、技术实现替换保留上层契约；以及局部小修不增产物、无 owner 必须升级、设计 / 实现漂移不得 READY、旧 owner 退役后的 current locator 迁移等正反例。实施与验证 Evidence 保存于 Issue #189 及后续 PR，稳定语义进入实际 canonical Skills / Guide，不为本事项创建第二套长期规范。
 
@@ -171,4 +171,4 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 
 演进事项 1～3 已按各自 Issue / PR / Git Evidence 集成。事项 4 基于 Issue #180 收敛为 GitHub Actions 与本地 Docker 两条按需验证 Guide。事项 5 基于 Issue #188 收敛 Working State、Candidate Commit 与 History Convergence，并同时覆盖单仓、嵌套独立仓与 submodule；本次 runtime delta 通过 `agentic-dev-v0.2.1` 发布。
 
-演进事项 6 已有 Issue #189 作为反馈入口，依单项协议完成审计、设计、实施与验证后才能进入集成决策。真实 Consumer adoption、多轮 Docker 构建的磁盘占用与回收、不同宿主的运行差异，以及任何发布环境用途都不属于已验证的 Provider 成果；后续新的稳定跨 Consumer 缺口仍须另行确认 owner、边界和验收。
+演进事项 6 的设计知识责任与关键取舍由当前 Git 版本化的 Architecture / Skills / Guide 承担，相关过程证据在 Issue #189 / PR #190；具体集成、发布身份仍以实际 Git / GitHub 为准。**本项的 Provider 契约验证不等于真实 Consumer adoption 或 Runtime PASS**。多轮 Docker 构建的磁盘占用与回收、不同宿主的运行差异，以及任何发布环境用途同样不属于已验证的 Provider 成果；后续新的稳定跨 Consumer 缺口仍须另行确认 owner、边界和验收。

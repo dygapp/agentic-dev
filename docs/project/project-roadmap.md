@@ -113,11 +113,11 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 3. **多仓库项目的工作区与权威边界**：已完成并集成；Issue #181 / PR #186 保存方案、验证与 Review Evidence，integration commit 为 `b9ebbecf485192532071a4b25c1894ce18f327f6`；
 4. **自动化验证路径与本地 Docker 资源生命周期**：以 Issue #180 为反馈起点，形成 [GitHub Actions 自动化验证](../guides/github-actions-automated-verification.md)与可独立用于非 GitHub 仓库的[本地 Docker 自动化验证](../guides/docker-automated-verification.md)两条按需向导；未新增通用 Docker Skill 或 Provider 编排器，真实 Consumer 的多轮构建、缓存与磁盘回收效果尚未验证；
 5. **Git Commit 生命周期与集成历史收敛**：Issue #188 已完成；实现 candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 通过 14 / 14 contracts 与 Fresh / Independent Review，覆盖单仓、嵌套独立仓和 submodule，并作为 `agentic-dev-v0.2.1` 的唯一 runtime semantic delta 发布。
-6. **长期设计知识的形成、归属与收敛**：Issue #189 来自真实 Consumer 的详细设计权威固化反馈；按开放 Consumer-owned Current Authority、单一语义 owner 和低复杂度边界开展责任审计、最小契约、现有 Skills 协同及正反例验证。它不是已发布能力或 Consumer adoption PASS；精确候选、复核和集成状态以 GitHub 当前事实为准。
+6. **长期设计知识的形成、归属与收敛**：源于 Issue #189 的 Consumer 反馈，采用现有 canonical Skills 与开放 Consumer-owned Current Authority，解决单 EU 长期设计形成、合法 owner 回流及 Design / Code / Contract / Tests 一致性；长期决定与必要取舍理由保存在 Git 版本化 Architecture / Skills，未新增 Design Skill、Registry 或独立 ADR。精确集成与发布状态由 Git / GitHub 验证，不从文档存在推断发布或真实 Consumer adoption PASS。
 
 该顺序不是永久 Roadmap。每个演进事项收口后必须基于届时最新 Repository / Consumer Evidence 重新判断后续事项，允许调整、拆分或删除，不为了“一次规划完整”同时展开多个事项的详细分析和设计。
 
-演进事项 6 的反馈入口为 Issue #189；须按最新 Authority 区分当前已覆盖能力、仍存在的设计生命周期缺口与 Consumer-local 决定。不得预设新增独立 Design Skill、中央 Registry 或 Consumer 固定目录；本事项完成 / 发布判断以实际实施、适用验证、Fresh / Independent Review 和最终授权为准，不把本地候选或未执行的真实 Consumer adoption 冒充已集成事实。
+演进事项 6 的长期设计责任与取舍由 `../architecture/skill-architecture.md`、直接相关 canonical Skills 与 `../guides/design-knowledge.md` 承担；Issue #189 / PR #190 仅作讨论和验证 Evidence。对新的设计需求仍应判断 Consumer-local owner 与实际能力缺口，不预设独立 Design Skill、中央 Registry 或 Consumer 固定目录。后续发布 / Consumer adoption 必须另外取得对应的精确版本与适用验证证据。
 
 ## 已知约束
 
@@ -147,7 +147,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - 演进事项 3 已完成 Evidence：GitHub Issue #181 / PR #186；
 - 演进事项 4 已完成 Provider 文档层 Evidence：GitHub Issue #180 与对应 Guides；
 - 演进事项 5 已完成 Evidence：GitHub Issue #188、implementation candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 与 `agentic-dev-v0.2.1` release binding；
-- 演进事项 6 新反馈与阶段性 Evidence：GitHub Issue #189，当前 Design Knowledge 目标仅以已集成 canonical Skill / Guide 为正式语义 owner；
+- 演进事项 6 长期语义：`../architecture/skill-architecture.md`、相关 canonical Skills 与 `../guides/design-knowledge.md`；Issue #189 / PR #190 仅作历史过程 Evidence，精确集成状态从 Git / GitHub 核验；
 - 稳定历史里程碑：`project-evolution.md`；
 - 历史研究与旧模型 Evidence：`../research/**`；
 - bounded change 的精确 commit / Review / Actions Evidence：Git / GitHub 对应对象。
