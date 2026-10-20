@@ -21,6 +21,7 @@ Consumer Repository
 - 新项目 Bootstrap：[`docs/guides/bootstrap-new-project.md`](docs/guides/bootstrap-new-project.md)
 - 已有项目采用：[`docs/guides/adopting-agentic-dev.md`](docs/guides/adopting-agentic-dev.md)
 - 不知道下一步：[`docs/guides/choosing-next-step.md`](docs/guides/choosing-next-step.md)
+- 长期设计知识：[`docs/guides/design-knowledge.md`](docs/guides/design-knowledge.md)
 - Skill 清单：[`skills/README.md`](skills/README.md)
 
 Guide 只在需要方法理解、Bootstrap 或导航时按需读取。进入明确执行责任后，由 installed Skill 承担 procedure。

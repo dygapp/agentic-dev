@@ -308,3 +308,11 @@ Issue #188 由真实 Consumer `dygapp/jilinjobs-cms` 的 EU-68 与历史工作�
 
 实现 candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 通过 14 / 14 deterministic contracts 与最终 Fresh / Independent Review（`Blocking=0`、`Medium=0`）。`v0.2.0 → v0.2.1` 有界升级 smoke 保持 15 个 Skill，只改变 `execute-unit` 与 `converge`，Consumer-owned 文件保持不变；该变化以 `agentic-dev-v0.2.1` 发布。
 
+## 21. 长期设计知识形成、归属与收敛
+
+Issue #189 来自 Consumer 的持久化详细设计需求：旧 `technical-plan` 偏向跨多个 EU 的 HOW，不能可靠覆盖单 EU 中形成、却持续约束接口消费者、状态、数据契约或后续替换工作的长期设计知识。PR #190 选择扩展现有 Skills 而非新增 `detailed-design` Skill、固定目录、Registry 或强制 ADR，集成 commit 为 `7916045f858b8a0f34891056afe8b3994515c26f`。
+
+长期结果：以未来约束价值而不是 EU 数量识别 Durable Design；由 Consumer 授权的 Git 版本化 Current owner 保存设计结论、适用边界与必要取舍依据；`technical-plan` 处理稳定设计与重要 HOW，`slice-work` 保留恢复线索，`execute-unit` 在执行中识别并回流设计，`converge` / `review-change` 对设计、实现、接口消费与验证的一致性把关。无合法 owner 时升级，不把 EU、JIT、Issue 或 PR 作为当前权威的替代品；局部可逆修改不因此强制创建 Design 或 Plan。
+
+本次 Provider contract 变更由 `agentic-dev-v0.3.0` 版本分发，保持 15 个 Skill；长期语义以当前 `../architecture/skill-architecture.md` 与 canonical Skills 为准。真实 Consumer 采用效果将由 Lotus PKI 正常演进中的具体证据持续反馈，不被设为 Provider 本次发布的前置 Gate。
+
