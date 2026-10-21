@@ -27,6 +27,7 @@ status: active
 7. [`github-actions-automated-verification.md`](github-actions-automated-verification.md) — 选择 GitHub Actions 时的自动化验证路径；
 8. [`docker-automated-verification.md`](docker-automated-verification.md) — 不依赖 GitHub 的本地 Docker 自动化验证路径；
 9. [`multi-repository-projects.md`](multi-repository-projects.md) — 多仓库项目的推荐布局、权威与精确组合边界；
+   - [`local-task-workspace.md`](local-task-workspace.md) — 本地任务、EU、交接、恢复与退出治理方案的按需参考；
 10. [`establishing-requirement-baseline.md`](establishing-requirement-baseline.md) — 系统性 Requirement Baseline 建立；
 11. [`human-review.md`](human-review.md) — 人工评审与 durable semantic writeback；
 12. [`upgrading-agentic-dev.md`](upgrading-agentic-dev.md) — 显式采用新的 exact-version Skills；
