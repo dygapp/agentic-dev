@@ -189,14 +189,14 @@ Guide 只选择“下一类工作”，不会维护另一套 Skill procedure。
 
 ## 6. Requirement 与 Architecture
 
-当项目只有原始资料、长期 Requirement owner 不清、同一事实冲突，或多个 Feature 被同一需求缺口反复阻塞时，使用：
+当项目只有原始资料、长期 Requirement owner 不清、同一事实冲突、多个 Feature 被同一需求缺口反复阻塞，或显式梳理公共能力需求时，使用：
 
 - [establishing-requirement-baseline.md](establishing-requirement-baseline.md)
 - installed `establish-requirement-baseline` Skill
 
 核心原则是建立 Consumer-owned、可恢复、single-owner 的长期 Requirement Authority，而不是把需求获取理解成无限问答。
 
-只有多个当前或预期 Feature 共同依赖一个长期、高成本难逆、并且不解决就会阻塞可靠开发的 systemic architecture driver 时，才使用 `clarify-architecture`。
+多个当前或预期 Feature 共同面对长期结构问题，且已阻塞可靠开发或有明确证据表明延后会造成显著返工、难逆结构时，使用 `clarify-architecture`。显式架构演进参见[长期设计知识](design-knowledge.md#7-公共能力与持续架构演进)。
 
 局部、低风险、可逆的实现选择可在有界变更中直接处理；正式 Unit 中由 `execute-unit` 处理。必须提前收敛的 HOW 或具有长期约束价值的 Durable Design（即使仅由单个 Unit 产生）可由 `technical-plan` 形成 / 维护合法 Consumer owner。Technical Plan 是条件性施工产物，不是默认设计 Authority。详见 [长期设计知识](design-knowledge.md)。
 

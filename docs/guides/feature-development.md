@@ -21,7 +21,7 @@ status: active
 
 如果多个 Feature 同时被同一 Requirement gap 阻塞，先使用 `establish-requirement-baseline`。
 
-如果多个 Feature 共同依赖长期、高成本难逆的 systemic architecture driver，先使用 `clarify-architecture`。
+如果多个 Feature 面临长期结构问题，已阻塞下游或有证据表明延后会造成显著返工、难逆结构，按实际责任使用 `clarify-architecture`；不因此要求提前完成全部公共能力。
 
 ## 2. 先判断执行粒度
 
@@ -108,7 +108,7 @@ Feature-specific 技术规划不能重新定义产品语义；发现产品歧义
 
 ## 7. slice-work
 
-当工作需要独立、可恢复和可验收的执行责任时，把 Ready Specification、必要 Technical Plan 与当前责任实际适用的 Consumer Current Authority 转成 context-fit Execution Units。有界变更不因发生代码修改而自动进入切分。
+当工作需要独立、可恢复和可验收的执行责任时，把 Ready Specification 或同等明确的公共能力责任、必要 Technical Plan 与当前责任实际适用的 Consumer Current Authority 转成 context-fit Execution Units。公共能力已有合法需求/设计契约明确目标、范围、义务与验收时，不重复创建 Feature Specification。有界变更不因发生代码修改而自动进入切分。
 
 每个 Unit 至少明确：
 

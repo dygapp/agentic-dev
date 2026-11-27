@@ -20,9 +20,9 @@ description: Investigates an observed defect or unexpected failure through repro
 
 1. 在当前 exact subject 上稳定复现问题，记录 actual behavior、最小触发条件、Consumer-local constraints 与相关 runtime / environment facts；无法复现时不猜测根因。
 2. 结合当前 defect / failure claim、Consumer locator / navigation 与 Repository facts，重新判断并读取实际适用的 Current Authority，从中确认 expected behavior；Requirement / Specification / Architecture 只是常见来源，不构成封闭列表。若 expected behavior 未被任何可靠 Current owner 定义，返回真实责任层（产品行为缺口可返回 `clarify-intent` / `specify`），不得自行定义。测试或 Workflow 与 Current Authority 冲突时先判断 stale verification contract，而不是修改产品迎合旧断言。
-3. 区分 implementation defect、stale verification contract、runtime / environment problem 与 external dependency problem，收集能区分原因的 Evidence，形成有限、可证伪的 root-cause hypotheses。
+3. 区分 implementation defect、stale verification contract、runtime / environment problem、external dependency problem、共享设计/架构缺口与任务范围扩大，收集能区分原因的 Evidence，形成有限、可证伪的 root-cause hypotheses。
 4. 逐一验证假设，直到 Evidence 支持根因；不得同时做多项无关“可能修复”，也不通过大规模重构掩盖尚未确认的原因。
-5. 实施针对根因的最低必要修复，最终差异只包含当前 defect、验证责任和由修复直接产生的必要清理。
+5. 若反复补丁、跨模块变化、退出条件持续失败、schema 扩张或混合验证环境经区分性 Evidence 证实源于共享契约、架构责任或范围问题，停止扩大修改，保留已确认目标和证据，返回 Requirement / `clarify-architecture` / `technical-plan` / 合法 Design owner 或重新切分责任，按授权收敛后再实施与定向验证。不能用固定失败次数判断根因，不自动全仓重构或跳过安全、集成及验收义务。属于当前实现的根因则实施针对根因的最低必要修复，最终差异只包含当前 defect、验证责任和由修复直接产生的必要清理。
 6. 运行与 claim 匹配的当前回归与必要邻接验证，确认原 failure 消失且没有已知相关回归；如果修复改变 commit / runtime subject，旧 Evidence 不自动支持新 subject。
 7. 每次复现、假设验证、修复、测试、异步观察失败或超时后重新计算剩余诊断责任；只要仍有当前授权内可自动执行的区分性检查就继续，不因单个步骤终态提前停止。
 

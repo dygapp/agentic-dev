@@ -11,7 +11,7 @@ description: Resolves consequential technical HOW and establishes or updates con
 
 ## 输入
 
-- Ready Specification；
+- Ready Specification，或已明确目标、边界及适用义务的共享能力 / 架构设计责任；
 - 当前 Architecture / ADR / code state、已有组件 / 接口 / 数据等 Design Authority（如适用），以及会约束当前 HOW 的其他 Consumer Current Authority；
 - 技术约束；
 - Consumer-local constraints。
@@ -20,6 +20,8 @@ description: Resolves consequential technical HOW and establishes or updates con
 
 1. 判断是否存在必须收敛的技术不确定性或长期设计约束；即使只有一个 Unit，稳定接口、关键不变量、组件替换边界等仍可能需要设计固化。仅有局部、低影响、可逆 HOW 且已有模式足以实施时，跳过独立 Technical Planning / Technical Plan，不额外建立文档。
 2. 在最小必要范围收敛组件职责、接口 / 协议、数据与状态、错误处理、依赖、集成、迁移、部署、验证和关键风险；分别判断哪些是产品可观察 WHAT（返回 Requirement / Specification owner）、哪些是跨 Feature 的系统性 Architecture、哪些是有长期约束力的逻辑或技术实现 Design、哪些仅为本次施工步骤。不得让 HOW 覆盖其他 semantic owner。
+   - 对公共能力，比较真实消费者的共同语义、不变量、变化原因与依赖，区分共享业务义务和技术机制；相似代码或同名对象不足以证明应抽象。依据真实重复、规则漂移、变化传播、循环依赖或验证成本，比较成熟机制复用、组合、薄适配、局部重复与有界抽取；没有净收益时保留独立实现，不预建无消费者的抽象。明确适用/不适用消费者、职责、依赖方向、数据/状态/事务/安全及失败契约、兼容版本和验证接缝；业务失败、回退、提交时点等 WHAT 仍归 Requirement owner，不能由通用机制替业务决定。
+   - 为稳定共享契约设计独立验证：规则/不变量用必要单元或属性测试，依赖真实权限、事务、消息或持久化语义的 claim 用必要真实依赖验证，以最小真实消费者验证接缝；测试替身不证明真实依赖，保留实际业务集成和系统验收义务。不默认使用完整无关业务链作为夹具，也不因独立通过而永久冻结契约。
 3. 设计集合型数据访问时确认真实消费范围与 bounded / growing / unknown 性质；不得为了实现方便默认全量读取持续增长数据，也不得用固定小上限静默截断正确集合。
 4. 涉及 legacy / historical / business data migration 时，明确 source role、semantic preservation、identity / duplicate、replay / idempotency、exception / conflict disposition、reconciliation 与 provenance；legacy source / mapping 不反向成为新 Requirement Authority。数据库 schema / initialization migration 与业务数据迁移是不同责任，不因名称相同混用。
 5. 对会持续影响后续实现、接口消费者、技术替换、安全或验证的 Design 决定，即使仅由一个 Unit 产生，也要确认 Consumer 指定的合法 Current owner、适用范围、版本 / 替代关系及消费者，并在授权内写入真实 owner（Markdown、IDL / Schema、代码中的契约及其测试等载体依项目约定，不能制造互相竞争的真值）。Technical Plan 是可选施工方案，不因包含设计内容就自动成为 Current Design Authority。

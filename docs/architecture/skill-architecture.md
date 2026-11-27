@@ -82,6 +82,12 @@ Consumer 可以按自身事实建立长期 Design owner，但 Provider 不规定
 
 以上理由与当前模型一起保存在本仓库的版本化 Architecture 中，不依赖 Issue / PR 讨论才能恢复。背景讨论和审查 Evidence 可以从 Git 历史追溯，但不得作为 ordinary runtime 的必读 Authority。
 
+### 公共能力的形成与持续演进
+
+公共能力不是固定开发阶段或预建通用框架。需求阶段主动识别有项目依据的共享业务义务及横切质量需求，确认产品取舍后由真实 Requirement owner 持有；架构责任可以主动解决已有依据且延后代价显著的系统性 driver，不必等待下游被阻塞。局部共享契约由适当 Design owner 承担，技术机制不替代业务不变量或可观察失败语义。优先成熟机制和最小抽象，只有共同语义、实际消费者与收益支持时才形成新共享责任。
+
+共享能力的独立实现与验证有助于降低无关业务依赖；是否切分取决于实际前置依赖与独立验证价值。独立契约证据仅支持其适用版本和范围，后续消费按真实差异和依赖判断影响，不免除必要接缝、集成和系统验收。反复补丁是调查信号，只有根因证据支持才返回合法设计/架构或范围责任。现有需求、架构、规划、切分、执行、调试与收敛 Skills 已具有对应生命周期，当前不另设公共能力或架构演进 Skill、固定知识目录或业务框架。
+
 ## 7. Inventory 与安装
 
 实际 `skills/*/SKILL.md` corpus 是 Skill inventory 的机器事实来源；`skills/README.md` 只是 Human View。
@@ -93,3 +99,5 @@ Consumer 可以按自身事实建立长期 Design owner，但 Provider 不规定
 新增 Skill 至少证明独立 trigger / purpose、稳定 inputs、可重复 procedure、稳定 outputs、明确 exit / escalation、有界上下文、单一语义 owner，并证明现有 Skill / Guide / Consumer-local mechanism 无法更简单地承担该责任。
 
 “很重要”“多个地方都会用”“存在多个步骤”本身不足以新增 Skill。
+
+项目可以显式开展无拟集成变更的知识健康评审。当前采用按需治理导航和 Consumer 自有维护约定，发现返回已有需求、设计、实现、验证或人工评审责任。拟集成的高影响权威变更继续由 `review-change` 复核实际差异。代表性隔离样本中，现有组合可以在简短请求下完成只读健康评审和增量退出，普通局部修改仍保持原有路径，因此当前不单设 `document-governance` Skill。若真实使用出现可重复、可归因于执行契约不足的关键遗漏或人工补偿，再按上述准入条件做同范围比较。

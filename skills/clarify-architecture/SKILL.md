@@ -1,13 +1,13 @@
 ---
 name: clarify-architecture
-description: Resolves systemic architecture drivers that span multiple current or expected features and would otherwise block reliable specification or technical planning. Use for durable, high-cost-to-reverse structural decisions; do not use for local reversible implementation choices or ordinary feature technical planning.
+description: Resolves systemic architecture drivers that span multiple current or expected features and either block reliable specification or technical planning or are demonstrably costly to defer or reverse. Use for consequential durable structural decisions; do not use for local reversible implementation choices or ordinary feature technical planning.
 ---
 
 # clarify-architecture
 
 ## 目的
 
-只解决跨多个当前或预期 Feature 持续成立、长期、高返工成本或高成本难逆，并且不解决就会阻塞可靠 Specification / Technical Planning 的系统性架构问题。
+只解决跨多个当前或预期 Feature 持续成立、具有长期结构价值的系统性架构问题：不解决会阻塞可靠 Specification / Technical Planning，或已有依据表明延后将造成显著返工、形成高成本难逆的结构。
 
 ## 输入
 
@@ -18,9 +18,9 @@ description: Resolves systemic architecture drivers that span multiple current o
 
 ## 流程
 
-1. 确认问题确实跨多个当前或预期 Feature、具有长期结构价值、高返工成本或高成本难逆，并且不解决就会阻塞可靠 Specification / Technical Planning；局部可逆实现选择、文件组织和普通 framework usage 不进入本 Skill。
+1. 确认问题确实跨多个当前或预期 Feature 且具有长期结构价值，并满足至少一个条件：不解决会阻塞可靠 Specification / Technical Planning；或已有依据表明延后将造成显著返工、形成高成本难逆的结构。局部可逆实现选择、文件组织和普通 framework usage 不进入本 Skill。
 2. 读取当前 Requirement、Architecture / ADR、接口和必要代码事实；实现与成熟 reference implementation 可以作为 evidence / oracle，但不能自动覆盖更高层 Authority。
-3. 建立最小 Architecture Context，只解决真实 systemic driver，不做 Big Design Up Front。
+3. 建立最小 Architecture Context，只解决真实 systemic driver，不做 Big Design Up Front。基于已确认公共能力需求与真实预期消费者，识别共同义务、系统责任、依赖方向和必要基础机制；优先成熟框架/库、组合或薄适配，不预建无需求依据的通用业务平台、MQ、微服务或工作流。初始公共能力框架是有据的最小职责与契约设计，不是预先自研实现，也不要求全部公共能力先完成。
 4. 比较能够真实解决 driver 的少量结构选项，明确责任边界、stable contract、Authority 已决定的 failure semantics、迁移 / replaceability seam 与主要权衡。Requirement 没有决定的业务失败、回退、切换时点、缓存期限或一次操作内快照语义，不得由 Architecture 自行补齐。
 5. 将系统性稳定决定及后续维护确需知道的关键取舍依据写回 Consumer Git 版本化的真实 Architecture owner；仅局部或组件级但具有长期约束价值的详细设计交由 Consumer 现有 Design owner / `technical-plan` 责任处理，不把所有 Detailed Design 升格为系统级 Architecture。只有 Consumer 的既有决策记录机制需要且具有稳定消费者时才额外形成 / 更新 ADR；Issue / PR 只保存过程 Evidence。新增、替换或退役长期 owner 时同步检查 locator、navigation、verification consumer 与 current-state wording，避免旧 owner 继续成为 Current truth。
 6. 若分析暴露业务多解、产品边界、长期 Requirement fact 缺失或 Requirement conflict，返回 Requirement owner；不在本 Skill 内创造 Product Requirement。尤其当 Requirement 只规定“全局一致 / 单一事实来源”等业务目标时，Architecture 可以定义单一责任边界与稳定读取 contract，但不能自行决定 fail-open / fail-closed、last-known fallback、切换生效时点、事务内快照等会改变可观察业务语义的规则。

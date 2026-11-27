@@ -18,7 +18,8 @@ status: active
 - 已有一批客户需求、招标文件、PRD、访谈材料，但还没有稳定需求基线；
 - legacy rewrite / modernization，需要重新确认现行需求；
 - 现有需求文档彼此冲突、重复、边界不清；
-- 多个 Feature 不断因为同一批业务事实缺失而返工。
+- 多个 Feature 不断因为同一批业务事实缺失而返工；
+- 显式梳理公共能力需求及初始边界。
 
 如果项目已经有稳定 Requirement Authority，普通 Feature 不需要重跑这套流程，直接进入当前项目采用的 Feature Development Method。
 
@@ -51,6 +52,8 @@ API
 ```
 
 这些通常是后续设计结果，不是需求事实本身。
+
+需求基线建立或显式梳理公共能力时，也从这些业务事实、质量属性和安全合规义务识别真正有消费者的共同能力。可以把需要裁决的候选集中交给人工确认，其余已确认事实直接恢复；例如先确认跨业务审计义务，而不是先决定采用哪一种日志框架或消息队列。确认的 WHAT 进入实际需求 owner，候选与投影不是权威。初始架构衔接参见[长期设计知识](design-knowledge.md#7-公共能力与持续架构演进)。
 
 ## 3. 推荐的 `docs/requirements` 起始结构
 
@@ -244,7 +247,7 @@ AI 内部可以做完整分析，但普通交互默认只向人工输出当前�
     → 否：不升级人工
 
 不解决会阻塞 Requirement Baseline？
-    → 否：记录 non-blocking open item
+    → 否：记录 non-blocking open item；确需人工裁决的长期产品取舍可集中确认，不阻塞无关范围
 
 以上都满足
     → Ask Human
@@ -451,6 +454,6 @@ AI 负责：
 
 达到 `Requirement Baseline Ready` 后：
 
-- 没有 systemic architecture blocker → 可以开始具体 Feature Development；
-- 有跨多个 Feature 的长期 Architecture blocker → 使用 `clarify-architecture`；
+- 没有必须当前解决的系统性结构问题 → 可以开始具体 Feature Development；
+- 跨多个 Feature 的长期结构问题已阻塞下游或有明确延后代价 → 使用 `clarify-architecture`；
 - 后续普通 Feature 进入 [`feature-development.md`](feature-development.md) 导航，并按需调用对应 installed Skills，不重复整套项目需求建立流程。

@@ -181,6 +181,6 @@ Guide 不复制进 Consumer runtime，但 Consumer 应能知道自己采用的�
 最常见的下一步不是直接编码：
 
 - Requirement 仍只是原始材料 / 零散事实 → `establish-requirement-baseline`；
-- Requirement 足够，但存在跨多个 Feature 的长期 Architecture blocker → `clarify-architecture`；
+- Requirement 足够，但存在跨多个 Feature 的长期结构问题，已阻塞下游或有明确延后代价 → `clarify-architecture`；
 - Requirement / Architecture 已足够，存在明确 Feature → 进入 [`feature-development.md`](feature-development.md)；
 - 已有成熟 Repository，只是首次引入 Skills → 不需要重跑绿地 Bootstrap，使用 [`adopting-agentic-dev.md`](adopting-agentic-dev.md)。

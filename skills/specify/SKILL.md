@@ -19,11 +19,11 @@ description: Creates or incrementally updates an authoritative WHAT/WHY specific
 ## 流程
 
 1. 读取当前 Repository / Product / Requirement / Domain Authority、会改变本次 WHAT / WHY / Acceptance 的其他适用 Consumer Current Authority、Consumer-local constraints 与已有 Specification，确认目标、范围与现有行为；locator / index 只用于找到真实 owner，不把导航或分析资产当作事实正文。
-2. 写明 Goal、In / Out of Scope、Observable Behavior、Business Rules、Boundary / Failure Behavior、Acceptance Criteria 与必要非功能义务，使新的 Fresh Context 能判断“做什么、什么不做、何时完成”。
+2. 写明 Goal、In / Out of Scope、Observable Behavior、Business Rules、Boundary / Failure Behavior、Acceptance Criteria 与必要非功能义务，使新的 Fresh Context 能判断“做什么、什么不做、何时完成”。在当前影响范围内核对上层目标、已有能力边界与必要义务，避免无依据扩展或遗漏；不为普通局部 Specification 执行全项目健康评审，也不以同级篇幅决定细化深度。
 3. 把 HOW、文件路径、类 / 函数、框架细节和施工顺序留给 `technical-plan` / `execute-unit`，除非它们本身是外部 contract 或产品可观察约束。
 4. 对跨 Feature 长期业务术语、不变量或规则形成 Domain / Requirement Authority Candidate；只有当前仓库授权允许且 owner 唯一时才更新长期 Authority。临时分析、对照表、评审草稿和派生视图默认非 Authority，不让同一事实形成第二个 Current owner。
 5. 新增长期 owner 或替换 / 退役旧 owner 时检查 locator / navigation、verification consumer 与 durable current-state wording 是否同步，确保 Historical / provenance reference 不被 ordinary runtime 当成 Current truth。
-6. 若 Specification 分析暴露多个 Feature 共同依赖的 Requirement Baseline gap / conflict / ownership failure，返回 `establish-requirement-baseline`；若暴露长期、高成本难逆且阻塞可靠开发的 systemic architecture driver，返回 `clarify-architecture`；若长期语义属于 Consumer 已存在的其他 Current owner，则返回该 owner / maintenance procedure，不把专项语义塞进当前 Feature Specification。
+6. 若 Specification 分析暴露多个 Feature 共同依赖的 Requirement Baseline gap / conflict / ownership failure，返回 `establish-requirement-baseline`；若暴露跨多个当前或预期 Feature 的长期结构问题，已阻塞可靠开发或有证据表明延后会造成显著返工、难逆结构，返回 `clarify-architecture`；若长期语义属于 Consumer 已存在的其他 Current owner，则返回该 owner / maintenance procedure，不把专项语义塞进当前 Feature Specification。
 7. 只要仍存在可由当前 Authority 自动裁决、会改变 WHAT / WHY / Acceptance 的歧义就继续收敛；只有不可替代的 Product / Domain 决定才请求人工。
 
 ## 输出
