@@ -8,7 +8,7 @@ status: active
 
 ## 1. 任务身份与当前状态
 
-本文件是 Issue #191 对应演进事项的实施前目标、方案边界、关键取舍及验收计划，不是已发布的 Consumer Skill 契约。按[单项演进协议](post-v0.1.0-consumer-feedback-evolution-plan.md#3-单项执行协议)执行。当前处于方案规划完成、待实施范围核验与冻结的状态；不声明新增 Skill 已准入、正式版本已发布或 Consumer 已升级。
+本文件是 Issue #191 对应演进事项的目标、方案边界、关键取舍及验收计划，不是已发布的 Consumer Skill 契约。按[单项演进协议](post-v0.1.0-consumer-feedback-evolution-plan.md#3-单项执行协议)执行。当前范围 A 首个最小候选已形成，待聚焦行为验证及独立复核；不声明新增 Skill 已准入、正式版本已发布或 Consumer 已升级。
 
 稳定产品基线为 `agentic-dev-v0.3.0`，其 release commit 为 `477a5a8230878e4431d2618c57f6a630a334b55a`；本计划起草前核验的 Provider master 为 `97e845f6ab327b46362b89789f5955ae87fa4e46`。这些是历史定位，不代替执行时重新核验当前仓库及精确基线。已发布模型的 15 个 Skill、单一语义 owner、开放 Consumer-owned Current Authority、长期设计生命周期及最小产品边界继续成立。新方案只面向普通软件 Consumer，不向 Provider 自身套用 Consumer 需求、公共业务能力或文档治理流程。
 
@@ -102,6 +102,18 @@ AI 提供精简分组候选并引导人工讨论，确认纳入、延期、排�
 
 ## 7. 验收条件与最小验证设计
 
+### 范围 A 首次准入核验（7-A1）
+
+执行基线：本地规划 commit `9f7d36a8b8495da4026300714ca2542d507a0fc2`，远端 master `97e845f6ab327b46362b89789f5955ae87fa4e46`，Issue #191 开放、无开放 PR。对现有 Skill contract 与 Issue 正文证据重新比较：`review-change` 需要精确拟接受变更，不将其扩展为存量检查；`human-review` 已负责人工确认、投影和回写；`technical-plan` 与 `clarify-architecture` 已负责长期设计归属，范围 B 的触发和共享契约留待 B；`establish-requirement-baseline` 已检查信息架构但未明确同层细化覆盖，`specify` 需明确当前范围内的上层追溯，不引入全面评审。
+
+冻结首个最小候选 A：新增按需治理导航，连接实际现有责任与 Consumer-local 维护约定，并只对上述两个需求形成契约作局部补充。普通变更不额外读取 Guide 或运行项目级治理。独立 Skill 的 H2 增量价值尚未证明，不能仅凭存在无 diff 的独立责任准入；不扩展 `review-change` 或创建正式第 16 个 Skill。先以非 PKI 的有界场景检查 A 是否能在简短目标下可靠完成，若出现稳定、可归因于缺少执行契约的缺口，再以同目标、同基线、同权限的独立 C 候选比较；不把作者的契约分析当作行为证据。不需要外部技术研究。
+
+7-A2 的首次候选只允许上述 Guide、导航、两项 Skill 最小修订和聚焦验证材料。当前已形成 [治理 Guide](../guides/document-governance.md)、导航及两项需求 Skill 的最小修订，并建立[行为输入样本](../../tests/fixtures/knowledge-health-review-input.md)。最终准入取舍、行为验证及独立复核仍待 7-A3；不能据此开始 B 或声明范围 A 已收口。
+
+该样本的评估预期仅供评估者：案例 1 应识别预约的越界扩展、研究误用、取消的已确认规则和审计投影缺失、代码审计偏差、过时验证合同、接口失败语义与消费者路径、不可访问组件；区分 409 为待确认业务语义而非自动晋升；不误报简洁目录或明确历史 blob，不写入仓库。案例 2 应有界快速退出且不作整体健康声明；案例 3 不引入项目级治理、独立 EU 或全量回归。隔离执行仅提供样本、候选 Guide / Skills 和等价权限，不提供本段或作者 findings；记录遗漏、误报、步骤及人工介入。样本不是行为运行证据，不替代实际独立执行。
+
+### 聚焦验收
+
 每项声明必须有相应证据，静态契约检查不能替代行为验证。以现有 deterministic repository contracts 和小型有界 fixture 优先；对同一语义层的行为、授权、独立发现、抽象判断等采用必要的代表场景与独立复核，不另建通用评分框架。可选择 Lotus 可恢复片段和不同结构/领域的小型非 PKI fixture；预期问题仅供评估者，不向独立评审提前透露作者 findings。不能取得真正隔离时如实报告局限，不冒充盲测。
 
 | 场景 | 必须观察的结果 |
@@ -131,4 +143,4 @@ Provider 正式发布后，才在独立 Consumer 工作中重新读取 Lotus PKI
 
 ## 9. 新会话恢复与当前停止点
 
-从根 AGENTS → Roadmap → post-v0.1.0 演进计划 → 本文件恢复当前事项，重新核验实际 branch/HEAD/worktree、Issue/PR 及真实现行 Skills。当前下一责任为 7-A1：按现行产品准入收敛范围 A 的最小方案与验证条件；之后按第 6 节顺序推进。无需历史聊天或 Issue 评论才能知道目标、取舍、实施顺序和验收；原始过程证据仅按需要查阅。尚未实施 canonical Skill 变更、行为验证、独立复核、集成、发布或 Consumer 升级。
+从根 AGENTS → Roadmap → post-v0.1.0 演进计划 → 本文件恢复当前事项，重新核验实际 branch/HEAD/worktree、Issue/PR 及真实现行 Skills。7-A1 已冻结首个最小候选，7-A2 已形成候选资产与行为样本；当前下一责任为 7-A3：按第 7 节执行聚焦行为验证、完成准入取舍和独立复核，再依第 6 节推进。无需历史聊天或 Issue 评论才能知道目标、取舍、实施顺序和验收；原始过程证据仅按需要查阅。行为验证、独立复核、集成、发布及 Consumer 升级均未完成。

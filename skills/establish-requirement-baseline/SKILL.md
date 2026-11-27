@@ -25,7 +25,7 @@ description: Establishes or rebuilds a durable Requirement Baseline from raw, fr
 5. 新增、替换或退役长期 owner 时同步检查 locator、Human navigation、verification consumer 与 current-state wording，确保 Fresh Context 能区分 Current truth 与 historical / provenance evidence。
 6. 只有当前 Authority 无法解决、不同合理答案会改变长期产品语义，而且问题确实阻塞当前 Baseline scope 或已知下游责任时，才形成最小人工问题；请求人工前先检查 Repository、现有 Evidence 与已授权工具是否已经可以裁决，避免机械中转。
 7. 高影响 Requirement Authority 重构按 Consumer Repository policy 进入 fresh / independent `review-change`；Review PASS 不等于人工批准。
-8. 检查 Requirement 信息架构、Fresh Context 导航、长期 owner、未决项与下游 Feature 可消费性；单个文档写入或 source inventory 完成不等于 Baseline Ready。
+8. 检查 Requirement 信息架构、Fresh Context 导航、长期 owner、未决项与下游 Feature 可消费性；从总体目标向能力及必要行为追溯，在当前 Baseline 范围内比较同一语义层的覆盖与细化程度，识别已确认义务缺失、无上层依据的扩展和过早技术细化。按实际责任、成熟度、复杂度和风险允许合理差异，不按字数或固定层级要求对称，也不要求未实现能力具备完整详细设计。单个文档写入或 source inventory 完成不等于 Baseline Ready。
 9. 只有当前证据支持长期需求基线可被后续工作可靠消费时返回 Requirement Baseline Ready。
 
 ## 输出

@@ -55,6 +55,7 @@ Consumer 当前项目事实
 | 当前责任需要安全修改 GitHub / 外部 API / review environment / shared state | `external-operation` |
 | GitHub Actions 本身是关键验证路径 | `github-actions-verification` |
 | 需要产品 / 业务 / 架构 / 工程责任人集中理解和确认 | `human-review` |
+| 显式检查存量长期知识健康（包括没有拟集成 diff 的情况） | [`document-governance.md`](document-governance.md) 与 Consumer-local 维护约定；按发现选择实际责任 |
 | 项目希望启用多 Agent / 多模型协作 | `activate-model-collaboration` |
 
 一个项目可以同时存在多个问题，但一次回答应指出当前最主要的 1 个下一责任，以及为什么它优先。
