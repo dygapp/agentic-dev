@@ -145,6 +145,12 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 
 **验收重点**：单 EU 稳定接口、跨 EU 已有设计不额外规划、执行中新增长期设计、技术实现替换保留上层契约；以及局部小修不增产物、无 owner 必须升级、设计 / 实现漂移不得 READY、旧 owner 退役后的 current locator 迁移等正反例。实施与验证 Evidence 保存于 Issue #189 及后续 PR，稳定语义进入实际 canonical Skills / Guide，不为本事项创建第二套长期规范。
 
+### 演进事项 7 — 长期知识健康治理与公共能力架构演进
+
+**来源**：Issue #191；存量项目知识治理、同级知识细化失衡、公共能力抽象与 T23 型收敛问题，以及需求阶段主动识别/人工确认公共能力的补充反馈。
+
+**当前方案与验收**：[本轮演进计划](knowledge-health-and-architecture-evolution-plan.md)持有实施前完整目标、关键取舍、责任范围及验证设计。范围 A（渐进知识形成与存量健康治理）先收敛，再处理范围 B（公共能力需求、设计与持续架构演进）；正式集成发布后另行升级 Lotus PKI。独立治理 Skill 是优先候选而非已准入能力；公共能力优先增强现有需求、设计与执行 Skills。当前下一责任为 7-A1；不启动后续独立演进事项，不恢复中央运行时。最终有效语义按第 3 节写回实际 owner，本轮计划在收口后退出活动职责。
+
 ## 5. 默认顺序
 
 ```text
@@ -154,6 +160,7 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 → 演进事项 4 — 自动化验证路径与本地 Docker 资源生命周期
 → 演进事项 5 — Git Commit 生命周期与集成历史收敛
 → 演进事项 6 — 长期设计知识的权威固化与收敛
+→ 演进事项 7 — 长期知识健康治理与公共能力架构演进
 ```
 
 顺序只表达当前规划：
@@ -164,6 +171,7 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 - 再评估依赖项目 / 组件身份的本地 Docker 验证与资源治理，并与 GitHub Actions 路径建立对应导航；
 - 随后的真实 Consumer commit-history Evidence 再启动事项 5，不把它预设为事项 4 的派生步骤。
 - 设计详情权威固化的真实 Consumer 反馈再启动事项 6；不从事项 5 的 Git 生命周期反推设计知识的 owner。
+- 事项 7 来自独立的真实 Consumer 维护和开发反馈，在事项 6 已形成的长期设计知识生命周期上补齐主动健康评审、知识细化与公共能力持续演进；不把它变成普通任务的强制流程。
 
 每个事项收口后都可以基于新 Evidence 调整、拆分或删除后续事项。
 
@@ -172,3 +180,5 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 演进事项 1～3 已按各自 Issue / PR / Git Evidence 集成。事项 4 基于 Issue #180 收敛为 GitHub Actions 与本地 Docker 两条按需验证 Guide。事项 5 基于 Issue #188 收敛 Working State、Candidate Commit 与 History Convergence，并同时覆盖单仓、嵌套独立仓与 submodule；本次 runtime delta 通过 `agentic-dev-v0.2.1` 发布。
 
 演进事项 6 的设计知识责任与关键取舍由当前 Git 版本化的 Architecture / Skills / Guide 承担，相关过程证据在 Issue #189 / PR #190；具体集成、发布身份仍以实际 Git / GitHub 为准。**本项的 Provider 契约验证不等于真实 Consumer adoption 或 Runtime PASS**。多轮 Docker 构建的磁盘占用与回收、不同宿主的运行差异，以及任何发布环境用途同样不属于已验证的 Provider 成果；后续新的稳定跨 Consumer 缺口仍须另行确认 owner、边界和验收。
+
+事项 7 已进入规划，具体下一责任及未完成边界见[本轮演进计划](knowledge-health-and-architecture-evolution-plan.md#9-新会话恢复与当前停止点)。当前不声明 Skill 准入、实施、发布或 Consumer 升级完成。
