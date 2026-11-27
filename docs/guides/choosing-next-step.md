@@ -47,7 +47,7 @@ Consumer 当前项目事实
 | 当前工作需要新的 WHAT / WHY / Acceptance 决定，且尚无稳定 Specification | `specify` |
 | 存在必须收敛的 HOW 或有长期约束价值的 Design（包括单个 Unit 产生的稳定接口） | `technical-plan` |
 | 目标和验收已明确，修改局部、低风险、可逆，且无需独立执行生命周期 | Agent 直接完成有界变更并按范围验证；不为形式完整而创建 Unit |
-| Specification 已 Ready，需要形成可独立执行的工作单元 | `slice-work` |
+| Specification 已 Ready，或公共能力已有同等明确的需求/设计及验收契约，需要形成可独立执行的工作单元 | `slice-work` |
 | 已有目标 Execution Unit，但不确定是否真的可执行 | `readiness-check` |
 | Execution Unit 已 Ready | `execute-unit` |
 | 出现 unexpected failure / defect | `systematic-debug` |
