@@ -1,0 +1,30 @@
+{
+  "source_candidate_sha": "577e00a499ed3e3247f673b5d75cd7933ac5b960",
+  "files": {
+    "AGENTS.md": "c3677c689d6f7e560274b19c412474547345d3782711b75e92d38eda9e9d359b",
+    "docs/guides/choosing-next-step.md": "58e5e76e859bd0f8fea22913f9ec07fce9583e938146878ee293ed8a44ea9b40",
+    "docs/guides/consumer-local-constraints.md": "e8e7b8b3dd380b871e78d2ecd6bcc7396a146a3fef34fcbc539f3dbb99c558f1",
+    "docs/guides/design-knowledge.md": "1748f75b863712dbe0638e3a5fe2a95c02e210009c324f9dcb0c8826c528b8cf",
+    "docs/guides/document-governance.md": "268863d5ce74ef276fce4bd24e805934ccf9f551522881bdbf1137794a78c185",
+    "docs/guides/establishing-requirement-baseline.md": "544b1858fe62c0c1992763a430cf4b7fdbc0d93a1d42c69c75df7390aac2f97c",
+    "docs/guides/feature-development.md": "ed0fd14b888619d5defbaa57dc0345f7f9908f7f6c9541a3954a1756a2f0a4fb",
+    "docs/guides/human-review.md": "c2a35132ef04bc6ebec2255f1f5551bd3414ab33ec0f8f3016a19364a7a768cb",
+    "docs/guides/using-agentic-dev.md": "8ea5104115cc180aef8e426ced5ecf2463bbad58c43b2c0de12b4d68f4733f27",
+    "skill-inventory.md": "c85c677e9ccbec61926b43768f31e7368946e70bb78f123c19c49602a95d894c",
+    "skills/activate-model-collaboration/SKILL.md": "c6352bc9b995d59f9612c4b15ebad70cc508b7d0d33170454582332f8fae1ffc",
+    "skills/clarify-architecture/SKILL.md": "8e67b1d85af8c06c0b4ccdf1351a0a0d699bb063337b5dc020320294bc7b08f8",
+    "skills/clarify-intent/SKILL.md": "865d174a24de6089658d4af74a7d48c71fa8f3243a636bd66e6e71b572c180a4",
+    "skills/converge/SKILL.md": "a6718bd0195dde19bac541b2894a8bd774c1d0c60ca8239de9b9da2c67c78e93",
+    "skills/establish-requirement-baseline/SKILL.md": "6fb620c86f016d4c293b0b8d9029051b72d7d2aaf2827ab6f3e5036128702b74",
+    "skills/execute-unit/SKILL.md": "247bce05140d7f88ce7f6c00c1e372f8649d22fe6d3f5e99d5998a22c43d5ffe",
+    "skills/external-operation/SKILL.md": "22b84f5f9397669af3432fea04fd0e219f341142608fa223eafc5d29d446005d",
+    "skills/github-actions-verification/SKILL.md": "822a28286c43208d3e71a0aeb706821fd629970578493fd0aafed110fefd842e",
+    "skills/human-review/SKILL.md": "2667ce8bc4da8ca15c8742df9a5c03d86ed480911986be9f1c67fc69cf64936a",
+    "skills/readiness-check/SKILL.md": "7ae79fc1634ce308bf640cff099e5619594673094d7113986531bbd6282b2972",
+    "skills/review-change/SKILL.md": "352491390045daab92478a01818b4a750aa602ecac5e44068640c81746fa5bfc",
+    "skills/slice-work/SKILL.md": "17c93b0a3520140f621e33648db3451dc993121c4dd88b27523b185cd081f18c",
+    "skills/specify/SKILL.md": "4d87dfd5dcdb65ca41ff32855c38c3904176d2984a64c9df7efcbe7cb8701ff4",
+    "skills/systematic-debug/SKILL.md": "be123db0e3f6c32d1c83996cef3f33ff7e046074fe97c71bb917aade9fe3ce75",
+    "skills/technical-plan/SKILL.md": "0c68afdcd848d16d2d8692048b5093186d64348727d969d210f70a1b76fb42a7"
+  }
+}

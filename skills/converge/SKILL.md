@@ -1,0 +1,44 @@
+---
+name: converge
+description: Performs feature-wide convergence against currently applicable consumer authority, project state, artifact lifecycle responsibilities, current implementation, and verification evidence. Use after required execution work is complete enough for final review; return READY or route evidence-backed gaps to the responsible layer, then stop at Ready to Integrate.
+---
+
+# converge
+
+## 目的
+
+在功能/变更范围内对 Authority、当前实现和当前证据做最终收敛，判断是否达到 `Ready to Integrate`，而不是执行集成。
+
+## 输入
+
+- 当前 change / claim 实际适用的 Consumer Current Authority 与可恢复 locator / navigation；
+- 当前实现，以及存在时相关的 Execution Units；
+- Current verification evidence；
+- Consumer-local constraints。
+
+## 流程
+
+1. 结合当前 change / claim、存在时相关 Unit 的 Authority 线索、Consumer locator / navigation 与 Repository facts，重新解析最终实际适用的 Current Authority，并读取 Consumer-local constraints、当前实现与当前 Evidence；不把切分时 owner 清单或单个 Unit、测试、Job、Review、工具调用的终态自动等同于整体完成。没有正式 Unit 的有界变更仍须从当前 Authority 与变更范围恢复目标和验收责任。
+2. 对每项可观察行为、边界、非功能义务、其他适用 Authority 义务和长期 artifact responsibility 建立当前证据对应关系；对适用的 Durable Design owner 逐项检查当前组件职责、接口 / 数据 / 状态 / 错误契约、实现、IDL / Schema 或其他机器可读载体、相关 consumer 与测试是否一致。执行中形成的长期设计若仍困在 EU / JIT / 历史 Plan、没有合法当前 owner，或已发现 Design/Code/Contract drift 且缺少区分性 Evidence，不能返回 READY；但无长期设计责任的局部变更无需额外设计文件。验证产物只有在其 expected behavior 仍与当前实际适用的 Current Authority 一致时才有效；失败先区分 implementation defect、stale verification contract、runtime / environment 与 external dependency。
+3. 存在多个 Unit 时检查跨 Unit 接缝；对所有变更检查遗漏、未关闭 finding、base drift、Current locator / navigation 与状态文档一致性，并在进入 `READY TO INTEGRATE` 前检查 History Convergence：checkpoint、WIP、Readiness、Gate、Evidence 记录、测试 / debug / Review 修复等 commit 如果只是同一逻辑目的的中间状态，在当前 Repository policy 与授权允许时应收敛为最少必要 logical commits；已经共享或不允许改写的历史不得为了整洁擅自重写。一个 Unit / Issue / PR 不要求对应一个 commit，多个真正可独立理解、验证和回退的目的也不应被机械 squash。多仓项目还须按项目拓扑逐仓核对当前工作区内 Project / Component Repository 的 Git 身份、HEAD 与 staged / unstaged / untracked 状态，并分别完成各仓 History Convergence；项目仓忽略组件目录时，根仓状态干净不能证明组件代码已提交，也不能从项目根统一 amend / rebase / squash 组件仓；若 Project Repository 以 `160000` gitlink / submodule 显式跟踪组件，则核对 gitlink 指向 History Convergence 后的最终组件 SHA，组件 candidate 改写后父仓 gitlink 与绑定 Evidence 也必须更新。将相关未提交变化、各仓 candidate、精确组合和验证证据对应；任一参与仓改写 SHA 后重新判断旧组合及 Evidence，无法归属或检查且影响完成声明时保留缺口，不代替其他 owner 提交或清理。长期 owner 被 replace / retire / archive 时，确认 ordinary runtime、verification consumer 与 durable current-state wording 已迁移，historical reference 被明确限制在 provenance 角色。
+4. 复用祖先 commit 的 CI / Review / Runtime evidence 时，必须取得 ancestor→current 精确 diff，并证明受复用 claim 不受差异影响；记录 ancestor SHA、current SHA、差异范围和 claim mapping，不能把祖先 Run 描述成当前 Run。涉及共享能力时核对实际受影响消费者、契约、运行配置、schema、安全、依赖版本与组合；只有差异及依赖证明旧 claim 不受影响才复用对应证据，影响不明或共享行为变化时补足必要消费者/接缝和集成回归。独立契约验证不替代 Consumer 要求的最终系统集成与验收。
+5. 当前变更涉及数据库 schema / migration lifecycle 且环境允许时，最终证据至少覆盖 `Fresh Database → Full Migration Chain → Application Startup`；做不到时明确保留 Evidence gap。
+6. 当前变更涉及 legacy / historical / business data migration 时，检查 source / scope coverage、semantic preservation、identity / duplicate、replay / idempotency、exception / conflict disposition、provenance 与 target-side observable verification；脚本成功不能替代这些责任，legacy source 也不能反向成为新 Requirement Authority。
+7. 当前适用 Authority 或最终 convergence claim 要求视觉复刻、设计稿还原或视觉 fidelity 时，功能 / 路由通过不能单独推出视觉通过；按风险使用真实运行页面、参考视觉、AI 对照和必要人工复核。Requirement 只是可能的义务来源之一。
+8. Workflow artifact、远程输出或临时快照默认只是一次运行 Evidence；只有当前 Authority 显式接受且确需稳定消费时才晋升为持久输入，并重新验证完整性、来源与受影响 Current Evidence。
+9. 高影响 Authority / Skill / Repository governance 变化按 Consumer policy 进入 fresh / independent `review-change`；复核 PASS 不等于人工集成授权。
+10. 缺口按真实责任层返回：若证据支持反复补丁、跨模块返工或范围增长源于共享设计/架构责任而非实现缺陷，停止扩大原范围，返回合法需求/设计 owner 或切分责任，保留安全和集成义务；需要澄清、规划、切分、执行正式 Unit 或调试时使用对应 Skill；无正式 Unit 的局部实现缺口返回当前有界变更的执行责任；属于其他 Consumer Current Authority 时返回其真实 owner / maintenance procedure，而不是在 Converge 中静默重设计。只要仍有当前职责可自动关闭的剩余问题就继续收敛。
+11. 只有不存在已知阻塞缺口且 Authority、实现与当前 Evidence 匹配目标状态时返回 READY。
+
+## 输出
+
+- `READY TO INTEGRATE`；或
+- Evidence-backed convergence gaps 与责任层。
+
+## 退出条件
+
+Authority、实现与当前证据一致，且没有已知阻塞缺口。
+
+## 升级
+
+集成、merge、release、deploy 以及必须由人工承担的高影响决定保持在仓库 / Human Authority。请求人工前先验证当前已授权工具、Evidence 与等价自动路径确实不足，并把请求缩到最小不可替代动作或决定。READY 不是集成授权。
