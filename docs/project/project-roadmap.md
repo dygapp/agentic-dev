@@ -122,7 +122,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 4. **自动化验证路径与本地 Docker 资源生命周期**：以 Issue #180 为反馈起点，形成 [GitHub Actions 自动化验证](../guides/github-actions-automated-verification.md)与可独立用于非 GitHub 仓库的[本地 Docker 自动化验证](../guides/docker-automated-verification.md)两条按需向导；未新增通用 Docker Skill 或 Provider 编排器，真实 Consumer 的多轮构建、缓存与磁盘回收效果尚未验证；
 5. **Git Commit 生命周期与集成历史收敛**：Issue #188 已完成；实现 candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 通过 14 / 14 contracts 与 Fresh / Independent Review，覆盖单仓、嵌套独立仓和 submodule，并作为 `agentic-dev-v0.2.1` 的唯一 runtime semantic delta 发布。
 6. **长期设计知识的形成、归属与收敛**：源于 Issue #189 的 Consumer 反馈，采用现有 canonical Skills 与开放 Consumer-owned Current Authority，解决单 EU 长期设计形成、合法 owner 回流及 Design / Code / Contract / Tests 一致性；长期决定与必要取舍理由保存在 Git 版本化 Architecture / Skills，未新增 Design Skill、Registry 或独立 ADR。本项通过 `agentic-dev-v0.3.0` 分发 Provider 契约，不表示真实 Consumer adoption PASS。
-7. **长期知识健康治理与公共能力架构演进**：源于 Issue #191 及后续 Consumer 反馈，按[本轮演进计划](knowledge-health-and-architecture-evolution-plan.md)推进。范围 A 已通过有界行为验证和准入判断，采用按需 Guide、Consumer 自有维护约定及现有 Skills；下一责任为 7-B1，收敛公共能力需求确认及初始架构设计。正式发布和 Lotus PKI 后续升级另行核验与授权。
+7. **长期知识健康治理与公共能力架构演进**：源于 Issue #191 及后续 Consumer 反馈，按[本轮演进计划](knowledge-health-and-architecture-evolution-plan.md)推进。范围 A 已通过有界行为验证和准入判断，采用按需 Guide、Consumer 自有维护约定及现有 Skills；范围 B 的 7-B1/B2 最小候选已实施；下一责任为 7-B3（隔离行为验证、A/B 接缝复核及必要整改），尚未完成。正式发布和 Lotus PKI 后续升级另行核验与授权。
 
 该顺序不是永久 Roadmap。每个演进事项收口后必须基于届时最新 Repository / Consumer Evidence 重新判断后续事项，允许调整、拆分或删除，不为了“一次规划完整”同时展开多个事项的详细分析和设计。
 

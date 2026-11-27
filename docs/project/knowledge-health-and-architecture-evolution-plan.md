@@ -123,6 +123,12 @@ AI 提供精简分组候选并引导人工讨论，确认纳入、延期、排�
 
 当前未见稳定且可归因于缺少独立执行契约的关键缺口，因此无需启动独立候选 C 的对照。保留现有 15 个 Skill，`document-governance` 由按需 Guide 和 Consumer 自有约定承担，`review-change` 保持对拟集成变更的复核责任。长期准入取舍见 [Skill 产品工程规范](../architecture/skill-architecture.md#8-准入)。
 
+### 范围 B 候选实施与待验证责任（7-B1 / 7-B2）
+
+从范围 A 收口 commit `e22d7a24ea671d50d27985f0cf3647788c21ac28` 的干净工作树继续；7-B1 核对 `establish-requirement-baseline` 缺少主动公共能力需求候选、`clarify-architecture` 存在实际阻塞硬条件、`technical-plan` 缺少共享契约与独立验证判断。`human-review` 已具备非权威评审、确认与合法回写契约，不另改。7-B2 将必要独立切分、影响控制和结构性失败回退补入 `slice-work`、`execute-unit`、`systematic-debug`、`converge`；交叉核验时发现公共能力可独立切分却仍硬性依赖 Feature Specification，因此同步调整 `slice-work` 与 `readiness-check` 输入，允许等价已明确的需求/设计责任，不降低验收、权限和依赖要求；长期取舍入 Skill Architecture，按需导航扩展现有 `design-knowledge.md` 并同步当前 Guide 触发描述，不增 Skill、目录、运行时或通用业务框架。没有需要外部研究才能裁决的技术事实。
+
+B1/B2 候选已实施，下一责任为 7-B3。隔离行为输入为[公共能力演进样本](../../tests/fixtures/shared-capability-evolution-input.md)，含五组场景（第 5 组两个独立目标）。逐场景独立运行，仅提供该场景及候选 Skill descriptions、必要 Skill 正文和按需导航；不提供本计划、作者分析、评估预期或其他运行结果。另按精确差异复查 A 的受影响需求场景和健康治理入口，必要时使用原 A 样本。观察固定后另行对照本计划聚焦验收；只读样本仅证明决策/路由行为，不冒充真实实现、验证执行或 Consumer adoption。此候选尚未取得 B 的独立行为证据或最终独立复核结论。
+
 ### 聚焦验收
 
 每项声明必须有相应证据，静态契约检查不能替代行为验证。以现有 deterministic repository contracts 和小型有界 fixture 优先；对同一语义层的行为、授权、独立发现、抽象判断等采用必要的代表场景与独立复核，不另建通用评分框架。可选择 Lotus 可恢复片段和不同结构/领域的小型非 PKI fixture；预期问题仅供评估者，不向独立评审提前透露作者 findings。不能取得真正隔离时如实报告局限，不冒充盲测。
@@ -154,4 +160,4 @@ Provider 正式发布后，才在独立 Consumer 工作中重新读取 Lotus PKI
 
 ## 9. 新会话恢复与当前停止点
 
-从根 AGENTS → Roadmap → post-v0.1.0 演进计划 → 本文件恢复当前事项，重新核验实际 branch/HEAD/worktree、Issue/PR 及真实现行 Skills。7-A3 的行为观察和准入取舍见第 7 节；范围 A 收口后的下一责任为 7-B1，按第 6 节以 A 的实际结果为基线推进。无需历史聊天或 Issue 评论才能恢复目标、取舍、实施顺序和验收。集成、发布及 Consumer 升级由后续阶段分别处理。
+从根 AGENTS → Roadmap → post-v0.1.0 演进计划 → 本文件恢复当前事项，重新核验实际 branch/HEAD/worktree、Issue/PR 及真实现行 Skills。7-A3 的行为观察和准入取舍见第 7 节；范围 A 已收口，7-B1/B2 的最小候选已实施；下一责任为 7-B3，完成隔离行为验证、A/B 接缝复核及必要整改。负责独立行为观察的上下文不得先读取本计划或作者 findings；只按白名单取得当前候选和单个输入样本。无需历史聊天或 Issue 评论才能恢复目标、取舍、实施顺序和验收。集成、发布及 Consumer 升级由后续阶段分别处理。

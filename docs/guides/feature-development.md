@@ -21,7 +21,7 @@ status: active
 
 如果多个 Feature 同时被同一 Requirement gap 阻塞，先使用 `establish-requirement-baseline`。
 
-如果多个 Feature 共同依赖长期、高成本难逆的 systemic architecture driver，先使用 `clarify-architecture`。
+如果多个 Feature 面临长期结构问题，已阻塞下游或有证据表明延后会造成显著返工、难逆结构，按实际责任使用 `clarify-architecture`；不因此要求提前完成全部公共能力。
 
 ## 2. 先判断执行粒度
 
