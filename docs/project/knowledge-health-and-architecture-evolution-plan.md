@@ -1,12 +1,14 @@
 ---
 id: project:knowledge-health-and-architecture-evolution-plan
 type: project
-status: active
+status: historical
 ---
 
 # 演进事项 7 — 长期知识健康治理与公共能力架构演进
 
-## 1. 任务身份与当前状态
+> 历史阶段计划：事项 7 的 Provider 范围 A/B 与 7-C 已完成独立复核及集成（PR #201）；本文保存实施前方案、过程判断和验收边界，不是 Current Authority 或新会话必读入口。正式版本以 `agentic-dev-v0.4.0` 实际远端 tag 为准；当前责任见 [Roadmap](project-roadmap.md)。下文过程状态均为当时记录。
+
+## 1. 任务身份与当时状态
 
 本文件是 Issue #191 对应演进事项的目标、方案边界、关键取舍及验收计划，不是已发布的 Consumer Skill 契约。按[单项演进协议](post-v0.1.0-consumer-feedback-evolution-plan.md#3-单项执行协议)执行。范围 A 采用按需治理导航、Consumer 自有维护约定和现有 Skills，新增 Skill 不准入；正式版本发布及 Consumer 升级仍待后续阶段。
 
@@ -177,6 +179,6 @@ Provider 正式发布后，才在独立 Consumer 工作中重新读取 Lotus PKI
 
 随后执行有界项目健康评审：重点检查同级细化、需求设计实现追溯、公共能力候选与现有架构契约、实际模块/测试隔离和合理抽象机会；按证据与授权整改，不自动重做已收口 T23 或扩大产品范围。记录实际发现、误判、人工介入、验证范围、长期维护成本及后续真实开发效果，必要时反馈 Provider。Provider PASS、安装成功、Consumer 评审完成、实际整改与持续收益分别声明。
 
-## 9. 新会话恢复与当前停止点
+## 9. 历史停止点与最终处置
 
-从根 AGENTS → Roadmap → post-v0.1.0 演进计划 → 本文件恢复当前事项，重新核验实际 branch/HEAD/worktree、Issue/PR 及真实现行 Skills。范围 A、B 和 A/B 接缝已完成有界验证与复核，证据边界见第 7 节。下一责任为 7-C：完成最终候选的状态收敛、聚焦验证、标准安装升级 smoke 及 Fresh Independent Review；相对已复核候选只改变项目状态时仍须证明精确差异不影响既有行为 claim。当前稳定版本仍为 `agentic-dev-v0.3.0`；正式集成、发布及 7-D Consumer 升级须分别取得所需证据与授权。无需历史聊天或 Issue 评论才能恢复目标、取舍、实施顺序和验收；独立复核直接回读必要原始 Evidence。若需补充隔离行为观察，仍只提供白名单候选与单个样本，不提供本计划或作者 findings。
+历史停止点已由 7-C 最终独立复核与 PR #201 集成取代。正式长期语义归实际 Skill / Architecture / Guide owner；当前基线与下一责任从根 AGENTS 和 Roadmap 恢复。7-D 在 Lotus PKI 独立 Consumer 上下文中按第 8 节边界执行，须另行授权；本文不参与 ordinary runtime。

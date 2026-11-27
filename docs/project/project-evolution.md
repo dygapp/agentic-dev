@@ -316,3 +316,9 @@ Issue #189 来自 Consumer 的持久化详细设计需求：旧 `technical-plan`
 
 本次 Provider contract 变更由 `agentic-dev-v0.3.0` 版本分发，保持 15 个 Skill；长期语义以当前 `../architecture/skill-architecture.md` 与 canonical Skills 为准。真实 Consumer 采用效果将由 Lotus PKI 正常演进中的具体证据持续反馈，不被设为 Provider 本次发布的前置 Gate。
 
+
+## 22. 长期知识健康治理与公共能力架构演进
+
+Issue #191 / PR #201 将存量知识健康检查、同级细化失衡与公共能力责任/架构演进收敛到既有产品模型。选择按需治理 Guide、Consumer-local 维护约定和现有 Skills，而非新治理 Skill、固定目录或强制阶段；长期权威保留在真实 owner。公共能力根据需求、安全和事务义务主动识别，在有依据的共享语义、真实消费者、依赖与验证边界上形成和演进；持续补丁与验证范围增长只有在证据支持结构性缺口时才返回设计/范围责任。普通局部变更保持轻量路径。
+
+集成 commit `d881bea9471fa8d0b7c389780472f42ab24e7472` 与最终独立复核候选 `e0eb1ceeac397900f3d75c53ec9b244a37134e90` 文件树一致；复核 Blocking=0、Medium=0、Low=2，CI Run `45965753113` 16/16 PASS。标准安装升级 smoke 验证 15 个 Skill、9 个内容变化和 Consumer 自有资产保全；不外推真实 Consumer adoption、原生发现或长期收益。通过 `agentic-dev-v0.4.0` exact tag 分发；历史计划退役，实际长期语义由 Skill Architecture、canonical Skills 与按需 Guides 持有。

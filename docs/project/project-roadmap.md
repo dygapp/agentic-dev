@@ -8,7 +8,7 @@ status: active
 
 ## 当前基线
 
-`agentic-dev` 当前稳定 baseline 是 `agentic-dev-v0.3.0` 对应的极简 Provider 产品模型；`agentic-dev-v0.2.1` 继续保留为上一稳定版本：
+`agentic-dev` 当前稳定 baseline 是 `agentic-dev-v0.4.0` 对应的极简 Provider 产品模型；`agentic-dev-v0.3.0` 继续保留为上一稳定版本：
 
 - `skills/**` 是唯一正式 Consumer-facing runtime product；
 - `docs/guides/**` 只为人和 AI 提供按需 Bootstrap、方法理解与下一步导航；
@@ -17,13 +17,13 @@ status: active
 - Provider 自身只保留少量直接 governance，普通修改使用与声明匹配的最小 deterministic validation 与必要 Review，不恢复批量模型 grader、custom Release Builder 或多级 Gate；
 - 历史复杂机制解决过的 bounded context、Consumer ownership、Evidence integrity、Fresh Context、human escalation 等长期语义已经进入 Skills、Guides、Provider governance 或 Consumer-local Authority。
 
-当前允许的完成声明是：**Provider 极简切换保持完成，`agentic-dev-v0.3.0` 可供采用；本版本在 `v0.2.1` 基础上建立长期设计知识形成、权威归属、回流与一致性契约**。这不表示任意真实 Consumer 已自动完成升级或业务回归，也不授予后续版本的 merge、release 或 deploy 权限。
+当前允许的完成声明是：**Provider 极简切换保持完成，`agentic-dev-v0.4.0` 以实际远端 immutable tag 为准可供采用；本版本在 `v0.3.0` 基础上补齐长期知识健康治理与公共能力架构演进契约**。这不表示任意真实 Consumer 已自动完成升级或业务回归，也不授予后续版本的 merge、release 或 deploy 权限。
 
 稳定演进里程碑与历史原因由 `docs/project/project-evolution.md` 持有；精确 branch / Issue / PR / Actions / commit 状态始终从 GitHub 与当前 checkout 重新读取。
 
 ## 当前演进
 
-**AI 驱动软件开发方法论产品边界重构已完成 S1～S3 Provider 收敛并发布为 `agentic-dev-v0.1.0`；后续 Consumer 反馈演进依次发布 `v0.2.0`、`v0.2.1`（Commit lifecycle）与 `v0.3.0`（长期设计知识生命周期）。**
+**AI 驱动软件开发方法论产品边界重构已完成 S1～S3 Provider 收敛并发布为 `agentic-dev-v0.1.0`；后续 Consumer 反馈演进依次发布 `v0.2.0`、`v0.2.1`（Commit lifecycle）、`v0.3.0`（长期设计知识生命周期）与 `v0.4.0`（长期知识健康治理与公共能力架构演进）。**
 
 本轮目标模型先后完成 Specification、Repository-wide disposition、P1～P4 能力验证、S1 Authority Freeze、S2 Subtractive Cutover 与 S3 Final Fresh Independent Review。`methodology-product-boundary-specification.md` 与 `methodology-product-boundary-implementation-plan.md` 已完成本轮临时 Authority 职责，现作为本轮历史规范 / 实施计划保留，不再参与 ordinary Provider runtime。
 
@@ -68,6 +68,12 @@ Issue #189 / PR #190 的集成 commit 为 `7916045f858b8a0f34891056afe8b3994515c
 相对 `v0.2.1`，6 个 canonical Skill contract 发生变化：`clarify-architecture`、`technical-plan`、`slice-work`、`execute-unit`、`converge` 和 `review-change`；Skill inventory 保持 15 项。长期设计决定与必要取舍依据进入 Git 版本化 owner，Issue / PR 只承担过程 Evidence。设计责任模型见 `../architecture/skill-architecture.md`，Consumer 使用导航见 `../guides/design-knowledge.md`。
 
 本版的有界升级 smoke 使用标准 `skills@1.7.0`：在 disposable Consumer 中先从远端 `agentic-dev-v0.2.1` exact tag 安装 15 个 Skill，再从待发布本地候选安装；15 项 lock 保留、只有上述 6 个 Skill 的内容变化，Consumer-owned `AGENTS.md` 和项目设计文档哈希不变。配套 deterministic repository contracts 为 16/16 PASS。该证据只支持 Provider 契约、分发与安装边界；Lotus PKI 的正常演进用于持续提供实际反馈，不设独立 Consumer Acceptance 阶段，也不把尚未发生的 Consumer adoption 声称为 PASS。正式版本身份由远端 `agentic-dev-v0.3.0` immutable tag 与实际绑定 commit 确定。
+
+### v0.4.0 — 长期知识健康治理与公共能力架构演进
+
+Issue #191 / PR #201 集成提交为 `d881bea9471fa8d0b7c389780472f42ab24e7472`。最终独立复核候选 `e0eb1ceeac397900f3d75c53ec9b244a37134e90` 与实际集成文件树完全一致。Fresh Independent Review：Blocking=0、Medium=0、Low=2；CI Run `45965753113` 在相同文件树的 merge ref 上 16/16 PASS。
+
+知识健康治理采用按需 [Guide](../guides/document-governance.md)、Consumer-local 维护约定与现有 Skills；公共能力架构演进进入现有 canonical Skills 与 [Skill Architecture](../architecture/skill-architecture.md)。相对 v0.3.0，9 个既有 Skill 内容变化，inventory 保持 15；不新增独立治理 Skill、强制阶段或运行时。发布前标准安装升级 smoke 验证了旧 exact tag 到本地精确候选的 15/15 Skills、lock 与五类 Consumer 自有资产保全。行为证据仅覆盖代表性决策、责任路由与计划，不证明原生 Skill 发现、长期收益或真实 Consumer adoption。正式分发身份由远端 `agentic-dev-v0.4.0` immutable tag 与实际绑定 commit 决定。
 
 ## 已完成阶段与当前收敛
 
@@ -122,7 +128,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 4. **自动化验证路径与本地 Docker 资源生命周期**：以 Issue #180 为反馈起点，形成 [GitHub Actions 自动化验证](../guides/github-actions-automated-verification.md)与可独立用于非 GitHub 仓库的[本地 Docker 自动化验证](../guides/docker-automated-verification.md)两条按需向导；未新增通用 Docker Skill 或 Provider 编排器，真实 Consumer 的多轮构建、缓存与磁盘回收效果尚未验证；
 5. **Git Commit 生命周期与集成历史收敛**：Issue #188 已完成；实现 candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 通过 14 / 14 contracts 与 Fresh / Independent Review，覆盖单仓、嵌套独立仓和 submodule，并作为 `agentic-dev-v0.2.1` 的唯一 runtime semantic delta 发布。
 6. **长期设计知识的形成、归属与收敛**：源于 Issue #189 的 Consumer 反馈，采用现有 canonical Skills 与开放 Consumer-owned Current Authority，解决单 EU 长期设计形成、合法 owner 回流及 Design / Code / Contract / Tests 一致性；长期决定与必要取舍理由保存在 Git 版本化 Architecture / Skills，未新增 Design Skill、Registry 或独立 ADR。本项通过 `agentic-dev-v0.3.0` 分发 Provider 契约，不表示真实 Consumer adoption PASS。
-7. **长期知识健康治理与公共能力架构演进**：源于 Issue #191 及后续 Consumer 反馈，按[本轮演进计划](knowledge-health-and-architecture-evolution-plan.md)推进。范围 A 采用按需 Guide、Consumer 自有维护约定及现有 Skills；范围 B 与 A/B 接缝已完成 7-B3 有界独立复核，保持 15 个 Skill。下一责任为 7-C（最终候选聚焦验证、标准安装升级、Fresh Independent Review 与经授权的集成发布）。当前稳定版本不变，Lotus PKI 后续升级另行核验与授权。
+7. **长期知识健康治理与公共能力架构演进**：Issue #191 / PR #201 的 Provider 契约已集成，版本分发以 `agentic-dev-v0.4.0` exact tag 为准。A/B 有界验证与独立复核完成，保持 15 个 Skill；下一责任为经单独授权的 7-D Lotus PKI 升级与实际应用观察，不将其作为 Provider 发布前置。
 
 该顺序不是永久 Roadmap。每个演进事项收口后必须基于届时最新 Repository / Consumer Evidence 重新判断后续事项，允许调整、拆分或删除，不为了“一次规划完整”同时展开多个事项的详细分析和设计。
 
@@ -157,7 +163,7 @@ S3 — Minimal Validation / Final Fresh Independent Review 已在 exact candidat
 - 演进事项 4 已完成 Provider 文档层 Evidence：GitHub Issue #180 与对应 Guides；
 - 演进事项 5 已完成 Evidence：GitHub Issue #188、implementation candidate `e21f207ebdcfa7bccccbf02079e28eff1f986db4` 与 `agentic-dev-v0.2.1` release binding；
 - 演进事项 6 长期语义：`../architecture/skill-architecture.md`、相关 canonical Skills 与 `../guides/design-knowledge.md`；Issue #189 / PR #190 仅作历史过程 Evidence，发布身份由 `agentic-dev-v0.3.0` exact tag 持有；
-- 演进事项 7 的当前实施前目标、关键取舍、工作范围与验收：[长期知识健康治理与公共能力架构演进计划](knowledge-health-and-architecture-evolution-plan.md)；Issue #191 作为过程协调与证据；最终长期契约回真实 Skill / Architecture / Guide owner；
+- 演进事项 7 的长期语义由实际 Skill / Architecture / Guide owner 承担；[历史演进计划](knowledge-health-and-architecture-evolution-plan.md) 已退出活动职责；Issue #191 / PR #201 保存过程 Evidence。
 - 稳定历史里程碑：`project-evolution.md`；
 - 历史研究与旧模型 Evidence：`../research/**`；
 - bounded change 的精确 commit / Review / Actions Evidence：Git / GitHub 对应对象。

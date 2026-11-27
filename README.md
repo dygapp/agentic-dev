@@ -21,6 +21,8 @@ Consumer Repository
 - 新项目 Bootstrap：[`docs/guides/bootstrap-new-project.md`](docs/guides/bootstrap-new-project.md)
 - 已有项目采用：[`docs/guides/adopting-agentic-dev.md`](docs/guides/adopting-agentic-dev.md)
 - 不知道下一步：[`docs/guides/choosing-next-step.md`](docs/guides/choosing-next-step.md)
+- 已有项目升级：[`docs/guides/upgrading-agentic-dev.md`](docs/guides/upgrading-agentic-dev.md)
+- 知识健康治理：[`docs/guides/document-governance.md`](docs/guides/document-governance.md)
 - 长期设计知识：[`docs/guides/design-knowledge.md`](docs/guides/design-knowledge.md)
 - Skill 清单：[`skills/README.md`](skills/README.md)
 

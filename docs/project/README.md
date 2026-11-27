@@ -9,7 +9,7 @@
 - [`post-v0.1.0-consumer-feedback-evolution-plan.md`](post-v0.1.0-consumer-feedback-evolution-plan.md) — 当前 Consumer 反馈演进事项、执行顺序与单项闭环协议；
 - [`project-evolution.md`](project-evolution.md) — 对理解当前项目仍有价值的稳定演进历史。
 
-当前有界演进计划：[长期知识健康治理与公共能力架构演进](knowledge-health-and-architecture-evolution-plan.md)（事项 7 的实施前目标、关键取舍、责任范围及验收；收口后退出活动职责，正式语义回真实 owner）。
+历史有界演进计划：[长期知识健康治理与公共能力架构演进](knowledge-health-and-architecture-evolution-plan.md)（事项 7 Provider 收口后的方案与 Evidence 背景，不再承担活动计划职责；当前下一责任从 Roadmap 恢复）。
 
 `methodology-product-boundary-specification.md` 与 `methodology-product-boundary-implementation-plan.md` 已完成本轮产品边界重构的临时 Authority 职责，现作为历史规范 / 实施计划保留；当前产品边界、状态与下一责任从 `project-charter.md`、根 `AGENTS.md`、`docs/architecture/skill-architecture.md` 与本目录 Roadmap 恢复。
 
