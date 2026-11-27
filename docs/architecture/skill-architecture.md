@@ -93,3 +93,5 @@ Consumer 可以按自身事实建立长期 Design owner，但 Provider 不规定
 新增 Skill 至少证明独立 trigger / purpose、稳定 inputs、可重复 procedure、稳定 outputs、明确 exit / escalation、有界上下文、单一语义 owner，并证明现有 Skill / Guide / Consumer-local mechanism 无法更简单地承担该责任。
 
 “很重要”“多个地方都会用”“存在多个步骤”本身不足以新增 Skill。
+
+项目可以显式开展无拟集成变更的知识健康评审。当前采用按需治理导航和 Consumer 自有维护约定，发现返回已有需求、设计、实现、验证或人工评审责任。拟集成的高影响权威变更继续由 `review-change` 复核实际差异。代表性隔离样本中，现有组合可以在简短请求下完成只读健康评审和增量退出，普通局部修改仍保持原有路径，因此当前不单设 `document-governance` Skill。若真实使用出现可重复、可归因于执行契约不足的关键遗漏或人工补偿，再按上述准入条件做同范围比较。
