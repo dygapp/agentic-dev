@@ -127,7 +127,7 @@ AI 提供精简分组候选并引导人工讨论，确认纳入、延期、排�
 
 从范围 A 收口 commit `e22d7a24ea671d50d27985f0cf3647788c21ac28` 的干净工作树继续；7-B1 核对 `establish-requirement-baseline` 缺少主动公共能力需求候选、`clarify-architecture` 存在实际阻塞硬条件、`technical-plan` 缺少共享契约与独立验证判断。`human-review` 已具备非权威评审、确认与合法回写契约，不另改。7-B2 将必要独立切分、影响控制和结构性失败回退补入 `slice-work`、`execute-unit`、`systematic-debug`、`converge`；交叉核验时发现公共能力可独立切分却仍硬性依赖 Feature Specification，因此同步调整 `slice-work` 与 `readiness-check` 输入，允许等价已明确的需求/设计责任，不降低验收、权限和依赖要求；长期取舍入 Skill Architecture，按需导航扩展现有 `design-knowledge.md` 并同步当前 Guide 触发描述，不增 Skill、目录、运行时或通用业务框架。没有需要外部研究才能裁决的技术事实。
 
-B1/B2 候选已实施，下一责任为 7-B3。隔离行为输入为[公共能力演进样本](../../tests/fixtures/shared-capability-evolution-input.md)，含五组场景（第 5 组两个独立目标）。逐场景独立运行，仅提供该场景及候选 Skill descriptions、必要 Skill 正文和按需导航；不提供本计划、作者分析、评估预期或其他运行结果。另按精确差异复查 A 的受影响需求场景和健康治理入口，必要时使用原 A 样本。观察固定后另行对照本计划聚焦验收；只读样本仅证明决策/路由行为，不冒充真实实现、验证执行或 Consumer adoption。此候选尚未取得 B 的独立行为证据或最终独立复核结论。
+B1/B2 候选实施后进入 7-B3。隔离行为输入为[公共能力演进样本](../../tests/fixtures/shared-capability-evolution-input.md)，含五组场景（第 5 组两个独立目标）。逐场景独立运行，仅提供该场景及候选 Skill descriptions、必要 Skill 正文和按需导航；不提供本计划、作者分析、评估预期或其他运行结果。另按精确差异复查 A 的受影响需求场景和健康治理入口，必要时使用原 A 样本。观察固定后另行对照本计划聚焦验收；只读样本仅证明决策/路由行为，不冒充真实实现、验证执行或 Consumer adoption。以下同上下文复核是历史过程记录，最终独立判断见后续小节。
 
 ### 范围 B 同上下文契约复核（7-B3，部分）
 
@@ -141,6 +141,12 @@ B1/B2 候选已实施，下一责任为 7-B3。隔离行为输入为[公共能�
 - A 回归：需求基线仍须发现管理员更正审计缺失，保持机构查询合理深度，移除未经确认技术扩展的现行要求地位；局部缺文件需求保持已批准失败行为，不引入合作方。冷链评审保留真实路径/锚点和历史 provenance，识别 410 待确认、覆盖原记录的实现偏差、IF5/IF6 验证漂移、研究误用、过时投影及未访问组件。可靠基线完全不变时只给出有界增量结论。
 
 复核发现两个衔接缺口：`specify` 仍把下游已阻塞写为架构返回必要条件；`choosing-next-step` 与 `feature-development` 仍把 Ready Specification 写为公共能力切分的唯一入口。按现行 `clarify-architecture`、`slice-work` 契约同步调整上述返回/导航，不扩大局部任务范围。其他场景在当前契约层已有对应责任，未发现需要新增 Skill 或额外规范的缺口；能否实际选择正确能力、遵守授权、无需人工提示及充分覆盖关键问题仍需独立观察。原候选白名单输入可用于组织验证，但 Guide 和 Skill 变更后必须重新绑定新候选，不得把旧输入包视为当前运行证据。
+
+### 范围 B 独立复核与收口（7-B3）
+
+独立复核对象为 `577e00a499ed3e3247f673b5d75cd7933ac5b960`，隔离输入 commit 为 `f1e7d162df60fcf644253ec88b0b7e097f59bf33`。原始观察保存在 Issue #192–#200；[独立复核记录](https://github.com/dygapp/agentic-dev/issues/191#issuecomment-7213001761)重新核对输入包、候选、原始评论及 A/B 接缝。Manifest 25/25 哈希一致，15 个 Skill、8 个 Guide 与候选逐字节一致；B01 第一份观察因报告自动提供历史上下文而排除，采用第二份及其余八份观察。当前复核结论为有界 PASS（Blocking=0、Medium=0、Low=2），deterministic contracts 16/16 PASS。
+
+两项 Low 不触发额外产品修改：B06 样本不足以证明操作者字段是已确认必填义务，故只能支持风险分类、证据不足与责任路由，不能以确定性契约漂移计入通过；A03 草案增加了明确提示的候选细化，未获额外业务批准且未写入 Current Authority，后续应在草案正文区分已确认义务与候选。九份采纳的观察均未实际读取 Guide，不将行为成功归因于 Guide 或宣称真实 Consumer 的导航发现已验证。原始观察是决策/路由及计划证据，不是实际实现、执行 Skill、原生发现、安装升级或长期收益验证。保留现有 Skill inventory、实际长期 owner 及局部变更轻量路径，不增加机制；范围 B 与 A/B 接缝至此收口。
 
 ### 聚焦验收
 
@@ -173,4 +179,4 @@ Provider 正式发布后，才在独立 Consumer 工作中重新读取 Lotus PKI
 
 ## 9. 新会话恢复与当前停止点
 
-从根 AGENTS → Roadmap → post-v0.1.0 演进计划 → 本文件恢复当前事项，重新核验实际 branch/HEAD/worktree、Issue/PR 及真实现行 Skills。7-A3 的行为观察和准入取舍见第 7 节；范围 A 已收口，7-B1/B2 的最小候选已实施；下一责任为 7-B3，完成隔离行为验证、A/B 接缝复核及必要整改。负责独立行为观察的上下文不得先读取本计划或作者 findings；只按白名单取得当前候选和单个输入样本。无需历史聊天或 Issue 评论才能恢复目标、取舍、实施顺序和验收。集成、发布及 Consumer 升级由后续阶段分别处理。
+从根 AGENTS → Roadmap → post-v0.1.0 演进计划 → 本文件恢复当前事项，重新核验实际 branch/HEAD/worktree、Issue/PR 及真实现行 Skills。范围 A、B 和 A/B 接缝已完成有界验证与复核，证据边界见第 7 节。下一责任为 7-C：完成最终候选的状态收敛、聚焦验证、标准安装升级 smoke 及 Fresh Independent Review；相对已复核候选只改变项目状态时仍须证明精确差异不影响既有行为 claim。当前稳定版本仍为 `agentic-dev-v0.3.0`；正式集成、发布及 7-D Consumer 升级须分别取得所需证据与授权。无需历史聊天或 Issue 评论才能恢复目标、取舍、实施顺序和验收；独立复核直接回读必要原始 Evidence。若需补充隔离行为观察，仍只提供白名单候选与单个样本，不提供本计划或作者 findings。

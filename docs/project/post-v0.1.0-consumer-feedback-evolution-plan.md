@@ -149,7 +149,7 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 
 **来源**：Issue #191；存量项目知识治理、同级知识细化失衡、公共能力抽象与 T23 型收敛问题，以及需求阶段主动识别/人工确认公共能力的补充反馈。
 
-**当前方案与验收**：[本轮演进计划](knowledge-health-and-architecture-evolution-plan.md)持有目标、责任范围和验证设计。范围 A 采用按需 Guide、现有 Skills 与 Consumer-local 维护约定，独立治理 Skill 不准入。范围 B 已形成 7-B1/B2 最小实施候选；下一责任为 7-B3，验证公共能力需求、架构演进及 A/B 接缝。正式集成发布后另行升级 Lotus PKI。最终有效语义按第 3 节写回实际 owner，本轮计划在收口后退出活动职责。
+**当前方案与验收**：[本轮演进计划](knowledge-health-and-architecture-evolution-plan.md)持有目标、责任范围和验证设计。范围 A 采用按需 Guide、现有 Skills 与 Consumer-local 维护约定，独立治理 Skill 不准入。范围 B 与 A/B 接缝已完成 7-B3 有界独立复核；下一责任为 7-C 最终候选验证、复核及经授权的集成发布。正式发布后另行升级 Lotus PKI。最终有效语义按第 3 节写回实际 owner，本轮计划在收口后退出活动职责。
 
 ## 5. 默认顺序
 
@@ -181,4 +181,4 @@ Provider 文档层的结果由 [GitHub Actions 自动化验证 Guide](../guides/
 
 演进事项 6 的设计知识责任与关键取舍由当前 Git 版本化的 Architecture / Skills / Guide 承担，相关过程证据在 Issue #189 / PR #190；具体集成、发布身份仍以实际 Git / GitHub 为准。**本项的 Provider 契约验证不等于真实 Consumer adoption 或 Runtime PASS**。多轮 Docker 构建的磁盘占用与回收、不同宿主的运行差异，以及任何发布环境用途同样不属于已验证的 Provider 成果；后续新的稳定跨 Consumer 缺口仍须另行确认 owner、边界和验收。
 
-事项 7 已完成范围 A 的行为验证和准入判断。具体下一责任及发布、升级边界见[本轮演进计划](knowledge-health-and-architecture-evolution-plan.md#9-新会话恢复与当前停止点)。
+事项 7 已完成范围 A、B 的有界行为验证、准入判断及 A/B 接缝复核。具体下一责任及发布、升级边界见[本轮演进计划](knowledge-health-and-architecture-evolution-plan.md#9-新会话恢复与当前停止点)。
